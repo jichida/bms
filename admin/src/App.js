@@ -16,6 +16,7 @@ import translations from './i18n';
 import restClient from './restClient';
 
 import {SystemconfigList,SystemconfigShow,SystemconfigEdit,SystemconfigCreate} from './components/systemconfig/index.js';
+import {UserListList,UserListEdit} from './components/users';
 
 class App extends Component {
 
@@ -35,6 +36,7 @@ class App extends Component {
                 messages={translations}
             >
             <Resource name="systemconfig" list={SystemconfigList} show={SystemconfigShow} edit={SystemconfigEdit} create={SystemconfigCreate} />
+            <Resource name="user" list={UserListList} edit={UserListEdit} />
 
 
             </Admin>
