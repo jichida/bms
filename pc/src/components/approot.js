@@ -4,46 +4,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {carmap_setmapinited} from '../actions';
+import { Route,Redirect,Switch} from 'react-router-dom';
 
-import WeuiTool from './tools/weuitool';
-import Login from './login/login.js';
-import Test from './test';
 
-import {
-    Route,Redirect,
-    Switch
-} from 'react-router-dom';
-import '../newcss/common.css';
-import {requireAuthentication} from './requireauthentication';
-import MessageCenter from './messagecenter/messagecenter.js';
-import MessageDetail from './messagecenter/messagedetail.js';
+import Index from './index';
+
+import "../css/common.css";
 
 class AppRoot extends React.Component {
-  componentWillMount() {
+    componentWillMount() {
         const script = document.createElement("script");
         script.src = "http://webapi.amap.com/maps?v=1.3&key=788e08def03f95c670944fe2c78fa76f&callback=init&plugin=AMap.Geocoder,AMap.Driving";
         script.async = true;
         window.init = ()=>{
-          console.log(`地图下载成功啦！`);
-          window.initamaploaded = true;
-          this.props.dispatch(carmap_setmapinited(true));
+            // console.log(`地图下载成功啦！`);
+            window.initamaploaded = true;
+            this.props.dispatch(carmap_setmapinited(true));
         }
         document.body.appendChild(script);
     }
     componentWillUnmount() {
-      this.props.dispatch(carmap_setmapinited(false));
-      window.initamaploaded = false;
+        this.props.dispatch(carmap_setmapinited(false));
+        window.initamaploaded = false;
     }
     render() {
         return (
             <div className="AppContainer">
-                <WeuiTool />
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)}/>
-                    <Route path="/login" component={Login}/>
-                    <Route path="/index" component={Test}/>
-                    <Route path="/messagecenter" component={MessageCenter}/>
-                    <Route path="/mymessagedetail/:msgid" component={MessageDetail} />
+                    <Route path="/index" component={Index}/>
                 </Switch>
             </div>
         );
