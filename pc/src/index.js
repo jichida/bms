@@ -5,12 +5,8 @@ import store,{sagaMiddleware} from './env/store';
 import rootSaga from './sagas';
 import registerServiceWorker from './registerServiceWorker';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import {
-    postNotifyFromJPush
-} from './env/jpush';
-import {
-  registerandroid
-} from './env/android';
+import { postNotifyFromJPush } from './env/jpush';
+import { registerandroid } from './env/android';
 
 injectTapEventPlugin();
 

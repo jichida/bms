@@ -20,3 +20,103 @@
     bottom: 0;
     left: 0;
 }
+.AppPage{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    height: 100%;
+}
+.AppPage .content{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+.AppPage .content .AdminContent{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+.AppPage .leftmenu{
+    background: #2a2d34;
+    color: #FFF;
+    height: 100%;
+    overflow: auto;
+    width: 180px;
+}
+.AppPage .leftmenu ul li {
+    height: 50px;
+    display: block;
+}
+.AppPage .leftmenu ul li a{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-align-self: center;
+    align-self: center;
+    border-bottom: 1px solid #666;
+    line-height: 50px;
+    text-align: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    padding: 0 15px;
+}
+.AppPage .leftmenu.open ul li a{
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+.AppPage .leftmenu ul li i{
+    line-height: 50px;
+    font-size: 22px;
+}
+.AppPage .leftmenu ul li:active{
+    background: #383a3e;
+}
+
+.AppPage .logo{
+    background: #EEE;
+    height: 64px;
+    color: #333;
+    text-align: center;
+    line-height: 64px;
+}
+.AppPage .leftmenu ul li span{
+    padding-left: 10px;
+    display: none;
+}
+.AppPage .leftmenu.open ul li span{
+    display: inline-block;
+    white-space: nowrap ;
+}
+
+.AppPage .leftmenu{
+    width: 60px;
+    animation:leftmenuhide 1s;
+    -webkit-animation:leftmenuhide 1s;
+}
+.AppPage .leftmenu.open{
+    width: 180px;
+    animation:leftmenushow 1s;
+    -webkit-animation:leftmenushow 1s;
+}
+@keyframes leftmenuhide{
+    from {width: 180px;}
+    to {width : 60px;}
+}
+@keyframes leftmenushow{
+    from {width: 60px;}
+    to {width : 180px;}
+}
+.appbar .title{
+    color: #333;
+}
