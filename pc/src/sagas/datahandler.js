@@ -7,12 +7,7 @@ import {
     logout_request,
     logout_result,
 
-    getmypincheroute_request,
-    getmypincheroute_result,
-
-    getonepincheroutepassengers_request,
-    getonepincheroutepassengers_result,
-
+    getsystemconfig_request,
     getsystemconfig_result,
 
     getnotifymessage_request,
@@ -35,22 +30,19 @@ let recvmessagetoresultpair = {
   'login_result':login_result,
   'logout_result':logout_result,
 
-  'getmypincheroute_result':getmypincheroute_result,
-  'getonepincheroutepassengers_result':getonepincheroutepassengers_result,
 };
 
 //非验证发送接口
 let sendmessagefnsz = {
   'logout':`${logout_request}`,
   'login':`${login_request}`,
+  'getsystemconfig':`${getsystemconfig_request}`,
   'getnotifymessage':`${getnotifymessage_request}`,
   'getnotifymessageone':`${getnotifymessageone_request}`,
 };
 
 //验证发送接口
 let sendmessageauthfnsz = {
-  'getmypincheroute':`${getmypincheroute_request}`,
-  'getonepincheroutepassengers':`${getonepincheroutepassengers_request}`,
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};
