@@ -9,13 +9,13 @@ import { postNotifyFromJPush } from './env/jpush';
 import { registerandroid } from './env/android';
 
 injectTapEventPlugin();
-
+sagaMiddleware.run(rootSaga);
 ReactDOM.render(
     <Root />,
     document.getElementById('root')
 );
 
-sagaMiddleware.run(rootSaga);
+
 registerandroid();
 postNotifyFromJPush(store.dispatch);
 registerServiceWorker();

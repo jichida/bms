@@ -42,7 +42,7 @@ class Page extends React.Component {
                     <ul>
                         {_.map(leftmenuobj, (obj,index)=>{
                             return (
-                                <li><a title={index} key={index}><i className={obj.icon} aria-hidden="true"></i><span>{obj.text}</span></a></li>
+                                <li key={index}><a title={index}><i className={obj.icon} aria-hidden="true"></i><span>{obj.text}</span></a></li>
                             );
                         })}
                     </ul>

@@ -57,10 +57,8 @@ const listenmapevent = (eventname)=>{
 }
 
 const getmapstate_formapcar = (state) => {
-  const {operate,carmap,driveroute} = state;
-  let curlocation = operate.curlocation;
-  let routeleftpts = driveroute.latlngs;
-  return {...carmap,curlocation,routeleftpts,driveroute};
+  const {carmap} = state;
+  return {...carmap};
 }
 
 const drawmap = (nextprop)=>{
@@ -183,9 +181,11 @@ const drawmap = (nextprop)=>{
 }
 
 export function* createmapshowflow(){
+    console.log(`createmapshowflow...`);
     //创建地图
     yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
+        console.log(`carmapshow_createmap...`);
         //take
         let mapcarprops = yield select(getmapstate_formapcar);
         if(!mapcarprops.isMapInited){//仅在第一次加载页面初始化时进入
@@ -221,8 +221,7 @@ export function* createmapshowflow(){
         yield cancel(task_zoomend);
       }
       catch(e){
-        console.log(`创建地图失败`);
-        alert(`创建地图失败${JSON.stringify(e)}`);
+        console.log(`创建地图失败${e}`);
       }
 
     });

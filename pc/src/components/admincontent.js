@@ -3,32 +3,32 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
-import _  from "lodash";
-import AdminContent from "./admincontent";
+import {
+  carmapshow_createmap,
+  carmapshow_destorymap,
+} from '../actions';
 
 class Page extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-    componentWillMount() {
-    }
-    componentWillUnmount() {
-    }
-
-
-    render() {
-
-
-        return (
-            <div className="AdminContent">
-                <div>这里是地图部分</div>
-            </div>
-        );
-    }
+  componentWillMount () {
+    console.log('地图---->componentWillMount---------');
+  }
+  componentWillUnmount(){
+    console.log('地图---->componentWillUnmount---------');
+    this.props.dispatch(carmapshow_destorymap());
+  }
+  componentDidMount () {
+    console.log('地图---->componentDidMount---------');
+    this.props.dispatch(carmapshow_createmap());
+ }
+ render() {
+     const height = this.props.height || window.innerHeight;
+     console.log('地图---->render---------height:'+height);
+     return (
+         <div className="AdminContent">
+             <div id="gaodemap" style={{height:`${height}px`}}/>
+         </div>
+     );
+ }
 }
 
 export default connect()(Page);

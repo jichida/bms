@@ -9,8 +9,8 @@ export const carmapshow_createmap = createAction('carmapshow_createmap');
 export const carmapshow_destorymap = createAction('carmapshow_destorymap');
 export const carmap_setenableddrawmapflag = createAction('carmap_setenableddrawmapflag');
 
-export const driveroute_request = createAction('driveroute_request');
-export const driveroute_result = createAction('driveroute_result');
+export const carmap_resetmap = createAction('carmap_resetmap');
+export const carmap_setcurlocation  = createAction('carmap_setcurlocation');
+export const carmap_setdragging  = createAction('carmap_setdragging');
 
-export const sendcurlocationtoserver = createAction('sendcurlocationtoserver');
 export const setcurlocation = createAction('setcurlocation');
