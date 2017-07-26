@@ -201,8 +201,8 @@ export function* createmapshowflow(){
         let task_dragend =  yield fork(function*(eventname){
           while(true){
             yield call(listenmapevent,eventname);
-            let curlocation = window.amap.getCenter();
-            let centerlatlng = L.latLng(curlocation.lat, curlocation.lng);
+            let centerlocation = window.amap.getCenter();
+            let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
             yield put(carmap_setmapcenter(centerlatlng));
           }
         },'dragend');
@@ -210,8 +210,8 @@ export function* createmapshowflow(){
         let task_zoomend =  yield fork(function*(eventname){
           while(true){
             yield call(listenmapevent,eventname);
-            let curlocation = window.amap.getCenter();
-            let centerlatlng = L.latLng(curlocation.lat, curlocation.lng);
+            // let centerlocation = window.amap.getCenter();
+            // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
             yield put(carmap_setzoomlevel(window.amap.getZoom()));
           }
         },'zoomend');

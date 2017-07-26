@@ -10,7 +10,5 @@ export const carmapshow_destorymap = createAction('carmapshow_destorymap');
 export const carmap_setenableddrawmapflag = createAction('carmap_setenableddrawmapflag');
 
 export const carmap_resetmap = createAction('carmap_resetmap');
-export const carmap_setcurlocation  = createAction('carmap_setcurlocation');
-export const carmap_setdragging  = createAction('carmap_setdragging');
 
-export const setcurlocation = createAction('setcurlocation');
+export const carmap_setdragging  = createAction('carmap_setdragging');
