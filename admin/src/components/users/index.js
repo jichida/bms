@@ -5,21 +5,33 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
- Filter,Filters } from 'admin-on-rest/lib/mui';
+ Filter,Filters, ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
 
 import { Field,FieldArray } from 'redux-form';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
-
+import moment from 'moment';
 import {TimePickerInput} from '../controls/timepicker.js';
 
 const UserListTitle = ({ record }) => {
   return <span>显示 用户</span>;
 };
+const userDefaultValue = {created_at:new Date()};
 
-const UserListShow = (props) => (
+const UserCreate = (props) => (
+  <Create title="新建用户" {...props}>
+    <SimpleForm defaultValue={userDefaultValue}>
+      <TextInput label="用户名" source="username" validate={required} />
+      <ReferenceInput source="groupid" reference="usergroup" allowEmpty>
+        <SelectInput optionText="name" />
+      </ReferenceInput>
+    </SimpleForm>
+  </Create>
+);
+
+const UserShow = (props) => (
   <Show title={<UserListTitle />} {...props} >
       <SimpleShowLayout>
          <TextField source="id" />
@@ -33,14 +45,15 @@ const UserListShow = (props) => (
   </Show>
 );
 
-const UserListEdit = (props) => {
+const UserEdit = (props) => {
   return (
     <Edit title={<UserListEdit />} {...props} >
       <SimpleForm>
         <TextField source="id" />
-        <TextField label="用户名" source="username" />
-        <DateField label="注册时间" source="created_at" showtime />
-        <DateField label="上次登陆时间" source="updated_at" showtime />
+        <TextField label="用户名" source="username" validate={required} />
+        <ReferenceInput source="groupid" reference="usergroup" allowEmpty>
+          <SelectInput optionText="name" />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );
@@ -52,16 +65,19 @@ const UserFilter = (props) => (
   </Filter>
 );
 
-const UserListList = (props) => (
-  <List title="用户列表" Filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}} >
+const UserList = (props) => (
+  <List title="用户列表" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}} >
     <Datagrid>
        <TextField source="id" />
         <TextField label="用户名" source="username" />
         <DateField label="注册时间" source="created_at" showtime />
         <DateField label="上次登陆时间" source="updated_at" showtime />
+        <ReferenceField label="用户组" source="groupid" reference="usergroup">
+          <TextField source="name" />
+        </ReferenceField>
         <EditButton />
     </Datagrid>
   </List>
 );
 
-export {UserListList,UserListEdit};
+export {UserCreate,UserList,UserEdit,UserShow};

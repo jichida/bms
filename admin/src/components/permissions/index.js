@@ -3,7 +3,7 @@ import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
+import { NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
  Filter,Filters } from 'admin-on-rest/lib/mui';
 
@@ -18,9 +18,9 @@ import {TimePickerInput} from '../controls/timepicker.js';
 const PermissionCreate = ({record}) => (
   <Create {...props} >
     <SimpleForm>
-      <DisabledInput label="权限ID" source="id" />
-      <TextInput label="权限名称" source="name" />
-      <TextInput label="memo" source="memo" />
+      <NumberInput label="ID" source="id" />
+      <TextInput label="名称" source="name" />
+      <TextInput label="备注" source="memo" />
     </SimpleForm>
   </Create>
 );
@@ -30,21 +30,23 @@ const PermissionTitle = ({record}) => {
 }
 
 const PermissionList = (props) => (
-  <Datagrid title="用户权限">
-    <TextField label="权限ID" source="id" />
-    <TextField label="权限名称" source="name" />
-    <TextField label="memo" source="memo" />
-    <EditButton />
-  </Datagrid>
+  <List title="用户权限列表" {...props}>
+    <Datagrid>
+      <NumberField label="ID" source="id" />
+      <TextField label="名称" source="name" />
+      <TextField label="备注" source="memo" />
+      <EditButton />
+    </Datagrid>
+  </List>
 );
 
 const PermissionEdit = (props) => {
   return (
-    <Edit title={<PermissionTitle />} {...props} >
+    <Edit title="编辑权限" {...props} >
       <SimpleForm>
-        <NumberInput label="权限ID" source="id" />
-        <TextInput label="权限名称" source="name" />
-        <TextInput label="memo" source="memo" />
+        <NumberInput label="ID" source="id" />
+        <TextInput label="名称" source="name" />
+        <TextInput label="备注" source="memo" />
       </SimpleForm>
     </Edit>
   );

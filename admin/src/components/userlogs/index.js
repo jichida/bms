@@ -42,19 +42,19 @@ const UserFilter = (props) => (
     <Filter {...props}>
        <ReferenceInput label="用户" source="creator" reference="user" addLabel={false}>
             <SelectInput optionText="username" />
-        </ReferenceInput>
+       </ReferenceInput>
     </Filter>
 );
 
-const UserlogList = (props) => (//
+const UserlogList = (props) => (
      <List title="用户登录信息列表" filters={<UserFilter />}  {...props} >
         <Datagrid>
-        <TextField label="用户id" source="creator" />
-        <ReferenceField label="用户" source="creator" reference="user" >
-          <TextField source="username" />
-        </ReferenceField>
-
-        <DateField label="登录时间" source="created_at"  showTime/>
+          <TextField label="用户名" source="username" />
+          <DateField label="登陆时间" source="created_at" showTime />
+          <ReferenceField label="用户" source="creator" reference="user" >
+            <TextField source="username" />
+          </ReferenceField>
+          <TextField label="类型" source="type" />
         </Datagrid>
     </List>
 );
