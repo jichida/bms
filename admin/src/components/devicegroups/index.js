@@ -19,13 +19,12 @@ const DeviceGroupTitle = ({record}) => {
   return <span>设备分组</span>
 };
 
-const CreateDeviceGroup = (props) => (
-  <Create title={<DeviceGroupTitle />} {...props}>
+const DeviceGroupCreate = (props) => (
+  <Create title="创建设备组" {...props}>
     <SimpleForm>
-      <DisabledInput label="分组ID" source="groupid" />
-      <TextInput label="分组名称" source="name" />
-      <TextInput label="memo" source="memo" />
-      <TextInput label="contact" source="contact" />
+      <TextInput label="分组名称" source="name" validate={required} />
+      <TextInput label="备注" source="memo" />
+      <TextInput label="联系人" source="contact" />
     </SimpleForm>
   </Create>
 );
@@ -33,10 +32,11 @@ const CreateDeviceGroup = (props) => (
 const DeviceGroupList = (props) => (
   <List title={<DeviceGroupTitle />} {...props}>
     <Datagrid>
-      <TextField source="groupid" />
+      <TextField source="id" />
       <TextField label="分组名称" source="name" />
-      <TextField label="memo" source="memo" />
-      <TextField label="contact" source="contact" />
+      <TextField label="备注" source="memo" />
+      <TextField label="联系人" source="contact" />
+      <EditButton />
     </Datagrid>
   </List>
 );
@@ -44,23 +44,23 @@ const DeviceGroupList = (props) => (
 const DeviceGroupShow = (props) => (
   <Show title={<DeviceGroupTitle />} {...props}>
     <SimpleShowLayout>
-      <TextField source="groupid" />
+      <TextField source="id" />
       <TextField label="分组名称" source="name" />
-      <TextField label="memo" source="memo" />
-      <TextField label="contact" source="contact" />
+      <TextField label="备注" source="memo" />
+      <TextField label="联系人" source="contact" />
     </SimpleShowLayout>
   </Show>
 );
 
-const DeviceGroupEdit = (props) => (
-  <Edit title={<DeviceGroupTitle />} {...props}>
+const DeviceGroupEdit = (props) => {
+  return (<Edit title="编辑设备组" {...props}>
     <SimpleForm>
-      <DisabledInput label="分组ID" source="groupid" />
-      <TextInput label="分组名称" source="name" />
-      <TextInput label="memo" source="memo" />
-      <TextInput label="contact" source="contact" />
+      <TextInput label="分组名称" source="name" validate={required} />
+      <TextInput label="备注" source="memo" />
+      <TextInput label="联系人" source="contact" />
     </SimpleForm>
   </Edit>
-);
+  );
+};
 
-export {CreateDeviceGroup,DeviceGroupList}
+export {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit,DeviceGroupShow};
