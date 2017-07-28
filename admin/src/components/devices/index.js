@@ -8,11 +8,9 @@ import { NumberInput,
   NumberField,
   Create,
   Edit,
-  Show,
   SimpleForm,
   DisabledInput,
   TextInput,
-  List,
   ListButton,
   Show,
   SimpleShowLayout,
@@ -37,7 +35,6 @@ import { NumberInput,
 import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
 
 const deviceDefaultValue = {created_at:new Date(),updated_at:new Date()};
 

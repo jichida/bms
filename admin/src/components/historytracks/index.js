@@ -9,7 +9,6 @@ import { NumberInput,
   SimpleForm,
   DisabledInput,
   TextInput,
-  List,
   Show,
   SimpleShowLayout,
   ShowButton,
@@ -33,7 +32,6 @@ import { NumberInput,
 import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
 
 const HistoryTrackTitle = ({record}) => {
   return <span>设备轨迹</span>

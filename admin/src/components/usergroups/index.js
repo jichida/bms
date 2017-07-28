@@ -13,14 +13,9 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
-
-const UserGroupTitle = ({record}) => {
-  return <span>用户分组</span>;
-}
 
 const UserGroupCreate = (props) => (
-  <Create title="创建用户组" {...props}>
+  <Create title="创建用户组" {...props} >
     <SimpleForm>
       <TextInput label="分组名称" resource="name" validate={required} />
       <NumberInput label="权限值" resource="permissionvalue" />
@@ -31,17 +26,19 @@ const UserGroupCreate = (props) => (
 );
 
 const UserGroupList = (props) => (
-  <Datagrid title="用户分组" {...props}>
-    <TextField label="分组名称" source="name" />
-    <NumberField label="权限值" source="permissionvalue" />
-    <TextField label="备注" source="memo" />
-    <TextField label="联系人" source="contact" />
-    <EditButton />
-  </Datagrid>
+  <List title="用户分组列表" {...props} >
+    <Datagrid >
+      <TextField label="分组名称" source="name" />
+      <NumberField label="权限值" source="permissionvalue" />
+      <TextField label="备注" source="memo" />
+      <TextField label="联系人" source="contact" />
+      <EditButton />
+    </Datagrid>
+  </List>
 );
 
 const UserGroupShow = (props) => (
-  <Show title="用户分组"> {...props}>
+  <Show title="用户分组" {...props} >
     <SimpleShowLayout>
       <TextField label="分组名称" source="name" />
       <NumberField label="权限值" source="permissionvalue" />
