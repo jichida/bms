@@ -3,7 +3,7 @@ import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
+import { required,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
  Filter,Filters, ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
@@ -47,7 +47,7 @@ const UserShow = (props) => (
 
 const UserEdit = (props) => {
   return (
-    <Edit title={<UserListEdit />} {...props} >
+    <Edit title="编辑用户信息" {...props} >
       <SimpleForm>
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
