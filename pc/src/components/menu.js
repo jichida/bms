@@ -12,14 +12,6 @@ import _  from "lodash";
 
 var Menu = React.createClass({
 
-    renderToolbar() {
-        return (
-            <Toolbar>
-                <div className='center'>Speed dial</div>
-            </Toolbar>
-        );
-    },
-
   renderFixed() {
     const menuData = {
         power : {name : "电池包", icon : "fa fa-microchip", click : ()=>{}},
@@ -62,12 +54,9 @@ var Menu = React.createClass({
 
   render: function() {
     return (
-      <Page
-        renderToolbar={this.renderToolbar}
-        renderFixed={this.renderFixed}
-      >
-        Some content
-      </Page>
+        <Page renderFixed={this.renderFixed}>
+            Some content
+        </Page>
     );
   }
 });

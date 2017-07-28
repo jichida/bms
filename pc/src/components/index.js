@@ -11,6 +11,7 @@ import MenuItem from 'material-ui/MenuItem';
 import _  from "lodash";
 import AdminContent from "./admincontent";
 import Menu from "./menu";
+import Tree from "./tree";
 
 class Page extends React.Component {
     constructor(props) {
@@ -35,6 +36,7 @@ class Page extends React.Component {
                         zIndex: 100,
                     }}
                     >
+                    <Tree />
                 </Drawer>
                 <div className="content">
                     <div className="headcontent">

@@ -161,9 +161,21 @@
 .AppPage .fab__icon{
     line-height: 54px;
 }
+.AppPage .page__background,
+.AppPage .page__content{
+    display: none;
+}
+.AppPage .page{
+    pointer-events:none;
+}
+.AppPage .page .fab--bottom__right,
+.AppPage .page .fab--bottom__right *{
+    pointer-events:auto;
+}
 .appbar .title{
     color: #333;
 }
+
 
 
 
