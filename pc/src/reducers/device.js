@@ -63,27 +63,31 @@ const device = createReducer({
     });
     console.log(devicedatatree);
     let datatreesz = [];
+    let totalall = 0;
     _.map(devicedatatree,(psz,pname)=>{
       // console.log(`pname:${pname},psz:${JSON.stringify(psz)}`)
       let children = [];
+      let psztotal = 0;
       _.map(psz,(csz,cname)=>{
         let objnamesz = [];
         _.map(csz,(deviceid)=>{
           objnamesz.push({name:deviceid});
         })
         children.push({
-          name:cname,
+          name:`${cname}(${csz.length})`,
           children:objnamesz
         });
+        psztotal += csz.length;
       });
       datatreesz.push({
-        name:pname,
+        name:`${pname}(${psztotal})`,
         children
       });
+      totalall += psztotal;
     });
     let datatree =
       {
-          name: '所有设备',
+          name: `所有设备(${totalall})`,
           toggled: true,
           children:datatreesz
       }
