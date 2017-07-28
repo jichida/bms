@@ -4,6 +4,7 @@ import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { NumberInput,
+  required,
   NumberField,
   Create,
   Edit,
@@ -12,6 +13,7 @@ import { NumberInput,
   DisabledInput,
   TextInput,
   List,
+  ListButton,
   Show,
   SimpleShowLayout,
   ShowButton,
@@ -153,8 +155,16 @@ const DeviceEdit = (props) => {
     );
 };
 
+const DeviceShowActions = ({basePath,data,refresh}) => (
+  <CardActions>
+    <ListButton basePath={basePath} />
+    <EditButton basePath={basePath} record={data} />
+    <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
+  </CardActions>
+);
+
 const DeviceShow = (props) => {
-  return (<Show title="设备信息" {...props}>
+  return (<Show title="设备信息" actions={<DeviceShowActions />} {...props}>
       <TabbedForm>
         <FormTab label="设备基本信息">
           <TextField label="设备ID" source="DeviceId"  validate={required} />

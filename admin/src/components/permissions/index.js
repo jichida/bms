@@ -3,7 +3,7 @@ import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
-import { NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
+import { required,NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
  Filter,Filters } from 'admin-on-rest/lib/mui';
 
@@ -19,7 +19,7 @@ const PermissionCreate = ({record}) => (
   <Create {...props} >
     <SimpleForm>
       <NumberInput label="ID" source="id" />
-      <TextInput label="名称" source="name" />
+      <TextInput label="名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
     </SimpleForm>
   </Create>
@@ -45,7 +45,7 @@ const PermissionEdit = (props) => {
     <Edit title="编辑权限" {...props} >
       <SimpleForm>
         <NumberInput label="ID" source="id" />
-        <TextInput label="名称" source="name" />
+        <TextInput label="名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
       </SimpleForm>
     </Edit>
