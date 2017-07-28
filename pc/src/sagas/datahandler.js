@@ -29,7 +29,8 @@ import {
     queryrealtimealarm_result,
 
     queryhistorytrack_request,
-    queryhistorytrack_result
+    queryhistorytrack_result,
+
   } from '../actions';
 
 
@@ -60,6 +61,11 @@ let sendmessagefnsz = {
   'getsystemconfig':`${getsystemconfig_request}`,
   'getnotifymessage':`${getnotifymessage_request}`,
   'getnotifymessageone':`${getnotifymessageone_request}`,
+
+  //以下代码正式版本中删除
+  'querydevice':`${querydevice_request}`,
+  'querydeviceinfo':`${querydeviceinfo_request}`,
+
 };
 
 //验证发送接口

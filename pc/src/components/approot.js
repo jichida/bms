@@ -21,7 +21,11 @@ class AppRoot extends React.Component {
             window.initamaploaded = true;
             this.props.dispatch(map_setmapinited(true));
         }
+        const scriptui = document.createElement("script");
+        scriptui.src = "http://webapi.amap.com/ui/1.0/main.js?v=1.0.10";
+        scriptui.async = false;
         document.body.appendChild(script);
+        document.body.appendChild(scriptui);
     }
     componentWillUnmount() {
         this.props.dispatch(map_setmapinited(false));

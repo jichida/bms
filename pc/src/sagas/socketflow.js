@@ -3,6 +3,8 @@ import {
   notify_socket_connected,
   getsystemconfig_request,
   loginwithtoken_request,
+
+  querydevice_request
 } from '../actions';
 
 //获取地理位置信息，封装为promise
@@ -15,6 +17,8 @@ export function* socketflow(){//仅执行一次
         if (!!token) {
           yield put(loginwithtoken_request({token}));
         }
+
+        yield put(querydevice_request({query:{}}));
       }
     });
 

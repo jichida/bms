@@ -5,38 +5,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
-
-const data = {
-    name: 'root',
-    toggled: true,
-    children: [
-        {
-            name: 'parent',
-            children: [
-                { name: 'child1' },
-                { name: 'child2' }
-            ]
-        },
-        {
-            name: 'loading parent',
-            loading: true,
-            children: []
-        },
-        {
-            name: 'parent',
-            children: [
-                {
-                    name: 'nested parent',
-                    children: [
-                        { name: 'nested child 1' },
-                        { name: 'nested child 2' }
-                    ]
-                }
-            ]
-        }
-    ]
-};
-
+import _ from 'lodash';
+import {ui_selcurdevice} from '../actions';
 
 class TreeExample extends React.Component {
     constructor(props){
@@ -47,24 +17,63 @@ class TreeExample extends React.Component {
     onToggle(node, toggled){
         if(this.state.cursor){this.state.cursor.active = false;}
         node.active = true;
-        if(node.children){ 
+        if(node.children){
             node.toggled = toggled;
         }else{
+            let deviceid = node.name;
+            const {devices} = this.props;
+            const deviceitem = devices[deviceid];
+            this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}));
             console.log(node);
         }
         this.setState({ cursor: node });
     }
     render(){
+        const {datatree} = this.props;
+        // const decorators = {
+        //     Loading: (props) => {
+        //         return (
+        //             <div style={props.style}>
+        //                 loading...
+        //             </div>
+        //         );
+        //     },
+        //     Toggle: (props) => {
+        //         return (
+        //             <div style={props.style}>
+        //                 <svg height={props.height} width={props.width}>
+        //
+        //                 </svg>
+        //             </div>
+        //         );
+        //     },
+        //     Header: (props) => {
+        //         return (
+        //             <div style={props.style}>
+        //                 {props.node.name}
+        //             </div>
+        //         );
+        //     },
+        //     Container: (props) => {
+        //         return (
+        //             <div onClick={this.props.onClick}>
+        //                 <decorators.Toggle/>
+        //                 <decorators.Header/>
+        //             </div>
+        //         );
+        //     }
+        // };
         return (
             <Treebeard
-                data={data}
+                data={datatree}
                 onToggle={this.onToggle}
             />
         );
     }
 }
+const mapStateToProps = ({device:{datatree,devices}}) => {
 
+  return {datatree,devices};
+}
 
-export default connect()(TreeExample);
-
-
+export default connect(mapStateToProps)(TreeExample);

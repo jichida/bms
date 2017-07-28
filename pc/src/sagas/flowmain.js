@@ -26,7 +26,6 @@ function connect() {
     return new Promise(resolve => {
         socket.on('connect', () => {
             issocketconnected = true;
-            store.dispatch(notify_socket_connected(true));
             resolve(socket);
         });
     });
@@ -67,7 +66,7 @@ function* write(socket,fun,cmd) {
           socket.emit('pc',{cmd:cmd,data:payload});
         }
         else{
-          //yield put(common_err({type:cmd,errmsg:`服务器连接断开!无法发送命令${cmd}`}))
+          yield put(common_err({type:cmd,errmsg:`服务器连接断开!无法发送命令${cmd}`}))
         }
     }
 }
@@ -108,5 +107,5 @@ export function* flowmain() {
     yield fork(read, socket);
     yield fork(handleIOWithAuth, socket);
     yield fork(handleIO, socket);
-
+    store.dispatch(notify_socket_connected(true));
 }

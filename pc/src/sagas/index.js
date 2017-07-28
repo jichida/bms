@@ -8,7 +8,7 @@ import {jpushflow} from './jpushflow';
 import {createloadingflow} from './loading';
 import {createmapmainflow} from './mapmain';
 import {socketflow} from './socketflow';
-
+import {testdataflow} from '../test/offlinedata';
 export default function* rootSaga() {
   try{
     yield fork(socketflow);
@@ -17,9 +17,11 @@ export default function* rootSaga() {
     yield fork(jpushflow);
     yield fork(wsrecvsagaflow);
 
-    yield fork(flowmain);
+    // yield fork(flowmain);
 
     yield fork(createsagacallbackflow);
+
+    yield fork(testdataflow);//for test only
   }
   catch(e){
     console.log(e);

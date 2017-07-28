@@ -6,23 +6,150 @@ import {
   map_setmapinited,
   carmapshow_createmap,
   carmapshow_destorymap,
-  mapmain_setenableddrawmapflag
+  mapmain_setenableddrawmapflag,
+  querydevice_result,
+  ui_selcurdevice,
+  querydeviceinfo_request
 } from '../actions';
 
 import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
 import _ from 'lodash';
-const ISENABLEEDRAW_MARKERSTART = 1;
-const ISENABLEDDRAW_MARKEREND = 2;
-const ISENABLEDDRAW_MARKERDIRVER = 4;
-const ISENABLEDDRAW_ROUTELEFT = 32;
-const ISENABLEDDRAW_ROUTEPASTPTS = 64;
-const ISENABLEDDRAW_POPWITHCUR  = 256;
+
 const divmapid_mapmain = 'mapmain';
 
-let markerstart,markerend,markerdriver,polylineleft,polylinepast,infoWindow;
+let infoWindow;
 const loczero = L.latLng(0,0);
+let pointSimplifierIns;
+
+const initmapui =  (map)=>{
+  return new Promise((resolve,reject) => {
+      window.AMapUI.load(['ui/misc/PointSimplifier', 'lib/$'], (PointSimplifier, $)=> {
+
+           if (!PointSimplifier.supportCanvas) {
+               alert('当前环境不支持 Canvas！');
+               return;
+           }
+
+           let groupStyleMap;
+
+           pointSimplifierIns = new PointSimplifier({
+               zIndex: 115,
+               //autoSetFitView: false,
+               map: map, //所属的地图实例
+
+               getPosition: (deviceitem)=> {
+                   const LastHistoryTrack = deviceitem.LastHistoryTrack;
+                   if (!LastHistoryTrack) {
+                       return null;
+                   }
+                   if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+                     return null;
+                   }
+                   let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                   //console.log(`坐标为:${cor}`);
+                   return [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                   //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
+               },
+               getHoverTitle: (deviceitem, idx)=> {
+                   return `设备编号:${deviceitem.DeviceId},当前:${idx}`;
+               },
+               //使用GroupStyleRender
+               renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
+               renderOptions: {
+                   //点的样式
+                   pointStyle: {
+                       width: 5,
+                       height: 5,
+                       fillStyle:'#A2D0FA'
+                   },
+                   getGroupId: (deviceitem, idx)=> {
+                       let groupid = idx%3;
+                       return groupid;
+                   },
+                   groupStyleOptions: (gid)=> {
+                       return groupStyleMap[gid];
+                   }
+
+               }
+           });
+
+           const onIconLoad = ()=> {
+               pointSimplifierIns.renderLater();
+           }
+
+           const onIconError = (e)=> {
+               alert('图片加载失败！');
+           }
+
+           groupStyleMap = {
+               '0': {
+                   pointStyle: {
+                       //绘制点占据的矩形区域
+                       content: PointSimplifier.Render.Canvas.getImageContent(
+                           'images/bike.png', onIconLoad, onIconError),
+                       //宽度
+                       width: 16,
+                       //高度
+                       height: 16,
+                       //定位点为中心
+                       offset: ['-50%', '-50%'],
+                       fillStyle: null,
+                       //strokeStyle: null
+                   }
+               },
+               '1': {
+                   pointStyle: {
+                       //绘制点占据的矩形区域
+                       content: PointSimplifier.Render.Canvas.getImageContent(
+                           'images//people.png', onIconLoad, onIconError),
+                       //宽度
+                       width: 16,
+                       //高度
+                       height: 16,
+                       //定位点为中心
+                       offset: ['-50%', '-50%'],
+                       fillStyle: null,
+                       // strokeStyle: null
+                   }
+               },
+               '2': {
+                   pointStyle: {
+                       //绘制点占据的矩形区域
+                       content: PointSimplifier.Render.Canvas.getImageContent(
+                           'images/truck.png', onIconLoad, onIconError),
+                       //宽度
+                       width: 16,
+                       //高度
+                       height: 16,
+                       //定位点为中心
+                       offset: ['-50%', '-50%'],
+                       fillStyle: null,
+                       //strokeStyle: null
+                   }
+               },
+               '3': {
+                   pointStyle: {
+                       //绘制点占据的矩形区域
+                       content: PointSimplifier.Render.Canvas.getImageContent(
+                           'images/taxi.png', onIconLoad, onIconError),
+                       //宽度
+                       width: 16,
+                       //高度
+                       height: 16,
+                       //定位点为中心
+                       offset: ['-50%', '-50%'],
+                       fillStyle: null,
+                       //strokeStyle: null
+                   }
+               }
+             };
+             resolve(pointSimplifierIns);
+       });
+
+   });
+}
 
 let createmap =({mapcenterlocation,zoomlevel})=> {
   console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amapmain}`);
@@ -57,127 +184,45 @@ const listenmapevent = (eventname)=>{
   });
 }
 
+const listenmarkclickevent = (eventname)=>{
+  return new Promise(resolve => {
+    pointSimplifierIns.on(eventname, (e,record)=> {
+        resolve(record);
+    });
+  });
+}
+
 const getmapstate_formapcar = (state) => {
   const {carmap} = state;
   return {...carmap};
 }
 
-const drawmap = (nextprop)=>{
-  const {enableddrawmapflag,markerstartlatlng,markerendlatlng,
-  driverlocation,routeleftpts,routepastpts}  = nextprop;
-  return new Promise(resolve => {
-    if(!!window.amapmain){
-        const isenableddrawmapflag = (flag)=>{
-            return (enableddrawmapflag & flag)>0;
-        }
-        const getamppos = (curloc)=>{
-            return [curloc.lng,curloc.lat];
-        };
-        const getAMappos = (markerstartlatlng)=>{
-            return new window.AMap.LngLat(markerstartlatlng.lng,markerstartlatlng.lat);
-        }
-        //开始位置
-        const showmarker =(enableddrawflag,marker,markerloc,image)=>{
-            if (!!marker) {
-               marker.hide();
-               marker.setMap(null);
-               //marker = null;
-            }
-            if(isenableddrawmapflag(enableddrawflag)) {//显示
-                if (!marker) {
-                    let startIcon = new window.AMap.Icon({
-                        image: image,
-                        imageSize: new window.AMap.Size(25, 31)
-                    });
-                    let markstartprops = {
-                        position: getamppos(markerloc),
-                        icon: startIcon,
-                    };
-                    marker = new window.AMap.Marker(markstartprops);
-                }
-                else {
-                    marker.setPosition(getamppos(markerloc));
-                }
-                marker.setMap(window.amapmain);
-                marker.show();
-            }
-            return marker;
-        }
-
-        //标记点：起始，目的地，我的当前位置，司机位置
-        markerstart = showmarker(ISENABLEEDRAW_MARKERSTART,markerstart,markerstartlatlng,'images/start.png');
-        markerend = showmarker(ISENABLEDDRAW_MARKEREND,markerend,markerendlatlng,'images/end.png');
-        markerdriver = showmarker(ISENABLEDDRAW_MARKERDIRVER,markerdriver,L.latLng(driverlocation.lat,driverlocation.lng),'images/mycar.png');
-
-        //画线
-        const showpolyline =(enableddrawflag,polyline,polylineprops)=> {
-            if(!!polyline){
-                polyline.hide();
-                polyline.setMap(null);
-            }
-            if(isenableddrawmapflag(enableddrawflag)) {//显示
-                //重新画了！
-                polyline = new window.AMap.Polyline(polylineprops);
-                polyline.setMap(window.amapmain);
-            }
-            return polyline;
-        }
-        //驾车路线（导航的路线）
-        let leftpts = [];
-        _.map(routeleftpts,(pt)=>{
-          leftpts.push(getAMappos(pt));
+const showinfowindow = (deviceitem)=>{
+  return new Promise(resolve =>{
+      let LastHistoryTrack = deviceitem.LastHistoryTrack;
+      // if(!!infoWindow){
+      //   infoWindow.close();
+      //   infoWindow.setMap(null);
+      //   infoWindow = null;
+      // }
+      let info = [];
+      let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
+      let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
+      let DeviceId = _.get(deviceitem,'DeviceId','');
+      info.push(`<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`);
+      info.push(`<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`);
+      // if(!infoWindow){
+        infoWindow = new window.AMap.InfoWindow({
+            content: info.join("")  //使用默认信息窗体框样式，显示信息内容
         });
-
-        let routeleftprops ={
-            path: leftpts,//设置多边形边界路径
-            strokeColor: "#FF0000", //线颜色
-            strokeOpacity: 1, //线透明度
-            strokeWeight: 4,    //线宽
-            fillColor: "#1791fc", //填充色
-            fillOpacity: 0.35//填充透明度
-        };
-        polylineleft = showpolyline(ISENABLEDDRAW_ROUTELEFT,polylineleft,routeleftprops);
-        //驾车路线（走过的路线）
-        let pastpts = [];
-        _.map(routepastpts,(pt)=>{
-          pastpts.push(getAMappos(pt));
-        });
-
-        let routelpastprops ={
-            path: pastpts,//设置多边形边界路径
-            strokeColor: "#FF33FF", //线颜色
-            strokeOpacity: 0.2, //线透明度
-            strokeWeight: 3,    //线宽
-            fillColor: "#1791fc", //填充色
-            fillOpacity: 0.35//填充透明度
-        };
-        polylinepast = showpolyline(ISENABLEDDRAW_ROUTEPASTPTS,polylinepast,routelpastprops);
-
-        if(!!infoWindow){
-          infoWindow.close();
-          infoWindow.setMap(null);
-          //infoWindow = null;
-        }
-        if(isenableddrawmapflag(ISENABLEDDRAW_POPWITHCUR)){
-          let info = [];
-          let totaldistancetxt = _.get(nextprop,'driveroute.totaldistancetxt','');
-          let totaldurationtxt = _.get(nextprop,'driveroute.totaldurationtxt','');
-          let price = _.get(nextprop,'curmappageorder.realtimepricedetail.price',0);
-          info.push(`<p>距离<span class='color_warning'>${totaldistancetxt}</span>,用时:<span class='color_warning'>${totaldurationtxt}</span> </p>`);
-          info.push(`<p>费用<span class='color_warning'>${price}元</span></p>`);
-          if(!infoWindow){
-            infoWindow = new window.AMap.InfoWindow({
-                content: info.join("")  //使用默认信息窗体框样式，显示信息内容
-            });
-          }
-          else{
-            infoWindow.setContent(info.join("") );
-          }
-          infoWindow.show();
-          infoWindow.open(window.amapmain, [driverlocation.lng,driverlocation.lat]);
-        }
-      }//map
-      resolve();
+      // }
+      // else{
+      //   infoWindow.setContent(info.join(""));
+      // }
+      // infoWindow.show();
+      let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+      infoWindow.open(window.amapmain, cor);
+      resolve(infoWindow);
   });
 }
 
@@ -201,10 +246,12 @@ export function* createmapmainflow(){
             mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
           yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
+          yield call(initmapui,window.amapmain);
+
           let task_dragend =  yield fork(function*(eventname){
             while(true){
               yield call(listenmapevent,eventname);
-              let centerlocation = window.AMap.getCenter();
+              let centerlocation = window.amapmain.getCenter();
               let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
               yield put(mapmain_setmapcenter(centerlatlng));
             }
@@ -218,6 +265,25 @@ export function* createmapmainflow(){
               yield put(mapmain_setzoomlevel(window.amapmain.getZoom()));
             }
           },'zoomend');
+
+          let task_markclick = yield fork(function*(eventname){
+            while(true){
+                const dataitem = yield call(listenmarkclickevent,eventname);
+                if(!!dataitem){
+                  let deviceitem = dataitem.data;
+                  console.log(`点击了记录:${JSON.stringify(dataitem)}`);
+
+                  if(!!deviceitem){
+                    yield put(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}));
+                  }
+                }
+              //
+            }
+          },'pointClick');//'pointClick pointMouseover pointMouseout'
+          //监听事件
+          //  pointSimplifierIns.on('pointClick pointMouseover pointMouseout', function(e, record) {
+          //      console.log(e.type, record);
+          //  })
 
           yield take(`${carmapshow_destorymap}`);
           yield cancel(task_dragend);
@@ -235,17 +301,58 @@ export function* createmapmainflow(){
       let {payload:{divmapid}} = action_destorymap;
       if(divmapid === divmapid_mapmain){
         window.amapmain = null;
-        markerstart=null;
-        markerend=null;
-        markerdriver=null;
-        polylineleft=null;
-        polylinepast=null;
         infoWindow=null;
       }
     });
 
-    yield takeLatest(`${mapmain_setenableddrawmapflag}`, function*(action_enableddrawmapflag) {
-      let mapcarprops = yield select(getmapstate_formapcar);
-      yield call(drawmap,mapcarprops);
+
+    yield takeLatest(`${ui_selcurdevice}`,function*(actioncurdevice){
+      try{
+          const {payload:{DeviceId,deviceitem}} = actioncurdevice;
+          console.log(`${JSON.stringify(deviceitem)}`);
+          yield put(querydeviceinfo_request({query:{DeviceId}}));
+          yield call(showinfowindow,deviceitem);
+          console.log(`显示弹框${JSON.stringify(deviceitem)}`);
+        }
+        catch(e){
+          console.log(`选择点失败${e}`);
+        }
+    });
+
+    yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
+      let {payload:{list:devicelist}} = deviceresult;
+      if(!!pointSimplifierIns){
+        const data = [];
+        _.map(devicelist,(deviceitem)=>{
+          const LastHistoryTrack = deviceitem.LastHistoryTrack;
+          if (!LastHistoryTrack) {
+              return null;
+          }
+          if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+            return null;
+          }
+          data.push(deviceitem);
+        });
+        //pointSimplifierIns.setData(devicelist);
+        // let center = window.amapmain.getCenter();
+        // const num = 100000;
+        // var data = [];
+        // for (var i = 0, len = num; i < len; i++) {
+        //     data.push({
+        //         DeviceId:i,
+        //         LastHistoryTrack: {
+        //           Latitude:center.getLat() + (Math.random() > 0.5 ? 1 : -1) * Math.random(),
+        //           Longitude:center.getLng() + (Math.random() > 0.5 ? 1 : -1) * Math.random(),
+        //         }
+        //     });
+        // }
+        console.log(`一共显示${data.length}个设备`);
+        pointSimplifierIns.setData(data);
+
+        
+        //const City =
+      }
+
+
     });
 }

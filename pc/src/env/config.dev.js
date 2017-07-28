@@ -1,4 +1,4 @@
-let localhost = false;
+let localhost = true;
 let config = {
     serverurl:localhost?'http://localhost:30040':'http://yunqi.com28.cn:30040',
     requesttimeout:5000,
