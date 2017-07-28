@@ -24,7 +24,7 @@ const device = createReducer({
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
-    let devices = [...state.devices];
+    let devices = {...state.devices};
     devices[devicerecord.DeviceId] = devicerecord;
     return {...state,devices};
   },
