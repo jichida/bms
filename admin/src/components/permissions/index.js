@@ -13,10 +13,9 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
 
-const PermissionCreate = ({record}) => (
-  <Create {...props} >
+const PermissionCreate = (props) => (
+  <Create title="新建权限" {...props} >
     <SimpleForm>
       <NumberInput label="ID" source="id" />
       <TextInput label="名称" source="name" validate={required} />
