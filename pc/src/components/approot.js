@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import {carmap_setmapinited} from '../actions';
+import {map_setmapinited} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
 
 
@@ -19,12 +19,12 @@ class AppRoot extends React.Component {
         window.init = ()=>{
             // console.log(`地图下载成功啦！`);
             window.initamaploaded = true;
-            this.props.dispatch(carmap_setmapinited(true));
+            this.props.dispatch(map_setmapinited(true));
         }
         document.body.appendChild(script);
     }
     componentWillUnmount() {
-        this.props.dispatch(carmap_setmapinited(false));
+        this.props.dispatch(map_setmapinited(false));
         window.initamaploaded = false;
     }
     render() {

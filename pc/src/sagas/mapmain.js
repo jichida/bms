@@ -1,12 +1,12 @@
 import { select,put,call,take,takeEvery,takeLatest,cancel,fork } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
-  carmap_setzoomlevel,
-  carmap_setmapcenter,
-  carmap_setmapinited,
+  mapmain_setzoomlevel,
+  mapmain_setmapcenter,
+  map_setmapinited,
   carmapshow_createmap,
   carmapshow_destorymap,
-  carmap_setenableddrawmapflag
+  mapmain_setenableddrawmapflag
 } from '../actions';
 
 import {getcurrentpos} from './getcurrentpos';
@@ -19,16 +19,17 @@ const ISENABLEDDRAW_MARKERDIRVER = 4;
 const ISENABLEDDRAW_ROUTELEFT = 32;
 const ISENABLEDDRAW_ROUTEPASTPTS = 64;
 const ISENABLEDDRAW_POPWITHCUR  = 256;
+const divmapid_mapmain = 'mapmain';
 
 let markerstart,markerend,markerdriver,polylineleft,polylinepast,infoWindow;
 const loczero = L.latLng(0,0);
 
 let createmap =({mapcenterlocation,zoomlevel})=> {
-  console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amap}`);
+  console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amapmain}`);
   return new Promise((resolve,reject) => {
-    if(!mapcenterlocation.equals(loczero) && !window.amap ){
+    if(!mapcenterlocation.equals(loczero) && !window.amapmain ){
       let center = new window.AMap.LngLat(mapcenterlocation.lng,mapcenterlocation.lat);
-      window.amap = new window.AMap.Map("gaodemap", {
+      window.amapmain = new window.AMap.Map(divmapid_mapmain, {
             center: center,
             zoom:zoomlevel,
             lang:"zh-cn",
@@ -36,21 +37,21 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
             zoomEnable:true,
             touchZoom:true,
         });
-        resolve(window.amap);
+        resolve(window.amapmain);
       }
       else{
-        if(!!window.amap){
-          resolve(window.amap);
+        if(!!window.amapmain){
+          resolve(window.amapmain);
           return;
         }
-        reject(`地图参数${mapcenterlocation.lng},${mapcenterlocation.lat},amap:${!!window.amap}`);
+        reject(`地图参数${mapcenterlocation.lng},${mapcenterlocation.lat},amap:${!!window.amapmain}`);
       }
   });
 }
 
 const listenmapevent = (eventname)=>{
   return new Promise(resolve => {
-    window.amap.on(eventname, (e)=> {
+    window.amapmain.on(eventname, (e)=> {
         resolve(eventname);
     });
   });
@@ -65,7 +66,7 @@ const drawmap = (nextprop)=>{
   const {enableddrawmapflag,markerstartlatlng,markerendlatlng,
   driverlocation,routeleftpts,routepastpts}  = nextprop;
   return new Promise(resolve => {
-    if(!!window.amap){
+    if(!!window.amapmain){
         const isenableddrawmapflag = (flag)=>{
             return (enableddrawmapflag & flag)>0;
         }
@@ -97,7 +98,7 @@ const drawmap = (nextprop)=>{
                 else {
                     marker.setPosition(getamppos(markerloc));
                 }
-                marker.setMap(window.amap);
+                marker.setMap(window.amapmain);
                 marker.show();
             }
             return marker;
@@ -117,7 +118,7 @@ const drawmap = (nextprop)=>{
             if(isenableddrawmapflag(enableddrawflag)) {//显示
                 //重新画了！
                 polyline = new window.AMap.Polyline(polylineprops);
-                polyline.setMap(window.amap);
+                polyline.setMap(window.amapmain);
             }
             return polyline;
         }
@@ -173,52 +174,55 @@ const drawmap = (nextprop)=>{
             infoWindow.setContent(info.join("") );
           }
           infoWindow.show();
-          infoWindow.open(window.amap, [driverlocation.lng,driverlocation.lat]);
+          infoWindow.open(window.amapmain, [driverlocation.lng,driverlocation.lat]);
         }
       }//map
       resolve();
   });
 }
 
-export function* createmapshowflow(){
-    console.log(`createmapshowflow...`);
+export function* createmapmainflow(){
+    console.log(`createmapmainflow...`);
     //创建地图
     yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
-        console.log(`carmapshow_createmap...`);
-        //take
-        let mapcarprops = yield select(getmapstate_formapcar);
-        if(!mapcarprops.isMapInited){//仅在第一次加载页面初始化时进入
-          //等待地图初始化
-          yield take(`${carmap_setmapinited}`);
-        }
-        let {mapcenterlocation,zoomlevel} = mapcarprops;
-        if(mapcenterlocation.equals(loczero)){//仅在第一次加载页面初始化时进入
-          const centerpos = yield call(getcurrentpos);
-          mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
-        }
-        yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
-        let task_dragend =  yield fork(function*(eventname){
-          while(true){
-            yield call(listenmapevent,eventname);
-            let centerlocation = window.amap.getCenter();
-            let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
-            yield put(carmap_setmapcenter(centerlatlng));
+        let {payload:{divmapid}} = action_createmap;
+        if(divmapid === divmapid_mapmain){
+          console.log(`carmapshow_createmap...`);
+          //take
+          let mapcarprops = yield select(getmapstate_formapcar);
+          if(!mapcarprops.isMapInited){//仅在第一次加载页面初始化时进入
+            //等待地图初始化
+            yield take(`${map_setmapinited}`);
           }
-        },'dragend');
-
-        let task_zoomend =  yield fork(function*(eventname){
-          while(true){
-            yield call(listenmapevent,eventname);
-            // let centerlocation = window.amap.getCenter();
-            // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
-            yield put(carmap_setzoomlevel(window.amap.getZoom()));
+          let {mapcenterlocation,zoomlevel} = mapcarprops;
+          if(mapcenterlocation.equals(loczero)){//仅在第一次加载页面初始化时进入
+            const centerpos = yield call(getcurrentpos);
+            mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
-        },'zoomend');
+          yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
+          let task_dragend =  yield fork(function*(eventname){
+            while(true){
+              yield call(listenmapevent,eventname);
+              let centerlocation = window.AMap.getCenter();
+              let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
+              yield put(mapmain_setmapcenter(centerlatlng));
+            }
+          },'dragend');
 
-        yield take(`${carmapshow_destorymap}`);
-        yield cancel(task_dragend);
-        yield cancel(task_zoomend);
+          let task_zoomend =  yield fork(function*(eventname){
+            while(true){
+              yield call(listenmapevent,eventname);
+              // let centerlocation = window.amapmain.getCenter();
+              // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
+              yield put(mapmain_setzoomlevel(window.amapmain.getZoom()));
+            }
+          },'zoomend');
+
+          yield take(`${carmapshow_destorymap}`);
+          yield cancel(task_dragend);
+          yield cancel(task_zoomend);
+        }
       }
       catch(e){
         console.log(`创建地图失败${e}`);
@@ -228,16 +232,19 @@ export function* createmapshowflow(){
 
     //销毁地图
     yield takeEvery(`${carmapshow_destorymap}`, function*(action_destorymap) {
-      window.amap = null;
-      markerstart=null;
-      markerend=null;
-      markerdriver=null;
-      polylineleft=null;
-      polylinepast=null;
-      infoWindow=null;
+      let {payload:{divmapid}} = action_destorymap;
+      if(divmapid === divmapid_mapmain){
+        window.amapmain = null;
+        markerstart=null;
+        markerend=null;
+        markerdriver=null;
+        polylineleft=null;
+        polylinepast=null;
+        infoWindow=null;
+      }
     });
 
-    yield takeLatest(`${carmap_setenableddrawmapflag}`, function*(action_enableddrawmapflag) {
+    yield takeLatest(`${mapmain_setenableddrawmapflag}`, function*(action_enableddrawmapflag) {
       let mapcarprops = yield select(getmapstate_formapcar);
       yield call(drawmap,mapcarprops);
     });

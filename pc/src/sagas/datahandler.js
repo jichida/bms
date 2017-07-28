@@ -15,6 +15,21 @@ import {
 
     getnotifymessageone_request,
     getnotifymessageone_result,
+
+    querydevicegroup_request,
+    querydevicegroup_result,
+
+    querydevice_request,
+    querydevice_result,
+
+    querydeviceinfo_request,
+    querydeviceinfo_result,
+
+    queryrealtimealarm_request,
+    queryrealtimealarm_result,
+
+    queryhistorytrack_request,
+    queryhistorytrack_result
   } from '../actions';
 
 
@@ -29,6 +44,11 @@ let recvmessagetoresultpair = {
 
   'login_result':login_result,
   'logout_result':logout_result,
+  'querydevicegroup_result':querydevicegroup_result,
+  'querydevice_result':querydevice_result,
+  'querydeviceinfo_result':querydeviceinfo_result,
+  'queryrealtimealarm_result':queryrealtimealarm_result,
+  'queryhistorytrack_result':queryhistorytrack_result,
 
 };
 
@@ -36,6 +56,7 @@ let recvmessagetoresultpair = {
 let sendmessagefnsz = {
   'logout':`${logout_request}`,
   'login':`${login_request}`,
+  'querydevicegroup':`${querydevicegroup_request}`,
   'getsystemconfig':`${getsystemconfig_request}`,
   'getnotifymessage':`${getnotifymessage_request}`,
   'getnotifymessageone':`${getnotifymessageone_request}`,
@@ -43,6 +64,11 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'querydevice':`${querydevice_request}`,
+  'querydeviceinfo':`${querydeviceinfo_request}`,
+  'queryrealtimealarm':`${queryrealtimealarm_request}`,
+  'queryhistorytrack':`${queryhistorytrack_request}`,
+
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

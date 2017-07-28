@@ -20,7 +20,7 @@ export default [
         { name: 'devicegroup', icon: <DeviceGroupIcon /> },
         { name: 'user', icon: <UserIcon /> },
         { name: 'permission', icon: <PermissionIcon /> },
-        { name: 'realtimealaram', icon: <RealtimeIcon /> },
+        { name: 'realtimealaram', icon: <RealtimeAlarmIcon /> },
         { name: 'historytrack', icon: <HistoryTrackIcon /> },
         { name: 'historydevice', icon: <SystemconfigIcon /> },
         { name: 'canrowdata', icon:<CanrowDataIcon />},
