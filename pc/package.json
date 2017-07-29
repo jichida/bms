@@ -1,7 +1,8 @@
 {
-  "name": "pinchedriver",
+  "name": "bmspc",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "bankcardinfo": "^2.0.3",
     "geolib": "^2.0.22",
