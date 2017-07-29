@@ -21,6 +21,9 @@ export default {
     user:{
       name: '用户管理 |||| 用户管理',
     },
+    usergroup:{
+      name: '用户分组管理 |||| 用户分组管理 ',
+    },
     permission:{
       name: '权限管理 |||| 权限管理',
     },
@@ -32,6 +35,9 @@ export default {
     },
     historydevice:{
       name: '设备历史数据管理 |||| 设备历史数据管理',
+    },
+    canrowdata:{
+      name: '原始数据管理 |||| 原始数据管理',
     },
     userlog:{
       name: '用户日志管理 |||| 用户日志管理',
