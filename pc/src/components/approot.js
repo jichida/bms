@@ -14,6 +14,11 @@ import "../css/common.css";
 
 class AppRoot extends React.Component {
     componentWillMount() {
+        const scriptui = document.createElement("script");
+        scriptui.src = "http://webapi.amap.com/ui/1.0/main.js?v=1.0.10";
+        scriptui.async = false;
+        document.body.appendChild(scriptui);
+
         const script = document.createElement("script");
         script.src = "http://webapi.amap.com/maps?v=1.3&key=788e08def03f95c670944fe2c78fa76f&callback=init&&plugin=AMap.Scale,AMap.OverView,AMap.ToolBar";
         script.async = true;
@@ -22,11 +27,9 @@ class AppRoot extends React.Component {
             window.initamaploaded = true;
             this.props.dispatch(map_setmapinited(true));
         }
-        const scriptui = document.createElement("script");
-        scriptui.src = "http://webapi.amap.com/ui/1.0/main.js?v=1.0.10";
-        scriptui.async = false;
+
         document.body.appendChild(script);
-        document.body.appendChild(scriptui);
+
     }
     componentWillUnmount() {
         this.props.dispatch(map_setmapinited(false));
