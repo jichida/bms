@@ -11,7 +11,7 @@ import { NumberInput,
   SimpleForm,
   DisabledInput,
   TextInput,
-  List,
+
   SimpleShowLayout,
   DateInput,
   LongTextInput,
@@ -130,4 +130,4 @@ const RealtimeAlarmList = (props) => (
   </List>
 );
 
-export {RealtimeAlarmList,RealtimeAlarmShow};
+export {RealtimeAlarmList,RealtimeAlamShow};

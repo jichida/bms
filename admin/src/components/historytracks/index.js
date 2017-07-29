@@ -9,7 +9,6 @@ import { NumberInput,
   SimpleForm,
   DisabledInput,
   TextInput,
-  List,
   Show,
   SimpleShowLayout,
   ShowButton,
@@ -86,4 +85,3 @@ const HistoryTrackList = (props)=> (
 );
 
 export {HistoryTrackList,HistoryTrackShow};
-

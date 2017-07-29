@@ -15,7 +15,7 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {TimePickerInput} from '../controls/timepicker.js';
 
-const PermissionCreate = ({record}) => (
+const PermissionCreate = (props) => (
   <Create {...props} >
     <SimpleForm>
       <NumberInput label="ID" source="id" />

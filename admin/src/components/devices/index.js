@@ -12,9 +12,9 @@ import { NumberInput,
   SimpleForm,
   DisabledInput,
   TextInput,
-  List,
+
   ListButton,
-  Show,
+
   SimpleShowLayout,
   ShowButton,
   DateInput,
