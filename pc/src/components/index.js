@@ -54,7 +54,7 @@ class Page extends React.Component {
                     <div className="headcontent">
                         <AppBar
                             title={<span className="title">Title</span>}
-                            onLeftIconButtonTouchTap={this.handleToggle}
+                            onLeftIconButtonTouchTap={this.menuevent}
                             style={{
                                 backgroundColor: "#FFF",
                                 paddingLeft:"0",
@@ -71,7 +71,7 @@ class Page extends React.Component {
                         />
                     </div>
                     <AdminContent />
-                    <Menu />
+                    <Menu showtree={this.menuevent} />
                     <Drawer width={window.innerWidth} openSecondary={true} open={this.state.showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
