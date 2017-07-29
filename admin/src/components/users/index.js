@@ -13,7 +13,6 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
 
 const UserListTitle = ({ record }) => {
   return <span>显示 用户</span>;
@@ -24,7 +23,7 @@ const UserCreate = (props) => (
   <Create title="新建用户" {...props}>
     <SimpleForm defaultValue={userDefaultValue}>
       <TextInput label="用户名" source="username" validate={required} />
-      <ReferenceInput source="groupid" reference="usergroup" allowEmpty>
+      <ReferenceInput label="用户组" source="groupid" reference="usergroup" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
     </SimpleForm>
@@ -51,7 +50,7 @@ const UserEdit = (props) => {
       <SimpleForm>
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
-        <ReferenceInput source="groupid" reference="usergroup" allowEmpty>
+        <ReferenceInput label="用户组" source="groupid" reference="usergroup" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
       </SimpleForm>
