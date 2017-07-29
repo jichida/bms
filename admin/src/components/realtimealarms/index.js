@@ -11,7 +11,6 @@ import { NumberInput,
   SimpleForm,
   DisabledInput,
   TextInput,
-
   SimpleShowLayout,
   DateInput,
   LongTextInput,
@@ -33,7 +32,6 @@ import { NumberInput,
  import { Field,FieldArray } from 'redux-form';
  import TimePicker from 'material-ui/TimePicker';
  import moment from 'moment';
- import {TimePickerInput} from '../controls/timepicker.js';
 
 
 const RealtimeAlamTitle = ({record}) => {
@@ -45,7 +43,7 @@ const choices = [
   {_id:1,status:'ON'},
 ];
 
-const RealtimeAlamShow = (props) => {
+const RealtimeAlarmShow = (props) => {
   return (<Show title={<RealtimeAlamTitle />} {...props}>
     <TabbedForm>
       <FormTab label="基本信息">
@@ -130,4 +128,4 @@ const RealtimeAlarmList = (props) => (
   </List>
 );
 
-export {RealtimeAlarmList,RealtimeAlamShow};
+export {RealtimeAlarmList,RealtimeAlarmShow};

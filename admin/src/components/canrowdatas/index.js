@@ -32,7 +32,6 @@ import { NumberInput,
 import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
 
 const CanRawDataShow = (props) => {
   return (<Show title="设备历史数据" {...props}>

@@ -13,35 +13,47 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
-import {TimePickerInput} from '../controls/timepicker.js';
 
-const UserGroupTitle = ({record}) => {
-  return <span>用户分组</span>;
-}
+const UserGroupCreate = (props) => {
+  return (
+    <Create title="创建用户组" {...props} >
+      <SimpleForm>
+        <TextInput label="分组名称" resource="name" validate={required} />
+        <NumberInput label="权限值" resource="permissionvalue" />
+        <TextInput label="备注" source="memo" />
+        <TextInput label="联系人" source="contact" />
+      </SimpleForm>
+    </Create>
+  );
+};
 
-const UserGroupCreate = (props) => (
-  <Create title="创建用户组" {...props}>
-    <SimpleForm>
-      <TextInput label="分组名称" resource="name" validate={required} />
-      <NumberInput label="权限值" resource="permissionvalue" />
-      <TextInput label="备注" source="memo" />
-      <TextInput label="联系人" source="contact" />
-    </SimpleForm>
-  </Create>
-);
+const UserGroupEdit = (props) => {
+  return (
+    <Edit title="编辑用户组" {...props} >
+      <SimpleForm>
+        <TextInput label="分组名称" source="name" validate={required} />
+        <NumberInput label="权限值" source="permissionvalue" />
+        <TextInput label="备注" source="memo" />
+        <TextInput label="联系人" source="contact" />
+      </SimpleForm>
+    </Edit>
+  );
+};
 
 const UserGroupList = (props) => (
-  <Datagrid title="用户分组" {...props}>
-    <TextField label="分组名称" source="name" />
-    <NumberField label="权限值" source="permissionvalue" />
-    <TextField label="备注" source="memo" />
-    <TextField label="联系人" source="contact" />
-    <EditButton />
-  </Datagrid>
+  <List title="用户分组列表" {...props} >
+    <Datagrid >
+      <TextField label="分组名称" source="name" />
+      <NumberField label="权限值" source="permissionvalue" />
+      <TextField label="备注" source="memo" />
+      <TextField label="联系人" source="contact" />
+      <EditButton />
+    </Datagrid>
+  </List>
 );
 
 const UserGroupShow = (props) => (
-  <Show title="用户分组"> {...props}>
+  <Show title="用户分组" {...props} >
     <SimpleShowLayout>
       <TextField label="分组名称" source="name" />
       <NumberField label="权限值" source="permissionvalue" />
@@ -50,18 +62,5 @@ const UserGroupShow = (props) => (
     </SimpleShowLayout>
   </Show>
 );
-
-const UserGroupEdit = (props) => {
-  return (
-    <Edit title="编辑用户组" {...props} >
-      <SimpleForm>
-        <TextInput label="用户组" source="name" validate={required} />
-        <NumberInput label="权限" source="permissionvalue" />
-        <TextInput label="备注" source="memo" />
-        <TextInput label="联系人" source="contact" />
-      </SimpleForm>
-    </Edit>
-  );
-};
 
 export {UserGroupCreate,UserGroupList,UserGroupEdit,UserGroupShow};
