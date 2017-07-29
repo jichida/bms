@@ -21,11 +21,11 @@ const divmapid_mapmain = 'mapmain';
 
 let infoWindow;
 const loczero = L.latLng(0,0);
-let pointSimplifierIns;
+let distCluster,pointSimplifierIns;
 
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
-      window.AMapUI.load(['ui/misc/PointSimplifier', 'lib/$'], (PointSimplifier, $)=> {
+      window.AMapUI.load(['ui/geo/DistrictCluster','ui/misc/PointSimplifier', 'lib/$'], (DistrictCluster,PointSimplifier, $)=> {
 
            if (!PointSimplifier.supportCanvas) {
                alert('当前环境不支持 Canvas！');
@@ -145,6 +145,26 @@ const initmapui =  (map)=>{
                    }
                }
              };
+             //<------------
+             distCluster = new DistrictCluster({
+                 zIndex: 100,
+                 map: map, //所属的地图实例
+
+                 getPosition: (deviceitem)=> {
+                     const LastHistoryTrack = deviceitem.LastHistoryTrack;
+                     if (!LastHistoryTrack) {
+                         return null;
+                     }
+                     if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+                       return null;
+                     }
+                     let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                     //console.log(`坐标为:${cor}`);
+                     return [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                     //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
+                 },
+             });
+
              resolve(pointSimplifierIns);
        });
 
@@ -176,7 +196,7 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
           window.amapmain.addControl(scale);
           window.amapmain.addControl(toolBar);
           window.amapmain.addControl(overView);
-        resolve(window.amapmain);
+          resolve(window.amapmain);
       }
       else{
         if(!!window.amapmain){
@@ -375,6 +395,7 @@ export function* createmapmainflow(){
         //     });
         // }
         console.log(`一共显示${data.length}个设备`);
+        distCluster.setData(data);
         pointSimplifierIns.setData(data);
 
 
