@@ -4,6 +4,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
+import RaisedButton from 'material-ui/RaisedButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
@@ -12,17 +14,27 @@ import _  from "lodash";
 import AdminContent from "./admincontent";
 import Menu from "./menu";
 import Tree from "./tree";
+import Historytrackplayback from "./historytrackplayback/map.js";
+
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {open: false};
+        this.state = {
+            showmenu: false,
+            showhistoryplay : false
+        };
     }
     componentWillMount() {
     }
     componentWillUnmount() {
     }
-    handleToggle = () => this.setState({open: !this.state.open})
+    //主菜单点击事件
+    menuevent = () => this.setState({showmenu: !this.state.showmenu});
+    //现实历史轨迹点击时间
+    showhistoryplay = () => this.setState({showhistoryplay: true});
+    hidehistoryplay = () => this.setState({showhistoryplay: false});
+
     onTouchTap=()=>{
         console.log("onTouchTap");
     }
@@ -30,7 +42,7 @@ class Page extends React.Component {
         return (
             <div className="AppPage">
                 <Drawer 
-                    open={this.state.open} 
+                    open={this.state.showmenu} 
                     containerStyle={{
                         top: "64px",
                         zIndex: 100,
@@ -54,10 +66,16 @@ class Page extends React.Component {
                             }}
                             iconElementLeft={<div className="logo">logo</div>}
                             className="appbar"
+                            iconElementRight={<RaisedButton label="轨迹回放" onTouchTap={this.showhistoryplay} style={{marginRight:"30px"}} />}
+                            iconStyleRight={{marginTop:"12px"}}
                         />
                     </div>
                     <AdminContent />
                     <Menu />
+                    <Drawer width={window.innerWidth} openSecondary={true} open={this.state.showhistoryplay} >
+                        <Historytrackplayback back={this.hidehistoryplay}/>
+                    </Drawer>
+                    
                 </div>
 
             </div>
