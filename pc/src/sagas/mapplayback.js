@@ -21,157 +21,66 @@ const divmapid_maptrackhistoryplayback = 'maptrackhistoryplayback';
 
 
 const loczero = L.latLng(0,0);
-//
-// const initmapui =  (map)=>{
-//   return new Promise((resolve,reject) => {
-//       window.AMapUI.load(['ui/geo/DistrictCluster','ui/misc/PointSimplifier', 'lib/$'], (DistrictCluster,PointSimplifier, $)=> {
-//
-//            if (!PointSimplifier.supportCanvas) {
-//                alert('当前环境不支持 Canvas！');
-//                return;
-//            }
-//
-//            let groupStyleMap;
-//
-//            pointSimplifierIns = new PointSimplifier({
-//                zIndex: 115,
-//                //autoSetFitView: false,
-//                map: map, //所属的地图实例
-//
-//                getPosition: (deviceitem)=> {
-//                    const LastHistoryTrack = deviceitem.LastHistoryTrack;
-//                    if (!LastHistoryTrack) {
-//                        return null;
-//                    }
-//                    if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-//                      return null;
-//                    }
-//                    let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-//                    //console.log(`坐标为:${cor}`);
-//                    return [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-//                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
-//                },
-//                getHoverTitle: (deviceitem, idx)=> {
-//                    return `设备编号:${deviceitem.DeviceId},当前:${idx}`;
-//                },
-//                //使用GroupStyleRender
-//                renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
-//                renderOptions: {
-//                    //点的样式
-//                    pointStyle: {
-//                        width: 5,
-//                        height: 5,
-//                        fillStyle:'#A2D0FA'
-//                    },
-//                    getGroupId: (deviceitem, idx)=> {
-//                        let groupid = idx%3;
-//                        return groupid;
-//                    },
-//                    groupStyleOptions: (gid)=> {
-//                        return groupStyleMap[gid];
-//                    }
-//
-//                }
-//            });
-//
-//            const onIconLoad = ()=> {
-//                pointSimplifierIns.renderLater();
-//            }
-//
-//            const onIconError = (e)=> {
-//                alert('图片加载失败！');
-//            }
-//
-//            groupStyleMap = {
-//                '0': {
-//                    pointStyle: {
-//                        //绘制点占据的矩形区域
-//                        content: PointSimplifier.Render.Canvas.getImageContent(
-//                            'images/bike.png', onIconLoad, onIconError),
-//                        //宽度
-//                        width: 16,
-//                        //高度
-//                        height: 16,
-//                        //定位点为中心
-//                        offset: ['-50%', '-50%'],
-//                        fillStyle: null,
-//                        //strokeStyle: null
-//                    }
-//                },
-//                '1': {
-//                    pointStyle: {
-//                        //绘制点占据的矩形区域
-//                        content: PointSimplifier.Render.Canvas.getImageContent(
-//                            'images//people.png', onIconLoad, onIconError),
-//                        //宽度
-//                        width: 16,
-//                        //高度
-//                        height: 16,
-//                        //定位点为中心
-//                        offset: ['-50%', '-50%'],
-//                        fillStyle: null,
-//                        // strokeStyle: null
-//                    }
-//                },
-//                '2': {
-//                    pointStyle: {
-//                        //绘制点占据的矩形区域
-//                        content: PointSimplifier.Render.Canvas.getImageContent(
-//                            'images/truck.png', onIconLoad, onIconError),
-//                        //宽度
-//                        width: 16,
-//                        //高度
-//                        height: 16,
-//                        //定位点为中心
-//                        offset: ['-50%', '-50%'],
-//                        fillStyle: null,
-//                        //strokeStyle: null
-//                    }
-//                },
-//                '3': {
-//                    pointStyle: {
-//                        //绘制点占据的矩形区域
-//                        content: PointSimplifier.Render.Canvas.getImageContent(
-//                            'images/taxi.png', onIconLoad, onIconError),
-//                        //宽度
-//                        width: 16,
-//                        //高度
-//                        height: 16,
-//                        //定位点为中心
-//                        offset: ['-50%', '-50%'],
-//                        fillStyle: null,
-//                        //strokeStyle: null
-//                    }
-//                }
-//              };
-//              //<------------
-//              distCluster = new DistrictCluster({
-//                  zIndex: 100,
-//                  map: map, //所属的地图实例
-//
-//                  getPosition: (deviceitem)=> {
-//                      const LastHistoryTrack = deviceitem.LastHistoryTrack;
-//                      if (!LastHistoryTrack) {
-//                          return null;
-//                      }
-//                      if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-//                        return null;
-//                      }
-//                      let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-//                      //console.log(`坐标为:${cor}`);
-//                      return [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-//                      //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
-//                  },
-//              });
-//
-//              resolve(pointSimplifierIns);
-//        });
-//
-//    });
-// }
+let pathSimplifierIns;
+const initmapui =  (map)=>{
+    return new Promise((resolve,reject) => {
+         console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
+        //加载PathSimplifier，loadUI的路径参数为模块名中 'ui/' 之后的部分
+         window.AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier)=> {
+
+          if (!PathSimplifier.supportCanvas) {
+              alert('当前环境不支持 Canvas！');
+              return;
+          }
+
+          pathSimplifierIns = new PathSimplifier({
+              zIndex: 100,
+              map: map, //所属的地图实例
+              getPath: (pathData, pathIndex)=> {
+                  //返回轨迹数据中的节点信息，[AMap.LngLat, AMap.LngLat...] 或者 [[lng,lat],[lng,lat]...]
+                  return pathData.path;
+              },
+              getHoverTitle: (pathData, pathIndex, pointIndex)=> {
+                  //返回鼠标悬停时显示的信息
+                  if (pointIndex >= 0) {
+                      //鼠标悬停在某个轨迹节点上
+                      return pathData.name + '，点:' + pointIndex + '/' + pathData.path.length;
+                  }
+                  //鼠标悬停在节点之间的连线上
+                  return pathData.name + '，点数量' + pathData.path.length;
+              },
+              renderOptions: {
+                  //轨迹线的样式
+                  pathLineStyle: {
+                      strokeStyle: 'red',
+                      lineWidth: 6,
+                      dirArrowStyle: true
+                  }
+              }
+          });
+
+          //这里构建两条简单的轨迹，仅作示例
+          pathSimplifierIns.setData([{
+              name: '轨迹1',
+              path: [
+                  [100.340417, 27.376994],
+                  [108.426354, 37.827452],
+                  [113.392174, 31.208439],
+                  [124.905846, 42.232876]
+              ]
+          }, {
+              name: '大地线',
+              //创建一条包括500个插值点的大地线
+              path: PathSimplifier.getGeodesicPath([116.405289, 39.904987], [87.61792, 43.793308], 500)
+          }]);
+          resolve(pathSimplifierIns);
+        });
+
+   });
+}
 
 let createmap =({mapcenterlocation,zoomlevel})=> {
-  console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amaptrackhistoryplayback:${!!window.amaptrackhistoryplayback}`);
+  console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},${mapcenterlocation.lat},amaptrackhistoryplayback:${!!window.amaptrackhistoryplayback}`);
   return new Promise((resolve,reject) => {
     if(!mapcenterlocation.equals(loczero) && !window.amaptrackhistoryplayback ){
       let center = new window.AMap.LngLat(mapcenterlocation.lng,mapcenterlocation.lat);
@@ -229,8 +138,8 @@ const getmapstate_curdevice = (state) => {
   if(!!deviceitem){
     const LastHistoryTrack = deviceitem.LastHistoryTrack;
     if(!!LastHistoryTrack){
-      let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-      return cor;
+      const locz = L.latLng(LastHistoryTrack.Latitude,LastHistoryTrack.Longitude);
+      return locz;
     }
   }
   return loczero;
@@ -288,6 +197,7 @@ export function* createmaptrackhistoryplaybackflow(){
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_maptrackhistoryplayback){
+          yield call(delay,2000);
           console.log(`carmapshow_createmap...`);
           //take
           let mapcenterlocation = yield select(getmapstate_curdevice);
@@ -298,7 +208,7 @@ export function* createmaptrackhistoryplaybackflow(){
             mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
           yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
-          // yield call(initmapui,window.amapmain);
+          yield call(initmapui,window.amaptrackhistoryplayback);
 
 
           let task_zoomend =  yield fork(function*(eventname){
@@ -316,6 +226,7 @@ export function* createmaptrackhistoryplaybackflow(){
         }
       }
       catch(e){
+        console.log(e);
         console.log(`创建地图失败${e}`);
       }
 
@@ -335,14 +246,15 @@ export function* createmaptrackhistoryplaybackflow(){
           if(!!deviceitem){
             const LastHistoryTrack = deviceitem.LastHistoryTrack;
             if(!!LastHistoryTrack){
-              let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-              //if(cor.equals(loczero)){
+              if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
+                let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
                 window.amaptrackhistoryplayback.setCenter(cor);
-              //}
+              }
             }
           }
         }
         catch(e){
+          console.log(e);
           console.log(`选择点失败${e}`);
         }
     });

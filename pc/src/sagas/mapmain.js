@@ -25,6 +25,7 @@ let distCluster,pointSimplifierIns;
 
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
+      console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
       window.AMapUI.load(['ui/geo/DistrictCluster','ui/misc/PointSimplifier', 'lib/$'], (DistrictCluster,PointSimplifier, $)=> {
 
            if (!PointSimplifier.supportCanvas) {
@@ -281,6 +282,7 @@ export function* createmapmainflow(){
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_mapmain){
+          yield call(delay,1000);
           console.log(`carmapshow_createmap...`);
           //take
           let mapcarprops = yield select(getmapstate_formapcar);
