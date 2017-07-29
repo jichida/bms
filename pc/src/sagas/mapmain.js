@@ -164,6 +164,18 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
             zoomEnable:true,
             touchZoom:true,
         });
+        const scale = new window.AMap.Scale({
+              visible: true
+          });
+        const  toolBar = new window.AMap.ToolBar({
+              visible: true
+          });
+        const  overView = new window.AMap.OverView({
+              visible: true
+          });
+          window.amapmain.addControl(scale);
+          window.amapmain.addControl(toolBar);
+          window.amapmain.addControl(overView);
         resolve(window.amapmain);
       }
       else{
@@ -200,29 +212,45 @@ const getmapstate_formapcar = (state) => {
 const showinfowindow = (deviceitem)=>{
   return new Promise(resolve =>{
       let LastHistoryTrack = deviceitem.LastHistoryTrack;
+      window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+          let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
+          let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
+          let DeviceId = _.get(deviceitem,'DeviceId','');
+
+          infoWindow = new SimpleInfoWindow({
+              infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
+              infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
+          });
+          let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+          //显示在map上
+          // window.amapmain.setZoomAndCenter(16,cor);
+          window.amapmain.setCenter(cor);
+          infoWindow.open(window.amapmain, cor);
+          resolve(infoWindow);
+      });
       // if(!!infoWindow){
       //   infoWindow.close();
       //   infoWindow.setMap(null);
       //   infoWindow = null;
       // }
-      let info = [];
-      let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
-      let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
-      let DeviceId = _.get(deviceitem,'DeviceId','');
-      info.push(`<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`);
-      info.push(`<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`);
-      // if(!infoWindow){
-        infoWindow = new window.AMap.InfoWindow({
-            content: info.join("")  //使用默认信息窗体框样式，显示信息内容
-        });
-      // }
-      // else{
-      //   infoWindow.setContent(info.join(""));
-      // }
-      // infoWindow.show();
-      let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-      infoWindow.open(window.amapmain, cor);
-      resolve(infoWindow);
+      // let info = [];
+      // let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
+      // let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
+      // let DeviceId = _.get(deviceitem,'DeviceId','');
+      // info.push(`<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`);
+      // info.push(`<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`);
+      // // if(!infoWindow){
+      //   infoWindow = new window.AMap.InfoWindow({
+      //       content: info.join("")  //使用默认信息窗体框样式，显示信息内容
+      //   });
+      // // }
+      // // else{
+      // //   infoWindow.setContent(info.join(""));
+      // // }
+      // // infoWindow.show();
+      // let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+      // infoWindow.open(window.amapmain, cor);
+      // resolve(infoWindow);
   });
 }
 
@@ -349,7 +377,7 @@ export function* createmapmainflow(){
         console.log(`一共显示${data.length}个设备`);
         pointSimplifierIns.setData(data);
 
-        
+
         //const City =
       }
 
