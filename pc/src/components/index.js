@@ -14,7 +14,7 @@ import _  from "lodash";
 import AdminContent from "./admincontent";
 import Menu from "./menu";
 import Tree from "./tree";
-import Historytrackplayback from "./historytrackplayback/map.js";
+import Historytrackplayback from "./historytrackplayback/index.js";
 
 
 class Page extends React.Component {
@@ -41,8 +41,8 @@ class Page extends React.Component {
     render() {
         return (
             <div className="AppPage">
-                <Drawer 
-                    open={this.state.showmenu} 
+                <Drawer
+                    open={this.state.showmenu}
                     containerStyle={{
                         top: "64px",
                         zIndex: 100,
@@ -75,7 +75,7 @@ class Page extends React.Component {
                     <Drawer width={window.innerWidth} openSecondary={true} open={this.state.showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
-                    
+
                 </div>
 
             </div>
