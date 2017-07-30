@@ -9,7 +9,9 @@ import {
   mapmain_setenableddrawmapflag,
   querydevice_result,
   ui_selcurdevice,
-  querydeviceinfo_request
+  querydeviceinfo_request,
+
+  mapplayback_start
 } from '../actions';
 
 import {getcurrentpos} from './getcurrentpos';
@@ -77,6 +79,20 @@ const initmapui =  (map)=>{
         });
 
    });
+}
+
+const startplayback = ({isloop,speed})=>{
+  return new Promise((resolve,reject) => {
+    if(!!pathSimplifierIns){
+      //创建一个巡航器
+         const navg0 = pathSimplifierIns.createPathNavigator(1, {
+             loop: isloop, //循环播放
+             speed
+         });
+         navg0.start();
+         resolve(navg0);
+    }
+  });
 }
 
 let createmap =({mapcenterlocation,zoomlevel})=> {
@@ -252,6 +268,18 @@ export function* createmaptrackhistoryplaybackflow(){
               }
             }
           }
+        }
+        catch(e){
+          console.log(e);
+          console.log(`选择点失败${e}`);
+        }
+    });
+
+    //mapplayback_start
+    yield  takeLatest(`${mapplayback_start}`,function*(actionstart){
+      try{
+          const {payload:{isloop,speed}} = actionstart;
+          yield call(startplayback,{isloop,speed});
         }
         catch(e){
           console.log(e);

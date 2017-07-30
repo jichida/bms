@@ -9,3 +9,7 @@ export const carmapshow_createmap = createAction('carmapshow_createmap');
 export const carmapshow_destorymap = createAction('carmapshow_destorymap');
 
 export const ui_selcurdevice = createAction('ui_selcurdevice');
+
+//轨迹回放
+export const mapplayback_start = createAction('mapplayback_start');
+export const mapplayback_end = createAction('mapplayback_end');

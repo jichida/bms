@@ -12,9 +12,12 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Map from './map';
 import "./map.css";
+import {mapplayback_start} from '../../actions';
 
 class Page extends React.Component {
-
+    onClickStart(){
+      this.props.dispatch(mapplayback_start({isloop:true,speed:50000}));
+    }
     render() {
         return (
             <div className="historytrackplayback">
@@ -48,7 +51,7 @@ class Page extends React.Component {
                         <TimePicker hintText="结束时间" />
                     </div>
                     <div>
-                        <RaisedButton label="开始" primary={true} style={{marginRight:"10px"}} />
+                        <RaisedButton onTouchTap={this.onClickStart.bind(this)} label="开始" primary={true} style={{marginRight:"10px"}} />
                         <RaisedButton label="结束" secondary={true} style={{marginRight:"10px"}} />
                     </div>
                     <Map />
