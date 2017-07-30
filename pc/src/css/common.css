@@ -36,6 +36,7 @@
     display: -webkit-flex;
     -webkit-flex-direction: column;
     flex-direction: column;
+    position: relative;
 }
 .AppPage .content .AdminContent{
     -webkit-flex-grow: 1;
@@ -219,6 +220,48 @@
 }
 .warningsearch .seltime:last-child{
     margin-right: 0;
+}
+.showMessageBtn,.showDeviceInfo{
+    position: absolute;
+    top: 12px;
+    right: 120px;
+    z-index: 1200;
+}
+.showDeviceInfo{
+    right: 220px;
+}
+
+.messagePage .lists,
+.devicePage .lists{
+    border-top:1px solid #EEE;
+}
+.messagePage .lists .li,
+.devicePage .lists .li{
+    padding: 10px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    border-bottom:1px solid #EEE;
+}
+.devicePage .lists .li{
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.messagePage .lists .li:active{
+    background: #EEE;
+}
+.messagePage .lists .li .fa.fa-bus{
+    text-align: center;
+}
+.messagePage .lists .li .licontent .name{
+    font-size:14px;
+    color: #999;
+}
+
+.devicePage .lists .li{
+    border-bottom: 1px solid #EEE;
 }
 
 

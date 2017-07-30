@@ -16,6 +16,9 @@ import Menu from "./menu";
 import Tree from "./tree";
 import Search from "./search";
 import Warning from "./warning";
+import Message from "./message";
+import Device from "./device";
+
 import Historytrackplayback from "./historytrackplayback/index.js";
 
 
@@ -42,6 +45,9 @@ class Page extends React.Component {
     showPowersearch =()=> this.setState({showmenu: "powersearch"});
     showWarningbox =()=> this.setState({showmenu: "warningbox"});
     showAddressbox =()=> this.setState({showmenu: "addressbox"});
+    showMessage =()=> this.setState({showmenu: "showmessage"});
+    showDeviceInfo =()=> this.setState({showmenu: "showdevice"});
+
 
     //现实历史轨迹点击时间
     showhistoryplay = () => this.setState({showhistoryplay: true});
@@ -87,6 +93,27 @@ class Page extends React.Component {
                     <Tree />
                 </Drawer>
 
+                <Drawer
+                    open={this.state.showmenu==="showmessage"}
+                    containerStyle={{
+                        top: "64px",
+                        zIndex: 1000,
+                    }}
+                    >
+                    <Message />
+                    <Tree />
+                </Drawer>
+
+                <Drawer
+                    open={this.state.showmenu==="showdevice"}
+                    containerStyle={{
+                        top: "64px",
+                        zIndex: 1000,
+                    }}
+                    >
+                    <Device />
+                </Drawer>
+
 
                 <div className="content">
                     <div className="headcontent">
@@ -118,6 +145,9 @@ class Page extends React.Component {
                     <Drawer width={window.innerWidth} openSecondary={true} open={this.state.showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
+
+                    <RaisedButton label="最新消息" onTouchTap={this.showMessage} className="showMessageBtn" />
+                    <RaisedButton label="设备详情" onTouchTap={this.showDeviceInfo} className="showDeviceInfo" />
 
                 </div>
 
