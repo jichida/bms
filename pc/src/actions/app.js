@@ -8,3 +8,4 @@ export const getsystemconfig_request = createAction('getsystemconfig_request');
 export const getsystemconfig_result = createAction('getsystemconfig_result');
 
 export const ui_showmenu = createAction('ui_showmenu');
+export const ui_showhistoryplay  = createAction('ui_showhistoryplay');

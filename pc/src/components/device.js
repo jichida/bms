@@ -5,9 +5,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
+import RaisedButton from 'material-ui/RaisedButton';
+import {ui_showhistoryplay} from '../actions';
 
 class Page extends React.Component {
-
+    showhistoryplay(){
+      this.props.dispatch(ui_showhistoryplay(true));
+    }
     render(){
         const data = {
             "设备名称" : "123XG设备",
@@ -30,8 +34,8 @@ class Page extends React.Component {
                             </div>
                         )
                     })}
-
                 </div>
+                <RaisedButton label="轨迹回放" onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
             </div>
         );
     }

@@ -9,7 +9,8 @@ import {
   mapmain_setenableddrawmapflag,
   querydevice_result,
   ui_selcurdevice,
-  querydeviceinfo_request
+  querydeviceinfo_request,
+  ui_showmenu
 } from '../actions';
 
 import {getcurrentpos} from './getcurrentpos';
@@ -89,7 +90,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           'images/bike.png', onIconLoad, onIconError),
+                           `images/bike.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -104,7 +105,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           'images//people.png', onIconLoad, onIconError),
+                           `images/people.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -119,7 +120,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           'images/truck.png', onIconLoad, onIconError),
+                           `images/truck.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -134,7 +135,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           'images/taxi.png', onIconLoad, onIconError),
+                           `images/taxi.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -225,6 +226,14 @@ const listenmarkclickevent = (eventname)=>{
   });
 }
 
+const listenwindowinfoevent = (eventname)=>{
+  return new Promise(resolve => {
+    infoWindow.on(eventname, (e)=> {
+        resolve(eventname);
+    });
+  });
+}
+
 const getmapstate_formapcar = (state) => {
   const {carmap} = state;
   return {...carmap};
@@ -249,29 +258,6 @@ const showinfowindow = (deviceitem)=>{
           infoWindow.open(window.amapmain, cor);
           resolve(infoWindow);
       });
-      // if(!!infoWindow){
-      //   infoWindow.close();
-      //   infoWindow.setMap(null);
-      //   infoWindow = null;
-      // }
-      // let info = [];
-      // let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
-      // let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
-      // let DeviceId = _.get(deviceitem,'DeviceId','');
-      // info.push(`<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`);
-      // info.push(`<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`);
-      // // if(!infoWindow){
-      //   infoWindow = new window.AMap.InfoWindow({
-      //       content: info.join("")  //使用默认信息窗体框样式，显示信息内容
-      //   });
-      // // }
-      // // else{
-      // //   infoWindow.setContent(info.join(""));
-      // // }
-      // // infoWindow.show();
-      // let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-      // infoWindow.open(window.amapmain, cor);
-      // resolve(infoWindow);
   });
 }
 
@@ -362,6 +348,13 @@ export function* createmapmainflow(){
           console.log(`${JSON.stringify(deviceitem)}`);
           yield put(querydeviceinfo_request({query:{DeviceId}}));
           yield call(showinfowindow,deviceitem);
+          yield fork(function*(eventname){
+           while(true){
+             yield call(listenwindowinfoevent,eventname);
+             yield put(ui_showmenu("showdevice_no"));
+           }
+          },'close');
+          yield put(ui_showmenu("showdevice"));
           console.log(`显示弹框${JSON.stringify(deviceitem)}`);
         }
         catch(e){

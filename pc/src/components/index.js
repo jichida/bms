@@ -18,7 +18,10 @@ import Search from "./search";
 import Warning from "./warning";
 import Message from "./message";
 import Device from "./device";
-import {ui_showmenu} from '../actions';
+import {
+  ui_showmenu,
+  ui_showhistoryplay,
+} from '../actions';
 
 import Historytrackplayback from "./historytrackplayback/index.js";
 
@@ -26,14 +29,6 @@ import Historytrackplayback from "./historytrackplayback/index.js";
 class Page extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            // showmenu : "",
-            // powersearch: false,//电池包搜索
-            // warningbox: false,//警告面板
-            // addressbox: false,//地理位置
-            // message: false,//新消息
-            showhistoryplay : false
-        };
     }
     componentWillMount() {
     }
@@ -51,14 +46,14 @@ class Page extends React.Component {
 
 
     //现实历史轨迹点击时间
-    showhistoryplay = () => this.setState({showhistoryplay: true});
-    hidehistoryplay = () => this.setState({showhistoryplay: false});
+    showhistoryplay = () => this.props.dispatch(ui_showhistoryplay(true));
+    hidehistoryplay = () => this.props.dispatch(ui_showhistoryplay(false));
 
     onTouchTap=()=>{
         console.log("onTouchTap");
     }
     render() {
-        const {showmenu} = this.props;
+        const {showmenu,showhistoryplay} = this.props;
         return (
             <div className="AppPage">
                 <Drawer
@@ -107,7 +102,7 @@ class Page extends React.Component {
                 </Drawer>
 
                 <Drawer
-                    open={this.state.showmenu==="showdevice"}
+                    open={showmenu==="showdevice"}
                     containerStyle={{
                         top: "64px",
                         zIndex: 1000,
@@ -133,7 +128,7 @@ class Page extends React.Component {
                             }}
                             iconElementLeft={<div className="logo">logo</div>}
                             className="appbar"
-                            iconElementRight={<RaisedButton label="轨迹回放" onTouchTap={this.showhistoryplay} style={{marginRight:"30px"}} />}
+                            iconElementRight={<RaisedButton label="最新消息" onTouchTap={this.showMessage} style={{marginRight:"30px"}} />}
                             iconStyleRight={{marginTop:"12px"}}
                         />
                     </div>
@@ -144,12 +139,9 @@ class Page extends React.Component {
                         showwarningbox={this.showWarningbox}
                         showaddressbox={this.showAddressbox}
                         />
-                    <Drawer width={window.innerWidth} openSecondary={true} open={this.state.showhistoryplay} >
+                    <Drawer width={window.innerWidth} openSecondary={true} open={showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
-
-                    <RaisedButton label="最新消息" onTouchTap={this.showMessage} className="showMessageBtn" />
-                    <RaisedButton label="设备详情" onTouchTap={this.showDeviceInfo} className="showDeviceInfo" />
 
                 </div>
 
@@ -158,7 +150,7 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = ({app:{showmenu}}) => {
-  return {showmenu};
+const mapStateToProps = ({app:{showmenu,showhistoryplay}}) => {
+  return {showmenu,showhistoryplay};
 };
 export default connect(mapStateToProps)(Page);
