@@ -17,7 +17,6 @@ export function* socketflow(){//仅执行一次
         if (!!token) {
           yield put(loginwithtoken_request({token}));
         }
-
         yield put(querydevice_request({query:{}}));
       }
     });

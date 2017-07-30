@@ -13,7 +13,9 @@ export function* testdataflow(){//仅执行一次
    });
 
    yield fork(function*(){
-     yield call(delay, 5000);
+     while(!window.amapmain){
+       yield call(delay,500);
+     }
      yield put(notify_socket_connected(true));
    });
 

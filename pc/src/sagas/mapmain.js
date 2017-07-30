@@ -268,7 +268,9 @@ export function* createmapmainflow(){
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_mapmain){
-          yield call(delay,1000);
+          while(!window.AMap){
+            yield call(delay,500);
+          }
           console.log(`carmapshow_createmap...`);
           //take
           let mapcarprops = yield select(getmapstate_formapcar);
@@ -282,6 +284,9 @@ export function* createmapmainflow(){
             mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
           yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
+          while(!window.AMapUI){
+            yield call(delay,500);
+          }
           yield call(initmapui,window.amapmain);
 
           let task_dragend =  yield fork(function*(eventname){
@@ -364,6 +369,9 @@ export function* createmapmainflow(){
 
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
+      while(!pointSimplifierIns){
+        yield call(delay,500);
+      }
       if(!!pointSimplifierIns){
         const data = [];
         _.map(devicelist,(deviceitem)=>{
@@ -376,25 +384,9 @@ export function* createmapmainflow(){
           }
           data.push(deviceitem);
         });
-        //pointSimplifierIns.setData(devicelist);
-        // let center = window.amapmain.getCenter();
-        // const num = 100000;
-        // var data = [];
-        // for (var i = 0, len = num; i < len; i++) {
-        //     data.push({
-        //         DeviceId:i,
-        //         LastHistoryTrack: {
-        //           Latitude:center.getLat() + (Math.random() > 0.5 ? 1 : -1) * Math.random(),
-        //           Longitude:center.getLng() + (Math.random() > 0.5 ? 1 : -1) * Math.random(),
-        //         }
-        //     });
-        // }
         console.log(`一共显示${data.length}个设备`);
         distCluster.setData(data);
         pointSimplifierIns.setData(data);
-
-
-        //const City =
       }
 
 
