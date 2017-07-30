@@ -14,9 +14,9 @@ var Menu = React.createClass({
 
   renderFixed() {
     const menuData = {
-        power : {name : "电池包", icon : "fa fa-microchip", click : ()=>{}},
-        history : {name : "历史告警", icon : "fa fa-history", click : ()=>{}},
-        address : {name : "地理位置", icon : "fa fa-globe", click : this.props.showtree} 
+        power : {name : "电池包", icon : "fa fa-microchip", click : this.props.showpowersearch},
+        history : {name : "历史告警", icon : "fa fa-history", click : this.props.showwarningbox},
+        address : {name : "地理位置", icon : "fa fa-globe", click : this.props.showaddressbox} 
     }
     return (
       <SpeedDial position='bottom right'>
@@ -27,7 +27,7 @@ var Menu = React.createClass({
             return (
                 <SpeedDialItem 
                     key={index}
-                    onClick={menu.click.bind(this, '')}
+                    onClick={menu.click}
                     className="menuitem"
                     style={{
                         marginRight : "-6px",
