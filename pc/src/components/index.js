@@ -133,12 +133,7 @@ class Page extends React.Component {
                         />
                     </div>
                     <AdminContent />
-                    <Menu
-                        showtree={this.menuevent}
-                        showpowersearch={this.showPowersearch}
-                        showwarningbox={this.showWarningbox}
-                        showaddressbox={this.showAddressbox}
-                        />
+                    <Menu />
                     <Drawer width={window.innerWidth} openSecondary={true} open={showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>

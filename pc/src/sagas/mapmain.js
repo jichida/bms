@@ -90,7 +90,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           `images/bike.png`, onIconLoad, onIconError),
+                           `${process.env.PUBLIC_URL}/images/bike.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -105,7 +105,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           `images/people.png`, onIconLoad, onIconError),
+                           `${process.env.PUBLIC_URL}/images/people.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -120,7 +120,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           `images/truck.png`, onIconLoad, onIconError),
+                           `${process.env.PUBLIC_URL}/images/truck.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
@@ -135,7 +135,7 @@ const initmapui =  (map)=>{
                    pointStyle: {
                        //绘制点占据的矩形区域
                        content: PointSimplifier.Render.Canvas.getImageContent(
-                           `images/taxi.png`, onIconLoad, onIconError),
+                           `${process.env.PUBLIC_URL}/images/taxi.png`, onIconLoad, onIconError),
                        //宽度
                        width: 16,
                        //高度
