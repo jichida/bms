@@ -18,6 +18,7 @@ import Search from "./search";
 import Warning from "./warning";
 import Message from "./message";
 import Device from "./device";
+import {ui_showmenu} from '../actions';
 
 import Historytrackplayback from "./historytrackplayback/index.js";
 
@@ -26,7 +27,7 @@ class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showmenu : "",
+            // showmenu : "",
             // powersearch: false,//电池包搜索
             // warningbox: false,//警告面板
             // addressbox: false,//地理位置
@@ -39,14 +40,14 @@ class Page extends React.Component {
     componentWillUnmount() {
     }
     //主菜单点击事件
-    menuevent = () => this.setState({showmenu: ""});
+    menuevent = () => this.props.dispatch(ui_showmenu(""));
 
     //显示电池包搜索
-    showPowersearch =()=> this.setState({showmenu: "powersearch"});
-    showWarningbox =()=> this.setState({showmenu: "warningbox"});
-    showAddressbox =()=> this.setState({showmenu: "addressbox"});
-    showMessage =()=> this.setState({showmenu: "showmessage"});
-    showDeviceInfo =()=> this.setState({showmenu: "showdevice"});
+    showPowersearch =()=> this.props.dispatch(ui_showmenu("powersearch"));
+    showWarningbox =()=> this.props.dispatch(ui_showmenu("warningbox"));
+    showAddressbox =()=> this.props.dispatch(ui_showmenu("addressbox"));
+    showMessage =()=> this.props.dispatch(ui_showmenu("showmessage"));
+    showDeviceInfo =()=> this.props.dispatch(ui_showmenu("showdevice"));
 
 
     //现实历史轨迹点击时间
@@ -57,10 +58,11 @@ class Page extends React.Component {
         console.log("onTouchTap");
     }
     render() {
+        const {showmenu} = this.props;
         return (
             <div className="AppPage">
                 <Drawer
-                    open={this.state.showmenu==="powersearch"}
+                    open={showmenu==="powersearch"}
                     containerStyle={{
                         top: "64px",
                         zIndex: 1000,
@@ -72,7 +74,7 @@ class Page extends React.Component {
 
 
                 <Drawer
-                    open={this.state.showmenu==="warningbox"}
+                    open={showmenu==="warningbox"}
                     containerStyle={{
                         top: "64px",
                         zIndex: 1000,
@@ -84,7 +86,7 @@ class Page extends React.Component {
                 </Drawer>
 
                 <Drawer
-                    open={this.state.showmenu==="addressbox"}
+                    open={showmenu==="addressbox"}
                     containerStyle={{
                         top: "64px",
                         zIndex: 1000,
@@ -94,7 +96,7 @@ class Page extends React.Component {
                 </Drawer>
 
                 <Drawer
-                    open={this.state.showmenu==="showmessage"}
+                    open={showmenu==="showmessage"}
                     containerStyle={{
                         top: "64px",
                         zIndex: 1000,
@@ -136,9 +138,9 @@ class Page extends React.Component {
                         />
                     </div>
                     <AdminContent />
-                    <Menu 
-                        showtree={this.menuevent} 
-                        showpowersearch={this.showPowersearch} 
+                    <Menu
+                        showtree={this.menuevent}
+                        showpowersearch={this.showPowersearch}
                         showwarningbox={this.showWarningbox}
                         showaddressbox={this.showAddressbox}
                         />
@@ -156,4 +158,7 @@ class Page extends React.Component {
     }
 }
 
-export default connect()(Page);
+const mapStateToProps = ({app:{showmenu}}) => {
+  return {showmenu};
+};
+export default connect(mapStateToProps)(Page);

@@ -8,10 +8,7 @@ import _ from 'lodash';
 
 class Page extends React.Component {
 
-
-
-    render(){  
-
+    render(){
         const data = {
             "设备名称" : "123XG设备",
             "最高单体温度" : "80",
@@ -28,12 +25,12 @@ class Page extends React.Component {
                 <div className="lists">
                     {_.map(data, (d, key)=>{
                         return (
-                            <div className="li">
+                            <div className="li" key={key}>
                                 <div className="name">{key}</div><div className="text">{d}</div>
                             </div>
                         )
                     })}
-                    
+
                 </div>
             </div>
         );

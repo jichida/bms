@@ -9,14 +9,17 @@ import "onsenui/css-components-src/src/onsen-css-components.css";
 import ons from 'onsenui';
 import {SpeedDial,Fab,Toolbar,Icon,SpeedDialItem,Page} from 'react-onsenui';
 import _  from "lodash";
+import {ui_showmenu} from '../actions';
 
-var Menu = React.createClass({
-
+class Menu extends React.Component {
+  onClickMenu(menuitemstring){
+    this.props.dispatch(ui_showmenu(menuitemstring));
+  }
   renderFixed() {
     const menuData = {
-        power : {name : "电池包", icon : "fa fa-microchip", click : this.props.showpowersearch},
-        history : {name : "历史告警", icon : "fa fa-history", click : this.props.showwarningbox},
-        address : {name : "地理位置", icon : "fa fa-globe", click : this.props.showaddressbox} 
+        power : {name : "电池包", icon : "fa fa-microchip", click : this.onClickMenu.bind(this,'powersearch')},
+        history : {name : "历史告警", icon : "fa fa-history", click : this.onClickMenu.bind(this,'warningbox')},
+        address : {name : "地理位置", icon : "fa fa-globe", click : this.onClickMenu.bind(this,'addressbox')}
     }
     return (
       <SpeedDial position='bottom right'>
@@ -25,7 +28,7 @@ var Menu = React.createClass({
         </Fab>
         {_.map(menuData, (menu, index)=>{
             return (
-                <SpeedDialItem 
+                <SpeedDialItem
                     key={index}
                     onClick={menu.click}
                     className="menuitem"
@@ -45,23 +48,21 @@ var Menu = React.createClass({
         })}
       </SpeedDial>
     );
-  },
+  }
 
-  menuclick: function(name) {
+  menuclick(name) {
     //ons.notification.confirm(`Do you want to share on "${name}"?`);
 
-  },
+  }
 
-  render: function() {
+  render() {
     return (
-        <Page renderFixed={this.renderFixed}>
+        <Page renderFixed={this.renderFixed.bind(this)}>
             Some content
         </Page>
     );
   }
-});
+};
 
 
 export default connect()(Menu);
-
-
