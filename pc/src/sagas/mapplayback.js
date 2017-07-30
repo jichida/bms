@@ -23,13 +23,13 @@ const divmapid_maptrackhistoryplayback = 'maptrackhistoryplayback';
 
 
 const loczero = L.latLng(0,0);
-let pathSimplifierIns;
+let gPathSimplifier,pathSimplifierIns;
 const initmapui =  (map)=>{
     return new Promise((resolve,reject) => {
          console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
         //加载PathSimplifier，loadUI的路径参数为模块名中 'ui/' 之后的部分
          window.AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier)=> {
-
+          gPathSimplifier = PathSimplifier;
           if (!PathSimplifier.supportCanvas) {
               alert('当前环境不支持 Canvas！');
               return;
@@ -63,17 +63,10 @@ const initmapui =  (map)=>{
 
           //这里构建两条简单的轨迹，仅作示例
           pathSimplifierIns.setData([{
-              name: '轨迹1',
-              path: [
-                  [100.340417, 27.376994],
-                  [108.426354, 37.827452],
-                  [113.392174, 31.208439],
-                  [124.905846, 42.232876]
-              ]
-          }, {
-              name: '大地线',
+              name: '上海桂菁路69号到常州津通工业园',
               //创建一条包括500个插值点的大地线
-              path: PathSimplifier.getGeodesicPath([116.405289, 39.904987], [87.61792, 43.793308], 500)
+              path: PathSimplifier.getGeodesicPath([121.4044300000,31.1742500000], [119.9515200000,31.6641500000], 500)
+
           }]);
           resolve(pathSimplifierIns);
         });
@@ -85,9 +78,26 @@ const startplayback = ({isloop,speed})=>{
   return new Promise((resolve,reject) => {
     if(!!pathSimplifierIns){
       //创建一个巡航器
-         const navg0 = pathSimplifierIns.createPathNavigator(1, {
+          window.amaptrackhistoryplayback.setCenter([121.4044300000,31.1742500000]);
+
+          const onload = ()=> {
+              pathSimplifierIns.renderLater();
+          }
+
+          const onerror =(e)=> {
+              alert('图片加载失败！');
+          }
+
+          const navg0 = pathSimplifierIns.createPathNavigator(0, {
              loop: isloop, //循环播放
-             speed
+             speed,
+             pathNavigatorStyle: {
+                  width: 16,
+                  height: 32,
+                  content: gPathSimplifier.Render.Canvas.getImageContent(`images/car.png`, onload, onerror),
+                  strokeStyle: null,
+                  fillStyle: null
+            }
          });
          navg0.start();
          resolve(navg0);
