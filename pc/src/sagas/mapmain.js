@@ -26,6 +26,12 @@ let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,pointSimplifierIns;
 
+//优化的时候再考虑
+// const createmap_marklist =(map)=>{
+//   return new Promise((resolve,reject) => {
+//       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
+// }
+
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);

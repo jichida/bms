@@ -13,7 +13,7 @@ class Page extends React.Component {
       this.props.dispatch(ui_showhistoryplay(true));
     }
     render(){
-        const data = {
+      const data = {
             "设备名称" : "123XG设备",
             "最高单体温度" : "80",
             "最低单体温度" : "0",
@@ -22,8 +22,14 @@ class Page extends React.Component {
             "真实SOC" : "SOC",
             "箱体电流" : "20A",
         }
+      const {mapseldeviceid,devices} = this.props;
+      let deviceitem = devices[mapseldeviceid];
+      if(!!deviceitem){
+        data[`设备Id`] = deviceitem.DeviceId;
+      }
 
-        return (
+
+      return (
             <div className="warningPage devicePage">
                 <div className="tit">设备详情</div>
                 <div className="lists">
@@ -41,4 +47,7 @@ class Page extends React.Component {
     }
 }
 
-export default connect()(Page);
+const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
+  return {mapseldeviceid,devices};
+}
+export default connect(mapStateToProps)(Page);
