@@ -41,7 +41,7 @@ class Page extends React.Component {
                         )
                     })}
                 </div>
-                <RaisedButton label="轨迹回放" onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
+                <RaisedButton label="轨迹回放" primary={true} onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
             </div>
         );
     }

@@ -177,7 +177,7 @@
     color: #333;
 }
 .treePage{
-    background: rgb(33, 37, 43);
+    
     padding: '20px 20px 0 20px'
 }
 .treeSearch .input-group{
@@ -228,7 +228,7 @@
     z-index: 1200;
 }
 .showDeviceInfo{
-    right: 220px;
+    right: 10px;
 }
 
 .messagePage .lists,
@@ -262,6 +262,94 @@
 
 .devicePage .lists .li{
     border-bottom: 1px solid #EEE;
+}
+.toggledistcluster,
+.togglehugepoints{
+    position: fixed;
+    right: 120px;
+    top:12px;
+    z-index:1200;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    padding: 6px 10px;
+    background: #EEE;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+}
+.togglehugepoints{
+    right: 270px;
+}
+
+.toggledistcluster .toggleitme,
+.togglehugepoints .toggleitme{
+
+}
+
+.searchli{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: flex-end;
+    align-items: flex-end;
+    -webkit-align-items: flex-end;
+    -moz-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.searchli >div{
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.searchbtn{
+    text-align: right;
+    margin-bottom: 15px;
+}
+.myclose {
+    display: block;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    right: 5px;
+    top:2px;
+}
+.myclose :active{
+    background: #EEE;
+}
+
+.myclose:after{
+    content : "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: #333;
+    left: 8px;
+    top: 18px;
+    transform: rotate(45deg);
+}
+.myclose:before{
+    content : "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: #333;
+    left: 8px;
+    top: 18px;
+    transform: rotate(-45deg);
+}
+
+.myclose.white:after,
+.myclose.white:before{
+    background: #FFF;
+
 }
 
 

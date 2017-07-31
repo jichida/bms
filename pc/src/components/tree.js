@@ -30,44 +30,14 @@ class TreeExample extends React.Component {
     }
     render(){
         const {datatree} = this.props;
-        // const decorators = {
-        //     Loading: (props) => {
-        //         return (
-        //             <div style={props.style}>
-        //                 loading...
-        //             </div>
-        //         );
-        //     },
-        //     Toggle: (props) => {
-        //         return (
-        //             <div style={props.style}>
-        //                 <svg height={props.height} width={props.width}>
-        //
-        //                 </svg>
-        //             </div>
-        //         );
-        //     },
-        //     Header: (props) => {
-        //         return (
-        //             <div style={props.style}>
-        //                 {props.node.name}
-        //             </div>
-        //         );
-        //     },
-        //     Container: (props) => {
-        //         return (
-        //             <div onClick={this.props.onClick}>
-        //                 <decorators.Toggle/>
-        //                 <decorators.Header/>
-        //             </div>
-        //         );
-        //     }
-        // };
         return (
+            <div style={{paddingTop:"20px", background:"rgb(33, 37, 43)"}}>
             <Treebeard
+                id="lefttree"
                 data={datatree}
                 onToggle={this.onToggle}
             />
+            </div>
         );
     }
 }

@@ -27,13 +27,22 @@ import {
 } from '../actions';
 
 import Historytrackplayback from "./historytrackplayback/index.js";
-
+let resizetime = null;
 
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            innerWidth : window.innerWidth,
+        };
     }
     componentWillMount() {
+        window.onresize = ()=>{
+            window.clearTimeout(resizetime);
+            resizetime = window.setTimeout(()=>{
+                this.setState({innerWidth: window.innerWidth});
+            }, 10)
+        }
     }
     componentWillUnmount() {
     }
@@ -65,9 +74,10 @@ class Page extends React.Component {
                         top: "64px",
                         zIndex: 1000,
                     }}
+                    width={Math.floor(this.state.innerWidth/2)}
                     >
                     <Search />
-                    <Tree />
+                    <span className="myclose" onClick={this.menuevent}></span>
                 </Drawer>
 
 
@@ -77,10 +87,10 @@ class Page extends React.Component {
                         top: "64px",
                         zIndex: 1000,
                     }}
-                    width={Math.floor(window.innerWidth/2)}
+                    width={Math.floor(this.state.innerWidth/2)}
                     >
                     <Warning />
-                    <Tree />
+                    <span className="myclose" onClick={this.menuevent}></span>
                 </Drawer>
 
                 <Drawer
@@ -91,6 +101,7 @@ class Page extends React.Component {
                     }}
                     >
                     <Tree />
+                    <span className="myclose white" onClick={this.menuevent}></span>
                 </Drawer>
 
                 <Drawer
@@ -101,7 +112,7 @@ class Page extends React.Component {
                     }}
                     >
                     <Message />
-                    <Tree />
+                    <span className="myclose" onClick={this.menuevent}></span>
                 </Drawer>
 
                 <Drawer
@@ -112,6 +123,7 @@ class Page extends React.Component {
                     }}
                     >
                     <Device />
+                    <span className="myclose" onClick={this.menuevent}></span>
                 </Drawer>
 
 
@@ -137,25 +149,31 @@ class Page extends React.Component {
                     </div>
                     <AdminContent />
                     <Menu />
-                    <Drawer width={window.innerWidth} openSecondary={true} open={showhistoryplay} >
+                    <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
-                    <Toggle
-                          label="显示区域"
-                          defaultToggled={showdistcluster}
-                          onToggle={(e,isshow)=>{
-                              this.props.dispatch(ui_showdistcluster(isshow));
-                            }
-                          }
-                        />
+                    <div className="toggledistcluster">
                         <Toggle
-                          label="显示海量点"
-                          defaultToggled={showhugepoints}
-                          onToggle={(e,isshow)=>{
-                              this.props.dispatch(ui_showhugepoints(isshow));
+                            label="显示区域"
+                            defaultToggled={showdistcluster}
+                            onToggle={
+                                (e,isshow)=>{
+                                    this.props.dispatch(ui_showdistcluster(isshow));
+                                }
                             }
-                          }
                         />
+                    </div>
+                    <div className="togglehugepoints">
+                        <Toggle
+                            label="显示海量点"
+                            defaultToggled={showhugepoints}
+                            onToggle={
+                                (e,isshow)=>{
+                                    this.props.dispatch(ui_showhugepoints(isshow));
+                                }
+                            }
+                        />
+                    </div>
                 </div>
 
             </div>
