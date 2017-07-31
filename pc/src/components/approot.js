@@ -8,7 +8,6 @@ import { Route,Redirect,Switch} from 'react-router-dom';
 
 
 import Index from './index';
-import Historyplay from './historytrackplayback/map';
 
 import "../css/common.css";
 
@@ -41,7 +40,6 @@ class AppRoot extends React.Component {
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)}/>
                     <Route path="/index" component={Index}/>
-                    <Route path="/historyplay" component={Historyplay}/>
                 </Switch>
             </div>
         );

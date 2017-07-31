@@ -10,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
+import Toggle from 'material-ui/Toggle';
 import _  from "lodash";
 import AdminContent from "./admincontent";
 import Menu from "./menu";
@@ -21,6 +22,8 @@ import Device from "./device";
 import {
   ui_showmenu,
   ui_showhistoryplay,
+  ui_showdistcluster,
+  ui_showhugepoints
 } from '../actions';
 
 import Historytrackplayback from "./historytrackplayback/index.js";
@@ -53,7 +56,7 @@ class Page extends React.Component {
         console.log("onTouchTap");
     }
     render() {
-        const {showmenu,showhistoryplay} = this.props;
+        const {showmenu,showhistoryplay,showdistcluster,showhugepoints} = this.props;
         return (
             <div className="AppPage">
                 <Drawer
@@ -137,7 +140,22 @@ class Page extends React.Component {
                     <Drawer width={window.innerWidth} openSecondary={true} open={showhistoryplay} >
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
-
+                    <Toggle
+                          label="显示区域"
+                          defaultToggled={showdistcluster}
+                          onToggle={(e,isshow)=>{
+                              this.props.dispatch(ui_showdistcluster(isshow));
+                            }
+                          }
+                        />
+                        <Toggle
+                          label="显示海量点"
+                          defaultToggled={showhugepoints}
+                          onToggle={(e,isshow)=>{
+                              this.props.dispatch(ui_showhugepoints(isshow));
+                            }
+                          }
+                        />
                 </div>
 
             </div>
@@ -145,7 +163,7 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = ({app:{showmenu,showhistoryplay}}) => {
-  return {showmenu,showhistoryplay};
+const mapStateToProps = ({app:{showmenu,showhistoryplay,showdistcluster,showhugepoints}}) => {
+  return {showmenu,showhistoryplay,showdistcluster,showhugepoints};
 };
 export default connect(mapStateToProps)(Page);

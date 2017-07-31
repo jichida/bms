@@ -9,3 +9,6 @@ export const getsystemconfig_result = createAction('getsystemconfig_result');
 
 export const ui_showmenu = createAction('ui_showmenu');
 export const ui_showhistoryplay  = createAction('ui_showhistoryplay');
+
+export const ui_showdistcluster = createAction('ui_showdistcluster');
+export const ui_showhugepoints = createAction('ui_showhugepoints');

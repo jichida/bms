@@ -10,7 +10,9 @@ import {
   querydevice_result,
   ui_selcurdevice,
   querydeviceinfo_request,
-  ui_showmenu
+  ui_showmenu,
+  ui_showdistcluster,
+  ui_showhugepoints
 } from '../actions';
 
 import {getcurrentpos} from './getcurrentpos';
@@ -388,7 +390,28 @@ export function* createmapmainflow(){
         distCluster.setData(data);
         pointSimplifierIns.setData(data);
       }
+    });
 
-
+    //显示地图区域
+    yield takeEvery(`${ui_showdistcluster}`, function*(action_showflag) {
+        let {payload:isshow} = action_showflag;
+        if(isshow){
+          distCluster.show();
+        }
+        else{
+          distCluster.hide();
+        }
+        distCluster.render();
+    });
+    //显示海量点
+    yield takeEvery(`${ui_showhugepoints}`, function*(action_showflag) {
+        let {payload:isshow} = action_showflag;
+        if(isshow){
+          pointSimplifierIns.show();
+        }
+        else{
+          pointSimplifierIns.hide();
+        }
+        pointSimplifierIns.render();
     });
 }
