@@ -19,6 +19,7 @@ import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
 import _ from 'lodash';
+import coordtransform from 'coordtransform';
 
 const divmapid_mapmain = 'mapmain';
 
@@ -57,9 +58,13 @@ const initmapui =  (map)=>{
                    if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
                      return null;
                    }
+
                    let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                  //  console.log(`wgs84坐标:${cor}`);
+                   let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+                  //  console.log(`wgs84togcj02:${wgs84togcj02}`);
                    //console.log(`坐标为:${cor}`);
-                   return [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                   return wgs84togcj02;
                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                },
                getHoverTitle: (deviceitem, idx)=> {
@@ -170,7 +175,10 @@ const initmapui =  (map)=>{
                      }
                      let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
                      //console.log(`坐标为:${cor}`);
-                     return [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                    //  console.log(`wgs84坐标:${cor}`);
+                     let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+                    //  console.log(`wgs84togcj02:${wgs84togcj02}`);
+                     return wgs84togcj02;
                      //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                  },
              });
@@ -260,10 +268,14 @@ const showinfowindow = (deviceitem)=>{
               infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
           });
           let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+         //  console.log(`wgs84坐标:${cor}`);
+          let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+         //  console.log(`wgs84togcj02:${wgs84togcj02}`);
+          //console.log(`坐标为:${cor}`);
           //显示在map上
           // window.amapmain.setZoomAndCenter(16,cor);
-          window.amapmain.setCenter(cor);
-          infoWindow.open(window.amapmain, cor);
+          window.amapmain.setCenter(wgs84togcj02);
+          infoWindow.open(window.amapmain, wgs84togcj02);
           resolve(infoWindow);
       });
   });

@@ -5,6 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "bankcardinfo": "^2.0.3",
+    "coordtransform": "^2.1.2",
     "geolib": "^2.0.22",
     "idcard": "^3.2.4",
     "leaflet": "^1.1.0",

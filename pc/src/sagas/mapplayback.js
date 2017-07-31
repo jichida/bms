@@ -13,7 +13,7 @@ import {
 
   mapplayback_start
 } from '../actions';
-
+import coordtransform from 'coordtransform';
 import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
@@ -227,7 +227,11 @@ export function* createmaptrackhistoryplaybackflow(){
             if(!!LastHistoryTrack){
               if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
                 let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-                window.amaptrackhistoryplayback.setCenter(cor);
+                //console.log(`坐标为:${cor}`);
+               //  console.log(`wgs84坐标:${cor}`);
+                let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+               //  console.log(`wgs84togcj02:${wgs84togcj02}`);
+                window.amaptrackhistoryplayback.setCenter(wgs84togcj02);
               }
             }
           }
