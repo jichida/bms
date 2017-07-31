@@ -19,6 +19,12 @@ class Page extends React.Component {
       this.props.dispatch(mapplayback_start({isloop:true,speed:50000}));
     }
     render() {
+        const {mapseldeviceid,devices} = this.props;
+        let DeviceId;
+        let deviceitem = devices[mapseldeviceid];
+        if(!!deviceitem){
+          DeviceId = deviceitem.DeviceId;
+        }
         return (
             <div className="historytrackplayback">
                 <AppBar
@@ -43,7 +49,7 @@ class Page extends React.Component {
                     }}
                     />
                 <div className="set">
-                    <div>设备编号：123456</div>
+                    <div>设备编号：{DeviceId || ''}</div>
                     <div>
                         <DatePicker hintText="开始日期" />
                         <TimePicker hintText="开始时间" />
@@ -60,5 +66,7 @@ class Page extends React.Component {
         );
     }
 }
-
-export default connect()(Page);
+const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
+  return {mapseldeviceid,devices};
+}
+export default connect(mapStateToProps)(Page);

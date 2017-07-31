@@ -377,7 +377,7 @@ export function* createmapmainflow(){
 
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
-      while(!pointSimplifierIns){
+      while(!pointSimplifierIns || !distCluster){
         yield call(delay,500);
       }
       if(!!pointSimplifierIns){
