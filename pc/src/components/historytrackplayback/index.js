@@ -25,6 +25,7 @@ class Page extends React.Component {
         if(!!deviceitem){
           DeviceId = deviceitem.DeviceId;
         }
+        const formstyle={width:"120px"};
         return (
             <div className="historytrackplayback">
                 <AppBar
@@ -50,11 +51,11 @@ class Page extends React.Component {
                     />
                 <div className="set">
                     <div>设备编号：{DeviceId || ''}</div>
-                    <div>
-                        <DatePicker hintText="开始日期" />
-                        <TimePicker hintText="开始时间" />
-                        <DatePicker hintText="结束日期" />
-                        <TimePicker hintText="结束时间" />
+                    <div className="formlist">
+                        <DatePicker hintText="开始日期" style={formstyle} />
+                        <TimePicker hintText="开始时间" style={formstyle} />
+                        <DatePicker hintText="结束日期" style={formstyle} />
+                        <TimePicker hintText="结束时间" style={formstyle} />
                     </div>
                     <div>
                         <RaisedButton onTouchTap={this.onClickStart.bind(this)} label="开始" primary={true} style={{marginRight:"10px"}} />

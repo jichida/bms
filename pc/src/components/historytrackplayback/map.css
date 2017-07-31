@@ -7,5 +7,17 @@
 .historytrackplayback .set{
     border-bottom: 1px solid #EEE;
     padding:20px;
-    background:#EEE;
+}
+
+.historytrackplayback{
+    padding-bottom: 15px;
+}
+.historytrackplayback .formlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+.historytrackplayback .formlist{
+	
 }
