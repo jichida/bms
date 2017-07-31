@@ -25,7 +25,7 @@ import {
   ui_showdistcluster,
   ui_showhugepoints
 } from '../actions';
-
+import translate from 'redux-polyglot/translate';
 import Historytrackplayback from "./historytrackplayback/index.js";
 
 
@@ -56,7 +56,7 @@ class Page extends React.Component {
         console.log("onTouchTap");
     }
     render() {
-        const {showmenu,showhistoryplay,showdistcluster,showhugepoints} = this.props;
+        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
         return (
             <div className="AppPage">
                 <Drawer
@@ -131,7 +131,7 @@ class Page extends React.Component {
                             }}
                             iconElementLeft={<div className="logo">logo</div>}
                             className="appbar"
-                            iconElementRight={<RaisedButton label="最新消息" onTouchTap={this.showMessage} style={{marginRight:"30px"}} />}
+                            iconElementRight={<RaisedButton label={p.tc('title')} onTouchTap={this.showMessage} style={{marginRight:"30px"}} />}
                             iconStyleRight={{marginTop:"12px"}}
                         />
                     </div>
@@ -166,4 +166,6 @@ class Page extends React.Component {
 const mapStateToProps = ({app:{showmenu,showhistoryplay,showdistcluster,showhugepoints}}) => {
   return {showmenu,showhistoryplay,showdistcluster,showhugepoints};
 };
-export default connect(mapStateToProps)(Page);
+
+const DummyComponentWithPProps = translate('warningbox')(Page);
+export default connect(mapStateToProps)(DummyComponentWithPProps);
