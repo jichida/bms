@@ -267,15 +267,17 @@ const showinfowindow = (deviceitem)=>{
               infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
               infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
           });
-          let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-         //  console.log(`wgs84坐标:${cor}`);
-          let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-         //  console.log(`wgs84togcj02:${wgs84togcj02}`);
-          //console.log(`坐标为:${cor}`);
-          //显示在map上
-          // window.amapmain.setZoomAndCenter(16,cor);
-          window.amapmain.setCenter(wgs84togcj02);
-          infoWindow.open(window.amapmain, wgs84togcj02);
+
+          if(!!LastHistoryTrack){
+            let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+            let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+            window.amapmain.setCenter(wgs84togcj02);
+            infoWindow.open(window.amapmain, wgs84togcj02);
+          }
+          else{
+            infoWindow.open(window.amapmain, window.amapmain.getCenter());
+          }
+
           resolve(infoWindow);
       });
   });

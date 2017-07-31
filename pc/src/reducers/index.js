@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { routerReducer } from 'react-router-redux';
-
+import { polyglotReducer } from 'redux-polyglot';
 import weui from './weui';
 import app from './app';
 import device from './device';
@@ -17,5 +17,6 @@ export default combineReducers({
   userlogin,
   weui,
   form: formReducer,
-  router: routerReducer
+  router: routerReducer,
+  polyglot: polyglotReducer,
 });
