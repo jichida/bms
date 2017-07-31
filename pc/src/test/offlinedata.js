@@ -5,7 +5,7 @@ import {
   querydevice_result,
   notify_socket_connected
 } from '../actions';
-import jsondata from './bmsdata1.json';
+import jsondata from './bmsdata.json';
 //获取地理位置信息，封装为promise
 export function* testdataflow(){//仅执行一次
    yield takeEvery(`${querydevice_request}`, function*(action) {
