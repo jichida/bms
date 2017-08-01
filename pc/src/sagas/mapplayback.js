@@ -11,7 +11,9 @@ import {
   ui_selcurdevice,
   querydeviceinfo_request,
 
-  mapplayback_start
+  mapplayback_start,
+  queryhistorytrack_request,
+  queryhistorytrack_result
 } from '../actions';
 import coordtransform from 'coordtransform';
 import {getcurrentpos} from './getcurrentpos';
@@ -62,12 +64,12 @@ const initmapui =  (map)=>{
           });
 
           //这里构建两条简单的轨迹，仅作示例
-          pathSimplifierIns.setData([{
-              name: '上海桂菁路69号到常州津通工业园',
-              //创建一条包括500个插值点的大地线
-              path: PathSimplifier.getGeodesicPath([121.4044300000,31.1742500000], [119.9515200000,31.6641500000], 500)
-
-          }]);
+          // pathSimplifierIns.setData([{
+          //     name: '上海桂菁路69号到常州津通工业园',
+          //     //创建一条包括500个插值点的大地线
+          //     path: PathSimplifier.getGeodesicPath([121.4044300000,31.1742500000], [119.9515200000,31.6641500000], 500)
+          //
+          // }]);
           resolve(pathSimplifierIns);
         });
 
@@ -78,8 +80,6 @@ const startplayback = ({isloop,speed})=>{
   return new Promise((resolve,reject) => {
     if(!!pathSimplifierIns){
       //创建一个巡航器
-          window.amaptrackhistoryplayback.setCenter([121.4044300000,31.1742500000]);
-
           const onload = ()=> {
               pathSimplifierIns.renderLater();
           }
@@ -246,11 +246,41 @@ export function* createmaptrackhistoryplaybackflow(){
     yield  takeLatest(`${mapplayback_start}`,function*(actionstart){
       try{
           const {payload:{isloop,speed}} = actionstart;
-          yield call(startplayback,{isloop,speed});
+          yield put(queryhistorytrack_request({}));
+          const {payload:{list}} = yield take(`${queryhistorytrack_result}`);
+          let path = [];
+          let latlngs = [];
+          let center = [];
+          for(let i = 0;i < list.length ;i ++){
+            let cor = [list[i].Longitude,list[i].Latitude];
+            let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+            latlngs.push([wgs84togcj02[1],wgs84togcj02[0]]);
+            path.push(wgs84togcj02);
+            if(i === 0){
+              center = wgs84togcj02;
+            }
+          }
+
+          if(path.length > 0){
+            let polyline = L.polyline(latlngs);
+            let lBounds = polyline.getBounds();//LatLngBounds
+            let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
+            let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
+            let amapboounds = new window.AMap.Bounds(southWest,northEast);
+            window.amaptrackhistoryplayback.setBounds(amapboounds);
+            pathSimplifierIns.setData([{
+              name: '设备1602010008',
+              path
+            }]);
+
+            yield call(startplayback,{isloop,speed});
+          }
+
         }
         catch(e){
           console.log(e);
           console.log(`选择点失败${e}`);
         }
     });
+
 }

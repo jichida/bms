@@ -16,7 +16,7 @@ import {mapplayback_start} from '../../actions';
 
 class Page extends React.Component {
     onClickStart(){
-      this.props.dispatch(mapplayback_start({isloop:true,speed:50000}));
+      this.props.dispatch(mapplayback_start({isloop:false,speed:5000}));
     }
     render() {
         const {mapseldeviceid,devices} = this.props;
