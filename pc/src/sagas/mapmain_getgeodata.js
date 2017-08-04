@@ -4,6 +4,34 @@ import _ from 'lodash';
 //转换数据,批量转换所有数据
 export const getgeodatabatch =(devicelist)=> {
   return new Promise((resolve,reject) => {
+    let resultdevicelist = [];
+    _.map(devicelist,(deviceitem)=>{
+      let isget = true;
+      const LastHistoryTrack = deviceitem.LastHistoryTrack;
+      if (!LastHistoryTrack) {
+          isget = false;
+      }
+      else{
+        if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+          isget = false;
+        }
+      }
+      if(isget){
+        let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+        const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+        //let keygeo = `${wgs84togcj02[0]},${wgs84togcj02[1]}`;
+        deviceitem.locz = wgs84togcj02;
+      }
+      resultdevicelist.push(deviceitem);
+    });
+    //console.log(`mapgeo:${JSON.stringify(mapgeo)}`);
+    //console.log(`resultdevicelist:${JSON.stringify(resultdevicelist)}`);
+    resolve(resultdevicelist);
+  });
+};
+
+export const getgeodatabatch2 =(devicelist)=> {
+  return new Promise((resolve,reject) => {
     const geocoder = new window.AMap.Geocoder({
             radius: 1000,
             batch:true,

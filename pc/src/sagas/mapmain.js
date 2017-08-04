@@ -419,11 +419,11 @@ export function* createmapmainflow(){
         yield call(delay,500);
       }
       //批量转换一次
-       
+
       let devicelistresult = yield call(getgeodatabatch,devicelist);
       const data = [];
       _.map(devicelistresult,(deviceitem)=>{
-        if(!!deviceitem.address){
+        if(!!deviceitem.locz){
           data.push(deviceitem);
         }
       });
