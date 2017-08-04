@@ -6,7 +6,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import _ from 'lodash';
-import {ui_selcurdevice} from '../actions';
+import {
+  mapmain_seldistrict,
+  ui_selcurdevice
+} from '../actions';
 
 class TreeExample extends React.Component {
     constructor(props){
@@ -17,14 +20,27 @@ class TreeExample extends React.Component {
     onToggle(node, toggled){
         if(this.state.cursor){this.state.cursor.active = false;}
         node.active = true;
-        if(node.children){
+        if(!!node.children){
             node.toggled = toggled;
+            let id = node.adcode;
+            if(typeof id === 'string'){
+              id = parseInt(id);
+            }
+            // if(id !== 100000){
+            //选择一个文件夹
+            this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled}));
+            console.log(id);//选择一个文件夹
+            // }
+
         }else{
+            // node.toggled = toggled;
             let deviceid = node.name;
             const {devices} = this.props;
             const deviceitem = devices[deviceid];
-            this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}));
-            console.log(node);
+            if(!!deviceitem && toggled){
+              this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}));
+            }
+            console.log(deviceitem);//选择一个设备
         }
         this.setState({ cursor: node });
     }

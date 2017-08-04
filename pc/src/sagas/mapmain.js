@@ -13,6 +13,7 @@ import {
   ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
+  mapmain_seldistrict,
   mapmain_getdistrictresult
 } from '../actions';
 
@@ -279,29 +280,39 @@ let getClusterTree =({adcodetop=111281})=> {
         //      adcode, name, dataItem
         //  }> 子级区划的聚合信息
         console.log(`${err}`);
+        let treenode = {
+          children:[],
+        };
         if(!err){
           const {adcode,name,dataItems,hangingDataItems,children} = result;
+          treenode.adcode = adcode;
+          treenode.name = `${name}(${dataItems.length})`;
+
           console.log(`adcode:${adcode},name:${name}`);
           console.log(`${JSON.stringify(dataItems.length)}`);
-          let ungetcity = [];
-          for(let i = 0;i < dataItems.length;i++){
-            let deviceitem = dataItems[i];
-            // console.log(`${JSON.stringify(deviceitem)}`);
-            if(!!deviceitem.dataItem){
-              let address = deviceitem.dataItem.address;
-              if(!!address){
-                console.log(`地理位置:deviceid:${deviceitem.dataItem.DeviceId},信息:${JSON.stringify(address)}`);
+          if(!children || children.length === 0){
+            _.map(dataItems,(deviceitem)=>{
+              if(!!deviceitem.dataItem){
+                treenode.children.push({
+                  loading: false,
+                  name:`${deviceitem.dataItem.DeviceId}`,
+                });
+                //treenode.devicelist.push(deviceitem.dataItem);
               }
-            }
-
+            });
           }
-          // console.log(`====未获取到数据部分====`);
-          // for(let i = 0;i < ungetcity.length;i++){
-          //   let dataItem = ungetcity[i];
-          //   console.log(`设备id:${dataItem.DeviceId},纬度:${dataItem.LastHistoryTrack.Latitude},经度:${dataItem.LastHistoryTrack.Longitude}`);
-          // }
-          resolve();
+          else{
+            _.map(children,(child)=>{
+              treenode.children.push({
+                adcode:child.adcode,
+                loading: true,
+                name:`${child.name}(${child.dataItems.length})`,
+                children:[]
+              });
+            });
+          }
         }
+        resolve(treenode);
     });
   });
 };
@@ -431,8 +442,7 @@ export function* createmapmainflow(){
       distCluster.setData(data);
       pointSimplifierIns.setData(data);
 
-      distCluster.zoomToShowSubFeatures(320400);
-      yield put(mapmain_getdistrictresult({adcodetop:320412}));
+      yield put(mapmain_seldistrict({adcodetop:100000}));
 
     });
 
@@ -460,9 +470,18 @@ export function* createmapmainflow(){
     });
 
     //mapmain_getdistrictresult
-    yield takeEvery(`${mapmain_getdistrictresult}`, function*(action_district) {
+    yield takeEvery(`${mapmain_seldistrict}`, function*(action_district) {
         let {payload:{adcodetop}} = action_district;
-        yield call(delay,3000);
-        yield call(getClusterTree,{adcodetop});
+        try{
+          if(!!adcodetop){
+            distCluster.zoomToShowSubFeatures(adcodetop);
+            let treenode = yield call(getClusterTree,{adcodetop});
+            yield put(mapmain_getdistrictresult(treenode));
+          }
+        }
+        catch(e){
+          console.log(e);
+        }
+
     });
 }
