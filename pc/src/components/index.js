@@ -125,7 +125,7 @@ class Page extends React.Component {
                     <Device />
                     <span className="myclose" onClick={this.menuevent}></span>
                 </Drawer>
-
+                
 
                 <div className="content">
                     <div className="headcontent">
