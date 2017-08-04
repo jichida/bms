@@ -66,6 +66,7 @@ const device = createReducer({
           id:treenode.adcode,
           adcode:treenode.adcode,
           loading: false,
+          active : true,
           toggled:state.toggled,
           name:treenode.name,
           children:treenode.children

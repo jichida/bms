@@ -461,7 +461,7 @@ export function* createmapmainflow(){
       distCluster.setData(data);
       pointSimplifierIns.setData(data);
 
-      yield put(mapmain_seldistrict({adcodetop:100000}));
+      yield put(mapmain_seldistrict({adcodetop:100000,toggled:true}));
 
     });
 
