@@ -237,7 +237,8 @@ const listenwindowinfoevent = (eventname)=>{
 const listenclusterevent = (eventname)=>{
   return new Promise(resolve => {
     distCluster.on(eventname, (e,record)=> {
-        resolve({adcodetop:record.adcode,toggled:true});
+        let level = _.get(record,'feature.properties.level','');
+        resolve({adcodetop:record.adcode,toggled:true,level});
     });
   });
 }
@@ -495,6 +496,27 @@ export function* createmapmainflow(){
             distCluster.zoomToShowSubFeatures(adcodetop);
             let treenode = yield call(getClusterTree,{adcodetop});
             yield put(mapmain_getdistrictresult(treenode));
+            //如果当前定位到区一级，则自动放大到最合适位置
+            const {level,curdevicelist,devices} = yield select((state)=>{
+              return {...state.device};
+            });
+            if(level === 'district'){
+              let latlngs = [];
+              _.map(curdevicelist,(devicenode)=>{
+                  const deviceitem = devices[devicenode.name];
+                  if(!!deviceitem){
+                    latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
+                  }
+              });
+              if(latlngs.length > 0){
+                 let polyline = L.polyline(latlngs);
+                 let lBounds = polyline.getBounds();//LatLngBounds
+                 let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
+                 let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
+                 let amapboounds = new window.AMap.Bounds(southWest,northEast);
+                 window.amapmain.setBounds(amapboounds);
+               }
+            }
           }
         }
         catch(e){

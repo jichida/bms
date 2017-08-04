@@ -28,7 +28,8 @@ class TreeExample extends React.Component {
             }
             // if(id !== 100000){
             //选择一个文件夹
-            this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled}));
+            let level = id%10 === 0?'':'district';
+            this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled,level}));
             console.log(id);//选择一个文件夹
             // }
 

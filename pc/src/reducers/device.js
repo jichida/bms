@@ -10,7 +10,8 @@ import _ from 'lodash';
 
 const initial = {
   device:{
-    toggled:false,
+    level:'',
+    toggled:true,
     mapseldeviceid:undefined,
     mapdeviceidlist:[],
     datatree:[],
@@ -41,8 +42,8 @@ const device = createReducer({
     return {...state,devices};
   },
   [mapmain_seldistrict]:(state,payload)=>{
-    const {adcodetop:selnodeid,toggled} = payload;
-    return {...state,selnodeid,toggled};
+    const {adcodetop:selnodeid,toggled,level} = payload;
+    return {...state,selnodeid,toggled,level};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
       let treenode = payload;
@@ -58,6 +59,9 @@ const device = createReducer({
 
       if(treenode.adcode === 100000){
         curprovicelist = treenode.children;
+        curcitylist = [];
+        curdistrictlist = [];
+        curdevicelist = [];
         datatree = {
           id:treenode.adcode,
           adcode:treenode.adcode,
@@ -76,6 +80,9 @@ const device = createReducer({
 
             curcityid = undefined;
             curdistrictid = undefined;
+
+            curdistrictlist = [];
+            curdevicelist = [];
           }
         });
 
@@ -84,6 +91,11 @@ const device = createReducer({
             curcityid = selnodeid;
             curdistrictlist = treenode.children;
             curdistrictid = undefined;
+            curdevicelist = [];
+            //上海／北京／等特殊
+            if(state.level === 'district'){
+              curdevicelist = curdistrictlist;
+            }
           }
         });
 
