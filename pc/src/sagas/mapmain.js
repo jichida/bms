@@ -12,9 +12,11 @@ import {
   querydeviceinfo_request,
   ui_showmenu,
   ui_showdistcluster,
-  ui_showhugepoints
+  ui_showhugepoints,
+  mapmain_getdistrictresult
 } from '../actions';
 
+import {getgeodatabatch} from './mapmain_getgeodata';
 import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
@@ -33,6 +35,7 @@ let distCluster,pointSimplifierIns;
 //       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
 // }
 
+//新建行政区域&海量点
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
@@ -51,20 +54,7 @@ const initmapui =  (map)=>{
                map: map, //所属的地图实例
 
                getPosition: (deviceitem)=> {
-                   const LastHistoryTrack = deviceitem.LastHistoryTrack;
-                   if (!LastHistoryTrack) {
-                       return null;
-                   }
-                   if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-                     return null;
-                   }
-
-                   let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-                  //  console.log(`wgs84坐标:${cor}`);
-                   let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-                  //  console.log(`wgs84togcj02:${wgs84togcj02}`);
-                   //console.log(`坐标为:${cor}`);
-                   return wgs84togcj02;
+                   return deviceitem.locz;
                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                },
                getHoverTitle: (deviceitem, idx)=> {
@@ -166,19 +156,7 @@ const initmapui =  (map)=>{
                  map: map, //所属的地图实例
 
                  getPosition: (deviceitem)=> {
-                     const LastHistoryTrack = deviceitem.LastHistoryTrack;
-                     if (!LastHistoryTrack) {
-                         return null;
-                     }
-                     if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-                       return null;
-                     }
-                     let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-                     //console.log(`坐标为:${cor}`);
-                    //  console.log(`wgs84坐标:${cor}`);
-                     let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-                    //  console.log(`wgs84togcj02:${wgs84togcj02}`);
-                     return wgs84togcj02;
+                     return deviceitem.locz;
                      //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                  },
              });
@@ -189,6 +167,7 @@ const initmapui =  (map)=>{
    });
 }
 
+//新建地图
 let createmap =({mapcenterlocation,zoomlevel})=> {
   console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amapmain}`);
   return new Promise((resolve,reject) => {
@@ -226,6 +205,7 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
   });
 }
 
+//监听地图事件
 const listenmapevent = (eventname)=>{
   return new Promise(resolve => {
     window.amapmain.on(eventname, (e)=> {
@@ -234,6 +214,7 @@ const listenmapevent = (eventname)=>{
   });
 }
 
+//监听标记事件
 const listenmarkclickevent = (eventname)=>{
   return new Promise(resolve => {
     pointSimplifierIns.on(eventname, (e,record)=> {
@@ -242,6 +223,7 @@ const listenmarkclickevent = (eventname)=>{
   });
 }
 
+//监听弹框事件
 const listenwindowinfoevent = (eventname)=>{
   return new Promise(resolve => {
     infoWindow.on(eventname, (e)=> {
@@ -250,14 +232,16 @@ const listenwindowinfoevent = (eventname)=>{
   });
 }
 
+//获取reduce
 const getmapstate_formapcar = (state) => {
   const {carmap} = state;
   return {...carmap};
 }
 
+//显示弹框
 const showinfowindow = (deviceitem)=>{
   return new Promise(resolve =>{
-      let LastHistoryTrack = deviceitem.LastHistoryTrack;
+      let locz = deviceitem.locz;
       window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
           let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
           let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
@@ -268,11 +252,9 @@ const showinfowindow = (deviceitem)=>{
               infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
           });
 
-          if(!!LastHistoryTrack){
-            let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-            let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-            window.amapmain.setCenter(wgs84togcj02);
-            infoWindow.open(window.amapmain, wgs84togcj02);
+          if(!!locz){
+            window.amapmain.setCenter(locz);
+            infoWindow.open(window.amapmain, locz);
           }
           else{
             infoWindow.open(window.amapmain, window.amapmain.getCenter());
@@ -282,6 +264,48 @@ const showinfowindow = (deviceitem)=>{
       });
   });
 }
+
+//获取某个行政编码的树形结构
+let getClusterTree =({adcodetop=111281})=> {
+  console.log(`distCluster:${!!distCluster}`);
+  return new Promise((resolve,reject) => {
+    distCluster.getClusterRecord(adcodetop,(err,result)=>{
+        // adcode: number 区划编码,
+        //  name: string 区划名称,
+        //  dataItems: Array.<Object> 该区划下辖的数据点的信息
+        //  hangingDataItems: Array.<Object>
+        //        该区划内的悬挂（没有对应子级）数据点
+        //  children:Array.<{
+        //      adcode, name, dataItem
+        //  }> 子级区划的聚合信息
+        console.log(`${err}`);
+        if(!err){
+          const {adcode,name,dataItems,hangingDataItems,children} = result;
+          console.log(`adcode:${adcode},name:${name}`);
+          console.log(`${JSON.stringify(dataItems.length)}`);
+          let ungetcity = [];
+          for(let i = 0;i < dataItems.length;i++){
+            let deviceitem = dataItems[i];
+            // console.log(`${JSON.stringify(deviceitem)}`);
+            if(!!deviceitem.dataItem){
+              let address = deviceitem.dataItem.address;
+              if(!!address){
+                console.log(`地理位置:deviceid:${deviceitem.dataItem.DeviceId},信息:${JSON.stringify(address)}`);
+              }
+            }
+
+          }
+          // console.log(`====未获取到数据部分====`);
+          // for(let i = 0;i < ungetcity.length;i++){
+          //   let dataItem = ungetcity[i];
+          //   console.log(`设备id:${dataItem.DeviceId},纬度:${dataItem.LastHistoryTrack.Latitude},经度:${dataItem.LastHistoryTrack.Longitude}`);
+          // }
+          resolve();
+        }
+    });
+  });
+};
+
 
 export function* createmapmainflow(){
     console.log(`createmapmainflow...`);
@@ -394,22 +418,22 @@ export function* createmapmainflow(){
       while(!pointSimplifierIns || !distCluster){
         yield call(delay,500);
       }
-      if(!!pointSimplifierIns){
-        const data = [];
-        _.map(devicelist,(deviceitem)=>{
-          const LastHistoryTrack = deviceitem.LastHistoryTrack;
-          if (!LastHistoryTrack) {
-              return null;
-          }
-          if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-            return null;
-          }
+      //批量转换一次
+       
+      let devicelistresult = yield call(getgeodatabatch,devicelist);
+      const data = [];
+      _.map(devicelistresult,(deviceitem)=>{
+        if(!!deviceitem.address){
           data.push(deviceitem);
-        });
-        console.log(`一共显示${data.length}个设备`);
-        distCluster.setData(data);
-        pointSimplifierIns.setData(data);
-      }
+        }
+      });
+      console.log(`一共显示${data.length}个设备`);
+      distCluster.setData(data);
+      pointSimplifierIns.setData(data);
+
+      distCluster.zoomToShowSubFeatures(320400);
+      yield put(mapmain_getdistrictresult({adcodetop:320412}));
+
     });
 
     //显示地图区域
@@ -433,5 +457,12 @@ export function* createmapmainflow(){
           pointSimplifierIns.hide();
         }
         pointSimplifierIns.render();
+    });
+
+    //mapmain_getdistrictresult
+    yield takeEvery(`${mapmain_getdistrictresult}`, function*(action_district) {
+        let {payload:{adcodetop}} = action_district;
+        yield call(delay,3000);
+        yield call(getClusterTree,{adcodetop});
     });
 }
