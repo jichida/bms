@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "async": "^2.5.0",
     "bankcardinfo": "^2.0.3",
     "coordtransform": "^2.1.2",
     "geolib": "^2.0.22",

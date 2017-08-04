@@ -13,3 +13,8 @@ export const ui_selcurdevice = createAction('ui_selcurdevice');
 //轨迹回放
 export const mapplayback_start = createAction('mapplayback_start');
 export const mapplayback_end = createAction('mapplayback_end');
+
+//获取一个区域
+export const mapmain_getdistrictresult = createAction('mapmain_getdistrictresult');
+//获取地理位置【城市】
+export const mapmain_getgeoresult = createAction('mapmain_getgeoresult');
