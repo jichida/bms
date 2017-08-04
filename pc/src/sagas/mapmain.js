@@ -233,6 +233,14 @@ const listenwindowinfoevent = (eventname)=>{
   });
 }
 
+//监听行政事件,clusterMarkerClick
+const listenclusterevent = (eventname)=>{
+  return new Promise(resolve => {
+    distCluster.on(eventname, (e,record)=> {
+        resolve({adcodetop:record.adcode});
+    });
+  });
+}
 //获取reduce
 const getmapstate_formapcar = (state) => {
   const {carmap} = state;
@@ -345,6 +353,16 @@ export function* createmapmainflow(){
             yield call(delay,500);
           }
           yield call(initmapui,window.amapmain);
+
+          let listentask =  yield fork(function*(eventname){
+            while(true){
+              let result = yield call(listenclusterevent,eventname);
+              yield put(mapmain_seldistrict(result));
+              // yield put(clusterMarkerClick(result));
+            }
+          },'clusterMarkerClick');
+
+
 
           let task_dragend =  yield fork(function*(eventname){
             while(true){

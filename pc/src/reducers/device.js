@@ -14,7 +14,15 @@ const initial = {
     mapseldeviceid:undefined,
     mapdeviceidlist:[],
     datatree:[],
-    deviceidlist:[],
+
+    curproviceid:undefined,
+    curcityid:undefined,
+    curdistrictid:undefined,
+    curprovicelist:[],
+    curcitylist:[],
+    curdistrictlist:[],
+    curdevicelist:[],
+
     selnodeid:100000,
     devices: {
     },
@@ -39,7 +47,17 @@ const device = createReducer({
   [mapmain_getdistrictresult]:(state,payload)=>{
       let treenode = payload;
       let datatree = state.datatree;
+
+      let curprovicelist = state.curprovicelist;
+      let curcitylist = state.curcitylist;
+      let curdistrictlist = state.curdistrictlist;
+      let curdevicelist = state.curdevicelist;
+      let curproviceid= state.curproviceid;
+      let curcityid= state.curcityid;
+      let curdistrictid= state.curdistrictid;
+
       if(treenode.adcode === 100000){
+        curprovicelist = treenode.children;
         datatree = {
           id:treenode.adcode,
           adcode:treenode.adcode,
@@ -50,34 +68,87 @@ const device = createReducer({
         };
       }
       else{
-        datatree = {...datatree};
-        let findandsettreenode = (node,parentnodeid,newnodevalue)=>{
-          if(node.adcode === parentnodeid){
-            return node;
+        let selnodeid = state.selnodeid;
+        _.map(curprovicelist,(provice)=>{
+          if(selnodeid === provice.adcode){
+            curproviceid = selnodeid;
+            curcitylist = treenode.children;
+
+            curcityid = undefined;
+            curdistrictid = undefined;
           }
-          if(!!node.children){
-            for(let i = 0; i<node.children.length ;i++){
-              const subnode = node.children[i];
-              let resutnode = findandsettreenode(subnode,parentnodeid,newnodevalue);
-              if(!!resutnode){
-                node.children[i] = newnodevalue;
-                return null;
+        });
+
+        _.map(curcitylist,(city)=>{
+          if(selnodeid === city.adcode){
+            curcityid = selnodeid;
+            curdistrictlist = treenode.children;
+            curdistrictid = undefined;
+          }
+        });
+
+        _.map(curdistrictlist,(district)=>{
+          if(selnodeid === district.adcode){
+            curdistrictid = selnodeid;
+            curdevicelist = treenode.children;
+          }
+        });
+
+        datatree = {...datatree};
+        if(!!curproviceid){
+          _.map(datatree.children,(childprovice)=>{
+            if(childprovice.adcode === curproviceid){
+              childprovice.children = curcitylist;
+              childprovice.loading = false;
+              childprovice.toggled = state.toggled;
+              if(!!curcityid){
+                childprovice.toggled = true;
+                _.map(childprovice.children,(childcity)=>{
+                  if(childcity.adcode === curcityid){
+                    childcity.children = curdistrictlist;
+                    childcity.loading = false;
+                    childcity.toggled = state.toggled;
+                    if(!!curdistrictid){
+                      childcity.toggled = true;
+                      _.map(childcity.children,(childdistict)=>{
+                        if(childdistict.adcode === curdistrictid){
+                          childdistict.children = curdevicelist;
+                          childdistict.loading = false;
+                          childdistict.toggled = state.toggled;
+                        }
+                        else{
+                          childdistict.children = [];
+                          childdistict.toggled = false;
+                        }
+                      });
+                    }
+                  }
+                  else{
+                    childcity.children = [];
+                    childcity.toggled = false;
+                  }
+                });
               }
             }
-          }
-          return null;
+            else{
+              childprovice.children = [];
+              childprovice.toggled = false;
+            }
+          });
         }
-        let selnodeid = state.selnodeid;
-        let resutnode = findandsettreenode(datatree,selnodeid,{
-          id:treenode.adcode,
-          adcode:treenode.adcode,
-          loading: false,
-          toggled:state.toggled,
-          name:treenode.name,
-          children:treenode.children
-        });
+
       }
-      return {...state,datatree};
+      return {
+        ...state,
+        datatree,
+        curprovicelist,
+        curcitylist,
+        curdistrictlist,
+        curdevicelist,
+        curproviceid,
+        curcityid,
+        curdistrictid
+      };
   },
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;

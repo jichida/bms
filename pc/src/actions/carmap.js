@@ -19,3 +19,5 @@ export const mapmain_seldistrict = createAction('mapmain_seldistrict');
 export const mapmain_getdistrictresult = createAction('mapmain_getdistrictresult');
 //获取地理位置【城市】
 export const mapmain_getgeoresult = createAction('mapmain_getgeoresult');
+
+export const mapmain_clusterMarkerClick = createAction('mapmain_clusterMarkerClick');
