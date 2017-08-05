@@ -66,7 +66,7 @@ const device = createReducer({
           id:treenode.adcode,
           adcode:treenode.adcode,
           loading: false,
-          active : true,
+          active : false,
           toggled:state.toggled,
           name:treenode.name,
           children:treenode.children
@@ -114,24 +114,30 @@ const device = createReducer({
               childprovice.children = curcitylist;
               childprovice.loading = false;
               childprovice.toggled = state.toggled;
+              childprovice.active = true;
               if(!!curcityid){
                 childprovice.toggled = true;
+                childprovice.active = false;
                 _.map(childprovice.children,(childcity)=>{
                   if(childcity.adcode === curcityid){
                     childcity.children = curdistrictlist;
                     childcity.loading = false;
                     childcity.toggled = state.toggled;
+                    childcity.active = true;
                     if(!!curdistrictid){
+                      childcity.active = false;
                       childcity.toggled = true;
                       _.map(childcity.children,(childdistict)=>{
                         if(childdistict.adcode === curdistrictid){
                           childdistict.children = curdevicelist;
                           childdistict.loading = false;
                           childdistict.toggled = state.toggled;
+                          childdistict.active = true;
                         }
                         else{
                           childdistict.children = [];
                           childdistict.toggled = false;
+                          childdistict.active = false;
                         }
                       });
                     }
@@ -139,6 +145,7 @@ const device = createReducer({
                   else{
                     childcity.children = [];
                     childcity.toggled = false;
+                    childcity.active = false;
                   }
                 });
               }
@@ -146,6 +153,7 @@ const device = createReducer({
             else{
               childprovice.children = [];
               childprovice.toggled = false;
+              childprovice.active = false;
             }
           });
         }

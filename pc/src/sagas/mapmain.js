@@ -289,10 +289,10 @@ let getClusterTree =({adcodetop=111281})=> {
         //      adcode, name, dataItem
         //  }> 子级区划的聚合信息
         console.log(`${err}`);
-        let treenode = {
-          children:[],
-        };
         if(!err){
+          let treenode = {
+            children:[],
+          };
           const {adcode,name,dataItems,hangingDataItems,children} = result;
           treenode.adcode = adcode;
           treenode.name = `${name}(${dataItems.length})`;
@@ -320,8 +320,12 @@ let getClusterTree =({adcodetop=111281})=> {
               });
             });
           }
+          resolve(treenode);
         }
-        resolve(treenode);
+        else{
+          reject(err);
+        }
+
     });
   });
 };
@@ -494,7 +498,16 @@ export function* createmapmainflow(){
         try{
           if(!!adcodetop){
             distCluster.zoomToShowSubFeatures(adcodetop);
-            let treenode = yield call(getClusterTree,{adcodetop});
+            let treenode;
+            while(!treenode){
+              try{
+                treenode = yield call(getClusterTree,{adcodetop});
+              }
+              catch(e){
+                yield call(delay,1000);
+                console.log(e);
+              }
+            }
             yield put(mapmain_getdistrictresult(treenode));
             //如果当前定位到区一级，则自动放大到最合适位置
             const {level,curdevicelist,devices} = yield select((state)=>{
