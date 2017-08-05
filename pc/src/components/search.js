@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import _ from 'lodash';
-import {ui_selcurdevice} from '../actions';
+// import {ui_selcurdevice} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -82,7 +82,7 @@ class TreeSearch extends React.Component {
                     </TableBody>
                   </Table>
             </div>
-                  
+
         );
     }
 }

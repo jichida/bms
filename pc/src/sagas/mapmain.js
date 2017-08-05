@@ -9,15 +9,18 @@ import {
   mapmain_setenableddrawmapflag,
   querydevice_result,
   ui_selcurdevice,
+  ui_selcurdevice_result,
   querydeviceinfo_request,
   ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
   mapmain_seldistrict,
-  mapmain_getdistrictresult
+  mapmain_seldistrict_init,
+  mapmain_getdistrictresult,
+  mapmain_getdistrictresult_last
 } from '../actions';
 
-import {getgeodatabatch} from './mapmain_getgeodata';
+import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
 import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
@@ -466,7 +469,7 @@ export function* createmapmainflow(){
       distCluster.setData(data);
       pointSimplifierIns.setData(data);
 
-      yield put(mapmain_seldistrict({adcodetop:100000,toggled:true}));
+      yield put(mapmain_seldistrict_init({adcodetop:100000,toggled:true}));
 
     });
 
@@ -492,7 +495,27 @@ export function* createmapmainflow(){
         }
         pointSimplifierIns.render();
     });
-
+    //第一次初始化
+    yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
+      try{
+        let {payload:{adcodetop}} = action_district;
+        distCluster.zoomToShowSubFeatures(adcodetop);
+        let treenode;
+        while(!treenode){
+          try{
+            treenode = yield call(getClusterTree,{adcodetop});
+          }
+          catch(e){
+            yield call(delay,1000);
+            console.log(e);
+          }
+        }
+        yield put(mapmain_getdistrictresult(treenode));
+      }
+      catch(e){
+        console.log(e);
+      }
+    });
     //mapmain_getdistrictresult
     yield takeEvery(`${mapmain_seldistrict}`, function*(action_district) {
         let {payload:{adcodetop}} = action_district;
@@ -528,18 +551,9 @@ export function* createmapmainflow(){
             }
             //========================================================================================
             distCluster.zoomToShowSubFeatures(adcodetop);
-            let treenode;
-            while(!treenode){
-              try{
-                treenode = yield call(getClusterTree,{adcodetop});
-              }
-              catch(e){
-                yield call(delay,1000);
-                console.log(e);
-              }
-            }
+            let treenode = yield call(getClusterTree,{adcodetop});
             yield put(mapmain_getdistrictresult(treenode));
-
+            yield put(mapmain_getdistrictresult_last({}));
             if(level === 'district'){
               //如果当前定位到区一级，则自动放大到最合适位置
               let latlngs = [];
@@ -564,5 +578,26 @@ export function* createmapmainflow(){
           console.log(e);
         }
 
+    });
+
+    yield takeLatest(`${ui_selcurdevice}`,function*(actioncurdevice){
+      try{
+        //如果左侧的树中没有该设备
+        const {curdevicelist} = yield select((state)=>{
+          return {...state.device};
+        });
+        const {payload:{DeviceId,deviceitem}} = actioncurdevice;
+        if(!_.find(curdevicelist,(o)=>{return DeviceId === o.name})){
+            //树中找不到该设备,获取该设备所在经纬度
+            const result = yield call(getgeodata,deviceitem);
+            const adcodetop = parseInt(result.adcode);
+            yield put(mapmain_seldistrict({adcodetop,level:'district',toggled:true}));
+            yield take(`${mapmain_getdistrictresult_last}`);//等待数据完成
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+      yield put(ui_selcurdevice_result(actioncurdevice.payload));
     });
 }

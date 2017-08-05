@@ -30,6 +30,36 @@ export const getgeodatabatch =(devicelist)=> {
   });
 };
 
+export const getgeodata =(deviceitem)=>{
+  return new Promise((resolve,reject) => {
+    console.log(`${JSON.stringify(deviceitem)}`);
+    const geocoder = new window.AMap.Geocoder({
+            radius: 1000,
+        });
+    const lnglatXY=deviceitem.locz;//[116.396574, 39.992706];//地图上所标点的坐标
+    geocoder.getAddress(lnglatXY, function(status, result) {
+        if (status === 'complete' && result.info === 'OK') {
+           //获得了有效的地址信息:
+           //即，result.regeocode.formattedAddress
+           let georesult = result.regeocode;
+           let addressComponent = georesult.addressComponent;
+           let resultobj = {
+             adcode:addressComponent.adcode,
+             city:addressComponent.city,
+             province:addressComponent.province,
+             district:addressComponent.district,
+             formattedAddress:georesult.formattedAddress
+           };
+           console.log(`获取到地理信息位置:${JSON.stringify(resultobj)}`);
+           resolve(resultobj);
+        }else{
+           //获取地址失败
+           reject(status);
+        }
+    });
+  });
+}
+
 export const getgeodatabatch2 =(devicelist)=> {
   return new Promise((resolve,reject) => {
     const geocoder = new window.AMap.Geocoder({

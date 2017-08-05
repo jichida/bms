@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-act';
 import{
   querydevice_result,
-  ui_selcurdevice,
+  ui_selcurdevice_result,
   querydeviceinfo_result,
   mapmain_getdistrictresult,
   mapmain_seldistrict
@@ -30,9 +30,27 @@ const initial = {
 };
 
 const device = createReducer({
-  [ui_selcurdevice]:(state,payload)=>{
+  [ui_selcurdevice_result]:(state,payload)=>{
     const mapseldeviceid = payload.DeviceId;
-    return {...state,mapseldeviceid};
+    console.log(`mapseldeviceid:${mapseldeviceid},payload:${JSON.stringify(payload)}`);
+    let datatree = {...state.datatree};
+    let findandsettreenode = (node,mapseldeviceid)=>{
+      if(node.name === `${mapseldeviceid}`){
+        node.active = true;
+        console.log(`node${node.name}==>true`);
+        return node;
+      }
+      if(!!node.children){
+        for(let i = 0; i<node.children.length ;i++){
+          const subnode = node.children[i];
+          findandsettreenode(subnode,mapseldeviceid);
+        }
+      }
+      node.active = false;
+      return null;
+    }
+    findandsettreenode(datatree,mapseldeviceid);
+    return {...state,mapseldeviceid,datatree};
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
