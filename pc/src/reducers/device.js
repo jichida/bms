@@ -24,7 +24,6 @@ const initial = {
     curdistrictlist:[],
     curdevicelist:[],
 
-    selnodeid:100000,
     devices: {
     },
   }
@@ -42,8 +41,8 @@ const device = createReducer({
     return {...state,devices};
   },
   [mapmain_seldistrict]:(state,payload)=>{
-    const {adcodetop:selnodeid,toggled,level} = payload;
-    return {...state,selnodeid,toggled,level};
+    const {toggled,level} = payload;
+    return {...state,toggled,level};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
       let treenode = payload;
@@ -73,7 +72,7 @@ const device = createReducer({
         };
       }
       else{
-        let selnodeid = state.selnodeid;
+        let selnodeid = treenode.adcode;
         _.map(curprovicelist,(provice)=>{
           if(selnodeid === provice.adcode){
             curproviceid = selnodeid;

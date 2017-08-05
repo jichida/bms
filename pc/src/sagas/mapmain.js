@@ -23,6 +23,7 @@ import { push } from 'react-router-redux';
 import L from 'leaflet';
 import _ from 'lodash';
 import coordtransform from 'coordtransform';
+import {getadcodeinfo} from '../util/addressutil';
 
 const divmapid_mapmain = 'mapmain';
 
@@ -497,6 +498,35 @@ export function* createmapmainflow(){
         let {payload:{adcodetop}} = action_district;
         try{
           if(!!adcodetop){
+            //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
+            const {level,curdevicelist,devices,curproviceid,curcityid} = yield select((state)=>{
+              return {...state.device};
+            });
+            let adcodeinfo = getadcodeinfo(adcodetop);
+            if(adcodeinfo.level === 'district' && curcityid !== adcodeinfo.parent_code){
+              //当前区的城市 非当前选择城市
+              let adcodecityinfo = getadcodeinfo(adcodeinfo.parent_code);
+              if(adcodecityinfo.parent_code !== curproviceid){
+                //当前省份非当前选择省份
+                // yield put.resolve(mapmain_seldistrict({adcodetop:adcodecityinfo.parent_code,toggled:true}));
+                let treenodeprovice = yield call(getClusterTree,{adcodetop:adcodecityinfo.parent_code});
+                //选择省份
+                yield put(mapmain_getdistrictresult(treenodeprovice));
+              }
+              //选择当前城市
+              // yield put.resolve(mapmain_seldistrict({adcodetop:adcodeinfo.parent_code,toggled:true}));
+              let treenodecity = yield call(getClusterTree,{adcodetop:adcodeinfo.parent_code});
+              yield put(mapmain_getdistrictresult(treenodecity));
+            }
+
+            if(adcodeinfo.level === 'city' && curproviceid !== adcodeinfo.parent_code){
+              //当前城市所在省 非当前省
+              // yield put.resolve(mapmain_seldistrict({adcodetop:adcodeinfo.parent_code,toggled:true}));
+              let treenodeprovice = yield call(getClusterTree,{adcodetop:adcodeinfo.parent_code});
+              //选择省份
+              yield put(mapmain_getdistrictresult(treenodeprovice));
+            }
+            //========================================================================================
             distCluster.zoomToShowSubFeatures(adcodetop);
             let treenode;
             while(!treenode){
@@ -509,11 +539,9 @@ export function* createmapmainflow(){
               }
             }
             yield put(mapmain_getdistrictresult(treenode));
-            //如果当前定位到区一级，则自动放大到最合适位置
-            const {level,curdevicelist,devices} = yield select((state)=>{
-              return {...state.device};
-            });
+
             if(level === 'district'){
+              //如果当前定位到区一级，则自动放大到最合适位置
               let latlngs = [];
               _.map(curdevicelist,(devicenode)=>{
                   const deviceitem = devices[devicenode.name];
