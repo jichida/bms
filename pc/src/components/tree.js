@@ -5,6 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
+import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import {
   mapmain_seldistrict,
@@ -57,17 +58,21 @@ class TreeExample extends React.Component {
     render(){
         const {datatree} = this.props;
         return (
-            <div style={{paddingTop:"20px", background:"rgb(33, 37, 43)"}}>
-                <div>
+            <div style={{paddingTop:"20px", background:"rgb(33, 37, 43)"}} className="treePage">
+                <div className="searchbox">
                     <div className="input-group">
                         <span className="input-group-addon">
-                          <i className="fa fa-search"/>
+                            <i className="fa fa-search"/>
                         </span>
                         <input className="form-control"
                                onKeyUp={this.onFilterMouseUp.bind(this)}
                                placeholder="Search the tree..."
                                type="text"/>
                     </div>
+                </div>
+                <div className="btnlist">
+                    <RaisedButton label="按地理位置" />
+                    <RaisedButton label="按分组" />
                 </div>
                 <Treebeard
                     id="lefttree"
