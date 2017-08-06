@@ -90,8 +90,10 @@ class Menu extends React.Component {
                                 background: "#4283cc",
                                 textAlign:"center",
                             }}
+                            onMouseOver={this.showtext.bind(this,index)}
+                            onMouseOut={this.hidetext.bind(this,index)}
                         >
-                            <i className={menu.icon} aria-hidden="true" style={{fontSize:"20px"}} onMouseOver={this.showtext.bind(this,index)} onMouseOut={this.hidetext.bind(this,index)}></i>
+                            <i className={menu.icon} aria-hidden="true" style={{fontSize:"20px"}}></i>
                             <span className={`name ${this.state.showitemtext[index]}`}>{menu.name}</span>
                         </SpeedDialItem>
                         
