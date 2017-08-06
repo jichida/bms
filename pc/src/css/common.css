@@ -353,9 +353,32 @@
     justify-content: space-between;
 }
 .searchli >div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: flex-end;
+    align-items: flex-end;
+    -webkit-align-items: flex-end;
+    -moz-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    width: 100%;
     -moz-flex-shrink: 0;
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
+}
+.searchli >div>div{
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
 }
 .searchbtn{
     text-align: right;
@@ -399,8 +422,41 @@
 .myclose.white:after,
 .myclose.white:before{
     background: #FFF;
-
 }
 
+.AppPage .warningtips{
+    position: absolute;
+    z-index: 2000;
+    position: absolute;
+    top : 12px;
+    right: 432px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+.AppPage .Badge{
+    padding: 0;
+    height: 36px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-left: 5px;
+}
+.AppPage .BadgeStyle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
 
 

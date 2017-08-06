@@ -19,6 +19,7 @@ import Search from "./search";
 import Warning from "./warning";
 import Message from "./message";
 import Device from "./device";
+import Warningtips from "./warningtips";
 import {
   ui_showmenu,
   ui_showhistoryplay,
@@ -173,6 +174,10 @@ class Page extends React.Component {
                                 }
                             }
                         />
+                    </div>
+
+                    <div className="warningtips">
+                        <Warningtips/>
                     </div>
                 </div>
 

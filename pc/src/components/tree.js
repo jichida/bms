@@ -45,15 +45,35 @@ class TreeExample extends React.Component {
         }
         this.setState({ cursor: node });
     }
+
+
+    onFilterMouseUp(e) {
+        const filter = e.target.value.trim();
+        if (!filter) {
+            console.log(filter);
+        }
+    }
+
     render(){
         const {datatree} = this.props;
         return (
             <div style={{paddingTop:"20px", background:"rgb(33, 37, 43)"}}>
-            <Treebeard
-                id="lefttree"
-                data={datatree}
-                onToggle={this.onToggle}
-            />
+                <div>
+                    <div className="input-group">
+                        <span className="input-group-addon">
+                          <i className="fa fa-search"/>
+                        </span>
+                        <input className="form-control"
+                               onKeyUp={this.onFilterMouseUp.bind(this)}
+                               placeholder="Search the tree..."
+                               type="text"/>
+                    </div>
+                </div>
+                <Treebeard
+                    id="lefttree"
+                    data={datatree}
+                    onToggle={this.onToggle}
+                />
             </div>
         );
     }
