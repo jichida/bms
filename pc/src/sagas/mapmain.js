@@ -431,7 +431,7 @@ export function* createmapmainflow(){
     });
 
 
-    yield takeLatest(`${ui_selcurdevice}`,function*(actioncurdevice){
+    yield takeLatest(`${ui_selcurdevice_result}`,function*(actioncurdevice){
       try{
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
           console.log(`${JSON.stringify(deviceitem)}`);
@@ -522,7 +522,7 @@ export function* createmapmainflow(){
         try{
           if(!!adcodetop){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
-            const {level,curdevicelist,devices,curproviceid,curcityid} = yield select((state)=>{
+            const {level,devices,curproviceid,curcityid} = yield select((state)=>{
               return {...state.device};
             });
             let adcodeinfo = getadcodeinfo(adcodetop);
@@ -553,8 +553,12 @@ export function* createmapmainflow(){
             distCluster.zoomToShowSubFeatures(adcodetop);
             let treenode = yield call(getClusterTree,{adcodetop});
             yield put(mapmain_getdistrictresult(treenode));
-            yield put(mapmain_getdistrictresult_last({}));
-            if(level === 'district'){
+
+            const {curdevicelist} = yield select((state)=>{
+              return {...state.device};
+            });
+            console.log(`===>${adcodeinfo.level},${curdevicelist.length}`);
+            if(adcodeinfo.level === 'district'){
               //如果当前定位到区一级，则自动放大到最合适位置
               let latlngs = [];
               _.map(curdevicelist,(devicenode)=>{
@@ -563,6 +567,7 @@ export function* createmapmainflow(){
                     latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
                   }
               });
+              console.log(`latlngs===>${JSON.stringify(latlngs)}`);
               if(latlngs.length > 0){
                  let polyline = L.polyline(latlngs);
                  let lBounds = polyline.getBounds();//LatLngBounds
@@ -570,8 +575,11 @@ export function* createmapmainflow(){
                  let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
                  let amapboounds = new window.AMap.Bounds(southWest,northEast);
                  window.amapmain.setBounds(amapboounds);
+
+                 console.log(`zoomto...`);
                }
             }
+            yield put(mapmain_getdistrictresult_last({}));
           }
         }
         catch(e){
@@ -581,17 +589,18 @@ export function* createmapmainflow(){
     });
 
     yield takeLatest(`${ui_selcurdevice}`,function*(actioncurdevice){
+      const {payload:{DeviceId,deviceitem}} = actioncurdevice;
       try{
         //如果左侧的树中没有该设备
         const {curdevicelist} = yield select((state)=>{
           return {...state.device};
         });
-        const {payload:{DeviceId,deviceitem}} = actioncurdevice;
         if(!_.find(curdevicelist,(o)=>{return DeviceId === o.name})){
             //树中找不到该设备,获取该设备所在经纬度
             const result = yield call(getgeodata,deviceitem);
             const adcodetop = parseInt(result.adcode);
             yield put(mapmain_seldistrict({adcodetop,level:'district',toggled:true}));
+            console.log(`等待数据完成...`);
             yield take(`${mapmain_getdistrictresult_last}`);//等待数据完成
         }
       }
