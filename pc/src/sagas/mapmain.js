@@ -17,6 +17,7 @@ import {
   mapmain_seldistrict,
   mapmain_seldistrict_init,
   mapmain_getdistrictresult,
+  mapmain_getdistrictresult_init,
   mapmain_getdistrictresult_last
 } from '../actions';
 
@@ -220,8 +221,8 @@ const showinfowindow = (deviceitem)=>{
 }
 
 //获取某个行政编码的树形结构
-let getClusterTree =({adcodetop=111281})=> {
-  console.log(`distCluster:${!!distCluster}`);
+let getClusterTree =({adcodetop})=> {
+  // console.log(`distCluster:${!!distCluster},adcodetop:${adcodetop}`);
   return new Promise((resolve,reject) => {
     distCluster.getClusterRecord(adcodetop,(err,result)=>{
         // adcode: number 区划编码,
@@ -232,7 +233,7 @@ let getClusterTree =({adcodetop=111281})=> {
         //  children:Array.<{
         //      adcode, name, dataItem
         //  }> 子级区划的聚合信息
-        console.log(`${err}`);
+        // console.log(`${err}`);
         if(!err){
           let treenode = {
             children:[],
@@ -241,8 +242,8 @@ let getClusterTree =({adcodetop=111281})=> {
           treenode.adcode = adcode;
           treenode.name = `${name}(${dataItems.length})`;
 
-          console.log(`adcode:${adcode},name:${name}`);
-          console.log(`${JSON.stringify(dataItems.length)}`);
+          // console.log(`adcode:${adcode},name:${name}`);
+          // console.log(`${JSON.stringify(dataItems.length)}`);
           if(!children || children.length === 0){
             _.map(dataItems,(deviceitem)=>{
               if(!!deviceitem.dataItem){
@@ -437,18 +438,42 @@ export function* createmapmainflow(){
     yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
       try{
         let {payload:{adcodetop}} = action_district;
-        distCluster.zoomToShowSubFeatures(adcodetop);
-        let treenode;
-        while(!treenode){
-          try{
-            treenode = yield call(getClusterTree,{adcodetop});
+
+        function* gettreenode(adcode){
+          let treenode;
+          while(!treenode){
+            try{
+              treenode = yield call(getClusterTree,{adcodetop:adcode});
+            }
+            catch(e){
+              yield call(delay,1000);
+              distCluster.zoomToShowSubFeatures(adcode);
+              console.log(e);
+            }
           }
-          catch(e){
-            yield call(delay,1000);
-            console.log(e);
+          return treenode;
+        }
+
+        let treenoderoot = yield gettreenode(adcodetop);
+
+        function* settreenode(treenode){
+          if(!!treenode && !!treenode.children){
+            for(let i =0 ;i< treenode.children.length;i++){
+              let child = treenode.children[i];
+              let adcode = child.adcode;
+              if(!!adcode){
+                let childsub = yield gettreenode(adcode);
+                child.children = childsub.children;
+                yield settreenode(childsub);
+              }
+            }
           }
         }
-        yield put(mapmain_getdistrictresult(treenode));
+        yield settreenode(treenoderoot);
+        console.log(treenoderoot);
+        distCluster.zoomToShowSubFeatures(adcodetop);
+
+        yield put(mapmain_getdistrictresult_init(treenoderoot));
       }
       catch(e){
         console.log(e);
@@ -537,7 +562,7 @@ export function* createmapmainflow(){
             //树中找不到该设备,获取该设备所在经纬度
             const result = yield call(getgeodata,deviceitem);
             const adcodetop = parseInt(result.adcode);
-            yield put(mapmain_seldistrict({adcodetop,level:'district',toggled:true}));
+            yield put(mapmain_seldistrict({adcodetop,toggled:true}));
             console.log(`等待数据完成...`);
             yield take(`${mapmain_getdistrictresult_last}`);//等待数据完成
         }

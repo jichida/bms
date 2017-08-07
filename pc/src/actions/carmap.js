@@ -18,6 +18,7 @@ export const mapplayback_end = createAction('mapplayback_end');
 //获取一个区域
 export const mapmain_seldistrict_init = createAction('mapmain_seldistrict_init');
 export const mapmain_seldistrict = createAction('mapmain_seldistrict');
+export const mapmain_getdistrictresult_init = createAction('mapmain_getdistrictresult_init');
 export const mapmain_getdistrictresult = createAction('mapmain_getdistrictresult');
 export const mapmain_getdistrictresult_last = createAction('mapmain_getdistrictresult_last');
 //获取地理位置【城市】

@@ -28,7 +28,7 @@ export const filterTree = (node, filter, matcher = defaultMatcher) => {
 export const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     let children = node.children;
     if(!children || children.length === 0){
-      return Object.assign({}, node, { toggled: false });
+      return Object.assign({}, node, { toggled: false,loading:false,active:false });
     }
     const childrenWithMatches = node.children.filter(child => findNode(child, filter, matcher));
     const shouldExpand = childrenWithMatches.length > 0;
@@ -40,6 +40,8 @@ export const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
     }
     return Object.assign({}, node, {
       children: children,
-      toggled: shouldExpand
+      toggled: shouldExpand,
+      loading:false,
+      active:false 
     });
 };
