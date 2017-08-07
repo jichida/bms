@@ -341,7 +341,7 @@ export function* createmapmainflow(){
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_mapmain){
-          while(!window.AMap){
+          while(!window.AMap || !window.AMapUI){
             yield call(delay,500);
           }
           console.log(`carmapshow_createmap...`);
@@ -357,9 +357,7 @@ export function* createmapmainflow(){
             mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
           yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
-          while(!window.AMapUI){
-            yield call(delay,500);
-          }
+
           yield call(initmapui,window.amapmain);
 
           let listentask =  yield fork(function*(eventname){

@@ -101,7 +101,7 @@ class Page extends React.Component {
                         _.map(item.fieldnames, (fielditem, key)=>{
                             let name = p.tc(fielditem.name);
                             let value = _.get(deviceitem,name,'');
-                            console.log(`name:${name},value:${value}`);
+                            // console.log(`name:${name},value:${value}`);
                             return (
                                 <div className="li" key={`${gindex}_${key}`}>
                                     <div className="name">{name}</div><div className="text">{value}</div>
