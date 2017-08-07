@@ -241,8 +241,7 @@ const listenwindowinfoevent = (eventname)=>{
 const listenclusterevent = (eventname)=>{
   return new Promise(resolve => {
     distCluster.on(eventname, (e,record)=> {
-        let level = _.get(record,'feature.properties.level','');
-        resolve({adcodetop:record.adcode,toggled:true,level});
+        resolve({adcodetop:record.adcode,toggled:true});
     });
   });
 }

@@ -9,7 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import {
   mapmain_seldistrict,
-  ui_selcurdevice
+  ui_selcurdevice,
+  ui_changetreestyle
 } from '../actions';
 
 class TreeExample extends React.Component {
@@ -17,6 +18,9 @@ class TreeExample extends React.Component {
         super(props);
         this.state = {};
         this.onToggle = this.onToggle.bind(this);
+    }
+    onChangeTreeStyle(stylename){
+      this.props.dispatch(ui_changetreestyle(stylename));
     }
     onToggle(node, toggled){
         if(this.state.cursor){this.state.cursor.active = false;}
@@ -27,12 +31,13 @@ class TreeExample extends React.Component {
             if(typeof id === 'string'){
               id = parseInt(id);
             }
-            // if(id !== 100000){
-            //选择一个文件夹
-            let level = id%10 === 0?'':'district';
-            this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled,level}));
-            console.log(id);//选择一个文件夹
-            // }
+            const {treeviewstyle} = this.props;
+            if(treeviewstyle === 'byloc'){
+              this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled}));
+            }
+            else{
+
+            }
 
         }else{
             // node.toggled = toggled;
@@ -71,8 +76,8 @@ class TreeExample extends React.Component {
                     </div>
                 </div>
                 <div className="btnlist">
-                    <RaisedButton label="按地理位置" />
-                    <RaisedButton label="按分组" />
+                    <RaisedButton label="按地理位置" onTouchTap={this.onChangeTreeStyle.bind(this,'byloc')}/>
+                    <RaisedButton label="按分组"  onTouchTap={this.onChangeTreeStyle.bind(this,'bygroup')}/>
                 </div>
                 <Treebeard
                     id="lefttree"
@@ -83,9 +88,9 @@ class TreeExample extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{datatree,devices}}) => {
-
-  return {datatree,devices};
+const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,datatreegroup,devices}}) => {
+  let datatree = treeviewstyle === 'byloc'?datatreeloc:datatreegroup;
+  return {datatree,devices,treeviewstyle};
 }
 
 export default connect(mapStateToProps)(TreeExample);

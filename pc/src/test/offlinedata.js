@@ -25,6 +25,13 @@ export function* testdataflow(){//仅执行一次
    yield takeEvery(`${queryhistorytrack_request}`, function*(action) {
       yield put(queryhistorytrack_result({list:jsondatatrack}));
    });
+}
 
-
+export const getgroupnamebydevice = (deviceinfo)=>{
+  let groupname = `未分组`;
+  if(typeof deviceinfo.DeviceId === 'string'){
+    let devid = parseInt(deviceinfo.DeviceId);
+    groupname = `分组${devid%200}`;
+  }
+  return groupname;
 }

@@ -4,17 +4,23 @@ import{
   ui_selcurdevice_result,
   querydeviceinfo_result,
   mapmain_getdistrictresult,
-  mapmain_seldistrict
+  mapmain_seldistrict,
+  ui_changetreestyle
 } from '../actions';
 import _ from 'lodash';
+import {getadcodeinfo} from '../util/addressutil';
+import {getgroupnamebydevice} from '../test/offlinedata';
 
 const initial = {
   device:{
-    level:'',
+    treeviewstyle:'byloc',//byloc or bygroup
+
     toggled:true,
+    toggledgruop:true,
     mapseldeviceid:undefined,
     mapdeviceidlist:[],
-    datatree:[],
+    datatree:{},
+    datatreegroup:{},
 
     curproviceid:undefined,
     curcityid:undefined,
@@ -30,27 +36,39 @@ const initial = {
 };
 
 const device = createReducer({
+  [ui_changetreestyle]:(state,payload)=>{
+    const treeviewstyle = payload;
+    return {...state,treeviewstyle};
+  },
   [ui_selcurdevice_result]:(state,payload)=>{
     const mapseldeviceid = payload.DeviceId;
     console.log(`mapseldeviceid:${mapseldeviceid},payload:${JSON.stringify(payload)}`);
     let datatree = {...state.datatree};
+    let datatreegroup = {...state.datatreegroup};
     let findandsettreenode = (node,mapseldeviceid)=>{
+      let retnode = node;
       if(node.name === `${mapseldeviceid}`){
         node.active = true;
         console.log(`node${node.name}==>true`);
-        return node;
+        return retnode;
       }
+      retnode = null;
       if(!!node.children){
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
-          findandsettreenode(subnode,mapseldeviceid);
+          let tmpnode = findandsettreenode(subnode,mapseldeviceid);
+          if(!!tmpnode){
+            retnode = node;
+            retnode.toggled = true;
+          }
         }
       }
       node.active = false;
-      return null;
+      return retnode;
     }
     findandsettreenode(datatree,mapseldeviceid);
-    return {...state,mapseldeviceid,datatree};
+    findandsettreenode(datatreegroup,mapseldeviceid);
+    return {...state,mapseldeviceid,datatree,datatreegroup};
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
@@ -59,8 +77,8 @@ const device = createReducer({
     return {...state,devices};
   },
   [mapmain_seldistrict]:(state,payload)=>{
-    const {toggled,level} = payload;
-    return {...state,toggled,level};
+    const {toggled} = payload;
+    return {...state,toggled};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
       let treenode = payload;
@@ -111,7 +129,8 @@ const device = createReducer({
             curdistrictid = undefined;
             curdevicelist = [];
             //上海／北京／等特殊
-            if(state.level === 'district'){
+            let adcodeinfo = getadcodeinfo(selnodeid);
+            if(adcodeinfo.level === 'district'){
               curdevicelist = curdistrictlist;
             }
           }
@@ -196,62 +215,34 @@ const device = createReducer({
       //deviceidlist.push(devicerecord.DeviceId);
       devices[devicerecord.DeviceId] = devicerecord;
     });
+    let datatreegroup = {
+      id:0,
+      loading: false,
+      active : state.toggledgruop,
+      toggled:state.toggledgruop,
+      name:`所有分组`,
+      children:[]
+    };
+    const devicesgroups = _.groupBy(list,getgroupnamebydevice);
+    _.map(devicesgroups,(csz,ckey)=>{
+        let node = {
+          id:ckey,
+          name:`${ckey}(${csz.length})`,
+          children:[]
+        };
 
-    // const Province = _.groupBy(list,'LastHistoryTrack.Province');
-    // console.log(Province);
-    // let devicedatatree = {};
-    // _.map(Province,(psz,pkey)=>{
-    //   if(pkey === 'undefined' || !pkey){
-    //     pkey = '其他';
-    //   }
-    //   if(!!pkey){
-    //     devicedatatree[pkey] = {};
-    //   }
-    //
-    //   let City = _.groupBy(psz,'LastHistoryTrack.City');
-    //   _.map(City,(csz,ckey)=>{
-    //     if(ckey === 'undefined' || !ckey){
-    //       ckey = '其他';
-    //     }
-    //     let vsz = [];
-    //     _.map(csz,(v,k)=>{
-    //       vsz.push(v.DeviceId);
-    //     });
-    //     devicedatatree[pkey][ckey] = vsz;
-    //
-    //   });
-    // });
-    // console.log(devicedatatree);
-    // let datatreesz = [];
-    // let totalall = 0;
-    // _.map(devicedatatree,(psz,pname)=>{
-    //   // console.log(`pname:${pname},psz:${JSON.stringify(psz)}`)
-    //   let children = [];
-    //   let psztotal = 0;
-    //   _.map(psz,(csz,cname)=>{
-    //     let objnamesz = [];
-    //     _.map(csz,(deviceid)=>{
-    //       objnamesz.push({name:deviceid});
-    //     })
-    //     children.push({
-    //       name:`${cname}(${csz.length})`,
-    //       children:objnamesz
-    //     });
-    //     psztotal += csz.length;
-    //   });
-    //   datatreesz.push({
-    //     name:`${pname}(${psztotal})`,
-    //     children
-    //   });
-    //   totalall += psztotal;
-    // });
-    // let datatree =
-    //   {
-    //       name: `所有设备(${totalall})`,
-    //       toggled: true,
-    //       children:datatreesz
-    //   }
-    return {...state,devices};
+        _.map(csz,(v,k)=>{
+          node.children.push({
+            id:`${v.DeviceId}`,
+            name:`${v.DeviceId}`,
+            toggled:false,
+            active:false,
+          });
+        });
+
+        datatreegroup.children.push(node);
+    });
+    return {...state,devices,datatreegroup};
   },
 }, initial.device);
 
