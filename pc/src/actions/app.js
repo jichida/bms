@@ -12,3 +12,6 @@ export const ui_showhistoryplay  = createAction('ui_showhistoryplay');
 
 export const ui_showdistcluster = createAction('ui_showdistcluster');
 export const ui_showhugepoints = createAction('ui_showhugepoints');
+
+export const ui_changetreestyle = createAction('ui_changetreestyle');
+export const ui_settreefilter = createAction('ui_settreefilter');

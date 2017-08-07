@@ -9,14 +9,20 @@ import RaisedButton from 'material-ui/RaisedButton';
 import _ from 'lodash';
 import {
   mapmain_seldistrict,
-  ui_selcurdevice
+  ui_selcurdevice,
+  ui_changetreestyle,
+  ui_settreefilter
 } from '../actions';
+import {filterTree,expandFilteredNodes} from '../util/filter';
 
 class TreeExample extends React.Component {
     constructor(props){
         super(props);
         this.state = {};
         this.onToggle = this.onToggle.bind(this);
+    }
+    onChangeTreeStyle(stylename){
+      this.props.dispatch(ui_changetreestyle(stylename));
     }
     onToggle(node, toggled){
         if(this.state.cursor){this.state.cursor.active = false;}
@@ -27,12 +33,13 @@ class TreeExample extends React.Component {
             if(typeof id === 'string'){
               id = parseInt(id);
             }
-            // if(id !== 100000){
-            //选择一个文件夹
-            let level = id%10 === 0?'':'district';
-            this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled,level}));
-            console.log(id);//选择一个文件夹
-            // }
+            const {treeviewstyle} = this.props;
+            if(treeviewstyle === 'byloc'){
+              this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled}));
+            }
+            else{
+
+            }
 
         }else{
             // node.toggled = toggled;
@@ -50,9 +57,12 @@ class TreeExample extends React.Component {
 
     onFilterMouseUp(e) {
         const filter = e.target.value.trim();
-        if (!filter) {
-            console.log(filter);
+        if(!!filter){
+          if(filter.length <= 3){
+            return;
+          }
         }
+        this.props.dispatch(ui_settreefilter(filter));
     }
 
     render(){
@@ -66,13 +76,13 @@ class TreeExample extends React.Component {
                         </span>
                         <input className="form-control"
                                onKeyUp={this.onFilterMouseUp.bind(this)}
-                               placeholder="Search the tree..."
+                               placeholder="根据设备id搜索(至少三位)"
                                type="text"/>
                     </div>
                 </div>
                 <div className="btnlist">
-                    <RaisedButton label="按地理位置" />
-                    <RaisedButton label="按分组" />
+                    <RaisedButton label="按地理位置" onTouchTap={this.onChangeTreeStyle.bind(this,'byloc')}/>
+                    <RaisedButton label="按分组"  onTouchTap={this.onChangeTreeStyle.bind(this,'bygroup')}/>
                 </div>
                 <Treebeard
                     id="lefttree"
@@ -83,9 +93,13 @@ class TreeExample extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{datatree,devices}}) => {
-
-  return {datatree,devices};
+const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,treefilter,datatreegroup,devices}}) => {
+  let datatree = treeviewstyle === 'byloc'?datatreeloc:datatreegroup;
+  if(!!treefilter){
+      const filtered = filterTree(datatree, treefilter);
+      datatree = expandFilteredNodes(filtered, treefilter);
+  }
+  return {datatree,devices,treeviewstyle};
 }
 
 export default connect(mapStateToProps)(TreeExample);

@@ -17,6 +17,7 @@ import {
   mapmain_seldistrict,
   mapmain_seldistrict_init,
   mapmain_getdistrictresult,
+  mapmain_getdistrictresult_init,
   mapmain_getdistrictresult_last
 } from '../actions';
 
@@ -27,7 +28,7 @@ import L from 'leaflet';
 import _ from 'lodash';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
-
+import {getpopinfowindowstyle,getgroupStyleMap} from './getmapstyle';
 const divmapid_mapmain = 'mapmain';
 
 let infoWindow;
@@ -39,7 +40,7 @@ let distCluster,pointSimplifierIns;
 //   return new Promise((resolve,reject) => {
 //       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
 // }
-
+let groupStyleMap = {};
 //新建行政区域&海量点
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
@@ -51,7 +52,17 @@ const initmapui =  (map)=>{
                return;
            }
 
-           let groupStyleMap;
+           let groupsz = getgroupStyleMap();
+           _.map(groupsz,(group)=>{
+             const {name,image,...rest} = group;
+             groupStyleMap[name] = {
+                pointStyle: {
+                 content:PointSimplifier.Render.Canvas.getImageContent(
+                     image, onIconLoad, onIconError),
+                 ...rest
+               }
+             }
+           });
 
            pointSimplifierIns = new PointSimplifier({
                zIndex: 115,
@@ -92,69 +103,6 @@ const initmapui =  (map)=>{
            const onIconError = (e)=> {
                alert('图片加载失败！');
            }
-
-           groupStyleMap = {
-               '0': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/bike.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       //strokeStyle: null
-                   }
-               },
-               '1': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/people.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       // strokeStyle: null
-                   }
-               },
-               '2': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/truck.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       //strokeStyle: null
-                   }
-               },
-               '3': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/taxi.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       //strokeStyle: null
-                   }
-               }
-             };
              //<------------
              distCluster = new DistrictCluster({
                  zIndex: 100,
@@ -241,8 +189,7 @@ const listenwindowinfoevent = (eventname)=>{
 const listenclusterevent = (eventname)=>{
   return new Promise(resolve => {
     distCluster.on(eventname, (e,record)=> {
-        let level = _.get(record,'feature.properties.level','');
-        resolve({adcodetop:record.adcode,toggled:true,level});
+        resolve({adcodetop:record.adcode,toggled:true});
     });
   });
 }
@@ -257,14 +204,8 @@ const showinfowindow = (deviceitem)=>{
   return new Promise(resolve =>{
       let locz = deviceitem.locz;
       window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-          let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
-          let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
-          let DeviceId = _.get(deviceitem,'DeviceId','');
 
-          infoWindow = new SimpleInfoWindow({
-              infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
-              infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
-          });
+          infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(deviceitem));
 
           if(!!locz){
             window.amapmain.setCenter(locz);
@@ -280,8 +221,8 @@ const showinfowindow = (deviceitem)=>{
 }
 
 //获取某个行政编码的树形结构
-let getClusterTree =({adcodetop=111281})=> {
-  console.log(`distCluster:${!!distCluster}`);
+let getClusterTree =({adcodetop})=> {
+  // console.log(`distCluster:${!!distCluster},adcodetop:${adcodetop}`);
   return new Promise((resolve,reject) => {
     distCluster.getClusterRecord(adcodetop,(err,result)=>{
         // adcode: number 区划编码,
@@ -292,7 +233,7 @@ let getClusterTree =({adcodetop=111281})=> {
         //  children:Array.<{
         //      adcode, name, dataItem
         //  }> 子级区划的聚合信息
-        console.log(`${err}`);
+        // console.log(`${err}`);
         if(!err){
           let treenode = {
             children:[],
@@ -301,8 +242,8 @@ let getClusterTree =({adcodetop=111281})=> {
           treenode.adcode = adcode;
           treenode.name = `${name}(${dataItems.length})`;
 
-          console.log(`adcode:${adcode},name:${name}`);
-          console.log(`${JSON.stringify(dataItems.length)}`);
+          // console.log(`adcode:${adcode},name:${name}`);
+          // console.log(`${JSON.stringify(dataItems.length)}`);
           if(!children || children.length === 0){
             _.map(dataItems,(deviceitem)=>{
               if(!!deviceitem.dataItem){
@@ -342,7 +283,7 @@ export function* createmapmainflow(){
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_mapmain){
-          while(!window.AMap){
+          while(!window.AMap || !window.AMapUI){
             yield call(delay,500);
           }
           console.log(`carmapshow_createmap...`);
@@ -358,9 +299,7 @@ export function* createmapmainflow(){
             mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
           yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
-          while(!window.AMapUI){
-            yield call(delay,500);
-          }
+
           yield call(initmapui,window.amapmain);
 
           let listentask =  yield fork(function*(eventname){
@@ -499,18 +438,42 @@ export function* createmapmainflow(){
     yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
       try{
         let {payload:{adcodetop}} = action_district;
-        distCluster.zoomToShowSubFeatures(adcodetop);
-        let treenode;
-        while(!treenode){
-          try{
-            treenode = yield call(getClusterTree,{adcodetop});
+
+        function* gettreenode(adcode){
+          let treenode;
+          while(!treenode){
+            try{
+              treenode = yield call(getClusterTree,{adcodetop:adcode});
+            }
+            catch(e){
+              yield call(delay,1000);
+              distCluster.zoomToShowSubFeatures(adcode);
+              console.log(e);
+            }
           }
-          catch(e){
-            yield call(delay,1000);
-            console.log(e);
+          return treenode;
+        }
+
+        let treenoderoot = yield gettreenode(adcodetop);
+
+        function* settreenode(treenode){
+          if(!!treenode && !!treenode.children){
+            for(let i =0 ;i< treenode.children.length;i++){
+              let child = treenode.children[i];
+              let adcode = child.adcode;
+              if(!!adcode){
+                let childsub = yield gettreenode(adcode);
+                child.children = childsub.children;
+                yield settreenode(childsub);
+              }
+            }
           }
         }
-        yield put(mapmain_getdistrictresult(treenode));
+        yield settreenode(treenoderoot);
+        console.log(treenoderoot);
+        distCluster.zoomToShowSubFeatures(adcodetop);
+
+        yield put(mapmain_getdistrictresult_init(treenoderoot));
       }
       catch(e){
         console.log(e);
@@ -599,7 +562,7 @@ export function* createmapmainflow(){
             //树中找不到该设备,获取该设备所在经纬度
             const result = yield call(getgeodata,deviceitem);
             const adcodetop = parseInt(result.adcode);
-            yield put(mapmain_seldistrict({adcodetop,level:'district',toggled:true}));
+            yield put(mapmain_seldistrict({adcodetop,toggled:true}));
             console.log(`等待数据完成...`);
             yield take(`${mapmain_getdistrictresult_last}`);//等待数据完成
         }
