@@ -91,7 +91,7 @@ class Page extends React.Component {
                     width={Math.floor(this.state.innerWidth/2)}
                     >
                     <Warning />
-                    <span className="myclose" onClick={this.menuevent}></span>
+                    <span className="myclose" onClick={()=>{this.menuevent();this.showDeviceInfo();}}></span>
                 </Drawer>
 
                 <Drawer
@@ -111,6 +111,7 @@ class Page extends React.Component {
                         top: "64px",
                         zIndex: 1000,
                     }}
+                    width={Math.floor(this.state.innerWidth/2)}
                     >
                     <Message />
                     <span className="myclose" onClick={this.menuevent}></span>
@@ -150,32 +151,10 @@ class Page extends React.Component {
                     </div>
                     <AdminContent />
                     <Menu />
-                    <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay} >
+                    <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
-                    <div className="toggledistcluster">
-                        <Toggle
-                            label="显示区域"
-                            defaultToggled={showdistcluster}
-                            onToggle={
-                                (e,isshow)=>{
-                                    this.props.dispatch(ui_showdistcluster(isshow));
-                                }
-                            }
-                        />
-                    </div>
-                    <div className="togglehugepoints">
-                        <Toggle
-                            label="显示海量点"
-                            defaultToggled={showhugepoints}
-                            onToggle={
-                                (e,isshow)=>{
-                                    this.props.dispatch(ui_showhugepoints(isshow));
-                                }
-                            }
-                        />
-                    </div>
-
+                    
                     <div className="warningtips">
                         <Warningtips/>
                     </div>

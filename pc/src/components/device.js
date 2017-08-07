@@ -6,9 +6,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import RaisedButton from 'material-ui/RaisedButton';
-import {ui_showhistoryplay} from '../actions';
+import {ui_showhistoryplay,ui_showmenu} from '../actions';
 
 class Page extends React.Component {
+    onClickMenu(menuitemstring){
+        this.props.dispatch(ui_showmenu(menuitemstring));
+    }
     showhistoryplay(){
       this.props.dispatch(ui_showhistoryplay(true));
     }
@@ -32,6 +35,10 @@ class Page extends React.Component {
       return (
             <div className="warningPage devicePage">
                 <div className="tit">设备详情</div>
+                <div className="devicebtnlist">
+                    <RaisedButton label="轨迹回放" primary={true} onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
+                    <RaisedButton label="历史警告" primary={true} onTouchTap={this.onClickMenu.bind(this,"warningbox")} className="showDeviceInfo" />
+                </div>
                 <div className="lists">
                     {_.map(data, (d, key)=>{
                         return (
@@ -41,7 +48,7 @@ class Page extends React.Component {
                         )
                     })}
                 </div>
-                <RaisedButton label="轨迹回放" primary={true} onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
+               
             </div>
         );
     }

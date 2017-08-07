@@ -67,7 +67,7 @@ class Menu extends React.Component {
     renderFixed() {
         const menuData = {
             power : {name : "电池包", icon : "fa fa-microchip", click : this.onClickMenu.bind(this,'powersearch')},
-            history : {name : "历史告警", icon : "fa fa-history", click : this.onClickMenu.bind(this,'warningbox')},
+            // history : {name : "历史告警", icon : "fa fa-history", click : this.onClickMenu.bind(this,'warningbox')},
             address : {name : "地理位置", icon : "fa fa-globe", click : this.onClickMenu.bind(this,'addressbox')}
         }
         return (

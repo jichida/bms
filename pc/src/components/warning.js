@@ -29,7 +29,7 @@ class Page extends React.Component {
         
         return (
             <div className="warningPage">
-                <div className="tit">历史警告</div>
+                <div className="tit">设备：23234 历史警告</div>
                 <SelectField 
                     value={this.state.type}
                     onChange={this.handleChange}

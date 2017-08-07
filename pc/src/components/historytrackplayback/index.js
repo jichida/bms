@@ -14,6 +14,7 @@ import Map from './map';
 import "./map.css";
 import {mapplayback_start} from '../../actions';
 
+
 class Page extends React.Component {
     onClickStart(){
       this.props.dispatch(mapplayback_start({isloop:false,speed:5000}));
@@ -25,7 +26,7 @@ class Page extends React.Component {
         if(!!deviceitem){
           DeviceId = deviceitem.DeviceId;
         }
-        const formstyle={width:"120px"};
+        const formstyle={width:"10px",flexGrow:"1"};
         return (
             <div className="historytrackplayback">
                 <AppBar
@@ -52,17 +53,21 @@ class Page extends React.Component {
                 <div className="set">
                     <div>设备编号：{DeviceId || ''}</div>
                     <div className="formlist">
-                        <DatePicker hintText="开始日期" style={formstyle} />
-                        <TimePicker hintText="开始时间" style={formstyle} />
-                        <DatePicker hintText="结束日期" style={formstyle} />
-                        <TimePicker hintText="结束时间" style={formstyle} />
+                        <div>
+                            <DatePicker hintText="开始日期" style={formstyle} />
+                            <TimePicker hintText="开始时间" style={formstyle} />
+                        </div>
+                        <div>
+                            <DatePicker hintText="结束日期" style={formstyle} />
+                            <TimePicker hintText="结束时间" style={formstyle} />
+                        </div>
                     </div>
-                    <div>
+                    <div className="btnlist">
                         <RaisedButton onTouchTap={this.onClickStart.bind(this)} label="开始" primary={true} style={{marginRight:"10px"}} />
                         <RaisedButton label="结束" secondary={true} style={{marginRight:"10px"}} />
                     </div>
-                    <Map />
                 </div>
+                <Map />
             </div>
         );
     }
