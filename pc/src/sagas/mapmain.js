@@ -27,7 +27,7 @@ import L from 'leaflet';
 import _ from 'lodash';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
-
+import {getpopinfowindowstyle,getgroupStyleMap} from './getmapstyle';
 const divmapid_mapmain = 'mapmain';
 
 let infoWindow;
@@ -39,7 +39,7 @@ let distCluster,pointSimplifierIns;
 //   return new Promise((resolve,reject) => {
 //       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
 // }
-
+let groupStyleMap = {};
 //新建行政区域&海量点
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
@@ -51,7 +51,17 @@ const initmapui =  (map)=>{
                return;
            }
 
-           let groupStyleMap;
+           let groupsz = getgroupStyleMap();
+           _.map(groupsz,(group)=>{
+             const {name,image,...rest} = group;
+             groupStyleMap[name] = {
+                pointStyle: {
+                 content:PointSimplifier.Render.Canvas.getImageContent(
+                     image, onIconLoad, onIconError),
+                 ...rest
+               }
+             }
+           });
 
            pointSimplifierIns = new PointSimplifier({
                zIndex: 115,
@@ -92,69 +102,6 @@ const initmapui =  (map)=>{
            const onIconError = (e)=> {
                alert('图片加载失败！');
            }
-
-           groupStyleMap = {
-               '0': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/bike.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       //strokeStyle: null
-                   }
-               },
-               '1': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/people.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       // strokeStyle: null
-                   }
-               },
-               '2': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/truck.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       //strokeStyle: null
-                   }
-               },
-               '3': {
-                   pointStyle: {
-                       //绘制点占据的矩形区域
-                       content: PointSimplifier.Render.Canvas.getImageContent(
-                           `${process.env.PUBLIC_URL}/images/taxi.png`, onIconLoad, onIconError),
-                       //宽度
-                       width: 16,
-                       //高度
-                       height: 16,
-                       //定位点为中心
-                       offset: ['-50%', '-50%'],
-                       fillStyle: null,
-                       //strokeStyle: null
-                   }
-               }
-             };
              //<------------
              distCluster = new DistrictCluster({
                  zIndex: 100,
@@ -256,14 +203,8 @@ const showinfowindow = (deviceitem)=>{
   return new Promise(resolve =>{
       let locz = deviceitem.locz;
       window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-          let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
-          let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
-          let DeviceId = _.get(deviceitem,'DeviceId','');
 
-          infoWindow = new SimpleInfoWindow({
-              infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
-              infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
-          });
+          infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(deviceitem));
 
           if(!!locz){
             window.amapmain.setCenter(locz);
