@@ -10,8 +10,10 @@ import _ from 'lodash';
 import {
   mapmain_seldistrict,
   ui_selcurdevice,
-  ui_changetreestyle
+  ui_changetreestyle,
+  ui_settreefilter
 } from '../actions';
+import {filterTree,expandFilteredNodes} from '../util/filter';
 
 class TreeExample extends React.Component {
     constructor(props){
@@ -55,9 +57,7 @@ class TreeExample extends React.Component {
 
     onFilterMouseUp(e) {
         const filter = e.target.value.trim();
-        if (!filter) {
-            console.log(filter);
-        }
+        this.props.dispatch(ui_settreefilter(filter));
     }
 
     render(){
@@ -88,8 +88,12 @@ class TreeExample extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,datatreegroup,devices}}) => {
+const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,treefilter,datatreegroup,devices}}) => {
   let datatree = treeviewstyle === 'byloc'?datatreeloc:datatreegroup;
+  if(!!treefilter){
+      const filtered = filterTree(datatree, treefilter);
+      datatree = expandFilteredNodes(filtered, treefilter);
+  }
   return {datatree,devices,treeviewstyle};
 }
 

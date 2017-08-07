@@ -5,7 +5,8 @@ import{
   querydeviceinfo_result,
   mapmain_getdistrictresult,
   mapmain_seldistrict,
-  ui_changetreestyle
+  ui_changetreestyle,
+  ui_settreefilter
 } from '../actions';
 import _ from 'lodash';
 import {getadcodeinfo} from '../util/addressutil';
@@ -14,7 +15,7 @@ import {getgroupnamebydevice} from '../test/offlinedata';
 const initial = {
   device:{
     treeviewstyle:'byloc',//byloc or bygroup
-
+    treefilter:undefined,
     toggled:true,
     toggledgruop:true,
     mapseldeviceid:undefined,
@@ -36,6 +37,10 @@ const initial = {
 };
 
 const device = createReducer({
+  [ui_settreefilter]:(state,payload)=>{
+    let treefilter = payload;
+    return {...state,treefilter};
+  },
   [ui_changetreestyle]:(state,payload)=>{
     const treeviewstyle = payload;
     return {...state,treeviewstyle};
