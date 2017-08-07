@@ -57,6 +57,11 @@ class TreeExample extends React.Component {
 
     onFilterMouseUp(e) {
         const filter = e.target.value.trim();
+        if(!!filter){
+          if(filter.length <= 3){
+            return;
+          }
+        }
         this.props.dispatch(ui_settreefilter(filter));
     }
 
@@ -71,7 +76,7 @@ class TreeExample extends React.Component {
                         </span>
                         <input className="form-control"
                                onKeyUp={this.onFilterMouseUp.bind(this)}
-                               placeholder="Search the tree..."
+                               placeholder="根据设备id搜索(至少三位)"
                                type="text"/>
                     </div>
                 </div>
