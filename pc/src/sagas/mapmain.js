@@ -466,6 +466,10 @@ export function* createmapmainflow(){
                 child.children = childsub.children;
                 yield settreenode(childsub);
               }
+              else{
+                //device
+                child.loading = false;
+              }
             }
           }
         }
@@ -485,42 +489,15 @@ export function* createmapmainflow(){
         try{
           if(!!adcodetop){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
-            const {level,devices,curproviceid,curcityid} = yield select((state)=>{
-              return {...state.device};
-            });
-            let adcodeinfo = getadcodeinfo(adcodetop);
-            if(adcodeinfo.level === 'district' && curcityid !== adcodeinfo.parent_code){
-              //当前区的城市 非当前选择城市
-              let adcodecityinfo = getadcodeinfo(adcodeinfo.parent_code);
-              if(adcodecityinfo.parent_code !== curproviceid){
-                //当前省份非当前选择省份
-                // yield put.resolve(mapmain_seldistrict({adcodetop:adcodecityinfo.parent_code,toggled:true}));
-                let treenodeprovice = yield call(getClusterTree,{adcodetop:adcodecityinfo.parent_code});
-                //选择省份
-                yield put(mapmain_getdistrictresult(treenodeprovice));
-              }
-              //选择当前城市
-              // yield put.resolve(mapmain_seldistrict({adcodetop:adcodeinfo.parent_code,toggled:true}));
-              let treenodecity = yield call(getClusterTree,{adcodetop:adcodeinfo.parent_code});
-              yield put(mapmain_getdistrictresult(treenodecity));
-            }
-
-            if(adcodeinfo.level === 'city' && curproviceid !== adcodeinfo.parent_code){
-              //当前城市所在省 非当前省
-              // yield put.resolve(mapmain_seldistrict({adcodetop:adcodeinfo.parent_code,toggled:true}));
-              let treenodeprovice = yield call(getClusterTree,{adcodetop:adcodeinfo.parent_code});
-              //选择省份
-              yield put(mapmain_getdistrictresult(treenodeprovice));
-            }
             //========================================================================================
             distCluster.zoomToShowSubFeatures(adcodetop);
-            let treenode = yield call(getClusterTree,{adcodetop});
-            yield put(mapmain_getdistrictresult(treenode));
 
-            const {curdevicelist} = yield select((state)=>{
+            yield put(mapmain_getdistrictresult({adcode:adcodetop}));
+            let adcodeinfo = getadcodeinfo(adcodetop);
+            const {curdevicelist,devices} = yield select((state)=>{
               return {...state.device};
             });
-            console.log(`===>${adcodeinfo.level},${curdevicelist.length}`);
+            console.log(`${curdevicelist.length}`);
             if(adcodeinfo.level === 'district'){
               //如果当前定位到区一级，则自动放大到最合适位置
               let latlngs = [];
@@ -542,12 +519,12 @@ export function* createmapmainflow(){
                  console.log(`zoomto...`);
                }
             }
-            yield put(mapmain_getdistrictresult_last({}));
           }
         }
         catch(e){
           console.log(e);
         }
+        yield put(mapmain_getdistrictresult_last({}));
 
     });
 

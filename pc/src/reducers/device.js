@@ -24,12 +24,6 @@ const initial = {
     datatree:{},
     datatreegroup:{},
 
-    curproviceid:undefined,
-    curcityid:undefined,
-    curdistrictid:undefined,
-    curprovicelist:[],
-    curcitylist:[],
-    curdistrictlist:[],
     curdevicelist:[],
 
     devices: {
@@ -54,7 +48,6 @@ const device = createReducer({
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
       if(node.name === `${mapseldeviceid}`){
-        node.active = true;
         console.log(`node${node.name}==>true`);
         return retnode;
       }
@@ -64,8 +57,12 @@ const device = createReducer({
           const subnode = node.children[i];
           let tmpnode = findandsettreenode(subnode,mapseldeviceid);
           if(!!tmpnode){
+            if(tmpnode.name === `${mapseldeviceid}`){
+              subnode.active = true;
+              subnode.loading = false;
+            }
+            subnode.toggled = true;
             retnode = node;
-            retnode.toggled = true;
           }
         }
       }
@@ -100,11 +97,16 @@ const device = createReducer({
     return {...state,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
-    let treenode = payload;
+    let {adcode} = payload;
+    let adcodeinfo = getadcodeinfo(adcode);
+    let curdevicelist = state.curdevicelist;
     let findandsettreenode = (node,adcode,isroot)=>{
       let retnode = node;
       if(node.adcode === adcode){
         console.log(node);
+        if(adcodeinfo.level === 'district'){
+          curdevicelist = [...node.children];
+        }
         return retnode;
       }
       retnode = null;
@@ -112,17 +114,17 @@ const device = createReducer({
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
           let tmpnode = findandsettreenode(subnode,adcode,false);
-          if(!!tmpnode){
-            if(tmpnode.adcode !== adcode){
-              node.toggled = true;
-              node.active = false;
-              node.loading = false;
-            }
-            else{//equal
-              subnode.toggled = state.toggled;
+          if(!!tmpnode){//subnode为tmpnode,目标选中
+            if(tmpnode.adcode === adcode){
+              //选中／展开//equal
               subnode.active = true;
+              subnode.toggled = state.toggled;
               subnode.loading = false;
             }
+            node.active = false;
+            node.toggled = true;
+            node.loading = false;
+
             retnode = node;
           }
         }
@@ -136,8 +138,12 @@ const device = createReducer({
     };
       // let treenode = payload;
      let datatree = {...state.datatree};
-     findandsettreenode(datatree,treenode.adcode,true);
-     return {...state,datatree};
+     findandsettreenode(datatree,adcode,true);
+     //root保持不动
+     datatree.toggled = true;
+     datatree.active = false;
+     datatree.loading = false;
+     return {...state,datatree,curdevicelist};
   },
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
