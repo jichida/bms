@@ -21,3 +21,6 @@ export const searchbattery_result = createAction('searchbattery_result');
 //查询电池包报警
 export const searchbatteryalarm_request = createAction('searchbatteryalarm_request');
 export const searchbatteryalarm_result = createAction('searchbatteryalarm_result');
+//查询单个电池包报警
+export const searchbatteryalarmsingle_request = createAction('searchbatteryalarmsingle_request');
+export const searchbatteryalarmsingle_result = createAction('searchbatteryalarmsingle_result');

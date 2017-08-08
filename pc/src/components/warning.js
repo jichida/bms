@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import DatePicker from 'material-ui/DatePicker';
+
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,39 +16,19 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-
+import TreeSearchBatteryAlarmSingle from './search/searchbatteryalarmsingle';
 class Page extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            type : 1,
-        };
+
     }
     handleChange = (event, index, value) => this.setState({value});
     render(){
-        
+
         return (
             <div className="warningPage">
                 <div className="tit">设备：23234 历史警告</div>
-                <SelectField 
-                    value={this.state.type}
-                    onChange={this.handleChange}
-                    fullWidth={true}
-                    className="seltype"
-                    underlineDisabledStyle={{}}
-                    >
-                    <MenuItem value={1} primaryText="严重" />
-                    <MenuItem value={2} primaryText="紧急" />
-                    <MenuItem value={3} primaryText="一般" />
-                </SelectField>
-                <div className="warningsearch">
-
-                    <DatePicker hintText="开始时间" className="seltime" />
-                    <DatePicker hintText="结束时间" className="seltime" />
-                </div>
-                <div>
-                    <RaisedButton label="查询" primary={true} style={{marginRight:"10px"}} fullWidth={true} />
-                </div>
+                <TreeSearchBatteryAlarmSingle />
                 <Table>
                     <TableHeader>
                       <TableRow>

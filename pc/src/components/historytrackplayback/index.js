@@ -12,12 +12,18 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Map from './map';
 import "./map.css";
-import {mapplayback_start} from '../../actions';
+import {
+  mapplayback_start,
+  mapplayback_end
+} from '../../actions';
 
 
 class Page extends React.Component {
     onClickStart(){
       this.props.dispatch(mapplayback_start({isloop:false,speed:5000}));
+    }
+    onClickEnd(){
+      this.props.dispatch(mapplayback_end({}));
     }
     render() {
         const {mapseldeviceid,devices} = this.props;
@@ -64,7 +70,7 @@ class Page extends React.Component {
                     </div>
                     <div className="btnlist">
                         <RaisedButton onTouchTap={this.onClickStart.bind(this)} label="开始" primary={true} style={{marginRight:"10px"}} />
-                        <RaisedButton label="结束" secondary={true} style={{marginRight:"10px"}} />
+                        <RaisedButton onTouchTap={this.onClickEnd.bind(this)} label="结束" secondary={true} style={{marginRight:"10px"}} />
                     </div>
                 </div>
                 <Map />
