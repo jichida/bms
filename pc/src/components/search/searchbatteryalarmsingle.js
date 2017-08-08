@@ -34,7 +34,15 @@ class TreeSearchBatteryAlarmSingle extends React.Component {
     handleChange = (event, index, value) => this.setState({value});
 
     onClickQuery=()=>{
-
+      let query = {
+        queryalarm:{
+          level:this.state.type
+        }
+      };
+      console.log(`query:${JSON.stringify(query)}`);
+      if(!!this.props.onClickQuery){
+        this.props.onClickQuery({query});
+      }
     }
     render(){
         return (
@@ -55,7 +63,7 @@ class TreeSearchBatteryAlarmSingle extends React.Component {
                   <DatePicker hintText="结束时间" className="seltime" />
               </div>
               <div>
-                  <RaisedButton label="查询" primary={true} style={{marginRight:"10px"}} fullWidth={true} />
+                  <RaisedButton label="查询" primary={true} style={{marginRight:"10px"}} fullWidth={true} onTouchTap={this.onClickQuery}/>
               </div>
             </div>
 

@@ -17,18 +17,23 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import TreeSearchBatteryAlarmSingle from './search/searchbatteryalarmsingle';
+import {searchbatteryalarmsingle_request} from '../actions';
+
 class Page extends React.Component {
     constructor(props){
         super(props);
 
     }
     handleChange = (event, index, value) => this.setState({value});
-    render(){
 
+    onClickQuery(query){
+      this.props.dispatch(searchbatteryalarmsingle_request(query));
+    }
+    render(){
         return (
             <div className="warningPage">
                 <div className="tit">设备：23234 历史警告</div>
-                <TreeSearchBatteryAlarmSingle />
+                <TreeSearchBatteryAlarmSingle onClickQuery={this.onClickQuery.bind(this)}/>
                 <Table>
                     <TableHeader>
                       <TableRow>
