@@ -14,3 +14,7 @@ export const queryrealtimealarm_result = createAction('queryrealtimealarm_result
 //查询历史轨迹数据
 export const queryhistorytrack_request  = createAction('queryhistorytrack_request');
 export const queryhistorytrack_result  = createAction('queryhistorytrack_result');
+
+//查询电池包
+export const searchbattery_request = createAction('searchbattery_request');
+export const searchbattery_result = createAction('searchbattery_result');

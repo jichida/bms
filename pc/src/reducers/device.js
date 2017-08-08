@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-act';
 import{
   querydevice_result,
+  querydevicegroup_result,
   ui_selcurdevice_result,
   querydeviceinfo_result,
   mapmain_getdistrictresult,
@@ -25,9 +26,8 @@ const initial = {
     datatreegroup:{},
 
     curdevicelist:[],
-
-    devices: {
-    },
+    groups:{},
+    devices:{},
   }
 };
 
@@ -145,6 +145,16 @@ const device = createReducer({
      datatree.loading = false;
      return {...state,datatree,curdevicelist};
   },
+  [querydevicegroup_result]:(state,payload)=>{
+    const {list} = payload;
+    // let deviceidlist = [];
+    let groups = {};
+    _.map(list,(grouprecord)=>{
+      //deviceidlist.push(devicerecord.DeviceId);
+      groups[grouprecord._id] = grouprecord.name;
+    });
+    return {...state,groups};
+  },
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
     // let deviceidlist = [];
@@ -161,11 +171,13 @@ const device = createReducer({
       name:`所有分组`,
       children:[]
     };
-    const devicesgroups = _.groupBy(list,getgroupnamebydevice);
+    const devicesgroups = _.groupBy(list,(dev)=>{
+      return getgroupnamebydevice(dev)._id;
+    });
     _.map(devicesgroups,(csz,ckey)=>{
         let node = {
           id:ckey,
-          name:`${ckey}(${csz.length})`,
+          name:`${state.groups[ckey]}(${csz.length})`,
           children:[]
         };
 
