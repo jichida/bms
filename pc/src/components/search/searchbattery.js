@@ -151,10 +151,14 @@ class TreeSearchBattery extends React.Component {
                                 })
                               }
                         </SelectField>
-                        <TextField
-                            hintText={hintTextBattery}
-                            style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: ishiddenbattery?"none":"inline-block"}}
-                        />
+                        {
+                          !ishiddenbattery &&
+                          (<TextField
+                              hintText={hintTextBattery}
+                              style ={{width : "30%", marginTop: "-10px", minWidth:"100px"}}
+                          />)
+                        }
+
                     </div>
                     <div>
                         <SelectField
@@ -168,10 +172,14 @@ class TreeSearchBattery extends React.Component {
                                 })
                               }
                         </SelectField>
-                        <TextField
-                            hintText={hintTextAlarm}
-                            style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: ishiddenalarm?"none":"inline-block"}}
-                        />
+                        {
+                          !ishiddenalarm &&
+                          <TextField
+                              hintText={hintTextAlarm}
+                              style ={{width : "30%", marginTop: "-10px", minWidth:"100px"}}
+                          />
+                        }
+
                     </div>
                 </div>
                 <div className="searchbtn">
