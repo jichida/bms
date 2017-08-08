@@ -19,6 +19,45 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
+/* <MenuItem value={''} primaryText="请选择" />
+<MenuItem value={'RdbNo'} primaryText="RDB编号" />
+<MenuItem value={'PackNo'} primaryText="BMU PACK号" />
+<MenuItem value={'PnNo'} primaryText="设备PN料号" /> */
+const selitem_devicefields = [
+  {
+    value:'',
+    text:'请选择'
+  },
+  {
+    value:'RdbNo',
+    text:'RDB编号'
+  },
+  {
+    value:'PackNo',
+    text:'BMU PACK号"'
+  },
+  {
+    value:'PnNo',
+    text:'设备PN料号'
+  },
+];
+/* <MenuItem value={''} primaryText="请选择" />
+<MenuItem value={'ALARM_H'} primaryText="警告代码" />
+<MenuItem value={'ALARM_L'} primaryText="故障代码" /> */
+const selitem_alarmfields = [
+  {
+    value:'',
+    text:'请选择'
+  },
+  {
+    value:'ALARM_H',
+    text:'警告代码'
+  },
+  {
+    value:'ALARM_L',
+    text:'故障代码'
+  },
+];
 
 class TreeSearchBattery extends React.Component {
 
@@ -27,20 +66,27 @@ class TreeSearchBattery extends React.Component {
         this.state = {
             groupname:  '',
             devicefield : '',
-            alaramfield : '',
+            alarmfield : '',
         };
     }
     handleChangeGroupname = (e,key)=>{
         console.log(key);
-        this.setState({groupname: key});
+        const {groupidlist} = this.props;
+        if(key === 0){
+          this.setState({groupname: ''});
+        }
+        else{
+          let groupid = groupidlist[key-1];
+          this.setState({groupname:groupid});
+        }
     }
     handleChangeDevicefield = (e,key)=>{
         console.log(key);
-        this.setState({devicefield: key});
+        this.setState({devicefield: selitem_devicefields[key].value});
     }
-    handleChangeAlaramfiled = (e,key)=>{
+    handleChangeAlarmfiled = (e,key)=>{
         console.log(key);
-        this.setState({alaramfield: key});
+        this.setState({alarmfield: selitem_alarmfields[key].value});
     }
     render(){
         let hintTextBattery = '';
@@ -58,17 +104,21 @@ class TreeSearchBattery extends React.Component {
           hintTextBattery = '设备PN料号';
         }
 
-        let hintTextAlaram = '';
-        let ishiddenalaram = false;
-        if(this.state.alaramfield === ''){
-          ishiddenalaram = true;
+        let hintTextAlarm = '';
+        let ishiddenalarm = false;
+        if(this.state.alarmfield === ''){
+          ishiddenalarm = true;
         }
-        else if(this.state.alaramfield === 'ALARM_H'){
-          hintTextAlaram = '警告代码';
+        else if(this.state.alarmfield === 'ALARM_H'){
+          hintTextAlarm = '警告代码';
         }
-        else if(this.state.alaramfield === 'ALARM_L'){
-          hintTextAlaram = '故障代码';
+        else if(this.state.alarmfield === 'ALARM_L'){
+          hintTextAlarm = '故障代码';
         }
+
+
+        const {groups,groupidlist} = this.props;
+
 
         return (
             <div className="warningPage">
@@ -76,49 +126,51 @@ class TreeSearchBattery extends React.Component {
                 <div className="searchli">
                     <div>
                         <SelectField
-                            value={0}
-                            onChange={this.handleChange}
+                            onChange={this.handleChangeGroupname}
                             style={{minWidth:"100px", width: "33%"}}
-                            value = {this.state.input1}
+                            value = {this.state.groupname}
                             >
-                            <MenuItem value={0} primaryText="选择分组名称" />
-                            <MenuItem value={1} primaryText="Every Night" />
-                            <MenuItem value={2} primaryText="Weeknights" />
-                            <MenuItem value={3} primaryText="Weekends" />
-                            <MenuItem value={4} primaryText="Weekly" />
+                            <MenuItem key={'-1'} value={''} primaryText="选择分组名称" />
+                            {
+                              _.map(groupidlist,(groupid)=>{
+                                let group= groups[groupid];
+                                return (<MenuItem key={groupid} value={groupid} primaryText={group.name} />)
+                              })
+                            }
                         </SelectField>
                     </div>
                     <div>
                         <SelectField
-                            value={0}
-                            onChange={this.handleChange2}
+                            onChange={this.handleChangeDevicefield}
                             style={{minWidth:"100px", width: "33%"}}
-                            value = {this.state.input2}
+                            value = {this.state.devicefield}
                             >
-                            <MenuItem value={''} primaryText="请选择" />
-                            <MenuItem value={'RdbNo'} primaryText="RDB编号" />
-                            <MenuItem value={'PackNo'} primaryText="BMU PACK号" />
-                            <MenuItem value={'PnNo'} primaryText="设备PN料号" />
+                              {
+                                _.map(selitem_devicefields,(field,key)=>{
+                                  return (<MenuItem key={key} value={field.value} primaryText={field.text} />)
+                                })
+                              }
                         </SelectField>
                         <TextField
-                            hintText={hintText}
+                            hintText={hintTextBattery}
                             style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: ishiddenbattery?"none":"inline-block"}}
                         />
                     </div>
                     <div>
                         <SelectField
-                            value={0}
-                            onChange={this.handleChange3}
+                            onChange={this.handleChangeAlarmfiled}
                             style={{minWidth:"100px", width: "33%"}}
-                            value = {this.state.input3}
+                            value = {this.state.alarmfield}
                             >
-                            <MenuItem value={''} primaryText="请选择" />
-                            <MenuItem value={'ALARM_H'} primaryText="警告代码" />
-                            <MenuItem value={'ALARM_L'} primaryText="故障代码" />
+                              {
+                                _.map(selitem_alarmfields,(field,key)=>{
+                                  return (<MenuItem key={key} value={field.value} primaryText={field.text} />)
+                                })
+                              }
                         </SelectField>
                         <TextField
-                            hintText={hintTextAlaram}
-                            style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: ishiddenalaram?"none":"inline-block"}}
+                            hintText={hintTextAlarm}
+                            style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: ishiddenalarm?"none":"inline-block"}}
                         />
                     </div>
                 </div>
@@ -131,7 +183,7 @@ class TreeSearchBattery extends React.Component {
     }
 }
 
-// const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
-//   return {mapseldeviceid,devices};
-// }
-export default connect()(TreeSearchBattery);
+const mapStateToProps = ({device:{groups,groupidlist}}) => {
+  return {groups,groupidlist};
+}
+export default connect(mapStateToProps)(TreeSearchBattery);

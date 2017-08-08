@@ -26,6 +26,7 @@ const initial = {
     datatreegroup:{},
 
     curdevicelist:[],
+    groupidlist:[],
     groups:{},
     devices:{},
   }
@@ -147,13 +148,13 @@ const device = createReducer({
   },
   [querydevicegroup_result]:(state,payload)=>{
     const {list} = payload;
-    // let deviceidlist = [];
+    let groupidlist = [];
     let groups = {};
     _.map(list,(grouprecord)=>{
-      //deviceidlist.push(devicerecord.DeviceId);
-      groups[grouprecord._id] = grouprecord.name;
+      groupidlist.push(grouprecord._id);
+      groups[grouprecord._id] = grouprecord;
     });
-    return {...state,groups};
+    return {...state,groups,groupidlist};
   },
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
@@ -177,7 +178,7 @@ const device = createReducer({
     _.map(devicesgroups,(csz,ckey)=>{
         let node = {
           id:ckey,
-          name:`${state.groups[ckey]}(${csz.length})`,
+          name:`${state.groups[ckey].name}(${csz.length})`,
           children:[]
         };
 

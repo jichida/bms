@@ -127,7 +127,7 @@ class Page extends React.Component {
                     <Device />
                     <span className="myclose" onClick={this.menuevent}></span>
                 </Drawer>
-                
+
 
                 <div className="content">
                     <div className="headcontent">
@@ -154,7 +154,7 @@ class Page extends React.Component {
                     <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>
                         <Historytrackplayback back={this.hidehistoryplay}/>
                     </Drawer>
-                    
+
                     <div className="warningtips">
                         <Warningtips/>
                     </div>
