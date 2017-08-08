@@ -23,18 +23,21 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import TreeSearchBattery from './search/searchbattery';
+import {searchbatteryalarm_request} from '../actions';
 
 class TreeSearch extends React.Component {
 
     constructor(props) {
         super(props);
     }
-
+    onClickQuery(query){
+      this.props.dispatch(searchbatteryalarm_request(query));
+    }
     render(){
         return (
             <div className="warningPage">
                 <div className="tit">新消息</div>
-                <TreeSearchBattery />
+                <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
 
                 <Table>
                     <TableHeader

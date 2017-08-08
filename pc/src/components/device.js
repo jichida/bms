@@ -80,16 +80,6 @@ class Page extends React.Component {
         },
       ];
 
-
-      // const data = {
-      //       "设备名称" : "123XG设备",
-      //       "最高单体温度" : "80",
-      //       "最低单体温度" : "0",
-      //       "最高单体电压" : "100V",
-      //       "最低单体电压" : "30V",
-      //       "真实SOC" : "SOC",
-      //       "箱体电流" : "20A",
-      //   }
       const {mapseldeviceid,devices,p} = this.props;
       let deviceitem = devices[mapseldeviceid];
 
@@ -119,7 +109,7 @@ class Page extends React.Component {
                   })
                 }
                 </div>
-               
+
             </div>
         );
     }

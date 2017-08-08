@@ -18,3 +18,6 @@ export const queryhistorytrack_result  = createAction('queryhistorytrack_result'
 //查询电池包
 export const searchbattery_request = createAction('searchbattery_request');
 export const searchbattery_result = createAction('searchbattery_result');
+//查询电池包报警
+export const searchbatteryalarm_request = createAction('searchbatteryalarm_request');
+export const searchbatteryalarm_result = createAction('searchbatteryalarm_result');

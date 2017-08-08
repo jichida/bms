@@ -10,7 +10,12 @@ import {
   notify_socket_connected,
   md_login_result,
   getsystemconfig_request,
-  getsystemconfig_result
+  getsystemconfig_result,
+
+  searchbatteryalarm_request,
+  searchbatteryalarm_result,
+  searchbattery_request,
+  searchbattery_result
 } from '../actions';
 import jsondata from './bmsdata.json';
 import jsondatatrack from './1602010008.json';
@@ -26,6 +31,20 @@ export function* testdataflow(){//仅执行一次
   yield takeEvery(`${querydevice_request}`, function*(action) {
      yield put(querydevice_result({list:jsondata}));
   });
+
+  yield takeEvery(`${searchbattery_request}`, function*(action) {
+    const {payload:{query}} = action;
+    const list = _.sampleSize(jsondata, 20);
+    yield put(searchbattery_result({list}));
+  });
+
+
+  yield takeEvery(`${searchbatteryalarm_request}`, function*(action) {
+    const {payload:{query}} = action;
+    const list = [];
+    yield put(searchbatteryalarm_result({list}));
+  });
+
 
 
 

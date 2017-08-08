@@ -67,8 +67,17 @@ class TreeSearchBattery extends React.Component {
             groupname:  '',
             devicefield : '',
             alarmfield : '',
+            searchtxtfordevice:'',
+            searchtxtforalarm:''
         };
     }
+    handleChangeSearchtxtfordevice(e,v){
+      this.setState({searchtxtfordevice:v});
+    }
+    handleChangeSearchtxtforalaram(e,v){
+      this.setState({searchtxtforalarm:v});
+    }
+
     handleChangeGroupname = (e,key)=>{
         console.log(key);
         const {groupidlist} = this.props;
@@ -87,6 +96,30 @@ class TreeSearchBattery extends React.Component {
     handleChangeAlarmfiled = (e,key)=>{
         console.log(key);
         this.setState({alarmfield: selitem_alarmfields[key].value});
+    }
+
+    onClickQuery=()=>{
+      let query = {
+        querydevice:{},
+        queryalarm:{}
+      };
+      if(this.state.groupname !== ''){
+        query.querydevice =
+              {
+                ...query.querydevice,
+                groupid:this.state.groupname
+              };
+      }
+      if(this.state.devicefield !== '' && this.state.searchtxtfordevice !== ''){
+        query.querydevice[this.state.devicefield] = this.state.searchtxtfordevice;
+      }
+      if(this.state.alarmfield !== '' && this.state.searchtxtforalarm !== ''){
+        query.queryalarm[this.state.alarmfield] = this.state.searchtxtforalarm;
+      }
+      console.log(`query:${JSON.stringify(query)}`);
+      if(!!this.props.onClickQuery){
+        this.props.onClickQuery({query});
+      }
     }
     render(){
         let hintTextBattery = '';
@@ -154,6 +187,8 @@ class TreeSearchBattery extends React.Component {
                         {
                           !ishiddenbattery &&
                           (<TextField
+                              onChange={this.handleChangeSearchtxtfordevice.bind(this)}
+                              value={this.state.searchtxtfordevice}
                               hintText={hintTextBattery}
                               style ={{width : "30%", marginTop: "-10px", minWidth:"100px"}}
                           />)
@@ -175,6 +210,8 @@ class TreeSearchBattery extends React.Component {
                         {
                           !ishiddenalarm &&
                           <TextField
+                              onChange={this.handleChangeSearchtxtforalaram.bind(this)}
+                              value={this.state.searchtxtforalarm}
                               hintText={hintTextAlarm}
                               style ={{width : "30%", marginTop: "-10px", minWidth:"100px"}}
                           />
@@ -183,7 +220,7 @@ class TreeSearchBattery extends React.Component {
                     </div>
                 </div>
                 <div className="searchbtn">
-                  <RaisedButton label="查询" primary={true} fullWidth={true} />
+                  <RaisedButton label="查询" primary={true} fullWidth={true} onTouchTap={this.onClickQuery}/>
                 </div>
             </div>
 
