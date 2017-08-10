@@ -25,7 +25,7 @@ import {
 import TreeSearchBattery from './search/searchbattery';
 import {searchbatteryalarm_request} from '../actions';
 
-class TreeSearch extends React.Component {
+class MessageAllDevice extends React.Component {
 
     constructor(props) {
         super(props);
@@ -34,6 +34,7 @@ class TreeSearch extends React.Component {
       this.props.dispatch(searchbatteryalarm_request(query));
     }
     render(){
+        const {devices,alarms,searchresult_alaram} = this.props;
         return (
             <div className="warningPage">
                 <div className="tit">新消息</div>
@@ -46,14 +47,24 @@ class TreeSearch extends React.Component {
                         >
                       <TableRow>
                         <TableHeaderColumn>图标及设备号</TableHeaderColumn>
+                        <TableHeaderColumn>告警时间</TableHeaderColumn>
                         <TableHeaderColumn>告警信息</TableHeaderColumn>
                       </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
-                      <TableRow>
-                        <TableRowColumn><Avatar src={Deraultimg} /><span>1234</span></TableRowColumn>
-                        <TableRowColumn>这里是警告内容</TableRowColumn>
-                      </TableRow>
+                      {
+                        _.map(searchresult_alaram,(alarmid,key)=>{
+                          const alarm =alarms[alarmid];
+                          if(!!alarm){
+                            return (
+                              <TableRow key={key}>
+                              <TableRowColumn><Avatar src={Deraultimg} /><span>{alarm.DeviceId}</span></TableRowColumn>
+                              <TableRowColumn>{alarm.DataTime}</TableRowColumn>
+                              <TableRowColumn>{alarm.Alarm}</TableRowColumn>
+                              </TableRow>)
+                          }
+                        })
+                      }
                     </TableBody>
                   </Table>
             </div>
@@ -61,4 +72,21 @@ class TreeSearch extends React.Component {
         );
     }
 }
-export default connect()(TreeSearch);
+
+
+const mapStateToProps = (
+  {
+    device:
+    {
+      devices
+    },
+    searchresult:
+    {
+      searchresult_alaram,
+      alarms
+    }
+  }) => {
+
+  return {devices,alarms,searchresult_alaram};
+}
+export default connect(mapStateToProps)(MessageAllDevice);

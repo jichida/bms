@@ -17,7 +17,10 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import TreeSearchBatteryAlarmSingle from './search/searchbatteryalarmsingle';
-import {searchbatteryalarmsingle_request} from '../actions';
+import {
+  ui_selcurdevice_result,
+  searchbatteryalarmsingle_request
+} from '../actions';
 import _ from 'lodash';
 
 class Page extends React.Component {
@@ -32,15 +35,20 @@ class Page extends React.Component {
       query.querydevice._id = curseldeviceid;
       this.props.dispatch(searchbatteryalarmsingle_request(query));
     }
+
+    onRowSelection(selstring){
+      console.log(selstring);
+      // this.props.dispatch(ui_selcurdevice_result({DeviceId}));
+    }
     render(){
         const {devices,alarms,curseldeviceid,searchresult_alaramsingle} = this.props;
         return (
             <div className="warningPage">
                 <div className="tit">设备：{curseldeviceid} 历史告警</div>
                 <TreeSearchBatteryAlarmSingle onClickQuery={this.onClickQuery.bind(this)}/>
-                <Table selectable={false}>
+                <Table onRowSelection={this.onRowSelection.bind(this)}>
                     <TableHeader>
-                      <TableRow>
+                      <TableRow selectable={false}>
                         <TableHeaderColumn>告警时间</TableHeaderColumn>
                         <TableHeaderColumn>告警内容</TableHeaderColumn>
                       </TableRow>
@@ -51,7 +59,7 @@ class Page extends React.Component {
                           const alarm =alarms[alarmid];
                           if(!!alarm){
                             return (
-                              <TableRow key={key}>
+                              <TableRow key={key} selectable={false}>
                               <TableRowColumn>{alarm.DataTime}</TableRowColumn>
                               <TableRowColumn>{alarm.Alarm}</TableRowColumn>
                               </TableRow>)
