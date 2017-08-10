@@ -8,21 +8,26 @@ import {
   searchbatteryalarm_result,
   searchbatteryalarmsingle_result,
 
+  ui_selcurdevice_result,
 } from '../actions';
+import _ from 'lodash';
 
-const searchresult = {
-  userlogin:{
+const initial = {
+  searchresult:{
     curseldeviceid:undefined,
     searchresult_battery:[],
     searchresult_alaram:[],
     searchresult_alaramsingle:[],
-    alarms:{
-
-    }
+    alarms:{}
   },
 };
 
 const searchresult = createReducer({
+  [ui_selcurdevice_result]:(state,payload)=>{
+    const curseldeviceid = payload.DeviceId;
+    let searchresult_alaramsingle = [];
+    return { ...state, curseldeviceid,searchresult_alaramsingle};
+  },
   [searchbattery_request]: (state, payload) => {
     let searchresult_battery = [];
     return { ...state, searchresult_battery};
@@ -32,7 +37,7 @@ const searchresult = createReducer({
     return { ...state, searchresult_alaram};
   },
   [searchbatteryalarmsingle_request]: (state, payload) => {
-    const {query:{querydevice:{_id:curseldeviceid}}} = payload;
+    const {querydevice:{_id:curseldeviceid}} = payload;
     let searchresult_alaramsingle = [];
     return { ...state, searchresult_alaramsingle,curseldeviceid};
   },
@@ -41,12 +46,24 @@ const searchresult = createReducer({
     return { ...state, searchresult_battery};
   },
   [searchbatteryalarm_result]: (state, payload) => {
+    const {list} = payload;
+    let alarms = {...state.alarms};
     let searchresult_alaram = [];
-    return { ...state, searchresult_alaram};
+    _.map(list,(alaram)=>{
+      alarms[alaram._id] = alaram;
+      searchresult_alaram.push(alaram._id);
+    });
+    return { ...state,alarms,searchresult_alaram};
   },
   [searchbatteryalarmsingle_result]: (state, payload) => {
+    const {list} = payload;
+    let alarms = {...state.alarms};
     let searchresult_alaramsingle = [];
-    return { ...state, searchresult_alaramsingle};
+    _.map(list,(alaram)=>{
+      alarms[alaram._id] = alaram;
+      searchresult_alaramsingle.push(alaram._id);
+    });
+    return { ...state,alarms, searchresult_alaramsingle};
   },
 }, initial.searchresult);
 

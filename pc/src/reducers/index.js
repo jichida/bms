@@ -8,10 +8,12 @@ import device from './device';
 import notifymessage from './messagecenter';
 import userlogin from './userlogin';
 import carmap from './carmap';
+import searchresult from './searchresult';
 
 export default combineReducers({
   app,
   carmap,
+  searchresult,
   device,
   notifymessage,
   userlogin,

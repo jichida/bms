@@ -14,11 +14,14 @@ import {
 
   searchbatteryalarm_request,
   searchbatteryalarm_result,
+  searchbatteryalarmsingle_request,
+  searchbatteryalarmsingle_result,
   searchbattery_request,
   searchbattery_result
 } from '../actions';
 import jsondata from './bmsdata.json';
 import jsondatatrack from './1602010008.json';
+import jsondataalarm from './json-BMS2.json';
 import _ from 'lodash';
 //获取地理位置信息，封装为promise
 export function* testdataflow(){//仅执行一次
@@ -42,9 +45,16 @@ export function* testdataflow(){//仅执行一次
   yield takeEvery(`${searchbatteryalarm_request}`, function*(action) {
     const {payload:{query}} = action;
     const list = [];
+    list.push(jsondataalarm);
     yield put(searchbatteryalarm_result({list}));
   });
 
+  yield takeEvery(`${searchbatteryalarmsingle_request}`, function*(action) {
+    const {payload:{query}} = action;
+    const list = [];
+    list.push(jsondataalarm);
+    yield put(searchbatteryalarmsingle_result({list}));
+  });
 
 
 
