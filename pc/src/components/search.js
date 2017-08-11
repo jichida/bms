@@ -20,7 +20,12 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import TreeSearchBattery from './search/searchbattery';
-import {searchbattery_request} from '../actions';
+
+import {
+  ui_selcurdevice_result,
+  searchbattery_request
+} from '../actions';
+
 
 class TreeSearch extends React.Component {
 
@@ -59,4 +64,22 @@ class TreeSearch extends React.Component {
         );
     }
 }
-export default connect()(TreeSearch);
+
+const mapStateToProps = (
+  {
+    device:
+    {
+      devices
+    },
+    searchresult:
+    {
+      searchresult_battery,
+      alarms
+    }
+  }) => {
+
+  return {devices,alarms,searchresult_battery};
+}
+
+
+export default connect(mapStateToProps)(TreeSearch);
