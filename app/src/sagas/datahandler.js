@@ -7,12 +7,7 @@ import {
     logout_request,
     logout_result,
 
-    getmypincheroute_request,
-    getmypincheroute_result,
-
-    getonepincheroutepassengers_request,
-    getonepincheroutepassengers_result,
-
+    getsystemconfig_request,
     getsystemconfig_result,
 
     getnotifymessage_request,
@@ -20,6 +15,22 @@ import {
 
     getnotifymessageone_request,
     getnotifymessageone_result,
+
+    querydevicegroup_request,
+    querydevicegroup_result,
+
+    querydevice_request,
+    querydevice_result,
+
+    querydeviceinfo_request,
+    querydeviceinfo_result,
+
+    queryrealtimealarm_request,
+    queryrealtimealarm_result,
+
+    queryhistorytrack_request,
+    queryhistorytrack_result,
+
   } from '../actions';
 
 
@@ -34,23 +45,36 @@ let recvmessagetoresultpair = {
 
   'login_result':login_result,
   'logout_result':logout_result,
+  'querydevicegroup_result':querydevicegroup_result,
+  'querydevice_result':querydevice_result,
+  'querydeviceinfo_result':querydeviceinfo_result,
+  'queryrealtimealarm_result':queryrealtimealarm_result,
+  'queryhistorytrack_result':queryhistorytrack_result,
 
-  'getmypincheroute_result':getmypincheroute_result,
-  'getonepincheroutepassengers_result':getonepincheroutepassengers_result,
 };
 
 //非验证发送接口
 let sendmessagefnsz = {
   'logout':`${logout_request}`,
   'login':`${login_request}`,
+  'querydevicegroup':`${querydevicegroup_request}`,
+  'getsystemconfig':`${getsystemconfig_request}`,
   'getnotifymessage':`${getnotifymessage_request}`,
   'getnotifymessageone':`${getnotifymessageone_request}`,
+
+  //以下代码正式版本中删除
+  'querydevice':`${querydevice_request}`,
+  'querydeviceinfo':`${querydeviceinfo_request}`,
+
 };
 
 //验证发送接口
 let sendmessageauthfnsz = {
-  'getmypincheroute':`${getmypincheroute_request}`,
-  'getonepincheroutepassengers':`${getonepincheroutepassengers_request}`,
+  'querydevice':`${querydevice_request}`,
+  'querydeviceinfo':`${querydeviceinfo_request}`,
+  'queryrealtimealarm':`${queryrealtimealarm_request}`,
+  'queryhistorytrack':`${queryhistorytrack_request}`,
+
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

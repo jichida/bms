@@ -9,7 +9,7 @@ import { fork, take, call, put, cancel } from 'redux-saga/effects';
 import store from '../env/store.js';
 
 import {wsrecvhandler} from './wsrecvhandler.js';
-import {getcurrentpos} from './getcurrentpos';
+
 import data from './datahandler.js';
 import {
     login_result,
@@ -20,21 +20,6 @@ import {
 } from '../actions';
 
 let issocketconnected = false;
-let sendmsgwhenreconnect =(socket)=>{
-    let token = localStorage.getItem('zhongnan_driverpinche_token');
-    if (token !== null) {
-        //take token to login...
-        socket.emit('appdriverpinche',{cmd:'loginwithtoken',data:{token:token}});
-    }
-
-    store.dispatch(notify_socket_connected(true));
-    socket.emit('appdriverpinche',{cmd:'getsystemconfig',data:{}});
-}
-
-let sendmsgwhenlogined  = (socket)=>{
-    //发送app版本信息
-    //socket.emit('appdriverpinche',{cmd:'senddriverappinfo',data:{appversion:config.appversion}});
-}
 
 function connect() {
     const socket = io(config.serverurl);
@@ -51,7 +36,7 @@ function subscribe(socket) {
         wsrecvhandler(socket,emit);
         socket.on('connect',()=>{
             issocketconnected = true;
-            sendmsgwhenreconnect(socket);
+            store.dispatch(notify_socket_connected(true));
         });
         socket.on('disconnect',()=>{
             issocketconnected = false;
@@ -78,10 +63,10 @@ function* write(socket,fun,cmd) {
         let { payload } = yield take(fun);
         console.log(`${cmd}:` + JSON.stringify(payload));
         if(issocketconnected){
-          socket.emit('appdriverpinche',{cmd:cmd,data:payload});
+          socket.emit('pc',{cmd:cmd,data:payload});
         }
         else{
-          //yield put(common_err({type:cmd,errmsg:`服务器连接断开!无法发送命令${cmd}`}))
+          yield put(common_err({type:cmd,errmsg:`服务器连接断开!无法发送命令${cmd}`}))
         }
     }
 }
@@ -91,7 +76,6 @@ function* handleIOWithAuth(socket) {
     while (true) {
         console.log("等待登录中...!");
         yield take(`${login_result}`);
-        sendmsgwhenlogined(socket);
 
         console.log("登录成功!");
         let fnsz = data.sendmessageauthfnsz;
@@ -120,11 +104,8 @@ function* handleIO(socket) {
 
 export function* flowmain() {
     const socket = yield call(connect);
-    //连接上以后直接发送-----》
-    sendmsgwhenreconnect(socket);
-
     yield fork(read, socket);
     yield fork(handleIOWithAuth, socket);
     yield fork(handleIO, socket);
-
+    store.dispatch(notify_socket_connected(true));
 }

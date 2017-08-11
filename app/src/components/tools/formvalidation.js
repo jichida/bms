@@ -1,22 +1,18 @@
 /*
 	表单验证
 */
-import React from 'react'
-import "./formvalidation.css"
+import React from 'react';
+import "./formvalidation.css";
 import { connect } from 'react-redux';
-import {
-    set_weui
-} from '../../actions';
+import { set_weui } from '../../actions';
 import WeUI from 'react-weui';
 import 'weui';
-import 'react-weui/lib/react-weui.min.css';
+import 'react-weui/build/packages/react-weui.css';
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
-import idCard from "idcard";
-import BIN from "bankcardinfo";
 import { _getBankInfoByCardNo } from "./validationbank"
-
-
+//import idCard from "idcard";
+//import BIN from "bankcardinfo";
 const {
     FormCell,
     CellHeader,
@@ -27,6 +23,7 @@ const {
     Switch,
     CellFooter
     } = WeUI;
+
 
 //判断是否必填
 export const required = value => value ? undefined : '必填项'
@@ -83,17 +80,17 @@ let password = '';
 export const passwordA = value => {password = value; return undefined};
 export const passwordB = value => value && value !== password? "两次密码输入不一致":  undefined;
 //身份证输入验证
-export const isidcard = value => idCard.verify(value)? undefined : "请输入正确的身份证号码";
+//export const isidcard = value => idCard.verify(value)? undefined : "请输入正确的身份证号码";
 
 //获取银行卡信息
-export const asyncValidate = value=> BIN.getBankBin(parseInt(value,10)).then(
-	function (data) {
-		//console.log(data);
-	}).catch(
-		error => {
-	        throw { bankaccount: error }
-	    }
-	)
+// export const asyncValidate = value=> BIN.getBankBin(parseInt(value,10)).then(
+// 	function (data) {
+// 		//console.log(data);
+// 	}).catch(
+// 		error => {
+// 	        throw { bankaccount: error }
+// 	    }
+// 	)
 
 
 //验证银行卡信息
@@ -324,9 +321,10 @@ let WeuiCheckboxValidation = (props) => {
 				<input { ...input } className="weui-agree__checkbox" type={type} />
 				<span className="weui-agree__text">
 					&nbsp;&nbsp;{labelinfo}
-					{!!lnktxt?(<a href={lnkurl}>{lnktxt}</a>):""}
+					
 				</span>
 			</label>
+			{!!lnktxt?(<a onClick={lnkurl} style={{fontSize:"13px",marginLeft:"-10px", display:"inline-block",cursor: "pointer"}}>{lnktxt}</a>):""}
 			{	touched &&
 		    	((error &&
 		    		<span

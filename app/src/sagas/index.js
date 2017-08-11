@@ -1,23 +1,29 @@
 import { fork } from 'redux-saga/effects';
 import {flowmain} from './flowmain';
 import {createsagacallbackflow} from './sagacallback';
-import {getcurpositionflow} from './senddriverposition';
+
 import {wsrecvsagaflow} from './wsrecvsaga';
 import {jpushflow} from './jpushflow';
-import {createnavdrawrouteflow} from './navdrawroute';
-import {createloadingflow} from './loading';
-import {createmapshowflow} from './map';
 
+import {createloadingflow} from './loading';
+import {createmapmainflow} from './mapmain';
+import {createmaptrackhistoryplaybackflow} from './mapplayback';
+import {socketflow} from './socketflow';
+import {testdataflow} from '../test/offlinedata';
 export default function* rootSaga() {
   try{
-    yield fork(createmapshowflow);
+    yield fork(socketflow);
+    yield fork(createmapmainflow);
+    yield fork(createmaptrackhistoryplaybackflow);
     yield fork(createloadingflow);
     yield fork(jpushflow);
     yield fork(wsrecvsagaflow);
-    yield fork(createnavdrawrouteflow);
-    yield fork(flowmain);
-    yield fork(getcurpositionflow);
+
+    // yield fork(flowmain);
+
     yield fork(createsagacallbackflow);
+
+    yield fork(testdataflow);//for test only
   }
   catch(e){
     console.log(e);

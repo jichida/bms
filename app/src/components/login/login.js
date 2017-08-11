@@ -3,7 +3,6 @@ import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
 import { connect } from 'react-redux';
 import {loginsendauth_request,login_request} from '../../actions';
 import NavBar from '../tools/nav.js';
-import '../../newcss/login.css';
 import { withRouter } from 'react-router-dom';
 import { set_weui } from '../../actions';
 import {

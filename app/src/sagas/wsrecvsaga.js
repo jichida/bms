@@ -5,7 +5,6 @@ import {
   md_login_result,
   login_result,
 
-
   set_weui,
 
 } from '../actions';

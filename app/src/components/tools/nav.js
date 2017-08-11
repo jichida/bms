@@ -1,6 +1,5 @@
 ﻿import React from 'react';
-
-import '../../newcss/nav.css';
+import './nav.css';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
 

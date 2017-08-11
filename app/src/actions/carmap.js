@@ -1,16 +1,27 @@
 import { createAction } from 'redux-act';
 
-export const carmap_setmapinited = createAction('carmap_setmapinited');
+export const map_setmapinited = createAction('map_setmapinited');
+export const mapmain_setmapcenter = createAction('mapmain_setmapcenter');
+export const mapmain_setzoomlevel = createAction('mapmain_setzoomlevel');
+export const mapmain_setenableddrawmapflag = createAction('mapmain_setenableddrawmapflag');
 
-export const carmap_setmapcenter = createAction('carmap_setmapcenter');
-
-export const carmap_setzoomlevel = createAction('carmap_setzoomlevel');
 export const carmapshow_createmap = createAction('carmapshow_createmap');
 export const carmapshow_destorymap = createAction('carmapshow_destorymap');
-export const carmap_setenableddrawmapflag = createAction('carmap_setenableddrawmapflag');
 
-export const driveroute_request = createAction('driveroute_request');
-export const driveroute_result = createAction('driveroute_result');
+export const ui_selcurdevice = createAction('ui_selcurdevice');
+export const ui_selcurdevice_result = createAction('ui_selcurdevice_result');
 
-export const sendcurlocationtoserver = createAction('sendcurlocationtoserver');
-export const setcurlocation = createAction('setcurlocation');
+//轨迹回放
+export const mapplayback_start = createAction('mapplayback_start');
+export const mapplayback_end = createAction('mapplayback_end');
+
+//获取一个区域
+export const mapmain_seldistrict_init = createAction('mapmain_seldistrict_init');
+export const mapmain_seldistrict = createAction('mapmain_seldistrict');
+export const mapmain_getdistrictresult_init = createAction('mapmain_getdistrictresult_init');
+export const mapmain_getdistrictresult = createAction('mapmain_getdistrictresult');
+export const mapmain_getdistrictresult_last = createAction('mapmain_getdistrictresult_last');
+//获取地理位置【城市】
+export const mapmain_getgeoresult = createAction('mapmain_getgeoresult');
+
+export const mapmain_clusterMarkerClick = createAction('mapmain_clusterMarkerClick');
