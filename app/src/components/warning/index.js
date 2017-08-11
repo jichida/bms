@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './warning.css';
 import NavBar from "../tools/nav.js";
-import Avatars from "../../img/2.png"; 
+import Avatars from "../../img/2.png";
 import {List, ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import DatePicker from 'material-ui/DatePicker';
@@ -13,22 +13,22 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import {
-    carmapshow_createmap,
-    carmapshow_destorymap,
-} from '../../actions';
-const divmapid = 'mapmain';
+// import {
+//     carmapshow_createmap,
+//     carmapshow_destorymap,
+// } from '../../actions';
+// const divmapid = 'mapmain';
 class Page extends React.Component {
     componentWillMount () {
         console.log('地图---->componentWillMount---------');
     }
     componentWillUnmount(){
         console.log('地图---->componentWillUnmount---------');
-        this.props.dispatch(carmapshow_destorymap({divmapid}));
+        // this.props.dispatch(carmapshow_destorymap({divmapid}));
     }
     componentDidMount () {
         console.log('地图---->componentDidMount---------');
-        this.props.dispatch(carmapshow_createmap({divmapid}));
+        // this.props.dispatch(carmapshow_createmap({divmapid}));
     }
 
     render() {
