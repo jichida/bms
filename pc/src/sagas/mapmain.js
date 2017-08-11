@@ -27,6 +27,7 @@ import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
 import _ from 'lodash';
+import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
 import {getpopinfowindowstyle,getgroupStyleMap} from './getmapstyle';
@@ -440,6 +441,7 @@ export function* createmapmainflow(){
     yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
       try{
         let {payload:{adcodetop}} = action_district;
+        console.log(`开始初始化设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
         function* gettreenode(adcode){
           let treenode;
@@ -476,9 +478,9 @@ export function* createmapmainflow(){
           }
         }
         yield settreenode(treenoderoot);
-        console.log(treenoderoot);
-        distCluster.zoomToShowSubFeatures(adcodetop);
 
+        distCluster.zoomToShowSubFeatures(adcodetop);
+        console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         yield put(mapmain_getdistrictresult_init(treenoderoot));
       }
       catch(e){

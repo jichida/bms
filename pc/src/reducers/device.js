@@ -21,7 +21,7 @@ const initial = {
     toggled:true,
     toggledgruop:true,
     mapseldeviceid:undefined,
-    mapdeviceidlist:[],
+    // mapdeviceidlist:[],
     datatree:{},
     datatreegroup:{},
 
@@ -158,10 +158,10 @@ const device = createReducer({
   },
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
-    // let deviceidlist = [];
+    // let mapdeviceidlist = [];
     let devices = {};
     _.map(list,(devicerecord)=>{
-      //deviceidlist.push(devicerecord.DeviceId);
+      // mapdeviceidlist.push(devicerecord.DeviceId);
       devices[devicerecord.DeviceId] = devicerecord;
     });
     let datatreegroup = {

@@ -22,15 +22,26 @@ import {
   querydeviceinfo_request,
   querydeviceinfo_result
 } from '../actions';
-import jsondata from './bmsdata.json';
+import jsondatareadonly from './bmsdata.json';
 import jsondatatrack from './1602010008.json';
 import jsondataalarm from './json-BMS2.json';
 import _ from 'lodash';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 //获取地理位置信息，封装为promise
+let jsondata = _.filter(jsondatareadonly,(item) => {
+  let thisdata = false;
+  if(!!item.LastHistoryTrack){
+    if(!!item.LastHistoryTrack.Latitude){
+      if(item.LastHistoryTrack.Latitude > 0){
+        thisdata = true;
+      }
+    }
+  }
+  return thisdata;
+});
+// jsondata = _.sampleSize(jsondata, 1000);
+
 export function* testdataflow(){//仅执行一次
-
-
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
     const {payload:{query:{DeviceId}}} = action;
     const getdevices = (state)=>{return state.device};
