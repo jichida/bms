@@ -1,4 +1,4 @@
-import { select,put,call,take,takeEvery,takeLatest,cancel,fork } from 'redux-saga/effects';
+import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   mapmain_setzoomlevel,
@@ -451,24 +451,28 @@ export function* createmapmainflow(){
             }
             catch(e){
               yield call(delay,1000);
-              distCluster.zoomToShowSubFeatures(adcode);
+              // distCluster.zoomToShowSubFeatures(adcode);
               console.log(e);
             }
           }
+          // console.log(`gettreenode result:${adcode}`);
           return treenode;
         }
 
         let treenoderoot = yield gettreenode(adcodetop);
+        let forkhandles = [];
 
         function* settreenode(treenode){
           if(!!treenode && !!treenode.children){
+            // console.log(`settreenode:${treenode.children.length}`);
             for(let i =0 ;i< treenode.children.length;i++){
               let child = treenode.children[i];
               let adcode = child.adcode;
               if(!!adcode){
-                let childsub = yield gettreenode(adcode);
-                child.children = childsub.children;
-                yield settreenode(childsub);
+                const handlefork = yield fork(gettreenodeandset,adcode,child);
+                forkhandles.push(handlefork);
+                // yield gettreenodeandset(adcode,child);
+                // console.log(`开始:${adcode}`);
               }
               else{
                 //device
@@ -477,9 +481,20 @@ export function* createmapmainflow(){
             }
           }
         }
-        yield settreenode(treenoderoot);
 
-        distCluster.zoomToShowSubFeatures(adcodetop);
+        function* gettreenodeandset(adcode,child){
+          let childsub = yield gettreenode(adcode);
+          child.children = childsub.children;
+          // yield settreenode(childsub);
+          const handlefork = yield fork(settreenode,childsub);
+          forkhandles.push(handlefork);
+        }
+        yield settreenode(treenoderoot);
+        // yield call(delay,10000);
+        console.log(`等待完成,合计${forkhandles.length}个任务`);
+        // yield forkhandles.map(t => join(t)).
+        yield join(...forkhandles);
+        // distCluster.zoomToShowSubFeatures(adcodetop);
         console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         yield put(mapmain_getdistrictresult_init(treenoderoot));
       }
