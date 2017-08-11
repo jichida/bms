@@ -1,0 +1,547 @@
+/*common*/
+*{
+    overflow-scrolling:touch;
+    -webkit-overflow-scrolling:touch;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-weight: 200;
+    border:none;
+}
+.AppContainer{
+    background: #EEE;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.AppPage{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    height: 100%;
+}
+.AppPage .content{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+}
+.AppPage .content .AdminContent{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.AppPage .content .appbar{
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.AppPage .leftmenu{
+    background: #2a2d34;
+    color: #FFF;
+    height: 100%;
+    overflow: auto;
+    width: 180px;
+}
+.AppPage .leftmenu ul li {
+    height: 50px;
+    display: block;
+}
+.AppPage .leftmenu ul li a{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-align-self: center;
+    align-self: center;
+    border-bottom: 1px solid #666;
+    line-height: 50px;
+    text-align: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    padding: 0 15px;
+}
+.AppPage .leftmenu.open ul li a{
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+.AppPage .leftmenu ul li i{
+    line-height: 50px;
+    font-size: 22px;
+}
+.AppPage .leftmenu ul li:active{
+    background: #383a3e;
+}
+
+.AppPage .logo{
+    background: #EEE;
+    height: 64px;
+    color: #333;
+    text-align: center;
+    line-height: 64px;
+}
+.AppPage .leftmenu ul li span{
+    padding-left: 10px;
+    display: none;
+}
+.AppPage .leftmenu.open ul li span{
+    display: inline-block;
+    white-space: nowrap ;
+}
+.AppPage .content .headcontent{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.AppPage .content .headcontent .logo{
+    width: 100px;
+    height: 64px;
+    line-height: 64px;
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.AppPage .leftmenu{
+    width: 60px;
+    animation:leftmenuhide .1s;
+    -webkit-animation:leftmenuhide .1s;
+}
+.AppPage .leftmenu.open{
+    width: 180px;
+    animation:leftmenushow .1s;
+    -webkit-animation:leftmenushow .1s;
+}
+@keyframes leftmenuhide{
+    from {width: 180px;}
+    to {width : 60px;}
+}
+@keyframes leftmenushow{
+    from {width: 60px;}
+    to {width : 180px;}
+}
+.AppPage .menuMain{
+    width: 54px;
+    background:#4283cc;
+    height: 54px;
+    display: block;
+    overflow:hidden;
+    padding: 0;
+    border-radius: 54px;
+    text-align: center;
+    font-size:24px;
+}
+.AppPage .menuitem{
+    width: 60px;
+    line-height: 60px;
+    margin-bottom: 5px;
+    border-radius: 60px;
+    background:#4283cc;
+}
+.AppPage .menuMain,
+.AppPage .menuitem{
+    color: #FFF;
+}
+.AppPage .menuitem span.name{
+    width: 0;
+    opacity :  0;
+    display: none;
+}
+.AppPage .menuitem span.name.show{
+    position: absolute;
+    right: 26px;
+    display: block;
+    background: #4283cc;
+    border-radius: 60px 0 0 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+    top: 0;
+    opacity: 1;
+    white-space : nowrap;
+    width: 100px;
+    animation:leftmenutextshow .1s;
+    -webkit-animation:leftmenutextshow .1s;
+}
+
+@keyframes leftmenutextshow{
+    from {width: 0px;opacity: 0;}
+    to {width : 100px;opacity: 1;}
+}
+
+
+.AppPage .menuitem i.fa{
+    z-index: 100;
+    position: relative;
+}
+
+
+
+.AppPage .fab__icon{
+    line-height: 54px;
+}
+.AppPage .page__background,
+.AppPage .page__content{
+    display: none;
+}
+.AppPage .page{
+    pointer-events:none;
+}
+.AppPage .page .fab--bottom__right,
+.AppPage .react-draggable .cursor,
+.AppPage .react-draggable .cursor *,
+.AppPage .page .fab--bottom__right *{
+    pointer-events:auto;
+}
+.AppPage .fab--bottom__right{
+    bottom: 0;
+    right: 3px;
+}
+.AppPage .react-draggable{
+    z-index: 13001;
+    height: 54px;
+    width: 60px;
+    position: absolute;
+    overflow: visible;
+}
+.AppPage .react-draggable .page{
+    overflow-y: visible;
+}
+.appbar .title{
+    color: #333;
+}
+.treePage{
+    padding: '20px 20px 0 20px'
+}
+.treeSearch .input-group{
+    padding:10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+.treeSearch .input-group .input-group-addon{
+    padding:5px 10px;
+    background: #FFF;
+}
+.treeSearch .input-group input{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.warningPage{
+    padding:10px;
+}
+.warningPage .tit{
+    font-size: 18px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+.warningsearch{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    height: 60px;
+}
+
+.warningsearch .seltime{
+    -webkit-flex-grow:1;
+    flex-grow:1;
+    width: 200px;
+    margin-right: 10px;
+    overflow:hidden;
+}
+.warningsearch .seltime:last-child{
+    margin-right: 0;
+}
+.showMessageBtn{
+    position: absolute;
+    top: 12px;
+    right: 120px;
+    z-index: 1200;
+}
+.devicebtnlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    padding-bottom: 10px;
+}
+.devicebtnlist >div{
+    margin-right: 10px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.messagePage .lists,
+.devicePage .lists{
+    border-top:1px solid #EEE;
+}
+.messagePage .lists .li,
+.devicePage .lists .li{
+    padding: 10px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    border-bottom:1px solid #EEE;
+}
+.devicePage .lists .li{
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.messagePage .lists .li:active{
+    background: #EEE;
+}
+.messagePage .lists .li .fa.fa-bus{
+    text-align: center;
+}
+.messagePage .lists .li .licontent .name{
+    font-size:14px;
+    color: #999;
+}
+
+.devicePage .lists .li{
+    border-bottom: 1px solid #EEE;
+}
+.toggledistcluster,
+.togglehugepoints{
+    position: fixed;
+    right: 120px;
+    top:12px;
+    z-index:1200;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    padding: 6px 10px;
+    background: #EEE;
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+}
+.togglehugepoints{
+    right: 270px;
+}
+
+.toggledistcluster .toggleitme,
+.togglehugepoints .toggleitme{
+
+}
+
+.searchli{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: flex-end;
+    align-items: flex-end;
+    -webkit-align-items: flex-end;
+    -moz-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.searchli >div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: flex-end;
+    align-items: flex-end;
+    -webkit-align-items: flex-end;
+    -moz-flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    width: 100%;
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.searchli >div>div{
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.searchbtn{
+    text-align: right;
+    margin-bottom: 15px;
+}
+.myclose {
+    display: block;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    right: 5px;
+    top:2px;
+}
+.myclose :active{
+    background: #EEE;
+}
+
+.myclose:after{
+    content : "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: #333;
+    left: 8px;
+    top: 18px;
+    transform: rotate(45deg);
+}
+.myclose:before{
+    content : "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    background: #333;
+    left: 8px;
+    top: 18px;
+    transform: rotate(-45deg);
+}
+
+.myclose.white:after,
+.myclose.white:before{
+    background: #FFF;
+}
+
+.AppPage .warningtips{
+    position: absolute;
+    z-index: 1299;
+    position: absolute;
+    top : 12px;
+    right: 130px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+.AppPage .Badge{
+    padding: 0;
+    height: 36px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-left: 5px;
+}
+.AppPage .BadgeStyle{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+.treePage .btnlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    padding: 0 15px 15px 15px;
+}
+.treePage .btnlist >div{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.treePage .btnlist >div:first-child{
+    margin-right: 10px;
+}
+
+.treePage .searchbox{
+    padding: 10px 15px;
+    background: rgb(33, 37, 43);
+}
+.treePage .searchbox >div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    background: #EEE;
+    padding: 5px;
+}
+.treePage .searchbox >div input{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 10px;
+    background: #EEE;
+}
+.formlist,.btnlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+.formlist >div,
+.btnlist >div{
+    margin-right: 10px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.formlist >div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.formlist >div:first-child,.formlist >div>div:first-child{
+    margin-right: 10px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.formlist >div>div{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.formlist >div>div>div{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+
