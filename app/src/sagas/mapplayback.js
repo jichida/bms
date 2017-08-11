@@ -12,6 +12,7 @@ import {
   querydeviceinfo_request,
 
   mapplayback_start,
+  mapplayback_end,
   queryhistorytrack_request,
   queryhistorytrack_result
 } from '../actions';
@@ -76,6 +77,7 @@ const initmapui =  (map)=>{
    });
 }
 
+let navg0;
 const startplayback = ({isloop,speed})=>{
   return new Promise((resolve,reject) => {
     if(!!pathSimplifierIns){
@@ -88,7 +90,7 @@ const startplayback = ({isloop,speed})=>{
               alert('图片加载失败！');
           }
 
-          const navg0 = pathSimplifierIns.createPathNavigator(0, {
+          navg0 = pathSimplifierIns.createPathNavigator(0, {
              loop: isloop, //循环播放
              speed,
              pathNavigatorStyle: {
@@ -277,5 +279,17 @@ export function* createmaptrackhistoryplaybackflow(){
           console.log(`选择点失败${e}`);
         }
     });
-
+    //mapplayback_end
+    yield takeLatest(`${mapplayback_end}`,function*(action){
+      try{
+        if(!!navg0){
+          navg0.stop();
+          navg0.destroy();
+        }
+      }
+      catch(e){
+        console.log(e);
+        console.log(`选择点失败${e}`);
+      }
+    });
 }

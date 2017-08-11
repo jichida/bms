@@ -1,4 +1,4 @@
-import { select,put,call,take,takeEvery,takeLatest,cancel,fork } from 'redux-saga/effects';
+import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   mapmain_setzoomlevel,
@@ -11,6 +11,7 @@ import {
   ui_selcurdevice,
   ui_selcurdevice_result,
   querydeviceinfo_request,
+  querydeviceinfo_result,
   ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
@@ -26,6 +27,7 @@ import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
 import _ from 'lodash';
+import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
 import {getpopinfowindowstyle,getgroupStyleMap} from './getmapstyle';
@@ -375,7 +377,8 @@ export function* createmapmainflow(){
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
           console.log(`${JSON.stringify(deviceitem)}`);
           yield put(querydeviceinfo_request({query:{DeviceId}}));
-          yield call(showinfowindow,deviceitem);
+          const {payload} = yield take(`${querydeviceinfo_result}`);
+          yield call(showinfowindow,payload);
           yield fork(function*(eventname){
            while(true){
              yield call(listenwindowinfoevent,eventname);
@@ -438,6 +441,7 @@ export function* createmapmainflow(){
     yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
       try{
         let {payload:{adcodetop}} = action_district;
+        console.log(`开始初始化设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
         function* gettreenode(adcode){
           let treenode;
@@ -447,32 +451,63 @@ export function* createmapmainflow(){
             }
             catch(e){
               yield call(delay,1000);
-              distCluster.zoomToShowSubFeatures(adcode);
+              // distCluster.zoomToShowSubFeatures(adcode);
               console.log(e);
             }
           }
+          // console.log(`gettreenode result:${adcode}`);
           return treenode;
         }
 
         let treenoderoot = yield gettreenode(adcodetop);
 
+
         function* settreenode(treenode){
+          let forkhandles = [];
           if(!!treenode && !!treenode.children){
+            // console.log(`settreenode:${treenode.children.length}`);
             for(let i =0 ;i< treenode.children.length;i++){
               let child = treenode.children[i];
               let adcode = child.adcode;
               if(!!adcode){
-                let childsub = yield gettreenode(adcode);
-                child.children = childsub.children;
-                yield settreenode(childsub);
+                const handlefork = yield fork(gettreenodeandset,adcode,child);
+                forkhandles.push(handlefork);
+                // yield gettreenodeandset(adcode,child);
+                // console.log(`开始:${adcode}`);
+              }
+              else{
+                //device
+                child.loading = false;
               }
             }
           }
+          if(forkhandles.length > 0){
+            yield join(...forkhandles);
+          }
+
+        }
+
+        function* gettreenodeandset(adcode,child){
+          let childsub = yield gettreenode(adcode);
+          child.children = childsub.children;
+          // yield settreenode(childsub);
+          let forkhandles = [];
+          const handlefork = yield fork(settreenode,childsub);
+          forkhandles.push(handlefork);
+          if(forkhandles.length > 0){
+            yield join(...forkhandles);
+          }
+          
         }
         yield settreenode(treenoderoot);
-        console.log(treenoderoot);
-        distCluster.zoomToShowSubFeatures(adcodetop);
+        // const handlefork = yield fork(settreenode,treenoderoot);
+        // forkhandles.push(handlefork);
+        // yield call(delay,10000);
+        // console.log(`等待完成,合计${forkhandles.length}个任务:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+        // yield forkhandles.map(t => join(t)).
 
+        // distCluster.zoomToShowSubFeatures(adcodetop);
+        console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         yield put(mapmain_getdistrictresult_init(treenoderoot));
       }
       catch(e){
@@ -485,43 +520,16 @@ export function* createmapmainflow(){
         try{
           if(!!adcodetop){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
-            const {level,devices,curproviceid,curcityid} = yield select((state)=>{
-              return {...state.device};
-            });
-            let adcodeinfo = getadcodeinfo(adcodetop);
-            if(adcodeinfo.level === 'district' && curcityid !== adcodeinfo.parent_code){
-              //当前区的城市 非当前选择城市
-              let adcodecityinfo = getadcodeinfo(adcodeinfo.parent_code);
-              if(adcodecityinfo.parent_code !== curproviceid){
-                //当前省份非当前选择省份
-                // yield put.resolve(mapmain_seldistrict({adcodetop:adcodecityinfo.parent_code,toggled:true}));
-                let treenodeprovice = yield call(getClusterTree,{adcodetop:adcodecityinfo.parent_code});
-                //选择省份
-                yield put(mapmain_getdistrictresult(treenodeprovice));
-              }
-              //选择当前城市
-              // yield put.resolve(mapmain_seldistrict({adcodetop:adcodeinfo.parent_code,toggled:true}));
-              let treenodecity = yield call(getClusterTree,{adcodetop:adcodeinfo.parent_code});
-              yield put(mapmain_getdistrictresult(treenodecity));
-            }
-
-            if(adcodeinfo.level === 'city' && curproviceid !== adcodeinfo.parent_code){
-              //当前城市所在省 非当前省
-              // yield put.resolve(mapmain_seldistrict({adcodetop:adcodeinfo.parent_code,toggled:true}));
-              let treenodeprovice = yield call(getClusterTree,{adcodetop:adcodeinfo.parent_code});
-              //选择省份
-              yield put(mapmain_getdistrictresult(treenodeprovice));
-            }
             //========================================================================================
             distCluster.zoomToShowSubFeatures(adcodetop);
-            let treenode = yield call(getClusterTree,{adcodetop});
-            yield put(mapmain_getdistrictresult(treenode));
 
-            const {curdevicelist} = yield select((state)=>{
+            yield put(mapmain_getdistrictresult({adcode:adcodetop}));
+            let adcodeinfo = getadcodeinfo(adcodetop);
+            const {curdevicelist,devices} = yield select((state)=>{
               return {...state.device};
             });
-            console.log(`===>${adcodeinfo.level},${curdevicelist.length}`);
-            if(adcodeinfo.level === 'district'){
+            console.log(`${curdevicelist.length}`);
+            if(adcodeinfo.level === 'district' && curdevicelist.length < 50){
               //如果当前定位到区一级，则自动放大到最合适位置
               let latlngs = [];
               _.map(curdevicelist,(devicenode)=>{
@@ -542,12 +550,12 @@ export function* createmapmainflow(){
                  console.log(`zoomto...`);
                }
             }
-            yield put(mapmain_getdistrictresult_last({}));
           }
         }
         catch(e){
           console.log(e);
         }
+        yield put(mapmain_getdistrictresult_last({}));
 
     });
 

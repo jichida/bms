@@ -14,3 +14,13 @@ export const queryrealtimealarm_result = createAction('queryrealtimealarm_result
 //查询历史轨迹数据
 export const queryhistorytrack_request  = createAction('queryhistorytrack_request');
 export const queryhistorytrack_result  = createAction('queryhistorytrack_result');
+
+//查询电池包
+export const searchbattery_request = createAction('searchbattery_request');
+export const searchbattery_result = createAction('searchbattery_result');
+//查询电池包报警
+export const searchbatteryalarm_request = createAction('searchbatteryalarm_request');
+export const searchbatteryalarm_result = createAction('searchbatteryalarm_result');
+//查询单个电池包报警
+export const searchbatteryalarmsingle_request = createAction('searchbatteryalarmsingle_request');
+export const searchbatteryalarmsingle_result = createAction('searchbatteryalarmsingle_result');

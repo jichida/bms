@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-act';
 import{
   querydevice_result,
+  querydevicegroup_result,
   ui_selcurdevice_result,
   querydeviceinfo_result,
   mapmain_getdistrictresult,
@@ -20,20 +21,14 @@ const initial = {
     toggled:true,
     toggledgruop:true,
     mapseldeviceid:undefined,
-    mapdeviceidlist:[],
+    // mapdeviceidlist:[],
     datatree:{},
     datatreegroup:{},
 
-    curproviceid:undefined,
-    curcityid:undefined,
-    curdistrictid:undefined,
-    curprovicelist:[],
-    curcitylist:[],
-    curdistrictlist:[],
     curdevicelist:[],
-
-    devices: {
-    },
+    groupidlist:[],
+    groups:{},
+    devices:{},
   }
 };
 
@@ -54,7 +49,6 @@ const device = createReducer({
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
       if(node.name === `${mapseldeviceid}`){
-        node.active = true;
         console.log(`node${node.name}==>true`);
         return retnode;
       }
@@ -64,8 +58,12 @@ const device = createReducer({
           const subnode = node.children[i];
           let tmpnode = findandsettreenode(subnode,mapseldeviceid);
           if(!!tmpnode){
+            if(tmpnode.name === `${mapseldeviceid}`){
+              subnode.active = true;
+              subnode.loading = false;
+            }
+            subnode.toggled = true;
             retnode = node;
-            retnode.toggled = true;
           }
         }
       }
@@ -100,11 +98,16 @@ const device = createReducer({
     return {...state,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
-    let treenode = payload;
+    let {adcode} = payload;
+    let adcodeinfo = getadcodeinfo(adcode);
+    let curdevicelist = state.curdevicelist;
     let findandsettreenode = (node,adcode,isroot)=>{
       let retnode = node;
       if(node.adcode === adcode){
         console.log(node);
+        if(adcodeinfo.level === 'district'){
+          curdevicelist = [...node.children];
+        }
         return retnode;
       }
       retnode = null;
@@ -112,17 +115,17 @@ const device = createReducer({
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
           let tmpnode = findandsettreenode(subnode,adcode,false);
-          if(!!tmpnode){
-            if(tmpnode.adcode !== adcode){
-              node.toggled = true;
-              node.active = false;
-              node.loading = false;
-            }
-            else{//equal
-              subnode.toggled = state.toggled;
+          if(!!tmpnode){//subnode为tmpnode,目标选中
+            if(tmpnode.adcode === adcode){
+              //选中／展开//equal
               subnode.active = true;
+              subnode.toggled = state.toggled;
               subnode.loading = false;
             }
+            node.active = false;
+            node.toggled = true;
+            node.loading = false;
+
             retnode = node;
           }
         }
@@ -136,15 +139,29 @@ const device = createReducer({
     };
       // let treenode = payload;
      let datatree = {...state.datatree};
-     findandsettreenode(datatree,treenode.adcode,true);
-     return {...state,datatree};
+     findandsettreenode(datatree,adcode,true);
+     //root保持不动
+     datatree.toggled = true;
+     datatree.active = false;
+     datatree.loading = false;
+     return {...state,datatree,curdevicelist};
+  },
+  [querydevicegroup_result]:(state,payload)=>{
+    const {list} = payload;
+    let groupidlist = [];
+    let groups = {};
+    _.map(list,(grouprecord)=>{
+      groupidlist.push(grouprecord._id);
+      groups[grouprecord._id] = grouprecord;
+    });
+    return {...state,groups,groupidlist};
   },
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
-    // let deviceidlist = [];
+    // let mapdeviceidlist = [];
     let devices = {};
     _.map(list,(devicerecord)=>{
-      //deviceidlist.push(devicerecord.DeviceId);
+      // mapdeviceidlist.push(devicerecord.DeviceId);
       devices[devicerecord.DeviceId] = devicerecord;
     });
     let datatreegroup = {
@@ -155,11 +172,13 @@ const device = createReducer({
       name:`所有分组`,
       children:[]
     };
-    const devicesgroups = _.groupBy(list,getgroupnamebydevice);
+    const devicesgroups = _.groupBy(list,(dev)=>{
+      return getgroupnamebydevice(dev)._id;
+    });
     _.map(devicesgroups,(csz,ckey)=>{
         let node = {
           id:ckey,
-          name:`${ckey}(${csz.length})`,
+          name:`${state.groups[ckey].name}(${csz.length})`,
           children:[]
         };
 
