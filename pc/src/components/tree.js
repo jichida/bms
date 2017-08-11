@@ -11,7 +11,7 @@ import {
   mapmain_seldistrict,
   ui_selcurdevice,
   ui_changetreestyle,
-  ui_settreefilter
+  md_ui_settreefilter
 } from '../actions';
 import {filterTree,expandFilteredNodes} from '../util/filter';
 
@@ -58,11 +58,11 @@ class TreeExample extends React.Component {
     onFilterMouseUp(e) {
         const filter = e.target.value.trim();
         if(!!filter){
-          if(filter.length <= 3){
+          if(filter.length === 1){
             return;
           }
         }
-        this.props.dispatch(ui_settreefilter(filter));
+        this.props.dispatch(md_ui_settreefilter(filter));
     }
 
     render(){
@@ -76,7 +76,7 @@ class TreeExample extends React.Component {
                         </span>
                         <input className="form-control"
                                onKeyUp={this.onFilterMouseUp.bind(this)}
-                               placeholder="根据设备id搜索(至少三位)"
+                               placeholder="根据设备id搜索(至少两位)"
                                type="text"/>
                     </div>
                 </div>

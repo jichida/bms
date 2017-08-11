@@ -19,7 +19,9 @@ import {
   mapmain_seldistrict_init,
   mapmain_getdistrictresult,
   mapmain_getdistrictresult_init,
-  mapmain_getdistrictresult_last
+  mapmain_getdistrictresult_last,
+  ui_settreefilter,
+  md_ui_settreefilter
 } from '../actions';
 
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -602,4 +604,17 @@ export function* createmapmainflow(){
       }
       yield put(ui_selcurdevice_result(actioncurdevice.payload));
     });
+
+    yield takeLatest(`${md_ui_settreefilter}`,function*(action){
+      //https://redux-saga.js.org/docs/recipes/
+      const {payload} = action;
+      let delaytime = 0;
+      let treefilter = payload;
+      if(!!treefilter){
+          delaytime = 500;
+      }
+      yield call(delay, delaytime);
+      yield put(ui_settreefilter(payload));
+    });
+    //
 }
