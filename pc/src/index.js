@@ -23,6 +23,6 @@ store.dispatch(setLanguage('cn', lan['cn']));
 // const p = getP(store.getState(), { polyglotScope: 'warningbox' });
 // console.log(p.tc('title')) // => will return 'Hello'
 
-registerandroid();
-postNotifyFromJPush(store.dispatch);
+// registerandroid();
+// postNotifyFromJPush(store.dispatch);
 registerServiceWorker();

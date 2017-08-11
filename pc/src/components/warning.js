@@ -74,7 +74,6 @@ class Page extends React.Component {
         );
     }
 }
-
 const mapStateToProps = (
   {
     device:
