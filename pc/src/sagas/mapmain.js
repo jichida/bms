@@ -191,7 +191,16 @@ const listenwindowinfoevent = (eventname)=>{
 const listenclusterevent = (eventname)=>{
   return new Promise(resolve => {
     distCluster.on(eventname, (e,record)=> {
-        resolve({adcodetop:record.adcode,toggled:true});
+        distCluster.getClusterRecord(record.adcode,(err,result)=>{
+          if(!err){
+            const {adcode,name,dataItems,hangingDataItems,children} = result;
+            if(dataItems.length > 0){
+                resolve({adcodetop:record.adcode,toggled:true});
+                return;
+            }
+          }
+          resolve();
+        });
     });
   });
 }
@@ -237,10 +246,15 @@ let getClusterTree =({adcodetop})=> {
         //  }> 子级区划的聚合信息
         // console.log(`${err}`);
         if(!err){
+          const {adcode,name,dataItems,hangingDataItems,children} = result;
+          if(dataItems.length === 0){
+            resolve();
+            console.log(`返回undefined ...>${name}(${dataItems.length})`)
+            return;
+          }
           let treenode = {
             children:[],
           };
-          const {adcode,name,dataItems,hangingDataItems,children} = result;
           treenode.adcode = adcode;
           treenode.name = `${name}(${dataItems.length})`;
 
@@ -259,12 +273,14 @@ let getClusterTree =({adcodetop})=> {
           }
           else{
             _.map(children,(child)=>{
-              treenode.children.push({
-                adcode:child.adcode,
-                loading: true,
-                name:`${child.name}(${child.dataItems.length})`,
-                children:[]
-              });
+              if(child.dataItems.length > 0){
+                treenode.children.push({
+                  adcode:child.adcode,
+                  loading: true,
+                  name:`${child.name}(${child.dataItems.length})`,
+                  children:[]
+                });
+              }
             });
           }
           resolve(treenode);
@@ -307,7 +323,9 @@ export function* createmapmainflow(){
           let listentask =  yield fork(function*(eventname){
             while(true){
               let result = yield call(listenclusterevent,eventname);
-              yield put(mapmain_seldistrict(result));
+              if(!!result){
+                yield put(mapmain_seldistrict(result));
+              }
               // yield put(clusterMarkerClick(result));
             }
           },'clusterMarkerClick');
@@ -448,6 +466,7 @@ export function* createmapmainflow(){
           while(!treenode){
             try{
               treenode = yield call(getClusterTree,{adcodetop:adcode});
+              break;
             }
             catch(e){
               yield call(delay,1000);
@@ -460,7 +479,8 @@ export function* createmapmainflow(){
         }
 
         let treenoderoot = yield gettreenode(adcodetop);
-
+        //先加载一次
+        yield put(mapmain_getdistrictresult_init(treenoderoot));
 
         function* settreenode(treenode){
           let forkhandles = [];
@@ -489,15 +509,17 @@ export function* createmapmainflow(){
 
         function* gettreenodeandset(adcode,child){
           let childsub = yield gettreenode(adcode);
-          child.children = childsub.children;
-          // yield settreenode(childsub);
-          let forkhandles = [];
-          const handlefork = yield fork(settreenode,childsub);
-          forkhandles.push(handlefork);
-          if(forkhandles.length > 0){
-            yield join(...forkhandles);
+          if(!!childsub){
+            child.children = childsub.children;
+            // yield settreenode(childsub);
+            let forkhandles = [];
+            const handlefork = yield fork(settreenode,childsub);
+            forkhandles.push(handlefork);
+            if(forkhandles.length > 0){
+              yield join(...forkhandles);
+            }
           }
-          
+
         }
         yield settreenode(treenoderoot);
         // const handlefork = yield fork(settreenode,treenoderoot);
