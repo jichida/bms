@@ -5,12 +5,14 @@ import {loginsendauth_request,login_request} from '../../actions';
 import NavBar from '../tools/nav.js';
 import { withRouter } from 'react-router-dom';
 import { set_weui } from '../../actions';
+import './login.css';
 import {
     required,
     phone,
     InputValidation,
     length4
-    } from "../tools/formvalidation"
+} from "../tools/formvalidation-material-ui"
+import Loginbg from "../../img/1.png";
 
 export class PageForm extends Component {
     render(){
@@ -18,10 +20,12 @@ export class PageForm extends Component {
 
         return (
             <Form
-                className="loginForm formStyle1"
+                className="loginForm"
                 onSubmit={handleSubmit(onClickLogin)}
                 >
-
+                <div className="logo">
+                        地图监控系统
+                </div>
                 <div className="li" >
                     <span className="icon">
                         <img src="newimg/25.png" alt='' />
@@ -49,7 +53,9 @@ export class PageForm extends Component {
                     />
 
                 </div>
-                <span className="resetpassword" onClick={()=>{this.props.history.push("/findpwd")}}>忘记密码？</span>
+
+                <br/>
+                <br/>
 
                 <div className="submitBtn">
                     <span
@@ -59,7 +65,7 @@ export class PageForm extends Component {
                         >
                         登录
                     </span>
-                    <span className="gotoregister" onClick={()=>{this.props.history.push("/register")}}>还没有账号？去注册</span>
+                    
 
                 </div>
             </Form>
@@ -112,21 +118,24 @@ export class Page extends Component {
     }
 
     onClickLogin = (values)=>{
-        let payload = {
-            username:values.phonenumber,
-            password:values.password,
-        };
+        // let payload = {
+        //     username:values.phonenumber,
+        //     password:values.password,
+        // };
 
-        this.props.dispatch(login_request(payload));
+        // this.props.dispatch(login_request(payload));
+        this.props.history.push("./");
     }
     render(){
         return (
-            <div className="loginPage AppPage">
-                <NavBar back={true} title="快速登录" />
+            <div className="loginPage AppPage" 
+                style={{
+                    background:`url(${Loginbg})`,
+                    backgroundSize: "100% 100%",
+                    minHeight : `${window.innerHeight}px`
+                }}>
+                
                 <div className="content">
-                    <div className="logo">
-                        <img src="newimg/24.png" alt=''/>
-                    </div>
                     <PageForm onClickLogin={this.onClickLogin}/>
                 </div>
             </div>

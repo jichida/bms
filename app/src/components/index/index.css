@@ -1,0 +1,67 @@
+.indexPage .head{
+    width: 100%;
+    height: 200px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    padding-bottom:10px;
+}
+.indexPage .head img{
+    width : 80px;
+    height: 80px;
+    border-radius: 80px;
+    margin-bottom: 10px;
+    border:3px solid rgba(255,255,255,.6)
+}
+.indexPage .head .title{
+    font-size: 22px;
+    color: #FFF;
+    margin-bottom: 30px;
+}
+.indexPage .head span{
+    font-size: 20px;
+    color: #FFF;
+    font-weight: 600;
+}
+.indexPage .content{
+    background: rgba(255,255,255,.95);
+    width: 90%;
+    margin: auto;
+    border-radius: 6px;
+}
+.indexPage .content .li{
+    width: 50%;
+    display: inline-block;
+}
+.indexPage .content .li >div{
+    padding: 15px;
+    border-bottom: 1px solid #170f5c;
+    text-align: center;
+}
+.indexPage .content .li >div img{
+    height: 60px;
+}
+.indexPage .content .l1 >div,
+.indexPage .content .l3 >div,
+.indexPage .content .l5 >div{
+    border-right: 1px solid #170f5c;
+}
+.indexPage .content .li i,
+.indexPage .content .li span{
+    display: block;
+    font-size: 76px;
+    text-align: center;
+}
+.indexPage .content .li span{
+    font-size: 16px;
+}

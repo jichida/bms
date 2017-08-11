@@ -2,6 +2,7 @@
 import './nav.css';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
+import Loginbg from "../../img/1.png";
 
 export class Page extends React.Component {
 
@@ -98,7 +99,12 @@ export class Page extends React.Component {
         }
 
         return (
-            <div className="newNavHeadContent" id="newNavHeadContent">
+            <div className="newNavHeadContent" id="newNavHeadContent"
+                style={{
+                    background:`url(${Loginbg})`,
+                    backgroundSize: "100% auto",
+                }}
+                >
                 <span className="leftlnk">
                 {
                     back?(<span className="back" onClick={()=>{this.pageBack()}} />):''

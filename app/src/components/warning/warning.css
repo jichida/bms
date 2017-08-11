@@ -1,0 +1,12 @@
+.warningPage .set{
+    border-bottom: 1px solid #EEE;
+    padding:20px;
+    box-shadow: 1px 1px 8px rgba(0,0,0,.2);
+    background: #FFF;
+    position: relative;
+    z-index: 2;
+}
+
+.warningPage .content >div{
+	border-bottom: 1px solid #EEE;
+}

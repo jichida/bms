@@ -1,0 +1,48 @@
+.playbackPage .fa.back{
+    font-size:30px;
+    padding: 0 20px;
+    background-size: #FFF;
+
+}
+.playbackPage .set{
+    border-bottom: 1px solid #EEE;
+    padding:20px;
+    box-shadow: 1px 1px 8px rgba(0,0,0,.2);
+    background: #FFF;
+    position: relative;
+    z-index: 2;
+}
+
+.playbackPage{
+    padding-bottom: 15px;
+}
+.playbackPage .formlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.playbackPage .formlist >div{
+	width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.playbackPage .btnlist{
+    display: flex;
+    justify-content: space-between;
+}
+.playbackPage .btnlist >div{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.playbackPage .btnlist >div:last-child{
+    margin-right: 0;
+}

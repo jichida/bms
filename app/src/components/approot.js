@@ -7,8 +7,14 @@ import {map_setmapinited} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
 
 
-import Index from './index';
+import Index from './index/';
 import Login from './login/login';
+import Overview from './overview/overview';
+import Carlist from './mycars/carlist';
+import Collection from './collection/collection';
+import Playback from './playback';
+import Warning from './warning/';
+import Systems from './system';
 
 import "../css/common.css";
 
@@ -39,6 +45,12 @@ class AppRoot extends React.Component {
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)} />
                     <Route path="/index" component={Index} />
                     <Route path="/login" component={Login} />
+                    <Route path="/overview" component={Overview} />
+                    <Route path="/carlist" component={Carlist} />
+                    <Route path="/collection" component={Collection} />
+                    <Route path="/playback" component={Playback} />
+                    <Route path="/warning" component={Warning} />
+                    <Route path="/system" component={Systems} />
                 </Switch>
             </div>
         );

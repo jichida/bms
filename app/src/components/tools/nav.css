@@ -1,5 +1,5 @@
 #newNavHeadContent.newNavHeadContent {
-    background: #FFFFFF;
+    background: #2213a7;
     display: flex;
     align-items: center;
     height: 48px;
@@ -13,12 +13,13 @@
     text-align: center;
     line-height: 48px;
     color: #111;
-    font-size: 16px;
+    font-size: 20px;
     position: relative;
     z-index: 1;
     width: 100%;
     display: block;
-
+    color: #FFF;
+    font-weight: 600;
 }
 #newNavHeadContent .leftlnk{
     height: 48px;
@@ -60,14 +61,13 @@
     width: 45px;
 }
 #newNavHeadContent .back:active{
-    background: #EEE;
 }
 #newNavHeadContent .back:after {
     content: "";
     height: 14px;
     width: 14px;
-    border-left: 2px solid #999;
-    border-bottom: 2px solid #999; 
+    border-left: 2px solid #FFF;
+    border-bottom: 2px solid #FFF; 
     transform:rotate(45deg);
     display: block;
 }
@@ -82,7 +82,7 @@
     font-size: 16px;
 }
 #newNavHeadContent .nli:active {
-    background: #EEE;
+    
 }
 #newNavHeadContent .nli .iconBtn{
 
