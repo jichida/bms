@@ -460,9 +460,10 @@ export function* createmapmainflow(){
         }
 
         let treenoderoot = yield gettreenode(adcodetop);
-        let forkhandles = [];
+
 
         function* settreenode(treenode){
+          let forkhandles = [];
           if(!!treenode && !!treenode.children){
             // console.log(`settreenode:${treenode.children.length}`);
             for(let i =0 ;i< treenode.children.length;i++){
@@ -480,20 +481,31 @@ export function* createmapmainflow(){
               }
             }
           }
+          if(forkhandles.length > 0){
+            yield join(...forkhandles);
+          }
+
         }
 
         function* gettreenodeandset(adcode,child){
           let childsub = yield gettreenode(adcode);
           child.children = childsub.children;
           // yield settreenode(childsub);
+          let forkhandles = [];
           const handlefork = yield fork(settreenode,childsub);
           forkhandles.push(handlefork);
+          if(forkhandles.length > 0){
+            yield join(...forkhandles);
+          }
+          
         }
         yield settreenode(treenoderoot);
+        // const handlefork = yield fork(settreenode,treenoderoot);
+        // forkhandles.push(handlefork);
         // yield call(delay,10000);
-        console.log(`等待完成,合计${forkhandles.length}个任务`);
+        // console.log(`等待完成,合计${forkhandles.length}个任务:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         // yield forkhandles.map(t => join(t)).
-        yield join(...forkhandles);
+
         // distCluster.zoomToShowSubFeatures(adcodetop);
         console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         yield put(mapmain_getdistrictresult_init(treenoderoot));
