@@ -11,6 +11,7 @@ import {
   ui_selcurdevice,
   ui_selcurdevice_result,
   querydeviceinfo_request,
+  querydeviceinfo_result,
   ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
@@ -375,7 +376,8 @@ export function* createmapmainflow(){
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
           console.log(`${JSON.stringify(deviceitem)}`);
           yield put(querydeviceinfo_request({query:{DeviceId}}));
-          yield call(showinfowindow,deviceitem);
+          const {payload} = yield take(`${querydeviceinfo_result}`);
+          yield call(showinfowindow,payload);
           yield fork(function*(eventname){
            while(true){
              yield call(listenwindowinfoevent,eventname);
@@ -498,7 +500,7 @@ export function* createmapmainflow(){
               return {...state.device};
             });
             console.log(`${curdevicelist.length}`);
-            if(adcodeinfo.level === 'district'){
+            if(adcodeinfo.level === 'district' && curdevicelist.length < 50){
               //如果当前定位到区一级，则自动放大到最合适位置
               let latlngs = [];
               _.map(curdevicelist,(devicenode)=>{

@@ -1,4 +1,4 @@
-import {takeEvery,put,fork,call} from 'redux-saga/effects';
+import {takeEvery,put,fork,call,select} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   querydevicegroup_request,
@@ -17,14 +17,34 @@ import {
   searchbatteryalarmsingle_request,
   searchbatteryalarmsingle_result,
   searchbattery_request,
-  searchbattery_result
+  searchbattery_result,
+
+  querydeviceinfo_request,
+  querydeviceinfo_result
 } from '../actions';
 import jsondata from './bmsdata.json';
 import jsondatatrack from './1602010008.json';
 import jsondataalarm from './json-BMS2.json';
 import _ from 'lodash';
+import {getgeodata} from '../sagas/mapmain_getgeodata';
 //获取地理位置信息，封装为promise
 export function* testdataflow(){//仅执行一次
+
+
+  yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
+    const {payload:{query:{DeviceId}}} = action;
+    const getdevices = (state)=>{return state.device};
+    const {devices} = yield select(getdevices);
+    let deviceinfo = devices[DeviceId];
+    if(!!deviceinfo){
+      if(!!deviceinfo.locz){
+        const addr = yield call(getgeodata,deviceinfo);
+        deviceinfo = {...deviceinfo,...addr};
+      }
+    }
+     yield put(querydeviceinfo_result(deviceinfo));
+  });
+
   yield takeEvery(`${getsystemconfig_request}`, function*(action) {
      yield put(getsystemconfig_result({
 
@@ -45,14 +65,26 @@ export function* testdataflow(){//仅执行一次
   yield takeEvery(`${searchbatteryalarm_request}`, function*(action) {
     const {payload:{query}} = action;
     const list = [];
-    list.push(jsondataalarm);
+    const listdevice = _.sampleSize(jsondata, 20);
+    let iddate = new Date();
+    _.map(listdevice,(device,index)=>{
+      let alarm = {...jsondataalarm};
+      alarm.DeviceId = device.DeviceId;
+      alarm._id = iddate.getTime() + index;
+      list.push(alarm);
+    });
     yield put(searchbatteryalarm_result({list}));
   });
 
   yield takeEvery(`${searchbatteryalarmsingle_request}`, function*(action) {
     const {payload:{query}} = action;
     const list = [];
-    list.push(jsondataalarm);
+    let iddate = new Date();
+    for(let i = 0;i < 20 ;i++){
+      let alarm = {...jsondataalarm};
+      alarm._id = iddate.getTime() + i;
+      list.push(alarm);
+    }
     yield put(searchbatteryalarmsingle_result({list}));
   });
 

@@ -48,12 +48,32 @@ export const getgroupStyleMap = ()=>{
 }
 
 //弹出窗口样式
+// adcode
+// :
+// "150782"
+// city
+// :
+// "呼伦贝尔市"
+// district
+// :
+// "牙克石市"
+// formattedAddress
+// :
 export const getpopinfowindowstyle = (deviceitem)=>{
+  let DeviceId = _.get(deviceitem,'DeviceId','');
   let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
   let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
-  let DeviceId = _.get(deviceitem,'DeviceId','');
+  let adcode = _.get(deviceitem,'adcode','');
+  let province = _.get(deviceitem,'province','');
+  let city = _.get(deviceitem,'city','');
+  let district = _.get(deviceitem,'district','');
+  let formattedAddress = _.get(deviceitem,'formattedAddress','');
+
   return {
       infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
-      infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>`
+      infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>
+      <p>行政编码:<span class='color_warning'>${adcode}</span></p>
+      <p>省市区:<span class='color_warning'>${province}${city}${district}</span></p>
+      <p>地址:<span class='color_warning'>${formattedAddress}</span></p>`
   };
 }
