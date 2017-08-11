@@ -25,4 +25,4 @@ store.dispatch(setLanguage('cn', lan['cn']));
 
 // registerandroid();
 // postNotifyFromJPush(store.dispatch);
-registerServiceWorker();
+// registerServiceWorker();
