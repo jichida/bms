@@ -22,7 +22,7 @@ import {
 import TreeSearchBattery from './search/searchbattery';
 
 import {
-  ui_selcurdevice_result,
+  ui_selcurdevice,
   searchbattery_request
 } from '../actions';
 
@@ -32,10 +32,15 @@ class TreeSearch extends React.Component {
     constructor(props) {
         super(props);
     }
+    onClickDevice(deviceitem){
+      this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}))
+    }
     onClickQuery(query){
-      this.props.searchbattery_request(query);
+      console.log(`search:${JSON.stringify(query)}`);
+      this.props.dispatch(searchbattery_request(query));
     }
     render(){
+        const {devices,searchresult_battery} = this.props;
         return (
             <div className="warningPage">
                 <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
@@ -43,20 +48,23 @@ class TreeSearch extends React.Component {
                     <TableHeader>
                       <TableRow>
                         <TableHeaderColumn>设备号</TableHeaderColumn>
-                        <TableHeaderColumn>告警时间</TableHeaderColumn>
-                        <TableHeaderColumn>告警等级</TableHeaderColumn>
-                        <TableHeaderColumn>告警内容</TableHeaderColumn>
-                        <TableHeaderColumn>操作</TableHeaderColumn>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      <TableRow>
-                        <TableRowColumn>设备1</TableRowColumn>
-                        <TableRowColumn>2017-09-09 12:20:34</TableRowColumn>
-                        <TableRowColumn>严重</TableRowColumn>
-                        <TableRowColumn>这里是警告内容</TableRowColumn>
-                        <TableRowColumn><RaisedButton label="操作按钮" primary={true} fullWidth={true} /></TableRowColumn>
-                      </TableRow>
+                      {
+                        _.map(searchresult_battery,(deviceId,key)=>{
+                          const deviceinfo =devices[deviceId];
+                          return (
+                            <TableRow key={key}>
+                              <TableRowColumn>{deviceinfo.DeviceId}</TableRowColumn>
+                              <TableRowColumn>
+                                <RaisedButton label="查看设备" primary={true} fullWidth={true}
+                               onTouchTap={this.onClickDevice.bind(this,deviceinfo)} />
+                             </TableRowColumn>
+                            </TableRow>
+                          )
+                        })
+                    }
                     </TableBody>
                   </Table>
             </div>
@@ -74,11 +82,10 @@ const mapStateToProps = (
     searchresult:
     {
       searchresult_battery,
-      alarms
     }
   }) => {
 
-  return {devices,alarms,searchresult_battery};
+  return {devices,searchresult_battery};
 }
 
 

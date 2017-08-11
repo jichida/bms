@@ -23,7 +23,10 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 import TreeSearchBattery from './search/searchbattery';
-import {searchbatteryalarm_request} from '../actions';
+import {
+  ui_selcurdevice,
+  searchbatteryalarm_request
+} from '../actions';
 
 class MessageAllDevice extends React.Component {
 
@@ -32,6 +35,9 @@ class MessageAllDevice extends React.Component {
     }
     onClickQuery(query){
       this.props.dispatch(searchbatteryalarm_request(query));
+    }
+    onClickDevice(deviceitem){
+      this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}))
     }
     render(){
         const {devices,alarms,searchresult_alaram} = this.props;
@@ -56,11 +62,16 @@ class MessageAllDevice extends React.Component {
                         _.map(searchresult_alaram,(alarmid,key)=>{
                           const alarm =alarms[alarmid];
                           if(!!alarm){
+                            const deviceinfo = devices[alarm.DeviceId];
                             return (
                               <TableRow key={key}>
                               <TableRowColumn><Avatar src={Deraultimg} /><span>{alarm.DeviceId}</span></TableRowColumn>
                               <TableRowColumn>{alarm.DataTime}</TableRowColumn>
                               <TableRowColumn>{alarm.Alarm}</TableRowColumn>
+                              <TableRowColumn>
+                                <RaisedButton label="查看设备" primary={true} fullWidth={true}
+                               onTouchTap={this.onClickDevice.bind(this,deviceinfo)} />
+                             </TableRowColumn>
                               </TableRow>)
                           }
                         })

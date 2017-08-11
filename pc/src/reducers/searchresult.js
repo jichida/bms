@@ -43,6 +43,10 @@ const searchresult = createReducer({
   },
   [searchbattery_result]: (state, payload) => {
     let searchresult_battery = [];
+    const {list} = payload;
+    _.map(list,(device)=>{
+      searchresult_battery.push(device.DeviceId);
+    });
     return { ...state, searchresult_battery};
   },
   [searchbatteryalarm_result]: (state, payload) => {
