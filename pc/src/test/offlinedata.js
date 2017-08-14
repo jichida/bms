@@ -158,19 +158,19 @@ export function* testdataflow(){//仅执行一次
    yield fork(function*(){
      yield call(delay,10000);
      while(true){
-       const list = _.sampleSize(jsondata, 1000);
+       const list = _.sampleSize(jsondata, 10000);
        for(let i = 0;i < list.length; i++){
          let item = {...list[i]};
-         let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,50*1000);
+         let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,500*1000);
          item.LastHistoryTrack.Latitude = locationsz[1];
          item.LastHistoryTrack.Longitude  =  locationsz[0];
          let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
          const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
          item.locz = wgs84togcj02;
          yield put(serverpush_devicegeo(item));
-         yield call(delay,100);
+         yield call(delay,200);
        };
-       yield call(delay,5000);
+       yield call(delay,1000);
      }
 
 

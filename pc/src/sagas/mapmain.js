@@ -52,7 +52,11 @@ let g_devices = {};
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
-      window.AMapUI.load(['ui/geo/DistrictCluster','ui/misc/PointSimplifier', 'lib/$'], (DistrictCluster,PointSimplifier, $)=> {
+      window.AMapUI.load(['ui/geo/DistrictCluster','ui/misc/PointSimplifier', 'lib/$',
+      'lib/utils',
+      'lib/dom.utils',
+      'ui/geo/DistrictCluster/lib/DistMgr',
+    ],(DistrictCluster,PointSimplifier, $,utils, domUtils, DistMgr)=> {
 
            if (!PointSimplifier.supportCanvas) {
                alert('当前环境不支持 Canvas！');
@@ -100,7 +104,8 @@ const initmapui =  (map)=>{
                        fillStyle:'#A2D0FA'
                    },
                    getGroupId: (deviceitem, idx)=> {
-                       let groupid = idx%3;
+                       let idex = parseInt(deviceitem.locz[0]) + parseInt(deviceitem.locz[1]);
+                       let groupid = idex%3;
                        return groupid;
                    },
                    groupStyleOptions: (gid)=> {
@@ -118,15 +123,77 @@ const initmapui =  (map)=>{
                alert('图片加载失败！');
            }
              //<------------
+             const defaultgetClusterMarker = function(feature, dataItems, recycledMarker) {
+
+          	 var container, title, body, nodeClassNames = {
+          				title: 'amap-ui-district-cluster-marker-title',
+          				body: 'amap-ui-district-cluster-marker-body',
+          				container: 'amap-ui-district-cluster-marker'
+          			};
+          			if (recycledMarker) {
+          				container = recycledMarker.getContent();
+          				title = domUtils.getElementsByClassName(nodeClassNames.title, 'span', container)[0];
+          				body = domUtils.getElementsByClassName(nodeClassNames.body, 'span', container)[0];
+          			} else {
+                  container = document.createElement('div');
+          				title = document.createElement('span');
+          				title.className = nodeClassNames.title;
+          				body = document.createElement('span');
+          				body.className = nodeClassNames.body;
+          				container.appendChild(title);
+          				container.appendChild(body);
+          			}
+
+          			var props = feature.properties,
+          			routeNames = [];
+          			var classNameList = [nodeClassNames.container, 'level_' + props.level, 'adcode_' + props.adcode];
+          			if (props.acroutes) {
+          				var acroutes = props.acroutes;
+          				for (var i = 0, len = acroutes.length; i < len; i++) {
+          					classNameList.push('descendant_of_' + acroutes[i]);
+          					if (i === len - 1) {
+          						classNameList.push('child_of_' + acroutes[i]);
+          					}
+          					if (i > 0) {
+          						routeNames.push(DistMgr.getNodeByAdcode(acroutes[i]).name);
+          					}
+          				}
+          			}
+          			container.className = classNameList.join(' ');
+          			if (routeNames.length > 0) {
+          				routeNames.push(props.name);
+          				container.setAttribute('title', routeNames.join('>'));
+          			} else {
+          				container.removeAttribute('title');
+          			}
+          			title.innerHTML = utils.escapeHtml(props.name);
+          			body.innerHTML = dataItems.length;
+          			var resultMarker = recycledMarker || new window.AMap.Marker({
+          				topWhenClick: true,
+          				offset: new window.AMap.Pixel(-20, -30),
+          				content: container
+          			});
+          			return resultMarker;
+          		}
+
              distCluster = new DistrictCluster({
                  zIndex: 100,
                  map: map, //所属的地图实例
-
+                 autoSetFitView:false,
                  getPosition: (deviceitem)=> {
                      return deviceitem.locz;
                      //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                  },
+                 renderOptions:{
+                   getClusterMarker : (feature, dataItems, recycledMarker)=> {
+                      if(dataItems.length > 0){
+                        return defaultgetClusterMarker(feature, dataItems, recycledMarker);
+                      }
+                      return null;
+                    }
+                 }
              });
+//.DistrictCluster.Render.Default.prototype.renderClusterMarker
 
              resolve(pointSimplifierIns);
        });
