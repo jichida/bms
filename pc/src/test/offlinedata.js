@@ -158,7 +158,7 @@ export function* testdataflow(){//仅执行一次
    yield fork(function*(){
      yield call(delay,10000);
      while(true){
-       const list = _.sampleSize(jsondata, 10000);
+       const list = _.sampleSize(jsondata, 200);
        for(let i = 0;i < list.length; i++){
          let item = {...list[i]};
          let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,500*1000);

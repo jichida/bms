@@ -187,6 +187,22 @@ const initmapui =  (map)=>{
             	    return null;
           		}
 
+             utils.extend(DistrictCluster.prototype,
+               {
+               setDataWithoutClear: function(data) {
+                  console.log(`setDataWithoutClear=======>`);
+                  data || (data = []);
+                   this.trigger("willBuildData", data);
+                   this._data.source = data;
+                  //  this._data.bounds = BoundsItem.getBoundsItemToExpand();
+                   this._buildDataItems(data);
+                   this._buildKDTree();
+                   this._distCounter.setData(this._data.list);
+                   this.trigger("didBuildData", data);
+                  this.renderLater(10);
+                  data.length && this._opts.autoSetFitView && this.setFitView();
+                },
+              });
              distCluster = new DistrictCluster({
                  zIndex: 100,
                  map: map, //所属的地图实例
@@ -196,6 +212,8 @@ const initmapui =  (map)=>{
                      //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                  },
                  renderOptions:{
+                   clusterMarkerRecycleLimit:1000,
+                   clusterMarkerKeepConsistent:false,
                    getClusterMarker : (feature, dataItems, recycledMarker)=> {
                       if(dataItems.length > 0){
                         return defaultgetClusterMarker(feature, dataItems, recycledMarker);
@@ -750,18 +768,19 @@ export function* createmapmainflow(){
           });
 
           // let center =  window.amapmain.getCenter();
-          let zoomlevel = window.amapmain.getZoom();
-          console.log(`old zoomlevel:${zoomlevel}`);
+          // let zoomlevel = window.amapmain.getZoom();
+          // console.log(`old zoomlevel:${zoomlevel}`);
           // window.amapmain.setStatus({zoomEnable:false});
-          distCluster.setData(data);
+          distCluster.setDataWithoutClear(data);
+          // distCluster.renderLater(200);
           pointSimplifierIns.setData(data);
           yield call(delay,2000);
           // window.amapmain.setStatus({zoomEnable:true});
           // const wait = yield take(`${mapmain_setzoomlevel}`);
           // window.amapmain.setZoomAndCenter(zoomlevel,center);
           // window.amapmain.setZoom(zoomlevel);
-          zoomlevel = window.amapmain.getZoom();
-          console.log(`new zoomlevel:${zoomlevel}`);
+          // zoomlevel = window.amapmain.getZoom();
+          // console.log(`new zoomlevel:${zoomlevel}`);
           // distCluster.renderLater(200);
           // pointSimplifierIns.renderLater(200);
 
