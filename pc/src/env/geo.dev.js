@@ -50,6 +50,7 @@ let getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
     return [result.longitude,result.latitude];
 };
 
+export {getRandomLocation};
 let locationsz =[0,0];
 
 export const getcurrentlocationfn = (fncallback)=> {

@@ -1,4 +1,4 @@
-import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join } from 'redux-saga/effects';
+import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join,throttle } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   mapmain_setzoomlevel,
@@ -21,7 +21,9 @@ import {
   mapmain_getdistrictresult_init,
   mapmain_getdistrictresult_last,
   ui_settreefilter,
-  md_ui_settreefilter
+  md_ui_settreefilter,
+  serverpush_devicegeo,
+  devicelistgeochange
 } from '../actions';
 
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -45,6 +47,7 @@ let distCluster,pointSimplifierIns;
 //       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
 // }
 let groupStyleMap = {};
+let g_devices = {};
 //新建行政区域&海量点
 const initmapui =  (map)=>{
   return new Promise((resolve,reject) => {
@@ -70,10 +73,17 @@ const initmapui =  (map)=>{
 
            pointSimplifierIns = new PointSimplifier({
                zIndex: 115,
-               //autoSetFitView: false,
+               autoSetFitView: false,
                map: map, //所属的地图实例
 
                getPosition: (deviceitem)=> {
+                   let itemnew = g_devices[deviceitem.DeviceId];
+                   if(!!itemnew){
+                    //  console.log(`显示点:${JSON.stringify(itemnew.locz)}`);
+                     return itemnew.locz;
+                   }
+
+                  //  console.log(`显示点:${JSON.stringify(deviceitem.locz)}`);
                    return deviceitem.locz;
                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                },
@@ -419,12 +429,13 @@ export function* createmapmainflow(){
         yield call(delay,500);
       }
       //批量转换一次
-
+      g_devices = {};
       let devicelistresult = yield call(getgeodatabatch,devicelist);
       const data = [];
       _.map(devicelistresult,(deviceitem)=>{
         if(!!deviceitem.locz){
           data.push(deviceitem);
+          g_devices[deviceitem.DeviceId] = deviceitem;
         }
       });
       console.log(`一共显示${data.length}个设备`);
@@ -546,6 +557,7 @@ export function* createmapmainflow(){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
             //========================================================================================
             distCluster.zoomToShowSubFeatures(adcodetop);
+            console.log(`zoomToShowSubFeatures:${adcodetop}`);
 
             yield put(mapmain_getdistrictresult({adcode:adcodetop}));
             let adcodeinfo = getadcodeinfo(adcodetop);
@@ -616,5 +628,69 @@ export function* createmapmainflow(){
       yield call(delay, delaytime);
       yield put(ui_settreefilter(payload));
     });
-    //
+    //serverpush_devicegeo
+
+
+    yield takeEvery(`${serverpush_devicegeo}`,function*(action){
+      //https://redux-saga.js.org/docs/recipes/
+      const {payload} = action;
+      let deviceitem = payload;
+      try{
+        if(!!deviceitem){
+          // console.log(`${deviceitem.DeviceId}`)
+          while(!pointSimplifierIns || !distCluster){
+            yield call(delay,500);
+          }
+        }
+        g_devices[deviceitem.DeviceId] = deviceitem;
+
+        yield put(devicelistgeochange({}));
+        // yield call(delay,5000);//5秒后
+        // let listitems = [];
+        // _.map(changeddevices,(item)=>{
+        //   listitems.push(item);
+        // });
+        // changeddevices = {};
+        // console.log(`刷新${listitems.length}个设备`);
+        // if(listitems.length > 0){
+        //   yield put(devicelistgeochange(listitems));
+        // }
+      }
+      catch(e){
+        console.log(e);
+      }
+
+
+    });
+
+    //devicelistgeochange
+    yield throttle(5000,`${devicelistgeochange}`,function*(action){
+        try{
+          let data = [];
+          _.map(g_devices,(item)=>{
+            data.push(item);
+          });
+
+          // let center =  window.amapmain.getCenter();
+          let zoomlevel = window.amapmain.getZoom();
+          console.log(`old zoomlevel:${zoomlevel}`);
+          // window.amapmain.setStatus({zoomEnable:false});
+          distCluster.setData(data);
+          pointSimplifierIns.setData(data);
+          yield call(delay,2000);
+          // window.amapmain.setStatus({zoomEnable:true});
+          // const wait = yield take(`${mapmain_setzoomlevel}`);
+          // window.amapmain.setZoomAndCenter(zoomlevel,center);
+          // window.amapmain.setZoom(zoomlevel);
+          zoomlevel = window.amapmain.getZoom();
+          console.log(`new zoomlevel:${zoomlevel}`);
+          // distCluster.renderLater(200);
+          // pointSimplifierIns.renderLater(200);
+
+      }
+      catch(e){
+        console.log(e);
+      }
+
+    });
 }

@@ -20,11 +20,16 @@ import {
   searchbattery_result,
 
   querydeviceinfo_request,
-  querydeviceinfo_result
+  querydeviceinfo_result,
+
+  serverpush_devicegeo
 } from '../actions';
 import jsondatareadonly from './bmsdata.json';
 import jsondatatrack from './1602010008.json';
 import jsondataalarm from './json-BMS2.json';
+import {getRandomLocation} from '../env/geo';
+import coordtransform from 'coordtransform';
+
 import _ from 'lodash';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 //获取地理位置信息，封装为promise
@@ -39,7 +44,26 @@ let jsondata = _.filter(jsondatareadonly,(item) => {
   }
   return thisdata;
 });
-// jsondata = _.sampleSize(jsondata, 1000);
+
+//模拟10万+
+for(let i = 0;i < 0; i++){
+  _.map(jsondatareadonly,(itemonly) => {
+    const item = {...itemonly};
+    if(!!item.LastHistoryTrack){
+      if(!!item.LastHistoryTrack.Latitude){
+        if(item.LastHistoryTrack.Latitude > 0){
+          let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,300);
+          item.LastHistoryTrack.Latitude = item.LastHistoryTrack.Latitude;
+          item.LastHistoryTrack.Longitude  = item.LastHistoryTrack.Longitude;
+          item.DeviceId = `${i}${item.DeviceId}`;
+          jsondata.push(item);
+        }
+      }
+    }
+  });
+}
+
+jsondata = _.sampleSize(jsondata, 20000);
 
 export function* testdataflow(){//仅执行一次
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
@@ -128,6 +152,28 @@ export function* testdataflow(){//仅执行一次
 
    yield takeEvery(`${queryhistorytrack_request}`, function*(action) {
       yield put(queryhistorytrack_result({list:jsondatatrack}));
+   });
+
+   //模拟服务端推送消息
+   yield fork(function*(){
+     yield call(delay,10000);
+     while(true){
+       const list = _.sampleSize(jsondata, 1000);
+       for(let i = 0;i < list.length; i++){
+         let item = {...list[i]};
+         let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,50*1000);
+         item.LastHistoryTrack.Latitude = locationsz[1];
+         item.LastHistoryTrack.Longitude  =  locationsz[0];
+         let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+         const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+         item.locz = wgs84togcj02;
+         yield put(serverpush_devicegeo(item));
+         yield call(delay,100);
+       };
+       yield call(delay,5000);
+     }
+
+
    });
 }
 
