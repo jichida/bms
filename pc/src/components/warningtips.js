@@ -27,7 +27,7 @@ class Page extends React.Component {
                     style={{padding:"0",width:"36px",height:"36px",display: "flex"}}
                     badgeStyle={{top: "-4px", right: "-4px"}}
                     >
-                    <i className="fa fa-car"  aria-hidden="true"   style={iconstyle} onClick={this.onClickMenu.bind(this,'high')}/>
+                    <i className="fa fa-car"  aria-hidden="true"   style={iconstyle} onClick={this.onClickMenu.bind(this,'high')} />
                 </Badge>
                 <Badge
                     badgeContent={4}
@@ -36,7 +36,7 @@ class Page extends React.Component {
                     style={{padding:"0",width:"36px",height:"36px",display: "flex"}}
                     badgeStyle={{top: "-4px", right: "-4px"}}
                     >
-                    <i className="fa fa-bell"  aria-hidden="true"   style={iconstyle}  onClick={this.onClickMenu.bind(this,'low')}/>
+                    <i className="fa fa-bell"  aria-hidden="true"   style={iconstyle}  onClick={this.onClickMenu.bind(this,'low')} />
                 </Badge>
             </div>
         );

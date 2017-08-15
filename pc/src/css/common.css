@@ -38,9 +38,21 @@
     flex-direction: column;
     position: relative;
 }
-.AppPage .content .AdminContent{
+.AppPage .content .admincontainer{
     -webkit-flex-grow: 1;
     flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+.AppPage .content .AdminContent,
+.AppPage .content .admincontainer{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    align-self: stretch;
+    width: 100%;
+    position: relative;
 }
 .AppPage .content .appbar{
     -moz-flex-shrink: 0;
@@ -119,6 +131,13 @@
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
 }
+.AppPage .bodycontainer{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+
 .AppPage .leftmenu{
     width: 60px;
     animation:leftmenuhide .1s;
@@ -437,7 +456,7 @@
     z-index: 1299;
     position: absolute;
     top : 12px;
-    right: 130px;
+    right: 20px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

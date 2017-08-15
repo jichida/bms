@@ -22,7 +22,7 @@ class Menu extends React.Component {
             innerWidth : window.innerWidth,
             innerHeight : window.innerHeight,
             dragx : window.innerWidth-100,
-            dragy : window.innerHeight-100,
+            dragy : window.innerHeight-160,
             showitemtext : {
                 power : '',
                 history : '',
@@ -38,7 +38,7 @@ class Menu extends React.Component {
                     innerWidth: window.innerWidth,
                     innerHeight: window.innerHeight,
                     dragx : window.innerWidth-100,
-                    dragy : window.innerHeight-100,
+                    dragy : window.innerHeight-160,
                 });
 
             }, 10)

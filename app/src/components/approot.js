@@ -39,6 +39,7 @@ class AppRoot extends React.Component {
         window.initamaploaded = false;
     }
     render() {
+
         return (
             <div className="AppContainer">
                 <Switch>

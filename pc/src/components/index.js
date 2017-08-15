@@ -30,11 +30,13 @@ import translate from 'redux-polyglot/translate';
 import Historytrackplayback from "./historytrackplayback/index.js";
 let resizetime = null;
 
+
 class Page extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             innerWidth : window.innerWidth,
+            openaddress : false,
         };
     }
     componentWillMount() {
@@ -65,68 +67,29 @@ class Page extends React.Component {
     onTouchTap=()=>{
         console.log("onTouchTap");
     }
+
+    getdrawstyle=(width)=>{
+        return ({
+            drawopenstyle : {
+                marginLeft: 0,
+                order: -1,
+                transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+            },
+            drawclosestyle : {
+                marginLeft: `-${width}`,
+                order: -1,
+                transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+            },
+        })
+    }
+
     render() {
         const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
+        const treestyle = this.getdrawstyle("300px");
+
         return (
             <div className="AppPage">
-                <Drawer
-                    open={showmenu==="powersearch"}
-                    containerStyle={{
-                        top: "64px",
-                        zIndex: 1000,
-                    }}
-                    width={Math.floor(this.state.innerWidth/2)}
-                    >
-                    <Search />
-                    <span className="myclose" onClick={this.menuevent}></span>
-                </Drawer>
-
-
-                <Drawer
-                    open={showmenu==="warningbox"}
-                    containerStyle={{
-                        top: "64px",
-                        zIndex: 1000,
-                    }}
-                    width={Math.floor(this.state.innerWidth/2)}
-                    >
-                    <Warning />
-                    <span className="myclose" onClick={()=>{this.menuevent();this.showDeviceInfo();}}></span>
-                </Drawer>
-
-                <Drawer
-                    open={showmenu==="addressbox"}
-                    containerStyle={{
-                        top: "64px",
-                        zIndex: 1000,
-                    }}
-                    >
-                    <Tree />
-                    <span className="myclose white" onClick={this.menuevent}></span>
-                </Drawer>
-
-                <Drawer
-                    open={showmenu==="showmessage"}
-                    containerStyle={{
-                        top: "64px",
-                        zIndex: 1000,
-                    }}
-                    width={Math.floor(this.state.innerWidth/2)}
-                    >
-                    <Message />
-                    <span className="myclose" onClick={this.menuevent}></span>
-                </Drawer>
-
-                <Drawer
-                    open={showmenu==="showdevice"}
-                    containerStyle={{
-                        top: "64px",
-                        zIndex: 1000,
-                    }}
-                    >
-                    <Device />
-                    <span className="myclose" onClick={this.menuevent}></span>
-                </Drawer>
+                
 
 
                 <div className="content">
@@ -137,6 +100,7 @@ class Page extends React.Component {
                             style={{
                                 backgroundColor: "#FFF",
                                 paddingLeft:"0",
+
                                 paddingRight:"0",
                             }}
                             iconStyleLeft={{
@@ -145,18 +109,82 @@ class Page extends React.Component {
                             }}
                             iconElementLeft={<div className="logo">logo</div>}
                             className="appbar"
-                            iconElementRight={<RaisedButton label={p.tc('title')} onTouchTap={this.showMessage} style={{marginRight:"30px"}} />}
-                            iconStyleRight={{marginTop:"12px"}}
                         />
                     </div>
-                    <AdminContent />
-                    <Menu />
-                    <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>
-                        <Historytrackplayback back={this.hidehistoryplay}/>
-                    </Drawer>
 
-                    <div className="warningtips">
-                        <Warningtips/>
+                    <div className="bodycontainer">
+                        <Drawer
+                            open={showmenu==="powersearch"}
+                            containerStyle={{
+                                top: "64px",
+                                zIndex: 1000,
+                            }}
+                            >
+                            <Search />
+                            <span className="myclose" onClick={this.menuevent}></span>
+                        </Drawer>
+
+                        <Drawer
+                            open={showmenu==="warningbox"}
+                            containerStyle={{
+                                top: "64px",
+                                zIndex: 1000,
+                            }}
+                            width={Math.floor(this.state.innerWidth/2)}
+                            >
+                            <Warning />
+                            <span className="myclose" onClick={()=>{this.menuevent();this.showDeviceInfo();}}></span>
+                        </Drawer>
+
+                        <Drawer
+                            open={showmenu==="addressbox"}
+                            containerStyle={{
+                                top: "64px",
+                                zIndex: 1000,
+                                position: "inherit"
+                            }}
+                            width={300}
+                            style={showmenu==="addressbox"?treestyle.drawopenstyle:treestyle.drawclosestyle}
+                            >
+                            <Tree />
+
+                            <span className="myclose white" onClick={this.menuevent}></span>
+                        </Drawer>
+
+                        <Drawer
+                            open={showmenu==="showmessage"}
+                            containerStyle={{
+                                top: "64px",
+                                zIndex: 1000,
+                            }}
+                            width={Math.floor(this.state.innerWidth/2)}
+                            >
+                            <Message />
+                            <span className="myclose" onClick={this.menuevent}></span>
+                        </Drawer>
+
+                        <Drawer
+                            open={showmenu==="showdevice"}
+                            containerStyle={{
+                                top: "64px",
+                                zIndex: 1000,
+                            }}
+                            >
+                            <Device />
+                            <span className="myclose" onClick={this.menuevent}></span>
+                        </Drawer>
+
+                        <div className="admincontainer">
+                            <AdminContent />
+                            <Menu lesswidth={showmenu==="addressbox"?400:100}/>
+                        </div>
+                        <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>
+                            <Historytrackplayback back={this.hidehistoryplay}/>
+                        </Drawer>
+
+                        <div className="warningtips">
+                            <Warningtips/>
+                        </div>
                     </div>
                 </div>
 
@@ -166,7 +194,7 @@ class Page extends React.Component {
 }
 
 const mapStateToProps = ({app:{showmenu,showhistoryplay,showdistcluster,showhugepoints}}) => {
-  return {showmenu,showhistoryplay,showdistcluster,showhugepoints};
+    return {showmenu,showhistoryplay,showdistcluster,showhugepoints};
 };
 
 const DummyComponentWithPProps = translate('warningbox')(Page);
