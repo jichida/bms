@@ -774,11 +774,13 @@ export function* createmapmainflow(){
     //devicelistgeochange
     yield throttle(5000,`${devicelistgeochange_distcluster}`,function*(action){
       try{
+        if(!!distCluster){
           let data = [];
           _.map(g_devices,(item)=>{
             data.push(item);
           });
           distCluster.setDataWithoutClear(data);
+        }
       }
       catch(e){
         console.log(e);
@@ -787,11 +789,13 @@ export function* createmapmainflow(){
 
     yield throttle(2000,`${devicelistgeochange_pointsimplifierins}`,function*(action){
       try{
+        if(!!pointSimplifierIns){
           let data = [];
           _.map(g_devices,(item)=>{
             data.push(item);
           });
           pointSimplifierIns.setData(data);
+        }
       }
       catch(e){
         console.log(e);
