@@ -302,9 +302,11 @@ const listenclusterevent = (eventname)=>{
         distCluster.getClusterRecord(record.adcode,(err,result)=>{
           if(!err){
             const {adcode,name,dataItems,hangingDataItems,children} = result;
-            if(dataItems.length > 0){
-                resolve({adcodetop:record.adcode,toggled:true});
-                return;
+            if(!!dataItems){
+              if(dataItems.length > 0){
+                  resolve({adcodetop:record.adcode,toggled:true});
+                  return;
+              }
             }
           }
           resolve();
@@ -355,7 +357,7 @@ let getClusterTree =({adcodetop})=> {
         // console.log(`${err}`);
         if(!err){
           const {adcode,name,dataItems,hangingDataItems,children} = result;
-          if(dataItems.length === 0){
+          if(!dataItems || dataItems.length === 0){
             resolve();
             console.log(`返回undefined ...>${name}(${dataItems.length})`)
             return;
