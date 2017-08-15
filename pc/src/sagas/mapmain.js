@@ -23,7 +23,10 @@ import {
   ui_settreefilter,
   md_ui_settreefilter,
   serverpush_devicegeo,
-  devicelistgeochange
+  serverpush_devicegeo_sz,
+  devicelistgeochange_distcluster,
+  devicelistgeochange_pointsimplifierins,
+  devicelistgeochange_geotreemenu,
 } from '../actions';
 
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -737,68 +740,63 @@ export function* createmapmainflow(){
     });
     //serverpush_devicegeo
 
-
+    //某个设备地理位置发送变化
     yield takeEvery(`${serverpush_devicegeo}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
       let deviceitem = payload;
       try{
-        if(!!deviceitem){
-          // console.log(`${deviceitem.DeviceId}`)
-          while(!pointSimplifierIns || !distCluster){
-            yield call(delay,500);
-          }
-        }
         g_devices[deviceitem.DeviceId] = deviceitem;
-
-        yield put(devicelistgeochange({}));
-        // yield call(delay,5000);//5秒后
-        // let listitems = [];
-        // _.map(changeddevices,(item)=>{
-        //   listitems.push(item);
-        // });
-        // changeddevices = {};
-        // console.log(`刷新${listitems.length}个设备`);
-        // if(listitems.length > 0){
-        //   yield put(devicelistgeochange(listitems));
-        // }
+        yield put(devicelistgeochange_distcluster({}));
+        yield put(devicelistgeochange_pointsimplifierins({}));
       }
       catch(e){
         console.log(e);
       }
-
-
     });
 
+    yield takeEvery(`${serverpush_devicegeo_sz}`,function*(action){
+      //https://redux-saga.js.org/docs/recipes/
+      const {payload} = action;
+      let {list} = payload;
+      try{
+        _.map(list,(deviceitem)=>{
+          g_devices[deviceitem.DeviceId] = deviceitem;
+        });
+        console.log(`list:${list.length}`)
+        yield put(devicelistgeochange_distcluster({}));
+        yield put(devicelistgeochange_pointsimplifierins({}));
+      }
+      catch(e){
+        console.log(e);
+      }
+    });
     //devicelistgeochange
-    yield throttle(5000,`${devicelistgeochange}`,function*(action){
-        try{
+    yield throttle(5000,`${devicelistgeochange_distcluster}`,function*(action){
+      try{
           let data = [];
           _.map(g_devices,(item)=>{
             data.push(item);
           });
-
-          // let center =  window.amapmain.getCenter();
-          // let zoomlevel = window.amapmain.getZoom();
-          // console.log(`old zoomlevel:${zoomlevel}`);
-          // window.amapmain.setStatus({zoomEnable:false});
           distCluster.setDataWithoutClear(data);
-          // distCluster.renderLater(200);
-          pointSimplifierIns.setData(data);
-          yield call(delay,2000);
-          // window.amapmain.setStatus({zoomEnable:true});
-          // const wait = yield take(`${mapmain_setzoomlevel}`);
-          // window.amapmain.setZoomAndCenter(zoomlevel,center);
-          // window.amapmain.setZoom(zoomlevel);
-          // zoomlevel = window.amapmain.getZoom();
-          // console.log(`new zoomlevel:${zoomlevel}`);
-          // distCluster.renderLater(200);
-          // pointSimplifierIns.renderLater(200);
-
       }
       catch(e){
         console.log(e);
       }
-
     });
+
+    yield throttle(2000,`${devicelistgeochange_pointsimplifierins}`,function*(action){
+      try{
+          let data = [];
+          _.map(g_devices,(item)=>{
+            data.push(item);
+          });
+          pointSimplifierIns.setData(data);
+      }
+      catch(e){
+        console.log(e);
+      }
+    });
+
+    //devicelistgeochange_geotreemenu
 }

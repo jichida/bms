@@ -28,5 +28,8 @@ export const searchbatteryalarmsingle_result = createAction('searchbatteryalarms
 //主动更新某个电池包的数据
 //经纬度信息发生变化
 export const serverpush_devicegeo = createAction('serverpush_devicegeo');
+export const serverpush_devicegeo_sz = createAction('serverpush_devicegeo_sz');
 //批量设备地理位置变化
-export const devicelistgeochange = createAction('devicelistgeochange');
+export const devicelistgeochange_distcluster = createAction('devicelistgeochange_distcluster');
+export const devicelistgeochange_pointsimplifierins = createAction('devicelistgeochange_pointsimplifierins');
+export const devicelistgeochange_geotreemenu = createAction('devicelistgeochange_geotreemenu');
