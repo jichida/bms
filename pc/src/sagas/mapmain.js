@@ -40,29 +40,21 @@ const divmapid_mapmain = 'mapmain';
 let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,pointSimplifierIns;
-
-//优化的时候再考虑
-// const createmap_marklist =(map)=>{
-//   return new Promise((resolve,reject) => {
-//       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
-// }
 let groupStyleMap = {};
 let g_devices = {};
+
 //新建行政区域&海量点
-const initmapui =  (map)=>{
+const CreateMapUI_PointSimplifier =  (map)=>{
   return new Promise((resolve,reject) => {
       console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
-      window.AMapUI.load(['ui/geo/DistrictCluster','ui/misc/PointSimplifier', 'lib/$',
-      'lib/utils',
-      'lib/dom.utils',
-      'ui/geo/DistrictCluster/lib/DistMgr',
-    ],(DistrictCluster,PointSimplifier, $,utils, domUtils, DistMgr)=> {
-
+      window.AMapUI.load(['ui/misc/PointSimplifier',
+    ],(PointSimplifier)=> {
            if (!PointSimplifier.supportCanvas) {
                alert('当前环境不支持 Canvas！');
+               reject();
                return;
            }
-
+           //分组样式
            let groupsz = getgroupStyleMap();
            _.map(groupsz,(group)=>{
              const {name,image,...rest} = group;
@@ -75,11 +67,18 @@ const initmapui =  (map)=>{
              }
            });
 
+           const onIconLoad = ()=> {
+               pointSimplifierIns.renderLater();
+           }
+
+           const onIconError = (e)=> {
+               alert('图片加载失败！');
+           }
+           //海量点控件
            pointSimplifierIns = new PointSimplifier({
                zIndex: 115,
                autoSetFitView: false,
                map: map, //所属的地图实例
-
                getPosition: (deviceitem)=> {
                    let itemnew = g_devices[deviceitem.DeviceId];
                    if(!!itemnew){
@@ -97,7 +96,7 @@ const initmapui =  (map)=>{
                //使用GroupStyleRender
                renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
                renderOptions: {
-                   //点的样式
+                   //点的样式,海量点样式
                    pointStyle: {
                        width: 5,
                        height: 5,
@@ -114,94 +113,101 @@ const initmapui =  (map)=>{
 
                }
            });
+           resolve(pointSimplifierIns);
+       });
 
-           const onIconLoad = ()=> {
-               pointSimplifierIns.renderLater();
-           }
+   });
+}
 
-           const onIconError = (e)=> {
-               alert('图片加载失败！');
-           }
-             //<------------
-             const defaultgetClusterMarker = function(feature, dataItems, recycledMarker) {
-                 try{
-                   let container, title, body;
-                   const nodeClassNames = {
-                				title: 'amap-ui-district-cluster-marker-title',
-                				body: 'amap-ui-district-cluster-marker-body',
-                				container: 'amap-ui-district-cluster-marker'
-                			};
-                			if (recycledMarker) {
-                				container = recycledMarker.getContent();
-                				title = domUtils.getElementsByClassName(nodeClassNames.title, 'span', container)[0];
-                				body = domUtils.getElementsByClassName(nodeClassNames.body, 'span', container)[0];
-                			} else {
-                        container = document.createElement('div');
-                				title = document.createElement('span');
-                				title.className = nodeClassNames.title;
-                				body = document.createElement('span');
-                				body.className = nodeClassNames.body;
-                				container.appendChild(title);
-                				container.appendChild(body);
-                			}
+const CreateMapUI_DistrictCluster =  (map)=>{
+  return new Promise((resolve,reject) => {
+      console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
+      window.AMapUI.load(['ui/geo/DistrictCluster',
+      'lib/utils',
+      'lib/dom.utils',
+      'ui/geo/DistrictCluster/lib/DistMgr',
+    ],(DistrictCluster,utils, domUtils, DistMgr)=> {
+           //<------------
+           const defaultgetClusterMarker = (feature, dataItems, recycledMarker)=> {
+               //行政区域
+               try{
+                 let container, title, body;
+                 const nodeClassNames = {
+              				title: 'amap-ui-district-cluster-marker-title',
+              				body: 'amap-ui-district-cluster-marker-body',
+              				container: 'amap-ui-district-cluster-marker'
+              			};
+              			if (recycledMarker) {
+              				container = recycledMarker.getContent();
+              				title = domUtils.getElementsByClassName(nodeClassNames.title, 'span', container)[0];
+              				body = domUtils.getElementsByClassName(nodeClassNames.body, 'span', container)[0];
+              			} else {
+                      container = document.createElement('div');
+              				title = document.createElement('span');
+              				title.className = nodeClassNames.title;
+              				body = document.createElement('span');
+              				body.className = nodeClassNames.body;
+              				container.appendChild(title);
+              				container.appendChild(body);
+              			}
 
-                			const props = feature.properties,
-                			routeNames = [];
-                			const classNameList = [nodeClassNames.container, 'level_' + props.level, 'adcode_' + props.adcode];
-                			if (props.acroutes) {
-                				const acroutes = props.acroutes;
-                				for (let i = 0, len = acroutes.length; i < len; i++) {
-                					classNameList.push('descendant_of_' + acroutes[i]);
-                					if (i === len - 1) {
-                						classNameList.push('child_of_' + acroutes[i]);
-                					}
-                					if (i > 0) {
-                						routeNames.push(DistMgr.getNodeByAdcode(acroutes[i]).name);
-                					}
-                				}
-                			}
-                			container.className = classNameList.join(' ');
-                			if (routeNames.length > 0) {
-                				routeNames.push(props.name);
-                				container.setAttribute('title', routeNames.join('>'));
-                			} else {
-                				container.removeAttribute('title');
-                			}
-                      if(!!title){
-                        title.innerHTML = utils.escapeHtml(props.name);
-                      }
-                			if(!!body){
-                        body.innerHTML = dataItems.length;
-                      }
+              			const props = feature.properties,
+              			routeNames = [];
+              			const classNameList = [nodeClassNames.container, 'level_' + props.level, 'adcode_' + props.adcode];
+              			if (props.acroutes) {
+              				const acroutes = props.acroutes;
+              				for (let i = 0, len = acroutes.length; i < len; i++) {
+              					classNameList.push('descendant_of_' + acroutes[i]);
+              					if (i === len - 1) {
+              						classNameList.push('child_of_' + acroutes[i]);
+              					}
+              					if (i > 0) {
+              						routeNames.push(DistMgr.getNodeByAdcode(acroutes[i]).name);
+              					}
+              				}
+              			}
+              			container.className = classNameList.join(' ');
+              			if (routeNames.length > 0) {
+              				routeNames.push(props.name);
+              				container.setAttribute('title', routeNames.join('>'));
+              			} else {
+              				container.removeAttribute('title');
+              			}
+                    if(!!title){
+                      title.innerHTML = utils.escapeHtml(props.name);
+                    }
+              			if(!!body){
+                      body.innerHTML = dataItems.length;
+                    }
 
-                			const resultMarker = recycledMarker || new window.AMap.Marker({
-                				topWhenClick: true,
-                				offset: new window.AMap.Pixel(-20, -30),
-                				content: container
-                			});
-                			return resultMarker;
-                 }
-                 catch(e){
+              			const resultMarker = recycledMarker || new window.AMap.Marker({
+              				topWhenClick: true,
+              				offset: new window.AMap.Pixel(-20, -30),
+              				content: container
+              			});
+              			return resultMarker;
+               }
+               catch(e){
 
-                 }
-            	    return null;
-          		}
+               }
+          	    return null;
+        		}
 
              utils.extend(DistrictCluster.prototype,
-               {
-               setDataWithoutClear: function(data) {
-                  console.log(`setDataWithoutClear=======>`);
-                  data || (data = []);
-                   this.trigger("willBuildData", data);
-                   this._data.source = data;
-                  //  this._data.bounds = BoundsItem.getBoundsItemToExpand();
-                   this._buildDataItems(data);
-                   this._buildKDTree();
-                   this._distCounter.setData(this._data.list);
-                   this.trigger("didBuildData", data);
-                  this.renderLater(10);
-                  data.length && this._opts.autoSetFitView && this.setFitView();
-                },
+               {//重新设置数据时不刷新Marker
+                   setDataWithoutClear: function(data) {
+                      console.log(`setDataWithoutClear=======>`);
+                      data || (data = []);
+                      this.trigger("willBuildData", data);
+                      this._data.source = data;
+                      //  this._data.bounds = BoundsItem.getBoundsItemToExpand();
+                      this._buildDataItems(data);
+                      this._buildKDTree();
+                      this._distCounter.setData(this._data.list);
+                      this.trigger("didBuildData", data);
+                      this.renderLater(10);
+                      data.length && this._opts.autoSetFitView && this.setFitView();
+                    },
               });
              distCluster = new DistrictCluster({
                  zIndex: 100,
@@ -209,7 +215,6 @@ const initmapui =  (map)=>{
                  autoSetFitView:false,
                  getPosition: (deviceitem)=> {
                      return deviceitem.locz;
-                     //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                  },
                  renderOptions:{
                    clusterMarkerRecycleLimit:1000,
@@ -222,16 +227,14 @@ const initmapui =  (map)=>{
                     }
                  }
              });
-//.DistrictCluster.Render.Default.prototype.renderClusterMarker
-
-             resolve(pointSimplifierIns);
+             resolve(distCluster);
        });
 
    });
 }
 
 //新建地图
-let createmap =({mapcenterlocation,zoomlevel})=> {
+let CreateMap =({mapcenterlocation,zoomlevel})=> {
   console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amapmain}`);
   return new Promise((resolve,reject) => {
     if(!mapcenterlocation.equals(loczero) && !window.amapmain ){
@@ -244,19 +247,24 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
             zoomEnable:true,
             touchZoom:true,
         });
-        const scale = new window.AMap.Scale({
-              visible: true
-          });
-        const  toolBar = new window.AMap.ToolBar({
-              visible: true
-          });
-        const  overView = new window.AMap.OverView({
-              visible: true
-          });
-          window.amapmain.addControl(scale);
-          window.amapmain.addControl(toolBar);
-          window.amapmain.addControl(overView);
-          resolve(window.amapmain);
+
+        window.AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.OverView'],
+        ()=>{
+          const scale = new window.AMap.Scale({
+                visible: true
+            });
+          const  toolBar = new window.AMap.ToolBar({
+                visible: true
+            });
+          const  overView = new window.AMap.OverView({
+                visible: true
+            });
+            window.amapmain.addControl(scale);
+            window.amapmain.addControl(toolBar);
+            window.amapmain.addControl(overView);
+            resolve(window.amapmain);
+        });
+
       }
       else{
         if(!!window.amapmain){
@@ -426,9 +434,10 @@ export function* createmapmainflow(){
             const centerpos = yield call(getcurrentpos);
             mapcenterlocation = L.latLng(centerpos.lat, centerpos.lng);
           }
-          yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
+          yield call(CreateMap,{mapcenterlocation,zoomlevel});//创建地图
 
-          yield call(initmapui,window.amapmain);
+          yield call(CreateMapUI_PointSimplifier,window.amapmain);
+          yield call(CreateMapUI_DistrictCluster,window.amapmain);
 
           let listentask =  yield fork(function*(eventname){
             while(true){
