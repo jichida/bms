@@ -370,7 +370,6 @@ let getClusterTree =({adcodetop})=> {
           const {adcode,name,dataItems,hangingDataItems,children} = result;
           if(!dataItems || dataItems.length === 0){
             resolve();
-            console.log(`返回undefined ...>${name}(${dataItems.length})`)
             return;
           }
           let treenode = {
