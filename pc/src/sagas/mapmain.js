@@ -220,6 +220,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                      return deviceitem.locz;
                  },
                  renderOptions:{
+                   featureClickToShowSub:true,
                    clusterMarkerRecycleLimit:1000,
                    clusterMarkerKeepConsistent:false,
                    getClusterMarker : (feature, dataItems, recycledMarker)=> {

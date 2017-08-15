@@ -24,3 +24,12 @@ export const searchbatteryalarm_result = createAction('searchbatteryalarm_result
 //查询单个电池包报警
 export const searchbatteryalarmsingle_request = createAction('searchbatteryalarmsingle_request');
 export const searchbatteryalarmsingle_result = createAction('searchbatteryalarmsingle_result');
+
+//主动更新某个电池包的数据
+//经纬度信息发生变化
+export const serverpush_devicegeo = createAction('serverpush_devicegeo');
+export const serverpush_devicegeo_sz = createAction('serverpush_devicegeo_sz');
+//批量设备地理位置变化
+export const devicelistgeochange_distcluster = createAction('devicelistgeochange_distcluster');
+export const devicelistgeochange_pointsimplifierins = createAction('devicelistgeochange_pointsimplifierins');
+export const devicelistgeochange_geotreemenu = createAction('devicelistgeochange_geotreemenu');

@@ -27,7 +27,7 @@ const divmapid_maptrackhistoryplayback = 'maptrackhistoryplayback';
 
 const loczero = L.latLng(0,0);
 let gPathSimplifier,pathSimplifierIns;
-const initmapui =  (map)=>{
+const CreateMapUI =  (map)=>{
     return new Promise((resolve,reject) => {
          console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
         //加载PathSimplifier，loadUI的路径参数为模块名中 'ui/' 之后的部分
@@ -120,19 +120,23 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
             zoomEnable:true,
             touchZoom:true,
         });
-        const scale = new window.AMap.Scale({
-              visible: true
-          });
-        const  toolBar = new window.AMap.ToolBar({
-              visible: true
-          });
-        const  overView = new window.AMap.OverView({
-              visible: true
-          });
-          window.amaptrackhistoryplayback.addControl(scale);
-          window.amaptrackhistoryplayback.addControl(toolBar);
-          window.amaptrackhistoryplayback.addControl(overView);
-          resolve(window.amaptrackhistoryplayback);
+
+        window.AMap.plugin(['AMap.ToolBar','AMap.Scale','AMap.OverView'],
+        ()=>{
+            const scale = new window.AMap.Scale({
+                  visible: true
+              });
+            const  toolBar = new window.AMap.ToolBar({
+                  visible: true
+              });
+            const  overView = new window.AMap.OverView({
+                  visible: true
+              });
+            window.amaptrackhistoryplayback.addControl(scale);
+            window.amaptrackhistoryplayback.addControl(toolBar);
+            window.amaptrackhistoryplayback.addControl(overView);
+            resolve(window.amaptrackhistoryplayback);
+        });
       }
       else{
         if(!!window.amaptrackhistoryplayback){
@@ -187,7 +191,7 @@ export function* createmaptrackhistoryplaybackflow(){
           }
           yield call(createmap,{mapcenterlocation,zoomlevel});//创建地图
 
-          yield call(initmapui,window.amaptrackhistoryplayback);
+          yield call(CreateMapUI,window.amaptrackhistoryplayback);
 
 
           let task_zoomend =  yield fork(function*(eventname){
