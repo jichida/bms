@@ -665,36 +665,38 @@ export function* createmapmainflow(){
           if(!!adcodetop){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
             //========================================================================================
-            distCluster.zoomToShowSubFeatures(adcodetop);
+            if(!!distCluster){
+              distCluster.zoomToShowSubFeatures(adcodetop);
+            }
             console.log(`zoomToShowSubFeatures:${adcodetop}`);
 
             yield put(mapmain_getdistrictresult({adcode:adcodetop}));
-            let adcodeinfo = getadcodeinfo(adcodetop);
-            const {curdevicelist,devices} = yield select((state)=>{
-              return {...state.device};
-            });
-            console.log(`${curdevicelist.length}`);
-            if(adcodeinfo.level === 'district' && curdevicelist.length < 50){
-              //如果当前定位到区一级，则自动放大到最合适位置
-              let latlngs = [];
-              _.map(curdevicelist,(devicenode)=>{
-                  const deviceitem = devices[devicenode.name];
-                  if(!!deviceitem){
-                    latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
-                  }
-              });
-              console.log(`latlngs===>${JSON.stringify(latlngs)}`);
-              if(latlngs.length > 0){
-                 let polyline = L.polyline(latlngs);
-                 let lBounds = polyline.getBounds();//LatLngBounds
-                 let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
-                 let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
-                 let amapboounds = new window.AMap.Bounds(southWest,northEast);
-                 window.amapmain.setBounds(amapboounds);
-
-                 console.log(`zoomto...`);
-               }
-            }
+            // let adcodeinfo = getadcodeinfo(adcodetop);
+            // const {curdevicelist,devices} = yield select((state)=>{
+            //   return {...state.device};
+            // });
+            // console.log(`${curdevicelist.length}`);
+            // if(adcodeinfo.level === 'district' && curdevicelist.length < 50){
+            //   //如果当前定位到区一级，则自动放大到最合适位置
+            //   let latlngs = [];
+            //   _.map(curdevicelist,(devicenode)=>{
+            //       const deviceitem = devices[devicenode.name];
+            //       if(!!deviceitem){
+            //         latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
+            //       }
+            //   });
+            //   console.log(`latlngs===>${JSON.stringify(latlngs)}`);
+            //   if(latlngs.length > 0){
+            //      let polyline = L.polyline(latlngs);
+            //      let lBounds = polyline.getBounds();//LatLngBounds
+            //      let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
+            //      let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
+            //      let amapboounds = new window.AMap.Bounds(southWest,northEast);
+            //      window.amapmain.setBounds(amapboounds);
+            //
+            //      console.log(`zoomto...`);
+            //    }
+            // }
           }
         }
         catch(e){
