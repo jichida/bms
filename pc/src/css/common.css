@@ -237,7 +237,7 @@
     z-index: 13001;
     height: 54px;
     width: 60px;
-    position: absolute;
+    position: fixed;
     overflow: visible;
 }
 .AppPage .react-draggable .page{

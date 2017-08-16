@@ -27,7 +27,8 @@ import {
   ui_showhugepoints
 } from '../actions';
 import translate from 'redux-polyglot/translate';
-import Historytrackplayback from "./historytrackplayback/index.js";
+import Datatable from './datatable';
+import Historytrackplayback from "./historytrackplayback";
 let resizetime = null;
 
 
@@ -86,6 +87,7 @@ class Page extends React.Component {
     render() {
         const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
         const treestyle = this.getdrawstyle("300px");
+        const MapPage = this.props.map;
 
         return (
             <div className="AppPage">
@@ -174,10 +176,12 @@ class Page extends React.Component {
                             <span className="myclose" onClick={this.menuevent}></span>
                         </Drawer>
 
+                        <Datatable />
+
                         <div className="admincontainer">
-                            <AdminContent />
-                            <Menu lesswidth={showmenu==="addressbox"?400:100}/>
+                            <MapPage />
                         </div>
+                        
                         <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>
                             <Historytrackplayback back={this.hidehistoryplay}/>
                         </Drawer>
@@ -185,6 +189,9 @@ class Page extends React.Component {
                         <div className="warningtips">
                             <Warningtips/>
                         </div>
+
+                        <Menu lesswidth={showmenu==="addressbox"?400:100}/>
+                        
                     </div>
                 </div>
 

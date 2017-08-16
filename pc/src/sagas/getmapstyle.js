@@ -68,12 +68,16 @@ export const getpopinfowindowstyle = (deviceitem)=>{
   let city = _.get(deviceitem,'city','');
   let district = _.get(deviceitem,'district','');
   let formattedAddress = _.get(deviceitem,'formattedAddress','');
+  window.clickfn =(d)=>{
+    console.log("cilckfn");
+    console.log(d);
+  } 
 
   return {
       infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
       infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>
       <p>行政编码:<span class='color_warning'>${adcode}</span></p>
       <p>省市区:<span class='color_warning'>${province}${city}${district}</span></p>
-      <p>地址:<span class='color_warning'>${formattedAddress}</span></p>`
+      <p>地址:<span class='color_warning'>${formattedAddress}</span></p><p><button onclick="clickfn('ddd')">呵呵</button></p>`
   };
 }

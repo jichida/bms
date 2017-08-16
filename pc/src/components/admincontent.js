@@ -21,7 +21,7 @@ class Page extends React.Component {
     this.props.dispatch(carmapshow_createmap({divmapid}));
  }
  render() {
-     const height = this.props.height || window.innerHeight;
+     const height = this.props.height || window.innerHeight-64;
      console.log('地图---->render---------height:'+height);
      return (
          <div className="AdminContent">

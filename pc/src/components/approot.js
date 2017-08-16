@@ -5,11 +5,42 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {map_setmapinited} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
-
-
+import AdminContent from "./admincontent";
 import Index from './index';
-
+import { carmapshow_createmap, carmapshow_destorymap} from '../actions';
 import "../css/common.css";
+
+function mapoption(Component,Maps) {
+    let s = (props)=>{
+        return (<Component {...props} map={Maps}/>)
+    };
+    return connect()(s);
+}
+
+const divmapid = 'maptrackhistoryplayback';
+class MapPage extends React.Component {
+    componentWillMount () {
+        console.log('轨迹回放地图---->componentWillMount---------');
+    }
+    componentWillUnmount(){
+        console.log('轨迹回放地图---->componentWillUnmount---------');
+        this.props.dispatch(carmapshow_destorymap({divmapid}));
+    }
+    componentDidMount () {
+        console.log('轨迹回放地图---->componentDidMount---------');
+        this.props.dispatch(carmapshow_createmap({divmapid}));
+    }
+    render() {
+        const height = this.props.height || window.innerHeight;
+        console.log('地图---->render---------height:'+height);
+        return (
+            <div className="AdminContent">
+                <div id={divmapid} style={{height:`${height}px`}}/>
+            </div>
+        );
+    }
+}
+connect()(MapPage);
 
 class AppRoot extends React.Component {
     componentWillMount() {
@@ -35,11 +66,12 @@ class AppRoot extends React.Component {
         window.initamaploaded = false;
     }
     render() {
+        let MapPageCo = <MapPage />;
         return (
             <div className="AppContainer">
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)}/>
-                    <Route path="/index" component={Index}/>
+                    <Route path="/index" component={mapoption(Index, MapPageCo)}/>
                 </Switch>
             </div>
         );
