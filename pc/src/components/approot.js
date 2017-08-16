@@ -7,6 +7,8 @@ import {map_setmapinited} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
 import AdminContent from "./admincontent";
 import Index from './index';
+import Login from './login/login.js';
+import MapPage from './admincontent';
 import { carmapshow_createmap, carmapshow_destorymap} from '../actions';
 import "../css/common.css";
 
@@ -17,33 +19,9 @@ function mapoption(Component,Maps) {
     return connect()(s);
 }
 
-const divmapid = 'maptrackhistoryplayback';
-class MapPage extends React.Component {
-    componentWillMount () {
-        console.log('轨迹回放地图---->componentWillMount---------');
-    }
-    componentWillUnmount(){
-        console.log('轨迹回放地图---->componentWillUnmount---------');
-        this.props.dispatch(carmapshow_destorymap({divmapid}));
-    }
-    componentDidMount () {
-        console.log('轨迹回放地图---->componentDidMount---------');
-        this.props.dispatch(carmapshow_createmap({divmapid}));
-    }
-    render() {
-        const height = this.props.height || window.innerHeight;
-        console.log('地图---->render---------height:'+height);
-        return (
-            <div className="AdminContent">
-                <div id={divmapid} style={{height:`${height}px`}}/>
-            </div>
-        );
-    }
-}
-MapPage = connect()(MapPage);
-
 class AppRoot extends React.Component {
     componentWillMount() {
+        this.MapPageCo = <MapPage />;
         const scriptui = document.createElement("script");
         scriptui.src = "http://webapi.amap.com/ui/1.0/main.js?v=1.0.10";
         scriptui.async = false;
@@ -66,12 +44,13 @@ class AppRoot extends React.Component {
         window.initamaploaded = false;
     }
     render() {
-        let MapPageCo = <MapPage />;
+        
         return (
             <div className="AppContainer">
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)}/>
-                    <Route path="/index" component={mapoption(Index, MapPageCo)}/>
+                    <Route path="/index" component={mapoption(Index, this.MapPageCo)}/>
+                    <Route path="/login" component={Login}/>
                 </Switch>
             </div>
         );
