@@ -508,6 +508,8 @@ export function* createmapmainflow(){
       if(divmapid === divmapid_mapmain){
         window.amapmain = null;
         infoWindow=null;
+        distCluster=null;
+        pointSimplifierIns=null;
       }
     });
 
@@ -535,48 +537,67 @@ export function* createmapmainflow(){
 
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
-      while(!pointSimplifierIns || !distCluster){
-        yield call(delay,500);
-      }
-      //批量转换一次
-      g_devices = {};
-      let devicelistresult = yield call(getgeodatabatch,devicelist);
-      const data = [];
-      _.map(devicelistresult,(deviceitem)=>{
-        if(!!deviceitem.locz){
-          data.push(deviceitem);
-          g_devices[deviceitem.DeviceId] = deviceitem;
-        }
-      });
-      console.log(`一共显示${data.length}个设备`);
-      distCluster.setData(data);
-      pointSimplifierIns.setData(data);
+      try{
+          while(!pointSimplifierIns || !distCluster){
+            yield call(delay,500);
+          }
+          //批量转换一次
+          g_devices = {};
+          let devicelistresult = yield call(getgeodatabatch,devicelist);
+          const data = [];
+          _.map(devicelistresult,(deviceitem)=>{
+            if(!!deviceitem.locz){
+              data.push(deviceitem);
+              g_devices[deviceitem.DeviceId] = deviceitem;
+            }
+          });
+          console.log(`一共显示${data.length}个设备`);
+          distCluster.setData(data);
+          pointSimplifierIns.setData(data);
 
-      yield put(mapmain_seldistrict_init({adcodetop:100000,toggled:true}));
+          yield put(mapmain_seldistrict_init({adcodetop:100000,toggled:true}));
+        }
+        catch(e){
+          console.log(`选择点失败${e}`);
+        }
 
     });
 
     //显示地图区域
     yield takeEvery(`${ui_showdistcluster}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
-        if(isshow){
-          distCluster.show();
+        try{
+          if(!!distCluster){
+            if(isshow){
+              distCluster.show();
+            }
+            else{
+              distCluster.hide();
+            }
+            distCluster.render();
+          }
         }
-        else{
-          distCluster.hide();
+        catch(e){
+          console.log(e);
         }
-        distCluster.render();
     });
     //显示海量点
     yield takeEvery(`${ui_showhugepoints}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
-        if(isshow){
-          pointSimplifierIns.show();
+        try{
+          if(!!distCluster){
+            if(isshow){
+              pointSimplifierIns.show();
+            }
+            else{
+              pointSimplifierIns.hide();
+            }
+            pointSimplifierIns.render();
+          }
         }
-        else{
-          pointSimplifierIns.hide();
+        catch(e){
+          console.log(e);
         }
-        pointSimplifierIns.render();
     });
     //第一次初始化
     yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
@@ -731,14 +752,19 @@ export function* createmapmainflow(){
 
     yield takeLatest(`${md_ui_settreefilter}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
-      const {payload} = action;
-      let delaytime = 0;
-      let treefilter = payload;
-      if(!!treefilter){
-          delaytime = 500;
+      try{
+        const {payload} = action;
+        let delaytime = 0;
+        let treefilter = payload;
+        if(!!treefilter){
+            delaytime = 500;
+        }
+        yield call(delay, delaytime);
+        yield put(ui_settreefilter(payload));
       }
-      yield call(delay, delaytime);
-      yield put(ui_settreefilter(payload));
+      catch(e){
+        console.log(e);
+      }
     });
     //serverpush_devicegeo
 
