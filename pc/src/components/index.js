@@ -91,7 +91,7 @@ class Page extends React.Component {
 
         return (
             <div className="AppPage">
-                
+
 
 
                 <div className="content">
@@ -179,9 +179,9 @@ class Page extends React.Component {
                         <Datatable />
 
                         <div className="admincontainer">
-                            <MapPage />
+                            {MapPage}
                         </div>
-                        
+
                         <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>
                             <Historytrackplayback back={this.hidehistoryplay}/>
                         </Drawer>
@@ -191,7 +191,7 @@ class Page extends React.Component {
                         </div>
 
                         <Menu lesswidth={showmenu==="addressbox"?400:100}/>
-                        
+
                     </div>
                 </div>
 

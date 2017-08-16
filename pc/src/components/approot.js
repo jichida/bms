@@ -40,7 +40,7 @@ class MapPage extends React.Component {
         );
     }
 }
-connect()(MapPage);
+MapPage = connect()(MapPage);
 
 class AppRoot extends React.Component {
     componentWillMount() {
