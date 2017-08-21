@@ -12,6 +12,9 @@ export default {
     systemconfig:{
       name: '系统设置 |||| 系统设置',
     },
+    organization:{
+      name: '组织 |||| 组织',
+    },
     device:{
       name: '设备管理 |||| 设备管理',
     },

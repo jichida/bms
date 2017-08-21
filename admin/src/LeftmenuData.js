@@ -17,6 +17,7 @@ import CanrowDataIcon from 'material-ui/svg-icons/action/timeline';//原始数�
 
 export default [
         { name: 'systemconfig', icon: <SystemconfigIcon /> },
+        { name: 'organization', icon: <SystemconfigIcon /> },    
         { name: 'device', icon: <DeviceIcon /> },
         { name: 'devicegroup', icon: <DeviceGroupIcon /> },
         { name: 'user', icon: <UserIcon /> },

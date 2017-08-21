@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { required,NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
- Filter,Filters } from 'admin-on-rest/lib/mui';
+ Filter,Filters, ReferenceInput,SelectInput  } from 'admin-on-rest/lib/mui';
 
 
 import { Field,FieldArray } from 'redux-form';
@@ -18,10 +18,13 @@ const UserGroupCreate = (props) => {
   return (
     <Create title="创建用户组" {...props} >
       <SimpleForm>
-        <TextInput label="分组名称" resource="name" validate={required} />
-        <NumberInput label="权限值" resource="permissionvalue" />
+        <TextInput label="分组名称" source="name" validate={required} />
+        <NumberInput label="权限值" source="permissionvalue" />
         <TextInput label="备注" source="memo" />
         <TextInput label="联系人" source="contact" />
+        <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
+          <SelectInput optionText="name" />
+        </ReferenceInput>
       </SimpleForm>
     </Create>
   );
@@ -35,6 +38,9 @@ const UserGroupEdit = (props) => {
         <NumberInput label="权限值" source="permissionvalue" />
         <TextInput label="备注" source="memo" />
         <TextInput label="联系人" source="contact" />
+        <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
+          <SelectInput optionText="name" />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );
@@ -47,20 +53,13 @@ const UserGroupList = (props) => (
       <NumberField label="权限值" source="permissionvalue" />
       <TextField label="备注" source="memo" />
       <TextField label="联系人" source="contact" />
+      <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>
+        <TextField source="name" />
+      </ReferenceField>
       <EditButton />
     </Datagrid>
   </List>
 );
 
-const UserGroupShow = (props) => (
-  <Show title="用户分组" {...props} >
-    <SimpleShowLayout>
-      <TextField label="分组名称" source="name" />
-      <NumberField label="权限值" source="permissionvalue" />
-      <TextField label="备注" source="memo" />
-      <TextField label="联系人" source="contact" />
-    </SimpleShowLayout>
-  </Show>
-);
 
-export {UserGroupCreate,UserGroupList,UserGroupEdit,UserGroupShow};
+export {UserGroupCreate,UserGroupList,UserGroupEdit};

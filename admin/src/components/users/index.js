@@ -26,23 +26,13 @@ const UserCreate = (props) => (
       <ReferenceInput label="用户组" source="groupid" reference="usergroup" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
+      <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
+        <SelectInput optionText="name" />
+      </ReferenceInput>
     </SimpleForm>
   </Create>
 );
 
-const UserShow = (props) => (
-  <Show title={<UserListTitle />} {...props} >
-      <SimpleShowLayout>
-         <TextField source="id" />
-         <TextField label="用户名" source="username" />
-         <DateField label="注册时间" source="created_at" showtime />
-         <DateField label="上次登陆时间" source="updated_at" showtime />
-         <ReferenceField label="用户分组" source="groupid" reference="usergroup" >
-           <TextField source="name" />
-        </ReferenceField>
-      </SimpleShowLayout>
-  </Show>
-);
 
 const UserEdit = (props) => {
   return (
@@ -51,6 +41,9 @@ const UserEdit = (props) => {
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
         <ReferenceInput label="用户组" source="groupid" reference="usergroup" allowEmpty>
+          <SelectInput optionText="name" />
+        </ReferenceInput>
+        <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
       </SimpleForm>
@@ -71,7 +64,10 @@ const UserList = (props) => (
         <TextField label="用户名" source="username" />
         <DateField label="注册时间" source="created_at" showtime />
         <DateField label="上次登陆时间" source="updated_at" showtime />
-        <ReferenceField label="用户组" source="groupid" reference="usergroup">
+        <ReferenceField label="用户组" source="groupid" reference="usergroup" allowEmpty>
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>
           <TextField source="name" />
         </ReferenceField>
         <EditButton />
@@ -79,4 +75,4 @@ const UserList = (props) => (
   </List>
 );
 
-export {UserCreate,UserList,UserEdit,UserShow};
+export {UserCreate,UserList,UserEdit};

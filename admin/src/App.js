@@ -21,11 +21,12 @@ import {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit,DeviceGroupShow} from 
 import {DeviceCreate,DeviceList,DeviceEdit,DeviceShow} from './components/devices/index.js';
 import {HistoryTrackList,HistoryTrackShow} from './components/historytracks/index.js';
 import {RealtimeAlarmList,RealtimeAlarmShow} from './components/realtimealarms/index.js';
-import {UserCreate,UserList,UserEdit,UserShow} from './components/users/index.js';
+import {UserCreate,UserList,UserEdit} from './components/users/index.js';
 import {UserlogList} from './components/userlogs/index.js';
 import {PermissionCreate,PermissionList,PermissionEdit} from './components/permissions/index.js';
 import {UserAdminCreate,UserAdminList,UserAdminEdit} from './components/useradmins/index.js';
-import {UserGroupCreate,UserGroupList,UserGroupEdit,UserGroupShow} from './components/usergroups/index.js';
+import {UserGroupCreate,UserGroupList,UserGroupEdit} from './components/usergroups/index.js';
+import {OrganizationCreate,OrganizationEdit,OrganizationList} from './components/organization/index.js';
 
 class App extends Component {
 
@@ -50,13 +51,12 @@ class App extends Component {
             <Resource name="device" list={DeviceList} show={DeviceShow} edit={DeviceEdit} create={DeviceCreate} />
             <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />
             <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />
-            <Resource name="user" list={UserList} show={UserShow} edit={UserEdit} create={UserCreate} />
-            <Resource name="usergroup" list={UserGroupList} show={UserGroupShow} edit={UserGroupEdit} create={UserGroupCreate} />
+            <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} />
             <Resource name="userlog" list={UserlogList} />
             <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate} />
             <Resource name="useradmin" list={UserAdminList} edit={UserAdminEdit} create={UserAdminCreate} />
-            <Resource name="usergroup" list={UserGroupList} show={UserGroupShow} edit={UserGroupEdit} create={UserGroupCreate} />
-            
+            <Resource name="usergroup" list={UserGroupList} edit={UserGroupEdit} create={UserGroupCreate} />
+            <Resource name="organization" list={OrganizationList} edit={OrganizationEdit} create={OrganizationCreate} />
             </Admin>
         );
     }
