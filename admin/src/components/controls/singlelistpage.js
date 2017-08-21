@@ -13,7 +13,7 @@ import Avatar from 'material-ui/Avatar';
 import {white, cyan500} from 'material-ui/styles/colors';
 //import 'material-design-icons/iconfont/material-icons.css';
 import FontIcon from 'material-ui/FontIcon';
-
+import _ from 'lodash';
 import { push } from 'react-router-redux';
 import { CreateButton,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,BooleanField } from 'admin-on-rest/lib/mui';
@@ -49,8 +49,15 @@ class Page extends Component {
 const mapStateToProps = (state,props) => {
   const resourceState = state.admin[props.resource];
   console.log('resourceState===>' + JSON.stringify(resourceState));
+  let ids = [];
+  if(!!resourceState['data']){
+    _.map(resourceState['data'],(v,k)=>{
+      ids.push(k);
+    });
+  }
+
   let page = {
-    ids: resourceState.list.ids,
+    ids,
   };
   console.log("page:" + JSON.stringify(page));
   return Object.assign({},page);
