@@ -108,7 +108,7 @@ export class Page extends Component {
                     <div className="toastDialogContent">
                         {toast.type ==="warning" && <i className="fa fa-exclamation-circle" style={{color : "#e9a70e"}} aria-hidden="true"></i> }
                         {toast.type ==="success" && <i className="fa fa-check-circle" style={{color : "#2bab09"}} aria-hidden="true"></i> }
-                        {toast.type ==="loading" && <CircularProgress size={80} thickness={5} /> }
+                        {toast.type ==="loading" && <CircularProgress size={80} thickness={5} style={{margin: "auto"}} /> }
                         <span>{toast.text || "测试数据"}</span>
                     </div>
                 </Dialog>
