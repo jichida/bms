@@ -1,6 +1,7 @@
 import {takeEvery,put,fork,call,select} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
+  login_request,
   querydevicegroup_request,
   querydevicegroup_result,
   querydevice_request,
@@ -87,6 +88,12 @@ export function* testdataflow(){//仅执行一次
      }));
   });
 
+  yield takeEvery(`${login_request}`, function*(action) {
+    yield put(md_login_result({
+      loginsuccess:true
+    }));
+  });
+
   yield takeEvery(`${querydevice_request}`, function*(action) {
      yield put(querydevice_result({list:jsondata}));
   });
@@ -144,11 +151,6 @@ export function* testdataflow(){//仅执行一次
      }
      yield put(notify_socket_connected(true));
 
-     yield call(delay,2000);
-
-     yield put(md_login_result({
-       loginsuccess:true
-     }));
    });
 
    yield takeEvery(`${queryhistorytrack_request}`, function*(action) {

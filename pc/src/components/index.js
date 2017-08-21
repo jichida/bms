@@ -90,9 +90,6 @@ class Page extends React.Component {
 
         return (
             <div className="AppPage">
-
-
-
                 <div className="content">
                     <div className="headcontent">
                         <AppBar

@@ -11,6 +11,7 @@ import Datatable from './datatable/index.js';
 import Login from './login/login.js';
 import MapPage from './admincontent';
 import WeuiTool from './tools/weuitool';
+import {requireAuthentication} from './requireauthentication';
 import { carmapshow_createmap, carmapshow_destorymap} from '../actions';
 import "../css/common.css";
 
@@ -35,14 +36,14 @@ class AppRoot extends React.Component {
         window.initamaploaded = false;
     }
     render() {
-        
+
         return (
             <div className="AppContainer">
                 <WeuiTool />
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)} />
-                    <Route path="/index" component={()=>(<div></div>)} />
-                    <Route path="/datatable" component={Datatable} />
+                    <Route path="/index" component={requireAuthentication(()=>(<div></div>))} />
+                    <Route path="/datatable" component={requireAuthentication(Datatable)} />
                     <Route path="/login" component={Login} />
                 </Switch>
                 <div>
