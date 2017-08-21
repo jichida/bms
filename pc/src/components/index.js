@@ -27,7 +27,6 @@ import {
   ui_showhugepoints
 } from '../actions';
 import translate from 'redux-polyglot/translate';
-import Datatable from './datatable';
 import Historytrackplayback from "./historytrackplayback";
 let resizetime = null;
 
@@ -109,7 +108,7 @@ class Page extends React.Component {
                                 marginTop: "0",
                                 marginLeft: "0"
                             }}
-                            iconElementLeft={<div className="logo">logo</div>}
+                            iconElementLeft={<div className="logo" onClick={()=>{this.props.history.push("/datatable")}}>logo</div>}
                             className="appbar"
                         />
                     </div>
@@ -139,7 +138,7 @@ class Page extends React.Component {
                         </Drawer>
 
                         <Drawer
-                            open={showmenu==="addressbox"}
+                            open={showmenu==="addressbox" || true}
                             containerStyle={{
                                 top: "64px",
                                 zIndex: 1000,
@@ -176,10 +175,8 @@ class Page extends React.Component {
                             <span className="myclose" onClick={this.menuevent}></span>
                         </Drawer>
 
-                        <Datatable />
-
                         <div className="admincontainer">
-                            {MapPage}
+                            <AdminContent />
                         </div>
 
                         <Drawer width={this.state.innerWidth} openSecondary={true} open={showhistoryplay}>

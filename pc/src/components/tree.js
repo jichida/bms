@@ -4,16 +4,38 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Treebeard} from 'react-treebeard';
+import {Treebeard,decorators} from 'react-treebeard';
 import RaisedButton from 'material-ui/RaisedButton';
+import Search from "./search";
 import _ from 'lodash';
 import {
-  mapmain_seldistrict,
-  ui_selcurdevice,
-  ui_changetreestyle,
-  md_ui_settreefilter
+    mapmain_seldistrict,
+    ui_selcurdevice,
+    ui_changetreestyle,
+    md_ui_settreefilter
 } from '../actions';
 import {filterTree,expandFilteredNodes} from '../util/filter';
+import treestyle from './treestyle.js';
+import '../css/treestyle.css';
+
+
+decorators.Header = (props) => {
+
+    const active = props.node.active;
+    const iconType = props.node.children ? 'folder' : 'file-text';
+    const iconClass = `fa fa-${iconType}`;
+    const iconStyle = {marginRight: '5px'};
+    const treeseled = active ? "seled" : "";
+
+    return (
+        <div style={props.style.base} className={treeseled}>
+            <div style={props.style.title}>
+                {props.node.name}
+            </div>
+        </div>
+    );
+};
+
 
 class TreeExample extends React.Component {
     constructor(props){
@@ -67,8 +89,15 @@ class TreeExample extends React.Component {
 
     render(){
         const {datatree} = this.props;
+
+        
+
+
         return (
-            <div style={{paddingTop:"20px", background:"rgb(33, 37, 43)"}} className="treePage">
+            <div className="treePage">
+                <div className="treehead">
+                    地理位置
+                </div>
                 <div className="searchbox">
                     <div className="input-group">
                         <span className="input-group-addon">
@@ -80,14 +109,13 @@ class TreeExample extends React.Component {
                                type="text"/>
                     </div>
                 </div>
-                <div className="btnlist">
-                    <RaisedButton label="按地理位置" onTouchTap={this.onChangeTreeStyle.bind(this,'byloc')}/>
-                    <RaisedButton label="按分组"  onTouchTap={this.onChangeTreeStyle.bind(this,'bygroup')}/>
-                </div>
+                <Search />
                 <Treebeard
                     id="lefttree"
                     data={datatree}
                     onToggle={this.onToggle}
+                    decorators={decorators}
+                    style={treestyle.default}
                 />
             </div>
         );

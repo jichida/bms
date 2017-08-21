@@ -10,19 +10,20 @@ import IconButton from 'material-ui/IconButton';
 import {grey900} from 'material-ui/styles/colors';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import "./style.css";
 
-class Page extends React.Component {
+class DatatablePage extends React.Component {
     
     render() {
-        let show = !!this.props.show?{display:"flex"}:{display:"none"};
         return (
-            <div className="datatablePage AppPage" style={show}>
+            <div className="datatablePage AppPage">
                 <AppBar
-                    title={<span className="title">轨迹回放</span>}
-                    iconElementLeft={<div><i className="fa fa-angle-left back" aria-hidden="true"></i></div>}
+                    title={<span className="title"><b style={{marginRight:"10px"}}>数据列表</b> 设备编号：123123-wr2-2r3r2</span>}
+                    iconElementLeft={<div onClick={()=>{this.props.history.push("./")}}><i className="fa fa-angle-left back" aria-hidden="true"></i></div>}
                     iconElementRight={
-                        <IconButton onTouchTap={()=>{}}>
+                        <IconButton onTouchTap={()=>{this.props.history.push("./")}}>
                             <NavigationClose color={grey900}/>
                         </IconButton>
                     }
@@ -39,25 +40,45 @@ class Page extends React.Component {
                         marginRight: "20px"
                     }}
                     />
-                <div className="set">
-                    <div>设备编号：123123-wr2-2r3r2</div>
+                <div className="SearchBar">
                     <div className="formlist">
-                        <div>
                             <DatePicker hintText="开始日期"  />
                             <TimePicker hintText="开始时间"  />
-                        </div>
-                        <div>
                             <DatePicker hintText="结束日期"  />
                             <TimePicker hintText="结束时间"  />
-                        </div>
+                            <SelectField
+                                value={0}
+                                onChange={()=>{}}
+                                maxHeight={200}
+                                >
+                                <MenuItem value={0} primaryText={"选择地理位置"} />
+                                <MenuItem value={1} primaryText={"江苏"} />
+                            </SelectField>
+                            <SelectField
+                                value={0}
+                                onChange={()=>{}}
+                                maxHeight={200}
+                                >
+                                <MenuItem value={0} primaryText={"自定义分组"} />
+                                <MenuItem value={1} primaryText={"江苏"} />
+                            </SelectField>
+                            <SelectField
+                                value={0}
+                                onChange={()=>{}}
+                                maxHeight={200}
+                                >
+                                <MenuItem value={0} primaryText={"编号"} />
+                                <MenuItem value={1} primaryText={"PACK"} />
+                                <MenuItem value={2} primaryText={"RDB"} />
+                            </SelectField>
+                            <RaisedButton onTouchTap={()=>{}} label="查询" primary={true} />
                     </div>
-                    <div className="btnlist">
-                        <RaisedButton onTouchTap={()=>{}} label="开始" primary={true} style={{marginRight:"10px"}} />
-                        <RaisedButton onTouchTap={()=>{}} label="结束" secondary={true} style={{marginRight:"10px"}} />
-                    </div>
+                </div>
+                <div className="list">
+                    
                 </div>
             </div>
         );
     }
 }
-export default connect()(Page);
+export default connect()(DatatablePage);

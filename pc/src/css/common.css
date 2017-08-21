@@ -11,6 +11,7 @@
     font-family: sans-serif;
     font-weight: 200;
     border:none;
+    list-style: none;
 }
 .AppContainer{
     background: #EEE;
@@ -45,6 +46,9 @@
     display: -ms-flexbox;
     display: flex;
     display: -webkit-flex;
+}
+.AppPage .AdminContent{
+    
 }
 .AppPage .content .AdminContent,
 .AppPage .content .admincontainer{
@@ -507,7 +511,6 @@
 
 .treePage .searchbox{
     padding: 10px 15px;
-    background: rgb(33, 37, 43);
 }
 .treePage .searchbox >div{
     display: -webkit-box;
@@ -562,5 +565,16 @@
 .formlist >div>div>div{
     -webkit-flex-grow: 1;
     flex-grow: 1;
+}
+.treePage .warningPage{
+    margin-top: -20px;
+    margin-bottom: -10px;
+}
+.treehead{
+    color: #FFF;
+    background: #2085b5;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
 }
 

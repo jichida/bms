@@ -155,7 +155,6 @@ class TreeSearchBattery extends React.Component {
 
         return (
             <div className="warningPage">
-                <div className="tit">电池包搜索</div>
                 <div className="searchli">
                     <div>
                         <SelectField
@@ -220,7 +219,7 @@ class TreeSearchBattery extends React.Component {
                     </div>
                 </div>
                 <div className="searchbtn">
-                  <RaisedButton label="查询" primary={true} fullWidth={true} onTouchTap={this.onClickQuery}/>
+                  <RaisedButton label="查询" primary={true} fullWidth={true} onTouchTap={this.onClickQuery} buttonStyle={{background:"#2085b5"}}/>
                 </div>
             </div>
 

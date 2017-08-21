@@ -4,31 +4,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  carmapshow_createmap,
-  carmapshow_destorymap,
+    carmapshow_createmap,
+    carmapshow_destorymap,
 } from '../actions';
 const divmapid = 'mapmain';
-class Page extends React.Component {
-  componentWillMount () {
-    console.log('地图---->componentWillMount---------');
-  }
-  componentWillUnmount(){
-    console.log('地图---->componentWillUnmount---------');
-    this.props.dispatch(carmapshow_destorymap({divmapid}));
-  }
-  componentDidMount () {
-    console.log('地图---->componentDidMount---------');
-    this.props.dispatch(carmapshow_createmap({divmapid}));
- }
- render() {
-     const height = this.props.height || window.innerHeight-64;
-     console.log('地图---->render---------height:'+height);
-     return (
-         <div className="AdminContent">
-             <div id={divmapid} style={{height:`${height}px`}}/>
-         </div>
-     );
- }
+class MapPage extends React.Component {
+    componentWillMount () {
+        console.log('地图---->componentWillMount---------');
+    }
+    componentWillUnmount(){
+        console.log('地图---->componentWillUnmount---------');
+        this.props.dispatch(carmapshow_destorymap({divmapid}));
+    }
+    componentDidMount () {
+        console.log('地图---->componentDidMount---------');
+        this.props.dispatch(carmapshow_createmap({divmapid}));
+    }
+    render() {
+        const height = this.props.height || window.innerHeight-64;
+        console.log('地图---->render---------height:'+height);
+        return (
+            <div className="AdminContent">
+                <div id={divmapid} style={{height:`${height}px`}}/>
+            </div>
+        );
+    }
 }
-
-export default connect()(Page);
+export default connect()(MapPage);

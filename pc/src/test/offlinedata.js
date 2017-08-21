@@ -64,7 +64,7 @@ for(let i = 0;i < 0; i++){
   });
 }
 
-jsondata = _.sampleSize(jsondata, 20000);
+jsondata = _.sampleSize(jsondata, 100);
 
 export function* testdataflow(){//仅执行一次
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {

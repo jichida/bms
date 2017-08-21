@@ -42,31 +42,9 @@ class TreeSearch extends React.Component {
     render(){
         const {devices,searchresult_battery} = this.props;
         return (
-            <div className="warningPage">
+            <div className="warningcontentPage">
                 <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
-                <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHeaderColumn>设备号</TableHeaderColumn>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {
-                        _.map(searchresult_battery,(deviceId,key)=>{
-                          const deviceinfo =devices[deviceId];
-                          return (
-                            <TableRow key={key}>
-                              <TableRowColumn>{deviceinfo.DeviceId}</TableRowColumn>
-                              <TableRowColumn>
-                                <RaisedButton label="查看设备" primary={true} fullWidth={true}
-                               onTouchTap={this.onClickDevice.bind(this,deviceinfo)} />
-                             </TableRowColumn>
-                            </TableRow>
-                          )
-                        })
-                    }
-                    </TableBody>
-                  </Table>
+                
             </div>
 
         );
