@@ -577,4 +577,107 @@
     text-align: center;
     line-height: 45px;
 }
+.topuser {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    height: 48px;
+    margin-left: 20px;
+}
+.topuser span{
+    margin-right: 10px;
+    font-weight: bold;
+}
+.topuser img{
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border:2px solid #EEE;
+}
+.historytrackplayback .appbar{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    background: #5cbeaa;
+    color: #FFF;
+    font-size: 22px;
+    height: 72px;
+    line-height: 72px;
+}
+.historytrackplayback .appbar .title{
+    border:1px solid #FFF;
+    color: #FFF;
+    padding: 0 15px;
+}
+.historytrackplayback .appbar .day{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -webkit-box-orient:vertical;
+    -webkit-box-direction:normal;
+    -moz-box-orient:vertical;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0 15px;
+    border-right: 1px solid #FFF;
+    height: 72px;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.historytrackplayback .appbar .controlbtn{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    justify-content: flex-end;
+    -moz-justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+    margin-right: 20px;
+}
+.historytrackplayback .appbar .controlbtn span{
+    display: inline-block;
+    background: #EEE;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 0 4px 4px 0;
+    padding: 0 15px;
+    color: #333;
+    cursor: pointer;
+}
+.historytrackplayback .appbar .controlbtn span:first-child{
+    background: #FFF;
+    border-radius:4px 0 0 4px;
+}
+.historytrackplayback .appbar .controlbtn span:active{
+    background: #CCC;
+}
+
+
+
+
+
+
+
+
+
 

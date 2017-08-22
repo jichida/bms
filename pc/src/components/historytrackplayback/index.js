@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import Day from 'material-ui/svg-icons/action/date-range';
+import Time from 'material-ui/svg-icons/device/access-time';
 import IconButton from 'material-ui/IconButton';
 import {grey900} from 'material-ui/styles/colors';
 import DatePicker from 'material-ui/DatePicker';
@@ -35,6 +37,33 @@ class Page extends React.Component {
         const formstyle={width:"10px",flexGrow:"1"};
         return (
             <div className="historytrackplayback">
+
+
+                <div className="appbar">
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <div className="title">设备编号8888888</div>
+                    <div className="day">
+                        <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>开始日期</div>
+                    </div>
+                    <div className="day">
+                        <Time color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>开始时间</div>
+                    </div>
+                    <div className="day">
+                        <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>结束日期</div>
+                    </div>
+                    <div className="day">
+                        <Time color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>结束时间</div>
+                    </div>
+                    <div className="controlbtn">
+                        <span>开始</span>
+                        <span>结束</span>
+                    </div>
+                </div>
+
                 <AppBar
                     title={<span className="title">轨迹回放</span>}
                     iconElementLeft={<div><i className="fa fa-angle-left back" aria-hidden="true" onTouchTap={this.props.back}></i></div>}

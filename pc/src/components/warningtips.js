@@ -22,26 +22,27 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import MapsPlace from 'material-ui/svg-icons/maps/place';
+import Settings from "material-ui/svg-icons/action/settings";
+import Exit from "material-ui/svg-icons/action/exit-to-app";
+import Avatar from "../img/2.jpg";
 
 /**
  * The `maxHeight` property limits the height of the menu, above which it will be scrollable.
  */
+
 const UserMenu = () => (
     <IconMenu
-        iconButtonElement={<IconButton><MapsPlace /></IconButton>}
+        iconButtonElement={
+            <div className="topuser">
+                <span>jwhklk</span>
+                <img src={Avatar}  />
+            </div>
+        }
         targetOrigin={{horizontal: 'left', vertical: 'top'}}
         anchorOrigin ={{ vertical: 'bottom', horizontal: 'left'}}
-        style = {{top: "72px"}}
-        iconStyle = {{top : 0}}
         >
-        <MenuItem primaryText="Preview" leftIcon={<RemoveRedEye />} />
-        <MenuItem primaryText="Share" leftIcon={<PersonAdd />} />
-        <MenuItem primaryText="Get links" leftIcon={<ContentLink />} />
-        <Divider />
-        <MenuItem primaryText="Make a copy" leftIcon={<ContentCopy />} />
-        <MenuItem primaryText="Download" leftIcon={<Download />} />
-        <Divider />
-        <MenuItem primaryText="Remove" leftIcon={<Delete />} />
+        <MenuItem primaryText="设置" leftIcon={<Settings />} />
+        <MenuItem primaryText="退出登录" leftIcon={<Exit />} />
     </IconMenu>
 );
 

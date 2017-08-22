@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import Day from 'material-ui/svg-icons/action/date-range';
+import Time from 'material-ui/svg-icons/device/access-time';
+
 import IconButton from 'material-ui/IconButton';
 import {grey900} from 'material-ui/styles/colors';
 import DatePicker from 'material-ui/DatePicker';
@@ -15,31 +18,35 @@ import MenuItem from 'material-ui/MenuItem';
 import "./style.css";
 
 class DatatablePage extends React.Component {
-    
     render() {
         return (
             <div className="datatablePage AppPage">
-                <AppBar
-                    title={<span className="title"><b style={{marginRight:"10px"}}>数据列表</b> 设备编号：123123-wr2-2r3r2</span>}
-                    iconElementLeft={<div onClick={()=>{this.props.history.push("./")}}><i className="fa fa-angle-left back" aria-hidden="true"></i></div>}
-                    iconElementRight={
-                        <IconButton onTouchTap={()=>{this.props.history.push("./")}}>
-                            <NavigationClose color={grey900}/>
-                        </IconButton>
-                    }
-                    style={{
-                        backgroundColor: "#FFF",
-                        paddingLeft:"10px",
-                        paddingRight:"0",
-                    }}
-                    className="appbar"
-                    iconStyleLeft={{
-                        marginTop: "15px"
-                    }}
-                    iconStyleRight={{
-                        marginRight: "20px"
-                    }}
-                    />
+
+                <div className="appbar">
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <div className="title">设备编号8888888</div>
+                    <div className="day">
+                        <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>开始日期</div>
+                    </div>
+                    <div className="day">
+                        <Time color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>开始时间</div>
+                    </div>
+                    <div className="day">
+                        <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>结束日期</div>
+                    </div>
+                    <div className="day">
+                        <Time color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
+                        <div>结束时间</div>
+                    </div>
+                    <div className="controlbtn">
+                        <span>开始</span>
+                        <span>结束</span>
+                    </div>
+                </div>
+
                 <div className="SearchBar">
                     <div className="formlist">
                             <DatePicker hintText="开始日期"  />
