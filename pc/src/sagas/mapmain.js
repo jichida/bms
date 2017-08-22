@@ -527,7 +527,7 @@ export function* createmapmainflow(){
              yield put(ui_showmenu("showdevice_no"));
            }
           },'close');
-          yield put(ui_showmenu("showdevice"));
+          // yield put(ui_showmenu("showdevice"));
           console.log(`显示弹框${JSON.stringify(deviceitem)}`);
         }
         catch(e){

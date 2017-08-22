@@ -1,5 +1,6 @@
 import _ from 'lodash';
-
+import store from '../env/store';
+import {ui_showmenu} from '../actions';
 //地图上点图标的样式【图标类型】
 export const getgroupStyleMap = ()=>{
   let groupsz = [
@@ -71,13 +72,15 @@ export const getpopinfowindowstyle = (deviceitem)=>{
   window.clickfn =(d)=>{
     console.log("cilckfn");
     console.log(d);
-  } 
+    store.dispatch(ui_showmenu("showdevice"));
+    //yield put(ui_showmenu("showdevice"));
+  }
 
   return {
       infoTitle: `<p>设备id:<span class='color_warning'>${DeviceId}</span></p>`,
       infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>
       <p>行政编码:<span class='color_warning'>${adcode}</span></p>
       <p>省市区:<span class='color_warning'>${province}${city}${district}</span></p>
-      <p>地址:<span class='color_warning'>${formattedAddress}</span></p><p><button onclick="clickfn('ddd')">呵呵</button></p>`
+      <p>地址:<span class='color_warning'>${formattedAddress}</span></p><p><button onclick="clickfn('ddd')">查看详情</button></p>`
   };
 }
