@@ -46,11 +46,13 @@ const UserGroupEdit = (props) => {
   );
 };
 
+const UserGroupTitle = ({record}) => {
+  return <span>用户分组列表</span>
+};
 const UserGroupList = (props) => (
-  <List title="用户分组列表" {...props} >
+  <List title={<UserGroupTitle />} {...props} >
     <Datagrid >
       <TextField label="分组名称" source="name" />
-      <NumberField label="权限值" source="permissionvalue" />
       <TextField label="备注" source="memo" />
       <TextField label="联系人" source="contact" />
       <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>

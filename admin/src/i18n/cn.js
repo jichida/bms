@@ -25,7 +25,10 @@ export default {
       name: '用户管理 |||| 用户管理',
     },
     usergroup:{
-      name: '用户分组管理 |||| 用户分组管理 ',
+      name: '用户分组管理 |||| 用户分组管理',
+      fields:{
+        organizationid:'所在组织',
+      }
     },
     permission:{
       name: '权限管理 |||| 权限管理',

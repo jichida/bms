@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { required,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
- Filter,Filters } from 'admin-on-rest/lib/mui';
+ Filter,Filters,ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
 
 import { Field,FieldArray } from 'redux-form';
@@ -24,6 +24,9 @@ const DeviceGroupCreate = (props) => (
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
+      <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
+        <SelectInput optionText="name" />
+      </ReferenceInput>
     </SimpleForm>
   </Create>
 );
@@ -35,21 +38,14 @@ const DeviceGroupList = (props) => (
       <TextField label="分组名称" source="name" />
       <TextField label="备注" source="memo" />
       <TextField label="联系人" source="contact" />
+      <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>
+        <TextField source="name" />
+      </ReferenceField>
       <EditButton />
     </Datagrid>
   </List>
 );
 
-const DeviceGroupShow = (props) => (
-  <Show title={<DeviceGroupTitle />} {...props}>
-    <SimpleShowLayout>
-      <TextField source="id" />
-      <TextField label="分组名称" source="name" />
-      <TextField label="备注" source="memo" />
-      <TextField label="联系人" source="contact" />
-    </SimpleShowLayout>
-  </Show>
-);
 
 const DeviceGroupEdit = (props) => {
   return (<Edit title="编辑设备组" {...props}>
@@ -57,9 +53,12 @@ const DeviceGroupEdit = (props) => {
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
+      <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
+        <SelectInput optionText="name" />
+      </ReferenceInput>
     </SimpleForm>
   </Edit>
   );
 };
 
-export {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit,DeviceGroupShow};
+export {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit};

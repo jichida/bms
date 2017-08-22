@@ -80,7 +80,7 @@ export default (apiUrl, httpClient = fetchJson) => {
             console.log("UPDATE| json data:" + JSON.stringify( {data:json}));
             return {data:json};
         case GET_MANY:
-            json.docs.forEach((obj)=>{
+            json.forEach((obj)=>{
               obj.id = obj._id;
               delete obj._id;
               data.push(obj);
