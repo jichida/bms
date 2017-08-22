@@ -5,8 +5,8 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { required,NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
- Filter,Filters, ReferenceInput,SelectInput  } from 'admin-on-rest/lib/mui';
-
+ Filter,Filters, ReferenceInput,SelectInput,ReferenceArrayField,SingleFieldList,ChipField  } from 'admin-on-rest/lib/mui';
+import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest';
 
 import { Field,FieldArray } from 'redux-form';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
@@ -19,12 +19,14 @@ const UserGroupCreate = (props) => {
     <Create title="创建用户组" {...props} >
       <SimpleForm>
         <TextInput label="分组名称" source="name" validate={required} />
-        <NumberInput label="权限值" source="permissionvalue" />
         <TextInput label="备注" source="memo" />
         <TextInput label="联系人" source="contact" />
         <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
+        <ReferenceArrayInput label="权限" reference="permission" source="permissions" allowEmpty>
+              <SelectArrayInput optionText="name" />
+        </ReferenceArrayInput>
       </SimpleForm>
     </Create>
   );
@@ -35,12 +37,14 @@ const UserGroupEdit = (props) => {
     <Edit title="编辑用户组" {...props} >
       <SimpleForm>
         <TextInput label="分组名称" source="name" validate={required} />
-        <NumberInput label="权限值" source="permissionvalue" />
         <TextInput label="备注" source="memo" />
         <TextInput label="联系人" source="contact" />
         <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
+        <ReferenceArrayInput label="权限" reference="permission" source="permissions" allowEmpty>
+              <SelectArrayInput optionText="name" />
+        </ReferenceArrayInput>
       </SimpleForm>
     </Edit>
   );
@@ -58,6 +62,11 @@ const UserGroupList = (props) => (
       <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>
         <TextField source="name" />
       </ReferenceField>
+      <ReferenceArrayField label="权限" reference="permission" source="permissions" >
+              <SingleFieldList>
+                  <ChipField source="name" />
+              </SingleFieldList>
+      </ReferenceArrayField>
       <EditButton />
     </Datagrid>
   </List>

@@ -49,13 +49,13 @@ class App extends Component {
             <Resource name="device" list={DeviceList} edit={DeviceEdit} create={DeviceCreate} />
             <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} />
             <Resource name="usergroup" list={UserGroupList} edit={UserGroupEdit} create={UserGroupCreate} />
+            <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate} />
 
             <Resource name="systemconfig" list={SystemconfigList} show={SystemconfigShow} edit={SystemconfigEdit} create={SystemconfigCreate} />
             <Resource name="canrowdata" list={CanRawDataList} show={CanRawDataShow} />
             <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />
             <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />
             <Resource name="userlog" list={UserlogList} />
-            <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate} />
             <Resource name="useradmin" list={UserAdminList} edit={UserAdminEdit} create={UserAdminCreate} />
             <Resource name="organization" list={OrganizationList} edit={OrganizationEdit} create={OrganizationCreate} />
             </Admin>

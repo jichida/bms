@@ -17,8 +17,9 @@ import moment from 'moment';
 const PermissionCreate = (props) => (
   <Create title="新建权限" {...props} >
     <SimpleForm>
-      <NumberInput label="ID" source="id" />
       <TextInput label="名称" source="name" validate={required} />
+      <TextInput label="唯一字符串" source="keyname" validate={required} />
+      <NumberInput label="权限数值" source="permissionvalue" />
       <TextInput label="备注" source="memo" />
     </SimpleForm>
   </Create>
@@ -33,6 +34,7 @@ const PermissionList = (props) => (
     <Datagrid>
       <NumberField label="ID" source="id" />
       <TextField label="名称" source="name" />
+      <TextField label="唯一字符串" source="keyname" />
       <TextField label="备注" source="memo" />
       <EditButton />
     </Datagrid>
@@ -43,8 +45,10 @@ const PermissionEdit = (props) => {
   return (
     <Edit title="编辑权限" {...props} >
       <SimpleForm>
-        <NumberInput label="ID" source="id" />
+        <DisabledInput label="ID" source="id" />
         <TextInput label="名称" source="name" validate={required} />
+        <TextInput label="唯一字符串" source="keyname" validate={required} />
+        <NumberInput label="权限数值" source="permissionvalue" />
         <TextInput label="备注" source="memo" />
       </SimpleForm>
     </Edit>
