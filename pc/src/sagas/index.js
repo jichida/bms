@@ -1,5 +1,5 @@
 import { fork } from 'redux-saga/effects';
-import {flowmain} from './flowmain';
+import {apiflow} from './api';
 import {createsagacallbackflow} from './sagacallback';
 
 import {wsrecvsagaflow} from './wsrecvsaga';
@@ -9,7 +9,7 @@ import {createloadingflow} from './loading';
 import {createmapmainflow} from './mapmain';
 import {createmaptrackhistoryplaybackflow} from './mapplayback';
 import {socketflow} from './socketflow';
-import {testdataflow} from '../test/offlinedata';
+
 export default function* rootSaga() {
   try{
     yield fork(socketflow);
@@ -19,10 +19,9 @@ export default function* rootSaga() {
     // yield fork(jpushflow);
     yield fork(wsrecvsagaflow);
 
-    // yield fork(flowmain);
     yield fork(createsagacallbackflow);
 
-    yield fork(testdataflow);//for test only
+    yield fork(apiflow);
   }
   catch(e){
     console.log(e);

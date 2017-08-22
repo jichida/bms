@@ -1,7 +1,6 @@
 import {takeEvery,put,fork,call,select} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
-  login_request,
   querydevicegroup_request,
   querydevicegroup_result,
   querydevice_request,
@@ -26,9 +25,9 @@ import {
   serverpush_devicegeo,
   serverpush_devicegeo_sz
 } from '../actions';
-import jsondatareadonly from './bmsdata.json';
-import jsondatatrack from './1602010008.json';
-import jsondataalarm from './json-BMS2.json';
+import jsondatareadonly from '../test/bmsdata.json';
+import jsondatatrack from '../test/1602010008.json';
+import jsondataalarm from '../test/json-BMS2.json';
 import {getRandomLocation} from '../env/geo';
 import coordtransform from 'coordtransform';
 
@@ -65,9 +64,9 @@ for(let i = 0;i < 0; i++){
   });
 }
 
-jsondata = _.sampleSize(jsondata, 100);
+jsondata = _.sampleSize(jsondata, 20000);
 
-export function* testdataflow(){//仅执行一次
+export function* apiflow(){//仅执行一次
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
     const {payload:{query:{DeviceId}}} = action;
     const getdevices = (state)=>{return state.device};
@@ -86,12 +85,6 @@ export function* testdataflow(){//仅执行一次
      yield put(getsystemconfig_result({
 
      }));
-  });
-
-  yield takeEvery(`${login_request}`, function*(action) {
-    yield put(md_login_result({
-      loginsuccess:true
-    }));
   });
 
   yield takeEvery(`${querydevice_request}`, function*(action) {
@@ -151,6 +144,11 @@ export function* testdataflow(){//仅执行一次
      }
      yield put(notify_socket_connected(true));
 
+     yield call(delay,2000);
+
+     yield put(md_login_result({
+       loginsuccess:true
+     }));
    });
 
    yield takeEvery(`${queryhistorytrack_request}`, function*(action) {
@@ -177,19 +175,4 @@ export function* testdataflow(){//仅执行一次
   //      yield call(delay,1000);
   //    }
   //  });
-}
-
-export const getgroupnamebydevice = (deviceinfo)=>{
-  let groupinfo = {
-    _id:'0',
-    name:`未分组`
-  };
-  if(typeof deviceinfo.DeviceId === 'string'){
-    let devid = parseInt(deviceinfo.DeviceId);
-    groupinfo = {
-      _id:`${devid%200}`,
-      name:`分组${devid%200}`
-    }
-  }
-  return groupinfo;
 }

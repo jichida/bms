@@ -102,7 +102,7 @@ function* handleIO(socket) {
 }
 
 
-export function* flowmain() {
+export function* apiflow() {
     const socket = yield call(connect);
     yield fork(read, socket);
     yield fork(handleIOWithAuth, socket);

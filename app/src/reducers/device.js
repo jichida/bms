@@ -12,7 +12,7 @@ import{
 } from '../actions';
 import _ from 'lodash';
 import {getadcodeinfo} from '../util/addressutil';
-import {getgroupnamebydevice} from '../test/offlinedata';
+import {getgroupnamebydevice} from '../util/device';
 
 const initial = {
   device:{
