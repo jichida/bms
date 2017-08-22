@@ -37,7 +37,7 @@ export default {
     permission:{
       name: '权限管理 |||| 权限管理',
     },
-    realtimealaram:{
+    realtimealarm:{
       name:'实时报警管理 |||| 实时报警管理',
     },
     historytrack:{

@@ -23,8 +23,7 @@ export default [
         { name: 'user', icon: <UserIcon /> },
         { name: 'usergroup', icon: <UserGroupIcon /> },
         { name: 'permission', icon: <PermissionIcon /> },
-        { name: 'realtimealaram', icon: <RealtimeAlarmIcon /> },
+        { name: 'realtimealarm', icon: <RealtimeAlarmIcon /> },
         { name: 'historytrack', icon: <HistoryTrackIcon /> },
-        { name: 'historydevice', icon: <SystemconfigIcon /> },
         { name: 'userlog', icon: <UserLogIcon /> },
 ];
