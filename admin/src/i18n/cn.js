@@ -23,6 +23,10 @@ export default {
     },
     user:{
       name: '用户管理 |||| 用户管理',
+      notification:{
+        resetuserpassword_success:'重置密码成功',
+        resetuserpassword_failed:'重置密码失败',
+      }
     },
     usergroup:{
       name: '用户分组管理 |||| 用户分组管理',
