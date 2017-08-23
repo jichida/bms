@@ -199,7 +199,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
              utils.extend(DistrictCluster.prototype,
                {//重新设置数据时不刷新Marker
                    setDataWithoutClear: function(data) {
-                      console.log(`setDataWithoutClear=======>`);
+                      // console.log(`setDataWithoutClear=======>`);
                       data || (data = []);
                       this.trigger("willBuildData", data);
                       this._data.source = data;
@@ -794,7 +794,7 @@ export function* createmapmainflow(){
         _.map(list,(deviceitem)=>{
           g_devices[deviceitem.DeviceId] = deviceitem;
         });
-        console.log(`list:${list.length}`)
+        // console.log(`list:${list.length}`)
         yield put(devicelistgeochange_distcluster({}));
         yield put(devicelistgeochange_pointsimplifierins({}));
       }
@@ -803,7 +803,7 @@ export function* createmapmainflow(){
       }
     });
     //devicelistgeochange
-    yield throttle(5000,`${devicelistgeochange_distcluster}`,function*(action){
+    yield throttle(1200,`${devicelistgeochange_distcluster}`,function*(action){
       try{
         if(!!distCluster){
           let data = [];
@@ -818,7 +818,7 @@ export function* createmapmainflow(){
       }
     });
 
-    yield throttle(2000,`${devicelistgeochange_pointsimplifierins}`,function*(action){
+    yield throttle(1700,`${devicelistgeochange_pointsimplifierins}`,function*(action){
       try{
         if(!!pointSimplifierIns){
           let data = [];
