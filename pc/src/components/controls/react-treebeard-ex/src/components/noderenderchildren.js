@@ -1,31 +1,85 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TreeNode from './node.js';
-// import _ from 'lodash';
+import _ from 'lodash';
+import NodeArray from './nodearray.js';
 
 class NodeRenderChildren extends React.Component {
+    renderLoading(decorators) {
+        const {style} = this.props;
+
+        return (
+            <ul style={style.subtree}>
+                <li>
+                    <decorators.Loading style={style.loading}/>
+                </li>
+            </ul>
+        );
+    }
+
+    getsplitarray =(children)=>{
+      let retchildren = [];
+      let splitsz = _.chunk(children,10);
+      if(splitsz.length > 1){
+        let firstsz = _.flattenDeep(splitsz[0]);
+        let lastsz = [];
+        retchildren = [...firstsz];
+        if(splitsz.length > 2){
+           lastsz = _.flattenDeep(splitsz[splitsz.length-1]);
+           for(let i=1;i<splitsz.length-2;i++){
+             retchildren.push(splitsz[i]);
+           }
+           retchildren = [...retchildren,...lastsz];
+        }
+      }
+      else{
+        retchildren = [...children];
+      }
+
+      console.log(children);
+      console.log(retchildren);
+      //if(children.length > 100){
+        // console.log(`原===>${JSON.stringify(children)}\n
+        // 目标===>${JSON.stringify(retchildren)}`);
+      //}
+      return retchildren;
+    }
     render() {
         const {animations, decorators: propDecorators, node, style,
-        renderLoading,_eventBubbles} = this.props;
+          _eventBubbles} = this.props;
         if (node.loading) {
-            return renderLoading(propDecorators);
+            return this.renderLoading(propDecorators);
         }
 
         let children = node.children;
         if (!Array.isArray(children)) {
             children = children ? [children] : [];
         }
-
+        let retchildren = this.getsplitarray(children);
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
-                {children.map((child, index) => <TreeNode {..._eventBubbles}
-                                                          animations={animations}
-                                                          decorators={propDecorators}
-                                                          key={child.id || index}
-                                                          node={child}
-                                                          style={style}/>
-                )}
+                {
+                  _.map(retchildren,(child,index)=>{
+                    if(_.isArray(child)){
+                      return (<NodeArray subnodes={child}
+                        {..._eventBubbles}
+                          animations={animations}
+                          decorators={propDecorators}
+                          key={child.id || index}
+                          style={style}
+                      />);
+                    }
+                    else{
+                      return (<TreeNode {..._eventBubbles}
+                                    animations={animations}
+                                    decorators={propDecorators}
+                                    key={child.id || index}
+                                    node={child}
+                                    style={style}/>);
+                    }
+                  })
+                }
             </ul>
         );
     }
@@ -36,7 +90,6 @@ NodeRenderChildren.propTypes = {
     animations: PropTypes.object.isRequired,
     node: PropTypes.object.isRequired,
     style: PropTypes.object.isRequired,
-    renderLoading: PropTypes.func,
     _eventBubbles: PropTypes.object
 };
 
