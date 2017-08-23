@@ -33,10 +33,12 @@ import Avatar from "../img/2.jpg";
 const UserMenu = () => (
     <IconMenu
         iconButtonElement={
+          <IconButton>
             <div className="topuser">
                 <span>jwhklk</span>
                 <img src={Avatar}  />
             </div>
+          </IconButton>
         }
         targetOrigin={{horizontal: 'left', vertical: 'top'}}
         anchorOrigin ={{ vertical: 'bottom', horizontal: 'left'}}
@@ -85,7 +87,7 @@ class Page extends React.Component {
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
                     badgeStyle={{
                         top : "auto",
-                        bottom: "-4px", 
+                        bottom: "-4px",
                         right: "-4px",
                         backgroundColor: "none",
                         color : "#111",
@@ -105,7 +107,7 @@ class Page extends React.Component {
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
                     badgeStyle={{
                         top : "auto",
-                        bottom: "-4px", 
+                        bottom: "-4px",
                         right: "-4px",
                         backgroundColor: "none",
                         color : "#111",
@@ -125,7 +127,7 @@ class Page extends React.Component {
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
                     badgeStyle={{
                         top : "auto",
-                        bottom: "-4px", 
+                        bottom: "-4px",
                         right: "-4px",
                         backgroundColor: "none",
                         color : "#111",
@@ -145,7 +147,7 @@ class Page extends React.Component {
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
                     badgeStyle={{
                         top : "auto",
-                        bottom: "-4px", 
+                        bottom: "-4px",
                         right: "-4px",
                         backgroundColor: "none",
                         color : "#111",
@@ -180,7 +182,7 @@ class Page extends React.Component {
 
 
                 <UserMenu />
-                
+
             </div>
         );
     }
