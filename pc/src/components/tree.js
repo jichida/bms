@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Treebeard,decorators} from 'react-treebeard';
+import {Treebeard,decorators} from './controls/react-treebeard-ex/src/index.js';
 import RaisedButton from 'material-ui/RaisedButton';
 import Search from "./search";
 import _ from 'lodash';
@@ -80,19 +80,15 @@ class TreeExample extends React.Component {
     onFilterMouseUp(e) {
         const filter = e.target.value.trim();
         if(!!filter){
-          if(filter.length === 1){
+          if(filter.length <= 3){
             return;
           }
         }
-        this.props.dispatch(md_ui_settreefilter(filter));
+        this.props.dispatch(md_ui_settreefilter({inputtreevalue:filter}));
     }
 
     render(){
         const {datatree} = this.props;
-
-        
-
-
         return (
             <div className="treePage">
                 <div className="treehead">

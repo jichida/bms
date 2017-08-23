@@ -34,7 +34,7 @@ const initial = {
 
 const device = createReducer({
   [ui_settreefilter]:(state,payload)=>{
-    let treefilter = payload;
+    let treefilter = {...payload};
     return {...state,treefilter};
   },
   [ui_changetreestyle]:(state,payload)=>{
@@ -170,6 +170,7 @@ const device = createReducer({
       active : state.toggledgruop,
       toggled:state.toggledgruop,
       name:`所有分组`,
+      type:'group',
       children:[]
     };
     const devicesgroups = _.groupBy(list,(dev)=>{
@@ -178,14 +179,17 @@ const device = createReducer({
     _.map(devicesgroups,(csz,ckey)=>{
         let node = {
           id:ckey,
+          type:'group',
           name:`${state.groups[ckey].name}(${csz.length})`,
           children:[]
         };
 
         _.map(csz,(v,k)=>{
           node.children.push({
+            type:'device',
             id:`${v.DeviceId}`,
             name:`${v.DeviceId}`,
+            device:devices[v.DeviceId],
             toggled:false,
             active:false,
           });

@@ -1,11 +1,23 @@
-'use strict';
-
+import _ from 'lodash';
 // Helper functions for filtering
 export const defaultMatcher = (filterText, node) => {
     if(!!node.children){
       return false;
     }
-    return node.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
+
+    // console.log(node);
+    // console.log(filterText);
+    let devicetype = _.get(node,'type','');
+    if(devicetype === 'device'){
+        if(!!node.device && !!filterText.inputtreevalue){
+          if(node.device.DeviceId.toLowerCase().indexOf(filterText.inputtreevalue.toLowerCase()) !== -1){
+            return true;
+          }
+        }
+        //判断其他条件是否满足
+    }
+    return false;
+    //return node.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
 };
 
 export const findNode = (node, filter, matcher) => {
@@ -42,6 +54,6 @@ export const expandFilteredNodes = (node, filter, matcher = defaultMatcher) => {
       children: children,
       toggled: shouldExpand,
       loading:false,
-      active:false 
+      active:false
     });
 };

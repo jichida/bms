@@ -387,6 +387,8 @@ let getClusterTree =({adcodetop})=> {
                 treenode.children.push({
                   loading: false,
                   name:`${deviceitem.dataItem.DeviceId}`,
+                  type:'device',
+                  device:deviceitem.dataItem
                 });
                 //treenode.devicelist.push(deviceitem.dataItem);
               }
@@ -399,6 +401,7 @@ let getClusterTree =({adcodetop})=> {
                   adcode:child.adcode,
                   loading: true,
                   name:`${child.name}(${child.dataItems.length})`,
+                  type:'group',
                   children:[]
                 });
               }
