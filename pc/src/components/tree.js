@@ -18,8 +18,16 @@ import {filterTree,expandFilteredNodes} from '../util/filter';
 import treestyle from './treestyle.js';
 import '../css/treestyle.css';
 
-
-decorators.Header = (props) => {
+let HeaderCo = (props) => {
+    let title = props.node.name || '';
+    if(props.node.type !== 'device'){
+      const name = props.gmap_treename[props.node.adcode];
+      title = `${name}`;
+      const count = props.gmap_treecount[props.node.adcode];
+      if(!!count){
+        title = `${name}(${count})`;
+      }
+    }
 
     const active = props.node.active;
     const iconType = props.node.children ? 'folder' : 'file-text';
@@ -30,11 +38,16 @@ decorators.Header = (props) => {
     return (
         <div style={props.style.base} className={treeseled}>
             <div style={props.style.title}>
-                {props.node.name}
+                {title}
             </div>
         </div>
     );
-};
+  };
+
+const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_treecount}}) => {
+  return {gmap_treename,gmap_treecount};
+}
+decorators.Header = connect(mapStateToPropsHeaderCo)(HeaderCo);
 
 
 class TreeExample extends React.Component {

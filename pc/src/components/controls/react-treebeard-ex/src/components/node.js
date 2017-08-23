@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {VelocityTransitionGroup} from 'velocity-react';
 
@@ -10,14 +11,12 @@ import NodeRenderChildren from './noderenderchildren.js';
 class TreeNode extends React.Component {
     constructor() {
         super();
-
         this.onClick = this.onClick.bind(this);
     }
 
     onClick() {
         const {node, onToggle} = this.props;
         const {toggled} = node;
-
         if (onToggle) {
             onToggle(node, !toggled);
         }
@@ -25,7 +24,6 @@ class TreeNode extends React.Component {
 
     animations() {
         const {animations, node} = this.props;
-
         if (animations === false) {
             return false;
         }
@@ -41,23 +39,30 @@ class TreeNode extends React.Component {
         // Merge Any Node Based Decorators Into The Pack
         const {decorators, node} = this.props;
         let nodeDecorators = node.decorators || {};
-
         return Object.assign({}, decorators, nodeDecorators);
     }
 
     render() {
-        const {style} = this.props;
+        const {style,node} = this.props;
         const decorators = this.decorators();
         const animations = this.animations();
-
-        return (
-            <li ref={ref => this.topLevelRef = ref}
-                style={style.base}>
-                {this.renderHeader(decorators, animations)}
-
-                {this.renderDrawer(decorators, animations)}
-            </li>
-        );
+        const {gmap_treename,gmap_treecount} = this.props;
+        let isenable = true;
+        if(node.type !== 'device'){
+          let nodecount = gmap_treecount[node.adcode];
+          isenable = !!nodecount && nodecount > 0;
+        }
+        console.log(`${node.adcode}-->${gmap_treename[node.adcode]} ==> ${gmap_treecount[node.adcode]},isenable:${isenable}`)
+        if(isenable){
+          return (
+              <li ref={ref => this.topLevelRef = ref}
+                  style={style.base}>
+                  {this.renderHeader(decorators, animations)}
+                  {this.renderDrawer(decorators, animations)}
+              </li>
+          );
+        }
+        return null;
     }
 
     renderDrawer(decorators, animations) {
@@ -80,7 +85,6 @@ class TreeNode extends React.Component {
 
     renderHeader(decorators, animations) {
         const {node, style} = this.props;
-
         return (
             <NodeHeader animations={animations}
                         decorators={decorators}
@@ -100,7 +104,6 @@ class TreeNode extends React.Component {
 
     renderLoading(decorators) {
         const {style} = this.props;
-
         return (
             <ul style={style.subtree}>
                 <li>
@@ -112,7 +115,6 @@ class TreeNode extends React.Component {
 
     _eventBubbles() {
         const {onToggle} = this.props;
-
         return {
             onToggle
         };
@@ -129,5 +131,8 @@ TreeNode.propTypes = {
     ]).isRequired,
     onToggle: PropTypes.func
 };
-
+const mapStateToProps = ({device:{gmap_treename,gmap_treecount}}) => {
+  return {gmap_treename,gmap_treecount};
+}
+TreeNode = connect(mapStateToProps)(TreeNode);
 export default TreeNode;

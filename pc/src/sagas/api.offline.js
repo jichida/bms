@@ -47,7 +47,7 @@ let jsondata = _.filter(jsondatareadonly,(item) => {
 });
 
 //模拟10万+
-for(let i = 0;i < 0; i++){
+for(let i = 0;i < 5; i++){
   _.map(jsondatareadonly,(itemonly) => {
     const item = {...itemonly};
     if(!!item.LastHistoryTrack){
@@ -64,7 +64,7 @@ for(let i = 0;i < 0; i++){
   });
 }
 
-jsondata = _.sampleSize(jsondata, 20000);
+jsondata = _.sampleSize(jsondata, 100000);
 
 export function* apiflow(){//仅执行一次
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
@@ -156,23 +156,23 @@ export function* apiflow(){//仅执行一次
    });
 
    //模拟服务端推送消息
-   yield fork(function*(){
-     yield call(delay,10000);
-     while(true){
-       const list = _.sampleSize(jsondata, 20000);
-       let items = [];
-       for(let i = 0;i < list.length; i++){
-         let item = {...list[i]};
-         let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,50*1000);
-         item.LastHistoryTrack.Latitude = locationsz[1];
-         item.LastHistoryTrack.Longitude  =  locationsz[0];
-         let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
-         const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-         item.locz = wgs84togcj02;
-         items.push(item);
-       };
-       yield put(serverpush_devicegeo_sz({list:items}));
-       yield call(delay,1000);
-     }
-   });
+  //  yield fork(function*(){
+  //    yield call(delay,10000);
+  //    while(true){
+  //      const list = _.sampleSize(jsondata, 20000);
+  //      let items = [];
+  //      for(let i = 0;i < list.length; i++){
+  //        let item = {...list[i]};
+  //        let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,5*1000);
+  //        item.LastHistoryTrack.Latitude = locationsz[1];
+  //        item.LastHistoryTrack.Longitude  =  locationsz[0];
+  //        let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+  //        const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+  //        item.locz = wgs84togcj02;
+  //        items.push(item);
+  //      };
+  //      yield put(serverpush_devicegeo_sz({list:items}));
+  //      yield call(delay,1000);
+  //    }
+  //  });
 }

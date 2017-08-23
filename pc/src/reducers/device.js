@@ -13,7 +13,9 @@ import{
 import _ from 'lodash';
 import {getadcodeinfo} from '../util/addressutil';
 import {getgroupnamebydevice} from '../util/device';
+import {get_initgeotree} from '../util/treedata';
 
+const {datatree,gmap_treename,gmap_treecount} = get_initgeotree();
 const initial = {
   device:{
     treeviewstyle:'byloc',//byloc or bygroup
@@ -22,7 +24,11 @@ const initial = {
     toggledgruop:true,
     mapseldeviceid:undefined,
     // mapdeviceidlist:[],
-    datatree:{},
+    gmap_treename,
+    gmap_treecount,
+    gmap_devices:{},
+    datatreeconst:datatree,
+    datatree,
     datatreegroup:{},
 
     curdevicelist:[],
@@ -85,17 +91,44 @@ const device = createReducer({
     return {...state,toggled};
   },
   [mapmain_getdistrictresult_init]:(state,payload)=>{
-    let treenode = payload;
-    let datatree =  {
-        id:treenode.adcode,
-        adcode:treenode.adcode,
-        loading: false,
-        active : false,
-        toggled:state.toggled,
-        name:treenode.name,
-        children:treenode.children
-    };
-    return {...state,datatree};
+     const {g_devices,gmap_devices,gmap_treecount} = payload;
+     let datatree = {...state.datatreeconst};
+     let findandsettreenodedevice = (node)=>{
+       let retnode = node;
+       if(node.type === `group_area`){
+         return retnode;
+       }
+       if(!!node.children){
+         for(let i = 0; i<node.children.length ;i++){
+           const subnode = node.children[i];
+           let tmpnode = findandsettreenodedevice(subnode);
+           if(!!tmpnode){
+             //<---
+             _.map(gmap_devices[tmpnode.adcode],(deviceid)=>{
+               tmpnode.children.push({
+                 type:'device',
+                 loading:false,
+                 name:deviceid,
+                 device:g_devices[deviceid]
+               });
+             });
+           }
+         }
+       }
+       node.active = false;
+       return null;
+     }
+     findandsettreenodedevice(datatree);
+    // let datatree =  {
+    //     id:treenode.adcode,
+    //     adcode:treenode.adcode,
+    //     loading: false,
+    //     active : false,
+    //     toggled:state.toggled,
+    //     name:treenode.name,
+    //     children:treenode.children
+    // };
+    return {...state,gmap_devices,gmap_treecount,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode} = payload;
@@ -133,7 +166,7 @@ const device = createReducer({
       if(!isroot && !retnode){
         node.active = false;
         node.toggled = false;
-        node.loading = true;
+        node.loading = false;
       }
       return retnode;
     };

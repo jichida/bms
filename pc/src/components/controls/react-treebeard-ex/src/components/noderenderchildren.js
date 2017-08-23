@@ -52,10 +52,10 @@ class NodeRenderChildren extends React.Component {
         }
 
         let children = node.children;
-        if (!Array.isArray(children)) {
+        if (!_.isArray(children)) {
             children = children ? [children] : [];
         }
-        let retchildren = this.getsplitarray(children);
+        let retchildren = node.type==='device'?this.getsplitarray(children):children;
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>

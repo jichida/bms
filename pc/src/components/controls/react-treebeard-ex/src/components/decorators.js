@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Radium from 'radium';
 import {VelocityComponent} from 'velocity-react';
@@ -32,11 +33,22 @@ Toggle.propTypes = {
     style: PropTypes.object
 };
 
-const Header = ({node, style}) => {
+let Header = ({node, style,gmap_treename,gmap_treecount}) => {
+    let title = node.name || '';
+    if(node.type !== 'device'){
+      const name = gmap_treename[node.adcode];
+      title = `${name}`;
+      const count = gmap_treecount[node.adcode];
+      if(!!count){
+        title = `${name}(${count})`;
+      }
+
+    }
+
     return (
         <div style={style.base}>
             <div style={style.title}>
-                {node.name}
+                {title}
             </div>
         </div>
     );
@@ -45,6 +57,10 @@ Header.propTypes = {
     style: PropTypes.object,
     node: PropTypes.object.isRequired
 };
+const mapStateToProps = ({device:{gmap_treename,gmap_treecount}}) => {
+  return {gmap_treename,gmap_treecount};
+}
+Header = connect(mapStateToProps)(Header);
 
 // @Radium
 class Container extends React.Component {
