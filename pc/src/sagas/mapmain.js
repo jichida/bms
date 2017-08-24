@@ -568,6 +568,16 @@ export function* createmapmainflow(){
             //树中找不到该设备,获取该设备所在经纬度
             console.log(`找不到该设备...`);
             const result = yield call(getgeodata,deviceitem);
+            //调用一次citycode，防止加载不到AreaNode
+            try{
+              let adcodeinfo = getadcodeinfo(result.adcode);
+              yield call(getclustertree_one,adcodeinfo.parent_code);
+            }
+            catch(e){
+              console.log(e);
+            }
+
+
             const adcodetop = parseInt(result.adcode);
             //展开左侧树结构
             yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
