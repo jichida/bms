@@ -10,7 +10,7 @@ import Search from "./search";
 import _ from 'lodash';
 import {
     mapmain_seldistrict,
-    ui_selcurdevice,
+    ui_selcurdevice_request,
     ui_changetreestyle,
     md_ui_settreefilter,
     mapmain_areamountdevices_request
@@ -24,7 +24,7 @@ let HeaderCo = (props) => {
     if(props.node.type !== 'device'){
       const name = props.gmap_treename[props.node.adcode];
       title = `${name}`;
-      const count = props.gmap_treecount[props.node.adcode];
+      const count = props.gmap_acode_treecount[props.node.adcode];
       if(!!count){
         title = `${name}(${count})`;
       }
@@ -45,8 +45,8 @@ let HeaderCo = (props) => {
     );
   };
 
-const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_treecount}}) => {
-  return {gmap_treename,gmap_treecount};
+const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_acode_treecount}}) => {
+  return {gmap_treename,gmap_acode_treecount};
 }
 decorators.Header = connect(mapStateToPropsHeaderCo)(HeaderCo);
 
@@ -83,7 +83,7 @@ class TreeExample extends React.Component {
             const {devices} = this.props;
             const deviceitem = devices[deviceid];
             if(!!deviceitem && toggled){
-              this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}));
+              this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
             }
             console.log(deviceitem);//选择一个设备
         }

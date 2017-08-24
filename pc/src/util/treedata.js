@@ -16,7 +16,7 @@ export function get_initgeotree(){
   console.log(`全国共有:${jsondataprovinces.length}个省,${jsondatacities.length}个市,${jsondataareas.length}个区`);
   //root
   let gmap_treename = {};
-  let gmap_treecount = {};
+  let gmap_acode_treecount = {};
   let datatree =  {
       id:100000,
       adcode:100000,
@@ -27,7 +27,7 @@ export function get_initgeotree(){
       children:[]
   };
   gmap_treename[100000] = '全国';
-  gmap_treecount[100000] = 0;
+  gmap_acode_treecount[100000] = 0;
 
   _.map(jsondataprovinces,(province)=>{
     let provicecode = parseInt(province.code);
@@ -39,7 +39,7 @@ export function get_initgeotree(){
       children:[]
     };
     gmap_treename[provicecode] = province.name;
-    gmap_treecount[provicecode] = 0;
+    gmap_acode_treecount[provicecode] = 0;
 
     _.map(jsondatacities,(city)=>{
       let citycode = parseInt(city.code);
@@ -53,7 +53,7 @@ export function get_initgeotree(){
           children:[]
         };
         gmap_treename[citycode] = city.name;
-        gmap_treecount[citycode] = 0;
+        gmap_acode_treecount[citycode] = 0;
 
         _.map(jsondataareas,(area)=>{
           let areacode = parseInt(area.code);
@@ -67,7 +67,7 @@ export function get_initgeotree(){
               children:[]
             };
             gmap_treename[areacode] = area.name;
-            gmap_treecount[areacode] = 0;
+            gmap_acode_treecount[areacode] = 0;
             if(gmap_treename[citycode] !== "市辖区"){
               citynode.children.push(areanode);
             }
@@ -85,6 +85,6 @@ export function get_initgeotree(){
     datatree.children.push(provicenode);
   });
   console.log(gmap_treename);
-  console.log(gmap_treecount);
-  return {datatree,gmap_treename,gmap_treecount};
+  console.log(gmap_acode_treecount);
+  return {datatree,gmap_treename,gmap_acode_treecount};
 };

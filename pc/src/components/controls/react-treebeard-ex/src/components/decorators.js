@@ -33,12 +33,12 @@ Toggle.propTypes = {
     style: PropTypes.object
 };
 
-let Header = ({node, style,gmap_treename,gmap_treecount}) => {
+let Header = ({node, style,gmap_treename,gmap_acode_treecount}) => {
     let title = node.name || '';
     if(node.type !== 'device'){
       const name = gmap_treename[node.adcode];
       title = `${name}`;
-      const count = gmap_treecount[node.adcode];
+      const count = gmap_acode_treecount[node.adcode];
       if(!!count){
         title = `${name}(${count})`;
       }
@@ -57,8 +57,8 @@ Header.propTypes = {
     style: PropTypes.object,
     node: PropTypes.object.isRequired
 };
-const mapStateToProps = ({device:{gmap_treename,gmap_treecount}}) => {
-  return {gmap_treename,gmap_treecount};
+const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount}}) => {
+  return {gmap_treename,gmap_acode_treecount};
 }
 Header = connect(mapStateToProps)(Header);
 

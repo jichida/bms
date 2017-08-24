@@ -8,7 +8,7 @@ import {
   carmapshow_destorymap,
   mapmain_setenableddrawmapflag,
   querydevice_result,
-  ui_selcurdevice,
+  ui_selcurdevice_request,
   querydeviceinfo_request,
 
   mapplayback_start,
@@ -223,7 +223,7 @@ export function* createmaptrackhistoryplaybackflow(){
       }
     });
 
-    yield takeLatest(`${ui_selcurdevice}`,function*(actioncurdevice){
+    yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       try{
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
           if(!!deviceitem){

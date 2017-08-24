@@ -5,7 +5,7 @@ import{
   ui_selcurdevice_result,
   querydeviceinfo_result,
   mapmain_getdistrictresult,
-  mapmain_getdistrictresult_init,
+  mapmain_init_device,
   devicelistgeochange_geotreemenu_refreshtree,
   mapmain_areamountdevices_result,
   mapmain_seldistrict,
@@ -17,7 +17,7 @@ import {getadcodeinfo} from '../util/addressutil';
 import {getgroupnamebydevice} from '../util/device';
 import {get_initgeotree} from '../util/treedata';
 
-const {datatree,gmap_treename,gmap_treecount} = get_initgeotree();
+const {datatree,gmap_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
     treeviewstyle:'byloc',//byloc or bygroup
@@ -27,8 +27,8 @@ const initial = {
     mapseldeviceid:undefined,
     // mapdeviceidlist:[],
     gmap_treename,
-    gmap_treecount,
-    gmap_devices:{},
+    gmap_acode_treecount,
+    gmap_acode_devices:{},
     datatreeconst:datatree,
     datatree,
     datatreegroup:{},
@@ -93,11 +93,11 @@ const device = createReducer({
     return {...state,toggled};
   },
   [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
-    const {g_devices,gmap_devices,gmap_treecount} = payload;
-    return {...state,gmap_devices:{...gmap_devices},gmap_treecount:{...gmap_treecount}};
+    const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+    return {...state,gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
   },
   [mapmain_areamountdevices_result]:(state,payload)=>{
-    const {adcode,g_devices,gmap_devices} = payload;
+    const {adcode,g_devicesdb,gmap_acode_devices} = payload;
     let datatree = state.datatree;
     let findandsettreenodedevice = (node)=>{
        let retnode = node;
@@ -111,12 +111,12 @@ const device = createReducer({
            if(!!tmpnode){
              //<---
              let children = [];
-             _.map(gmap_devices[tmpnode.adcode],(deviceid)=>{
+             _.map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
                children.push({
                  type:'device',
                  loading:false,
                  name:deviceid,
-                 device:g_devices[deviceid]
+                 device:g_devicesdb[deviceid]
                });
              });
              tmpnode.children = [...children];
@@ -127,10 +127,10 @@ const device = createReducer({
        return null;
      }
      findandsettreenodedevice(datatree);
-     return {...state,g_devices,datatree,gmap_devices};
+     return {...state,g_devicesdb,datatree,gmap_acode_devices};
   },
-  [mapmain_getdistrictresult_init]:(state,payload)=>{
-     const {g_devices,gmap_devices,gmap_treecount} = payload;
+  [mapmain_init_device]:(state,payload)=>{
+     const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
 
      let datatree = {...state.datatreeconst};
     //  let findandsettreenodedevice = (node)=>{
@@ -144,12 +144,12 @@ const device = createReducer({
     //        let tmpnode = findandsettreenodedevice(subnode);
     //        if(!!tmpnode){
     //          //<---
-    //          _.map(gmap_devices[tmpnode.adcode],(deviceid)=>{
+    //          _.map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
     //            tmpnode.children.push({
     //              type:'device',
     //              loading:false,
     //              name:deviceid,
-    //              device:g_devices[deviceid]
+    //              device:g_devicesdb[deviceid]
     //            });
     //          });
     //        }
@@ -159,7 +159,7 @@ const device = createReducer({
     //    return null;
     //  }
     //  findandsettreenodedevice(datatree);
-     return {...state,gmap_devices,gmap_treecount,datatree};
+     return {...state,gmap_acode_devices,gmap_acode_treecount,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode} = payload;
