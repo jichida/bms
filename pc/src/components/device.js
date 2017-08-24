@@ -80,8 +80,8 @@ class Page extends React.Component {
         },
       ];
 
-      const {mapseldeviceid,devices,p} = this.props;
-      let deviceitem = devices[mapseldeviceid];
+      const {mapseldeviceid,g_devicesdb,p} = this.props;
+      let deviceitem = g_devicesdb[mapseldeviceid];
 
       return (
             <div className="warningPage devicePage">
@@ -115,8 +115,8 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
-  return {mapseldeviceid,devices};
+const mapStateToProps = ({device:{mapseldeviceid,g_devicesdb}}) => {
+  return {mapseldeviceid,g_devicesdb};
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

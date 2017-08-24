@@ -70,8 +70,8 @@ export function* apiflow(){//仅执行一次
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
     const {payload:{query:{DeviceId}}} = action;
     const getdevices = (state)=>{return state.device};
-    const {devices} = yield select(getdevices);
-    let deviceinfo = devices[DeviceId];
+    const {g_devicesdb} = yield select(getdevices);
+    let deviceinfo = g_devicesdb[DeviceId];
     if(!!deviceinfo){
       if(!!deviceinfo.locz){
         const addr = yield call(getgeodata,deviceinfo);

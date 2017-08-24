@@ -326,7 +326,7 @@ const listenclusterevent = (eventname)=>{
             const {adcode,name,dataItems,hangingDataItems,children} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
-                  resolve({adcodetop:record.adcode});
+                  resolve({adcodetop:record.adcode,forcetoggled:true});
                   return;
               }
             }
@@ -564,12 +564,13 @@ export function* createmapmainflow(){
         const {curdevicelist} = yield select((state)=>{
           return {...state.device};
         });
-        if(!_.find(curdevicelist,(o)=>{return DeviceId === o.name})){
+        if(!_.find(curdevicelist,(o)=>{return DeviceId === o})){
             //树中找不到该设备,获取该设备所在经纬度
+            console.log(`找不到该设备...`);
             const result = yield call(getgeodata,deviceitem);
             const adcodetop = parseInt(result.adcode);
             //展开左侧树结构
-            yield put(mapmain_seldistrict({adcodetop,toggled:true}));
+            yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
             console.log(`等待数据完成...`);
             yield take(`${mapmain_getdistrictresult}`);//等待数据完成
         }
@@ -679,10 +680,13 @@ export function* createmapmainflow(){
 
     //选中某个区域
     yield takeEvery(`${mapmain_seldistrict}`, function*(action_district) {
-        let {payload:{adcodetop}} = action_district;
+        let {payload:{adcodetop,forcetoggled}} = action_district;
         try{
           if(!!adcodetop){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
+            {
+              //确实需要判断,否则出现异常,应从最顶层开始进入
+            }
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
@@ -739,7 +743,7 @@ export function* createmapmainflow(){
         }
 
         //在树中将其他结点搜索，该节点展开
-        yield put(mapmain_getdistrictresult({adcode:adcodetop}));
+        yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
 
     });
 

@@ -28,9 +28,9 @@ class Page extends React.Component {
       this.props.dispatch(mapplayback_end({}));
     }
     render() {
-        const {mapseldeviceid,devices} = this.props;
+        const {mapseldeviceid,g_devicesdb} = this.props;
         let DeviceId;
-        let deviceitem = devices[mapseldeviceid];
+        let deviceitem = g_devicesdb[mapseldeviceid];
         if(!!deviceitem){
           DeviceId = deviceitem.DeviceId;
         }
@@ -107,7 +107,7 @@ class Page extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
-  return {mapseldeviceid,devices};
+const mapStateToProps = ({device:{mapseldeviceid,g_devicesdb}}) => {
+  return {mapseldeviceid,g_devicesdb};
 }
 export default connect(mapStateToProps)(Page);

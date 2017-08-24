@@ -40,7 +40,7 @@ class TreeSearch extends React.Component {
       this.props.dispatch(searchbattery_request(query));
     }
     render(){
-        const {devices,searchresult_battery} = this.props;
+        const {g_devicesdb,searchresult_battery} = this.props;
         return (
             <div className="warningcontentPage">
                 <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
@@ -55,7 +55,7 @@ const mapStateToProps = (
   {
     device:
     {
-      devices
+      g_devicesdb
     },
     searchresult:
     {
@@ -63,7 +63,7 @@ const mapStateToProps = (
     }
   }) => {
 
-  return {devices,searchresult_battery};
+  return {g_devicesdb,searchresult_battery};
 }
 
 

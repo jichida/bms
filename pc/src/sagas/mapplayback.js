@@ -158,8 +158,8 @@ const listenmapevent = (eventname)=>{
 
 
 const getmapstate_curdevice = (state) => {
-  const {device:{devices,mapseldeviceid}} = state;
-  let deviceitem = devices[mapseldeviceid];
+  const {device:{g_devicesdb,mapseldeviceid}} = state;
+  let deviceitem = g_devicesdb[mapseldeviceid];
   if(!!deviceitem){
     const LastHistoryTrack = deviceitem.LastHistoryTrack;
     if(!!LastHistoryTrack){

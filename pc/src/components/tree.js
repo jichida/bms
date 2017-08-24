@@ -75,7 +75,7 @@ class TreeExample extends React.Component {
             }
             const {treeviewstyle} = this.props;
             if(treeviewstyle === 'byloc'){
-              this.props.dispatch(mapmain_seldistrict({adcodetop:id}));
+              this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false}));
             }
             else{
 
@@ -84,8 +84,8 @@ class TreeExample extends React.Component {
         }else{
             // node.toggled = toggled;
             let deviceid = node.name;
-            const {devices} = this.props;
-            const deviceitem = devices[deviceid];
+            const {g_devicesdb} = this.props;
+            const deviceitem = g_devicesdb[deviceid];
             if(!!deviceitem && toggled){
               this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
             }
@@ -135,13 +135,13 @@ class TreeExample extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,treefilter,datatreegroup,devices}}) => {
+const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,treefilter,datatreegroup,g_devicesdb}}) => {
   let datatree = treeviewstyle === 'byloc'?datatreeloc:datatreegroup;
   if(!!treefilter){
       const filtered = filterTree(datatree, treefilter);
       datatree = expandFilteredNodes(filtered, treefilter);
   }
-  return {datatree,devices,treeviewstyle};
+  return {datatree,g_devicesdb,treeviewstyle};
 }
 
 export default connect(mapStateToProps)(TreeExample);

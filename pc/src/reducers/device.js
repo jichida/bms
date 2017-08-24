@@ -35,7 +35,7 @@ const initial = {
     curdevicelist:[],
     groupidlist:[],
     groups:{},
-    devices:{},
+    g_devicesdb:{},
   }
 };
 
@@ -83,14 +83,16 @@ const device = createReducer({
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
-    let devices = {...state.devices};
-    devices[devicerecord.DeviceId] = devicerecord;
-    return {...state,devices};
+    let g_devicesdb = {...state.g_devicesdb};
+    g_devicesdb[devicerecord.DeviceId] = devicerecord;
+    return {...state,g_devicesdb};
   },
 
   [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
     const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-    return {...state,gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
+    return {...state,
+      g_devicesdb:{...g_devicesdb},
+      gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
   },
   [mapmain_areamountdevices_result]:(state,payload)=>{
     const {adcode,g_devicesdb,gmap_acode_devices} = payload;
@@ -128,10 +130,10 @@ const device = createReducer({
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
      let datatree = {...state.datatreeconst};
-     return {...state,gmap_acode_devices,gmap_acode_treecount,datatree};
+     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
-    let {adcode} = payload;
+    let {adcode,forcetoggled} = payload;
     // let adcodeinfo = getadcodeinfo(adcode);
     let curdevicelist = state.curdevicelist;
     let findandsettreenode = (node,adcode)=>{
@@ -155,8 +157,10 @@ const device = createReducer({
             if(tmpnode.adcode === adcode){
               //选中／展开//equal
               subnode.active = true;
-              // subnode.toggled = state.toggled;
               subnode.loading = false;
+              if(forcetoggled){//强制展开结点
+                subnode.toggled = true;
+              }
             }
             node.active = false;
             node.toggled = true;
@@ -197,10 +201,10 @@ const device = createReducer({
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
     // let mapdeviceidlist = [];
-    let devices = {};
+    let g_devicesdb = {};
     _.map(list,(devicerecord)=>{
       // mapdeviceidlist.push(devicerecord.DeviceId);
-      devices[devicerecord.DeviceId] = devicerecord;
+      g_devicesdb[devicerecord.DeviceId] = devicerecord;
     });
     let datatreegroup = {
       id:0,
@@ -227,7 +231,7 @@ const device = createReducer({
             type:'device',
             id:`${v.DeviceId}`,
             name:`${v.DeviceId}`,
-            device:devices[v.DeviceId],
+            device:g_devicesdb[v.DeviceId],
             toggled:false,
             active:false,
           });
@@ -235,7 +239,7 @@ const device = createReducer({
 
         datatreegroup.children.push(node);
     });
-    return {...state,devices,datatreegroup};
+    return {...state,g_devicesdb,datatreegroup};
   },
 }, initial.device);
 
