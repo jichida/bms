@@ -31,11 +31,14 @@ class NodeRenderChildren extends React.Component {
            }
            retchildren = [...retchildren,...lastsz];
         }
+        else{
+          retchildren = [...retchildren,splitsz[1]];
+        }
       }
       else{
         retchildren = [...children];
       }
-
+      console.log(`getsplitarray:${children.length}`);
       console.log(children);
       console.log(retchildren);
       //if(children.length > 100){
@@ -55,15 +58,16 @@ class NodeRenderChildren extends React.Component {
         if (!_.isArray(children)) {
             children = children ? [children] : [];
         }
-        let retchildren = node.type==='device'?this.getsplitarray(children):children;
+        let retchildren = node.type==='group_area'?this.getsplitarray(children):children;
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
                 {
                   _.map(retchildren,(child,index)=>{
                     if(_.isArray(child)){
+                      console.log('render array...');
                       return (<NodeArray subnodes={child}
-                        {..._eventBubbles}
+                          {..._eventBubbles}
                           animations={animations}
                           decorators={propDecorators}
                           key={child.id || index}
