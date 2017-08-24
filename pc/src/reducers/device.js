@@ -6,6 +6,8 @@ import{
   querydeviceinfo_result,
   mapmain_getdistrictresult,
   mapmain_getdistrictresult_init,
+  devicelistgeochange_geotreemenu_refreshtree,
+  mapmain_areamountdevices_result,
   mapmain_seldistrict,
   ui_changetreestyle,
   ui_settreefilter
@@ -90,12 +92,16 @@ const device = createReducer({
     const {toggled} = payload;
     return {...state,toggled};
   },
-  [mapmain_getdistrictresult_init]:(state,payload)=>{
-     const {g_devices,gmap_devices,gmap_treecount} = payload;
-     let datatree = {...state.datatreeconst};
-     let findandsettreenodedevice = (node)=>{
+  [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
+    const {g_devices,gmap_devices,gmap_treecount} = payload;
+    return {...state,gmap_devices:{...gmap_devices},gmap_treecount:{...gmap_treecount}};
+  },
+  [mapmain_areamountdevices_result]:(state,payload)=>{
+    const {adcode,g_devices,gmap_devices} = payload;
+    let datatree = state.datatree;
+    let findandsettreenodedevice = (node)=>{
        let retnode = node;
-       if(node.type === `group_area`){
+       if(node.adcode === adcode){
          return retnode;
        }
        if(!!node.children){
@@ -104,31 +110,56 @@ const device = createReducer({
            let tmpnode = findandsettreenodedevice(subnode);
            if(!!tmpnode){
              //<---
+             let children = [];
              _.map(gmap_devices[tmpnode.adcode],(deviceid)=>{
-               tmpnode.children.push({
+               children.push({
                  type:'device',
                  loading:false,
                  name:deviceid,
                  device:g_devices[deviceid]
                });
              });
+             tmpnode.children = [...children];
+             console.log(`变化的数据[${tmpnode.name}]是:${children.length}`);
            }
          }
        }
-       node.active = false;
        return null;
      }
      findandsettreenodedevice(datatree);
-    // let datatree =  {
-    //     id:treenode.adcode,
-    //     adcode:treenode.adcode,
-    //     loading: false,
-    //     active : false,
-    //     toggled:state.toggled,
-    //     name:treenode.name,
-    //     children:treenode.children
-    // };
-    return {...state,gmap_devices,gmap_treecount,datatree};
+     return {...state,g_devices,datatree,gmap_devices};
+  },
+  [mapmain_getdistrictresult_init]:(state,payload)=>{
+     const {g_devices,gmap_devices,gmap_treecount} = payload;
+
+     let datatree = {...state.datatreeconst};
+    //  let findandsettreenodedevice = (node)=>{
+    //    let retnode = node;
+    //    if(node.type === `group_area`){
+    //      return retnode;
+    //    }
+    //    if(!!node.children){
+    //      for(let i = 0; i<node.children.length ;i++){
+    //        const subnode = node.children[i];
+    //        let tmpnode = findandsettreenodedevice(subnode);
+    //        if(!!tmpnode){
+    //          //<---
+    //          _.map(gmap_devices[tmpnode.adcode],(deviceid)=>{
+    //            tmpnode.children.push({
+    //              type:'device',
+    //              loading:false,
+    //              name:deviceid,
+    //              device:g_devices[deviceid]
+    //            });
+    //          });
+    //        }
+    //      }
+    //    }
+    //    node.active = false;
+    //    return null;
+    //  }
+    //  findandsettreenodedevice(datatree);
+     return {...state,gmap_devices,gmap_treecount,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode} = payload;

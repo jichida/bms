@@ -25,3 +25,6 @@ export const mapmain_getdistrictresult_last = createAction('mapmain_getdistrictr
 export const mapmain_getgeoresult = createAction('mapmain_getgeoresult');
 
 export const mapmain_clusterMarkerClick = createAction('mapmain_clusterMarkerClick');
+
+export const mapmain_areamountdevices_request= createAction('mapmain_areamountdevices_request');
+export const mapmain_areamountdevices_result= createAction('mapmain_areamountdevices_result');

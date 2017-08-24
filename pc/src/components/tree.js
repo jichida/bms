@@ -12,7 +12,8 @@ import {
     mapmain_seldistrict,
     ui_selcurdevice,
     ui_changetreestyle,
-    md_ui_settreefilter
+    md_ui_settreefilter,
+    mapmain_areamountdevices_request
 } from '../actions';
 import {filterTree,expandFilteredNodes} from '../util/filter';
 import treestyle from './treestyle.js';

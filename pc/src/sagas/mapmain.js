@@ -27,6 +27,9 @@ import {
   devicelistgeochange_distcluster,
   devicelistgeochange_pointsimplifierins,
   devicelistgeochange_geotreemenu,
+  devicelistgeochange_geotreemenu_refreshtree,
+  mapmain_areamountdevices_request,
+  mapmain_areamountdevices_result
 } from '../actions';
 import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -397,6 +400,7 @@ const getclustertree_root =()=>{
         _.map(children,(child)=>{
           if(child.dataItems.length > 0){
             childadcodelist.push(child.adcode);
+            gmap_treecount[child.adcode]=child.dataItems.length;
           }
           else{
             gmap_treecount[child.adcode]=0;
@@ -451,6 +455,7 @@ const getclustertree_one =(adcode)=>{
           gmap_treecount[adcode]=dataItems.length;
           _.map(children,(child)=>{
               if(child.dataItems.length > 0){
+                gmap_treecount[child.adcode]=child.dataItems.length;
                 childadcodelist.push(child.adcode);
               }
               else{
@@ -472,175 +477,6 @@ const getclustertree_one =(adcode)=>{
 }
 
 
-//获取某个行政编码的树形结构
-let getClusterTree_all =()=> {
-  const adcodetop=100000;
-  return new Promise((resolve,reject) => {
-    if(!distCluster){
-      reject();
-      return;
-    }
-    let gmap_treecount = {};
-    let gmap_devices = {};
-    let fnszroot = [];
-    const fnget = (code,callback)=>{
-      let fnsz = [];
-      distCluster.getClusterRecord(code,(err,result)=>{
-        if(!err){
-          const {adcode,dataItems,children} = result;
-          if(!children || children.length === 0){
-            //device
-            let deviceids = [];
-            if(!!dataItems){
-              _.map(dataItems,(deviceitem)=>{
-                if(!!deviceitem.dataItem){
-                  deviceids.push(deviceitem.dataItem.DeviceId);
-                }
-              });
-            }
-            gmap_treecount[adcode]=deviceids.length;
-            gmap_devices[adcode]=deviceids;
-            callback(null,true);
-          }
-          else{
-            //group
-            if(!dataItems || dataItems.length === 0){
-              gmap_treecount[adcode]=0;
-              callback(null,true);
-              return;
-            }
-            gmap_treecount[adcode]=dataItems.length;
-            _.map(children,(child)=>{
-              const fn = (callback)=>{
-                if(child.dataItems.length > 0){
-                  fnget(child.adcode,callback);
-                }
-                else{
-                  gmap_treecount[child.adcode]=0;
-                  callback(null,true);
-                }
-              }
-              fnsz.push(fn);
-            });
-            async.parallel(fnsz,(err,result)=>{
-              callback(null,true);
-            });
-          }
-        }
-        else{
-          callback(true,null);
-        }
-      });
-    };
-
-    //for root entry
-    distCluster.getClusterRecord(adcodetop,(err,result)=>{
-      if(!err){
-        const {children,dataItems} = result;
-        if(!children || children.length === 0){
-          reject();
-        }
-
-        if(!dataItems || dataItems.length === 0){
-          reject();
-          return;
-        }
-        gmap_treecount[adcodetop]=dataItems.length;//全国
-
-        _.map(children,(child)=>{
-          const fn = (callback)=>{
-            if(child.dataItems.length > 0){
-              fnget(child.adcode,callback);
-            }
-            else{
-              gmap_treecount[child.adcode]=0;
-              callback(null,true);
-            }
-          }
-          fnszroot.push(fn);
-        });
-        async.parallel(fnszroot,(err,result)=>{
-          resolve({gmap_devices,gmap_treecount});
-        });
-
-      }
-      else{
-        reject(err);
-      }
-    });
-  });
-};
-
-//获取某个行政编码的树形结构
-let getClusterTree_provicecity =({adcodetop})=> {
-  // console.log(`distCluster:${!!distCluster},adcodetop:${adcodetop}`);
-  return new Promise((resolve,reject) => {
-    if(!distCluster){
-      reject();
-      return;
-    }
-    distCluster.getClusterRecord(adcodetop,(err,result)=>{
-        // adcode: number 区划编码,
-        //  name: string 区划名称,
-        //  dataItems: Array.<Object> 该区划下辖的数据点的信息
-        //  hangingDataItems: Array.<Object>
-        //        该区划内的悬挂（没有对应子级）数据点
-        //  children:Array.<{
-        //      adcode, name, dataItem
-        //  }> 子级区划的聚合信息
-        // console.log(`${err}`);
-        if(!err){
-          const {adcode,name,dataItems,hangingDataItems,children} = result;
-          if(!dataItems || dataItems.length === 0){
-            resolve(0);
-            return;
-          }
-          resolve(dataItems.length);
-        }
-        else{
-          reject(err);
-        }
-    });
-  });
-};
-
-let getClusterTree_area =({adcodetop})=> {
-  // console.log(`distCluster:${!!distCluster},adcodetop:${adcodetop}`);
-  return new Promise((resolve,reject) => {
-    if(!distCluster){
-      reject();
-      return;
-    }
-    distCluster.getClusterRecord(adcodetop,(err,result)=>{
-        // adcode: number 区划编码,
-        //  name: string 区划名称,
-        //  dataItems: Array.<Object> 该区划下辖的数据点的信息
-        //  hangingDataItems: Array.<Object>
-        //        该区划内的悬挂（没有对应子级）数据点
-        //  children:Array.<{
-        //      adcode, name, dataItem
-        //  }> 子级区划的聚合信息
-        // console.log(`${err}`);
-        if(!err){
-          let deviceids = [];
-          const {adcode,name,dataItems,hangingDataItems,children} = result;
-          if(!dataItems || dataItems.length === 0){
-            resolve(deviceids);
-            return;
-          }
-          _.map(dataItems,(deviceitem)=>{
-            if(!!deviceitem.dataItem){
-              deviceids.push(deviceitem.dataItem.DeviceId);
-            }
-          });
-          resolve(deviceids);
-        }
-        else{
-          reject(err);
-        }
-    });
-  });
-};
 
 
 export function* createmapmainflow(){
@@ -838,180 +674,49 @@ export function* createmapmainflow(){
         yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
         console.log(`结束初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
-        function* getchild(childadcodelist){
-          let forkhandles = [];
-          for(let i=0;i<childadcodelist.length ;i++){
-          // _.map(childadcodelist,function*(adcode){
-            const handlefork = yield fork(function*(adcode){
-              const result = yield call(getclustertree_one,adcode);
-              if(result.type === 'group'){
-                yield call(getchild,result.childadcodelist);
-              }
-            },childadcodelist[i]);
-            forkhandles.push(handlefork);
-          };
-          
-          if(forkhandles.length > 0){
-            yield join(...forkhandles);
-          }
-        }
-        yield call(getchild,childadcodelist);
-        yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
-        console.log(`所有===>设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-        // const {gmap_devices,gmap_treecount} = yield call(getClusterTree_all);
-        // let {payload:{adcodetop}} = action_district;
-        // console.log(`开始初始化设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-        //
-//         function* getmap_area(adcode){
-//           let deviceids;
-//           while(!deviceids){
-//             try{
-//               deviceids = yield call(getClusterTree_area,{adcodetop:adcode});
-//               gmap_devices[adcode] = deviceids;
-//               gmap_treecount[adcode] = deviceids.length;
-//               break;
-//             }
-//             catch(e){
-//               yield call(delay,1000);
-//               console.log(e);
-//             }
-//           }
-//           return deviceids;
-//         }
-//         function* getmap_provicecity(adcode){
-//           let counts;
-//           while(!counts){
-//             try{
-//               counts = yield call(getClusterTree_provicecity,{adcodetop:adcode});
-//               gmap_treecount[adcode] = counts;
-//               break;
-//             }
-//             catch(e){
-//               yield call(delay,1000);
-//               console.log(e);
-//             }
-//           }
-//           return counts;
-//         }
-//
-//
-// console.log(`??====>`);
-//
-//         function* initalltree(){
-//            let forkhandles = [];
-// console.log(`0====>`);
-//             let mapcode = [];
-//             let provicecitycode = [];
-//             _.map(jsondataareas,(area)=>{
-//               const code = parseInt(area.code);
-//               mapcode.push(code);
-//             });
-//             _.map(jsondataprovinces,(provice)=>{
-//               const code = parseInt(provice.code);
-//               provicecitycode.push(code);
-//             });
-//             _.map(jsondatacities,(city)=>{
-//               const code = parseInt(city.code);
-//                if(city.name !== "市辖区" && city.name !== "省直辖县级行政区划"
-//              && city.name !== "县" && city.name !== "自治区直辖县级行政区划"){
-//                  provicecitycode.push(code);
-//                }
-//             });
-//
-//             console.log(`开始:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-//
-//             for(let i = 0;i < provicecitycode.length; i++){
-//               // console.log(`provicecitycode start for ${mapcode[i]}`);
-//                 yield getmap_area(provicecitycode[i]);
-//               // const handlefork = yield fork(getmap_provicecity,provicecitycode[i]);
-//               // forkhandles.push(handlefork);
-//             }
-//
-//     console.log(`1====>`);
-//             for(let i = 0; i < mapcode.length; i++){
-//               // yield getmap_area(parseInt(jsondataareas[i].code));
-//               console.log(`area start for ${mapcode[i]}`);
-//               yield getmap_area(mapcode[i]);
-//               // const handlefork = yield fork(getmap_area,mapcode[i]);
-//               // forkhandles.push(handlefork);
-//             }
-//     console.log(`2====>`);
-//             // for( let i = 0; i< jsondatacities.length ;i++){
-//             //   const city = jsondatacities[i];
-//             //   let code = parseInt(city.code);
-//             //   const handlefork = yield fork(getmap_provicecity,code);
-//             //   forkhandles.push(handlefork);
-//             // }
-//             console.log(`等待完成,合计${forkhandles.length}个任务:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-//             if(forkhandles.length > 0){
-//               yield join(...forkhandles);
-//             }
-//         };
-//         yield initalltree();
-//
-//         console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-//         console.log(gmap_devices);
-//         console.log(gmap_treecount);
-        //  yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
-        //
-        // let treenoderoot = yield gettreenode(adcodetop);
-        // //先加载一次
-        // yield put(mapmain_getdistrictresult_init(treenoderoot));
-        //
-        // function* settreenode(treenode){
+        // function* getchild(childadcodelist){
         //   let forkhandles = [];
-        //   if(!!treenode && !!treenode.children){
-        //     // console.log(`settreenode:${treenode.children.length}`);
-        //     for(let i =0 ;i< treenode.children.length;i++){
-        //       let child = treenode.children[i];
-        //       let adcode = child.adcode;
-        //       if(!!adcode){
-        //         const handlefork = yield fork(gettreenodeandset,adcode,child);
-        //         forkhandles.push(handlefork);
-        //         // yield gettreenodeandset(adcode,child);
-        //         // console.log(`开始:${adcode}`);
+        //   for(let i=0;i<childadcodelist.length ;i++){
+        //   // _.map(childadcodelist,function*(adcode){
+        //     const handlefork = yield fork(function*(adcode){
+        //       const result = yield call(getclustertree_one,adcode);
+        //       if(result.type === 'group'){
+        //         yield call(getchild,result.childadcodelist);
         //       }
-        //       else{
-        //         //device
-        //         child.loading = false;
-        //       }
-        //     }
-        //   }
+        //     },childadcodelist[i]);
+        //     forkhandles.push(handlefork);
+        //   };
+        //
         //   if(forkhandles.length > 0){
         //     yield join(...forkhandles);
         //   }
-        //
         // }
-        //
-        // function* gettreenodeandset(adcode,child){
-        //   let childsub = yield gettreenode(adcode);
-        //   if(!!childsub){
-        //     child.children = childsub.children;
-        //     // yield settreenode(childsub);
-        //     let forkhandles = [];
-        //     const handlefork = yield fork(settreenode,childsub);
-        //     forkhandles.push(handlefork);
-        //     if(forkhandles.length > 0){
-        //       yield join(...forkhandles);
-        //     }
-        //   }
-        //
-        // }
-        // yield settreenode(treenoderoot);
-        // // const handlefork = yield fork(settreenode,treenoderoot);
-        // // forkhandles.push(handlefork);
-        // // yield call(delay,10000);
-        // // console.log(`等待完成,合计${forkhandles.length}个任务:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-        // // yield forkhandles.map(t => join(t)).
-        //
-        // // distCluster.zoomToShowSubFeatures(adcodetop);
-        // console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-        // yield put(mapmain_getdistrictresult_init(treenoderoot));
+        // yield call(getchild,childadcodelist);
+        // yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
+        console.log(`所有===>设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
       }
       catch(e){
         console.log(e);
       }
     });
+    //mapmain_areamountdevices_request
+    // yield takeEvery(`${mapmain_areamountdevices_request}`, function*(action_district) {
+    //     let {payload:{adcodetop}} = action_district;
+    //     try{
+    //       yield put(mapmain_seldistrict(action_district.payload));
+    //       //获取adcodetop所在设备
+    //       const result = yield call(getclustertree_one,adcodetop);
+    //       if(!!result){
+    //         if(result.type === 'device'){
+    //           let devicelist = result.deviceids;
+    //           yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_devices,g_devices}));
+    //         }
+    //       }
+    //     }
+    //     catch(e){
+    //
+    //     }
+    // });
     //mapmain_getdistrictresult
     yield takeEvery(`${mapmain_seldistrict}`, function*(action_district) {
         let {payload:{adcodetop}} = action_district;
@@ -1023,34 +728,16 @@ export function* createmapmainflow(){
               distCluster.zoomToShowSubFeatures(adcodetop);
             }
             console.log(`zoomToShowSubFeatures:${adcodetop}`);
-
+            const result = yield call(getclustertree_one,adcodetop);
+            if(!!result){
+              if(result.type === 'device'){
+                yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_devices,g_devices}));
+              }
+              else{
+                yield put(devicelistgeochange_geotreemenu_refreshtree({g_devices,gmap_devices,gmap_treecount}));
+              }
+            }
             yield put(mapmain_getdistrictresult({adcode:adcodetop}));
-            // let adcodeinfo = getadcodeinfo(adcodetop);
-            // const {curdevicelist,devices} = yield select((state)=>{
-            //   return {...state.device};
-            // });
-            // console.log(`${curdevicelist.length}`);
-            // if(adcodeinfo.level === 'district' && curdevicelist.length < 50){
-            //   //如果当前定位到区一级，则自动放大到最合适位置
-            //   let latlngs = [];
-            //   _.map(curdevicelist,(devicenode)=>{
-            //       const deviceitem = devices[devicenode.name];
-            //       if(!!deviceitem){
-            //         latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
-            //       }
-            //   });
-            //   console.log(`latlngs===>${JSON.stringify(latlngs)}`);
-            //   if(latlngs.length > 0){
-            //      let polyline = L.polyline(latlngs);
-            //      let lBounds = polyline.getBounds();//LatLngBounds
-            //      let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
-            //      let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
-            //      let amapboounds = new window.AMap.Bounds(southWest,northEast);
-            //      window.amapmain.setBounds(amapboounds);
-            //
-            //      console.log(`zoomto...`);
-            //    }
-            // }
           }
         }
         catch(e){
@@ -1126,6 +813,7 @@ export function* createmapmainflow(){
         // console.log(`list:${list.length}`)
         yield put(devicelistgeochange_distcluster({}));
         yield put(devicelistgeochange_pointsimplifierins({}));
+        yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
         console.log(e);
@@ -1159,6 +847,71 @@ export function* createmapmainflow(){
           });
           pointSimplifierIns.setData(data);
         }
+      }
+      catch(e){
+        console.log(e);
+      }
+    });
+
+    yield throttle(1900,`${devicelistgeochange_geotreemenu}`,function*(action){
+      try{
+        //获取当前树，当前选择展开的行政编码code，放数组中,循环设置
+          console.log(`更新第一个结点:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          const childadcodelist = yield call(getclustertree_root);
+          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devices,gmap_devices,gmap_treecount}));
+          console.log(`更新第一个结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+
+          const getdevicestate = (state)=>{
+            const {datatree} = state.device;
+            return {datatree};
+          }
+          let codelist = [];
+          let curareaid;
+          const {datatree} = yield select(getdevicestate);
+          const findexpandnode = (node)=>{
+            let retnode;
+            if(node.toggled){
+              if(node.type === 'group_provice' || node.type === 'group_city' || node.type === 'group_area'){
+                if(node.type === 'group_area'){
+                  curareaid = node.adcode;
+                }
+                codelist.push(node.adcode);
+              }
+              retnode = node;
+            }
+            if(!!node.children){
+              for(let i = 0; i<node.children.length ;i++){
+                const subnode = node.children[i];
+                let tmpnode = findexpandnode(subnode);
+                if(!!tmpnode){
+                  break;
+                }
+              }
+            }
+            return retnode;
+          }
+          findexpandnode(datatree);
+          console.log(`全部展开列表:${JSON.stringify(codelist)}`);
+          //==============
+          let forkhandles = [];
+          for(let i=0;i<codelist.length ;i++){
+            const handlefork = yield fork(function*(adcode){
+              const result = yield call(getclustertree_one,adcode);
+            },codelist[i]);
+            forkhandles.push(handlefork);
+          };
+
+          if(forkhandles.length > 0){
+            yield join(...forkhandles);
+          }
+          if(!!curareaid){
+            yield put(mapmain_areamountdevices_result({adcode:curareaid,gmap_devices,g_devices}));
+          }
+          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devices,gmap_devices,gmap_treecount}));
+
+
+          console.log(`更新结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+
       }
       catch(e){
         console.log(e);
