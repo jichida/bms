@@ -52,7 +52,7 @@ class TreeNode extends React.Component {
           let nodecount = gmap_treecount[node.adcode];
           isenable = !!nodecount && nodecount > 0;
         }
-        console.log(`${node.adcode}-->${gmap_treename[node.adcode]} ==> ${gmap_treecount[node.adcode]},isenable:${isenable}`)
+        // console.log(`${node.adcode}-->${gmap_treename[node.adcode]} ==> ${gmap_treecount[node.adcode]},isenable:${isenable}`)
         if(isenable){
           return (
               <li ref={ref => this.topLevelRef = ref}

@@ -373,6 +373,105 @@ const showinfowindow = (deviceitem)=>{
   });
 }
 
+//获取root
+const getclustertree_root =()=>{
+  const adcodetop=100000;
+  return new Promise((resolve,reject) => {
+    if(!distCluster){
+      reject();
+      return;
+    }
+    distCluster.getClusterRecord(adcodetop,(err,result)=>{
+      if(!err){
+        const {children,dataItems} = result;
+        if(!children || children.length === 0){
+          reject();
+        }
+        if(!dataItems || dataItems.length === 0){
+          reject();
+          return;
+        }
+        gmap_treecount[adcodetop]=dataItems.length;//全国
+
+        let childadcodelist = [];
+        _.map(children,(child)=>{
+          if(child.dataItems.length > 0){
+            childadcodelist.push(child.adcode);
+          }
+          else{
+            gmap_treecount[child.adcode]=0;
+          }
+        });
+        resolve(childadcodelist);
+      }
+      else{
+        reject(err);
+      }
+    });
+  });
+}
+
+const getclustertree_one =(adcode)=>{
+  return new Promise((resolve,reject) => {
+    if(!distCluster){
+      reject();
+      return;
+    }
+    distCluster.getClusterRecord(adcode,(err,result)=>{
+      if(!err){
+        const {adcode,dataItems,children} = result;
+        if(!children || children.length === 0){
+          //device
+          let deviceids = [];
+          if(!!dataItems){
+            _.map(dataItems,(deviceitem)=>{
+              if(!!deviceitem.dataItem){
+                deviceids.push(deviceitem.dataItem.DeviceId);
+              }
+            });
+          }
+          gmap_treecount[adcode]=deviceids.length;
+          gmap_devices[adcode]=deviceids;
+          resolve({
+            type:'device',
+            deviceids
+          });
+        }
+        else{
+          //group
+          let childadcodelist = [];
+          if(!dataItems || dataItems.length === 0){
+            gmap_treecount[adcode]=0;
+            resolve({
+              type:'group',
+              childadcodelist
+            });
+            return;
+          }
+          gmap_treecount[adcode]=dataItems.length;
+          _.map(children,(child)=>{
+              if(child.dataItems.length > 0){
+                childadcodelist.push(child.adcode);
+              }
+              else{
+                gmap_treecount[child.adcode]=0;
+              }
+
+          });
+          resolve({
+            type:'group',
+            childadcodelist
+          });
+        }
+      }
+      else{
+        reject(err);
+      }
+    });
+  });
+}
+
+
 //获取某个行政编码的树形结构
 let getClusterTree_all =()=> {
   const adcodetop=100000;
@@ -732,9 +831,34 @@ export function* createmapmainflow(){
     //第一次初始化
     yield takeEvery(`${mapmain_seldistrict_init}`, function*(action_district) {
       try{
-        console.log(`开始初始化设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-        const {gmap_devices,gmap_treecount} = yield call(getClusterTree_all);
-        console.log(`结束初始化设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+        // let gmap_treecount = {};
+        // let gmap_devices = {};
+        console.log(`开始初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+        const childadcodelist = yield call(getclustertree_root);
+        yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
+        console.log(`结束初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+
+        function* getchild(childadcodelist){
+          let forkhandles = [];
+          for(let i=0;i<childadcodelist.length ;i++){
+          // _.map(childadcodelist,function*(adcode){
+            const handlefork = yield fork(function*(adcode){
+              const result = yield call(getclustertree_one,adcode);
+              if(result.type === 'group'){
+                yield call(getchild,result.childadcodelist);
+              }
+            },childadcodelist[i]);
+            forkhandles.push(handlefork);
+          };
+          
+          if(forkhandles.length > 0){
+            yield join(...forkhandles);
+          }
+        }
+        yield call(getchild,childadcodelist);
+        yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
+        console.log(`所有===>设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+        // const {gmap_devices,gmap_treecount} = yield call(getClusterTree_all);
         // let {payload:{adcodetop}} = action_district;
         // console.log(`开始初始化设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         //
@@ -828,7 +952,7 @@ export function* createmapmainflow(){
 //         console.log(`初始化设备树完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 //         console.log(gmap_devices);
 //         console.log(gmap_treecount);
-         yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
+        //  yield put(mapmain_getdistrictresult_init({g_devices,gmap_devices,gmap_treecount}));
         //
         // let treenoderoot = yield gettreenode(adcodetop);
         // //先加载一次
