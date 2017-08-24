@@ -47,7 +47,7 @@ let jsondata = _.filter(jsondatareadonly,(item) => {
 });
 
 //模拟10万+
-for(let i = 0;i < 5; i++){
+for(let i = 0;i < 0; i++){
   _.map(jsondatareadonly,(itemonly) => {
     const item = {...itemonly};
     if(!!item.LastHistoryTrack){
@@ -64,7 +64,7 @@ for(let i = 0;i < 5; i++){
   });
 }
 
-jsondata = _.sampleSize(jsondata, 100000);
+// jsondata = _.sampleSize(jsondata, 100000);
 
 export function* apiflow(){//仅执行一次
   yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
@@ -159,7 +159,7 @@ export function* apiflow(){//仅执行一次
    yield fork(function*(){
      yield call(delay,10000);
      while(true){
-       const list = _.sampleSize(jsondata, 20000);
+       const list = _.sampleSize(jsondata, 1000);
        let items = [];
        for(let i = 0;i < list.length; i++){
          let item = {...list[i]};

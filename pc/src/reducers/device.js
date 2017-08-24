@@ -22,8 +22,7 @@ const initial = {
   device:{
     treeviewstyle:'byloc',//byloc or bygroup
     treefilter:undefined,
-    toggled:true,
-    toggledgruop:true,
+
     mapseldeviceid:undefined,
     // mapdeviceidlist:[],
     gmap_treename,
@@ -88,10 +87,7 @@ const device = createReducer({
     devices[devicerecord.DeviceId] = devicerecord;
     return {...state,devices};
   },
-  [mapmain_seldistrict]:(state,payload)=>{
-    const {toggled} = payload;
-    return {...state,toggled};
-  },
+
   [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
     const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
     return {...state,gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
@@ -131,59 +127,35 @@ const device = createReducer({
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-
      let datatree = {...state.datatreeconst};
-    //  let findandsettreenodedevice = (node)=>{
-    //    let retnode = node;
-    //    if(node.type === `group_area`){
-    //      return retnode;
-    //    }
-    //    if(!!node.children){
-    //      for(let i = 0; i<node.children.length ;i++){
-    //        const subnode = node.children[i];
-    //        let tmpnode = findandsettreenodedevice(subnode);
-    //        if(!!tmpnode){
-    //          //<---
-    //          _.map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
-    //            tmpnode.children.push({
-    //              type:'device',
-    //              loading:false,
-    //              name:deviceid,
-    //              device:g_devicesdb[deviceid]
-    //            });
-    //          });
-    //        }
-    //      }
-    //    }
-    //    node.active = false;
-    //    return null;
-    //  }
-    //  findandsettreenodedevice(datatree);
      return {...state,gmap_acode_devices,gmap_acode_treecount,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode} = payload;
-    let adcodeinfo = getadcodeinfo(adcode);
+    // let adcodeinfo = getadcodeinfo(adcode);
     let curdevicelist = state.curdevicelist;
-    let findandsettreenode = (node,adcode,isroot)=>{
+    let findandsettreenode = (node,adcode)=>{
       let retnode = node;
       if(node.adcode === adcode){
-        console.log(node);
-        if(adcodeinfo.level === 'district'){
+        // console.log(node);
+        if(node.type === 'group_area'){
           curdevicelist = [...node.children];
         }
-        return retnode;
+        if(node.type !== 'group_root'){
+          return retnode;
+        }
+
       }
       retnode = null;
       if(!!node.children){
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
-          let tmpnode = findandsettreenode(subnode,adcode,false);
+          let tmpnode = findandsettreenode(subnode,adcode);
           if(!!tmpnode){//subnode为tmpnode,目标选中
             if(tmpnode.adcode === adcode){
               //选中／展开//equal
               subnode.active = true;
-              subnode.toggled = state.toggled;
+              // subnode.toggled = state.toggled;
               subnode.loading = false;
             }
             node.active = false;
@@ -194,16 +166,18 @@ const device = createReducer({
           }
         }
       }
-      if(!isroot && !retnode){
-        node.active = false;
-        node.toggled = false;
+      if(!retnode){
+        if(node.type !== 'group_root'){
+          node.active = false;
+          node.toggled = false;
+        }
         node.loading = false;
       }
       return retnode;
     };
       // let treenode = payload;
      let datatree = {...state.datatree};
-     findandsettreenode(datatree,adcode,true);
+     findandsettreenode(datatree,adcode);
      //root保持不动
      datatree.toggled = true;
      datatree.active = false;
@@ -231,8 +205,8 @@ const device = createReducer({
     let datatreegroup = {
       id:0,
       loading: false,
-      active : state.toggledgruop,
-      toggled:state.toggledgruop,
+      active :true,
+      toggled:true,
       name:`所有分组`,
       type:'group',
       children:[]

@@ -230,7 +230,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                      return deviceitem.locz;
                  },
                  renderOptions:{
-                   featureClickToShowSub:true,
+                  //  featureClickToShowSub:true,
                    clusterMarkerRecycleLimit:1000,
                    clusterMarkerKeepConsistent:false,
                    getClusterMarker : (feature, dataItems, recycledMarker)=> {
@@ -326,7 +326,7 @@ const listenclusterevent = (eventname)=>{
             const {adcode,name,dataItems,hangingDataItems,children} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
-                  resolve({adcodetop:record.adcode,toggled:true});
+                  resolve({adcodetop:record.adcode});
                   return;
               }
             }
@@ -684,14 +684,12 @@ export function* createmapmainflow(){
           if(!!adcodetop){
             //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
             //========================================================================================
-            if(!!distCluster){//放大到该区域
-              distCluster.zoomToShowSubFeatures(adcodetop);
-            }
-            console.log(`zoomToShowSubFeatures:${adcodetop}`);
+            let isarea = false;
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop);
             if(!!result){
               if(result.type === 'device'){
+                isarea = true;
                 //如果返回设备,则将设备加载到树中
                 yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb}));
               }
@@ -700,6 +698,16 @@ export function* createmapmainflow(){
                 yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
               }
             }
+
+            if(!!distCluster){//放大到该区域
+              if(isarea){
+
+              }
+              else{
+                distCluster.zoomToShowSubFeatures(adcodetop);
+              }
+            }
+            console.log(`zoomToShowSubFeatures:${adcodetop}`);
 
           }
         }
@@ -800,10 +808,10 @@ export function* createmapmainflow(){
     yield throttle(1900,`${devicelistgeochange_geotreemenu}`,function*(action){
       try{
         //获取当前树，当前选择展开的行政编码code，放数组中,循环设置
-          console.log(`更新第一个结点:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          // console.log(`更新第一个结点:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
           const childadcodelist = yield call(getclustertree_root);
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
-          console.log(`更新第一个结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          // console.log(`更新第一个结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
           const getdevicestate = (state)=>{
             const {datatree} = state.device;
@@ -835,7 +843,7 @@ export function* createmapmainflow(){
             return retnode;
           }
           findexpandnode(datatree);
-          console.log(`全部展开列表:${JSON.stringify(codelist)}`);
+          // console.log(`全部展开列表:${JSON.stringify(codelist)}`);
           //==============
           let forkhandles = [];
           for(let i=0;i<codelist.length ;i++){
@@ -856,7 +864,7 @@ export function* createmapmainflow(){
           //刷新树中数据
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
-          console.log(`更新结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          // console.log(`更新结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
       }
       catch(e){
         console.log(e);

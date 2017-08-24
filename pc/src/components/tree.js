@@ -65,13 +65,17 @@ class TreeExample extends React.Component {
         node.active = true;
         if(!!node.children){
             node.toggled = toggled;
+            if(node.adcode === 100000){
+              node.toggled = true;
+            }
+
             let id = node.adcode;
             if(typeof id === 'string'){
               id = parseInt(id);
             }
             const {treeviewstyle} = this.props;
             if(treeviewstyle === 'byloc'){
-              this.props.dispatch(mapmain_seldistrict({adcodetop:id,toggled}));
+              this.props.dispatch(mapmain_seldistrict({adcodetop:id}));
             }
             else{
 
