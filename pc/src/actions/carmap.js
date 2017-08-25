@@ -11,6 +11,14 @@ export const carmapshow_destorymap = createAction('carmapshow_destorymap');
 export const ui_selcurdevice_request = createAction('ui_selcurdevice_request');
 export const ui_selcurdevice_result = createAction('ui_selcurdevice_result');
 
+export const ui_btnclick_deviceonline  = createAction('ui_btnclick_deviceonline');
+export const ui_btnclick_deviceoffline  = createAction('ui_btnclick_deviceoffline');
+export const ui_btnclick_alaramall =  createAction('ui_btnclick_alaramall');
+export const ui_btnclick_alaramred =  createAction('ui_btnclick_alaramred');
+export const ui_btnclick_alaramorange =  createAction('ui_btnclick_alaramorange');
+export const ui_btnclick_alaramyellow =  createAction('ui_btnclick_alaramyellow');
+export const ui_menuclick_settings = createAction('ui_menuclick_settings');
+export const ui_menuclick_logout = createAction('ui_menuclick_logout');
 //轨迹回放
 export const mapplayback_start = createAction('mapplayback_start');
 export const mapplayback_end = createAction('mapplayback_end');

@@ -21,7 +21,7 @@ import {get_initgeotree} from '../util/treedata';
 const {datatree,gmap_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
-    treeviewstyle:'bygroup',//byloc or bygroup
+    treeviewstyle:'byloc',//byloc or bygroup
     treefilter:undefined,
 
     mapseldeviceid:undefined,
@@ -40,7 +40,15 @@ const initial = {
       type:'group_root',
       children:[]
     },
-
+    datatreesearchresult:{
+      id:'0',
+      loading: false,
+      active :true,
+      toggled:true,
+      name:`搜索结果`,
+      type:'group_root',
+      children:[]
+    },
     curdevicelist:[],
     groupidlist:[],
     groups:{},

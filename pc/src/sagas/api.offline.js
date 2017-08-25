@@ -8,6 +8,7 @@ import {
   queryhistorytrack_request,
   queryhistorytrack_result,
   notify_socket_connected,
+  login_request,
   md_login_result,
   getsystemconfig_request,
   getsystemconfig_result,
@@ -23,7 +24,8 @@ import {
   querydeviceinfo_result,
 
   serverpush_devicegeo,
-  serverpush_devicegeo_sz
+  serverpush_devicegeo_sz,
+  serverpush_devicealarm
 } from '../actions';
 import jsondatareadonly from '../test/bmsdata.json';
 import jsondatatrack from '../test/1602010008.json';
@@ -103,6 +105,24 @@ export function* apiflow(){//仅执行一次
      }));
   });
 
+  yield takeEvery(`${login_request}`, function*(action) {
+    const {payload} = action;
+    const {username,password} = payload;
+    if(password === '123456'){
+      yield put(md_login_result({
+        loginsuccess:true,
+        username:username,
+        token:'',
+      }));
+    }
+    else{
+      yield put(md_login_result({
+        loginsuccess:false,
+      }));
+    }
+
+  });
+
   yield takeEvery(`${querydevice_request}`, function*(action) {
      yield put(querydevice_result({list:jsondata}));
   });
@@ -162,9 +182,9 @@ export function* apiflow(){//仅执行一次
 
      yield call(delay,2000);
 
-     yield put(md_login_result({
-       loginsuccess:true
-     }));
+    //  yield put(md_login_result({
+    //    loginsuccess:true
+    //  }));
    });
 
    yield takeEvery(`${queryhistorytrack_request}`, function*(action) {
@@ -172,8 +192,8 @@ export function* apiflow(){//仅执行一次
    });
 
   //  模拟服务端推送消息
-  let serverpush_device = false;
-  if(serverpush_device){
+  let enable_serverpush_device = false;
+  if(enable_serverpush_device){
     yield fork(function*(){
       yield call(delay,10000);
       while(true){
@@ -194,5 +214,17 @@ export function* apiflow(){//仅执行一次
       }
     });
   }
+
+  let enable_serverpush_alarm = false;
+  if(enable_serverpush_alarm){
+    yield fork(function*(){
+      yield call(delay,10000);
+      while(true){
+        //产生模拟数据
+        //发送模拟数据
+      }
+    });
+  }
+  //serverpush_devicealarm
 
 }

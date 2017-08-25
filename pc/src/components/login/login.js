@@ -14,7 +14,7 @@ import {
     length4
     } from "../tools/formvalidation"
 
-export class PageForm extends Component {
+ class PageForm extends Component {
     render(){
         const { handleSubmit,onClickLogin,pristine,submitting } = this.props;
 
@@ -53,7 +53,8 @@ export class PageForm extends Component {
                 </div>
 
                 <div className="submitBtn">
-                    <RaisedButton label="登录" fullWidth={true} primary={true} disabled={pristine || submitting} onClick={handleSubmit(onClickLogin)} />
+                    <RaisedButton label="登录" fullWidth={true} primary={true} disabled={pristine || submitting}
+                    onClick={handleSubmit(onClickLogin)}/>
                 </div>
             </Form>
         )
@@ -64,22 +65,22 @@ PageForm = reduxForm({
     form: 'LoginPageForm'
 })(PageForm);
 
-const inputconnect = formValueSelector('LoginPageForm');
-PageForm = connect(
-    state => {
-        const phonenumber = inputconnect(state, 'phonenumber');
-        return {
-            phonenumber
-        }
-    }
-)(PageForm)
-PageForm = withRouter(PageForm);
+// const inputconnect = formValueSelector('LoginPageForm');
+// PageForm = connect(
+//     state => {
+//         const phonenumber = inputconnect(state, 'phonenumber');
+//         return {
+//             phonenumber
+//         }
+//     }
+// )(PageForm)
+// PageForm = withRouter(PageForm);
 
 export class Page extends Component {
     componentWillReceiveProps (nextProps) {
-        
+
         if(nextProps.loginsuccess && !this.props.loginsuccess){
-            
+
             //search:?next=/devicelist
             var fdStart = this.props.location.search.indexOf("?next=");
             if(fdStart === 0){
@@ -109,7 +110,7 @@ export class Page extends Component {
             username:values.phonenumber,
             password:values.password,
         };
-
+        console.log(`onClickLogin:${JSON.stringify(payload)}`);
         this.props.dispatch(login_request(payload));
     }
     render(){
@@ -123,7 +124,7 @@ export class Page extends Component {
     }
 }
 
-const data = ({userlogin}) => { return userlogin; }
-Page = connect(data)(Page);
+const mapStateToProps = ({userlogin}) => { return userlogin; }
+Page = connect(mapStateToProps)(Page);
 
 export default Page;
