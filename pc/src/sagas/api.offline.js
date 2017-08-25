@@ -23,7 +23,8 @@ import {
   querydeviceinfo_result,
 
   serverpush_devicegeo,
-  serverpush_devicegeo_sz
+  serverpush_devicegeo_sz,
+  serverpush_devicealarm
 } from '../actions';
 import jsondatareadonly from '../test/bmsdata.json';
 import jsondatatrack from '../test/1602010008.json';
@@ -172,8 +173,8 @@ export function* apiflow(){//仅执行一次
    });
 
   //  模拟服务端推送消息
-  let serverpush_device = false;
-  if(serverpush_device){
+  let enable_serverpush_device = false;
+  if(enable_serverpush_device){
     yield fork(function*(){
       yield call(delay,10000);
       while(true){
@@ -194,5 +195,17 @@ export function* apiflow(){//仅执行一次
       }
     });
   }
+
+  let enable_serverpush_alarm = false;
+  if(enable_serverpush_alarm){
+    yield fork(function*(){
+      yield call(delay,10000);
+      while(true){
+        //产生模拟数据
+        //发送模拟数据
+      }
+    });
+  }
+  //serverpush_devicealarm
 
 }

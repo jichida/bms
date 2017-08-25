@@ -29,6 +29,18 @@ import Avatar from "../img/2.jpg";
 import RaisedButton from 'material-ui/RaisedButton';
 import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 import withRouter from 'react-router-dom/withRouter';
+
+import {
+  ui_btnclick_deviceonline,
+  ui_btnclick_deviceoffline,
+  ui_btnclick_alaramall,
+  ui_btnclick_alaramred,
+  ui_btnclick_alaramorange,
+  ui_btnclick_alaramyellow,
+
+  ui_menuclick_settings,
+  ui_menuclick_logout
+}from '../actions';
 /**
  * The `maxHeight` property limits the height of the menu, above which it will be scrollable.
  */
@@ -93,19 +105,41 @@ class UserMenu extends React.Component {
           animation={PopoverAnimationVertical}
         >
           <Menu>
-            <MenuItem primaryText="设置" leftIcon={<Settings />} />
-            <MenuItem primaryText="退出登录" leftIcon={<Exit />} />
+            <MenuItem primaryText="设置" leftIcon={<Settings />} onClick={()=>{
+              this.props.dispatch(ui_menuclick_settings({}));
+            }}/>
+            <MenuItem primaryText="退出登录" leftIcon={<Exit />} onClick={()=>{
+              this.props.dispatch(ui_menuclick_logout({}));
+            }}/>
           </Menu>
         </Popover>
       </div>
     );
   }
 }
-
+UserMenu = connect()(UserMenu);
 
 class Page extends React.Component {
     onClickMenu(tiptype){
-        this.props.dispatch(ui_showmenu('showmessage'));
+        if(tiptype === 'online'){
+            this.props.dispatch(ui_btnclick_deviceonline({}));
+        }
+        else if(tiptype === 'offline'){
+            this.props.dispatch(ui_btnclick_deviceonline({}));
+        }
+        else if(tiptype === 'all'){
+            this.props.dispatch(ui_btnclick_alaramall({}));
+        }
+        else if(tiptype === 'red'){
+            this.props.dispatch(ui_btnclick_alaramred({}));
+        }
+        else if(tiptype === 'orange'){
+            this.props.dispatch(ui_btnclick_alaramorange({}));
+        }
+        else if(tiptype === 'yellow'){
+            this.props.dispatch(ui_btnclick_alaramyellow({}));
+        }
+        //this.props.dispatch(ui_showmenu('showmessage'));
     }
 
     render(){
@@ -152,7 +186,7 @@ class Page extends React.Component {
                         color : "#5cbeaa"
                     }}
                     >
-                    <img src={CarOnline} style={{marginBottom: "-6px"}} />
+                    <img src={CarOnline} style={{marginBottom: "-6px"}} onClick={this.onClickMenu.bind(this,'online')} />
                 </Badge>
                 <Badge
                     badgeContent={"离线"}
@@ -172,7 +206,7 @@ class Page extends React.Component {
                         color : "#999"
                     }}
                     >
-                    <img src={CarOutline} style={{marginBottom: "-6px"}} />
+                    <img src={CarOutline} style={{marginBottom: "-6px"}}  onClick={this.onClickMenu.bind(this,'offline')} />
                 </Badge>
                 <Badge
                     badgeContent={"(47788)"}
@@ -192,7 +226,7 @@ class Page extends React.Component {
                         color : "#d21d24"
                     }}
                     >
-                    <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle1} onClick={this.onClickMenu.bind(this,'high')} />
+                    <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle1} onClick={this.onClickMenu.bind(this,'red')} />
                 </Badge>
                 <Badge
                     badgeContent={"(47788)"}
@@ -212,7 +246,7 @@ class Page extends React.Component {
                         color : "#ed942f"
                     }}
                     >
-                    <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle2} onClick={this.onClickMenu.bind(this,'high')} />
+                    <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle2} onClick={this.onClickMenu.bind(this,'orange')} />
                 </Badge>
                 <Badge
                     badgeContent={"(47788)"}
@@ -232,7 +266,7 @@ class Page extends React.Component {
                         color : "#f6d06b"
                     }}
                     >
-                    <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle3} onClick={this.onClickMenu.bind(this,'high')} />
+                    <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle3} onClick={this.onClickMenu.bind(this,'yellow')} />
                 </Badge>
 
                 <Badge
@@ -251,7 +285,7 @@ class Page extends React.Component {
                         lineHeight : "18px"
                     }}
                     >
-                    <i className="fa fa-envelope-o"  aria-hidden="true"   style={iconstyle1}  onClick={()=>{this.props.history.push("/message")}} />
+                    <i className="fa fa-envelope-o"  aria-hidden="true"   style={iconstyle1}  onClick={this.onClickMenu.bind(this,'all')}  />
                 </Badge>
 
 
