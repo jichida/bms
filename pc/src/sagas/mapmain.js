@@ -341,6 +341,8 @@ const listenclusterevent = (eventname)=>{
 
 
 //显示弹框
+
+
 const showinfowindow = (deviceitem)=>{
   return new Promise(resolve =>{
       let locz = deviceitem.locz;
@@ -599,6 +601,7 @@ export function* createmapmainflow(){
           //获取该设备信息
           yield put(querydeviceinfo_request({query:{DeviceId}}));
           const {payload} = yield take(`${querydeviceinfo_result}`);
+          g_devicesdb[DeviceId] = payload;
           //弹框
           yield call(showinfowindow,payload);
 
@@ -606,6 +609,7 @@ export function* createmapmainflow(){
            //while(true){//关闭时触发的事件
              yield call(listenwindowinfoevent,eventname);//触发一次
              yield put(ui_showmenu("showdevice_no"));
+             infoWindow = null;
            //}
           },'close');
           // yield put(ui_showmenu("showdevice"));
@@ -693,10 +697,6 @@ export function* createmapmainflow(){
         let {payload:{adcodetop,forcetoggled}} = action_district;
         try{
           if(!!adcodetop){
-            //下面判断，防止用户在地图上乱点导致左侧省市区的树无法更新
-            {
-              //确实需要判断,否则出现异常,应从最顶层开始进入
-            }
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
@@ -801,6 +801,33 @@ export function* createmapmainflow(){
         _.map(list,(deviceitem)=>{
           g_devicesdb[deviceitem.DeviceId] = deviceitem;
         });
+
+        if(!!infoWindow){//正在弹窗
+          //判断当前设备是否发生偏移
+          const {mapseldeviceid} = yield select((state)=>{
+            return {mapseldeviceid:state.device.mapseldeviceid};
+          });
+          const deviceitem = _.find(list,((o)=>{
+            return o.DeviceId === mapseldeviceid;
+          }));
+          if(!!deviceitem){
+            //请求
+            yield put(querydeviceinfo_request({query:{DeviceId:mapseldeviceid}}));
+            const {payload} = yield take(`${querydeviceinfo_result}`);
+            //地理位置
+            let deviceinfo = {...deviceitem,...payload};
+            // const addr = yield call(getgeodata,deviceinfo);
+            // deviceinfo = {...deviceinfo,...addr};
+            // g_devicesdb[mapseldeviceid] = deviceinfo;
+
+            let locz = deviceinfo.locz;
+            const infooptions = getpopinfowindowstyle(deviceinfo);
+            infoWindow.setInfoTitle(infooptions.infoTitle);
+            infoWindow.setInfoBody(infooptions.infoBody);
+            infoWindow.setPosition(locz);
+            window.amapmain.setCenter(locz);
+          }
+        }
         // console.log(`list:${list.length}`)
         yield put(devicelistgeochange_distcluster({}));
         yield put(devicelistgeochange_pointsimplifierins({}));
@@ -811,7 +838,8 @@ export function* createmapmainflow(){
       }
     });
     //devicelistgeochange
-    yield throttle(1300,`${devicelistgeochange_distcluster}`,function*(action){
+    // yield throttle(1300,`${devicelistgeochange_distcluster}`,function*(action){
+    yield takeLatest(`${devicelistgeochange_distcluster}`,function*(action){
       try{
         if(!!distCluster){
           let data = [];
@@ -826,7 +854,8 @@ export function* createmapmainflow(){
       }
     });
 
-    yield throttle(1700,`${devicelistgeochange_pointsimplifierins}`,function*(action){
+    // yield throttle(1700,`${devicelistgeochange_pointsimplifierins}`,function*(action){
+    yield takeLatest(`${devicelistgeochange_pointsimplifierins}`,function*(action){
       try{
         if(!!pointSimplifierIns){
           let data = [];
@@ -842,7 +871,8 @@ export function* createmapmainflow(){
     });
 
     //刷新行政区域树
-    yield throttle(1900,`${devicelistgeochange_geotreemenu}`,function*(action){
+    // yield throttle(1900,`${devicelistgeochange_geotreemenu}`,function*(action){
+    yield takeLatest(`${devicelistgeochange_geotreemenu}`,function*(action){
       try{
         //获取当前树，当前选择展开的行政编码code，放数组中,循环设置
           // console.log(`更新第一个结点:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
@@ -910,3 +940,5 @@ export function* createmapmainflow(){
 
     //devicelistgeochange_geotreemenu
 }
+
+export {g_devicesdb};
