@@ -171,11 +171,12 @@ class Page extends React.Component {
         iconstyle4.color = "#5cbeaa";
         iconstyle4.fontSize = "30px";
 
+        const {count_online,count_offline,count_all,count_yellow,count_red,count_orange} = this.props;
         return (
             <div className="BadgeStyle">
 
                 <Badge
-                    badgeContent={"在线"}
+                    badgeContent={count_online}
                     className="Badge"
                     secondary={true}
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
@@ -195,7 +196,7 @@ class Page extends React.Component {
                     <img src={CarOnline} style={{marginBottom: "-6px"}} onClick={this.onClickMenu.bind(this,'online')} />
                 </Badge>
                 <Badge
-                    badgeContent={"离线"}
+                    badgeContent={count_offline}
                     className="Badge"
                     secondary={true}
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
@@ -215,7 +216,7 @@ class Page extends React.Component {
                     <img src={CarOutline} style={{marginBottom: "-6px"}}  onClick={this.onClickMenu.bind(this,'offline')} />
                 </Badge>
                 <Badge
-                    badgeContent={"(47788)"}
+                    badgeContent={`(${count_red})`}
                     className="Badge"
                     secondary={true}
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
@@ -235,7 +236,7 @@ class Page extends React.Component {
                     <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle1} onClick={this.onClickMenu.bind(this,'red')} />
                 </Badge>
                 <Badge
-                    badgeContent={"(47788)"}
+                    badgeContent={`(${count_orange})`}
                     className="Badge"
                     secondary={true}
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
@@ -255,7 +256,7 @@ class Page extends React.Component {
                     <i className="fa fa-bus"  aria-hidden="true"   style={iconstyle2} onClick={this.onClickMenu.bind(this,'orange')} />
                 </Badge>
                 <Badge
-                    badgeContent={"(47788)"}
+                    badgeContent={`(${count_yellow})`}
                     className="Badge"
                     secondary={true}
                     style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
@@ -276,7 +277,7 @@ class Page extends React.Component {
                 </Badge>
 
                 <Badge
-                    badgeContent={4}
+                    badgeContent={`(${count_all})`}
                     className="Badge"
                     secondary={true}
                     style={{
@@ -305,4 +306,15 @@ class Page extends React.Component {
 
 //this.onClickMenu.bind(this,'low')
 Page = withRouter(Page);
-export default connect()(Page);
+const mapStateToPropsTip = ({device}) => {
+   const {g_devicesdb} = device;
+   let count_online = 6000;
+   let count_offline = 70;
+   let count_all = 450;
+   let count_yellow = 40;
+   let count_red = 20;
+   let count_orange = 33;
+
+   return {count_online,count_offline,count_all,count_yellow,count_red,count_orange};
+ }
+export default connect(mapStateToPropsTip)(Page);
