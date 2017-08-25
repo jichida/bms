@@ -41,7 +41,7 @@ class Page extends React.Component {
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
-                    <div className="title">设备编号8888888</div>
+                    <div className="title">设备编号：{DeviceId || ''}</div>
                     <div className="day">
                         <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
                         <div>开始日期</div>

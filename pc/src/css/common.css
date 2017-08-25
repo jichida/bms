@@ -21,6 +21,7 @@
     bottom: 0;
     left: 0;
 }
+
 .AppPage{
     display: -webkit-box;
     display: -ms-flexbox;
@@ -238,7 +239,7 @@
     right: 3px;
 }
 .AppPage .react-draggable{
-    z-index: 13001;
+    z-index: 1000;
     height: 54px;
     width: 60px;
     position: fixed;
@@ -269,30 +270,17 @@
     flex-grow: 1;
 }
 .warningPage{
-    padding:10px;
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+    background: #FFF;
+    z-index: 2000
 }
 .warningPage .tit{
     font-size: 18px;
     margin: 10px 0;
     font-weight: bold;
-}
-.warningsearch{
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    display: -webkit-flex;
-    height: 60px;
-}
 
-.warningsearch .seltime{
-    -webkit-flex-grow:1;
-    flex-grow:1;
-    width: 200px;
-    margin-right: 10px;
-    overflow:hidden;
-}
-.warningsearch .seltime:last-child{
-    margin-right: 0;
 }
 .showMessageBtn{
     position: absolute;
@@ -599,7 +587,7 @@
     border-radius: 30px;
     border:2px solid #EEE;
 }
-.historytrackplayback .appbar{
+.appbar{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -613,12 +601,23 @@
     height: 72px;
     line-height: 72px;
 }
+.appbar .fa.back{
+    font-size:30px;
+    padding: 0 20px;
+    background-size: #FFF;
+
+}
+.appbar .title{
+    color: #FFF;
+    padding: 0 15px;
+}
 .historytrackplayback .appbar .title{
     border:1px solid #FFF;
     color: #FFF;
     padding: 0 15px;
 }
-.historytrackplayback .appbar .day{
+
+.appbar .day{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -641,7 +640,7 @@
     -webkit-justify-content: center;
     justify-content: center;
 }
-.historytrackplayback .appbar .controlbtn{
+.appbar .controlbtn{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -654,7 +653,7 @@
     justify-content: flex-end;
     margin-right: 20px;
 }
-.historytrackplayback .appbar .controlbtn span{
+.appbar .controlbtn span{
     display: inline-block;
     background: #EEE;
     height: 40px;
@@ -664,11 +663,11 @@
     color: #333;
     cursor: pointer;
 }
-.historytrackplayback .appbar .controlbtn span:first-child{
+.appbar .controlbtn span:first-child{
     background: #FFF;
     border-radius:4px 0 0 4px;
 }
-.historytrackplayback .appbar .controlbtn span:active{
+.appbar .controlbtn span:active{
     background: #CCC;
 }
 

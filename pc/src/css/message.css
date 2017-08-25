@@ -45,3 +45,14 @@
     padding-top: 10px;
     font-size: 18px;
 }
+
+.fillerform{
+    display: flex;
+    width: 100%;
+}
+
+.fillerform .ant-input-group,
+.fillerform .ant-btn.ant-btn-primary{
+    width: auto;
+    margin-left:10px;
+}

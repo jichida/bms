@@ -7,7 +7,8 @@ import {connect} from 'react-redux';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-import User from "../img/1.png";
+import CarOnline from "../img/1.png";
+import CarOutline from "../img/3.png";
 import { ui_showmenu } from '../actions';
 import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
@@ -25,28 +26,81 @@ import MapsPlace from 'material-ui/svg-icons/maps/place';
 import Settings from "material-ui/svg-icons/action/settings";
 import Exit from "material-ui/svg-icons/action/exit-to-app";
 import Avatar from "../img/2.jpg";
-
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
+import withRouter from 'react-router-dom/withRouter';
 /**
  * The `maxHeight` property limits the height of the menu, above which it will be scrollable.
  */
 
-const UserMenu = () => (
-    <IconMenu
-        iconButtonElement={
-          <IconButton>
-            <div className="topuser">
-                <span>jwhklk</span>
-                <img src={Avatar}  />
-            </div>
-          </IconButton>
-        }
-        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-        anchorOrigin ={{ vertical: 'bottom', horizontal: 'left'}}
+// const UserMenu = () => (
+//     <IconMenu
+//         iconButtonElement={
+//           <IconButton>
+//             <div className="topuser">
+//                 <span>jwhklk</span>
+//                 <img src={Avatar}  />
+//             </div>
+//           </IconButton>
+//         }
+//         targetOrigin={{horizontal: 'left', vertical: 'top'}}
+//         anchorOrigin ={{ vertical: 'bottom', horizontal: 'left'}}
+//         >
+//         <MenuItem primaryText="设置" leftIcon={<Settings />} />
+//         <MenuItem primaryText="退出登录" leftIcon={<Exit />} />
+//     </IconMenu>
+// );
+
+class UserMenu extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+  }
+
+  handleTouchTap = (event) => {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <div className="topuser" onClick={this.handleTouchTap}>
+            <span>jwhklk</span>
+            <img src={Avatar}  />
+        </div>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose}
+          animation={PopoverAnimationVertical}
         >
-        <MenuItem primaryText="设置" leftIcon={<Settings />} />
-        <MenuItem primaryText="退出登录" leftIcon={<Exit />} />
-    </IconMenu>
-);
+          <Menu>
+            <MenuItem primaryText="设置" leftIcon={<Settings />} />
+            <MenuItem primaryText="退出登录" leftIcon={<Exit />} />
+          </Menu>
+        </Popover>
+      </div>
+    );
+  }
+}
 
 
 class Page extends React.Component {
@@ -98,7 +152,27 @@ class Page extends React.Component {
                         color : "#5cbeaa"
                     }}
                     >
-                    <img src={User} style={{marginBottom: "-6px"}} />
+                    <img src={CarOnline} style={{marginBottom: "-6px"}} />
+                </Badge>
+                <Badge
+                    badgeContent={"离线"}
+                    className="Badge"
+                    secondary={true}
+                    style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                    badgeStyle={{
+                        top : "auto",
+                        bottom: "-4px",
+                        right: "-4px",
+                        backgroundColor: "none",
+                        color : "#111",
+                        position: "relative",
+                        bottom: "-8px",
+                        fontSize: "18px",
+                        width : "auto",
+                        color : "#999"
+                    }}
+                    >
+                    <img src={CarOutline} style={{marginBottom: "-6px"}} />
                 </Badge>
                 <Badge
                     badgeContent={"(47788)"}
@@ -177,7 +251,7 @@ class Page extends React.Component {
                         lineHeight : "18px"
                     }}
                     >
-                    <i className="fa fa-envelope-o"  aria-hidden="true"   style={iconstyle1}  onClick={this.onClickMenu.bind(this,'low')} />
+                    <i className="fa fa-envelope-o"  aria-hidden="true"   style={iconstyle1}  onClick={()=>{this.props.history.push("/message")}} />
                 </Badge>
 
 
@@ -187,4 +261,8 @@ class Page extends React.Component {
         );
     }
 }
+
+
+//this.onClickMenu.bind(this,'low')
+Page = withRouter(Page);
 export default connect()(Page);

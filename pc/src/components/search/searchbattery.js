@@ -19,22 +19,22 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
+
+import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
+const InputGroup = Input.Group;
+const Option = Select.Option;
 /* <MenuItem value={''} primaryText="请选择" />
 <MenuItem value={'RdbNo'} primaryText="RDB编号" />
 <MenuItem value={'PackNo'} primaryText="BMU PACK号" />
 <MenuItem value={'PnNo'} primaryText="设备PN料号" /> */
 const selitem_devicefields = [
   {
-    value:'',
-    text:'请选择'
-  },
-  {
     value:'RdbNo',
     text:'RDB编号'
   },
   {
     value:'PackNo',
-    text:'BMU PACK号"'
+    text:'BMU PACK号'
   },
   {
     value:'PnNo',
@@ -45,10 +45,6 @@ const selitem_devicefields = [
 <MenuItem value={'ALARM_H'} primaryText="警告代码" />
 <MenuItem value={'ALARM_L'} primaryText="故障代码" /> */
 const selitem_alarmfields = [
-  {
-    value:'',
-    text:'请选择'
-  },
   {
     value:'ALARM_H',
     text:'警告代码'
@@ -154,73 +150,56 @@ class TreeSearchBattery extends React.Component {
 
 
         return (
-            <div className="warningPage">
-                <div className="searchli">
-                    <div>
-                        <SelectField
-                            onChange={this.handleChangeGroupname}
-                            style={{minWidth:"100px", width: "33%"}}
-                            value = {this.state.groupname}
-                            >
-                            <MenuItem key={'-1'} value={''} primaryText="选择分组名称" />
-                            {
-                              _.map(groupidlist,(groupid)=>{
+            <div className="warningsearch">
+                <div className="fillerform">
+                    <Select defaultValue={this.state.groupname} style={{ width: 120 }}>
+                        <Option value={''} >选择分组名称</Option>
+                        {
+                            _.map(groupidlist,(groupid)=>{
                                 let group= groups[groupid];
-                                return (<MenuItem key={groupid} value={groupid} primaryText={group.name} />)
-                              })
-                            }
-                        </SelectField>
-                    </div>
-                    <div>
-                        <SelectField
-                            onChange={this.handleChangeDevicefield}
-                            style={{minWidth:"100px", width: "33%"}}
-                            value = {this.state.devicefield}
-                            >
-                              {
+                                return (<Option key={groupid} value={groupid} primaryText={group.name}>{group.name}</Option>)
+                            })
+                        }
+                    </Select>
+
+                    <InputGroup compact>
+                        <Select defaultValue="选择编号类型" style={{ width: 120 }}>
+                            {
                                 _.map(selitem_devicefields,(field,key)=>{
-                                  return (<MenuItem key={key} value={field.value} primaryText={field.text} />)
+                                    return (<Option key={key} value={field.value}>{field.text}</Option>)
                                 })
-                              }
-                        </SelectField>
-                        {
-                          !ishiddenbattery &&
-                          (<TextField
-                              onChange={this.handleChangeSearchtxtfordevice.bind(this)}
-                              value={this.state.searchtxtfordevice}
-                              hintText={hintTextBattery}
-                              style ={{width : "30%", marginTop: "-10px", minWidth:"100px"}}
-                          />)
-                        }
+                            }
+                        </Select>
+                        <AutoComplete
+                            style={{ width: 200 }}
+                            onChange={this.handleChangeSearchtxtforalaram.bind(this)}
+                            placeholder="请输入编号"
+                        />
+                    </InputGroup>
 
-                    </div>
-                    <div>
-                        <SelectField
-                            onChange={this.handleChangeAlarmfiled}
-                            style={{minWidth:"100px", width: "33%"}}
-                            value = {this.state.alarmfield}
-                            >
-                              {
+                    <InputGroup compact>
+                        <Select defaultValue="选择代码类型" style={{ width: 120 }}>
+                            {
                                 _.map(selitem_alarmfields,(field,key)=>{
-                                  return (<MenuItem key={key} value={field.value} primaryText={field.text} />)
+                                  return (<Option key={key} value={field.value}>{field.text}</Option>)
                                 })
-                              }
-                        </SelectField>
-                        {
-                          !ishiddenalarm &&
-                          <TextField
-                              onChange={this.handleChangeSearchtxtforalaram.bind(this)}
-                              value={this.state.searchtxtforalarm}
-                              hintText={hintTextAlarm}
-                              style ={{width : "30%", marginTop: "-10px", minWidth:"100px"}}
-                          />
-                        }
+                            }
+                        </Select>
+                        <AutoComplete
+                            style={{ width: 200 }}
+                            placeholder="请输入代码"
+                            onChange={this.handleChangeSearchtxtforalaram.bind(this)}
+                        />
+                    </InputGroup>
 
-                    </div>
+                    <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
                 </div>
-                <div className="searchbtn">
-                  <RaisedButton label="查询" primary={true} fullWidth={true} onTouchTap={this.onClickQuery} buttonStyle={{background:"#2085b5"}}/>
-                </div>
+
+
+
+
+
+
             </div>
 
         );

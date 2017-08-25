@@ -13,6 +13,9 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Avatar from 'material-ui/Avatar';
 import Deraultimg from "../img/1.png";
+import "../css/antd.css";
+import "../css/message.css";
+
 
 import {
     Table,
@@ -43,7 +46,13 @@ class MessageAllDevice extends React.Component {
         const {devices,alarms,searchresult_alaram} = this.props;
         return (
             <div className="warningPage">
-                <div className="tit">新消息</div>
+
+
+                <div className="appbar">
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <div className="title">新消息</div>
+                </div>
+
                 <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
 
                 <Table>

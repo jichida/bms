@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "antd": "^2.12.4",
+    "antd": "^2.12.7",
     "async": "^2.5.0",
     "bankcardinfo": "^2.0.3",
     "coordtransform": "^2.1.2",

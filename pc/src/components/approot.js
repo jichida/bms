@@ -8,9 +8,15 @@ import { Route,Redirect,Switch} from 'react-router-dom';
 import AdminContent from "./admincontent";
 import Index from './index';
 import Datatable from './datatable/index.js';
+import Message from './message.js';
+
+
+
 import Login from './login/login.js';
 import MapPage from './admincontent';
 import WeuiTool from './tools/weuitool';
+
+
 import {requireAuthentication} from './requireauthentication';
 import { carmapshow_createmap, carmapshow_destorymap} from '../actions';
 import "../css/common.css";
@@ -45,6 +51,7 @@ class AppRoot extends React.Component {
                     <Route path="/index" component={requireAuthentication(()=>(<div></div>))} />
                     <Route path="/datatable" component={requireAuthentication(Datatable)} />
                     <Route path="/login" component={Login} />
+                    <Route path="/message" component={Message} />
                 </Switch>
                 <div>
                     <Index history={this.props.history}/>
