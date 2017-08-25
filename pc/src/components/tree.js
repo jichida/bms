@@ -89,7 +89,7 @@ class TreeExample extends React.Component {
             if(!!deviceitem && toggled){
               this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
             }
-            console.log(deviceitem);//选择一个设备
+            //console.log(deviceitem);//选择一个设备
         }
         this.setState({ cursor: node });
     }

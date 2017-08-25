@@ -50,13 +50,13 @@ const device = createReducer({
   },
   [ui_selcurdevice_result]:(state,payload)=>{
     const mapseldeviceid = payload.DeviceId;
-    // console.log(`mapseldeviceid:${mapseldeviceid},payload:${JSON.stringify(payload)}`);
+    // //console.log(`mapseldeviceid:${mapseldeviceid},payload:${JSON.stringify(payload)}`);
     let datatree = {...state.datatree};
     let datatreegroup = {...state.datatreegroup};
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
       if(node.name === `${mapseldeviceid}`){
-        console.log(`node${node.name}==>true`);
+        //console.log(`node${node.name}==>true`);
         return retnode;
       }
       retnode = null;
@@ -118,7 +118,7 @@ const device = createReducer({
                });
              });
              tmpnode.children = [...children];
-             console.log(`变化的数据[${tmpnode.name}]是:${children.length}`);
+             //console.log(`变化的数据[${tmpnode.name}]是:${children.length}`);
            }
          }
        }
@@ -139,7 +139,7 @@ const device = createReducer({
     let findandsettreenode = (node,adcode)=>{
       let retnode = node;
       if(node.adcode === adcode){
-        // console.log(node);
+        // //console.log(node);
         if(node.type === 'group_area'){
           curdevicelist = [...node.children];
         }

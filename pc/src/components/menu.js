@@ -104,8 +104,8 @@ class Menu extends React.Component {
     }
 
     eventLogger = (e: MouseEvent, data: Object) => {
-        console.log('Event: ', e);
-        console.log('Data: ', data);
+        //console.log('Event: ', e);
+        //console.log('Data: ', data);
     };
 
     menuclick(name) {
@@ -113,7 +113,7 @@ class Menu extends React.Component {
     }
 
     onStop(e, ui) {
-        console.log(e);
+        //console.log(e);
         this.setState({
             dragx : ui.x,
             dragy : ui.y,

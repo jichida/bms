@@ -8,7 +8,7 @@ export function wsrecvhandler(socket,emit){
   _.map(recvmessagetoresultpair,(fnresult,keyname)=>{
     handlerlist[keyname] = (socket, emit)=> {
       return ((result)=> {
-        //console.log(`getservermessage:${keyname},result===>${JSON.stringify(result)}`);
+        ////console.log(`getservermessage:${keyname},result===>${JSON.stringify(result)}`);
         emit(fnresult(result));
       });
     }

@@ -12,7 +12,7 @@ export const removebackhandler=()=>{
 
 export const exitAndroidApp=()=>{
   alert('exit app');
-  console.log(`exit app`);
+  //console.log(`exit app`);
 }
 
 export const registerandroid=()=>{

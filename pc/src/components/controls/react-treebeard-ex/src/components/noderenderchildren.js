@@ -38,11 +38,11 @@ class NodeRenderChildren extends React.Component {
       else{
         retchildren = [...children];
       }
-      // console.log(`getsplitarray:${children.length}`);
-      // console.log(children);
-      // console.log(retchildren);
+      // //console.log(`getsplitarray:${children.length}`);
+      // //console.log(children);
+      // //console.log(retchildren);
       //if(children.length > 100){
-        // console.log(`原===>${JSON.stringify(children)}\n
+        // //console.log(`原===>${JSON.stringify(children)}\n
         // 目标===>${JSON.stringify(retchildren)}`);
       //}
       return retchildren;
@@ -65,7 +65,7 @@ class NodeRenderChildren extends React.Component {
                 {
                   _.map(retchildren,(child,index)=>{
                     if(_.isArray(child)){
-                      // console.log('render array...');
+                      // //console.log('render array...');
                       return (<NodeArray subnodes={child}
                           {..._eventBubbles}
                           animations={animations}

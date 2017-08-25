@@ -77,9 +77,9 @@ PageForm = withRouter(PageForm);
 
 export class Page extends Component {
     componentWillReceiveProps (nextProps) {
-        console.log(nextProps);
+        //console.log(nextProps);
         if(nextProps.loginsuccess && !this.props.loginsuccess){
-            console.log("------->" + JSON.stringify(this.props.location));
+            //console.log("------->" + JSON.stringify(this.props.location));
             //search:?next=/devicelist
             var fdStart = this.props.location.search.indexOf("?next=");
             if(fdStart === 0){

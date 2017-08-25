@@ -79,7 +79,7 @@ class TreeSearchBattery extends React.Component {
     }
 
     handleChangeGroupname = (e,key)=>{
-        console.log(key);
+        //console.log(key);
         const {groupidlist} = this.props;
         if(key === 0){
           this.setState({groupname: ''});
@@ -90,11 +90,11 @@ class TreeSearchBattery extends React.Component {
         }
     }
     handleChangeDevicefield = (e,key)=>{
-        console.log(key);
+        //console.log(key);
         this.setState({devicefield: selitem_devicefields[key].value});
     }
     handleChangeAlarmfiled = (e,key)=>{
-        console.log(key);
+        //console.log(key);
         this.setState({alarmfield: selitem_alarmfields[key].value});
     }
 
@@ -116,7 +116,7 @@ class TreeSearchBattery extends React.Component {
       if(this.state.alarmfield !== '' && this.state.searchtxtforalarm !== ''){
         query.queryalarm[this.state.alarmfield] = this.state.searchtxtforalarm;
       }
-      console.log(`query:${JSON.stringify(query)}`);
+      //console.log(`query:${JSON.stringify(query)}`);
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }

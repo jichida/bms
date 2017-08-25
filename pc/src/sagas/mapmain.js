@@ -59,7 +59,7 @@ let gmap_acode_devices = {};
 //新建行政区域&海量点
 const CreateMapUI_PointSimplifier =  (map)=>{
   return new Promise((resolve,reject) => {
-      console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
+      //console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
       window.AMapUI.load(['ui/misc/PointSimplifier',
     ],(PointSimplifier)=> {
            if (!PointSimplifier.supportCanvas) {
@@ -95,10 +95,10 @@ const CreateMapUI_PointSimplifier =  (map)=>{
                getPosition: (deviceitem)=> {
                    let itemnew = g_devicesdb[deviceitem.DeviceId];
                    if(!!itemnew){
-                    //  console.log(`显示点:${JSON.stringify(itemnew.locz)}`);
+                    //  //console.log(`显示点:${JSON.stringify(itemnew.locz)}`);
                      return itemnew.locz;
                    }
-                  //  console.log(`显示点:${JSON.stringify(deviceitem.locz)}`);
+                  //  //console.log(`显示点:${JSON.stringify(deviceitem.locz)}`);
                    return deviceitem.locz;
                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
                },
@@ -134,7 +134,7 @@ const CreateMapUI_PointSimplifier =  (map)=>{
 //新建行政区域
 const CreateMapUI_DistrictCluster =  (map)=>{
   return new Promise((resolve,reject) => {
-      console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
+      //console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
       window.AMapUI.load(['ui/geo/DistrictCluster',
       'lib/utils',
       'lib/dom.utils',
@@ -209,7 +209,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
              utils.extend(DistrictCluster.prototype,
                {//重新设置数据时不刷新Marker
                    setDataWithoutClear: function(data) {
-                      // console.log(`setDataWithoutClear=======>`);
+                      // //console.log(`setDataWithoutClear=======>`);
                       data || (data = []);
                       this.trigger("willBuildData", data);
                       this._data.source = data;
@@ -249,7 +249,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
 
 //新建地图
 let CreateMap =({mapcenterlocation,zoomlevel})=> {
-  console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amapmain}`);
+  //console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},amap:${!!window.amapmain}`);
   return new Promise((resolve,reject) => {
     if(!mapcenterlocation.equals(loczero) && !window.amapmain ){
       let center = new window.AMap.LngLat(mapcenterlocation.lng,mapcenterlocation.lat);
@@ -462,7 +462,7 @@ const getclustertree_one =(adcode)=>{
 
 //地图主流程
 export function* createmapmainflow(){
-    console.log(`createmapmainflow...`);
+    //console.log(`createmapmainflow...`);
     //创建地图
     yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
@@ -471,7 +471,7 @@ export function* createmapmainflow(){
           while(!window.AMap || !window.AMapUI){
             yield call(delay,500);
           }
-          console.log(`carmapshow_createmap...`);
+          //console.log(`carmapshow_createmap...`);
           //take
           let mapcarprops = yield select((state) => {
             const {carmap} = state;
@@ -524,7 +524,7 @@ export function* createmapmainflow(){
                 const dataitem = yield call(listenmarkclickevent,eventname);
                 if(!!dataitem){
                   let deviceitem = dataitem.data;
-                  console.log(`点击了记录:${JSON.stringify(dataitem)}`);
+                  //console.log(`点击了记录:${JSON.stringify(dataitem)}`);
                   if(!!deviceitem){
                     yield put(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
                   }
@@ -534,7 +534,7 @@ export function* createmapmainflow(){
           },'pointClick');//'pointClick pointMouseover pointMouseout'
           //监听事件
           //  pointSimplifierIns.on('pointClick pointMouseover pointMouseout', function(e, record) {
-          //      console.log(e.type, record);
+          //      //console.log(e.type, record);
           //  })
           yield take(`${carmapshow_destorymap}`);
           yield cancel(task_dragend);
@@ -542,7 +542,7 @@ export function* createmapmainflow(){
         }
       }
       catch(e){
-        console.log(`创建地图失败${e}`);
+        //console.log(`创建地图失败${e}`);
       }
 
     });
@@ -568,7 +568,7 @@ export function* createmapmainflow(){
         });
         if(!_.find(curdevicelist,(o)=>{return DeviceId === o})){
             //树中找不到该设备,获取该设备所在经纬度
-            console.log(`找不到该设备...`);
+            //console.log(`找不到该设备...`);
             const result = yield call(getgeodata,deviceitem);
             //调用一次citycode，防止加载不到AreaNode
             try{
@@ -576,19 +576,19 @@ export function* createmapmainflow(){
               yield call(getclustertree_one,adcodeinfo.parent_code);
             }
             catch(e){
-              console.log(e);
+              //console.log(e);
             }
 
 
             const adcodetop = parseInt(result.adcode);
             //展开左侧树结构
             yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
-            console.log(`等待数据完成...`);
+            //console.log(`等待数据完成...`);
             yield take(`${mapmain_getdistrictresult}`);//等待数据完成
         }
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
       yield put(ui_selcurdevice_result(actioncurdevice.payload));
     });
@@ -597,7 +597,7 @@ export function* createmapmainflow(){
     yield takeLatest(`${ui_selcurdevice_result}`,function*(actioncurdevice){
       try{
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
-          console.log(`${JSON.stringify(deviceitem)}`);
+          //console.log(`${JSON.stringify(deviceitem)}`);
           //获取该设备信息
           yield put(querydeviceinfo_request({query:{DeviceId}}));
           const {payload} = yield take(`${querydeviceinfo_result}`);
@@ -613,10 +613,10 @@ export function* createmapmainflow(){
            //}
           },'close');
           // yield put(ui_showmenu("showdevice"));
-          console.log(`显示弹框${JSON.stringify(deviceitem)}`);
+          //console.log(`显示弹框${JSON.stringify(deviceitem)}`);
         }
         catch(e){
-          console.log(`选择点失败${e}`);
+          //console.log(`选择点失败${e}`);
         }
     });
 
@@ -637,20 +637,20 @@ export function* createmapmainflow(){
               g_devicesdb[deviceitem.DeviceId] = deviceitem;
             }
           });
-          console.log(`一共显示${data.length}个设备`);
+          //console.log(`一共显示${data.length}个设备`);
           distCluster.setData(data);
           pointSimplifierIns.setData(data);
 
           //初始化清空
           gmap_acode_devices={};
           gmap_acode_treecount={};
-          console.log(`开始初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          //console.log(`开始初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
           const childadcodelist = yield call(getclustertree_root);
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
-          console.log(`结束初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          //console.log(`结束初始化root设备树:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
         }
         catch(e){
-          console.log(`选择点失败${e}`);
+          //console.log(`选择点失败${e}`);
         }
 
     });
@@ -670,7 +670,7 @@ export function* createmapmainflow(){
           }
         }
         catch(e){
-          console.log(e);
+          //console.log(e);
         }
     });
     //显示海量点
@@ -688,7 +688,7 @@ export function* createmapmainflow(){
           }
         }
         catch(e){
-          console.log(e);
+          //console.log(e);
         }
     });
 
@@ -727,7 +727,7 @@ export function* createmapmainflow(){
                         latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
                       }
                   });
-                  console.log(`latlngs===>${JSON.stringify(latlngs)}`);
+                  //console.log(`latlngs===>${JSON.stringify(latlngs)}`);
                   if(latlngs.length > 0){
                      let polyline = L.polyline(latlngs);
                      let lBounds = polyline.getBounds();//LatLngBounds
@@ -736,7 +736,7 @@ export function* createmapmainflow(){
                      let amapboounds = new window.AMap.Bounds(southWest,northEast);
                      window.amapmain.setBounds(amapboounds);
 
-                     console.log(`zoomto...`);
+                     //console.log(`zoomto...`);
                   }
 
               }
@@ -744,12 +744,12 @@ export function* createmapmainflow(){
                 distCluster.zoomToShowSubFeatures(adcodetop);
               }
             }
-            console.log(`zoomToShowSubFeatures:${adcodetop}`);
+            //console.log(`zoomToShowSubFeatures:${adcodetop}`);
 
           }
         }
         catch(e){
-          console.log(e);
+          //console.log(e);
         }
 
         //在树中将其他结点搜索，该节点展开
@@ -771,7 +771,7 @@ export function* createmapmainflow(){
         yield put(ui_settreefilter(payload));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
     //serverpush_devicegeo
@@ -788,7 +788,7 @@ export function* createmapmainflow(){
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
 
@@ -828,13 +828,13 @@ export function* createmapmainflow(){
             window.amapmain.setCenter(locz);
           }
         }
-        // console.log(`list:${list.length}`)
+        // //console.log(`list:${list.length}`)
         yield put(devicelistgeochange_distcluster({}));
         yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
     //devicelistgeochange
@@ -850,7 +850,7 @@ export function* createmapmainflow(){
         }
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
 
@@ -866,7 +866,7 @@ export function* createmapmainflow(){
         }
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
 
@@ -875,10 +875,10 @@ export function* createmapmainflow(){
     yield takeLatest(`${devicelistgeochange_geotreemenu}`,function*(action){
       try{
         //获取当前树，当前选择展开的行政编码code，放数组中,循环设置
-          // console.log(`更新第一个结点:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          // //console.log(`更新第一个结点:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
           const childadcodelist = yield call(getclustertree_root);
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
-          // console.log(`更新第一个结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          // //console.log(`更新第一个结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
           const getdevicestate = (state)=>{
             const {datatree} = state.device;
@@ -910,7 +910,7 @@ export function* createmapmainflow(){
             return retnode;
           }
           findexpandnode(datatree);
-          // console.log(`全部展开列表:${JSON.stringify(codelist)}`);
+          // //console.log(`全部展开列表:${JSON.stringify(codelist)}`);
           //==============
           let forkhandles = [];
           for(let i=0;i<codelist.length ;i++){
@@ -931,10 +931,10 @@ export function* createmapmainflow(){
           //刷新树中数据
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
-          // console.log(`更新结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+          // //console.log(`更新结点完毕:${moment().format('YYYY-MM-DD HH:mm:ss')}`);
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
 

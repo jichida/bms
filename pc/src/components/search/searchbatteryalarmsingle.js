@@ -39,7 +39,7 @@ class TreeSearchBatteryAlarmSingle extends React.Component {
           level:this.state.type
         }
       };
-      console.log(`query:${JSON.stringify(query)}`);
+      //console.log(`query:${JSON.stringify(query)}`);
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }

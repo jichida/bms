@@ -70,8 +70,8 @@ export const getpopinfowindowstyle = (deviceitem)=>{
   let district = _.get(deviceitem,'district','');
   let formattedAddress = _.get(deviceitem,'formattedAddress','');
   window.clickfn =(d)=>{
-    console.log("cilckfn");
-    console.log(d);
+    //console.log("cilckfn");
+    //console.log(d);
     store.dispatch(ui_showmenu("showdevice"));
     //yield put(ui_showmenu("showdevice"));
   }

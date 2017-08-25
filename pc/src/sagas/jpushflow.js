@@ -32,13 +32,13 @@ export function* jpushflow(){//仅执行一次
    yield takeEvery(`${login_result}`, function*(action) {
       let {payload:{userid}} = action;
       yield call(async_setJPushAlias,userid);
-      console.log(`login_result ===>${JSON.stringify(userid)}`);
+      //console.log(`login_result ===>${JSON.stringify(userid)}`);
     });
 
     yield takeEvery(`${logout_result}`, function*(action) {
       let {payload:msgobj} = action;
       yield call(async_cancelJPushAlisa);
-      console.log(`logout_result ===>${JSON.stringify(msgobj)}`);
+      //console.log(`logout_result ===>${JSON.stringify(msgobj)}`);
     });
 
     yield takeEvery(`${jpushlistenInMessage}`, function*(action) {

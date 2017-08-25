@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 export function get_initgeotree(){
   //获取第一次完整树结构
-  console.log(`全国共有:${jsondataprovinces.length}个省,${jsondatacities.length}个市,${jsondataareas.length}个区`);
+  //console.log(`全国共有:${jsondataprovinces.length}个省,${jsondatacities.length}个市,${jsondataareas.length}个区`);
   //root
   let gmap_treename = {};
   let gmap_acode_treecount = {};
@@ -72,7 +72,7 @@ export function get_initgeotree(){
               citynode.children.push(areanode);
             }
             else{
-              console.log(`市辖区==>${area.name}`)
+              //console.log(`市辖区==>${area.name}`)
               provicenode.children.push(areanode);
             }
           }
@@ -84,7 +84,7 @@ export function get_initgeotree(){
     });
     datatree.children.push(provicenode);
   });
-  console.log(gmap_treename);
-  console.log(gmap_acode_treecount);
+  //console.log(gmap_treename);
+  //console.log(gmap_acode_treecount);
   return {datatree,gmap_treename,gmap_acode_treecount};
 };
