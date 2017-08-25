@@ -90,10 +90,11 @@ class UserMenu extends React.Component {
   };
 
   render() {
+    const {username} = this.props;
     return (
       <div>
         <div className="topuser" onClick={this.handleTouchTap}>
-            <span>jwhklk</span>
+            <span>{username}</span>
             <img src={Avatar}  />
         </div>
         <Popover
@@ -117,7 +118,12 @@ class UserMenu extends React.Component {
     );
   }
 }
-UserMenu = connect()(UserMenu);
+
+const mapStateToProps = ({userlogin}) => {
+   const {username} = userlogin;
+   return {username};
+ }
+UserMenu = connect(mapStateToProps)(UserMenu);
 
 class Page extends React.Component {
     onClickMenu(tiptype){

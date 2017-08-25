@@ -19,7 +19,7 @@ const userlogin = createReducer({
     return { ...initial.userlogin};
   },
   [login_result]: (state, payload) => {
-    localStorage.setItem('zhongnan_driver_token',payload.token);
+    // localStorage.setItem('zhongnan_driver_token',payload.token);
     return { ...state, ...payload,loginsuccess:true};
   },
 }, initial.userlogin);

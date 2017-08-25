@@ -8,6 +8,7 @@ import {
   queryhistorytrack_request,
   queryhistorytrack_result,
   notify_socket_connected,
+  login_request,
   md_login_result,
   getsystemconfig_request,
   getsystemconfig_result,
@@ -104,6 +105,24 @@ export function* apiflow(){//仅执行一次
      }));
   });
 
+  yield takeEvery(`${login_request}`, function*(action) {
+    const {payload} = action;
+    const {username,password} = payload;
+    if(password === '123456'){
+      yield put(md_login_result({
+        loginsuccess:true,
+        username:username,
+        token:'',
+      }));
+    }
+    else{
+      yield put(md_login_result({
+        loginsuccess:false,
+      }));
+    }
+
+  });
+
   yield takeEvery(`${querydevice_request}`, function*(action) {
      yield put(querydevice_result({list:jsondata}));
   });
@@ -163,9 +182,9 @@ export function* apiflow(){//仅执行一次
 
      yield call(delay,2000);
 
-     yield put(md_login_result({
-       loginsuccess:true
-     }));
+    //  yield put(md_login_result({
+    //    loginsuccess:true
+    //  }));
    });
 
    yield takeEvery(`${queryhistorytrack_request}`, function*(action) {
