@@ -9,8 +9,8 @@ import AdminContent from "./admincontent";
 import Index from './index';
 import Datatable from './datatable/index.js';
 import Message from './message.js';
-
-
+import Device from './device.js';
+import Deviceinfo from './deviceinfo.js';
 
 import Login from './login/login.js';
 import MapPage from './admincontent';
@@ -52,6 +52,8 @@ class AppRoot extends React.Component {
                     <Route path="/datatable" component={requireAuthentication(Datatable)} />
                     <Route path="/login" component={Login} />
                     <Route path="/message" component={Message} />
+                    <Route path="/device" component={Device} />
+                    <Route path="/deviceinfo" component={Deviceinfo} />
                 </Switch>
                 <div>
                     <Index history={this.props.history}/>

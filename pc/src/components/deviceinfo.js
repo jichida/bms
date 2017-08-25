@@ -49,7 +49,7 @@ class MessageAllDevice extends React.Component {
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
-                    <div className="title">新消息</div>
+                    <div className="title">查询报表</div>
                     <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
                 </div>
                 <TableComponents data={alaram_data} />

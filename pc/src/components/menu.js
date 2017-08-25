@@ -11,6 +11,7 @@ import {SpeedDial,Fab,Toolbar,Icon,SpeedDialItem,Page} from 'react-onsenui';
 import _  from "lodash";
 import {ui_showmenu} from '../actions';
 import Draggable from 'react-draggable';
+import { withRouter } from 'react-router-dom';
 let resizetime = null;
 let hidetexttime = null;
 
@@ -64,9 +65,10 @@ class Menu extends React.Component {
         }
         this.setState({showitemtext: {...showstyle}});
     }
+
     renderFixed() {
         const menuData = {
-            power : {name : "电池包", icon : "fa fa-microchip", click : this.onClickMenu.bind(this,'powersearch')},
+            power : {name : "电池包", icon : "fa fa-microchip", click : ()=>{this.props.history.push("/deviceinfo")}},
             // history : {name : "历史告警", icon : "fa fa-history", click : this.onClickMenu.bind(this,'warningbox')},
             address : {name : "地理位置", icon : "fa fa-globe", click : this.onClickMenu.bind(this,'addressbox')}
         }
@@ -77,6 +79,7 @@ class Menu extends React.Component {
                 </Fab>
                 {_.map(menuData, (menu, index)=>{
                     return (
+
                         <SpeedDialItem
                             key={index}
                             onClick={menu.click}
@@ -135,5 +138,5 @@ class Menu extends React.Component {
         );
     }
 };
-
+Menu = withRouter(Menu);
 export default connect()(Menu);

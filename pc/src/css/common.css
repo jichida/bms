@@ -608,7 +608,6 @@
 
 }
 .appbar .title{
-    color: #FFF;
     padding: 0 15px;
 }
 .historytrackplayback .appbar .title{
@@ -672,8 +671,12 @@
 }
 
 
-
-
+.ant-table-body {
+    font-size: 16px;
+}
+.ant-tabs-bar{
+    margin-bottom: 0;
+}
 
 
 

@@ -98,7 +98,7 @@ class Page extends React.Component {
                             style={{
                                 backgroundColor: "#FFF",
                                 paddingLeft:"0",
-
+                                height : "64px",
                                 paddingRight:"0",
                             }}
                             iconStyleLeft={{

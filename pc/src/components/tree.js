@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard,decorators} from './controls/react-treebeard-ex/src/index.js';
 import RaisedButton from 'material-ui/RaisedButton';
-import Search from "./search";
+import Search from './search/searchtree.js';
 import _ from 'lodash';
 import {
     mapmain_seldistrict,
@@ -19,6 +19,10 @@ import {
 import {filterTree,expandFilteredNodes} from '../util/filter';
 import treestyle from './treestyle.js';
 import '../css/treestyle.css';
+import { Tabs } from 'antd';
+import "../css/antd.css";
+const TabPane = Tabs.TabPane;
+
 
 let HeaderCo = (props) => {
     let title = props.node.name || '';
@@ -118,25 +122,57 @@ class TreeExample extends React.Component {
                 <div className="treehead">
                     地理位置
                 </div>
-                <div className="searchbox">
-                    <div className="input-group">
-                        <span className="input-group-addon">
-                            <i className="fa fa-search"/>
-                        </span>
-                        <input className="form-control"
-                               onKeyUp={this.onFilterMouseUp.bind(this)}
-                               placeholder="根据设备id搜索(至少两位)"
-                               type="text"/>
-                    </div>
-                </div>
-                <Search />
-                <Treebeard
-                    id="lefttree"
-                    data={datatree}
-                    onToggle={this.onToggle}
-                    decorators={decorators}
-                    style={treestyle.default}
-                />
+
+                <Tabs
+                  defaultActiveKey="1"
+                  style={{ height: window.innerHeight-109 }}
+                >
+                    <TabPane tab="地址位置" key="1">
+                        <Treebeard
+                            id="lefttree"
+                            data={datatree}
+                            onToggle={this.onToggle}
+                            decorators={decorators}
+                            style={treestyle.default}
+                        />
+                    </TabPane>
+                    <TabPane tab="分组" key="2">
+                        <Treebeard
+                            id="lefttree"
+                            data={datatree}
+                            onToggle={this.onToggle}
+                            decorators={decorators}
+                            style={treestyle.default}
+                        />
+                    </TabPane>
+                    <TabPane tab="搜索" key="3">
+                        <div className="searchbox">
+                            <div className="input-group">
+                                <span className="input-group-addon">
+                                    <i className="fa fa-search"/>
+                                </span>
+                                <input 
+                                    className="form-control"
+                                    onKeyUp={this.onFilterMouseUp.bind(this)}
+                                    placeholder="根据设备id搜索(至少两位)"
+                                    type="text"
+                                    />
+                            </div>
+                        </div>
+                        <Search />
+
+                        <Treebeard
+                            id="lefttree"
+                            data={datatree}
+                            onToggle={this.onToggle}
+                            decorators={decorators}
+                            style={treestyle.default}
+                        />
+                    </TabPane>
+                </Tabs>
+
+                
+                
             </div>
         );
     }
