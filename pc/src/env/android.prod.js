@@ -4,7 +4,7 @@ import * as xview from './xview/Common';
 let handlerbackfn;
 
 export const exitAndroidApp=()=>{
-  console.log(`exit app`);
+
 
   window.setTimeout(()=>{
     try{

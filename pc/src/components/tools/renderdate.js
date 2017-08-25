@@ -27,7 +27,7 @@ class renderDateField extends React.Component{
         const { input, label} = this.props;
 
 
-        console.log("input value"+input.value);
+        
 
 
         let handleClick1 =()=>{

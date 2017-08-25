@@ -8,7 +8,7 @@ import {
   carmapshow_destorymap,
   mapmain_setenableddrawmapflag,
   querydevice_result,
-  ui_selcurdevice,
+  ui_selcurdevice_request,
   querydeviceinfo_request,
 
   mapplayback_start,
@@ -29,7 +29,7 @@ const loczero = L.latLng(0,0);
 let gPathSimplifier,pathSimplifierIns;
 const CreateMapUI =  (map)=>{
     return new Promise((resolve,reject) => {
-         console.log(`开始加载地图啦,window.AMapUI:${!!window.AMapUI}`);
+         
         //加载PathSimplifier，loadUI的路径参数为模块名中 'ui/' 之后的部分
          window.AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier)=> {
           gPathSimplifier = PathSimplifier;
@@ -108,7 +108,7 @@ const startplayback = ({isloop,speed})=>{
 }
 
 let createmap =({mapcenterlocation,zoomlevel})=> {
-  console.log(`开始创建地图啦。。。。${mapcenterlocation.lng},${mapcenterlocation.lat},amaptrackhistoryplayback:${!!window.amaptrackhistoryplayback}`);
+  
   return new Promise((resolve,reject) => {
     if(!mapcenterlocation.equals(loczero) && !window.amaptrackhistoryplayback ){
       let center = new window.AMap.LngLat(mapcenterlocation.lng,mapcenterlocation.lat);
@@ -158,8 +158,8 @@ const listenmapevent = (eventname)=>{
 
 
 const getmapstate_curdevice = (state) => {
-  const {device:{devices,mapseldeviceid}} = state;
-  let deviceitem = devices[mapseldeviceid];
+  const {device:{g_devicesdb,mapseldeviceid}} = state;
+  let deviceitem = g_devicesdb[mapseldeviceid];
   if(!!deviceitem){
     const LastHistoryTrack = deviceitem.LastHistoryTrack;
     if(!!LastHistoryTrack){
@@ -171,7 +171,7 @@ const getmapstate_curdevice = (state) => {
 }
 
 export function* createmaptrackhistoryplaybackflow(){
-    console.log(`createmaptrackhistoryplaybackflow...`);
+    
     //创建地图
     yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
@@ -180,7 +180,7 @@ export function* createmaptrackhistoryplaybackflow(){
           while(!window.AMap || !window.AMapUI){
             yield call(delay,500);
           }
-          console.log(`carmapshow_createmap...`);
+          
           //take
           let mapcenterlocation = yield select(getmapstate_curdevice);
           const zoomlevel = 16;
@@ -209,8 +209,8 @@ export function* createmaptrackhistoryplaybackflow(){
         }
       }
       catch(e){
-        console.log(e);
-        console.log(`创建地图失败${e}`);
+        
+        
       }
 
     });
@@ -223,7 +223,7 @@ export function* createmaptrackhistoryplaybackflow(){
       }
     });
 
-    yield takeLatest(`${ui_selcurdevice}`,function*(actioncurdevice){
+    yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       try{
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
           if(!!deviceitem){
@@ -238,8 +238,8 @@ export function* createmaptrackhistoryplaybackflow(){
           }
         }
         catch(e){
-          console.log(e);
-          console.log(`选择点失败${e}`);
+          
+          
         }
     });
 
@@ -279,8 +279,8 @@ export function* createmaptrackhistoryplaybackflow(){
 
         }
         catch(e){
-          console.log(e);
-          console.log(`选择点失败${e}`);
+          
+          
         }
     });
     //mapplayback_end
@@ -292,8 +292,8 @@ export function* createmaptrackhistoryplaybackflow(){
         }
       }
       catch(e){
-        console.log(e);
-        console.log(`选择点失败${e}`);
+        
+        
       }
     });
 }

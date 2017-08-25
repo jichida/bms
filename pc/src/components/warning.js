@@ -37,11 +37,11 @@ class Page extends React.Component {
     }
 
     onRowSelection(selstring){
-      console.log(selstring);
+
       // this.props.dispatch(ui_selcurdevice_result({DeviceId}));
     }
     render(){
-        const {devices,alarms,curseldeviceid,searchresult_alaramsingle} = this.props;
+        const {g_devicesdb,alarms,curseldeviceid,searchresult_alaramsingle} = this.props;
         return (
             <div className="warningPage">
                 <div className="tit">设备：{curseldeviceid} 历史告警</div>
@@ -78,7 +78,7 @@ const mapStateToProps = (
   {
     device:
     {
-      devices
+      g_devicesdb
     },
     searchresult:
     {
@@ -88,7 +88,7 @@ const mapStateToProps = (
     }
   }) => {
 
-  return {devices,alarms,curseldeviceid,searchresult_alaramsingle};
+  return {g_devicesdb,alarms,curseldeviceid,searchresult_alaramsingle};
 }
 
 

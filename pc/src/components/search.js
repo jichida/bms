@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import _ from 'lodash';
-// import {ui_selcurdevice} from '../actions';
+// import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -22,7 +22,7 @@ import {
 import TreeSearchBattery from './search/searchbattery';
 
 import {
-  ui_selcurdevice,
+  ui_selcurdevice_request,
   searchbattery_request
 } from '../actions';
 
@@ -33,14 +33,14 @@ class TreeSearch extends React.Component {
         super(props);
     }
     onClickDevice(deviceitem){
-      this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}))
+      this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}))
     }
     onClickQuery(query){
-      console.log(`search:${JSON.stringify(query)}`);
+
       this.props.dispatch(searchbattery_request(query));
     }
     render(){
-        const {devices,searchresult_battery} = this.props;
+        const {g_devicesdb,searchresult_battery} = this.props;
         return (
             <div className="warningcontentPage">
                 <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
@@ -55,7 +55,7 @@ const mapStateToProps = (
   {
     device:
     {
-      devices
+      g_devicesdb
     },
     searchresult:
     {
@@ -63,7 +63,7 @@ const mapStateToProps = (
     }
   }) => {
 
-  return {devices,searchresult_battery};
+  return {g_devicesdb,searchresult_battery};
 }
 
 

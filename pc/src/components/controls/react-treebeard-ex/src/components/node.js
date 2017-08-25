@@ -43,16 +43,18 @@ class TreeNode extends React.Component {
     }
 
     render() {
-        const {style,node} = this.props;
+        const {style,node,treeviewstyle} = this.props;
         const decorators = this.decorators();
         const animations = this.animations();
-        const {gmap_treename,gmap_treecount} = this.props;
+        const {gmap_treename,gmap_acode_treecount} = this.props;
         let isenable = true;
         if(node.type !== 'device'){
-          let nodecount = gmap_treecount[node.adcode];
-          isenable = !!nodecount && nodecount > 0;
+          if(treeviewstyle === 'byloc'){
+            let nodecount = gmap_acode_treecount[node.adcode];
+            isenable = !!nodecount && nodecount > 0;
+          }
         }
-        // console.log(`${node.adcode}-->${gmap_treename[node.adcode]} ==> ${gmap_treecount[node.adcode]},isenable:${isenable}`)
+
         if(isenable){
           return (
               <li ref={ref => this.topLevelRef = ref}
@@ -96,6 +98,7 @@ class TreeNode extends React.Component {
 
     renderChildren(decorators) {
         const {animations, decorators: propDecorators, node, style} = this.props;
+
         return <NodeRenderChildren decorators={decorators}
           animations={animations} node={node} style={style}
           renderLoading={this.renderLoading}
@@ -131,8 +134,8 @@ TreeNode.propTypes = {
     ]).isRequired,
     onToggle: PropTypes.func
 };
-const mapStateToProps = ({device:{gmap_treename,gmap_treecount}}) => {
-  return {gmap_treename,gmap_treecount};
+const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount,treeviewstyle}}) => {
+  return {gmap_treename,gmap_acode_treecount,treeviewstyle};
 }
 TreeNode = connect(mapStateToProps)(TreeNode);
 export default TreeNode;

@@ -5,8 +5,8 @@ export const defaultMatcher = (filterText, node) => {
       return false;
     }
 
-    // console.log(node);
-    // console.log(filterText);
+    // 
+    // 
     let devicetype = _.get(node,'type','');
     if(devicetype === 'device'){
         if(!!node.device && !!filterText.inputtreevalue){

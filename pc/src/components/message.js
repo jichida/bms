@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import _ from 'lodash';
-// import {ui_selcurdevice} from '../actions';
+// import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -27,7 +27,7 @@ import {
 } from 'material-ui/Table';
 import TreeSearchBattery from './search/searchbattery';
 import {
-  ui_selcurdevice,
+  ui_selcurdevice_request,
   searchbatteryalarm_request
 } from '../actions';
 
@@ -40,10 +40,10 @@ class MessageAllDevice extends React.Component {
       this.props.dispatch(searchbatteryalarm_request(query));
     }
     onClickDevice(deviceitem){
-      this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}))
+      this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}))
     }
     render(){
-        const {devices,alarms,searchresult_alaram} = this.props;
+        const {g_devicesdb,alarms,searchresult_alaram} = this.props;
         return (
             <div className="warningPage">
 
@@ -71,7 +71,7 @@ class MessageAllDevice extends React.Component {
                         _.map(searchresult_alaram,(alarmid,key)=>{
                           const alarm =alarms[alarmid];
                           if(!!alarm){
-                            const deviceinfo = devices[alarm.DeviceId];
+                            const deviceinfo = g_devicesdb[alarm.DeviceId];
                             return (
                               <TableRow key={key}>
                               <TableRowColumn><Avatar src={Deraultimg} /><span>{alarm.DeviceId}</span></TableRowColumn>
@@ -98,7 +98,7 @@ const mapStateToProps = (
   {
     device:
     {
-      devices
+      g_devicesdb
     },
     searchresult:
     {
@@ -107,6 +107,6 @@ const mapStateToProps = (
     }
   }) => {
 
-  return {devices,alarms,searchresult_alaram};
+  return {g_devicesdb,alarms,searchresult_alaram};
 }
 export default connect(mapStateToProps)(MessageAllDevice);

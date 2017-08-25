@@ -31,15 +31,18 @@ class NodeRenderChildren extends React.Component {
            }
            retchildren = [...retchildren,...lastsz];
         }
+        else{
+          retchildren = [...retchildren,splitsz[1]];
+        }
       }
       else{
         retchildren = [...children];
       }
-
-      console.log(children);
-      console.log(retchildren);
+      //
+      //
+      //
       //if(children.length > 100){
-        // console.log(`原===>${JSON.stringify(children)}\n
+        //
         // 目标===>${JSON.stringify(retchildren)}`);
       //}
       return retchildren;
@@ -55,15 +58,17 @@ class NodeRenderChildren extends React.Component {
         if (!_.isArray(children)) {
             children = children ? [children] : [];
         }
-        let retchildren = node.type==='device'?this.getsplitarray(children):children;
+        let retchildren = (node.type==='group_area' || node.type==='group_leaf')?this.getsplitarray(children):children;
+
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
                 {
                   _.map(retchildren,(child,index)=>{
                     if(_.isArray(child)){
+                      //
                       return (<NodeArray subnodes={child}
-                        {..._eventBubbles}
+                          {..._eventBubbles}
                           animations={animations}
                           decorators={propDecorators}
                           key={child.id || index}

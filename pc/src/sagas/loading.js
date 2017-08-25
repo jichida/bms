@@ -48,7 +48,7 @@ export function* createloadingflow(){
       });
 
       if(!!timeout){
-        console.log(`显示loading...这是什么请求，要等那么多时间===>${actionstring}`);
+
         //超过500毫秒才弹
         yield put(set_weui({
             loading : {
@@ -63,7 +63,7 @@ export function* createloadingflow(){
         });
 
         if(!!timeout){
-          console.log(`这是什么请求，要等那么多时间===>${actionstring}`);
+
         }
 
         yield put(set_weui({
@@ -74,7 +74,7 @@ export function* createloadingflow(){
       }
     }
     else{
-      console.log(`这个请求就不要loading了===>${actionstring}`);
+
     }
 
   });

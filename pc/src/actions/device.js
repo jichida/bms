@@ -33,3 +33,4 @@ export const serverpush_devicegeo_sz = createAction('serverpush_devicegeo_sz');
 export const devicelistgeochange_distcluster = createAction('devicelistgeochange_distcluster');
 export const devicelistgeochange_pointsimplifierins = createAction('devicelistgeochange_pointsimplifierins');
 export const devicelistgeochange_geotreemenu = createAction('devicelistgeochange_geotreemenu');
+export const devicelistgeochange_geotreemenu_refreshtree = createAction('devicelistgeochange_geotreemenu_refreshtree');

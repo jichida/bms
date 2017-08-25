@@ -80,8 +80,8 @@ class Page extends React.Component {
         },
       ];
 
-      const {mapseldeviceid,devices,p} = this.props;
-      let deviceitem = devices[mapseldeviceid];
+      const {mapseldeviceid,g_devicesdb,p} = this.props;
+      let deviceitem = g_devicesdb[mapseldeviceid];
 
       return (
             <div className="warningPage devicePage">
@@ -98,7 +98,7 @@ class Page extends React.Component {
                         _.map(item.fieldnames, (fielditem, key)=>{
                             let name = p.tc(fielditem.name);
                             let value = _.get(deviceitem,name,'');
-                            // console.log(`name:${name},value:${value}`);
+
                             return (
                                 <div className="li" key={`${gindex}_${key}`}>
                                     <div className="name">{name}</div><div className="text">{value}</div>
@@ -115,8 +115,8 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
-  return {mapseldeviceid,devices};
+const mapStateToProps = ({device:{mapseldeviceid,g_devicesdb}}) => {
+  return {mapseldeviceid,g_devicesdb};
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

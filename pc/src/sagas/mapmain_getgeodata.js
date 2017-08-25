@@ -24,15 +24,15 @@ export const getgeodatabatch =(devicelist)=> {
       }
       resultdevicelist.push(deviceitem);
     });
-    //console.log(`mapgeo:${JSON.stringify(mapgeo)}`);
-    //console.log(`resultdevicelist:${JSON.stringify(resultdevicelist)}`);
+    //
+    //
     resolve(resultdevicelist);
   });
 };
 
 export const getgeodata =(deviceitem)=>{
   return new Promise((resolve,reject) => {
-    console.log(`${JSON.stringify(deviceitem)}`);
+    
     const geocoder = new window.AMap.Geocoder({
             radius: 1000,
         });
@@ -50,7 +50,7 @@ export const getgeodata =(deviceitem)=>{
              district:addressComponent.district,
              formattedAddress:georesult.formattedAddress
            };
-           console.log(`获取到地理信息位置:${JSON.stringify(resultobj)}`);
+           
            resolve(resultobj);
         }else{
            //获取地址失败
@@ -100,14 +100,14 @@ export const getgeodatabatch2 =(devicelist)=> {
       i++;
     });
 
-    //console.log(`数组的数组:${JSON.stringify(mapsz)}`);
+    //
     //设置并发
     _.map(mapsz,(mapxy)=>{
-      //console.log(`mapxy==>:${JSON.stringify(mapxy)}`);
+      //
       parallelfunsz.push((callbackfn)=>{
         let mapxyobj = _.map(mapxy, _.clone);
-        //console.log(`mapxyobj==>:${JSON.stringify(mapxyobj)}`);
-        //console.log(`mapxy==>:${JSON.stringify(mapxy)}`);
+        //
+        //
         geocoder.getAddress(mapxyobj, (status, result)=> {
              if (status === 'complete' && result.info === 'OK') {
                if(!!result.regeocodes){
@@ -115,7 +115,7 @@ export const getgeodatabatch2 =(devicelist)=> {
                    if(!!georesult){
                      let addressComponent = georesult.addressComponent;
                      if(!!addressComponent){
-                       //console.log(`mapxy in==>:${JSON.stringify(mapxy)}`);
+                       //
                        mapgeo[`${mapxy[index][0]},${mapxy[index][1]}`] = {
                          adcode:addressComponent.adcode,
                          city:addressComponent.city,
@@ -155,8 +155,8 @@ export const getgeodatabatch2 =(devicelist)=> {
         }
         resultdevicelist.push(deviceitem);
       });
-      //console.log(`mapgeo:${JSON.stringify(mapgeo)}`);
-      //console.log(`resultdevicelist:${JSON.stringify(resultdevicelist)}`);
+      //
+      //
       resolve(resultdevicelist);
     });
   });

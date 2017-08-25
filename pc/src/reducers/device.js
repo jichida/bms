@@ -5,8 +5,11 @@ import{
   ui_selcurdevice_result,
   querydeviceinfo_result,
   mapmain_getdistrictresult,
-  mapmain_getdistrictresult_init,
+  mapmain_init_device,
+  devicelistgeochange_geotreemenu_refreshtree,
+  mapmain_areamountdevices_result,
   mapmain_seldistrict,
+  mapmain_selgroup,
   ui_changetreestyle,
   ui_settreefilter
 } from '../actions';
@@ -15,26 +18,33 @@ import {getadcodeinfo} from '../util/addressutil';
 import {getgroupnamebydevice} from '../util/device';
 import {get_initgeotree} from '../util/treedata';
 
-const {datatree,gmap_treename,gmap_treecount} = get_initgeotree();
+const {datatree,gmap_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
-    treeviewstyle:'byloc',//byloc or bygroup
+    treeviewstyle:'bygroup',//byloc or bygroup
     treefilter:undefined,
-    toggled:true,
-    toggledgruop:true,
+
     mapseldeviceid:undefined,
     // mapdeviceidlist:[],
     gmap_treename,
-    gmap_treecount,
-    gmap_devices:{},
+    gmap_acode_treecount,
+    gmap_acode_devices:{},
     datatreeconst:datatree,
     datatree,
-    datatreegroup:{},
+    datatreegroup:{
+      id:'0',
+      loading: false,
+      active :true,
+      toggled:true,
+      name:`所有分组`,
+      type:'group_root',
+      children:[]
+    },
 
     curdevicelist:[],
     groupidlist:[],
     groups:{},
-    devices:{},
+    g_devicesdb:{},
   }
 };
 
@@ -49,13 +59,13 @@ const device = createReducer({
   },
   [ui_selcurdevice_result]:(state,payload)=>{
     const mapseldeviceid = payload.DeviceId;
-    // console.log(`mapseldeviceid:${mapseldeviceid},payload:${JSON.stringify(payload)}`);
+
     let datatree = {...state.datatree};
     let datatreegroup = {...state.datatreegroup};
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
       if(node.name === `${mapseldeviceid}`){
-        console.log(`node${node.name}==>true`);
+
         return retnode;
       }
       retnode = null;
@@ -82,20 +92,22 @@ const device = createReducer({
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
-    let devices = {...state.devices};
-    devices[devicerecord.DeviceId] = devicerecord;
-    return {...state,devices};
+    let g_devicesdb = {...state.g_devicesdb};
+    g_devicesdb[devicerecord.DeviceId] = devicerecord;
+    return {...state,g_devicesdb};
   },
-  [mapmain_seldistrict]:(state,payload)=>{
-    const {toggled} = payload;
-    return {...state,toggled};
+  [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
+    const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+    return {...state,
+      g_devicesdb:{...g_devicesdb},
+      gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
   },
-  [mapmain_getdistrictresult_init]:(state,payload)=>{
-     const {g_devices,gmap_devices,gmap_treecount} = payload;
-     let datatree = {...state.datatreeconst};
-     let findandsettreenodedevice = (node)=>{
+  [mapmain_areamountdevices_result]:(state,payload)=>{
+    const {adcode,g_devicesdb,gmap_acode_devices} = payload;
+    let datatree = state.datatree;
+    let findandsettreenodedevice = (node)=>{
        let retnode = node;
-       if(node.type === `group_area`){
+       if(node.adcode === adcode){
          return retnode;
        }
        if(!!node.children){
@@ -104,56 +116,59 @@ const device = createReducer({
            let tmpnode = findandsettreenodedevice(subnode);
            if(!!tmpnode){
              //<---
-             _.map(gmap_devices[tmpnode.adcode],(deviceid)=>{
-               tmpnode.children.push({
+             let children = [];
+             _.map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
+               children.push({
                  type:'device',
                  loading:false,
                  name:deviceid,
-                 device:g_devices[deviceid]
+                 device:g_devicesdb[deviceid]
                });
              });
+             tmpnode.children = [...children];
+
            }
          }
        }
-       node.active = false;
        return null;
      }
      findandsettreenodedevice(datatree);
-    // let datatree =  {
-    //     id:treenode.adcode,
-    //     adcode:treenode.adcode,
-    //     loading: false,
-    //     active : false,
-    //     toggled:state.toggled,
-    //     name:treenode.name,
-    //     children:treenode.children
-    // };
-    return {...state,gmap_devices,gmap_treecount,datatree};
+     return {...state,g_devicesdb,datatree,gmap_acode_devices};
+  },
+  [mapmain_init_device]:(state,payload)=>{
+     const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+     let datatree = {...state.datatreeconst};
+     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatree};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
-    let {adcode} = payload;
-    let adcodeinfo = getadcodeinfo(adcode);
+    let {adcode,forcetoggled} = payload;
+    // let adcodeinfo = getadcodeinfo(adcode);
     let curdevicelist = state.curdevicelist;
-    let findandsettreenode = (node,adcode,isroot)=>{
+    let findandsettreenode = (node,adcode)=>{
       let retnode = node;
       if(node.adcode === adcode){
-        console.log(node);
-        if(adcodeinfo.level === 'district'){
+
+        if(node.type === 'group_area'){
           curdevicelist = [...node.children];
         }
-        return retnode;
+        if(node.type !== 'group_root'){
+          return retnode;
+        }
+
       }
       retnode = null;
       if(!!node.children){
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
-          let tmpnode = findandsettreenode(subnode,adcode,false);
+          let tmpnode = findandsettreenode(subnode,adcode);
           if(!!tmpnode){//subnode为tmpnode,目标选中
             if(tmpnode.adcode === adcode){
               //选中／展开//equal
               subnode.active = true;
-              subnode.toggled = state.toggled;
               subnode.loading = false;
+              if(forcetoggled){//强制展开结点
+                subnode.toggled = true;
+              }
             }
             node.active = false;
             node.toggled = true;
@@ -163,16 +178,18 @@ const device = createReducer({
           }
         }
       }
-      if(!isroot && !retnode){
-        node.active = false;
-        node.toggled = false;
+      if(!retnode){
+        if(node.type !== 'group_root'){
+          node.active = false;
+          node.toggled = false;
+        }
         node.loading = false;
       }
       return retnode;
     };
       // let treenode = payload;
      let datatree = {...state.datatree};
-     findandsettreenode(datatree,adcode,true);
+     findandsettreenode(datatree,adcode);
      //root保持不动
      datatree.toggled = true;
      datatree.active = false;
@@ -192,18 +209,18 @@ const device = createReducer({
   [querydevice_result]:(state,payload)=>{
     const {list} = payload;
     // let mapdeviceidlist = [];
-    let devices = {};
+    let g_devicesdb = {};
     _.map(list,(devicerecord)=>{
       // mapdeviceidlist.push(devicerecord.DeviceId);
-      devices[devicerecord.DeviceId] = devicerecord;
+      g_devicesdb[devicerecord.DeviceId] = devicerecord;
     });
     let datatreegroup = {
-      id:0,
+      id:'0',
       loading: false,
-      active : state.toggledgruop,
-      toggled:state.toggledgruop,
+      active :true,
+      toggled:true,
       name:`所有分组`,
-      type:'group',
+      type:'group_root',
       children:[]
     };
     const devicesgroups = _.groupBy(list,(dev)=>{
@@ -212,9 +229,10 @@ const device = createReducer({
     _.map(devicesgroups,(csz,ckey)=>{
         let node = {
           id:ckey,
-          type:'group',
+          type:'group_leaf',
           name:`${state.groups[ckey].name}(${csz.length})`,
-          children:[]
+          children:[],
+          toggled:false,
         };
 
         _.map(csz,(v,k)=>{
@@ -222,7 +240,7 @@ const device = createReducer({
             type:'device',
             id:`${v.DeviceId}`,
             name:`${v.DeviceId}`,
-            device:devices[v.DeviceId],
+            device:g_devicesdb[v.DeviceId],
             toggled:false,
             active:false,
           });
@@ -230,8 +248,63 @@ const device = createReducer({
 
         datatreegroup.children.push(node);
     });
-    return {...state,devices,datatreegroup};
+    return {...state,g_devicesdb,datatreegroup};
   },
+  [mapmain_selgroup]:(state,payload)=>{
+    let {groupid,forcetoggled} = payload;
+    let curdevicelist = state.curdevicelist;
+    let findandsettreenode = (node,groupid)=>{
+      let retnode = node;
+      if(node.id === groupid){
+
+        if(node.type === 'group_leaf'){
+          curdevicelist = [...node.children];
+        }
+        if(node.type !== 'group_root'){
+          return retnode;
+        }
+
+      }
+      retnode = null;
+      if(!!node.children){
+        for(let i = 0; i<node.children.length ;i++){
+          const subnode = node.children[i];
+          let tmpnode = findandsettreenode(subnode,groupid);
+          if(!!tmpnode){//subnode为tmpnode,目标选中
+            if(tmpnode.id === groupid){
+              //选中／展开//equal
+              subnode.active = true;
+              subnode.loading = false;
+              if(forcetoggled){//强制展开结点
+                subnode.toggled = true;
+              }
+            }
+            node.active = false;
+            node.toggled = true;
+            node.loading = false;
+
+            retnode = node;
+          }
+        }
+      }
+      if(!retnode){
+        if(node.type !== 'group_root'){
+          node.active = false;
+          node.toggled = false;
+        }
+        node.loading = false;
+      }
+      return retnode;
+    };
+      // let treenode = payload;
+     let datatreegroup = {...state.datatreegroup};
+     findandsettreenode(datatreegroup,groupid);
+     //root保持不动
+     datatreegroup.toggled = true;
+     datatreegroup.active = false;
+     datatreegroup.loading = false;
+     return {...state,datatreegroup};//这样reducer刷新才能刷新树！！！
+  }
 }, initial.device);
 
 export default device;

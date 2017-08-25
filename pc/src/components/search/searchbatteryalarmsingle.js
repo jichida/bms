@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import _ from 'lodash';
-// import {ui_selcurdevice} from '../actions';
+// import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -39,7 +39,7 @@ class TreeSearchBatteryAlarmSingle extends React.Component {
           level:this.state.type
         }
       };
-      console.log(`query:${JSON.stringify(query)}`);
+      
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }
