@@ -36,7 +36,7 @@ class TreeSearch extends React.Component {
       this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}))
     }
     onClickQuery(query){
-      //console.log(`search:${JSON.stringify(query)}`);
+
       this.props.dispatch(searchbattery_request(query));
     }
     render(){

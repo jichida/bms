@@ -2,12 +2,12 @@ import {jpushlistenInMessage,jpushpostNotification} from '../actions';
 
 
 export const cancelJPushAlisa=()=>{
-  //console.log(`取消设置别名cancelJPushAlisa`);
+
 }
 
 export const setJPushAlias = (name)=> {
     //设置jpush名字
-    //console.log(`设置别名${name}`);
+
 }
 
 export const postNotifyFromJPush = (dispatch)=>{

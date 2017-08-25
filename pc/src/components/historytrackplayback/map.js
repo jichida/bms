@@ -12,19 +12,19 @@ import {
 const divmapid = 'maptrackhistoryplayback';
 class Page extends React.Component {
     componentWillMount () {
-        //console.log('轨迹回放地图---->componentWillMount---------');
+        
     }
     componentWillUnmount(){
-        //console.log('轨迹回放地图---->componentWillUnmount---------');
+        
         this.props.dispatch(carmapshow_destorymap({divmapid}));
     }
     componentDidMount () {
-        //console.log('轨迹回放地图---->componentDidMount---------');
+        
         this.props.dispatch(carmapshow_createmap({divmapid}));
     }
     render() {
         const height = this.props.height || window.innerHeight;
-        //console.log('地图---->render---------height:'+height);
+        
         return (
             <div className="AdminContent">
                 <div id={divmapid} style={{height:`${height}px`}}/>

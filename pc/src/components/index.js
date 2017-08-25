@@ -65,7 +65,7 @@ class Page extends React.Component {
     hidehistoryplay = () => this.props.dispatch(ui_showhistoryplay(false));
 
     onTouchTap=()=>{
-        //console.log("onTouchTap");
+
     }
 
     getdrawstyle=(width)=>{

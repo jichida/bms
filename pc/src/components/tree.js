@@ -10,6 +10,7 @@ import Search from "./search";
 import _ from 'lodash';
 import {
     mapmain_seldistrict,
+    mapmain_selgroup,
     ui_selcurdevice_request,
     ui_changetreestyle,
     md_ui_settreefilter,
@@ -22,11 +23,13 @@ import '../css/treestyle.css';
 let HeaderCo = (props) => {
     let title = props.node.name || '';
     if(props.node.type !== 'device'){
-      const name = props.gmap_treename[props.node.adcode];
-      title = `${name}`;
-      const count = props.gmap_acode_treecount[props.node.adcode];
-      if(!!count){
-        title = `${name}(${count})`;
+      if(props.treeviewstyle === 'byloc'){
+        const name = props.gmap_treename[props.node.adcode];
+        title = `${name}`;
+        const count = props.gmap_acode_treecount[props.node.adcode];
+        if(!!count){
+          title = `${name}(${count})`;
+        }
       }
     }
 
@@ -45,8 +48,8 @@ let HeaderCo = (props) => {
     );
   };
 
-const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_acode_treecount}}) => {
-  return {gmap_treename,gmap_acode_treecount};
+const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_acode_treecount,treeviewstyle}}) => {
+  return {gmap_treename,gmap_acode_treecount,treeviewstyle};
 }
 decorators.Header = connect(mapStateToPropsHeaderCo)(HeaderCo);
 
@@ -65,20 +68,23 @@ class TreeExample extends React.Component {
         node.active = true;
         if(!!node.children){
             node.toggled = toggled;
-            if(node.adcode === 100000){
-              node.toggled = true;
-            }
 
-            let id = node.adcode;
-            if(typeof id === 'string'){
-              id = parseInt(id);
-            }
             const {treeviewstyle} = this.props;
             if(treeviewstyle === 'byloc'){
+              if(node.adcode === 100000){
+                node.toggled = true;
+              }
+
+              let id = node.adcode;
+              if(typeof id === 'string'){
+                id = parseInt(id);
+              }
               this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false}));
             }
             else{
-
+              let groupid = node.id;
+              //选择当前group<-----
+              this.props.dispatch(mapmain_selgroup({groupid,forcetoggled:false}));
             }
 
         }else{
@@ -89,7 +95,7 @@ class TreeExample extends React.Component {
             if(!!deviceitem && toggled){
               this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
             }
-            //console.log(deviceitem);//选择一个设备
+
         }
         this.setState({ cursor: node });
     }

@@ -69,15 +69,15 @@ class Page extends React.Component {
       listdata:this.initData,
       pos:pos//document.body.scrollTop||document.documentElement.scrollTop
     };
-    //console.log(`保存位置数据:,pos:${pos}`);
+    
   }
   componentDidMount(){
     this.mounted = true;
-    //console.log(`滚动到位置数据:${JSON.stringify(this.state.pos)}`);
+    
     this.refs.listview.scrollTo(0,this.state.pos);
   }
   onRefresh() {
-    //console.log('onRefresh');
+    
     this.setState({ refreshing: true });
     this.onAjax(this.props.query,this.props.sort,this.props.pagenumber);
   }
@@ -119,7 +119,7 @@ class Page extends React.Component {
   //到达底部事件
   _onEndReached(event) {
     // load new data
-    //console.log('reach end', event);
+    
     if(this.state.offset + this.props.pagenumber < this.state.total){
         this.setState({
           isLoading: true,//加载中

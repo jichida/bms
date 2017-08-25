@@ -19,7 +19,7 @@ export function* createsagacallbackflow(){
     const {payload:{actionreq,actionres,resolve,reject,...data}} = action;
     yield put(actionreq(data));//发送请求
 
-    //console.log('createflowsz==>payload:' +JSON.stringify(data));
+    
     const { response, timeout } = yield race({
        response: take(actionres),
        timeout: call(delay, config.requesttimeout)

@@ -38,7 +38,7 @@ export const getadcodeinfo = (adcodei)=>{
       parent_code:parseInt(resultobj.parent_code)
     };
   }
-  //console.log(`adcode:${adcode}找不到`);
+  
   return {
     level:'error',
     parent_code:100000

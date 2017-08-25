@@ -10,19 +10,19 @@ import {
 const divmapid = 'mapmain';
 class MapPage extends React.Component {
     componentWillMount () {
-        //console.log('地图---->componentWillMount---------');
+
     }
     componentWillUnmount(){
-        //console.log('地图---->componentWillUnmount---------');
+
         this.props.dispatch(carmapshow_destorymap({divmapid}));
     }
     componentDidMount () {
-        //console.log('地图---->componentDidMount---------');
+
         this.props.dispatch(carmapshow_createmap({divmapid}));
     }
     render() {
         const height = this.props.height || window.innerHeight-64;
-        //console.log('地图---->render---------height:'+height);
+
         return (
             <div className="AdminContent">
                 <div id={divmapid} style={{height:`${height}px`}}/>

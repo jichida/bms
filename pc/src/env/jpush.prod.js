@@ -3,7 +3,7 @@ import {jpushlistenInMessage,jpushpostNotification} from '../actions';
 
 export const cancelJPushAlisa=()=>{
     try{
-        //console.log(`注销设置别名`);
+
         xview.cancelJPushAlisa();
     }
     catch(e){
@@ -14,7 +14,7 @@ export const cancelJPushAlisa=()=>{
 
 export const setJPushAlias = (name)=> {
     //设置jpush名字
-    //console.log(`设置别名${name}`);
+
     try{
          xview.jiGuangTuiSong(name);
      }

@@ -33,16 +33,17 @@ Toggle.propTypes = {
     style: PropTypes.object
 };
 
-let Header = ({node, style,gmap_treename,gmap_acode_treecount}) => {
+let Header = ({node, style,gmap_treename,gmap_acode_treecount,treeviewstyle}) => {
     let title = node.name || '';
     if(node.type !== 'device'){
-      const name = gmap_treename[node.adcode];
-      title = `${name}`;
-      const count = gmap_acode_treecount[node.adcode];
-      if(!!count){
-        title = `${name}(${count})`;
+      if(treeviewstyle === 'byloc'){
+        const name = gmap_treename[node.adcode];
+        title = `${name}`;
+        const count = gmap_acode_treecount[node.adcode];
+        if(!!count){
+          title = `${name}(${count})`;
+        }
       }
-
     }
 
     return (
@@ -57,8 +58,8 @@ Header.propTypes = {
     style: PropTypes.object,
     node: PropTypes.object.isRequired
 };
-const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount}}) => {
-  return {gmap_treename,gmap_acode_treecount};
+const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount,treeviewstyle}}) => {
+  return {gmap_treename,gmap_acode_treecount,treeviewstyle};
 }
 Header = connect(mapStateToProps)(Header);
 

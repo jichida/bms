@@ -28,7 +28,7 @@ export function* wsrecvsagaflow() {
 
   yield takeEvery(`${common_err}`, function*(action) {
         let {payload:result} = action;
-        //console.log(`common_err:${JSON.stringify(result)}`);
+        
         yield put(set_weui({
           toast:{
           text:result.errmsg,

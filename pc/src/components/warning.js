@@ -37,7 +37,7 @@ class Page extends React.Component {
     }
 
     onRowSelection(selstring){
-      //console.log(selstring);
+
       // this.props.dispatch(ui_selcurdevice_result({DeviceId}));
     }
     render(){

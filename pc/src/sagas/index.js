@@ -27,7 +27,7 @@ export default function* rootSaga() {
     yield fork(apiflow);
   }
   catch(e){
-    //console.log(e);
+
   }
 
 }
