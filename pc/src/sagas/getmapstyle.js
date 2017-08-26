@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import store from '../env/store';
 import {ui_showmenu} from '../actions';
+import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
+
 //地图上点图标的样式【图标类型】
 export const getgroupStyleMap = ()=>{
   let groupsz = [
@@ -69,11 +71,11 @@ export const getpopinfowindowstyle = (deviceitem)=>{
   let city = _.get(deviceitem,'city','');
   let district = _.get(deviceitem,'district','');
   let formattedAddress = _.get(deviceitem,'formattedAddress','');
-  window.clickfn =(d)=>{
+  window.clickfn =(DeviceId)=>{
+    store.dispatch(push(`/deviceinfo/${DeviceId}`));
 
-
-    store.dispatch(ui_showmenu("showdevice"));
-    //yield put(ui_showmenu("showdevice"));
+    // store.dispatch(ui_showmenu("showdevice"));
+    //yield put(ui_showmenu("showdevice"));deviceinfo
   }
 
   return {
@@ -81,6 +83,6 @@ export const getpopinfowindowstyle = (deviceitem)=>{
       infoBody: `<p>位置:纬度<span class='color_warning'>${txtLatitude}</span>,经度:<span class='color_warning'>${txtLongitude}</span> </p>
       <p>行政编码:<span class='color_warning'>${adcode}</span></p>
       <p>省市区:<span class='color_warning'>${province}${city}${district}</span></p>
-      <p>地址:<span class='color_warning'>${formattedAddress}</span></p><p><button onclick="clickfn('ddd')">查看详情</button></p>`
+      <p>地址:<span class='color_warning'>${formattedAddress}</span></p><p><button onclick="clickfn(${DeviceId})">查看详情</button></p>`
   };
 }

@@ -53,7 +53,7 @@ class AppRoot extends React.Component {
                     <Route path="/login" component={Login} />
                     <Route path="/message" component={Message} />
                     <Route path="/device" component={Device} />
-                    <Route path="/deviceinfo" component={Deviceinfo} />
+                    <Route path="/deviceinfo/:id" component={Deviceinfo} />
                 </Switch>
                 <div>
                     <Index history={this.props.history}/>

@@ -47,12 +47,10 @@ class TreeExample extends React.Component {
                   style={{ height: window.innerHeight-109 }}
                 >
                     <TabPane tab="地址位置" key="1">
-                        <TreeByloc
-                        />
+                        <TreeByloc/>
                     </TabPane>
                     <TabPane tab="分组" key="2">
-                        <TreeBygroup
-                        />
+                        <TreeBygroup/>
                     </TabPane>
                     <TabPane tab="搜索" key="3">
                         <div className="searchbox">
@@ -69,8 +67,7 @@ class TreeExample extends React.Component {
                             </div>
                         </div>
                         <Search />
-                        <TreeBysearchresult
-                        />
+                        <TreeBysearchresult/>
                     </TabPane>
                 </Tabs>
             </div>
