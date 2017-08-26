@@ -562,13 +562,8 @@ export function* createmapmainflow(){
     yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       const {payload:{DeviceId,deviceitem}} = actioncurdevice;
       try{
-        //如果左侧的树中没有该设备
-        const {curdevicelist} = yield select((state)=>{
-          return {...state.device};
-        });
-        if(!_.find(curdevicelist,(o)=>{return DeviceId === o})){
-            //树中找不到该设备,获取该设备所在经纬度
-
+            //强制展开树
+            //获取该设备所在经纬度
             const result = yield call(getgeodata,deviceitem);
             //调用一次citycode，防止加载不到AreaNode
             try{
@@ -578,14 +573,11 @@ export function* createmapmainflow(){
             catch(e){
 
             }
-
-
             const adcodetop = parseInt(result.adcode);
             //展开左侧树结构
             yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
-
             yield take(`${mapmain_getdistrictresult}`);//等待数据完成
-        }
+
       }
       catch(e){
 
@@ -705,7 +697,7 @@ export function* createmapmainflow(){
               if(result.type === 'device'){
                 isarea = true;
                 //如果返回设备,则将设备加载到树中
-                yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb}));
+                yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
               }
               else{
                 //刷新树中的数据

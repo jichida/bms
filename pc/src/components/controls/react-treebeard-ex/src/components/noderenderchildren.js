@@ -19,7 +19,7 @@ class NodeRenderChildren extends React.Component {
 
     getsplitarray =(children)=>{
       let retchildren = [];
-      let splitsz = _.chunk(children,10);
+      let splitsz = _.chunk(children,80);
       if(splitsz.length > 1){
         let firstsz = _.flattenDeep(splitsz[0]);
         let lastsz = [];

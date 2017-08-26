@@ -6,8 +6,8 @@ export const getgroupnamebydevice = (deviceinfo)=>{
   if(typeof deviceinfo.DeviceId === 'string'){
     let devid = parseInt(deviceinfo.DeviceId);
     groupinfo = {
-      _id:`${devid%200}`,
-      name:`分组${devid%200}`
+      _id:`${devid%20}`,
+      name:`分组${devid%20}`
     }
   }
   return groupinfo;

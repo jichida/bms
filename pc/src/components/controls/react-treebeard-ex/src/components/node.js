@@ -46,7 +46,7 @@ class TreeNode extends React.Component {
         const {style,node,treeviewstyle} = this.props;
         const decorators = this.decorators();
         const animations = this.animations();
-        const {gmap_treename,gmap_acode_treecount} = this.props;
+        const {gmap_acode_treename,gmap_acode_treecount} = this.props;
         let isenable = true;
         if(node.type !== 'device'){
           if(treeviewstyle === 'byloc'){
@@ -138,8 +138,8 @@ TreeNode.propTypes = {
     ]).isRequired,
     onToggle: PropTypes.func
 };
-const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount}}) => {
-  return {gmap_treename,gmap_acode_treecount};
+const mapStateToProps = ({device:{gmap_acode_treename,gmap_acode_treecount}}) => {
+  return {gmap_acode_treename,gmap_acode_treecount};
 }
 TreeNode = connect(mapStateToProps)(TreeNode);
 export default TreeNode;

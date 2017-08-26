@@ -18,17 +18,16 @@ import {getadcodeinfo} from '../util/addressutil';
 import {getgroupnamebydevice} from '../util/device';
 import {get_initgeotree} from '../util/treedata';
 
-const {datatree,gmap_treename,gmap_acode_treecount} = get_initgeotree();
+const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
-    treeviewstyle:'byloc',//byloc or bygroup
     treefilter:undefined,
 
-    mapseldeviceid:undefined,
+    mapseldeviceid:undefined,//当前选中的设备
     // mapdeviceidlist:[],
-    gmap_treename,
-    gmap_acode_treecount,
-    gmap_acode_devices:{},
+    gmap_acode_treename,//key:acode/value:name
+    gmap_acode_treecount,//key:acode/value:count
+    gmap_acode_devices:{},//key:acode/value:deviceidlist
     datatreeloc:datatree,
     datatreegroup:{
       id:'0',
@@ -48,7 +47,6 @@ const initial = {
       type:'group_root',
       children:[]
     },
-    curdevicelist:[],
     groupidlist:[],
     groups:{},
     g_devicesdb:{},
@@ -110,7 +108,7 @@ const device = createReducer({
       gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
   },
   [mapmain_areamountdevices_result]:(state,payload)=>{
-    const {adcode,g_devicesdb,gmap_acode_devices} = payload;
+    const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
     let datatreeloc = state.datatreeloc;
     let findandsettreenodedevice = (node)=>{
        let retnode = node;
@@ -140,7 +138,7 @@ const device = createReducer({
        return null;
      }
      findandsettreenodedevice(datatreeloc);
-     return {...state,g_devicesdb,datatreeloc,gmap_acode_devices};
+     return {...state,g_devicesdb,datatreeloc,gmap_acode_devices,gmap_acode_treecount};
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
@@ -149,21 +147,14 @@ const device = createReducer({
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode,forcetoggled} = payload;
-    // let adcodeinfo = getadcodeinfo(adcode);
-    let curdevicelist = state.curdevicelist;
+    //选中某个区域,只列选中的数据
     let findandsettreenode = (node,adcode)=>{
-      let retnode = node;
       if(node.adcode === adcode){
-
-        if(node.type === 'group_area'){
-          curdevicelist = [...node.children];
-        }
         if(node.type !== 'group_root'){
-          return retnode;
+          return node;
         }
-
       }
-      retnode = null;
+      let retnode = null;
       if(!!node.children){
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
@@ -177,18 +168,19 @@ const device = createReducer({
                 subnode.toggled = true;
               }
             }
-            node.active = false;
-            node.toggled = true;
-            node.loading = false;
-
             retnode = node;
+          }//find ok
+          else{
+            //非自己所属
+            subnode.active = false;
+            subnode.toggled = false;
           }
         }
       }
       if(!retnode){
         if(node.type !== 'group_root'){
           node.active = false;
-          node.toggled = false;
+          node.toggled = true;
         }
         node.loading = false;
       }
@@ -201,7 +193,7 @@ const device = createReducer({
      datatreeloc.toggled = true;
      datatreeloc.active = false;
      datatreeloc.loading = false;
-     return {...state,datatreeloc,curdevicelist};
+     return {...state,datatreeloc};
   },
   [querydevicegroup_result]:(state,payload)=>{
     const {list} = payload;
@@ -259,18 +251,12 @@ const device = createReducer({
   },
   [mapmain_selgroup]:(state,payload)=>{
     let {groupid,forcetoggled} = payload;
-    let curdevicelist = state.curdevicelist;
     let findandsettreenode = (node,groupid)=>{
       let retnode = node;
       if(node.id === groupid){
-
-        if(node.type === 'group_leaf'){
-          curdevicelist = [...node.children];
-        }
         if(node.type !== 'group_root'){
           return retnode;
         }
-
       }
       retnode = null;
       if(!!node.children){
