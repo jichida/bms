@@ -61,7 +61,7 @@ class Tree extends React.Component {
   }
 }
 
-const mapStateToProps = ({device:{datatree,g_devicesdb}}) => {
+const mapStateToProps = ({device:{datatreeloc:datatree,g_devicesdb}}) => {
   return {datatree,g_devicesdb};
 }
 

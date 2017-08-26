@@ -18,19 +18,17 @@ import {getadcodeinfo} from '../util/addressutil';
 import {getgroupnamebydevice} from '../util/device';
 import {get_initgeotree} from '../util/treedata';
 
-const {datatree,gmap_treename,gmap_acode_treecount} = get_initgeotree();
+const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
-    treeviewstyle:'byloc',//byloc or bygroup
     treefilter:undefined,
 
-    mapseldeviceid:undefined,
+    mapseldeviceid:undefined,//当前选中的设备
     // mapdeviceidlist:[],
-    gmap_treename,
-    gmap_acode_treecount,
-    gmap_acode_devices:{},
-    datatreeconst:datatree,
-    datatree,
+    gmap_acode_treename,//key:acode/value:name
+    gmap_acode_treecount,//key:acode/value:count
+    gmap_acode_devices:{},//key:acode/value:deviceidlist
+    datatreeloc:datatree,
     datatreegroup:{
       id:'0',
       loading: false,
@@ -49,7 +47,6 @@ const initial = {
       type:'group_root',
       children:[]
     },
-    curdevicelist:[],
     groupidlist:[],
     groups:{},
     g_devicesdb:{},
@@ -68,7 +65,7 @@ const device = createReducer({
   [ui_selcurdevice_result]:(state,payload)=>{
     const mapseldeviceid = payload.DeviceId;
 
-    let datatree = {...state.datatree};
+    let datatreeloc = {...state.datatreeloc};
     let datatreegroup = {...state.datatreegroup};
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
@@ -94,9 +91,9 @@ const device = createReducer({
       node.active = false;
       return retnode;
     }
-    findandsettreenode(datatree,mapseldeviceid);
+    findandsettreenode(datatreeloc,mapseldeviceid);
     findandsettreenode(datatreegroup,mapseldeviceid);
-    return {...state,mapseldeviceid,datatree,datatreegroup};
+    return {...state,mapseldeviceid,datatreeloc,datatreegroup};
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
@@ -111,8 +108,8 @@ const device = createReducer({
       gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
   },
   [mapmain_areamountdevices_result]:(state,payload)=>{
-    const {adcode,g_devicesdb,gmap_acode_devices} = payload;
-    let datatree = state.datatree;
+    const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+    let datatreeloc = state.datatreeloc;
     let findandsettreenodedevice = (node)=>{
        let retnode = node;
        if(node.adcode === adcode){
@@ -140,31 +137,24 @@ const device = createReducer({
        }
        return null;
      }
-     findandsettreenodedevice(datatree);
-     return {...state,g_devicesdb,datatree,gmap_acode_devices};
+     findandsettreenodedevice(datatreeloc);
+     return {...state,g_devicesdb,datatreeloc,gmap_acode_devices,gmap_acode_treecount};
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-     let datatree = {...state.datatreeconst};
-     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatree};
+     let datatreeloc = {...datatree};
+     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode,forcetoggled} = payload;
-    // let adcodeinfo = getadcodeinfo(adcode);
-    let curdevicelist = state.curdevicelist;
+    //选中某个区域,只列选中的数据
     let findandsettreenode = (node,adcode)=>{
-      let retnode = node;
       if(node.adcode === adcode){
-
-        if(node.type === 'group_area'){
-          curdevicelist = [...node.children];
-        }
         if(node.type !== 'group_root'){
-          return retnode;
+          return node;
         }
-
       }
-      retnode = null;
+      let retnode = null;
       if(!!node.children){
         for(let i = 0; i<node.children.length ;i++){
           const subnode = node.children[i];
@@ -178,31 +168,32 @@ const device = createReducer({
                 subnode.toggled = true;
               }
             }
-            node.active = false;
-            node.toggled = true;
-            node.loading = false;
-
             retnode = node;
+          }//find ok
+          else{
+            //非自己所属
+            subnode.active = false;
+            subnode.toggled = false;
           }
         }
       }
       if(!retnode){
         if(node.type !== 'group_root'){
           node.active = false;
-          node.toggled = false;
+          node.toggled = true;
         }
         node.loading = false;
       }
       return retnode;
     };
       // let treenode = payload;
-     let datatree = {...state.datatree};
-     findandsettreenode(datatree,adcode);
+     let datatreeloc = {...state.datatreeloc};
+     findandsettreenode(datatreeloc,adcode);
      //root保持不动
-     datatree.toggled = true;
-     datatree.active = false;
-     datatree.loading = false;
-     return {...state,datatree,curdevicelist};
+     datatreeloc.toggled = true;
+     datatreeloc.active = false;
+     datatreeloc.loading = false;
+     return {...state,datatreeloc};
   },
   [querydevicegroup_result]:(state,payload)=>{
     const {list} = payload;
@@ -260,18 +251,12 @@ const device = createReducer({
   },
   [mapmain_selgroup]:(state,payload)=>{
     let {groupid,forcetoggled} = payload;
-    let curdevicelist = state.curdevicelist;
     let findandsettreenode = (node,groupid)=>{
       let retnode = node;
       if(node.id === groupid){
-
-        if(node.type === 'group_leaf'){
-          curdevicelist = [...node.children];
-        }
         if(node.type !== 'group_root'){
           return retnode;
         }
-
       }
       retnode = null;
       if(!!node.children){

@@ -6,7 +6,7 @@ const HeaderCo = (props) => {
     let title = props.node.name || '';
     if(props.node.type !== 'device'){
       if(props.treeviewstyle === 'byloc'){
-        const name = props.gmap_treename[props.node.adcode];
+        const name = props.gmap_acode_treename[props.node.adcode];
         title = `${name}`;
         const count = props.gmap_acode_treecount[props.node.adcode];
         if(!!count){
@@ -30,8 +30,8 @@ const HeaderCo = (props) => {
     );
   };
 
-const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_acode_treecount}}) => {
-  return {gmap_treename,gmap_acode_treecount};
+const mapStateToPropsHeaderCo = ({device:{gmap_acode_treename,gmap_acode_treecount}}) => {
+  return {gmap_acode_treename,gmap_acode_treecount};
 }
 
 
