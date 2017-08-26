@@ -43,28 +43,21 @@ class TreeSearch extends React.Component {
         const {g_devicesdb,searchresult_battery} = this.props;
         return (
             <div className="warningcontentPage">
-                <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
-                
+                <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)} />
             </div>
-
         );
     }
 }
 
-const mapStateToProps = (
-  {
-    device:
-    {
-      g_devicesdb
+const mapStateToProps = ({
+    device:{
+        g_devicesdb
     },
-    searchresult:
-    {
-      searchresult_battery,
+    searchresult:{
+        searchresult_battery,
     }
-  }) => {
-
-  return {g_devicesdb,searchresult_battery};
+}) => {
+    return {g_devicesdb,searchresult_battery};
 }
-
 
 export default connect(mapStateToProps)(TreeSearch);

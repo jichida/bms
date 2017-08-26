@@ -85,7 +85,7 @@ class Page extends React.Component {
 
     render() {
         const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
-        const treestyle = this.getdrawstyle("300px");
+        const treestyle = this.getdrawstyle("400px");
         const MapPage = this.props.map;
 
         return (
@@ -141,7 +141,7 @@ class Page extends React.Component {
                                 zIndex: 1000,
                                 position: "inherit"
                             }}
-                            width={300}
+                            width={400}
                             style={showmenu==="addressbox"?treestyle.drawopenstyle:treestyle.drawclosestyle}
                             >
                             <Tree />

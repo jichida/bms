@@ -8,7 +8,6 @@ exports.default = {
             color: '#000',
             fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
             fontSize: '16px',
-            marginTop: "-30px"
         },
         node: {
             base: {

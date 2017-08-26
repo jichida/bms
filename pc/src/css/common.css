@@ -669,17 +669,27 @@
 .appbar .controlbtn span:active{
     background: #CCC;
 }
-
-
 .ant-table-body {
     font-size: 16px;
 }
 .ant-tabs-bar{
     margin-bottom: 0;
 }
-
-
-
-
+.searchtree{
+    height: 175px;
+}
+.searchtree > div,
+.searchtree > span{
+    margin-bottom: 10px;
+}
+.treetabs .ant-tabs-nav.ant-tabs-nav-animated{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
 
 

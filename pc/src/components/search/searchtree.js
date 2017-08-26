@@ -6,27 +6,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import _ from 'lodash';
-// import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
-
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
+
 const InputGroup = Input.Group;
 const Option = Select.Option;
-/* <MenuItem value={''} primaryText="请选择" />
-<MenuItem value={'RdbNo'} primaryText="RDB编号" />
-<MenuItem value={'PackNo'} primaryText="BMU PACK号" />
-<MenuItem value={'PnNo'} primaryText="设备PN料号" /> */
 const selitem_devicefields = [
   {
     value:'RdbNo',
@@ -41,9 +28,6 @@ const selitem_devicefields = [
     text:'设备PN料号'
   },
 ];
-/* <MenuItem value={''} primaryText="请选择" />
-<MenuItem value={'ALARM_H'} primaryText="警告代码" />
-<MenuItem value={'ALARM_L'} primaryText="故障代码" /> */
 const selitem_alarmfields = [
   {
     value:'ALARM_H',
@@ -54,6 +38,83 @@ const selitem_alarmfields = [
     text:'故障代码'
   },
 ];
+
+class DateRange extends React.Component {
+    state = {
+        startValue: null,
+        endValue: null,
+        endOpen: false,
+    };
+
+    disabledStartDate = (startValue) => {
+        const endValue = this.state.endValue;
+        if (!startValue || !endValue) {
+            return false;
+        }
+        return startValue.valueOf() > endValue.valueOf();
+    }
+
+    disabledEndDate = (endValue) => {
+        const startValue = this.state.startValue;
+        if (!endValue || !startValue) {
+            return false;
+        }
+        return endValue.valueOf() <= startValue.valueOf();
+    }
+
+    onChange = (field, value) => {
+        this.setState({
+            [field]: value,
+        });
+    }
+
+    onStartChange = (value) => {
+        this.onChange('startValue', value);
+    }
+
+    onEndChange = (value) => {
+        this.onChange('endValue', value);
+    }
+
+    handleStartOpenChange = (open) => {
+        if (!open) {
+            this.setState({ endOpen: true });
+        }
+    }
+
+    handleEndOpenChange = (open) => {
+        this.setState({ endOpen: open });
+    }
+
+    render() {
+        const { startValue, endValue, endOpen } = this.state;
+        return (
+            <div className="daterange">
+                <DatePicker
+                    disabledDate={this.disabledStartDate}
+                    showTime
+                    format="YYYY-MM-DD HH:mm:ss"
+                    value={startValue}
+                    placeholder="开始日期和时间"
+                    onChange={this.onStartChange}
+                    onOpenChange={this.handleStartOpenChange}
+                    style={{width:"179px",marginRight : "10px"}}
+                />
+                <DatePicker
+                    disabledDate={this.disabledEndDate}
+                    showTime
+                    format="YYYY-MM-DD HH:mm:ss"
+                    value={endValue}
+                    placeholder="结束日期和时间"
+                    onChange={this.onEndChange}
+                    open={endOpen}
+                    onOpenChange={this.handleEndOpenChange}
+                    style={{width:"180px"}}
+                />
+            </div>
+        );
+    }
+}
 
 class TreeSearchBattery extends React.Component {
 
@@ -151,7 +212,10 @@ class TreeSearchBattery extends React.Component {
 
         return (
             <div className="searchtree" style={{textAlign: "center"}}>
-                    <Select defaultValue={this.state.groupname} style={{ width: 252 }}>
+
+                    <DateRange />
+
+                    <Select defaultValue={this.state.groupname} style={{ width: 370 }}>
                         <Option value={''} >选择分组名称</Option>
                         {
                             _.map(groupidlist,(groupid)=>{
@@ -170,7 +234,7 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 132 }}
+                            style={{ width: 250 }}
                             onChange={this.handleChangeSearchtxtforalaram.bind(this)}
                             placeholder="请输入编号"
                         />
@@ -185,13 +249,13 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 132 }}
+                            style={{ width: 250 }}
                             placeholder="请输入代码"
                             onChange={this.handleChangeSearchtxtforalaram.bind(this)}
                         />
                     </InputGroup>
 
-                    <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
+                    <Button type="primary" icon="search" onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
 
 
             </div>
@@ -199,8 +263,7 @@ class TreeSearchBattery extends React.Component {
         );
     }
 }
-
 const mapStateToProps = ({device:{groups,groupidlist}}) => {
-  return {groups,groupidlist};
+    return {groups,groupidlist};
 }
 export default connect(mapStateToProps)(TreeSearchBattery);

@@ -43,16 +43,24 @@ class TreeExample extends React.Component {
                 </div>
 
                 <Tabs
-                  defaultActiveKey="1"
-                  style={{ height: window.innerHeight-109 }}
-                >
-                    <TabPane tab="地址位置" key="1">
+                    defaultActiveKey="1"
+                    style={{ height: window.innerHeight-109}}
+                    tabBarStyle={{width : "400px"}}
+                    className="treetabs"
+                    >
+                    <TabPane 
+                        tab="地址位置" 
+                        key="1">
                         <TreeByloc/>
                     </TabPane>
-                    <TabPane tab="分组" key="2">
+                    <TabPane 
+                        tab="分组" 
+                        key="2" >
                         <TreeBygroup/>
                     </TabPane>
-                    <TabPane tab="搜索" key="3">
+                    <TabPane 
+                        tab="搜索" 
+                        key="3">
                         <div className="searchbox">
                             <div className="input-group">
                                 <span className="input-group-addon">
