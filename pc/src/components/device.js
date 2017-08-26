@@ -15,6 +15,7 @@ import Avatar from 'material-ui/Avatar';
 import Deraultimg from "../img/1.png";
 import "../css/message.css";
 import TableComponents from "./table.js";
+import Seltime from "./search/seltime.js";
 
 import {
     Table,
@@ -24,7 +25,7 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import TreeSearchBattery from './search/searchbattery';
+import TreeSearchreport from './search/searchreport';
 import {
   ui_selcurdevice_request,
   searchbatteryalarm_request
@@ -42,51 +43,21 @@ class MessageAllDevice extends React.Component {
       this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}))
     }
     render(){
-        const {g_devicesdb,alarms,searchresult_alaram,alaram_data} = this.props;
+        const {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
 
         return (
-            <div className="warningPage">
+            <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
                     <div className="title">查询报表</div>
-                    <TreeSearchBattery onClickQuery={this.onClickQuery.bind(this)}/>
                 </div>
-                <TableComponents data={alaram_data} />
-                <Table>
-                    <TableHeader
-                        displaySelectAll={false}
-                        adjustForCheckbox={false}
-                        >
-                      <TableRow>
-                        <TableHeaderColumn>图标及设备号</TableHeaderColumn>
-                        <TableHeaderColumn>告警时间</TableHeaderColumn>
-                        <TableHeaderColumn>告警信息</TableHeaderColumn>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
-                      {
-                        _.map(searchresult_alaram,(alarmid,key)=>{
-                          const alarm =alarms[alarmid];
-                          if(!!alarm){
-                            const deviceinfo = g_devicesdb[alarm.DeviceId];
-                            return (
-                                <TableRow key={key}>
-                                    <TableRowColumn><Avatar src={Deraultimg} /><span>{alarm.DeviceId}</span></TableRowColumn>
-                                    <TableRowColumn>{alarm.DataTime}</TableRowColumn>
-                                    <TableRowColumn>{alarm.Alarm}</TableRowColumn>
-                                    <TableRowColumn>
-                                        <RaisedButton
-                                            label="查看设备" primary={true} fullWidth={true}
-                                            onTouchTap={this.onClickDevice.bind(this,deviceinfo)}
-                                            />
-                                    </TableRowColumn>
-                                </TableRow>)
-                          }
-                        })
-                      }
-                    </TableBody>
-                  </Table>
+                <div className="TreeSearchBattery">
+                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)}/>
+                </div>
+                <div className="tablelist">
+                    <TableComponents data={alaram_data} columns={columns}/>
+                </div>
             </div>
 
         );
@@ -95,11 +66,54 @@ class MessageAllDevice extends React.Component {
 
 
 const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
-    const alaram_data = [];
-    _.map(searchresult_alaram,(alarmid,key)=>{
-        const alarm =alarms[alarmid];
-        alaram_data.push(alarm)
+    const alaram_data = [{
+        key: 1,
+        "设备ID" : "001",
+        "PACK号码" : "pack001",
+        "PDB编号" : "pdb001",
+        "料号" : "liaohao001",
+        "省市区" : "江苏常州武进区"
+    },
+    {
+        key: 2,
+        "设备ID" : "002",
+        "PACK号码" : "pack002",
+        "PDB编号" : "pdb002",
+        "料号" : "liaohao002",
+        "省市区" : "江苏常州武进区"
+    },
+    {
+        key: 3,
+        "设备ID" : "003",
+        "PACK号码" : "pack003",
+        "PDB编号" : "pdb003",
+        "料号" : "liaohao003",
+        "省市区" : "江苏常州武进区"
+    }];
+
+    let columns = _.map(alaram_data[0], (data, index)=>{
+        return {
+            title: index,
+            dataIndex: index,
+            key: index,
+            render: (text, row, index) => {
+                return <span>{text}</span>;
+            }
+        }
     })
-    return {g_devicesdb,alarms,searchresult_alaram, alaram_data};
+    let delrow = (row)=>{
+        console.log(row);
+    }
+    let columns_action ={
+        title: "操作",
+        dataIndex: '',
+        key: 'x',
+        render: (text, row, index) => {
+            return (<a onClick={()=>{delrow(row)}}>删除</a>);
+        }
+    }
+    columns.push(columns_action);
+
+    return {g_devicesdb,alarms,searchresult_alaram, alaram_data, columns};
 }
 export default connect(mapStateToProps)(MessageAllDevice);

@@ -10,37 +10,37 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import Seltime from './seltime.js';
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
+import TreeSelect from "../trees/tree_select.js";
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const selitem_devicefields = [
-  {
-    value:'RdbNo',
-    text:'RDB编号'
-  },
-  {
-    value:'PackNo',
-    text:'BMU PACK号'
-  },
-  {
-    value:'PnNo',
-    text:'设备PN料号'
-  },
+    {
+        value:'RdbNo',
+        text:'RDB编号'
+    },
+    {
+        value:'PackNo',
+        text:'BMU PACK号'
+    },
+    {
+        value:'PnNo',
+        text:'设备PN料号'
+    },
 ];
 const selitem_alarmfields = [
-  {
-    value:'ALARM_H',
-    text:'警告代码'
-  },
-  {
-    value:'ALARM_L',
-    text:'故障代码'
-  },
+    {
+        value:'ALARM_H',
+        text:'警告代码'
+    },
+    {
+        value:'ALARM_L',
+        text:'故障代码'
+    },
 ];
-
 class TreeSearchBattery extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -52,14 +52,13 @@ class TreeSearchBattery extends React.Component {
         };
     }
     handleChangeSearchtxtfordevice(e,v){
-      this.setState({searchtxtfordevice:v});
+        this.setState({searchtxtfordevice:v});
     }
     handleChangeSearchtxtforalaram(e,v){
-      this.setState({searchtxtforalarm:v});
+        this.setState({searchtxtforalarm:v});
     }
 
-    handleChangeGroupname = (e,key)=>{
-        
+    handleChangeGroupname = (e,key)=>{    
         const {groupidlist} = this.props;
         if(key === 0){
           this.setState({groupname: ''});
@@ -105,45 +104,38 @@ class TreeSearchBattery extends React.Component {
         let hintTextBattery = '';
         let ishiddenbattery = false;
         if(this.state.devicefield === ''){
-          ishiddenbattery = true;
+            ishiddenbattery = true;
         }
         else if(this.state.devicefield === 'RdbNo'){
-          hintTextBattery = '输入RDB编号';
+            hintTextBattery = '输入RDB编号';
         }
         else if(this.state.devicefield === 'PackNo'){
-          hintTextBattery = 'BMU PACK号';
+            hintTextBattery = 'BMU PACK号';
         }
         else if(this.state.devicefield === 'PnNo'){
-          hintTextBattery = '设备PN料号';
+            hintTextBattery = '设备PN料号';
         }
 
         let hintTextAlarm = '';
         let ishiddenalarm = false;
         if(this.state.alarmfield === ''){
-          ishiddenalarm = true;
+            ishiddenalarm = true;
         }
         else if(this.state.alarmfield === 'ALARM_H'){
-          hintTextAlarm = '警告代码';
+            hintTextAlarm = '警告代码';
         }
         else if(this.state.alarmfield === 'ALARM_L'){
-          hintTextAlarm = '故障代码';
+            hintTextAlarm = '故障代码';
         }
-
-
         const {groups,groupidlist} = this.props;
-
-
         return (
-            <div className="searchtree" style={{textAlign: "center"}}>
-                    <Select defaultValue={this.state.groupname} style={{ width: 370 }}>
-                        <Option value={''} >选择分组名称</Option>
-                        {
-                            _.map(groupidlist,(groupid)=>{
-                                let group= groups[groupid];
-                                return (<Option key={groupid} value={groupid} primaryText={group.name}>{group.name}</Option>)
-                            })
-                        }
-                    </Select>
+            <div className="searchreport" style={{textAlign: "center"}}>
+                <div className="i">
+
+                    <Seltime />
+
+                    <TreeSelect placeholder={"请选择分组"} width={200}/>
+                    <TreeSelect placeholder={"请选择地区"} width={200}/>
 
                     <InputGroup compact>
                         <Select defaultValue="选择编号类型" style={{ width: 120 }}>
@@ -154,7 +146,7 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 250 }}
+                            style={{ width: 150 }}
                             onChange={this.handleChangeSearchtxtforalaram.bind(this)}
                             placeholder="请输入编号"
                         />
@@ -169,20 +161,25 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 250 }}
+                            style={{ width: 150 }}
                             placeholder="请输入代码"
                             onChange={this.handleChangeSearchtxtforalaram.bind(this)}
                         />
                     </InputGroup>
 
+                    
 
-                    <Select defaultValue={"选择警告级别"} style={{ width: 370 }}>
+                    <Select defaultValue={"选择警告级别"}>
                         <Option value="0" >严重告警</Option>
                         <Option value="1" >紧急告警</Option>
                         <Option value="2" >一般告警</Option>
                     </Select>
 
-                    <Button type="primary" icon="search" onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
+                </div>
+                <div className="b">
+                    <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
+                    <Button icon="download" onClick={this.onClickQuery}>导出结果</Button>
+                </div>
             </div>
 
         );

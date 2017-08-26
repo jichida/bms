@@ -272,9 +272,9 @@
 .warningPage{
     position: fixed;
     width: 100%;
-    min-height: 100%;
     background: #FFF;
-    z-index: 2000
+    z-index: 2000;
+    overflow-y:auto; 
 }
 .warningPage .tit{
     font-size: 18px;
@@ -691,5 +691,46 @@
     -webkit-justify-content: space-between;
     justify-content: space-between;
 }
-
-
+.TreeSearchBattery {padding: 20px;border-bottom: 1px solid #EEE;background: #EEE;}
+.tablelist{padding: 20px;}
+.searchreport,
+.searchreport >div.i,
+.searchreport >div.b{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex-wrap: wrap;
+    
+}
+.searchreport >div.b{
+    justify-content: flex-end;
+    -moz-justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+}
+.searchreport >div.b >button{
+    margin-left: 10px;
+}
+.searchreport{
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.searchreport{
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+.searchreport >div .daterange{
+    -ms-flex-shrink: 0;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+}
+.searchreport >div >div,
+.searchreport >div >span{
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.searchreport >div .ant-input-group{
+    width: auto;
+}

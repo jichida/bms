@@ -55,18 +55,12 @@
     align-items: center;
     -webkit-align-items: center;
     width: 100%;
-    -moz-justify-content: flex-end;
-    -webkit-justify-content: flex-end;
-    justify-content: flex-end;
     padding-right:  20px;
 }
 .fillerform .ant-input-group,
 .fillerform .ant-btn.ant-btn-primary{
     width: auto;
     margin-left:10px;
-}
-.fillerform .ant-input-group{
-    margin-top: -5px;
 }
 .warningsearch {
     -webkit-flex-grow:1;
