@@ -11,7 +11,8 @@ import{
   mapmain_seldistrict,
   mapmain_selgroup,
   ui_changetreestyle,
-  ui_settreefilter
+  ui_settreefilter,
+  ui_searchbattery_result
 } from '../actions';
 import _ from 'lodash';
 import {getadcodeinfo} from '../util/addressutil';
@@ -54,6 +55,29 @@ const initial = {
 };
 
 const device = createReducer({
+  [ui_searchbattery_result]:(state,payload)=>{
+    const {devicelist,g_devicesdb} = payload;
+    let datatreesearchresult={
+      id:'0',
+      loading: false,
+      active :true,
+      toggled:true,
+      name:`搜索结果`,
+      type:'group_root',
+      children:[]
+    };
+    let children = [];
+    _.map(devicelist,(deviceid)=>{
+      children.push({
+        type:'device',
+        loading:false,
+        name:deviceid,
+        device:g_devicesdb[deviceid]
+      });
+    });
+    datatreesearchresult.children = [...children];
+    return {...state,datatreesearchresult,g_devicesdb};
+  },
   [ui_settreefilter]:(state,payload)=>{
     let treefilter = {...payload};
     return {...state,treefilter};
@@ -67,10 +91,10 @@ const device = createReducer({
 
     let datatreeloc = {...state.datatreeloc};
     let datatreegroup = {...state.datatreegroup};
+    let datatreesearchresult = {...state.datatreesearchresult};
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
       if(node.name === `${mapseldeviceid}`){
-
         return retnode;
       }
       retnode = null;
@@ -93,7 +117,8 @@ const device = createReducer({
     }
     findandsettreenode(datatreeloc,mapseldeviceid);
     findandsettreenode(datatreegroup,mapseldeviceid);
-    return {...state,mapseldeviceid,datatreeloc,datatreegroup};
+    findandsettreenode(datatreesearchresult,mapseldeviceid);
+    return {...state,mapseldeviceid,datatreeloc,datatreegroup,datatreesearchresult};
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;

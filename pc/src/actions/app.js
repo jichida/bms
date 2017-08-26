@@ -16,3 +16,5 @@ export const ui_showhugepoints = createAction('ui_showhugepoints');
 export const ui_changetreestyle = createAction('ui_changetreestyle');
 export const ui_settreefilter = createAction('ui_settreefilter');
 export const md_ui_settreefilter = createAction('md_ui_settreefilter');
+
+export const ui_searchbattery_result= createAction('ui_searchbattery_result');

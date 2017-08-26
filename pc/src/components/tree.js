@@ -18,6 +18,7 @@ import "../css/antd.css";
 import TreeByloc from './trees/tree_byloc';
 import TreeBygroup from './trees/tree_bygroup';
 import TreeBysearchresult from './trees/tree_bysearchresult';
+import {searchbattery_request} from '../actions';
 
 const TabPane = Tabs.TabPane;
 
@@ -32,6 +33,9 @@ class TreeExample extends React.Component {
           }
         }
         // this.props.dispatch(md_ui_settreefilter({inputtreevalue:filter}));
+    }
+    onClickQuery =(query)=>{
+      this.props.dispatch(searchbattery_request(query));
     }
 
     render(){
@@ -48,18 +52,18 @@ class TreeExample extends React.Component {
                     tabBarStyle={{width : "400px"}}
                     className="treetabs"
                     >
-                    <TabPane 
-                        tab="地址位置" 
+                    <TabPane
+                        tab="地址位置"
                         key="1">
                         <TreeByloc/>
                     </TabPane>
-                    <TabPane 
-                        tab="分组" 
+                    <TabPane
+                        tab="分组"
                         key="2" >
                         <TreeBygroup/>
                     </TabPane>
-                    <TabPane 
-                        tab="搜索" 
+                    <TabPane
+                        tab="搜索"
                         key="3">
                         <div className="searchbox">
                             <div className="input-group">
@@ -74,7 +78,7 @@ class TreeExample extends React.Component {
                                     />
                             </div>
                         </div>
-                        <Search />
+                        <Search onClickQuery={this.onClickQuery}/>
                         <TreeBysearchresult/>
                     </TabPane>
                 </Tabs>

@@ -28,7 +28,10 @@ import {
   devicelistgeochange_geotreemenu,
   devicelistgeochange_geotreemenu_refreshtree,
   mapmain_areamountdevices_request,
-  mapmain_areamountdevices_result
+  mapmain_areamountdevices_result,
+
+  searchbattery_result,
+  ui_searchbattery_result,
 } from '../actions';
 import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -931,6 +934,15 @@ export function* createmapmainflow(){
     });
 
     //devicelistgeochange_geotreemenu
+    yield takeLatest(`${searchbattery_result}`, function*(action) {
+      const {payload:{list}} = action;
+      let devicelist = [];
+      _.map(list,(device)=>{
+        devicelist.push(device.DeviceId);
+        g_devicesdb[device.DeviceId] = device;
+      });
+      yield put(ui_searchbattery_result({g_devicesdb,devicelist}));
+    });
 }
 
 export {g_devicesdb};
