@@ -29,8 +29,7 @@ const initial = {
     gmap_treename,
     gmap_acode_treecount,
     gmap_acode_devices:{},
-    datatreeconst:datatree,
-    datatree,
+    datatreeloc:datatree,
     datatreegroup:{
       id:'0',
       loading: false,
@@ -68,7 +67,7 @@ const device = createReducer({
   [ui_selcurdevice_result]:(state,payload)=>{
     const mapseldeviceid = payload.DeviceId;
 
-    let datatree = {...state.datatree};
+    let datatreeloc = {...state.datatreeloc};
     let datatreegroup = {...state.datatreegroup};
     let findandsettreenode = (node,mapseldeviceid)=>{
       let retnode = node;
@@ -94,9 +93,9 @@ const device = createReducer({
       node.active = false;
       return retnode;
     }
-    findandsettreenode(datatree,mapseldeviceid);
+    findandsettreenode(datatreeloc,mapseldeviceid);
     findandsettreenode(datatreegroup,mapseldeviceid);
-    return {...state,mapseldeviceid,datatree,datatreegroup};
+    return {...state,mapseldeviceid,datatreeloc,datatreegroup};
   },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
@@ -112,7 +111,7 @@ const device = createReducer({
   },
   [mapmain_areamountdevices_result]:(state,payload)=>{
     const {adcode,g_devicesdb,gmap_acode_devices} = payload;
-    let datatree = state.datatree;
+    let datatreeloc = state.datatreeloc;
     let findandsettreenodedevice = (node)=>{
        let retnode = node;
        if(node.adcode === adcode){
@@ -140,13 +139,13 @@ const device = createReducer({
        }
        return null;
      }
-     findandsettreenodedevice(datatree);
-     return {...state,g_devicesdb,datatree,gmap_acode_devices};
+     findandsettreenodedevice(datatreeloc);
+     return {...state,g_devicesdb,datatreeloc,gmap_acode_devices};
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-     let datatree = {...state.datatreeconst};
-     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatree};
+     let datatreeloc = {...datatree};
+     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode,forcetoggled} = payload;
@@ -196,13 +195,13 @@ const device = createReducer({
       return retnode;
     };
       // let treenode = payload;
-     let datatree = {...state.datatree};
-     findandsettreenode(datatree,adcode);
+     let datatreeloc = {...state.datatreeloc};
+     findandsettreenode(datatreeloc,adcode);
      //root保持不动
-     datatree.toggled = true;
-     datatree.active = false;
-     datatree.loading = false;
-     return {...state,datatree,curdevicelist};
+     datatreeloc.toggled = true;
+     datatreeloc.active = false;
+     datatreeloc.loading = false;
+     return {...state,datatreeloc,curdevicelist};
   },
   [querydevicegroup_result]:(state,payload)=>{
     const {list} = payload;
