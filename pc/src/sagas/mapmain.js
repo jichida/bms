@@ -603,7 +603,7 @@ export function* createmapmainflow(){
           yield fork(function*(eventname){
            //while(true){//关闭时触发的事件
              yield call(listenwindowinfoevent,eventname);//触发一次
-             yield put(ui_showmenu("showdevice_no"));
+            //  yield put(ui_showmenu("showdevice_no"));
              infoWindow = null;
            //}
           },'close');
@@ -730,7 +730,6 @@ export function* createmapmainflow(){
                      let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
                      let amapboounds = new window.AMap.Bounds(southWest,northEast);
                      window.amapmain.setBounds(amapboounds);
-
 
                   }
 
