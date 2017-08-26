@@ -24,11 +24,14 @@ import FontIcon from 'material-ui/FontIcon';
 import IconMenu from 'material-ui/IconMenu';
 import MapsPlace from 'material-ui/svg-icons/maps/place';
 import Settings from "material-ui/svg-icons/action/settings";
+import Car from "material-ui/svg-icons/maps/directions-car";
+
 import Exit from "material-ui/svg-icons/action/exit-to-app";
 import Avatar from "../img/2.jpg";
 import RaisedButton from 'material-ui/RaisedButton';
 import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 import withRouter from 'react-router-dom/withRouter';
+import { Icon } from "antd";
 
 import {
   ui_btnclick_deviceonline,
@@ -88,7 +91,7 @@ class UserMenu extends React.Component {
       open: false,
     });
   };
-
+// this.props.history.push("/device")
   render() {
     const {username} = this.props;
     return (
@@ -106,11 +109,17 @@ class UserMenu extends React.Component {
           animation={PopoverAnimationVertical}
         >
           <Menu>
+            <MenuItem primaryText="电池包" leftIcon={<Car />} onClick={()=>{
+                this.handleRequestClose();
+                this.props.history.push("/device");
+            }}/>
             <MenuItem primaryText="设置" leftIcon={<Settings />} onClick={()=>{
-              this.props.dispatch(ui_menuclick_settings({}));
+                this.handleRequestClose();
+                this.props.dispatch(ui_menuclick_settings({}));
             }}/>
             <MenuItem primaryText="退出登录" leftIcon={<Exit />} onClick={()=>{
-              this.props.dispatch(ui_menuclick_logout({}));
+                this.handleRequestClose();
+                this.props.dispatch(ui_menuclick_logout({}));
             }}/>
           </Menu>
         </Popover>
@@ -122,7 +131,8 @@ class UserMenu extends React.Component {
 const mapStateToProps = ({userlogin}) => {
    const {username} = userlogin;
    return {username};
- }
+}
+UserMenu = withRouter(UserMenu);
 UserMenu = connect(mapStateToProps)(UserMenu);
 
 class Page extends React.Component {
@@ -172,6 +182,7 @@ class Page extends React.Component {
         iconstyle4.fontSize = "30px";
 
         const {count_online,count_offline,count_all,count_yellow,count_red,count_orange} = this.props;
+
         return (
             <div className="BadgeStyle">
 
@@ -277,7 +288,7 @@ class Page extends React.Component {
                 </Badge>
 
                 <Badge
-                    badgeContent={`(${count_all})`}
+                    badgeContent={`${count_all}`}
                     className="Badge"
                     secondary={true}
                     style={{
@@ -287,9 +298,10 @@ class Page extends React.Component {
                         backgroundColor : "#FFF",
                         color : "#C00",
                         border : "2px solid #C00",
-                        width : "18px",
-                        height : "18px",
-                        lineHeight : "18px"
+                        width : "28px",
+                        height : "28px",
+                        lineHeight : "28px",
+                        fontSize : "11px"
                     }}
                     >
                     <i className="fa fa-envelope-o"  aria-hidden="true"   style={iconstyle1}  onClick={this.onClickMenu.bind(this,'all')}  />
@@ -314,6 +326,11 @@ const mapStateToPropsTip = ({device}) => {
    let count_yellow = 40;
    let count_red = 20;
    let count_orange = 33;
+
+    if(count_all>99){
+        count_all = "99+";
+    }
+
 
    return {count_online,count_offline,count_all,count_yellow,count_red,count_orange};
  }

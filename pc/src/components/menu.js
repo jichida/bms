@@ -126,12 +126,13 @@ class Menu extends React.Component {
     render() {
         const dragHandlers = {onStop: this.onStop.bind(this)};
         return (
-            <Draggable 
+            <Draggable  
                 defaultPosition={{x: this.state.innerWidth-100, y: this.state.innerHeight-100}} 
                 position={{x: this.state.dragx, y: this.state.dragy}}
+                
                 {...dragHandlers}
                 >
-                <div>
+                <div style={{display:"none"}}>
                     <Page renderFixed={this.renderFixed.bind(this)}></Page>
                 </div>
             </Draggable>
