@@ -86,23 +86,27 @@ class TreeNode extends React.Component {
     }
 
     renderHeader(decorators, animations) {
-        const {node, style} = this.props;
+        const {node, style,treeviewstyle} = this.props;
         return (
             <NodeHeader animations={animations}
                         decorators={decorators}
                         node={Object.assign({}, node)}
                         onClick={this.onClick}
-                        style={style}/>
+                        style={style}
+                        treeviewstyle={treeviewstyle}
+                      />
         );
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style} = this.props;
+        const {animations, decorators: propDecorators, node, style,treeviewstyle} = this.props;
 
         return <NodeRenderChildren decorators={decorators}
           animations={animations} node={node} style={style}
           renderLoading={this.renderLoading}
-          _eventBubbles={this._eventBubbles()} />
+          _eventBubbles={this._eventBubbles()}
+          treeviewstyle={treeviewstyle}
+        />
     }
 
     renderLoading(decorators) {
@@ -134,8 +138,8 @@ TreeNode.propTypes = {
     ]).isRequired,
     onToggle: PropTypes.func
 };
-const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount,treeviewstyle}}) => {
-  return {gmap_treename,gmap_acode_treecount,treeviewstyle};
+const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount}}) => {
+  return {gmap_treename,gmap_acode_treecount};
 }
 TreeNode = connect(mapStateToProps)(TreeNode);
 export default TreeNode;

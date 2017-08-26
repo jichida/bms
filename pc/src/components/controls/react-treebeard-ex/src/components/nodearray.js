@@ -14,7 +14,7 @@ class NodeArray extends React.Component {
     }
     render(){
       const {subnodes,animations, decorators: propDecorators, style,
-        _eventBubbles} = this.props;
+        _eventBubbles,treeviewstyle} = this.props;
       if(this.state.expanded){
         return (<div>
           {
@@ -24,7 +24,9 @@ class NodeArray extends React.Component {
                     decorators={propDecorators}
                     key={child.id || index}
                     node={child}
-                    style={style}/>)
+                    style={style}
+                    treeviewstyle={treeviewstyle}
+                  />)
             })
           }
         </div>)

@@ -8,101 +8,20 @@ import {Treebeard,decorators} from './controls/react-treebeard-ex/src/index.js';
 import RaisedButton from 'material-ui/RaisedButton';
 import Search from './search/searchtree.js';
 import _ from 'lodash';
-import {
-    mapmain_seldistrict,
-    mapmain_selgroup,
-    ui_selcurdevice_request,
-    ui_changetreestyle,
-    md_ui_settreefilter,
-    mapmain_areamountdevices_request
-} from '../actions';
-import {filterTree,expandFilteredNodes} from '../util/filter';
+
 import treestyle from './treestyle.js';
 import '../css/treestyle.css';
 import { Tabs } from 'antd';
 import "../css/antd.css";
+
+
+import TreeByloc from './trees/tree_byloc';
+import TreeBygroup from './trees/tree_bygroup';
+import TreeBysearchresult from './trees/tree_bysearchresult';
+
 const TabPane = Tabs.TabPane;
 
-
-let HeaderCo = (props) => {
-    let title = props.node.name || '';
-    if(props.node.type !== 'device'){
-      if(props.treeviewstyle === 'byloc'){
-        const name = props.gmap_treename[props.node.adcode];
-        title = `${name}`;
-        const count = props.gmap_acode_treecount[props.node.adcode];
-        if(!!count){
-          title = `${name}(${count})`;
-        }
-      }
-    }
-
-    const active = props.node.active;
-    const iconType = props.node.children ? 'folder' : 'file-text';
-    const iconClass = `fa fa-${iconType}`;
-    const iconStyle = {marginRight: '5px'};
-    const treeseled = active ? "seled" : "";
-
-    return (
-        <div style={props.style.base} className={treeseled}>
-            <div style={props.style.title}>
-                {title}
-            </div>
-        </div>
-    );
-  };
-
-const mapStateToPropsHeaderCo = ({device:{gmap_treename,gmap_acode_treecount,treeviewstyle}}) => {
-  return {gmap_treename,gmap_acode_treecount,treeviewstyle};
-}
-decorators.Header = connect(mapStateToPropsHeaderCo)(HeaderCo);
-
-
 class TreeExample extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {};
-        this.onToggle = this.onToggle.bind(this);
-    }
-    onChangeTreeStyle(stylename){
-      this.props.dispatch(ui_changetreestyle(stylename));
-    }
-    onToggle(node, toggled){
-        if(this.state.cursor){this.state.cursor.active = false;}
-        node.active = true;
-        if(!!node.children){
-            node.toggled = toggled;
-
-            const {treeviewstyle} = this.props;
-            if(treeviewstyle === 'byloc'){
-              if(node.adcode === 100000){
-                node.toggled = true;
-              }
-
-              let id = node.adcode;
-              if(typeof id === 'string'){
-                id = parseInt(id);
-              }
-              this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false}));
-            }
-            else{
-              let groupid = node.id;
-              //选择当前group<-----
-              this.props.dispatch(mapmain_selgroup({groupid,forcetoggled:false}));
-            }
-
-        }else{
-            // node.toggled = toggled;
-            let deviceid = node.name;
-            const {g_devicesdb} = this.props;
-            const deviceitem = g_devicesdb[deviceid];
-            if(!!deviceitem && toggled){
-              this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
-            }
-
-        }
-        this.setState({ cursor: node });
-    }
 
 
     onFilterMouseUp(e) {
@@ -112,11 +31,11 @@ class TreeExample extends React.Component {
             return;
           }
         }
-        this.props.dispatch(md_ui_settreefilter({inputtreevalue:filter}));
+        // this.props.dispatch(md_ui_settreefilter({inputtreevalue:filter}));
     }
 
     render(){
-        const {datatree} = this.props;
+
         return (
             <div className="treePage">
                 <div className="treehead">
@@ -128,21 +47,11 @@ class TreeExample extends React.Component {
                   style={{ height: window.innerHeight-109 }}
                 >
                     <TabPane tab="地址位置" key="1">
-                        <Treebeard
-                            id="lefttree"
-                            data={datatree}
-                            onToggle={this.onToggle}
-                            decorators={decorators}
-                            style={treestyle.default}
+                        <TreeByloc
                         />
                     </TabPane>
                     <TabPane tab="分组" key="2">
-                        <Treebeard
-                            id="lefttree"
-                            data={datatree}
-                            onToggle={this.onToggle}
-                            decorators={decorators}
-                            style={treestyle.default}
+                        <TreeBygroup
                         />
                     </TabPane>
                     <TabPane tab="搜索" key="3">
@@ -151,7 +60,7 @@ class TreeExample extends React.Component {
                                 <span className="input-group-addon">
                                     <i className="fa fa-search"/>
                                 </span>
-                                <input 
+                                <input
                                     className="form-control"
                                     onKeyUp={this.onFilterMouseUp.bind(this)}
                                     placeholder="根据设备id搜索(至少两位)"
@@ -160,30 +69,13 @@ class TreeExample extends React.Component {
                             </div>
                         </div>
                         <Search />
-
-                        <Treebeard
-                            id="lefttree"
-                            data={datatree}
-                            onToggle={this.onToggle}
-                            decorators={decorators}
-                            style={treestyle.default}
+                        <TreeBysearchresult
                         />
                     </TabPane>
                 </Tabs>
-
-                
-                
             </div>
         );
     }
 }
-const mapStateToProps = ({device:{datatree:datatreeloc,treeviewstyle,treefilter,datatreegroup,g_devicesdb}}) => {
-  let datatree = treeviewstyle === 'byloc'?datatreeloc:datatreegroup;
-  if(!!treefilter){
-      const filtered = filterTree(datatree, treefilter);
-      datatree = expandFilteredNodes(filtered, treefilter);
-  }
-  return {datatree,g_devicesdb,treeviewstyle};
-}
 
-export default connect(mapStateToProps)(TreeExample);
+export default connect()(TreeExample);

@@ -49,7 +49,7 @@ class NodeRenderChildren extends React.Component {
     }
     render() {
         const {animations, decorators: propDecorators, node, style,
-          _eventBubbles} = this.props;
+          _eventBubbles,treeviewstyle} = this.props;
         if (node.loading) {
             return this.renderLoading(propDecorators);
         }
@@ -68,6 +68,7 @@ class NodeRenderChildren extends React.Component {
                     if(_.isArray(child)){
                       //
                       return (<NodeArray subnodes={child}
+                          treeviewstyle={treeviewstyle}
                           {..._eventBubbles}
                           animations={animations}
                           decorators={propDecorators}
@@ -81,7 +82,9 @@ class NodeRenderChildren extends React.Component {
                                     decorators={propDecorators}
                                     key={child.id || index}
                                     node={child}
-                                    style={style}/>);
+                                    style={style}
+                                    treeviewstyle={treeviewstyle}
+                                />);
                     }
                   })
                 }

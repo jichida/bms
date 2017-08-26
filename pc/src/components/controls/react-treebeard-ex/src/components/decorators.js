@@ -58,15 +58,15 @@ Header.propTypes = {
     style: PropTypes.object,
     node: PropTypes.object.isRequired
 };
-const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount,treeviewstyle}}) => {
-  return {gmap_treename,gmap_acode_treecount,treeviewstyle};
+const mapStateToProps = ({device:{gmap_treename,gmap_acode_treecount}}) => {
+  return {gmap_treename,gmap_acode_treecount};
 }
 Header = connect(mapStateToProps)(Header);
 
 // @Radium
 class Container extends React.Component {
     render() {
-        const {style, decorators, terminal, onClick, node} = this.props;
+        const {style, decorators, terminal, onClick, node,treeviewstyle} = this.props;
 
         return (
             <div onClick={onClick}
@@ -75,7 +75,8 @@ class Container extends React.Component {
                 {!terminal ? this.renderToggle() : null}
 
                 <decorators.Header node={node}
-                                   style={style.header}/>
+                                   style={style.header}
+                                 treeviewstyle={treeviewstyle}/>
             </div>
         );
     }
