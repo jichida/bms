@@ -109,7 +109,7 @@ class UserMenu extends React.Component {
           animation={PopoverAnimationVertical}
         >
           <Menu>
-            <MenuItem primaryText="电池包" leftIcon={<Car />} onClick={()=>{
+            <MenuItem primaryText="查询报表" leftIcon={<Car />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.history.push("/device");
             }}/>

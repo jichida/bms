@@ -27,7 +27,7 @@ import {
   serverpush_devicegeo_sz,
   serverpush_devicealarm
 } from '../actions';
-import jsondatareadonly from '../test/bmsdata.json';
+import jsondatareadonly from '../test/bmsdata1.json';
 import jsondatatrack from '../test/1602010008.json';
 import jsondataalarm from '../test/json-BMS2.json';
 import {getRandomLocation} from '../env/geo';

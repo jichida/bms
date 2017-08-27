@@ -37,8 +37,6 @@ class Page extends React.Component {
         const formstyle={width:"10px",flexGrow:"1"};
         return (
             <div className="historytrackplayback">
-
-
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
                     <div className="title">设备编号：{DeviceId || ''}</div>
