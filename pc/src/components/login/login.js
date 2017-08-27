@@ -25,9 +25,6 @@ import {
                 >
 
                 <div className="li" >
-                    <span className="icon">
-                        <img src="newimg/25.png" alt='' />
-                    </span>
                     <Field
                         name="phonenumber"
                         id="phonenumber"
@@ -38,9 +35,6 @@ import {
                     />
                 </div>
                 <div className="li">
-                    <span className="icon">
-                        <img src="newimg/26.png" alt='' />
-                    </span>
                     <Field
                         name="password"
                         id="password"
