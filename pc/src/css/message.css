@@ -72,4 +72,14 @@
 }
 .warningPage .appbar .title{
     color:  #FFF;
+    flex-grow:1;
 }
+.warningPage{
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+
+
+

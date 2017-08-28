@@ -7,8 +7,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash';
 import RaisedButton from 'material-ui/RaisedButton';
-import {ui_showhistoryplay,ui_showmenu} from '../actions';
+import {ui_showhistoryplay,ui_showmenu,searchbatteryalarm_request} from '../actions';
 import translate from 'redux-polyglot/translate';
+import TableComponents from "./table.js";
+import TreeSearchmessage from './search/searchmessage';
+import { Button } from 'antd';
+
 
 class Page extends React.Component {
     onClickMenu(menuitemstring){
@@ -16,6 +20,9 @@ class Page extends React.Component {
     }
     showhistoryplay(){
       this.props.dispatch(ui_showhistoryplay(true));
+    }
+    onClickQuery(query){
+      this.props.dispatch(searchbatteryalarm_request(query));
     }
     render(){
       const datasz = [
@@ -81,33 +88,40 @@ class Page extends React.Component {
         },
       ];
 
-      const {mapseldeviceid,g_devicesdb,p} = this.props;
+      const {mapseldeviceid,g_devicesdb,p, columns, alaram_data} = this.props;
       let deviceitem = g_devicesdb[mapseldeviceid];
 
       return (
-            <div className="warningPage devicePage">
-                <div className="tit">设备详情</div>
-                <div className="devicebtnlist">
-                    <RaisedButton label="轨迹回放" primary={true} onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
-                    <RaisedButton label="历史警告" primary={true} onTouchTap={this.onClickMenu.bind(this,"warningbox")} className="showDeviceInfo" />
-                </div>
-                <div className="lists">
-                  {
-                    _.map(datasz,(item,gindex)=>{
-                      let groupname = item.groupname;
-                      return (
-                        _.map(item.fieldnames, (fielditem, key)=>{
-                            let name = p.tc(fielditem.name);
-                            let value = _.get(deviceitem,name,'');
 
-                            return (
-                                <div className="li" key={`${gindex}_${key}`}>
-                                    <div className="name">{name}</div><div className="text">{value}</div>
-                                </div>
-                            )
-                        })
-                      )
-                  })
+            <div className="warningPage devicePage deviceinfoPage">
+
+                <div className="appbar">
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <div className="title">设备详情</div>
+                    <div className="devicebtnlist">
+                        <Button type="primary" icon="clock-circle-o" onClick={()=>this.props.history.push("/historyplay/001")}>轨迹回放</Button>
+                        <Button type="primary" icon="play-circle-o" onClick={()=>this.props.history.push("/devicemessage/001")}>历史警告</Button>
+                    </div>
+                </div>
+
+                <div className="lists deviceinfolist">
+                {
+                    _.map(datasz,(item,gindex)=>{
+                        let groupname = item.groupname;
+                        return (
+                            _.map(item.fieldnames, (fielditem, key)=>{
+                                let name = p.tc(fielditem.name);
+                                let value = _.get(deviceitem,name,'');
+                                return (
+                                    <div className="li" key={`${gindex}_${key}`}>
+                                        <div>
+                                        <div className="name">{name}</div><div className="text">{value}</div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        )
+                    })
                 }
                 </div>
 
@@ -117,7 +131,7 @@ class Page extends React.Component {
 }
 
 const mapStateToProps = ({device:{mapseldeviceid,g_devicesdb}}) => {
-  return {mapseldeviceid,g_devicesdb};
+    return {mapseldeviceid,g_devicesdb, };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

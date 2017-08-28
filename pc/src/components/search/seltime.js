@@ -64,7 +64,7 @@ class DateRange extends React.Component {
                     placeholder="开始日期和时间"
                     onChange={this.onStartChange}
                     onOpenChange={this.handleStartOpenChange}
-                    style={{width:"179px",marginRight : "10px"}}
+                    style={{width: !!this.props.width?`${this.props.width}px`:"180px",marginRight : "10px"}}
                 />
                 <DatePicker
                     disabledDate={this.disabledEndDate}
@@ -75,7 +75,7 @@ class DateRange extends React.Component {
                     onChange={this.onEndChange}
                     open={endOpen}
                     onOpenChange={this.handleEndOpenChange}
-                    style={{width:"180px"}}
+                    style={{width: !!this.props.width?`${this.props.width}px`:"180px"}}
                 />
             </div>
         );

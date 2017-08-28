@@ -9,9 +9,9 @@ import "onsenui/css-components-src/src/onsen-css-components.css";
 import ons from 'onsenui';
 import {SpeedDial,Fab,Toolbar,Icon,SpeedDialItem,Page} from 'react-onsenui';
 import _  from "lodash";
-import {ui_showmenu} from '../actions';
 import Draggable from 'react-draggable';
 import { withRouter } from 'react-router-dom';
+import {ui_showmenu} from '../actions';
 let resizetime = null;
 let hidetexttime = null;
 

@@ -293,12 +293,12 @@
     display: -ms-flexbox;
     display: flex;
     display: -webkit-flex;
-    padding-bottom: 10px;
+    margin-right: 20px;
 }
-.devicebtnlist >div{
-    margin-right: 10px;
+.devicebtnlist >button{
     -webkit-flex-grow: 1;
     flex-grow: 1;
+    margin-left: 10px;
 }
 .messagePage .lists,
 .devicePage .lists{
@@ -735,3 +735,21 @@
 .searchreport >div .ant-input-group{
     width: auto;
 }
+.deviceinfoPage.devicePage .deviceinfolist{
+    padding: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+}
+.deviceinfoPage.devicePage .deviceinfolist .li{
+    width: 50%;
+    border-bottom: none;
+}
+.deviceinfoPage.devicePage .deviceinfolist .li>div{
+    margin:0 10px;
+    border-bottom: 1px solid #EEE;
+    width: 100%
+}
+

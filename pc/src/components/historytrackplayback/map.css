@@ -21,3 +21,135 @@
 .historytrackplayback .formlist{
 	
 }
+
+#historytrackplayback .appbar{
+    background: #daf0e1;
+}
+#historytrackplayback .appbar .title{
+    background: #FFF;
+    color:#333;
+    font-size: 16px;
+    height: 60px;
+    line-height: 60px;
+}
+#historytrackplayback .appbar .day,
+#historytrackplayback .appbar .anddday{
+    background: #FFF;
+    margin-left: 10px;
+    height: 60px;
+    color : #333;
+}
+#historytrackplayback .appbar .anddday{
+    width: 460px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+#historytrackplayback  .appbar .controlbtn span{
+    background: #e95740;
+    color: #FFF;
+    border-radius: 4px;
+    width: 100px;
+    text-align: center;
+}
+#historytrackplayback  .appbar .controlbtn span:first-child{
+    background: #6aba9d;
+    margin-right:10px;
+}
+#historytrackplayback .appbar .anddday {
+    position: relative;
+}
+#historytrackplayback .appbar .anddday .daterange{
+    height: 60px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    position: relative;
+    background: #FFF;
+    position: absolute;
+    left:0;
+    z-index: 1001;
+    opacity: 0;
+
+}
+#historytrackplayback .appbar .anddday:after{
+    content : "";
+    height: 40px;
+    width: 1px;
+    background: #333;
+    position: absolute;
+    left: 50%;
+    top: 10px;
+
+}
+
+#historytrackplayback .appbar .anddday .seldayli{
+    width: 50%;
+    font-size:14px; 
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+    z-index: 100;
+}
+#historytrackplayback .appbar .anddday .seldayli .dayinfo{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    line-height: 20px;
+    width: 150px;
+    margin: 0 10px;
+}
+#historytrackplayback .appbar .anddday .seldayli .dayinfo >span{
+    display: block;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    width: 100%;
+}
+#historytrackplayback .appbar .anddday .seldayli .dayinfo span>span{
+    display: inline-block;
+    width: auto;
+    margin-right: 10px;
+}
+#historytrackplayback .appbar .anddday .seldayli:after{
+    content : "";
+    width: 10px;
+    height: 10px;
+    display: block;
+    border: 1px solid #333;
+    border-top:0;
+    border-left:0;
+    margin-right: 10px;
+    -moz-transform:rotate(45deg);    /* Firefox */
+    -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+}
+
+
+
+

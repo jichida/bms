@@ -18,6 +18,7 @@ import {
   mapplayback_start,
   mapplayback_end
 } from '../../actions';
+import Seltime from '../search/seltime.js';
 
 
 class Page extends React.Component {
@@ -36,70 +37,38 @@ class Page extends React.Component {
         }
         const formstyle={width:"10px",flexGrow:"1"};
         return (
-            <div className="historytrackplayback">
+            <div className="historytrackplayback" id="historytrackplayback">
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
                     <div className="title">设备编号：{DeviceId || ''}</div>
-                    <div className="day">
-                        <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
-                        <div>开始日期</div>
+
+
+                    <div className="anddday">
+                        
+                        <div className="seldayli">
+                            <Day color={"#333"} style={{width: "26px", height : "26px"}} />
+                            <div className="dayinfo">
+                                <span>2017年8月23日</span>
+                                <span><span>星期三</span><span>17:04</span></span>
+                            </div>
+                        </div>
+                        <div className="seldayli">
+                            <Day color={"#333"} style={{width: "26px", height : "26px"}} />
+                            <div className="dayinfo">
+                                <span>2017年8月23日</span>
+                                <span><span>星期三</span><span>17:04</span></span>
+                            </div>
+                        </div>
+                        <Seltime width="225"/>
                     </div>
-                    <div className="day">
-                        <Time color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
-                        <div>开始时间</div>
-                    </div>
-                    <div className="day">
-                        <Day color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
-                        <div>结束日期</div>
-                    </div>
-                    <div className="day">
-                        <Time color={"#FFFFFF"} style={{width: "40px", height : "40px"}} />
-                        <div>结束时间</div>
-                    </div>
+
+                    
                     <div className="controlbtn">
                         <span>开始</span>
                         <span>结束</span>
                     </div>
                 </div>
 
-                <AppBar
-                    title={<span className="title">轨迹回放</span>}
-                    iconElementLeft={<div><i className="fa fa-angle-left back" aria-hidden="true" onTouchTap={this.props.back}></i></div>}
-                    iconElementRight={
-                        <IconButton onTouchTap={this.props.back}>
-                            <NavigationClose color={grey900}/>
-                        </IconButton>
-                    }
-                    style={{
-                        backgroundColor: "#FFF",
-                        paddingLeft:"10px",
-                        paddingRight:"0",
-                    }}
-                    className="appbar"
-                    iconStyleLeft={{
-                        marginTop: "15px"
-                    }}
-                    iconStyleRight={{
-                        marginRight: "20px"
-                    }}
-                    />
-                <div className="set">
-                    <div>设备编号：{DeviceId || ''}</div>
-                    <div className="formlist">
-                        <div>
-                            <DatePicker hintText="开始日期" style={formstyle} />
-                            <TimePicker hintText="开始时间" style={formstyle} />
-                        </div>
-                        <div>
-                            <DatePicker hintText="结束日期" style={formstyle} />
-                            <TimePicker hintText="结束时间" style={formstyle} />
-                        </div>
-                    </div>
-                    <div className="btnlist">
-                        <RaisedButton onTouchTap={this.onClickStart.bind(this)} label="开始" primary={true} style={{marginRight:"10px"}} />
-                        <RaisedButton onTouchTap={this.onClickEnd.bind(this)} label="结束" secondary={true} style={{marginRight:"10px"}} />
-                    </div>
-                </div>
                 <Map />
             </div>
         );

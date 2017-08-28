@@ -25,7 +25,7 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
-import TreeSearchreport from './search/searchreport';
+import TreeSearchreport from './search/searchdevicemessage';
 import {
   ui_selcurdevice_request,
   searchbatteryalarm_request
@@ -50,7 +50,7 @@ class MessageAllDevice extends React.Component {
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
-                    <div className="title">新消息</div>
+                    <div className="title">设备23423425的历史消息</div>
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)}/>

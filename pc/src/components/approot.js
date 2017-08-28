@@ -11,10 +11,13 @@ import Datatable from './datatable/index.js';
 import Message from './message.js';
 import Device from './device.js';
 import Deviceinfo from './deviceinfo.js';
+import Devicemessage from './devicemessage.js';
+import Historyplay from './historytrackplayback';
 
 import Login from './login/login.js';
 import MapPage from './admincontent';
 import WeuiTool from './tools/weuitool';
+
 
 
 import {requireAuthentication} from './requireauthentication';
@@ -54,6 +57,8 @@ class AppRoot extends React.Component {
                     <Route path="/message" component={Message} />
                     <Route path="/device" component={Device} />
                     <Route path="/deviceinfo/:id" component={Deviceinfo} />
+                    <Route path="/devicemessage/:id" component={Devicemessage} />
+                    <Route path="/historyplay/:id" component={Historyplay} />
                 </Switch>
                 <div>
                     <Index history={this.props.history}/>
