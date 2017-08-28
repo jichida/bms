@@ -39,7 +39,7 @@ class Page extends React.Component {
         return (
             <div className="historytrackplayback" id="historytrackplayback">
                 <div className="appbar">
-                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack();}}></i>
                     <div className="title">设备编号：{DeviceId || ''}</div>
 
 
