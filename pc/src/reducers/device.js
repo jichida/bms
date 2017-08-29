@@ -251,10 +251,11 @@ const device = createReducer({
       return getgroupnamebydevice(dev)._id;
     });
     _.map(devicesgroups,(csz,ckey)=>{
+        let name = _.get(state.groups[ckey],'name','');
         let node = {
           id:ckey,
           type:'group_leaf',
-          name:`${state.groups[ckey].name}(${csz.length})`,
+          name:`${name}(${csz.length})`,
           children:[],
           toggled:false,
         };

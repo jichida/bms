@@ -2,7 +2,7 @@ import {
     common_err,
 
     login_request,
-    login_result,//这个result特殊，需要判断是否登录
+    md_login_result,//这个result特殊，需要判断是否登录
 
     logout_request,
     logout_result,
@@ -43,7 +43,7 @@ let recvmessagetoresultpair = {
 
   'common_err':common_err,
 
-  'login_result':login_result,
+  'login_result':md_login_result,
   'logout_result':logout_result,
   'querydevicegroup_result':querydevicegroup_result,
   'querydevice_result':querydevice_result,
