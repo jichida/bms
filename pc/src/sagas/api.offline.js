@@ -26,7 +26,11 @@ import {
 
   serverpush_devicegeo,
   serverpush_devicegeo_sz,
-  serverpush_devicealarm
+  serverpush_devicealarm,
+
+  serverpush_devicegeo_sz_request,
+  serverpush_devicegeo_sz_result,
+  start_serverpush_devicegeo_sz
 } from '../actions';
 import jsondatareadonly from '../test/bmsdata1.json';
 import jsondatatrack from '../test/1602010008.json';
@@ -105,6 +109,8 @@ export function* apiflow(){//仅执行一次
 
   yield takeEvery(`${querydevice_request}`, function*(action) {
      yield put(querydevice_result({list:jsondata}));
+
+    //  yield put(start_serverpush_devicegeo_sz({}));
   });
 
   yield takeEvery(`${searchbattery_request}`, function*(action) {
@@ -172,39 +178,56 @@ export function* apiflow(){//仅执行一次
    });
 
   //  模拟服务端推送消息
-  let enable_serverpush_device = false;
-  if(enable_serverpush_device){
-    yield fork(function*(){
-      yield call(delay,10000);
-      while(true){
-        const list = _.sampleSize(jsondata, 10000);
-        let items = [];
-        for(let i = 0;i < list.length; i++){
-          let item = {...list[i]};
-          let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,10*1000);
-          item.LastHistoryTrack.Latitude = locationsz[1];
-          item.LastHistoryTrack.Longitude  =  locationsz[0];
-          let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
-          const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-          item.locz = wgs84togcj02;
-          items.push(item);
-        };
-        yield put(serverpush_devicegeo_sz({list:items}));
-        yield call(delay,1000);
-      }
-    });
-  }
+  yield takeEvery(`${serverpush_devicegeo_sz_request}`, function*(action) {
+    const list = _.sampleSize(jsondata, 10000);
+    let items = [];
+    for(let i = 0;i < list.length; i++){
+      let item = {...list[i]};
+      let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,10*1000);
+      item.LastHistoryTrack.Latitude = locationsz[1];
+      item.LastHistoryTrack.Longitude  =  locationsz[0];
+      let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+      const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+      item.locz = wgs84togcj02;
+      items.push(item);
+    };
+    yield put(serverpush_devicegeo_sz_result({list:items}));
+  });
 
-  let enable_serverpush_alarm = false;
-  if(enable_serverpush_alarm){
-    yield fork(function*(){
-      yield call(delay,10000);
-      while(true){
-        //产生模拟数据
-        //发送模拟数据
-      }
-    });
-  }
+
+  // let enable_serverpush_device = false;
+  // if(enable_serverpush_device){
+  //   yield fork(function*(){
+  //     yield call(delay,10000);
+  //     while(true){
+  //       const list = _.sampleSize(jsondata, 10000);
+  //       let items = [];
+  //       for(let i = 0;i < list.length; i++){
+  //         let item = {...list[i]};
+  //         let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,10*1000);
+  //         item.LastHistoryTrack.Latitude = locationsz[1];
+  //         item.LastHistoryTrack.Longitude  =  locationsz[0];
+  //         let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+  //         const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+  //         item.locz = wgs84togcj02;
+  //         items.push(item);
+  //       };
+  //       yield put(serverpush_devicegeo_sz({list:items}));
+  //       yield call(delay,1000);
+  //     }
+  //   });
+  // }
+  //
+  // let enable_serverpush_alarm = false;
+  // if(enable_serverpush_alarm){
+  //   yield fork(function*(){
+  //     yield call(delay,10000);
+  //     while(true){
+  //       //产生模拟数据
+  //       //发送模拟数据
+  //     }
+  //   });
+  // }
   //serverpush_devicealarm
 
 }

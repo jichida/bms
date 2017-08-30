@@ -1,4 +1,5 @@
-import { put,call,takeEvery} from 'redux-saga/effects';
+import { put,call,takeEvery,takeLatest,fork,take,race} from 'redux-saga/effects';
+import {delay} from 'redux-saga';
 import {
   common_err,
 
@@ -14,6 +15,14 @@ import {
 
   md_querydeviceinfo_result,
   querydeviceinfo_result,
+
+  serverpush_devicegeo_sz_request,
+  serverpush_devicegeo_sz_result,
+  serverpush_devicegeo_sz,
+
+  start_serverpush_devicegeo_sz,
+  stop_serverpush_devicegeo_sz,
+
 } from '../actions';
 import { push,goBack,go,replace } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import _ from 'lodash';
@@ -21,6 +30,26 @@ import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 
 export function* wsrecvsagaflow() {
+  yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {
+      yield fork(function*(){
+        while(true){
+          const { resstop, timeout } = yield race({
+             resstop: take(`${stop_serverpush_devicegeo_sz}`),
+             timeout: call(delay, 1000)
+          });
+          if(!!resstop){
+            break;
+          }
+          yield put(serverpush_devicegeo_sz_request({}));
+        }
+      });
+  });
+
+
+  yield takeEvery(`${serverpush_devicegeo_sz_result}`, function*(action) {
+      let {payload:result} = action;
+      yield put(serverpush_devicegeo_sz(result));
+  });
 
   yield takeEvery(`${md_login_result}`, function*(action) {
       let {payload:result} = action;
@@ -85,10 +114,12 @@ export function* wsrecvsagaflow() {
           }
         }
          yield put(querydeviceinfo_result(deviceinfo));
+         yield put(start_serverpush_devicegeo_sz({}));
        }
        catch(e){
          console.log(e);
        }
 
   });
+
 }

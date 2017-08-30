@@ -47,22 +47,24 @@ class TreeNode extends React.Component {
         const decorators = this.decorators();
         const animations = this.animations();
         const {gmap_acode_treename,gmap_acode_treecount} = this.props;
-        let isenable = true;
-        if(node.type !== 'device'){
-          if(treeviewstyle === 'byloc'){
-            let nodecount = gmap_acode_treecount[node.adcode];
-            isenable = !!nodecount && nodecount > 0;
+        if(!!gmap_acode_treename && !!gmap_acode_treecount){
+          let isenable = true;
+          if(node.type !== 'device'){
+            if(treeviewstyle === 'byloc'){
+              let nodecount = gmap_acode_treecount[node.adcode];
+              isenable = !!nodecount && nodecount > 0;
+            }
           }
-        }
 
-        if(isenable){
-          return (
-              <li ref={ref => this.topLevelRef = ref}
-                  style={style.base}>
-                  {this.renderHeader(decorators, animations)}
-                  {this.renderDrawer(decorators, animations)}
-              </li>
-          );
+          if(isenable){
+            return (
+                <li ref={ref => this.topLevelRef = ref}
+                    style={style.base}>
+                    {this.renderHeader(decorators, animations)}
+                    {this.renderDrawer(decorators, animations)}
+                </li>
+            );
+          }
         }
         return null;
     }
