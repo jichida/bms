@@ -3,8 +3,7 @@ import {
   notify_socket_connected,
   getsystemconfig_request,
   loginwithtoken_request,
-
-
+  
   querydevicegroup_request
 } from '../actions';
 
@@ -18,7 +17,7 @@ export function* socketflow(){//仅执行一次
         if (!!token) {
           yield put(loginwithtoken_request({token}));
         }
-        
+
       }
     });
 

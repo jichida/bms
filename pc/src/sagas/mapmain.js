@@ -805,6 +805,7 @@ export function* createmapmainflow(){
             return o.DeviceId === mapseldeviceid;
           }));
           if(!!deviceitem){
+            console.log(`当前设备发生了变化:${JSON.stringify(deviceitem)}`)
             //请求
             yield put(querydeviceinfo_request({query:{DeviceId:mapseldeviceid}}));
             const {payload} = yield take(`${querydeviceinfo_result}`);
@@ -815,6 +816,7 @@ export function* createmapmainflow(){
             // g_devicesdb[mapseldeviceid] = deviceinfo;
 
             let locz = deviceinfo.locz;
+            console.log(`开始移动==>${JSON.stringify(locz)}`)
             const infooptions = getpopinfowindowstyle(deviceinfo);
             infoWindow.setInfoTitle(infooptions.infoTitle);
             infoWindow.setInfoBody(infooptions.infoBody);

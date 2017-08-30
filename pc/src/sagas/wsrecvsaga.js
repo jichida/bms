@@ -12,6 +12,7 @@ import {
   querydevicegroup_result,
 
   querydevice_request,
+  querydevice_result,
 
   md_querydeviceinfo_result,
   querydeviceinfo_result,
@@ -28,8 +29,14 @@ import { push,goBack,go,replace } from 'react-router-redux';//https://github.com
 import _ from 'lodash';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
+import {g_devicesdb} from './mapmain';
 
 export function* wsrecvsagaflow() {
+  yield takeLatest(`${querydevice_result}`, function*(action) {
+    yield put(start_serverpush_devicegeo_sz({}));
+  });
+
+
   yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {
       yield fork(function*(){
         while(true){
@@ -40,7 +47,13 @@ export function* wsrecvsagaflow() {
           if(!!resstop){
             break;
           }
+          //
+          console.log(`开始获取变化数据...`)
           yield put(serverpush_devicegeo_sz_request({}));
+          yield race({
+            resstop: take(`${serverpush_devicegeo_sz_result}`),
+            timeout: call(delay, 10000)
+         });
         }
       });
   });
@@ -90,6 +103,7 @@ export function* wsrecvsagaflow() {
 
   yield takeEvery(`${md_querydeviceinfo_result}`, function*(action) {
     let {payload:deviceinfo} = action;
+    console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
     try{
         if(!!deviceinfo){
           let isget = true;
@@ -113,8 +127,8 @@ export function* wsrecvsagaflow() {
             deviceinfo = {...deviceinfo,...addr};
           }
         }
+         g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
          yield put(querydeviceinfo_result(deviceinfo));
-         yield put(start_serverpush_devicegeo_sz({}));
        }
        catch(e){
          console.log(e);
