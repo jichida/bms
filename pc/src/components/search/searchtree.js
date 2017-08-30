@@ -59,7 +59,7 @@ class TreeSearchBattery extends React.Component {
     }
 
     handleChangeGroupname = (e,key)=>{
-        
+
         const {groupidlist} = this.props;
         if(key === 0){
           this.setState({groupname: ''});
@@ -70,11 +70,11 @@ class TreeSearchBattery extends React.Component {
         }
     }
     handleChangeDevicefield = (e,key)=>{
-        
+
         this.setState({devicefield: selitem_devicefields[key].value});
     }
     handleChangeAlarmfiled = (e,key)=>{
-        
+
         this.setState({alarmfield: selitem_alarmfields[key].value});
     }
 
@@ -96,7 +96,7 @@ class TreeSearchBattery extends React.Component {
       if(this.state.alarmfield !== '' && this.state.searchtxtforalarm !== ''){
         query.queryalarm[this.state.alarmfield] = this.state.searchtxtforalarm;
       }
-      
+
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }
@@ -180,6 +180,12 @@ class TreeSearchBattery extends React.Component {
                         <Option value="0" >严重告警</Option>
                         <Option value="1" >紧急告警</Option>
                         <Option value="2" >一般告警</Option>
+                    </Select>
+
+                    <Select defaultValue={"是否在线"} style={{ width: 370 }}>
+                        <Option value="0" >全部</Option>
+                        <Option value="1" >在线</Option>
+                        <Option value="2" >离线</Option>
                     </Select>
 
                     <Button type="primary" icon="search" onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
