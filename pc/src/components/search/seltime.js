@@ -5,15 +5,17 @@
 import React from 'react';
 import { DatePicker} from 'antd';
 
+
 class DateRange extends React.Component {
-    state = {
-        startValue: null,
-        endValue: null,
-        endOpen: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+          endOpen: false,
+        }
+    }
 
     disabledStartDate = (startValue) => {
-        const endValue = this.state.endValue;
+        const endValue = this.props.endDate;
         if (!startValue || !endValue) {
             return false;
         }
@@ -21,7 +23,7 @@ class DateRange extends React.Component {
     }
 
     disabledEndDate = (endValue) => {
-        const startValue = this.state.startValue;
+        const startValue = this.props.startDate;
         if (!endValue || !startValue) {
             return false;
         }
@@ -29,17 +31,20 @@ class DateRange extends React.Component {
     }
 
     onChange = (field, value) => {
-        this.setState({
-            [field]: value,
-        });
+        let {startDate,endDate} = this.props;
+        let obj = {startDate,endDate};
+        obj[field] = value;
+        if(!!this.props.onChangeSelDate){
+          this.props.onChangeSelDate(obj.startDate,obj.endDate);
+        }
     }
 
     onStartChange = (value) => {
-        this.onChange('startValue', value);
+        this.onChange('startDate', value);
     }
 
     onEndChange = (value) => {
-        this.onChange('endValue', value);
+        this.onChange('endDate', value);
     }
 
     handleStartOpenChange = (open) => {
@@ -53,14 +58,15 @@ class DateRange extends React.Component {
     }
 
     render() {
-        const { startValue, endValue, endOpen } = this.state;
+        const {endOpen} = this.state;
+        const { startDate, endDate } = this.props;
         return (
             <div className="daterange">
                 <DatePicker
                     disabledDate={this.disabledStartDate}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
-                    value={startValue}
+                    value={startDate}
                     placeholder="开始日期和时间"
                     onChange={this.onStartChange}
                     onOpenChange={this.handleStartOpenChange}
@@ -70,7 +76,7 @@ class DateRange extends React.Component {
                     disabledDate={this.disabledEndDate}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
-                    value={endValue}
+                    value={endDate}
                     placeholder="结束日期和时间"
                     onChange={this.onEndChange}
                     open={endOpen}

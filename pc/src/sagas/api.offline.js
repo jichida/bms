@@ -179,7 +179,7 @@ export function* apiflow(){//仅执行一次
 
   //  模拟服务端推送消息
   yield takeEvery(`${serverpush_devicegeo_sz_request}`, function*(action) {
-    const list = _.sampleSize(jsondata, 10000);
+    const list = _.sampleSize(jsondata, 1);
     let items = [];
     for(let i = 0;i < list.length; i++){
       let item = {...list[i]};

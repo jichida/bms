@@ -19,12 +19,53 @@ import {
   mapplayback_end
 } from '../../actions';
 import Seltime from '../search/seltime.js';
+import moment from 'moment';
 
+
+const fGetCurrentWeek=function(m){
+        let sWeek=m.format('dddd');
+        switch (sWeek){
+            case 'Monday': sWeek='星期一';
+                break;
+            case 'Tuesday': sWeek='星期二';
+                break;
+            case 'Wednesday': sWeek='星期三';
+                break;
+            case 'Thursday': sWeek='星期四';
+                break;
+            case 'Friday': sWeek='星期五';
+                break;
+            case 'Saturday': sWeek='星期六';
+                break;
+            case 'Sunday': sWeek='星期日';
+                break;
+            default:
+                break;
+        }
+        return sWeek;
+    }
 
 class Page extends React.Component {
+
+      constructor(props) {
+          super(props);
+          this.state = {
+            startDate:moment(),
+            endDate:moment(),
+          }
+      }
+
+    onChangeSelDate(startDate,endDate){
+      this.setState({
+        startDate,
+        endDate
+      });
+    }
+
     onClickStart(){
       const {mapseldeviceid,g_devicesdb} = this.props;
-      this.props.dispatch(mapplayback_start({isloop:false,speed:5000,query:{DeviceId:mapseldeviceid}}));
+      const {startDate,endDate} = this.state;
+      this.props.dispatch(mapplayback_start({isloop:false,speed:5000,query:{DeviceId:mapseldeviceid,startDate,endDate}}));
     }
     onClickEnd(){
       this.props.dispatch(mapplayback_end({}));
@@ -37,6 +78,8 @@ class Page extends React.Component {
           DeviceId = deviceitem.DeviceId;
         }
         const formstyle={width:"10px",flexGrow:"1"};
+        const startdate_moment = this.state.startDate;
+        const enddate_moment = this.state.endDate;
         return (
             <div className="historytrackplayback" id="historytrackplayback">
                 <div className="appbar">
@@ -46,18 +89,21 @@ class Page extends React.Component {
                         <div className="seldayli">
                             <Day color={"#333"} style={{width: "26px", height : "26px"}} />
                             <div className="dayinfo">
-                                <span>2017年8月23日</span>
-                                <span><span>星期三</span><span>17:04</span></span>
+                                <span>{startdate_moment.format("YYYY年MM月DD日")}</span>
+                                <span><span>{fGetCurrentWeek(startdate_moment)}</span><span>{startdate_moment.format("HH:mm")}</span></span>
                             </div>
                         </div>
                         <div className="seldayli">
                             <Day color={"#333"} style={{width: "26px", height : "26px"}} />
                             <div className="dayinfo">
-                                <span>2017年8月23日</span>
-                                <span><span>星期三</span><span>17:04</span></span>
+                                <span>{enddate_moment.format("YYYY年MM月DD日")}</span>
+                                <span><span>{fGetCurrentWeek(enddate_moment)}</span><span>{enddate_moment.format("HH:mm")}</span></span>
                             </div>
                         </div>
-                        <Seltime width="225"/>
+                        <Seltime width="225"
+                          startDate = {this.state.startDate}
+                          endDate = {this.state.endDate}
+                         onChangeSelDate={this.onChangeSelDate.bind(this)}/>
                     </div>
 
 
