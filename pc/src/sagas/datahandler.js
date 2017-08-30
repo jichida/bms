@@ -23,6 +23,7 @@ import {
     querydevice_result,
 
     querydeviceinfo_request,
+    md_querydeviceinfo_result,
     querydeviceinfo_result,
 
     queryrealtimealarm_request,
@@ -30,6 +31,9 @@ import {
 
     queryhistorytrack_request,
     queryhistorytrack_result,
+
+    searchbattery_request,
+    searchbattery_result,
 
   } from '../actions';
 
@@ -47,10 +51,10 @@ let recvmessagetoresultpair = {
   'logout_result':logout_result,
   'querydevicegroup_result':querydevicegroup_result,
   'querydevice_result':querydevice_result,
-  'querydeviceinfo_result':querydeviceinfo_result,
+  'querydeviceinfo_result':md_querydeviceinfo_result,
   'queryrealtimealarm_result':queryrealtimealarm_result,
   'queryhistorytrack_result':queryhistorytrack_result,
-
+  'searchbattery_result':searchbattery_result,
 };
 
 //非验证发送接口
@@ -62,14 +66,11 @@ let sendmessagefnsz = {
   'getnotifymessage':`${getnotifymessage_request}`,
   'getnotifymessageone':`${getnotifymessageone_request}`,
 
-  //以下代码正式版本中删除
-  'querydevice':`${querydevice_request}`,
-  'querydeviceinfo':`${querydeviceinfo_request}`,
-
 };
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'searchbattery':`${searchbattery_request}`,
   'querydevice':`${querydevice_request}`,
   'querydeviceinfo':`${querydeviceinfo_request}`,
   'queryrealtimealarm':`${queryrealtimealarm_request}`,

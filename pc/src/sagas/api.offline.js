@@ -22,6 +22,7 @@ import {
 
   querydeviceinfo_request,
   querydeviceinfo_result,
+  md_querydeviceinfo_result,
 
   serverpush_devicegeo,
   serverpush_devicegeo_sz,
@@ -74,29 +75,8 @@ export function* apiflow(){//仅执行一次
     // const getdevices = (state)=>{return state.device};
     // const {g_devicesdb} = yield select(getdevices);
     let deviceinfo = g_devicesdb[DeviceId];
-    if(!!deviceinfo){
-      let isget = true;
-      const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-      if (!LastHistoryTrack) {
-          isget = false;
-      }
-      else{
-        if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-          isget = false;
-        }
-      }
-      if(isget){
-        let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-        const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-        deviceinfo.locz = wgs84togcj02;
-      }
 
-      if(!!deviceinfo.locz){
-        const addr = yield call(getgeodata,deviceinfo);
-        deviceinfo = {...deviceinfo,...addr};
-      }
-    }
-     yield put(querydeviceinfo_result(deviceinfo));
+     yield put(md_querydeviceinfo_result(deviceinfo));
   });
 
   yield takeEvery(`${getsystemconfig_request}`, function*(action) {
