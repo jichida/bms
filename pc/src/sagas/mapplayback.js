@@ -29,7 +29,7 @@ const loczero = L.latLng(0,0);
 let gPathSimplifier,pathSimplifierIns;
 const CreateMapUI =  (map)=>{
     return new Promise((resolve,reject) => {
-         
+
         //加载PathSimplifier，loadUI的路径参数为模块名中 'ui/' 之后的部分
          window.AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier)=> {
           gPathSimplifier = PathSimplifier;
@@ -108,7 +108,7 @@ const startplayback = ({isloop,speed})=>{
 }
 
 let createmap =({mapcenterlocation,zoomlevel})=> {
-  
+
   return new Promise((resolve,reject) => {
     if(!mapcenterlocation.equals(loczero) && !window.amaptrackhistoryplayback ){
       let center = new window.AMap.LngLat(mapcenterlocation.lng,mapcenterlocation.lat);
@@ -171,7 +171,7 @@ const getmapstate_curdevice = (state) => {
 }
 
 export function* createmaptrackhistoryplaybackflow(){
-    
+
     //创建地图
     yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
@@ -180,7 +180,7 @@ export function* createmaptrackhistoryplaybackflow(){
           while(!window.AMap || !window.AMapUI){
             yield call(delay,500);
           }
-          
+
           //take
           let mapcenterlocation = yield select(getmapstate_curdevice);
           const zoomlevel = 16;
@@ -209,8 +209,8 @@ export function* createmaptrackhistoryplaybackflow(){
         }
       }
       catch(e){
-        
-        
+
+
       }
 
     });
@@ -238,16 +238,16 @@ export function* createmaptrackhistoryplaybackflow(){
           }
         }
         catch(e){
-          
-          
+
+
         }
     });
 
     //mapplayback_start
     yield  takeLatest(`${mapplayback_start}`,function*(actionstart){
       try{
-          const {payload:{isloop,speed}} = actionstart;
-          yield put(queryhistorytrack_request({}));
+          const {payload:{isloop,speed,query}} = actionstart;
+          yield put(queryhistorytrack_request({query}));
           const {payload:{list}} = yield take(`${queryhistorytrack_result}`);
           let path = [];
           let latlngs = [];
@@ -279,8 +279,8 @@ export function* createmaptrackhistoryplaybackflow(){
 
         }
         catch(e){
-          
-          
+
+
         }
     });
     //mapplayback_end
@@ -292,8 +292,8 @@ export function* createmaptrackhistoryplaybackflow(){
         }
       }
       catch(e){
-        
-        
+
+
       }
     });
 }

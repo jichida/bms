@@ -1,6 +1,7 @@
 import {
     common_err,
 
+    loginwithtoken_request,
     login_request,
     md_login_result,//这个result特殊，需要判断是否登录
 
@@ -60,8 +61,9 @@ let recvmessagetoresultpair = {
 //非验证发送接口
 let sendmessagefnsz = {
   'logout':`${logout_request}`,
+  'loginwithtoken':`${loginwithtoken_request}`,
   'login':`${login_request}`,
-  'querydevicegroup':`${querydevicegroup_request}`,
+
   'getsystemconfig':`${getsystemconfig_request}`,
   'getnotifymessage':`${getnotifymessage_request}`,
   'getnotifymessageone':`${getnotifymessageone_request}`,
@@ -70,6 +72,7 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'querydevicegroup':`${querydevicegroup_request}`,
   'searchbattery':`${searchbattery_request}`,
   'querydevice':`${querydevice_request}`,
   'querydeviceinfo':`${querydeviceinfo_request}`,

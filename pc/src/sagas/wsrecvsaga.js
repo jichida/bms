@@ -26,6 +26,7 @@ export function* wsrecvsagaflow() {
       let {payload:result} = action;
       yield put(login_result(result));
       if(result.loginsuccess){
+        localStorage.setItem('bms_pc_token',result.token);
         yield put(querydevicegroup_request({}));
       }
   });

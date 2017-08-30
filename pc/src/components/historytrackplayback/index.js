@@ -23,7 +23,8 @@ import Seltime from '../search/seltime.js';
 
 class Page extends React.Component {
     onClickStart(){
-      this.props.dispatch(mapplayback_start({isloop:false,speed:5000}));
+      const {mapseldeviceid,g_devicesdb} = this.props;
+      this.props.dispatch(mapplayback_start({isloop:false,speed:5000,query:{DeviceId:mapseldeviceid}}));
     }
     onClickEnd(){
       this.props.dispatch(mapplayback_end({}));
@@ -41,10 +42,7 @@ class Page extends React.Component {
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack();}}></i>
                     <div className="title">设备编号：{DeviceId || ''}</div>
-
-
                     <div className="anddday">
-                        
                         <div className="seldayli">
                             <Day color={"#333"} style={{width: "26px", height : "26px"}} />
                             <div className="dayinfo">
@@ -62,10 +60,10 @@ class Page extends React.Component {
                         <Seltime width="225"/>
                     </div>
 
-                    
+
                     <div className="controlbtn">
-                        <span>开始</span>
-                        <span>结束</span>
+                        <span onClick={this.onClickStart.bind(this)}>开始</span>
+                        <span onClick={this.onClickEnd.bind(this)}>结束</span>
                     </div>
                 </div>
 

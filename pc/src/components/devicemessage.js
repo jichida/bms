@@ -49,7 +49,7 @@ class MessageAllDevice extends React.Component {
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
                 <div className="appbar">
-                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                     <div className="title">设备23423425的历史消息</div>
                 </div>
                 <div className="TreeSearchBattery">

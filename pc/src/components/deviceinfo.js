@@ -96,11 +96,11 @@ class Page extends React.Component {
             <div className="warningPage devicePage deviceinfoPage">
 
                 <div className="appbar">
-                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                     <div className="title">设备详情</div>
                     <div className="devicebtnlist">
-                        <Button type="primary" icon="play-circle-o" onClick={()=>this.props.history.push("/historyplay/001")}>轨迹回放</Button>
-                        <Button type="primary" icon="clock-circle-o" onClick={()=>this.props.history.push("/devicemessage/001")}>历史警告</Button>
+                        <Button type="primary" icon="play-circle-o" onClick={()=>this.props.history.push(`/historyplay/${mapseldeviceid}`)}>轨迹回放</Button>
+                        <Button type="primary" icon="clock-circle-o" onClick={()=>this.props.history.push(`/devicemessage/${mapseldeviceid}`)}>历史警告</Button>
                     </div>
                 </div>
 
@@ -135,5 +135,3 @@ const mapStateToProps = ({device:{mapseldeviceid,g_devicesdb}}) => {
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);
-
-
