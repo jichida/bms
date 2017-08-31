@@ -12,8 +12,8 @@ import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import Seltime from './seltime.js';
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
-import TreeSelect from "../trees/tree_select.js";
-
+import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
+import TreeselectByloc from "../trees/treeselect_byloc.js";
 const InputGroup = Input.Group;
 const Option = Select.Option;
 const selitem_devicefields = [
@@ -58,7 +58,7 @@ class TreeSearchBattery extends React.Component {
         this.setState({searchtxtforalarm:v});
     }
 
-    handleChangeGroupname = (e,key)=>{    
+    handleChangeGroupname = (e,key)=>{
         const {groupidlist} = this.props;
         if(key === 0){
           this.setState({groupname: ''});
@@ -69,11 +69,11 @@ class TreeSearchBattery extends React.Component {
         }
     }
     handleChangeDevicefield = (e,key)=>{
-        
+
         this.setState({devicefield: selitem_devicefields[key].value});
     }
     handleChangeAlarmfiled = (e,key)=>{
-        
+
         this.setState({alarmfield: selitem_alarmfields[key].value});
     }
 
@@ -95,7 +95,7 @@ class TreeSearchBattery extends React.Component {
       if(this.state.alarmfield !== '' && this.state.searchtxtforalarm !== ''){
         query.queryalarm[this.state.alarmfield] = this.state.searchtxtforalarm;
       }
-      
+
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }
@@ -134,8 +134,8 @@ class TreeSearchBattery extends React.Component {
 
                     <Seltime />
 
-                    <TreeSelect placeholder={"请选择分组"} width={200}/>
-                    <TreeSelect placeholder={"请选择地区"} width={200}/>
+                    <TreeSelectBygroup placeholder={"请选择分组"} width={200}/>
+                    <TreeselectByloc placeholder={"请选择地区"} width={200}/>
 
                     <InputGroup compact>
                         <Select defaultValue="选择编号类型" style={{ width: 120 }}>
@@ -167,7 +167,7 @@ class TreeSearchBattery extends React.Component {
                         />
                     </InputGroup>
 
-                    
+
 
                     <Select defaultValue={"选择警告级别"}>
                         <Option value="0" >严重告警</Option>
