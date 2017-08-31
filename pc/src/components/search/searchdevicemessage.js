@@ -13,6 +13,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Seltime from './seltime.js';
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
 import TreeSelect from "../trees/tree_select.js";
+import moment from 'moment';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -41,104 +42,53 @@ const selitem_alarmfields = [
     },
 ];
 class TreeSearchBattery extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            groupname:  '',
-            devicefield : '',
-            alarmfield : '',
-            searchtxtfordevice:'',
-            searchtxtforalarm:''
-        };
-    }
-    handleChangeSearchtxtfordevice(e,v){
-        this.setState({searchtxtfordevice:v});
-    }
-    handleChangeSearchtxtforalaram(e,v){
-        this.setState({searchtxtforalarm:v});
-    }
-
-    handleChangeGroupname = (e,key)=>{    
-        const {groupidlist} = this.props;
-        if(key === 0){
-          this.setState({groupname: ''});
-        }
-        else{
-          let groupid = groupidlist[key-1];
-          this.setState({groupname:groupid});
-        }
-    }
-    handleChangeDevicefield = (e,key)=>{
-        
-        this.setState({devicefield: selitem_devicefields[key].value});
-    }
-    handleChangeAlarmfiled = (e,key)=>{
-        
-        this.setState({alarmfield: selitem_alarmfields[key].value});
-    }
-
-    onClickQuery=()=>{
-      let query = {
-        querydevice:{},
-        queryalarm:{}
+  constructor(props) {
+      super(props);
+      this.state = {
+        alarmlevel:'',
+        startDate:moment(),
+        endDate:moment(),
       };
-      if(this.state.groupname !== ''){
-        query.querydevice =
-              {
-                ...query.querydevice,
-                groupid:this.state.groupname
-              };
-      }
-      if(this.state.devicefield !== '' && this.state.searchtxtfordevice !== ''){
-        query.querydevice[this.state.devicefield] = this.state.searchtxtfordevice;
-      }
-      if(this.state.alarmfield !== '' && this.state.searchtxtforalarm !== ''){
-        query.queryalarm[this.state.alarmfield] = this.state.searchtxtforalarm;
-      }
-      
-      if(!!this.props.onClickQuery){
-        this.props.onClickQuery({query});
-      }
-    }
-    render(){
-        let hintTextBattery = '';
-        let ishiddenbattery = false;
-        if(this.state.devicefield === ''){
-            ishiddenbattery = true;
-        }
-        else if(this.state.devicefield === 'RdbNo'){
-            hintTextBattery = '输入RDB编号';
-        }
-        else if(this.state.devicefield === 'PackNo'){
-            hintTextBattery = 'BMU PACK号';
-        }
-        else if(this.state.devicefield === 'PnNo'){
-            hintTextBattery = '设备PN料号';
-        }
+  }
+  onChangeSelDate(startDate,endDate){
+    this.setState({
+      startDate,
+      endDate
+    });
+  }
 
-        let hintTextAlarm = '';
-        let ishiddenalarm = false;
-        if(this.state.alarmfield === ''){
-            ishiddenalarm = true;
-        }
-        else if(this.state.alarmfield === 'ALARM_H'){
-            hintTextAlarm = '警告代码';
-        }
-        else if(this.state.alarmfield === 'ALARM_L'){
-            hintTextAlarm = '故障代码';
-        }
-        const {groups,groupidlist} = this.props;
+  onChange_alarmlevel(alarmlevel){
+    this.setState({alarmlevel});
+  }
+  onClickQuery=()=>{
+    let query = {
+      queryalarm:{
+      }
+    };
+    query.queryalarm['startDate'] = this.state.startDate;
+    query.queryalarm['endDate'] = this.state.endDate;
+    if(this.state.alarmlevel !== ''){
+      query.queryalarm['alarmlevel'] = this.state.alarmlevel;
+    }
+    console.log(`【searchdevicemessage】查询条件:${JSON.stringify(query)}`);
+    if(!!this.props.onClickQuery){
+      this.props.onClickQuery({query});
+    }
+  }
+    render(){
+
         return (
             <div className="searchreport" style={{textAlign: "center"}}>
                 <div className="i">
-
-                    <Seltime />
-                    <Select defaultValue={"选择警告级别"}>
-                        <Option value="0" >严重告警</Option>
-                        <Option value="1" >紧急告警</Option>
-                        <Option value="2" >一般告警</Option>
-                    </Select>
-
+                    <Seltime
+                      startDate = {this.state.startDate}
+                      endDate = {this.state.endDate}
+                     onChangeSelDate={this.onChangeSelDate.bind(this)}/>
+                     <Select defaultValue={"选择警告级别"}   onChange={this.onChange_alarmlevel.bind(this)}>
+                         <Option value="red" >严重告警</Option>
+                         <Option value="orange" >紧急告警</Option>
+                         <Option value="yellow" >一般告警</Option>
+                     </Select>
                 </div>
                 <div className="b">
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
@@ -149,7 +99,5 @@ class TreeSearchBattery extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{groups,groupidlist}}) => {
-    return {groups,groupidlist};
-}
-export default connect(mapStateToProps)(TreeSearchBattery);
+
+export default connect()(TreeSearchBattery);

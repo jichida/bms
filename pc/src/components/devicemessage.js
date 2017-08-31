@@ -37,20 +37,21 @@ class MessageAllDevice extends React.Component {
         super(props);
     }
     onClickQuery(query){
+      const id = this.props.match.params.id;
+      query = query || {};
+      query['DeviceId'] = id;
       this.props.dispatch(searchbatteryalarm_request(query));
     }
-    onClickDevice(deviceitem){
-      this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}))
-    }
+
     render(){
         const {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
-
+        const id = this.props.match.params.id;
         return (
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
-                    <div className="title">设备23423425的历史消息</div>
+                    <div className="title">设备{id}的历史消息</div>
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)}/>

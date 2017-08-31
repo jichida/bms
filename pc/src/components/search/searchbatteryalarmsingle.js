@@ -11,8 +11,9 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
-import DatePicker from 'material-ui/DatePicker';
-
+import Seltime from './seltime.js';
+import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
+import moment from 'moment';
 import {
     Table,
     TableBody,
@@ -22,24 +23,38 @@ import {
     TableRowColumn,
 } from 'material-ui/Table';
 
-
+const Option = Select.Option;
 class TreeSearchBatteryAlarmSingle extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            type : 1,
+          alarmlevel:'',
+          startDate:moment(),
+          endDate:moment(),
         };
     }
-    handleChange = (event, index, value) => this.setState({value});
+    onChangeSelDate(startDate,endDate){
+      this.setState({
+        startDate,
+        endDate
+      });
+    }
 
+    onChange_alarmlevel(alarmlevel){
+      this.setState({alarmlevel});
+    }
     onClickQuery=()=>{
       let query = {
         queryalarm:{
-          level:this.state.type
         }
       };
-      
+      query.queryalarm['startDate'] = this.state.startDate;
+      query.queryalarm['endDate'] = this.state.endDate;
+      if(this.state.alarmlevel !== ''){
+        query.queryalarm['alarmlevel'] = this.state.alarmlevel;
+      }
+      console.log(`【searchbatteryalaramsingle】查询条件:${JSON.stringify(query)}`);
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }
@@ -47,26 +62,20 @@ class TreeSearchBatteryAlarmSingle extends React.Component {
     render(){
         return (
             <div className="warningPage">
-              <SelectField
-                  value={this.state.type}
-                  onChange={this.handleChange}
-                  fullWidth={true}
-                  className="seltype"
-                  underlineDisabledStyle={{}}
-                  >
-                  <MenuItem value={1} primaryText="严重" />
-                  <MenuItem value={2} primaryText="紧急" />
-                  <MenuItem value={3} primaryText="一般" />
-              </SelectField>
+              <Select defaultValue={"选择警告级别"}   onChange={this.onChange_alarmlevel.bind(this)}>
+                  <Option value="red" >严重告警</Option>
+                  <Option value="orange" >紧急告警</Option>
+                  <Option value="yellow" >一般告警</Option>
+              </Select>
               <div className="warningsearch">
-                  <DatePicker hintText="开始时间" className="seltime" />
-                  <DatePicker hintText="结束时间" className="seltime" />
+                <Seltime  startDate = {this.state.startDate}
+                  endDate = {this.state.endDate}
+                 onChangeSelDate={this.onChangeSelDate.bind(this)}/>
               </div>
               <div>
                   <RaisedButton label="查询" primary={true} style={{marginRight:"10px"}} fullWidth={true} onTouchTap={this.onClickQuery}/>
               </div>
             </div>
-
         );
     }
 }

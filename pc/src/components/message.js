@@ -39,9 +39,7 @@ class MessageAllDevice extends React.Component {
     onClickQuery(query){
       this.props.dispatch(searchbatteryalarm_request(query));
     }
-    onClickDevice(deviceitem){
-      this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}))
-    }
+
     render(){
         const {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
 

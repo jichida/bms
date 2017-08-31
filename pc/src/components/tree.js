@@ -65,19 +65,6 @@ class TreeExample extends React.Component {
                     <TabPane
                         tab="搜索"
                         key="3">
-                        <div className="searchbox">
-                            <div className="input-group">
-                                <span className="input-group-addon">
-                                    <i className="fa fa-search"/>
-                                </span>
-                                <input
-                                    className="form-control"
-                                    onKeyUp={this.onFilterMouseUp.bind(this)}
-                                    placeholder="根据设备id搜索(至少两位)"
-                                    type="text"
-                                    />
-                            </div>
-                        </div>
                         <Search onClickQuery={this.onClickQuery}/>
                         <TreeBysearchresult/>
                     </TabPane>

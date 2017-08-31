@@ -9,8 +9,9 @@ class Treeselect extends React.Component {
     value: undefined,
   }
   onChange = (value) => {
-    console.log(arguments);
     this.setState({ value });
+    let adcode = parseInt(value);
+    this.props.onSelTreeNode(adcode);
   }
   render() {
     const {datatree,gmap_acode_treename} = this.props;
@@ -19,12 +20,12 @@ class Treeselect extends React.Component {
       if(!!datatreenode.children){
         hasChild = datatreenode.children.length > 0 && (datatreenode.type !== 'group_area');
       }
-
+      const adcode = ''+datatreenode.adcode;
       if(!hasChild){
-        return <TreeNode value={datatreenode.adcode} title={gmap_acode_treename[datatreenode.adcode]} key={datatreenode.adcode} />
+        return <TreeNode value={adcode} title={gmap_acode_treename[datatreenode.adcode]} key={adcode} />
       }
       return (
-        <TreeNode value={datatreenode.adcode} title={gmap_acode_treename[datatreenode.adcode]} key={datatreenode.adcode} >
+        <TreeNode value={adcode} title={gmap_acode_treename[datatreenode.adcode]} key={adcode} >
           {
             _.map(datatreenode.children,(node)=>{
                return renderComponentFromNode(node)

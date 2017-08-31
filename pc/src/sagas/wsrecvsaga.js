@@ -48,7 +48,7 @@ export function* wsrecvsagaflow() {
             break;
           }
           //
-          console.log(`开始获取变化数据...`)
+          // console.log(`开始获取变化数据...`)
           yield put(serverpush_devicegeo_sz_request({}));
           yield race({
             resstop: take(`${serverpush_devicegeo_sz_result}`),

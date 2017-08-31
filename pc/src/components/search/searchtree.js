@@ -11,6 +11,9 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
+import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
+import TreeselectByloc from "../trees/treeselect_byloc.js";
+import moment from 'moment';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -44,38 +47,39 @@ class TreeSearchBattery extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            groupname:  '',
-            devicefield : '',
-            alarmfield : '',
-            searchtxtfordevice:'',
-            searchtxtforalarm:''
+          notype:  '',
+          notypevalue : '',
+          alarmtype : '',
+          alarmtypevalue:'',
+          alarmlevel:'',
+          groupid:'0',
+          adcode:10000,
+          onlinestatus:'all'
         };
     }
-    handleChangeSearchtxtfordevice(e,v){
-      this.setState({searchtxtfordevice:v});
+    onSelTreeNode_Group(groupid){
+      this.setState({groupid});
     }
-    handleChangeSearchtxtforalaram(e,v){
-      this.setState({searchtxtforalarm:v});
+    onSelTreeNode_Loc(adcode){
+      this.setState({adcode});
     }
-
-    handleChangeGroupname = (e,key)=>{
-
-        const {groupidlist} = this.props;
-        if(key === 0){
-          this.setState({groupname: ''});
-        }
-        else{
-          let groupid = groupidlist[key-1];
-          this.setState({groupname:groupid});
-        }
+    onChange_onlinestatus(onlinestatus){
+        this.setState({onlinestatus});
     }
-    handleChangeDevicefield = (e,key)=>{
-
-        this.setState({devicefield: selitem_devicefields[key].value});
+    onChange_alarmlevel(alarmlevel){
+      this.setState({alarmlevel});
     }
-    handleChangeAlarmfiled = (e,key)=>{
-
-        this.setState({alarmfield: selitem_alarmfields[key].value});
+    onChange_notype(notype){
+      this.setState({notype});
+    }
+    onChange_alarmtype(alarmtype){
+      this.setState({alarmtype});
+    }
+    handleChange_notypevalue(notypevalue){
+        this.setState({notypevalue});
+    }
+    handleChange_alarmtypevalue(alarmtypevalue){
+        this.setState({alarmtypevalue});
     }
 
     onClickQuery=()=>{
@@ -83,70 +87,40 @@ class TreeSearchBattery extends React.Component {
         querydevice:{},
         queryalarm:{}
       };
-      if(this.state.groupname !== ''){
-        query.querydevice =
-              {
-                ...query.querydevice,
-                groupid:this.state.groupname
-              };
+
+      if(this.state.groupid !== '0'){
+        query['groupid'] = this.state.groupid;
       }
-      if(this.state.devicefield !== '' && this.state.searchtxtfordevice !== ''){
-        query.querydevice[this.state.devicefield] = this.state.searchtxtfordevice;
+      if(this.state.adcode !== 10000){
+        query['adcode'] = this.state.adcode;
       }
-      if(this.state.alarmfield !== '' && this.state.searchtxtforalarm !== ''){
-        query.queryalarm[this.state.alarmfield] = this.state.searchtxtforalarm;
+      if(this.state.notype!== '' && this.state.notypevalue!=''){
+        query.querydevice[this.state.notype] = this.state.notypevalue;
+      }
+      if(this.state.alarmtype!== '' && this.state.alarmtypevalue!=''){
+        query.querydevice[this.state.alarmtype] = this.state.alarmtypevalue;
       }
 
+      if(this.state.alarmlevel !== ''){
+        query.queryalarm['alarmlevel'] = this.state.alarmlevel;
+      }
+
+      if(this.state.onlinestatus !== 'all'){
+        query.querydevice['onlinestatus'] = this.state.onlinestatus;
+      }
+      console.log(`【searchreport】查询条件:${JSON.stringify(query)}`);
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }
     }
     render(){
-        let hintTextBattery = '';
-        let ishiddenbattery = false;
-        if(this.state.devicefield === ''){
-          ishiddenbattery = true;
-        }
-        else if(this.state.devicefield === 'RdbNo'){
-          hintTextBattery = '输入RDB编号';
-        }
-        else if(this.state.devicefield === 'PackNo'){
-          hintTextBattery = 'BMU PACK号';
-        }
-        else if(this.state.devicefield === 'PnNo'){
-          hintTextBattery = '设备PN料号';
-        }
-
-        let hintTextAlarm = '';
-        let ishiddenalarm = false;
-        if(this.state.alarmfield === ''){
-          ishiddenalarm = true;
-        }
-        else if(this.state.alarmfield === 'ALARM_H'){
-          hintTextAlarm = '警告代码';
-        }
-        else if(this.state.alarmfield === 'ALARM_L'){
-          hintTextAlarm = '故障代码';
-        }
-
-
-        const {groups,groupidlist} = this.props;
-
-
         return (
             <div className="searchtree" style={{textAlign: "center"}}>
-                    <Select defaultValue={this.state.groupname} style={{ width: 370 }}>
-                        <Option value={''} >选择分组名称</Option>
-                        {
-                            _.map(groupidlist,(groupid)=>{
-                                let group= groups[groupid];
-                                return (<Option key={groupid} value={groupid} primaryText={group.name}>{group.name}</Option>)
-                            })
-                        }
-                    </Select>
+                    <TreeSelectBygroup placeholder={"请选择分组"} width={200} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
+                    <TreeselectByloc placeholder={"请选择地区"} width={200} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
 
                     <InputGroup compact>
-                        <Select defaultValue="选择编号类型" style={{ width: 120 }}>
+                        <Select defaultValue="选择编号类型" style={{ width: 120 }} onChange={this.onChange_notype.bind(this)}>
                             {
                                 _.map(selitem_devicefields,(field,key)=>{
                                     return (<Option key={key} value={field.value}>{field.text}</Option>)
@@ -154,14 +128,14 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 250 }}
-                            onChange={this.handleChangeSearchtxtforalaram.bind(this)}
+                            style={{ width: 150 }}
+                            onChange={this.handleChange_notypevalue.bind(this)}
                             placeholder="请输入编号"
                         />
                     </InputGroup>
 
                     <InputGroup compact>
-                        <Select defaultValue="选择代码类型" style={{ width: 120 }}>
+                        <Select defaultValue="选择代码类型" style={{ width: 120 }}  onChange={this.onChange_alarmtype.bind(this)}>
                             {
                                 _.map(selitem_alarmfields,(field,key)=>{
                                   return (<Option key={key} value={field.value}>{field.text}</Option>)
@@ -169,23 +143,22 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 250 }}
+                            style={{ width: 150 }}
                             placeholder="请输入代码"
-                            onChange={this.handleChangeSearchtxtforalaram.bind(this)}
+                            onChange={this.handleChange_alarmtypevalue.bind(this)}
                         />
                     </InputGroup>
 
-
-                    <Select defaultValue={"选择警告级别"} style={{ width: 370 }}>
-                        <Option value="0" >严重告警</Option>
-                        <Option value="1" >紧急告警</Option>
-                        <Option value="2" >一般告警</Option>
+                    <Select defaultValue={"选择警告级别"}   onChange={this.onChange_alarmlevel.bind(this)}>
+                        <Option value="red" >严重告警</Option>
+                        <Option value="orange" >紧急告警</Option>
+                        <Option value="yellow" >一般告警</Option>
                     </Select>
 
-                    <Select defaultValue={"是否在线"} style={{ width: 370 }}>
-                        <Option value="0" >全部</Option>
-                        <Option value="1" >在线</Option>
-                        <Option value="2" >离线</Option>
+                    <Select defaultValue={"是否在线"} style={{ width: 370 }}  onChange={this.onChange_onlinestatus.bind(this)}>
+                        <Option value="all" >全部</Option>
+                        <Option value="online" >在线</Option>
+                        <Option value="offline" >离线</Option>
                     </Select>
 
                     <Button type="primary" icon="search" onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
@@ -194,7 +167,5 @@ class TreeSearchBattery extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{groups,groupidlist}}) => {
-    return {groups,groupidlist};
-}
-export default connect(mapStateToProps)(TreeSearchBattery);
+
+export default connect()(TreeSearchBattery);

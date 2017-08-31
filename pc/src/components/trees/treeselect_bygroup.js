@@ -11,6 +11,8 @@ class Treeselect extends React.Component {
   onChange = (value) => {
     console.log(arguments);
     this.setState({ value });
+    let groupid = value;
+    this.props.onSelTreeNode(groupid);
   }
   render() {
     const {datatree} = this.props;
