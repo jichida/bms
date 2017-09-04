@@ -2,6 +2,7 @@
   "name": "admin",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "admin-on-rest": "^1.2.1",
     "aor-language-chinese": "^1.0.3",
