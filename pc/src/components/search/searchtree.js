@@ -116,8 +116,9 @@ class TreeSearchBattery extends React.Component {
     render(){
         return (
             <div className="searchtree" style={{textAlign: "center"}}>
-                    <TreeSelectBygroup placeholder={"请选择分组"} width={200} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
-                    <TreeselectByloc placeholder={"请选择地区"} width={200} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
+                    <br/>
+                    <TreeSelectBygroup placeholder={"请选择分组"} width={370} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
+                    <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
 
                     <InputGroup compact>
                         <Select defaultValue="选择编号类型" style={{ width: 120 }} onChange={this.onChange_notype.bind(this)}>
@@ -128,7 +129,7 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 150 }}
+                            style={{ width: 250 }}
                             onChange={this.handleChange_notypevalue.bind(this)}
                             placeholder="请输入编号"
                         />
@@ -143,13 +144,13 @@ class TreeSearchBattery extends React.Component {
                             }
                         </Select>
                         <AutoComplete
-                            style={{ width: 150 }}
+                            style={{ width: 250 }}
                             placeholder="请输入代码"
                             onChange={this.handleChange_alarmtypevalue.bind(this)}
                         />
                     </InputGroup>
 
-                    <Select defaultValue={"选择警告级别"}   onChange={this.onChange_alarmlevel.bind(this)}>
+                    <Select defaultValue={"选择警告级别"}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
                         <Option value="red" >严重告警</Option>
                         <Option value="orange" >紧急告警</Option>
                         <Option value="yellow" >一般告警</Option>
@@ -161,7 +162,7 @@ class TreeSearchBattery extends React.Component {
                         <Option value="offline" >离线</Option>
                     </Select>
 
-                    <Button type="primary" icon="search" onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
+                    <Button type="primary" icon="search"  onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
             </div>
 
         );
