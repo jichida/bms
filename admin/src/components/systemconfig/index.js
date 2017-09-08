@@ -33,12 +33,7 @@ const SystemconfigShow = (props) => (
        <ShowPage title={<SystemconfigTitle />} {...props}>
            <SimpleShowLayout>
                <TextField source="id" />
-               <TextField label="最大显示评价数" source="maxshowtags" />
-               <TextField label="司机抽成" source="platformdriverfeediscount" />
-               <TextField label="代驾要求余额" source="daijialeastbalance" />
-               <TextField label="代驾取消价格" source="daijiacancelprice" />
                <TextField label="客服电话" source="servicephonenumber" />
-               <TextField label="未支付自动取消时间（单位分钟）" source="pinchetimecancelwhennotpaid" />
          </SimpleShowLayout>
        </ShowPage>
 );
@@ -54,50 +49,16 @@ const SystemconfigCreateTitle = ({ record }) => {
 };
 export const SystemconfigCreate = (props) => (
        <Create {...props} title={<SystemconfigCreateTitle />} >
-       <TabbedForm>
-           <FormTab label="resources.systemconfig.tabs.sysconfig">
-           <NumberInput label="司机抽成" source="platformdriverfeediscount"/>
-           <NumberInput label="代驾要求余额" source="daijialeastbalance" />
-           <NumberInput label="代驾取消价格" source="daijiacancelprice"/>
+       <SimpleForm>
            <TextInput label="客服电话" source="servicephonenumber"/>
-           </FormTab>
-           <FormTab label="resources.systemconfig.tabs.pinche">
-           <SelectArrayInput label="拼车城市列表" source="pinchecitylist"  options={{ fullWidth: true }}/>
-           <NumberInput label="未支付自动取消时间（单位分钟）" source="pinchetimecancelwhennotpaid"/>
-           </FormTab>
-           <FormTab label="resources.systemconfig.tabs.rider">
-           <SelectArrayInput label="对司机的评价" source="commenttagsfordriver" options={{ fullWidth: true }}/>
-           <NumberInput label="最大显示评价数" source="maxshowtags"/>
-           <SelectArrayInput label="热门城市列表" source="hotcity"  options={{ fullWidth: true }}/>
-           </FormTab>
-           <FormTab label="resources.systemconfig.tabs.driver">
-           <SelectArrayInput label="对乘客的评价" source="commenttagsforrider"  options={{ fullWidth: true }}/>
-           </FormTab>
-       </TabbedForm>
+       </SimpleForm>
        </Create>
 );
 
 export const SystemconfigEdit = (props) => (
     <EditPage {...props} title={<SystemconfigTitle />}>
-        <TabbedForm>
-            <FormTab label="resources.systemconfig.tabs.sysconfig">
-            <NumberInput label="司机抽成" source="platformdriverfeediscount"/>
-            <NumberInput label="代驾要求余额" source="daijialeastbalance" />
-            <NumberInput label="代驾取消价格" source="daijiacancelprice"/>
+        <SimpleForm>
             <TextInput label="客服电话" source="servicephonenumber"/>
-            </FormTab>
-            <FormTab label="resources.systemconfig.tabs.pinche">
-            <SelectArrayInput label="拼车城市列表" source="pinchecitylist"  options={{ fullWidth: true }}/>
-            <NumberInput label="未支付自动取消时间（单位分钟）" source="pinchetimecancelwhennotpaid"/>
-            </FormTab>
-            <FormTab label="resources.systemconfig.tabs.rider">
-            <SelectArrayInput label="对司机的评价" source="commenttagsfordriver" options={{ fullWidth: true }}/>
-            <NumberInput label="最大显示评价数" source="maxshowtags"/>
-            <SelectArrayInput label="热门城市列表" source="hotcity"  options={{ fullWidth: true }}/>
-            </FormTab>
-            <FormTab label="resources.systemconfig.tabs.driver">
-            <SelectArrayInput label="对乘客的评价" source="commenttagsforrider"  options={{ fullWidth: true }}/>
-            </FormTab>
-        </TabbedForm>
+        </SimpleForm>
     </EditPage>
 );
