@@ -1,4 +1,4 @@
-import {takeEvery,put,call} from 'redux-saga/effects';
+import {takeLatest,put,call} from 'redux-saga/effects';
 import {
     login_result,
     logout_result,
@@ -29,19 +29,19 @@ let async_cancelJPushAlisa =()=> {
 
 //获取地理位置信息，封装为promise
 export function* jpushflow(){//仅执行一次
-   yield takeEvery(`${login_result}`, function*(action) {
+   yield takeLatest(`${login_result}`, function*(action) {
       let {payload:{userid}} = action;
       yield call(async_setJPushAlias,userid);
-      console.log(`login_result ===>${JSON.stringify(userid)}`);
+
     });
 
-    yield takeEvery(`${logout_result}`, function*(action) {
+    yield takeLatest(`${logout_result}`, function*(action) {
       let {payload:msgobj} = action;
       yield call(async_cancelJPushAlisa);
-      console.log(`logout_result ===>${JSON.stringify(msgobj)}`);
+
     });
 
-    yield takeEvery(`${jpushlistenInMessage}`, function*(action) {
+    yield takeLatest(`${jpushlistenInMessage}`, function*(action) {
        let {payload:msgobj} = action;
         try{
           //yield call(alertmessage,`jpushlistenInMessage ===>${JSON.stringify(msgobj)}`);
@@ -73,7 +73,7 @@ export function* jpushflow(){//仅执行一次
 
     });
 
-    yield takeEvery(`${jpushpostNotification}`, function*(action) {
+    yield takeLatest(`${jpushpostNotification}`, function*(action) {
       let {payload:msgobj} = action;
         // 按 2，模拟发送（点击了推送消息）
         try{

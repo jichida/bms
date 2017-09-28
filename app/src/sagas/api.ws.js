@@ -53,7 +53,7 @@ function* read(socket) {
     const channel = yield call(subscribe, socket);
     while (true) {
         let action = yield take(channel);
-        console.log(`read action:${action}`);
+
         yield put(action);
     }
 }
@@ -61,7 +61,7 @@ function* read(socket) {
 function* write(socket,fun,cmd) {
     while (true) {
         let { payload } = yield take(fun);
-        console.log(`${cmd}:` + JSON.stringify(payload));
+
         if(issocketconnected){
           socket.emit('pc',{cmd:cmd,data:payload});
         }
@@ -74,10 +74,10 @@ function* write(socket,fun,cmd) {
 function* handleIOWithAuth(socket) {
     let tasksz =[];
     while (true) {
-        console.log("等待登录中...!");
+
         yield take(`${login_result}`);
 
-        console.log("登录成功!");
+
         let fnsz = data.sendmessageauthfnsz;
 
         for (var cmd in fnsz) {
@@ -86,7 +86,7 @@ function* handleIOWithAuth(socket) {
         }
 
         //注销比较特殊
-        console.log("登出APP发送当前位置(注销)");
+
         yield take(`${logout_result}`);
         for (let i=0;i<tasksz.length;i++) {
             yield cancel(tasksz[i]);

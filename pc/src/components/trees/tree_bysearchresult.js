@@ -20,35 +20,14 @@ class Tree extends React.Component {
     onToggle(node, toggled){
         if(this.state.cursor){this.state.cursor.active = false;}
         node.active = true;
-        if(!!node.children){
-            // node.toggled = toggled;
-            //
-            // if(treeviewstyle === 'byloc'){
-            //   if(node.adcode === 100000){
-            //     node.toggled = true;
-            //   }
-            //
-            //   let id = node.adcode;
-            //   if(typeof id === 'string'){
-            //     id = parseInt(id);
-            //   }
-            //   this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false}));
-            // }
-            // else{
-            //   let groupid = node.id;
-            //   //选择当前group<-----
-            //   this.props.dispatch(mapmain_selgroup({groupid,forcetoggled:false}));
-            // }
-
-        }else{
-            // node.toggled = toggled;
-            let deviceid = node.name;
-            const {g_devicesdb} = this.props;
-            const deviceitem = g_devicesdb[deviceid];
-            if(!!deviceitem && toggled){
-              this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
-            }
-
+        if(node.type === 'device'){
+          let deviceid = node.name;
+          const {g_devicesdb} = this.props;
+          const deviceitem = g_devicesdb[deviceid];
+          if(!!deviceitem){
+            console.log(`sel devid:${deviceitem.DeviceId}`);
+            this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
+          }
         }
         this.setState({ cursor: node });
     }

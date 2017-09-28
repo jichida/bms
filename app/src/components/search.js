@@ -71,7 +71,7 @@ class TreeSearch extends React.Component {
                             <MenuItem value={0} primaryText="请选择" />
                             <MenuItem value={1} primaryText="RDB编号" />
                             <MenuItem value={2} primaryText="BMU PACK号" />
-                            <MenuItem value={3} primaryText="设备PN料号" />
+                            <MenuItem value={3} primaryText="车辆PN料号" />
                         </SelectField>
                         <TextField
                             hintText="输入RDB编号"
@@ -82,7 +82,7 @@ class TreeSearch extends React.Component {
                             style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: this.state.input2===2?"inline-block":"none"}}
                         />
                         <TextField
-                            hintText="设备PN料号"
+                            hintText="车辆PN料号"
                             style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: this.state.input2===3?"inline-block":"none"}}
                         />
                     </div>
@@ -112,7 +112,7 @@ class TreeSearch extends React.Component {
                 <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHeaderColumn>设备号</TableHeaderColumn>
+                        <TableHeaderColumn>车辆号</TableHeaderColumn>
                         <TableHeaderColumn>告警时间</TableHeaderColumn>
                         <TableHeaderColumn>告警等级</TableHeaderColumn>
                         <TableHeaderColumn>告警内容</TableHeaderColumn>
@@ -121,7 +121,7 @@ class TreeSearch extends React.Component {
                     </TableHeader>
                     <TableBody>
                       <TableRow>
-                        <TableRowColumn>设备1</TableRowColumn>
+                        <TableRowColumn>车辆1</TableRowColumn>
                         <TableRowColumn>2017-09-09 12:20:34</TableRowColumn>
                         <TableRowColumn>严重</TableRowColumn>
                         <TableRowColumn>这里是警告内容</TableRowColumn>

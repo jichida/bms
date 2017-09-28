@@ -39,6 +39,7 @@ class TreeExample extends React.Component {
     }
 
     render(){
+        const {modeview} = this.props;
 
         return (
             <div className="treePage">
@@ -46,32 +47,44 @@ class TreeExample extends React.Component {
                     地理位置
                 </div>
 
-                <Tabs
-                    defaultActiveKey="1"
-                    style={{ height: window.innerHeight-109}}
-                    tabBarStyle={{width : "400px"}}
-                    className="treetabs"
-                    >
-                    <TabPane
-                        tab="地址位置"
-                        key="1">
-                        <TreeByloc/>
-                    </TabPane>
-                    <TabPane
-                        tab="分组"
-                        key="2" >
-                        <TreeBygroup/>
-                    </TabPane>
-                    <TabPane
-                        tab="搜索"
-                        key="3">
-                        <Search onClickQuery={this.onClickQuery}/>
-                        <TreeBysearchresult/>
-                    </TabPane>
-                </Tabs>
+                {
+                    modeview === 'device' && 
+                    <Tabs
+                        defaultActiveKey="1"
+                        style={{ height: window.innerHeight-109}}
+                        tabBarStyle={{width : "400px"}}
+                        className="treetabs"
+                        >
+                        <TabPane
+                            tab="地址位置"
+                            key="1">
+                            <TreeByloc/>
+                        </TabPane>
+                        <TabPane
+                            tab="分组"
+                            key="2" >
+                            <TreeBygroup/>
+                        </TabPane>
+                        <TabPane
+                            tab="搜索"
+                            key="3">
+                            <Search onClickQuery={this.onClickQuery}/>
+                            <TreeBysearchresult/>
+                        </TabPane>
+                    </Tabs>
+                }
+                {
+                    modeview !== 'device' && 
+                        <TreeByloc />
+                }
             </div>
         );
     }
 }
 
-export default connect()(TreeExample);
+const mapStateToPropsTip = ({app}) => {
+    const {modeview} = app;
+    return { modeview };
+}
+
+export default connect(mapStateToPropsTip)(TreeExample);

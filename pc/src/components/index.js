@@ -21,11 +21,13 @@ import Message from "./message";
 import Device from "./device";
 import Warningtips from "./warningtips";
 import { Icon } from "antd";
+import Logo from "../img/logo.png";
 import {
     ui_showmenu,
     ui_showhistoryplay,
     ui_showdistcluster,
-    ui_showhugepoints
+    ui_showhugepoints,
+    ui_changemodeview
 } from '../actions';
 import translate from 'redux-polyglot/translate';
 import Historytrackplayback from "./historytrackplayback";
@@ -79,10 +81,18 @@ class Page extends React.Component {
         })
     }
 
+    titleNavClick =(v)=>{
+        if(v===0){
+          this.props.dispatch(ui_changemodeview('device'));
+        }
+        else{
+          this.props.dispatch(ui_changemodeview('chargingpile'));
+        }
+    }
+
     render() {
-        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
+        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p,modeview} = this.props;
         const treestyle = this.getdrawstyle("400px");
-        const MapPage = this.props.map;
 
         return (
             <div className="AppPage">
@@ -90,9 +100,9 @@ class Page extends React.Component {
                     <div className="headcontent">
                         <AppBar
                             title={
-                                <div>
-                                    <Icon type="bars" style={{color:"#333"}} onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}} />
-                                    <span className="title">Title</span>
+                                <div className="titlenav">
+                                    <span className={modeview==='device'?"sel":""} onClick={this.titleNavClick.bind(this, 0)}>地图模式</span>
+                                    <span className={modeview!=='device'?"sel":""} onClick={this.titleNavClick.bind(this, 1)}>充电桩模式</span>
                                 </div>
                             }
                             onLeftIconButtonTouchTap={this.menuevent}
@@ -106,7 +116,7 @@ class Page extends React.Component {
                                 marginTop: "0",
                                 marginLeft: "0"
                             }}
-                            iconElementLeft={<div className="logo" onClick={()=>{this.props.history.push("/datatable")}}>logo</div>}
+                            iconElementLeft={<div className="logo" onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}}><img src={Logo} /></div>}
                             className="appbar"
                         />
                     </div>
@@ -132,22 +142,24 @@ class Page extends React.Component {
                             <AdminContent />
                         </div>
 
+
                         <div className="warningtips">
                             <Warningtips/>
                         </div>
 
+
                         <Menu lesswidth={showmenu==="addressbox"?400:100} />
 
                     </div>
-                </div> 
+                </div>
 
             </div>
         );
     }
 }
 
-const mapStateToProps = ({app:{showmenu,showhistoryplay,showdistcluster,showhugepoints}}) => {
-    return {showmenu,showhistoryplay,showdistcluster,showhugepoints};
+const mapStateToProps = ({app:{showmenu,showhistoryplay,showdistcluster,showhugepoints,modeview}}) => {
+    return {showmenu,showhistoryplay,showdistcluster,showhugepoints,modeview};
 };
 
 const DummyComponentWithPProps = translate('warningbox')(Page);

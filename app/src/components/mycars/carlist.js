@@ -45,7 +45,7 @@ class Page extends React.Component {
                     background : "#EEE"
                 }}
                 >
-                <NavBar back={true} title="我的设备" />
+                <NavBar back={true} title="我的车辆" />
                 <div className="content">
                     <Swipeout autoClose={true}
                         right={[

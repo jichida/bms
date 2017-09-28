@@ -44,7 +44,7 @@ class Page extends React.Component {
         const {g_devicesdb,alarms,curseldeviceid,searchresult_alaramsingle} = this.props;
         return (
             <div className="warningPage">
-                <div className="tit">设备：{curseldeviceid} 历史告警</div>
+                <div className="tit">车辆：{curseldeviceid} 历史告警</div>
                 <TreeSearchBatteryAlarmSingle onClickQuery={this.onClickQuery.bind(this)}/>
                 <Table onRowSelection={this.onRowSelection.bind(this)}>
                     <TableHeader>

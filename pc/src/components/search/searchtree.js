@@ -28,7 +28,7 @@ const selitem_devicefields = [
   },
   {
     value:'PnNo',
-    text:'设备PN料号'
+    text:'车辆PN料号'
   },
 ];
 const selitem_alarmfields = [
@@ -51,7 +51,7 @@ class TreeSearchBattery extends React.Component {
           notypevalue : '',
           alarmtype : '',
           alarmtypevalue:'',
-          alarmlevel:'',
+          alarmlevel:'-1',
           groupid:'0',
           adcode:10000,
           onlinestatus:'all'
@@ -101,8 +101,8 @@ class TreeSearchBattery extends React.Component {
         query.querydevice[this.state.alarmtype] = this.state.alarmtypevalue;
       }
 
-      if(this.state.alarmlevel !== ''){
-        query.queryalarm['alarmlevel'] = this.state.alarmlevel;
+      if(this.state.alarmlevel !== '-1'){
+        query.queryalarm['warninglevel'] = parseInt(this.state.alarmlevel);
       }
 
       if(this.state.onlinestatus !== 'all'){
@@ -150,10 +150,11 @@ class TreeSearchBattery extends React.Component {
                         />
                     </InputGroup>
 
-                    <Select defaultValue={"选择警告级别"}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
-                        <Option value="red" >严重告警</Option>
-                        <Option value="orange" >紧急告警</Option>
-                        <Option value="yellow" >一般告警</Option>
+                    <Select defaultValue={'-1'}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
+                        <Option value={'-1'} >选择警告级别</Option>
+                        <Option value={'0'} >严重告警</Option>
+                        <Option value={'1'} >紧急告警</Option>
+                        <Option value={'2'} >一般告警</Option>
                     </Select>
 
                     <Select defaultValue={"是否在线"} style={{ width: 370 }}  onChange={this.onChange_onlinestatus.bind(this)}>

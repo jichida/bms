@@ -49,7 +49,7 @@ class TreeExample extends React.Component {
             if(!!deviceitem && toggled){
               this.props.dispatch(ui_selcurdevice({DeviceId:deviceitem.DeviceId,deviceitem}));
             }
-            console.log(deviceitem);//选择一个设备
+            console.log(deviceitem);//选择一个车辆
         }
         this.setState({ cursor: node });
     }
@@ -76,7 +76,7 @@ class TreeExample extends React.Component {
                         </span>
                         <input className="form-control"
                                onKeyUp={this.onFilterMouseUp.bind(this)}
-                               placeholder="根据设备id搜索(至少三位)"
+                               placeholder="根据车辆id搜索(至少三位)"
                                type="text"/>
                     </div>
                 </div>

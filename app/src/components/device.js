@@ -1,6 +1,6 @@
 /**
  * Created by jiaowenhui on 2017/7/28.
-    设备详情
+    车辆详情
  */
 import React from 'react';
 import {connect} from 'react-redux';
@@ -82,7 +82,7 @@ class Page extends React.Component {
 
 
       // const data = {
-      //       "设备名称" : "123XG设备",
+      //       "车辆名称" : "123XG车辆",
       //       "最高单体温度" : "80",
       //       "最低单体温度" : "0",
       //       "最高单体电压" : "100V",
@@ -95,9 +95,9 @@ class Page extends React.Component {
 
       return (
             <div className="warningPage devicePage">
-                <div className="tit">设备详情</div>
+                <div className="tit">车辆详情</div>
                 <div className="devicebtnlist">
-                    <RaisedButton label="轨迹回放" primary={true} onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
+                    <RaisedButton label="轨迹监控" primary={true} onTouchTap={this.showhistoryplay.bind(this)} className="showDeviceInfo" />
                     <RaisedButton label="历史警告" primary={true} onTouchTap={this.onClickMenu.bind(this,"warningbox")} className="showDeviceInfo" />
                 </div>
                 <div className="lists">
@@ -119,7 +119,7 @@ class Page extends React.Component {
                   })
                 }
                 </div>
-               
+
             </div>
         );
     }

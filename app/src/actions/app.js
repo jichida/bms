@@ -16,3 +16,13 @@ export const ui_showhugepoints = createAction('ui_showhugepoints');
 export const ui_changetreestyle = createAction('ui_changetreestyle');
 export const ui_settreefilter = createAction('ui_settreefilter');
 export const md_ui_settreefilter = createAction('md_ui_settreefilter');
+
+export const ui_searchbattery_result= createAction('ui_searchbattery_result');
+
+export const ui_changemodeview = createAction('ui_changemodeview');
+export const ui_sel_tabindex = createAction('ui_sel_tabindex');
+
+export const ui_setmapstyle = createAction('ui_setmapstyle');
+export const ui_resetsearch = createAction('ui_resetsearch');
+
+export const ui_clickplayback = createAction('ui_clickplayback');

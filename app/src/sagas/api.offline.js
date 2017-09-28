@@ -1,4 +1,4 @@
-import {takeEvery,put,fork,call,select} from 'redux-saga/effects';
+import {takeLatest,take,takeEvery,put,fork,call,select} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   querydevicegroup_request,
@@ -8,6 +8,7 @@ import {
   queryhistorytrack_request,
   queryhistorytrack_result,
   notify_socket_connected,
+  login_request,
   md_login_result,
   getsystemconfig_request,
   getsystemconfig_result,
@@ -21,158 +22,510 @@ import {
 
   querydeviceinfo_request,
   querydeviceinfo_result,
+  md_querydeviceinfo_result,
 
   serverpush_devicegeo,
-  serverpush_devicegeo_sz
-} from '../actions';
-import jsondatareadonly from '../test/bmsdata.json';
-import jsondatatrack from '../test/1602010008.json';
-import jsondataalarm from '../test/json-BMS2.json';
-import {getRandomLocation} from '../env/geo';
-import coordtransform from 'coordtransform';
+  serverpush_devicegeo_sz,
+  serverpush_devicealarm,
 
+  serverpush_devicegeo_sz_request,
+  serverpush_devicegeo_sz_result,
+  start_serverpush_devicegeo_sz,
+
+  ui_changemodeview,
+
+  getcurallalarm_request,
+  getcurallalarm_result,
+
+  logout_request,
+  logout_result,
+
+  getallworkorder_request,
+  getallworkorder_result,
+
+  queryworkorder_request,
+  queryworkorder_result,
+
+  setalarmreaded_request,
+  setalarmreaded_result,
+
+  setworkorderdone_request,
+  setworkorderdone_result,
+
+  createworkorder_request,
+  createworkorder_result,
+
+  getworkusers_request,
+  getworkusers_result,
+
+  ui_clickplayback
+} from '../actions';
+import  {
+  jsondata_bms_chargingpile,
+  jsondata_bms_track,
+  jsondata_bms_mydevice,
+  jsondata_bms_alarm,
+  jsondata_bms_workorder,
+  jsondata_bms_groups,
+  jsondata_bms_workusers,
+  getrandom
+} from '../test/bmsdata.js';
+import { push,goBack,go,replace } from 'react-router-redux';
+
+import {getRandomLocation} from '../env/geo';
+import {getRandomLocation_track} from './simulatetrack';
+import coordtransform from 'coordtransform';
+import {g_devicesdb} from './mapmain';
 import _ from 'lodash';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 //获取地理位置信息，封装为promise
-let jsondata = _.filter(jsondatareadonly,(item) => {
-  let thisdata = false;
-  if(!!item.LastHistoryTrack){
-    if(!!item.LastHistoryTrack.Latitude){
-      if(item.LastHistoryTrack.Latitude > 0){
-        thisdata = true;
-      }
-    }
-  }
-  return thisdata;
-});
 
-//模拟10万+
-for(let i = 0;i < 0; i++){
-  _.map(jsondatareadonly,(itemonly) => {
-    const item = {...itemonly};
-    if(!!item.LastHistoryTrack){
-      if(!!item.LastHistoryTrack.Latitude){
-        if(item.LastHistoryTrack.Latitude > 0){
-          let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,300);
-          item.LastHistoryTrack.Latitude = item.LastHistoryTrack.Latitude;
-          item.LastHistoryTrack.Longitude  = item.LastHistoryTrack.Longitude;
-          item.DeviceId = `${i}${item.DeviceId}`;
-          jsondata.push(item);
-        }
-      }
-    }
+import moment from 'moment';
+
+const getresult_historytrack = (mstart,mend)=>{
+  let list = [];
+  list = _.filter(jsondata_bms_track,(item)=>{
+    return (item.GPSTime >= mstart) && (item.GPSTime <= mend);
   });
+  return list;
 }
 
-jsondata = _.sampleSize(jsondata, 20000);
+let list_historyplayback_sz = [
+  getresult_historytrack('2017-07-31 09:30:00','2017-07-31 10:30:00'),
+  getresult_historytrack('2017-07-31 13:00:00','2017-07-31 14:00:00'),
+  getresult_historytrack('2017-07-31 14:00:00','2017-07-31 15:00:00'),
+  getresult_historytrack('2017-07-31 15:00:00','2017-07-31 16:00:00'),
+];
 
-export function* apiflow(){//仅执行一次
-  yield takeEvery(`${querydeviceinfo_request}`, function*(action) {
-    const {payload:{query:{DeviceId}}} = action;
-    const getdevices = (state)=>{return state.device};
-    const {devices} = yield select(getdevices);
-    let deviceinfo = devices[DeviceId];
-    if(!!deviceinfo){
-      if(!!deviceinfo.locz){
-        const addr = yield call(getgeodata,deviceinfo);
-        deviceinfo = {...deviceinfo,...addr};
+
+
+export function* apiflow(){//
+  yield takeLatest(`${ui_clickplayback}`, function*(action) {
+    try{
+      const {payload} = action;
+      const mode = yield select((state)=>{
+        return state.app.modeview;
+      });
+      if(mode !== 'device'){
+        yield put(ui_changemodeview('device'));
+        yield take(`${querydevice_result}`);
       }
-    }
-     yield put(querydeviceinfo_result(deviceinfo));
-  });
-
-  yield takeEvery(`${getsystemconfig_request}`, function*(action) {
-     yield put(getsystemconfig_result({
-
-     }));
-  });
-
-  yield takeEvery(`${querydevice_request}`, function*(action) {
-     yield put(querydevice_result({list:jsondata}));
-  });
-
-  yield takeEvery(`${searchbattery_request}`, function*(action) {
-    const {payload:{query}} = action;
-    const list = _.sampleSize(jsondata, 20);
-    yield put(searchbattery_result({list}));
+      //轨迹回放时,判断是否为
+      yield put(push(`/historyplay/${payload}`));
+   }
+   catch(e){
+     console.log(e);
+   }
   });
 
 
-  yield takeEvery(`${searchbatteryalarm_request}`, function*(action) {
-    const {payload:{query}} = action;
-    const list = [];
-    const listdevice = _.sampleSize(jsondata, 20);
-    let iddate = new Date();
-    _.map(listdevice,(device,index)=>{
-      let alarm = {...jsondataalarm};
-      alarm.DeviceId = device.DeviceId;
-      alarm._id = iddate.getTime() + index;
-      list.push(alarm);
-    });
-    yield put(searchbatteryalarm_result({list}));
+  yield takeLatest(`${createworkorder_request}`, function*(action) {
+    try{
+      const {payload} = action;
+      let indexalarm = jsondata_bms_workorder.length;
+      payload.key = indexalarm + '';
+      payload._id = payload.key;
+      payload['工单号'] = payload.key;
+      jsondata_bms_workorder.push(payload);
+      yield put(createworkorder_result(payload));
+   }
+   catch(e){
+     console.log(e);
+   }
   });
 
-  yield takeEvery(`${searchbatteryalarmsingle_request}`, function*(action) {
-    const {payload:{query}} = action;
-    const list = [];
-    let iddate = new Date();
-    for(let i = 0;i < 20 ;i++){
-      let alarm = {...jsondataalarm};
-      alarm._id = iddate.getTime() + i;
-      list.push(alarm);
-    }
-    yield put(searchbatteryalarmsingle_result({list}));
+  yield takeLatest(`${getworkusers_request}`, function*(action) {
+    try{
+      yield put(getworkusers_result({list:jsondata_bms_workusers}));
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
+
+  yield takeLatest(`${setalarmreaded_request}`, function*(action) {
+    try{
+      const {payload} = action;
+      let item;
+      _.map(jsondata_bms_alarm,(alarm,index)=>{
+        if(alarm._id === payload){
+          item = {...alarm};
+          item.isreaded = true;
+          jsondata_bms_alarm[index] = item;
+        };
+      });
+
+      if(!!item){
+        yield put(setalarmreaded_result(item));
+      }
+
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
+
+  yield takeLatest(`${setworkorderdone_request}`, function*(action) {
+    try{
+      const {payload:{query,data}} = action;
+      let item;
+      _.map(jsondata_bms_workorder,(workorder)=>{
+        if(workorder._id === query._id){
+          workorder = {...workorder,...data};
+          item = workorder;
+        }
+      });
+      yield put(setworkorderdone_result(item));
+   }
+   catch(e){
+     console.log(e);
+   }
   });
 
 
+  yield takeLatest(`${getallworkorder_request}`, function*(action) {
+    try{
+      yield put(getallworkorder_result({list:jsondata_bms_workorder}));
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
 
-   yield takeEvery(`${querydevicegroup_request}`, function*(action) {
-      // yield put(querydevicegroup_result({list:jsondata}));
-      let groups = [];
-      for(let i = 0;i < 200;i++){
-        groups.push({
-          _id:`${i}`,
-          name:`分组${i}`
+  yield takeLatest(`${queryworkorder_request}`, function*(action) {
+    try{
+      const {payload:{query}} = action;
+
+      let list = [];
+
+      let workusers = yield select((state)=>{
+        return state.workorder.workusers;
+      });
+      let assignto = _.get(query,'queryalarm.assignto','');
+      if(assignto !== ''){
+        list = _.filter(jsondata_bms_workorder, (oneworkorder)=>{
+          return workusers[assignto].name === oneworkorder['责任人'];
         });
       }
-      yield put(querydevicegroup_result({list:groups}));
+      else{
+        list =  _.sampleSize(jsondata_bms_workorder, getrandom(0,jsondata_bms_workorder.length-1));
+      }
+
+      let startdatestring = _.get(query,'queryalarm.startDate','');
+      let enddatestring = _.get(query,'queryalarm.endDate','');
+      if(startdatestring !== '' && enddatestring !== ''){
+        list = _.filter(list,(item)=>{
+          let waringtime = item['createtime'];
+          let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
+          return match;
+       });
+      }
+      //查询条件
+
+      yield put(queryworkorder_result({list}));
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
+
+  //========
+  yield takeLatest(`${logout_request}`, function*(action) {
+    try{
+      yield put(logout_result({}));
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
+
+  yield takeLatest(`${getcurallalarm_request}`, function*(action) {
+    try{
+      //获取今天所有告警信息列表
+
+      // jsondata_bms_alarm
+      yield put(getcurallalarm_result({list:jsondata_bms_alarm}));
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
+
+
+  yield takeLatest(`${querydeviceinfo_request}`, function*(action) {
+    try{
+    const {payload:{query:{DeviceId}}} = action;
+    let deviceinfo = g_devicesdb[DeviceId];
+     yield put(md_querydeviceinfo_result(deviceinfo));
+   }
+   catch(e){
+     console.log(e);
+   }
+  });
+
+  yield takeLatest(`${getsystemconfig_request}`, function*(action) {
+    try{
+      yield put(getsystemconfig_result({}));
+
+      yield call(delay,3000);
+      yield put(login_request({
+        username:'15961125167',
+        password:'123456'
+      }));
+    }
+    catch(e){
+      console.log(e);
+    }
+
+  });
+
+  yield takeLatest(`${login_request}`, function*(action) {
+    try{
+        const {payload} = action;
+        const {username,password} = payload;
+        if(password === '123456'){
+          yield put(md_login_result({
+            loginsuccess:true,
+            username:username,
+            token:'',
+          }));
+        }
+        else{
+          yield put(md_login_result({
+            loginsuccess:false,
+          }));
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+  });
+
+  yield takeLatest(`${ui_changemodeview}`, function*(action) {
+    try{
+        let viewmode = action.payload;
+        let jsondata_result_2;
+        if(viewmode === 'device'){
+          jsondata_result_2 = jsondata_bms_mydevice;
+        }
+        else{
+          jsondata_result_2 = jsondata_bms_chargingpile;
+        }
+
+        yield put(querydevice_result({list:jsondata_result_2}));
+      }
+      catch(e){
+        console.log(e);
+      }
+  });
+
+  yield takeLatest(`${querydevice_request}`, function*(action) {
+    try{
+       yield put(querydevice_result({list:jsondata_bms_mydevice}));
+     }
+     catch(e){
+       console.log(e);
+     }
+    //  yield put(start_serverpush_devicegeo_sz({}));
+  });
+
+  yield takeLatest(`${searchbattery_request}`, function*(action) {
+    try{
+        const {payload:{query}} = action;
+        let {carcollections} = yield select((state)=>{
+          let carcollections = state.device.carcollections;
+          return {carcollections};
+        });
+        //收藏的设备
+        const list = _.filter(jsondata_bms_mydevice, (itemdevice)=>{
+          return !!_.find(carcollections,(item)=>{
+            return item === itemdevice.DeviceId;
+          });
+        });
+        yield put(searchbattery_result({list}));
+      }
+      catch(e){
+        console.log(e);
+      }
+  });
+
+
+  yield takeLatest(`${searchbatteryalarm_request}`, function*(action) {
+    try{
+      const {payload:{query}} = action;
+
+      console.log(`${JSON.stringify(query)}`);
+
+      let list = [];
+      if(!!query){
+        let warninglevel = _.get(query,'queryalarm.warninglevel',-1);
+        if(warninglevel !== -1){
+          //报警等级
+          list = _.filter(jsondata_bms_alarm,(item)=>{
+            return item.warninglevel === warninglevel;
+          });
+        }
+        else{
+          //随机生成
+            list = jsondata_bms_alarm;//_.sampleSize(jsondata_bms_alarm, getrandom(0,jsondata_bms_alarm.length));
+        }
+
+        let startdatestring = _.get(query,'queryalarm.startDate','');
+        let enddatestring = _.get(query,'queryalarm.endDate','');
+        if(startdatestring !== '' && enddatestring !== ''){
+          list = _.filter(list,(item)=>{
+            let waringtime = item['告警时间'];
+            let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
+            return match;
+         });
+        }
+
+        //是否已读
+        if(!!query.queryalarm){
+          if(query.queryalarm.hasOwnProperty('isreaded')){
+            list = _.filter(list,(item)=>{
+              return item.isreaded === query.queryalarm.isreaded;
+           });
+          }
+        }
+
+      }
+      else{
+        //all
+        list = jsondata_bms_alarm;
+      }
+      yield put(searchbatteryalarm_result({list}));
+
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
+
+  yield takeLatest(`${searchbatteryalarmsingle_request}`, function*(action) {
+    try{
+        const {payload:{query}} = action;
+
+        console.log(`${JSON.stringify(query)}`);
+
+        let list = [];
+        if(!!query){
+           list = _.filter(jsondata_bms_alarm,(item)=>{
+            return item.DeviceId === query.DeviceId;
+          });
+
+          let warninglevel = _.get(query,'queryalarm.warninglevel',-1);
+          if(warninglevel != -1){
+            list = _.filter(list,(item)=>{
+             return item.warninglevel === warninglevel;
+           });
+          }
+
+          let startdatestring = _.get(query,'queryalarm.startDate','');
+          let enddatestring = _.get(query,'queryalarm.endDate','');
+          if(startdatestring !== '' && enddatestring !== ''){
+            list = _.filter(list,(item)=>{
+              let waringtime = item['告警时间'];
+              let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
+              return match;
+           });
+          }
+          // console.log(jsondata_bms_alarm);
+          // console.log(`query.DeviceId:${query.DeviceId},list:${JSON.stringify(list)}`);
+        }
+
+        yield put(searchbatteryalarmsingle_result({list}));
+      }
+      catch(e){
+        console.log(e);
+      }
+  });
+
+
+
+   yield takeLatest(`${querydevicegroup_request}`, function*(action) {
+       try{
+          yield put(querydevicegroup_result({list:jsondata_bms_groups}));
+        }
+        catch(e){
+          console.log(e);
+        }
    });
 
    yield fork(function*(){
-     while(!window.amapmain){
-       yield call(delay,500);
-     }
-     yield put(notify_socket_connected(true));
+     try{
+         while(!window.amapmain){
+           yield call(delay,500);
+         }
+         yield put(notify_socket_connected(true));
+       }
+       catch(e){
+         console.log(e);
+       }
 
-     yield call(delay,2000);
-
-     yield put(md_login_result({
-       loginsuccess:true
-     }));
    });
 
-   yield takeEvery(`${queryhistorytrack_request}`, function*(action) {
-      yield put(queryhistorytrack_result({list:jsondatatrack}));
+   yield takeLatest(`${queryhistorytrack_request}`, function*(action) {
+     try{
+        const {payload} = action;
+        const {query} = payload;
+        const {startDate,endDate} = query;
+        // let mstart = moment(startDate).format('2017-07-31 HH:mm:ss');
+        // let mend = moment(endDate).format('2017-07-31 HH:mm:ss');
+        let index = getrandom(0,list_historyplayback_sz.length -1);
+        let resultlist = list_historyplayback_sz[index];
+        console.log(`resultlist:index:${index}:${JSON.stringify(resultlist.length)}`);
+        yield put(queryhistorytrack_result({list:resultlist}));
+      }
+      catch(e){
+        console.log(e);
+      }
    });
 
-   //模拟服务端推送消息
-  //  yield fork(function*(){
-  //    yield call(delay,10000);
-  //    while(true){
-  //      const list = _.sampleSize(jsondata, 20000);
-  //      let items = [];
-  //      for(let i = 0;i < list.length; i++){
-  //        let item = {...list[i]};
-  //        let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,50*1000);
-  //        item.LastHistoryTrack.Latitude = locationsz[1];
-  //        item.LastHistoryTrack.Longitude  =  locationsz[0];
-  //        let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
-  //        const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-  //        item.locz = wgs84togcj02;
-  //        items.push(item);
-  //      };
-  //      yield put(serverpush_devicegeo_sz({list:items}));
-  //      yield call(delay,1000);
-  //    }
-  //  });
+  //  模拟服务端推送消息
+  yield takeLatest(`${serverpush_devicegeo_sz_request}`, function*(action) {
+     try{
+        let {modeview,carcollections} = yield select((state)=>{
+          let carcollections = state.device.carcollections;
+          let modeview = state.app.modeview;
+          return {modeview,carcollections};
+        });
+        if('device' === modeview){
+
+            const list = _.sampleSize(jsondata_bms_mydevice, jsondata_bms_mydevice.length);
+            let items = [];
+            for(let i = 0;i < list.length; i++){
+              let item = {...list[i]};
+              let locationsz = [];
+              let findeditem = _.find(carcollections,(col)=>{
+                return col === item.DeviceId;
+              });
+              if(!!findeditem){
+                const wgs84togcj02=coordtransform.wgs84togcj02(item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude);
+                locationsz = yield call(getRandomLocation_track,item.DeviceId,wgs84togcj02[1],wgs84togcj02[0]);
+                //坐标转换
+                const gcj02towgs84=coordtransform.gcj02towgs84(locationsz[0],locationsz[1]);
+                item.LastHistoryTrack.Longitude = gcj02towgs84[0];
+                item.LastHistoryTrack.Latitude = gcj02towgs84[1];
+                item.locz = locationsz;
+              }
+              else{
+                locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,getrandom(5,60));
+                item.LastHistoryTrack.Latitude = locationsz[1];
+                item.LastHistoryTrack.Longitude  =  locationsz[0];
+                let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+                const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+                item.locz = wgs84togcj02;
+              }
+
+
+              items.push(item);
+            };
+            yield put(serverpush_devicegeo_sz_result({list:items}));
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+   });
 }

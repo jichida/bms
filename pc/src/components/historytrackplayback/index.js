@@ -20,7 +20,8 @@ import {
 } from '../../actions';
 import Seltime from '../search/seltime.js';
 import moment from 'moment';
-
+import _ from 'lodash';
+import SelectDevice from './selectdevice.js';
 
 const fGetCurrentWeek=function(m){
         let sWeek=m.format('dddd');
@@ -49,12 +50,21 @@ class Page extends React.Component {
 
       constructor(props) {
           super(props);
+          let deviceid =  this.props.match.params.deviceid;
+          if(deviceid === '0'){
+            deviceid = '';
+          }
           this.state = {
-            startDate:moment(),
+            startDate:moment().subtract(5, 'hours'),
             endDate:moment(),
+            deviceid,
           }
       }
-
+      onSelDeviceid(deviceid){
+          this.setState({
+              deviceid
+          });
+      }
     onChangeSelDate(startDate,endDate){
       this.setState({
         startDate,
@@ -63,28 +73,52 @@ class Page extends React.Component {
     }
 
     onClickStart(){
-      const {mapseldeviceid,g_devicesdb} = this.props;
-      const {startDate,endDate} = this.state;
-      this.props.dispatch(mapplayback_start({isloop:false,speed:5000,query:{DeviceId:mapseldeviceid,startDate,endDate}}));
-    }
+      const {deviceid,startDate,endDate} = this.state;
+      const {g_devicesdb} = this.props;
+      if(!!g_devicesdb[deviceid]){
+        this.props.dispatch(mapplayback_start({isloop:false,speed:60,query:{DeviceId:deviceid,startDate,endDate}}));
+      }
+      else{
+        console.log(`无效的设备id`);
+      }
+  }
     onClickEnd(){
       this.props.dispatch(mapplayback_end({}));
     }
     render() {
-        const {mapseldeviceid,g_devicesdb} = this.props;
+        const {deviceid} = this.state;
+        const {g_devicesdb} = this.props;
         let DeviceId;
-        let deviceitem = g_devicesdb[mapseldeviceid];
+        let deviceitem = g_devicesdb[deviceid];
         if(!!deviceitem){
           DeviceId = deviceitem.DeviceId;
         }
+        let deviceidlist = [];
+        _.map(g_devicesdb,(item)=>{
+            deviceidlist.push(item.DeviceId);
+        });
         const formstyle={width:"10px",flexGrow:"1"};
         const startdate_moment = this.state.startDate;
         const enddate_moment = this.state.endDate;
         return (
             <div className="historytrackplayback" id="historytrackplayback">
-                <div className="appbar">
+                <div className="appbar" style={{height: "72px"}}>
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack();}}></i>
-                    <div className="title">设备编号：{DeviceId || ''}</div>
+                    <div className="deviceinfo">
+
+                        <span>车辆信息</span>
+                    </div>
+                    <div className="selcar">
+                      <span className="t">车辆ID：</span>
+                      <SelectDevice 
+                        placeholder={"请输入设备ID"}
+                        initdeviceid={this.state.deviceid}
+                        onSelDeviceid={this.onSelDeviceid.bind(this)}
+                        deviceidlist={deviceidlist}
+                      />
+                    </div>
+
+
                     <div className="anddday">
                         <div className="seldayli">
                             <Day color={"#333"} style={{width: "26px", height : "26px"}} />
@@ -118,7 +152,7 @@ class Page extends React.Component {
         );
     }
 }
-const mapStateToProps = ({device:{mapseldeviceid,g_devicesdb}}) => {
-  return {mapseldeviceid,g_devicesdb};
+const mapStateToProps = ({device:{g_devicesdb}}) => {
+  return {g_devicesdb};
 }
 export default connect(mapStateToProps)(Page);

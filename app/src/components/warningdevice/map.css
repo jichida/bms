@@ -1,0 +1,186 @@
+.playbackPage .fa.back{
+    font-size:30px;
+    padding: 0 20px;
+    background-size: #FFF;
+
+}
+.playbackPage .set{
+    border-bottom: 1px solid #EEE;
+    box-shadow: 1px 1px 8px rgba(0,0,0,.2);
+    background: #FFF;
+    position: relative;
+    z-index: 2;
+}
+.playbackPage .set.warningmessageset{
+    display: flex;
+    flex-direction: column;
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle{
+    width: 96px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle{
+    text-align: left;   
+    
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle .warningtype_0,
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle .warningtype_1,
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle .warningtype_2{
+    display: inline-block;
+    width: 18px;
+    height: 18px; 
+    background: #C00;
+    color: #FFF;
+    margin-right: 5px;
+    border-radius: 18px;
+    line-height: 18px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 12px;
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle .warningtype_1{
+    background: #FF8C00;
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:first-child span.warningtdtitle .warningtype_2{
+    background: #FFD700;
+}
+
+
+.playbackPage.warningmessagePage .ant-table-tbody>tr.ant-table-row>td:last-child span{
+    white-space: nowrap;
+    text-overflow:ellipsis; 
+    width: 70px;
+    height: 20px;
+    overflow:hidden;
+    line-height: 20px;
+    display: inline-block;
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr>td,
+.playbackPage.warningmessagePage .ant-table-thead>tr>th{
+    word-break: normal;
+    width: 25%;
+    text-align: center;
+}
+.mydevicePage .ant-table-tbody>tr>td{
+    word-break: normal;
+}
+.playbackPage.warningmessagePage .ant-table-tbody>tr>td{
+    white-space: wrap;
+    word-break:break-all;
+    max-width: 70px;
+}
+.playbackPage.warningmessagePage .ant-table-thead>tr>th span{
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    align-items: center;
+}
+.playbackPage.warningmessagePage .ant-table-thead>tr>th span .ant-table-column-sorter{
+    margin-top: 5px;
+}
+.playbackPage.warningmessagePage .ant-table-thead>tr>th:first-child{
+    
+}
+
+.playbackPage.warningmessagePage .seltimecontent {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #EEE;
+    position: relative;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+.playbackPage.warningmessagePage .seltimecontent:active{
+    background: #EEE;
+}
+.playbackPage.warningmessagePage .seltimecontent:after{
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #999;
+    right: 20px;
+    top: 20px;
+    position: absolute;
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);    /* Firefox */  
+    -webkit-transform: rotate(45deg); /* Safari 和 Chrome */
+    border-bottom: none;
+    border-left: none;
+}
+
+
+
+
+.playbackPage .set .title{
+    text-align: center;
+    background: #EEE;
+    line-height: 46px;
+    font-size: 16px;
+    color: #888;
+}
+.playbackPage .set .formlist{
+    
+}
+.playbackPage{
+    padding-bottom: 15px;
+}
+.playbackPage .formlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.playbackPage .formlist >div{
+	width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.playbackPage .formlist >div.li{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    align-items: center;
+}
+.playbackPage .formlist >div.li img{
+    margin-left: 10px;
+}
+.playbackPage .btnlist{
+    display: flex;
+    justify-content: space-between;
+}
+.playbackPage .btnlist >div{
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+}
+.playbackPage .btnlist >div:last-child{
+    margin-right: 0;
+}
+
+
+.ant-table-tbody > tr.isreaded{
+    background:#EEE;
+    color: #999;
+}
+.ant-table-tbody > tr.isreaded td,
+.ant-table-tbody > tr.isreaded td span{
+    color: #999;
+}

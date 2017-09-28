@@ -12,19 +12,17 @@ import {
 const divmapid = 'maptrackhistoryplayback';
 class Page extends React.Component {
     componentWillMount () {
-        
+
     }
     componentWillUnmount(){
-        
         this.props.dispatch(carmapshow_destorymap({divmapid}));
     }
     componentDidMount () {
-        
         this.props.dispatch(carmapshow_createmap({divmapid}));
     }
     render() {
         const height = this.props.height || window.innerHeight;
-        
+
         return (
             <div className="AdminContent">
                 <div id={divmapid} style={{height:`${height}px`}}/>

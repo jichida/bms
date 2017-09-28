@@ -78,7 +78,7 @@ export default {
       'Latitude':'纬度',//{ type: Schema.Types.Number,default: 0 },//纬度
       'Speed':'速度',//{ type: Schema.Types.Number,default: 0 },//速度
       'Course':'航向',//{ type: Schema.Types.Number,default: 0 },//航向
-      'DeviceStatus':'设备状态',//String,//设备状态
+      'DeviceStatus':'车辆状态',//String,//车辆状态
       'LAC':'蜂窝',//{ type: Schema.Types.Number,default: 0 },//	30065	uint16	蜂窝 Location Area Code
       'CellId':'',//{ type: Schema.Types.Number,default: 0 },//	53033	uint16	蜂窝 Cell Id
       'ADC1':'主板温度',//{ type: Schema.Types.Number,default: 0 },//	37.8	 	主板温度，单位：摄氏度

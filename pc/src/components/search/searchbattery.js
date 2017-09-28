@@ -38,7 +38,7 @@ const selitem_devicefields = [
   },
   {
     value:'PnNo',
-    text:'设备PN料号'
+    text:'车辆PN料号'
   },
 ];
 const selitem_alarmfields = [

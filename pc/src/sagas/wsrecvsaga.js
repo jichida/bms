@@ -24,14 +24,29 @@ import {
   start_serverpush_devicegeo_sz,
   stop_serverpush_devicegeo_sz,
 
+  getcurallalarm_request,
+  getallworkorder_request,
+
+  setworkorderdone_request,
+  setworkorderdone_result,
+
+  getworkusers_request
 } from '../actions';
 import { push,goBack,go,replace } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import _ from 'lodash';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
+import  {
+  getrandom
+} from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
+  yield takeLatest(`${setworkorderdone_request}`, function*(action) {
+      yield take(`${setworkorderdone_result}`);
+      yield put(goBack());
+  });
+
   yield takeLatest(`${querydevice_result}`, function*(action) {
     yield put(start_serverpush_devicegeo_sz({}));
   });
@@ -42,7 +57,7 @@ export function* wsrecvsagaflow() {
         while(true){
           const { resstop, timeout } = yield race({
              resstop: take(`${stop_serverpush_devicegeo_sz}`),
-             timeout: call(delay, 1000)
+             timeout: call(delay,5000)
           });
           if(!!resstop){
             break;
@@ -59,22 +74,29 @@ export function* wsrecvsagaflow() {
   });
 
 
-  yield takeEvery(`${serverpush_devicegeo_sz_result}`, function*(action) {
+  yield takeLatest(`${serverpush_devicegeo_sz_result}`, function*(action) {
       let {payload:result} = action;
       yield put(serverpush_devicegeo_sz(result));
   });
 
-  yield takeEvery(`${md_login_result}`, function*(action) {
+  yield takeLatest(`${md_login_result}`, function*(action) {
       let {payload:result} = action;
       yield put(login_result(result));
       if(result.loginsuccess){
         localStorage.setItem('bms_pc_token',result.token);
         yield put(querydevicegroup_request({}));
+        //
+        yield put(getworkusers_request({}));
+        //登录成功,获取今天所有报警信息列表
+        yield put(getcurallalarm_request({}));
+        //获取所有工单
+        yield put(getallworkorder_request({}));
+
       }
   });
 
 
-  yield takeEvery(`${common_err}`, function*(action) {
+  yield takeLatest(`${common_err}`, function*(action) {
         let {payload:result} = action;
 
         yield put(set_weui({
@@ -85,7 +107,7 @@ export function* wsrecvsagaflow() {
         }}));
   });
 
-  yield takeEvery(`${querydevicegroup_result}`, function*(action) {
+  yield takeLatest(`${querydevicegroup_result}`, function*(action) {
     try{
       const {payload:{list}} = action;
       //获取到分组列表
@@ -101,7 +123,7 @@ export function* wsrecvsagaflow() {
 
   });
 
-  yield takeEvery(`${md_querydeviceinfo_result}`, function*(action) {
+  yield takeLatest(`${md_querydeviceinfo_result}`, function*(action) {
     let {payload:deviceinfo} = action;
     console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
     try{

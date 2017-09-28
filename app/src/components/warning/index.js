@@ -44,7 +44,7 @@ class Page extends React.Component {
                 >
                 <NavBar back={true} title="预警信息" />
                 <div className="set">
-                    <div>设备编号：{DeviceId || '23423-24cdc-wef'}</div>
+                    <div>车辆编号：{DeviceId || '23423-24cdc-wef'}</div>
                     <div className="formlist">
                         <SelectField value={0} fullWidth={true} style={{height:"58px"}}>
                             <MenuItem value={0} primaryText="警告等级" />

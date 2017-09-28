@@ -23,7 +23,7 @@ import {
                 className="loginForm formStyle1"
                 onSubmit={handleSubmit(onClickLogin)}
                 >
-
+                
                 <div className="li" >
                     <Field
                         name="phonenumber"
@@ -31,7 +31,7 @@ import {
                         placeholder="请输入您的账号"
                         type="text"
                         component={ InputValidation }
-                        validate={[ required, phone ]}
+                        validate={[ required ]}
                     />
                 </div>
                 <div className="li">
@@ -47,8 +47,13 @@ import {
                 </div>
 
                 <div className="submitBtn">
-                    <RaisedButton label="登录" fullWidth={true} primary={true} disabled={pristine || submitting}
-                    onClick={handleSubmit(onClickLogin)}/>
+                    <RaisedButton 
+                        label="登录"
+                        fullWidth={true} 
+                        primary={true} 
+                        disabled={pristine || submitting}
+                        onClick={handleSubmit(onClickLogin)}
+                    />
                 </div>
             </Form>
         )
@@ -74,8 +79,7 @@ export class Page extends Component {
     componentWillReceiveProps (nextProps) {
 
         if(nextProps.loginsuccess && !this.props.loginsuccess){
-
-            //search:?next=/devicelist
+          //search:?next=/devicelist
             var fdStart = this.props.location.search.indexOf("?next=");
             if(fdStart === 0){
                 const redirectRoute = this.props.location.search.substring(6);
@@ -118,7 +122,9 @@ export class Page extends Component {
     }
 }
 
-const mapStateToProps = ({userlogin}) => { return userlogin; }
+const mapStateToProps = ({userlogin}) => {
+  return {...userlogin};
+}
 Page = connect(mapStateToProps)(Page);
 
 export default Page;

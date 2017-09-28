@@ -74,7 +74,7 @@ class TreeSearch extends React.Component {
                             <MenuItem value={0} primaryText="请选择" />
                             <MenuItem value={1} primaryText="RDB编号" />
                             <MenuItem value={2} primaryText="BMU PACK号" />
-                            <MenuItem value={3} primaryText="设备PN料号" />
+                            <MenuItem value={3} primaryText="车辆PN料号" />
                         </SelectField>
                         <TextField
                             hintText="输入RDB编号"
@@ -85,7 +85,7 @@ class TreeSearch extends React.Component {
                             style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: this.state.input2===2?"inline-block":"none"}}
                         />
                         <TextField
-                            hintText="设备PN料号"
+                            hintText="车辆PN料号"
                             style ={{width : "30%", marginTop: "-10px", minWidth:"100px" ,display: this.state.input2===3?"inline-block":"none"}}
                         />
                     </div>
@@ -118,7 +118,7 @@ class TreeSearch extends React.Component {
                         adjustForCheckbox={false}
                         >
                       <TableRow>
-                        <TableHeaderColumn>图标及设备号</TableHeaderColumn>
+                        <TableHeaderColumn>图标及车辆号</TableHeaderColumn>
                         <TableHeaderColumn>告警信息</TableHeaderColumn>
                       </TableRow>
                     </TableHeader>

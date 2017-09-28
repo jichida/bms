@@ -12,19 +12,21 @@ import{
   mapmain_selgroup,
   ui_changetreestyle,
   ui_settreefilter,
-  ui_searchbattery_result
+  ui_searchbattery_result,
+  ui_index_addcollection,
+  ui_index_unaddcollection
 } from '../actions';
 import _ from 'lodash';
 import {getadcodeinfo} from '../util/addressutil';
-import {getgroupnamebydevice} from '../util/device';
 import {get_initgeotree} from '../util/treedata';
+import {jsondata_bms_carcollections} from '../test/bmsdata';
 
 const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
     treefilter:undefined,
-
-    mapseldeviceid:undefined,//当前选中的设备
+    carcollections:jsondata_bms_carcollections,
+    mapseldeviceid:undefined,//当前选中的车辆
     // mapdeviceidlist:[],
     gmap_acode_treename,//key:acode/value:name
     gmap_acode_treecount,//key:acode/value:count
@@ -55,6 +57,18 @@ const initial = {
 };
 
 const device = createReducer({
+  [ui_index_addcollection]:(state,payload)=>{
+    let carcollections = [...state.carcollections];
+    carcollections.push(payload);
+    return {...state,carcollections};
+  },
+  [ui_index_unaddcollection]:(state,payload)=>{
+    let carcollections = [...state.carcollections];
+    carcollections = _.filter(carcollections,(item)=>{
+      return item !== payload;
+    })
+    return {...state,carcollections};
+  },
   [ui_searchbattery_result]:(state,payload)=>{
     const {devicelist,g_devicesdb} = payload;
     let datatreesearchresult={
@@ -167,6 +181,7 @@ const device = createReducer({
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+     const {datatree} = get_initgeotree();
      let datatreeloc = {...datatree};
      return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
   },
@@ -247,8 +262,9 @@ const device = createReducer({
       type:'group_root',
       children:[]
     };
+
     const devicesgroups = _.groupBy(list,(dev)=>{
-      return getgroupnamebydevice(dev)._id;
+      return dev.groupid;
     });
     _.map(devicesgroups,(csz,ckey)=>{
         let name = _.get(state.groups[ckey],'name','');

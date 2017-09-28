@@ -6,6 +6,7 @@ let config = {
     requesttimeout:5000,
     appversion:'1.0.0',
     sendlocationinterval:5000,
+    softmode:'pc'
 };
 
 export default config;

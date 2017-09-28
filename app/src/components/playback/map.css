@@ -6,13 +6,21 @@
 }
 .playbackPage .set{
     border-bottom: 1px solid #EEE;
-    padding:20px;
     box-shadow: 1px 1px 8px rgba(0,0,0,.2);
     background: #FFF;
     position: relative;
     z-index: 2;
 }
-
+.playbackPage .set .title{
+    text-align: center;
+    background: #EEE;
+    line-height: 46px;
+    font-size: 16px;
+    color: #888;
+}
+.playbackPage .set .formlist{
+    
+}
 .playbackPage{
     padding-bottom: 15px;
 }
@@ -36,7 +44,10 @@
     -webkit-flex-direction:column;
 }
 .playbackPage .btnlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    display: -webkit-flex;
     justify-content: space-between;
 }
 .playbackPage .btnlist >div{
@@ -46,3 +57,72 @@
 .playbackPage .btnlist >div:last-child{
     margin-right: 0;
 }
+.seltimecontent {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #EEE;
+    position: relative;
+}
+.seltimecontent:active{
+    background: #EEE;
+}
+.seltimecontent:after{
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #999;
+    right: 20px;
+    top: 20px;
+    position: absolute;
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);    /* Firefox */  
+    -webkit-transform: rotate(45deg); /* Safari 和 Chrome */
+    border-bottom: none;
+    border-left: none;
+}
+.seltimecontent img{
+    width: 24px;
+    margin-right: 10px;
+}
+.seltimecontent span{
+    font-size: 16px;
+}
+.seltimebtn{
+    padding: 15px;
+    text-align: center;
+}
+
+.AdminContent{
+    flex-grow: 1;
+}
+.datepicker .datepicker-scroll>li{
+    font-size: 12px;
+}
+.playbackPage .deviceinfo{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    padding: 10px 15px 10px 13px;
+    border-bottom: 1px solid #EEE;
+    font-size: 16px;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.playbackPage .deviceinfo span:last-child{
+    flex-grow:1;
+    margin-left: 10px;
+}
+.playbackPage .deviceinfo span input{
+    text-align: right;
+    width: 100%;
+}
+.playbackPage .deviceinfo img{
+    width: 28px;
+    height:28px;
+    margin-right: 8px;
+}
+

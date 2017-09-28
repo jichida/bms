@@ -29,7 +29,7 @@ const selitem_devicefields = [
     },
     {
         value:'PnNo',
-        text:'设备PN料号'
+        text:'车辆PN料号'
     },
 ];
 const selitem_alarmfields = [
@@ -45,13 +45,14 @@ const selitem_alarmfields = [
 class TreeSearchBattery extends React.Component {
     constructor(props) {
         super(props);
+        let warninglevel = props.warninglevel + '';
         this.state = {
             notype:  '',
             notypevalue : '',
             alarmtype : '',
             alarmtypevalue:'',
-            alarmlevel:'',
-            startDate:moment(),
+            alarmlevel:warninglevel,
+            startDate:moment().subtract(7, 'days'),
             endDate:moment(),
             groupid:'0',
             adcode:10000
@@ -109,10 +110,10 @@ class TreeSearchBattery extends React.Component {
       if(this.state.alarmtype!== '' && this.state.alarmtypevalue!=''){
         query.querydevice[this.state.alarmtype] = this.state.alarmtypevalue;
       }
-      query.queryalarm['startDate'] = this.state.startDate;
-      query.queryalarm['endDate'] = this.state.endDate;
-      if(this.state.alarmlevel !== ''){
-        query.queryalarm['alarmlevel'] = this.state.alarmlevel;
+      query.queryalarm['startDate'] = this.state.startDate.format('YYYY-MM-DD HH:mm:ss');
+      query.queryalarm['endDate'] = this.state.endDate.format('YYYY-MM-DD HH:mm:ss');
+      if(this.state.alarmlevel !== '-1'){
+        query.queryalarm['warninglevel'] = parseInt(this.state.alarmlevel);
       }
 
       console.log(`【searchreport】查询条件:${JSON.stringify(query)}`);
@@ -164,10 +165,11 @@ class TreeSearchBattery extends React.Component {
 
 
 
-                    <Select defaultValue={"选择警告级别"}   onChange={this.onChange_alarmlevel.bind(this)}>
-                        <Option value="red" >严重告警</Option>
-                        <Option value="orange" >紧急告警</Option>
-                        <Option value="yellow" >一般告警</Option>
+                    <Select defaultValue={this.state.alarmlevel}   onChange={this.onChange_alarmlevel.bind(this)}>
+                        <Option value={'-1'}>选择警告级别</Option>
+                        <Option value={'0'} >严重告警</Option>
+                        <Option value={'1'} >紧急告警</Option>
+                        <Option value={'2'} >一般告警</Option>
                     </Select>
 
                 </div>

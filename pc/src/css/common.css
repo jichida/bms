@@ -129,7 +129,7 @@
     flex-shrink: 0;
 }
 .AppPage .content .headcontent .logo{
-    width: 100px;
+    width: 120px;
     height: 64px;
     line-height: 64px;
     -moz-flex-shrink: 0;
@@ -564,6 +564,30 @@
     height: 45px;
     text-align: center;
     line-height: 45px;
+    font-size: 16px;
+}
+.treePage .ant-tabs{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-orient:vertical;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.treePage .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content-animated{
+    flex-grow: 1;
+}
+.treePage .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane{
+    display: flex;
+    overflow-y: scroll;
+    width: 400px;
+    overflow-x: hidden;
+    -moz-box-orient:vertical;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
 }
 .topuser {
     display: -webkit-box;
@@ -599,8 +623,9 @@
     background: #5cbeaa;
     color: #FFF;
     font-size: 22px;
-    height: 72px;
-    line-height: 72px;
+    height: 60px;
+    line-height: 60px;
+    flex-shrink: 0;
 }
 .appbar .fa.back{
     font-size:30px;
@@ -735,6 +760,15 @@
 .searchreport >div .ant-input-group{
     width: auto;
 }
+.deviceinfoPage.devicePage{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
 .deviceinfoPage.devicePage .deviceinfolist{
     padding: 20px;
     display: -webkit-box;
@@ -750,6 +784,161 @@
 .deviceinfoPage.devicePage .deviceinfolist .li>div{
     margin:0 10px;
     border-bottom: 1px solid #EEE;
-    width: 100%
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
 }
 
+.deviceinfoPage.devicePage.alarminfoPage .deviceinfolist{
+    display: flex;
+    flex-direction: column;
+}
+.deviceinfoPage.devicePage.alarminfoPage .deviceinfolist >div{
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+}
+.deviceinfoPage.devicePage.alarminfoPage .deviceinfolist >div >div.tit{
+    width: 100%;
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+.headcontent .titlenav {
+    font-size: 18px;
+    line-height: 64px;
+}
+.headcontent .titlenav span{
+    margin: 0 5px;
+    display: inline-block;
+    color: #666;
+    font-weight: bold;
+    position: relative;
+    width: 91px;
+    text-align: center;
+}
+.headcontent .titlenav span.sel{
+    color : rgb(92, 190, 170);
+}
+.headcontent .titlenav span.sel:after{
+    content : "";
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    width: 75px;
+    height: 5px;
+    background: rgb(92, 190, 170);
+}
+.amap-overlays .amap-ui-smp-ifwn-content-body{
+    box-shadow: none;
+    border-radius: 15px;
+    padding:0;
+    overflow:hidden;
+}
+.amap-overlays .amap-ui-smp-ifwn-def-tr-close{
+    display: none;
+}
+.amap-overlays .amap-ui-smp-ifwn-info-title{
+    border-bottom: none;
+    display: none;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > p:first-child{
+    background: #5cbeaa;
+    text-align: center;
+    color: #FFF;
+    line-height: 30px;
+    font-size: 14px;
+    display: block;
+}
+.amap-overlays .amap-ui-smp-ifwn-info-content{
+    position: relative;
+    padding: 0;
+    padding-bottom: 10px;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p span{
+    display: inline-block;
+}
+
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p span:first-child{
+    width: 28%;
+    text-align: left;
+    flex-shrink: 0;
+    text-indent: 10px;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p span:last-child{
+    padding-left: 15px;
+    flex-grow: 1;
+    margin-right: 100px;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p:first-child span:last-child,
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p:first-child span:first-child{
+    padding: 0;
+    flex-grow: 0;
+    margin: 0;
+    width: auto;
+    text-align: left;
+    flex-shrink: 0;
+    text-indent: 0;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    z-index: 1000;
+    color: #27b395;
+    font-size: 16px;
+    background: none;
+    padding-right: 10px;
+}   
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button:after{
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #27b395;
+    right: 0px;
+    top: 7px;
+    position: absolute;
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border-bottom: none;
+    border-left: none;
+}
+.amap-overlays .amap-info > div:first-child {
+    width: 100%;
+}
+.workorderinfoPage .control{
+    padding:20px;
+}
+.workorderinfoPage .control .statusbtn{
+    background: #35B815;
+    color: #FFF;
+    margin-bottom: 10px;
+    line-height: 30px;
+    padding: 0 15px;
+    border-radius: 30px;
+    display: inline-block;
+}
+.workorderinfoPage .control .statusbtn.nodone{
+    background:#ff9966;
+}
+
+.showworderlist p{
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    line-height: 40px;
+    border-bottom:  1px dashed #EEE;
+    align-items: center;
+}

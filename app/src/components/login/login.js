@@ -24,7 +24,8 @@ export class PageForm extends Component {
                 onSubmit={handleSubmit(onClickLogin)}
                 >
                 <div className="logo">
-                        地图监控系统
+                    <span className="logoimg"></span>
+                    <span className="logospan">LOGO</span>
                 </div>
                 <div className="li" >
                     <span className="icon">
@@ -33,7 +34,7 @@ export class PageForm extends Component {
                     <Field
                         name="phonenumber"
                         id="phonenumber"
-                        placeholder="请输入您的账号"
+                        placeholder="User name"
                         type="text"
                         component={ InputValidation }
                         validate={[ required, phone ]}
@@ -46,12 +47,11 @@ export class PageForm extends Component {
                     <Field
                         name="password"
                         id="password"
-                        placeholder="请输入密码"
+                        placeholder="Password"
                         type="password"
                         component={ InputValidation }
                         validate={[ required ]}
                     />
-
                 </div>
 
                 <br/>
@@ -59,7 +59,7 @@ export class PageForm extends Component {
 
                 <div className="submitBtn">
                     <span
-                        className="btn Primary"
+                        className="btn Default"
                         disabled={pristine || submitting}
                         onClick={handleSubmit(onClickLogin)}
                         >
@@ -130,9 +130,8 @@ export class Page extends Component {
         return (
             <div className="loginPage AppPage" 
                 style={{
-                    background:`url(${Loginbg})`,
                     backgroundSize: "100% 100%",
-                    minHeight : `${window.innerHeight}px`
+                    height : `${window.innerHeight}px`
                 }}>
                 
                 <div className="content">

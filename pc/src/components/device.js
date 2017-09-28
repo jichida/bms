@@ -66,7 +66,7 @@ class MessageAllDevice extends React.Component {
 const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
     const alaram_data = [{
         key: 1,
-        "设备ID" : "001",
+        "车辆ID" : "001",
         "PACK号码" : "pack001",
         "PDB编号" : "pdb001",
         "料号" : "liaohao001",
@@ -74,7 +74,7 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
     },
     {
         key: 2,
-        "设备ID" : "002",
+        "车辆ID" : "002",
         "PACK号码" : "pack002",
         "PDB编号" : "pdb002",
         "料号" : "liaohao002",
@@ -82,7 +82,7 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
     },
     {
         key: 3,
-        "设备ID" : "003",
+        "车辆ID" : "003",
         "PACK号码" : "pack003",
         "PDB编号" : "pdb003",
         "料号" : "liaohao003",

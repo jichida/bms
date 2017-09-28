@@ -20,6 +20,17 @@ export const ui_btnclick_alaramyellow =  createAction('ui_btnclick_alaramyellow'
 export const ui_menuclick_settings = createAction('ui_menuclick_settings');
 export const ui_menuclick_logout = createAction('ui_menuclick_logout');
 export const ui_btnclick_devicehistorytrackplayback = createAction('ui_btnclick_devicehistorytrackplayback');
+export const ui_btnclick_devicemessage = createAction('ui_btnclick_devicemessage');
+
+export const ui_alarm_selcurdevice = createAction('ui_alarm_selcurdevice');
+export const ui_mycar_selcurdevice = createAction('ui_mycar_selcurdevice');
+export const ui_mycar_showtype= createAction('ui_mycar_showtype');
+export const ui_selworkorder = createAction('ui_selworkorder');
+
+export const ui_index_selstatus= createAction('ui_index_selstatus');
+
+export const ui_index_addcollection= createAction('ui_index_addcollection');
+export const ui_index_unaddcollection= createAction('ui_index_unaddcollection');
 //轨迹回放
 export const mapplayback_start = createAction('mapplayback_start');
 export const mapplayback_end = createAction('mapplayback_end');

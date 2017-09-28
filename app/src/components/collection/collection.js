@@ -18,19 +18,13 @@ import 'rc-swipeout/assets/index.css';
 // const divmapid = 'mapmain';
 class Page extends React.Component {
     componentWillMount () {
-        console.log('地图---->componentWillMount---------');
     }
     componentWillUnmount(){
-        console.log('地图---->componentWillUnmount---------');
-        // this.props.dispatch(carmapshow_destorymap({divmapid}));
     }
     componentDidMount () {
-        console.log('地图---->componentDidMount---------');
-        // this.props.dispatch(carmapshow_createmap({divmapid}));
     }
 
     render() {
-        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
 
         const onShow = ()=> {
             this.props.history.push("./overview");

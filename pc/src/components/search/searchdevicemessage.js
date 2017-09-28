@@ -28,7 +28,7 @@ const selitem_devicefields = [
     },
     {
         value:'PnNo',
-        text:'设备PN料号'
+        text:'车辆PN料号'
     },
 ];
 const selitem_alarmfields = [
@@ -41,12 +41,14 @@ const selitem_alarmfields = [
         text:'故障代码'
     },
 ];
+
+
 class TreeSearchBattery extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        alarmlevel:'',
-        startDate:moment(),
+        alarmlevel:'-1',
+        startDate:moment().subtract(3600*12, 'seconds'),
         endDate:moment(),
       };
   }
@@ -65,10 +67,10 @@ class TreeSearchBattery extends React.Component {
       queryalarm:{
       }
     };
-    query.queryalarm['startDate'] = this.state.startDate;
-    query.queryalarm['endDate'] = this.state.endDate;
-    if(this.state.alarmlevel !== ''){
-      query.queryalarm['alarmlevel'] = this.state.alarmlevel;
+    query.queryalarm['startDate'] = this.state.startDate.format('YYYY-MM-DD HH:mm:ss');
+    query.queryalarm['endDate'] = this.state.endDate.format('YYYY-MM-DD HH:mm:ss');
+    if(this.state.alarmlevel !== '-1'){
+      query.queryalarm['warninglevel'] = parseInt(this.state.alarmlevel);
     }
     console.log(`【searchdevicemessage】查询条件:${JSON.stringify(query)}`);
     if(!!this.props.onClickQuery){
@@ -84,10 +86,11 @@ class TreeSearchBattery extends React.Component {
                       startDate = {this.state.startDate}
                       endDate = {this.state.endDate}
                      onChangeSelDate={this.onChangeSelDate.bind(this)}/>
-                     <Select defaultValue={"选择警告级别"}   onChange={this.onChange_alarmlevel.bind(this)}>
-                         <Option value="red" >严重告警</Option>
-                         <Option value="orange" >紧急告警</Option>
-                         <Option value="yellow" >一般告警</Option>
+                     <Select defaultValue={'-1'}   onChange={this.onChange_alarmlevel.bind(this)}>
+                         <Option value={'-1'} >全部</Option>
+                         <Option value={'0'} >严重告警</Option>
+                         <Option value={'1'} >紧急告警</Option>
+                         <Option value={'2'} >一般告警</Option>
                      </Select>
                 </div>
                 <div className="b">

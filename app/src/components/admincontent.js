@@ -21,11 +21,11 @@ class Page extends React.Component {
     this.props.dispatch(carmapshow_createmap({divmapid}));
  }
  render() {
-     const height = this.props.height || window.innerHeight;
+     const height = this.props.height || window.innerHeight+"px";
      console.log('地图---->render---------height:'+height);
      return (
          <div className="AdminContent">
-             <div id={divmapid} style={{height:`${height}px`}}/>
+             <div id={divmapid} style={{height:height}}/>
          </div>
      );
  }

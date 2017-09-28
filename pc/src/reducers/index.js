@@ -9,14 +9,17 @@ import notifymessage from './messagecenter';
 import userlogin from './userlogin';
 import carmap from './carmap';
 import searchresult from './searchresult';
-
+import workorder from './workorder';
+import pic from './pic';
 export default combineReducers({
+  pic,
   app,
   carmap,
   searchresult,
   device,
   notifymessage,
   userlogin,
+  workorder,
   weui,
   form: formReducer,
   router: routerReducer,

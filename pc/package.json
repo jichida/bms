@@ -6,7 +6,6 @@
   "dependencies": {
     "antd": "^2.12.7",
     "async": "^2.5.0",
-    "bankcardinfo": "^2.0.3",
     "coordtransform": "^2.1.2",
     "geolib": "^2.0.22",
     "idcard": "^3.2.4",
@@ -15,8 +14,8 @@
     "material-ui": "^0.18.7",
     "moment": "^2.18.1",
     "normalizr": "^3.2.3",
+    "pica": "^3.0.6",
     "react": "^15.6.1",
-    "react-checkbox-tree": "^0.6.4",
     "react-dom": "^15.6.1",
     "react-draggable": "^2.2.6",
     "react-mobile-datepicker": "^3.0.5",
@@ -39,6 +38,7 @@
     "weui": "^1.1.2"
   },
   "scripts": {
+    "buildcp": "react-scripts build && cp -r build/. ../deploy/dist/pc && rm -R build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

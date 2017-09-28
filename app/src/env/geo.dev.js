@@ -6,7 +6,7 @@
 // export const getcurrentaddress = ()=>{
 //   return srcaddress;31.9931551257,118.7294151918
 // };
-let getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
+const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
 
     var getRandomCoordinates =  (radius, uniform)=> {
         // Generate two random numbers
@@ -50,6 +50,7 @@ let getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
     return [result.longitude,result.latitude];
 };
 
+export {getRandomLocation};
 let locationsz =[0,0];
 
 export const getcurrentlocationfn = (fncallback)=> {
