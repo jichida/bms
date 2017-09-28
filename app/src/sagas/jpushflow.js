@@ -36,7 +36,7 @@ export function* jpushflow(){//仅执行一次
     });
 
     yield takeLatest(`${logout_result}`, function*(action) {
-      let {payload:msgobj} = action;
+      // let {payload:msgobj} = action;
       yield call(async_cancelJPushAlisa);
 
     });

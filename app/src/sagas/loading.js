@@ -1,9 +1,9 @@
-import { select,put,takeLatest,race,take,call} from 'redux-saga/effects';
+import { put,takeLatest,race,take,call} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
     set_weui,
 } from '../actions';
-import { push } from 'react-router-redux';
+// import { push } from 'react-router-redux';
 import endsWith from 'lodash.endswith';
 import split from 'lodash.split';
 

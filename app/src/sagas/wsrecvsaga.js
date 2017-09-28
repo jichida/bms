@@ -1,4 +1,4 @@
-import { put,call,takeEvery,takeLatest,fork,take,race} from 'redux-saga/effects';
+import { put,call,takeLatest,fork,take,race} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   common_err,
@@ -32,14 +32,14 @@ import {
 
   getworkusers_request
 } from '../actions';
-import { push,goBack,go,replace } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
+import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
-import  {
-  getrandom
-} from '../test/bmsdata.js';
+// import  {
+//   getrandom
+// } from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
   yield takeLatest(`${setworkorderdone_request}`, function*(action) {

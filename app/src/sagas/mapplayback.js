@@ -1,4 +1,4 @@
-import { select,put,call,take,takeEvery,takeLatest,cancel,fork } from 'redux-saga/effects';
+import { select,put,call,take,takeLatest } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   mapmain_setzoomlevel,
