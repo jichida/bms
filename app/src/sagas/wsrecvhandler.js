@@ -1,11 +1,11 @@
-import _ from 'lodash';
+import map from 'lodash.map';
 import data from './datahandler.js';
 const handlerlist = {};
 
 const recvmessagetoresultpair = data.recvmessagetoresultpair;
 
 export function wsrecvhandler(socket,emit){
-  _.map(recvmessagetoresultpair,(fnresult,keyname)=>{
+  map(recvmessagetoresultpair,(fnresult,keyname)=>{
     handlerlist[keyname] = (socket, emit)=> {
       return ((result)=> {
         //
@@ -13,7 +13,7 @@ export function wsrecvhandler(socket,emit){
       });
     }
   });
-  _.map(handlerlist,(handlersocket,handlername)=>{
+  map(handlerlist,(handlersocket,handlername)=>{
     socket.on(handlername,handlersocket(socket,emit));
   });
 

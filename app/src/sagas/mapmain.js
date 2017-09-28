@@ -47,7 +47,9 @@ import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
 import {getcurrentpos} from './getcurrentpos';
 import { push,replace } from 'react-router-redux';
 import L from 'leaflet';
-import _ from 'lodash';
+import lodashmap from 'lodash.map';
+import find from 'lodash.find';
+import sampleSize from 'lodash.samplesize';
 import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
@@ -62,7 +64,6 @@ let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,pointSimplifierIns;
 let groupStyleMap = {};
-
 
 //=====数据部分=====
 let g_devicesdb = {};
@@ -119,7 +120,8 @@ const CreateMapUI_PointSimplifier =  (map)=>{
            }
            //分组样式
            let groupsz = getgroupStyleMap();
-           _.map(groupsz,(group)=>{
+
+           lodashmap(groupsz,(group)=>{
              const {name,image,...rest} = group;
              groupStyleMap[name] = {
                 pointStyle: {
@@ -468,7 +470,7 @@ const getclustertree_root =()=>{
         gmap_acode_treecount[adcodetop]=dataItems.length;//全国
 
         let childadcodelist = [];
-        _.map(children,(child)=>{
+        lodashmap(children,(child)=>{
           if(child.dataItems.length > 0){
             childadcodelist.push(child.adcode);
             gmap_acode_treecount[child.adcode]=child.dataItems.length;
@@ -499,7 +501,7 @@ const getclustertree_one =(adcode)=>{
           //device
           let deviceids = [];
           if(!!dataItems){
-            _.map(dataItems,(deviceitem)=>{
+            lodashmap(dataItems,(deviceitem)=>{
               if(!!deviceitem.dataItem){
                 deviceids.push(deviceitem.dataItem.DeviceId);
               }
@@ -524,7 +526,7 @@ const getclustertree_one =(adcode)=>{
             return;
           }
           gmap_acode_treecount[adcode]=dataItems.length;
-          _.map(children,(child)=>{
+          lodashmap(children,(child)=>{
               if(child.dataItems.length > 0){
                 gmap_acode_treecount[child.adcode]=child.dataItems.length;
                 childadcodelist.push(child.adcode);
@@ -637,7 +639,7 @@ export function* createmapmainflow(){
 
           //如果已经登录,并且有数据了！，重新加载数据
           let deivcelist = [];
-          _.map(g_devicesdb,(v)=>{
+          lodashmap(g_devicesdb,(v)=>{
             deivcelist.push(v);
           });
           if(deivcelist.length > 0){
@@ -747,7 +749,7 @@ export function* createmapmainflow(){
           g_devicesdb = {};//清空，重新初始化
           let devicelistresult = yield call(getgeodatabatch,devicelist);
           const data = [];
-          _.map(devicelistresult,(deviceitem)=>{
+          lodashmap(devicelistresult,(deviceitem)=>{
             if(!!deviceitem.locz){
               data.push(deviceitem);
               g_devicesdb[deviceitem.DeviceId] = deviceitem;
@@ -877,10 +879,10 @@ export function* createmapmainflow(){
                 //定位10个
                 const sample_size = 10;
                 const samplesz = gmap_acode_devices[adcodetop].length > sample_size?
-                _.sampleSize(gmap_acode_devices[adcodetop],sample_size):gmap_acode_devices[adcodetop];
+                sampleSize(gmap_acode_devices[adcodetop],sample_size):gmap_acode_devices[adcodetop];
 
                 let latlngs = [];
-                  _.map(samplesz,(deviceid)=>{
+                  lodashmap(samplesz,(deviceid)=>{
                       const deviceitem = g_devicesdb[deviceid];
                       if(!!deviceitem){
                         latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
@@ -957,7 +959,7 @@ export function* createmapmainflow(){
       const {payload} = action;
       let {list} = payload;
       try{
-        _.map(list,(deviceitem)=>{
+        lodashmap(list,(deviceitem)=>{
           g_devicesdb[deviceitem.DeviceId] = deviceitem;
         });
 
@@ -966,7 +968,7 @@ export function* createmapmainflow(){
           const {mapseldeviceid} = yield select((state)=>{
             return {mapseldeviceid:state.device.mapseldeviceid};
           });
-          const deviceitem = _.find(list,((o)=>{
+          const deviceitem = find(list,((o)=>{
             return o.DeviceId === mapseldeviceid;
           }));
           if(!!deviceitem){
@@ -1004,7 +1006,7 @@ export function* createmapmainflow(){
       try{
         if(!!distCluster){
           let data = [];
-          _.map(g_devicesdb,(item)=>{
+          lodashmap(g_devicesdb,(item)=>{
             data.push(item);
           });
           distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
@@ -1020,7 +1022,7 @@ export function* createmapmainflow(){
       try{
         if(!!pointSimplifierIns){
           let data = [];
-          _.map(g_devicesdb,(item)=>{
+          lodashmap(g_devicesdb,(item)=>{
             data.push(item);
           });
           pointSimplifierIns.setData(data);//刷新海量点
@@ -1104,7 +1106,7 @@ export function* createmapmainflow(){
         try{
           const {payload:{list}} = action;
           let devicelist = [];
-          _.map(list,(device)=>{
+          lodashmap(list,(device)=>{
             devicelist.push(device.DeviceId);
             g_devicesdb[device.DeviceId] = device;
           });

@@ -5,7 +5,7 @@ import {
     mapmain_setzoomlevel,
     map_setmapinited,
 } from '../actions';
-import _ from 'lodash';
+
 
 import L from 'leaflet';
 

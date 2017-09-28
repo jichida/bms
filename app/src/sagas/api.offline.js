@@ -76,7 +76,11 @@ import {getRandomLocation} from '../env/geo';
 import {getRandomLocation_track} from './simulatetrack';
 import coordtransform from 'coordtransform';
 import {g_devicesdb} from './mapmain';
-import _ from 'lodash';
+import map from 'lodash.map';
+import get from 'lodash.get';
+import filter from 'lodash.filter';
+import find from 'lodash.find';
+import sampleSize from 'lodash.samplesize';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 //获取地理位置信息，封装为promise
 
@@ -84,7 +88,7 @@ import moment from 'moment';
 
 const getresult_historytrack = (mstart,mend)=>{
   let list = [];
-  list = _.filter(jsondata_bms_track,(item)=>{
+  list = filter(jsondata_bms_track,(item)=>{
     return (item.GPSTime >= mstart) && (item.GPSTime <= mend);
   });
   return list;
@@ -147,7 +151,7 @@ export function* apiflow(){//
     try{
       const {payload} = action;
       let item;
-      _.map(jsondata_bms_alarm,(alarm,index)=>{
+      map(jsondata_bms_alarm,(alarm,index)=>{
         if(alarm._id === payload){
           item = {...alarm};
           item.isreaded = true;
@@ -169,7 +173,7 @@ export function* apiflow(){//
     try{
       const {payload:{query,data}} = action;
       let item;
-      _.map(jsondata_bms_workorder,(workorder)=>{
+      map(jsondata_bms_workorder,(workorder)=>{
         if(workorder._id === query._id){
           workorder = {...workorder,...data};
           item = workorder;
@@ -201,20 +205,20 @@ export function* apiflow(){//
       let workusers = yield select((state)=>{
         return state.workorder.workusers;
       });
-      let assignto = _.get(query,'queryalarm.assignto','');
+      let assignto = get(query,'queryalarm.assignto','');
       if(assignto !== ''){
-        list = _.filter(jsondata_bms_workorder, (oneworkorder)=>{
+        list = filter(jsondata_bms_workorder, (oneworkorder)=>{
           return workusers[assignto].name === oneworkorder['责任人'];
         });
       }
       else{
-        list =  _.sampleSize(jsondata_bms_workorder, getrandom(0,jsondata_bms_workorder.length-1));
+        list =  sampleSize(jsondata_bms_workorder, getrandom(0,jsondata_bms_workorder.length-1));
       }
 
-      let startdatestring = _.get(query,'queryalarm.startDate','');
-      let enddatestring = _.get(query,'queryalarm.endDate','');
+      let startdatestring = get(query,'queryalarm.startDate','');
+      let enddatestring = get(query,'queryalarm.endDate','');
       if(startdatestring !== '' && enddatestring !== ''){
-        list = _.filter(list,(item)=>{
+        list = filter(list,(item)=>{
           let waringtime = item['createtime'];
           let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
           return match;
@@ -337,8 +341,8 @@ export function* apiflow(){//
           return {carcollections};
         });
         //收藏的设备
-        const list = _.filter(jsondata_bms_mydevice, (itemdevice)=>{
-          return !!_.find(carcollections,(item)=>{
+        const list = filter(jsondata_bms_mydevice, (itemdevice)=>{
+          return !!find(carcollections,(item)=>{
             return item === itemdevice.DeviceId;
           });
         });
@@ -358,22 +362,22 @@ export function* apiflow(){//
 
       let list = [];
       if(!!query){
-        let warninglevel = _.get(query,'queryalarm.warninglevel',-1);
+        let warninglevel = get(query,'queryalarm.warninglevel',-1);
         if(warninglevel !== -1){
           //报警等级
-          list = _.filter(jsondata_bms_alarm,(item)=>{
+          list = filter(jsondata_bms_alarm,(item)=>{
             return item.warninglevel === warninglevel;
           });
         }
         else{
           //随机生成
-            list = jsondata_bms_alarm;//_.sampleSize(jsondata_bms_alarm, getrandom(0,jsondata_bms_alarm.length));
+            list = jsondata_bms_alarm;//sampleSize(jsondata_bms_alarm, getrandom(0,jsondata_bms_alarm.length));
         }
 
-        let startdatestring = _.get(query,'queryalarm.startDate','');
-        let enddatestring = _.get(query,'queryalarm.endDate','');
+        let startdatestring = get(query,'queryalarm.startDate','');
+        let enddatestring = get(query,'queryalarm.endDate','');
         if(startdatestring !== '' && enddatestring !== ''){
-          list = _.filter(list,(item)=>{
+          list = filter(list,(item)=>{
             let waringtime = item['告警时间'];
             let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
             return match;
@@ -383,7 +387,7 @@ export function* apiflow(){//
         //是否已读
         if(!!query.queryalarm){
           if(query.queryalarm.hasOwnProperty('isreaded')){
-            list = _.filter(list,(item)=>{
+            list = filter(list,(item)=>{
               return item.isreaded === query.queryalarm.isreaded;
            });
           }
@@ -410,21 +414,21 @@ export function* apiflow(){//
 
         let list = [];
         if(!!query){
-           list = _.filter(jsondata_bms_alarm,(item)=>{
+           list = filter(jsondata_bms_alarm,(item)=>{
             return item.DeviceId === query.DeviceId;
           });
 
-          let warninglevel = _.get(query,'queryalarm.warninglevel',-1);
+          let warninglevel = get(query,'queryalarm.warninglevel',-1);
           if(warninglevel != -1){
-            list = _.filter(list,(item)=>{
+            list = filter(list,(item)=>{
              return item.warninglevel === warninglevel;
            });
           }
 
-          let startdatestring = _.get(query,'queryalarm.startDate','');
-          let enddatestring = _.get(query,'queryalarm.endDate','');
+          let startdatestring = get(query,'queryalarm.startDate','');
+          let enddatestring = get(query,'queryalarm.endDate','');
           if(startdatestring !== '' && enddatestring !== ''){
-            list = _.filter(list,(item)=>{
+            list = filter(list,(item)=>{
               let waringtime = item['告警时间'];
               let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
               return match;
@@ -492,12 +496,12 @@ export function* apiflow(){//
         });
         if('device' === modeview){
 
-            const list = _.sampleSize(jsondata_bms_mydevice, jsondata_bms_mydevice.length);
+            const list = sampleSize(jsondata_bms_mydevice, jsondata_bms_mydevice.length);
             let items = [];
             for(let i = 0;i < list.length; i++){
               let item = {...list[i]};
               let locationsz = [];
-              let findeditem = _.find(carcollections,(col)=>{
+              let findeditem = find(carcollections,(col)=>{
                 return col === item.DeviceId;
               });
               if(!!findeditem){

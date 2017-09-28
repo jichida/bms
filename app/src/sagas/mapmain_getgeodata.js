@@ -1,11 +1,12 @@
 import async from 'async';
 import coordtransform from 'coordtransform';
-import _ from 'lodash';
+import map from 'lodash.map';
+import clone from 'lodash.clone';
 //转换数据,批量转换所有数据
 export const getgeodatabatch =(devicelist)=> {
   return new Promise((resolve,reject) => {
     let resultdevicelist = [];
-    _.map(devicelist,(deviceitem)=>{
+    map(devicelist,(deviceitem)=>{
       let isget = true;
       const LastHistoryTrack = deviceitem.LastHistoryTrack;
       if (!LastHistoryTrack) {
@@ -32,7 +33,7 @@ export const getgeodatabatch =(devicelist)=> {
 
 export const getgeodata =(deviceitem)=>{
   return new Promise((resolve,reject) => {
-    
+
     const geocoder = new window.AMap.Geocoder({
             radius: 1000,
         });
@@ -50,7 +51,7 @@ export const getgeodata =(deviceitem)=>{
              district:addressComponent.district,
              formattedAddress:georesult.formattedAddress
            };
-           
+
            resolve(resultobj);
         }else{
            //获取地址失败
@@ -74,7 +75,7 @@ export const getgeodatabatch2 =(devicelist)=> {
     let mapsz = [];
 
     //每20个获取一个坐标数组
-    _.map(devicelist,(deviceitem)=>{
+    map(devicelist,(deviceitem)=>{
       let isget = true;
       const LastHistoryTrack = deviceitem.LastHistoryTrack;
       if (!LastHistoryTrack) {
@@ -102,16 +103,16 @@ export const getgeodatabatch2 =(devicelist)=> {
 
     //
     //设置并发
-    _.map(mapsz,(mapxy)=>{
+    map(mapsz,(mapxy)=>{
       //
       parallelfunsz.push((callbackfn)=>{
-        let mapxyobj = _.map(mapxy, _.clone);
+        let mapxyobj = map(mapxy, clone);
         //
         //
         geocoder.getAddress(mapxyobj, (status, result)=> {
              if (status === 'complete' && result.info === 'OK') {
                if(!!result.regeocodes){
-                 _.map(result.regeocodes,(georesult,index)=>{
+                 map(result.regeocodes,(georesult,index)=>{
                    if(!!georesult){
                      let addressComponent = georesult.addressComponent;
                      if(!!addressComponent){
@@ -135,7 +136,7 @@ export const getgeodatabatch2 =(devicelist)=> {
 
     //获取所有结果
     async.parallel(parallelfunsz,(err,result)=>{
-      _.map(devicelist,(deviceitem)=>{
+      map(devicelist,(deviceitem)=>{
         let isget = true;
         const LastHistoryTrack = deviceitem.LastHistoryTrack;
         if (!LastHistoryTrack) {

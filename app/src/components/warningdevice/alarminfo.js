@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
 import Devicestar from "../../img/16.png";
 import Moresetting from "../../img/17.png";
 import Searchimg from '../../img/13.png';
@@ -31,7 +31,7 @@ class Page extends React.Component {
         let curalarm =  alarms[alarmid];
         let deviceid = curalarm.DeviceId;
         let isincollections = false;
-        _.map(carcollections,(id)=>{
+        map(carcollections,(id)=>{
             if(id === deviceid){
                 isincollections = true;
             }
@@ -74,13 +74,13 @@ class Page extends React.Component {
                 </div>
                 <div className="deviceinfocontent">
                     {
-                      _.map(datadevice,(item,index)=>{
+                      map(datadevice,(item,index)=>{
 
                         return (
                             <div key={index}>
                                 <div className="tit">{index}</div>
                                 {
-                                    _.map(item,(i,k)=>{
+                                    map(item,(i,k)=>{
                                         return (<div key={k} className="li"><span>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
                                     })
                                 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TreeSelect  from 'antd/lib/tree-select';
-import _ from 'lodash';
+import map from 'lodash.map';
 
 const TreeNode = TreeSelect.TreeNode;
 
@@ -22,7 +22,7 @@ class SelectDevice extends React.Component {
     const treeData = [];
     let {g_devicesdb,deviceidlist} = this.props;
     deviceidlist = deviceidlist || [];
-    _.map(deviceidlist,(deviceid)=>{
+    map(deviceidlist,(deviceid)=>{
       let item = g_devicesdb[deviceid];
       let data = {
           label: `${item.DeviceId}`,

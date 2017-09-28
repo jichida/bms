@@ -21,7 +21,7 @@ import MapPage from '../admincontent';
 import {searchbatteryalarm_request} from '../../actions';
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
-import _ from 'lodash';
+
 
 class Page extends React.Component {
     constructor(props) {

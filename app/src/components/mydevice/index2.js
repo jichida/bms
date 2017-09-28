@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+
 import Devicestar from "../../img/16.png";
 import Moresetting from "../../img/17.png";
 import Footer from "../index/footer.js";

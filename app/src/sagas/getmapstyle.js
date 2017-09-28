@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import get from 'lodash.get';
 import store from '../env/store';
 import {ui_showmenu} from '../actions';
 import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
@@ -100,23 +100,23 @@ window.clickfn_chargingpile =(DeviceId)=>{
   store.dispatch(push(`/chargingpileinfo/${DeviceId}`));
 }
 const getpop_device =(deviceitem)=>{
-  let DeviceId = _.get(deviceitem,'DeviceId','');
-  let txtLatitude = _.get(deviceitem,'LastHistoryTrack.Latitude','');
-  let txtLongitude = _.get(deviceitem,'LastHistoryTrack.Longitude','');
-  let adcode = _.get(deviceitem,'adcode','');
-  let province = _.get(deviceitem,'province','');
-  let city = _.get(deviceitem,'city','');
-  let district = _.get(deviceitem,'district','');
-  let formattedAddress = _.get(deviceitem,'formattedAddress','');
+  let DeviceId = get(deviceitem,'DeviceId','');
+  let txtLatitude = get(deviceitem,'LastHistoryTrack.Latitude','');
+  let txtLongitude = get(deviceitem,'LastHistoryTrack.Longitude','');
+  let adcode = get(deviceitem,'adcode','');
+  let province = get(deviceitem,'province','');
+  let city = get(deviceitem,'city','');
+  let district = get(deviceitem,'district','');
+  let formattedAddress = get(deviceitem,'formattedAddress','');
 
-  let zdl = _.get(deviceitem,'总电流(A)',0);
-  let zdy = _.get(deviceitem,'总电压(V)',374);
-  let soc = _.get(deviceitem,'SOC(%)',50);
-  let cs = _.get(deviceitem,'车速(km/h)',60);
-  let zlc = _.get(deviceitem,'里程(km)',100000);
-  let jxzk = _.get(deviceitem,'电池绝缘电阻(KΩ)',9000);
-  let zgwd = _.get(deviceitem,'最高温度值(℃)',30);
-  let bjxx = _.get(deviceitem,'报警信息','无');
+  let zdl = get(deviceitem,'总电流(A)',0);
+  let zdy = get(deviceitem,'总电压(V)',374);
+  let soc = get(deviceitem,'SOC(%)',50);
+  let cs = get(deviceitem,'车速(km/h)',60);
+  let zlc = get(deviceitem,'里程(km)',100000);
+  let jxzk = get(deviceitem,'电池绝缘电阻(KΩ)',9000);
+  let zgwd = get(deviceitem,'最高温度值(℃)',30);
+  let bjxx = get(deviceitem,'报警信息','无');
   return {
       infoBody: `<p>车辆编号:${DeviceId}</p>
       <p class='l'><span class='t'>总电流</span><span class='color_warning'>${zdl}A</span></p>
@@ -133,22 +133,22 @@ const getpop_device =(deviceitem)=>{
 }
 //充电桩
 const getpop_chargingpile =(deviceitem)=>{
-  let DeviceId = _.get(deviceitem,'DeviceId','');
-  let no = _.get(deviceitem,'充电桩编号','');
-  let sccj = _.get(deviceitem,'生产厂家','');
-  let cdms = _.get(deviceitem,'充电模式','');
-  let dqzt = _.get(deviceitem,'当前状态','');
-  let sysc = _.get(deviceitem,'开机时长（h）','');
+  let DeviceId = get(deviceitem,'DeviceId','');
+  let no = get(deviceitem,'充电桩编号','');
+  let sccj = get(deviceitem,'生产厂家','');
+  let cdms = get(deviceitem,'充电模式','');
+  let dqzt = get(deviceitem,'当前状态','');
+  let sysc = get(deviceitem,'开机时长（h）','');
 
-  let dqdl = _.get(deviceitem,'当前电流（A）','');
-  let jyzk = _.get(deviceitem,'绝缘阻抗','');
-  let dqgl = _.get(deviceitem,'当前功率（kW）','');
+  let dqdl = get(deviceitem,'当前电流（A）','');
+  let jyzk = get(deviceitem,'绝缘阻抗','');
+  let dqgl = get(deviceitem,'当前功率（kW）','');
 
-  let adcode = _.get(deviceitem,'adcode','');
-  let province = _.get(deviceitem,'province','');
-  let city = _.get(deviceitem,'city','');
-  let district = _.get(deviceitem,'district','');
-  let formattedAddress = _.get(deviceitem,'formattedAddress','');
+  let adcode = get(deviceitem,'adcode','');
+  let province = get(deviceitem,'province','');
+  let city = get(deviceitem,'city','');
+  let district = get(deviceitem,'district','');
+  let formattedAddress = get(deviceitem,'formattedAddress','');
 
   return {
       infoBody: `<p>充电桩编号: ${no}</p>,
@@ -165,7 +165,7 @@ const getpop_chargingpile =(deviceitem)=>{
 
 
 export const getpopinfowindowstyle = (deviceitem)=>{
-  let imagetype = _.get(deviceitem,'imagetype','0');
+  let imagetype = get(deviceitem,'imagetype','0');
   if(typeof imagetype === 'string'){
     imagetype = parseInt(imagetype);
   }

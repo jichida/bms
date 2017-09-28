@@ -9,7 +9,8 @@ import Setting from "../../img/12.png";
 import Footer from "../index/footer.js";
 import Collectiondevice from "../collectiondevice";
 import Datalist from "./datalist";
-import _ from 'lodash';
+import map from 'lodash.map';
+import minBy from 'lodash.minby';
 import moment from 'moment';
 import {
   getallworkorder_request,
@@ -46,7 +47,7 @@ class Page extends React.Component {
         let workorder_datas = [];
         let count_done = 0;
         let count_undo = 0;
-        _.map(curallworkorder,(id)=>{
+        map(curallworkorder,(id)=>{
           let item = workorders[id];
           if(selstatus === 0 && !item.isdone){
             workorder_datas.push(item);
@@ -72,7 +73,7 @@ class Page extends React.Component {
         const colorred = {color: "#C00"};
 
         let leastdays = 1;
-        let earlytimeo = _.minBy(workorder_datas,(o)=>{
+        let earlytimeo = minBy(workorder_datas,(o)=>{
           return o.createtime;
         });
         if(!!earlytimeo){

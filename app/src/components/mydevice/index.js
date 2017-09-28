@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
 import Devicestar from "../../img/16.png";
 import Moresetting from "../../img/17.png";
 import Footer from "../index/footer.js";
@@ -32,7 +32,7 @@ class Page extends React.Component {
         let count_running = 0;
         let count_error = 0;
         const {g_devicesdb} = this.props;
-        _.map(g_devicesdb,(item)=>{
+        map(g_devicesdb,(item)=>{
             if(item.isconnected){
               count_connected++;
             }

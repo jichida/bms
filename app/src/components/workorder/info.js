@@ -11,7 +11,7 @@ import Collectiondevice from "../collectiondevice";
 import Datalist from "./datalist";
 import Updataimg from "../../img/18.png";
 import Button  from 'antd/lib/button';
-import _ from 'lodash';
+
 import PicturesWall  from '../controls/pictureswall.js';
 import {ui_selworkorder,setworkorderdone_request} from '../../actions';
 import TextField from 'material-ui/TextField';

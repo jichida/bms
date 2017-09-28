@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
-import _ from 'lodash';
+
 // import {ui_selcurdevice} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -113,7 +113,7 @@ class TreeSearch extends React.Component {
                 <div className="searchbtn"><RaisedButton label="查询" primary={true} fullWidth={true} /></div>
 
                 <Table>
-                    <TableHeader 
+                    <TableHeader
                         displaySelectAll={false}
                         adjustForCheckbox={false}
                         >

@@ -2,7 +2,8 @@ import React from 'react';
 import ListView from 'rmc-list-view';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import get from 'lodash.get';
+import map from 'lodash.map';
 import './listview.css';
 //https://github.com/edwardhotchkiss/mongoose-paginate
 //https://github.com/react-component/m-list-view
@@ -61,7 +62,7 @@ class Page extends React.Component {
   }
   componentWillUnmount() {
     this.mounted = false;
-    let pos = _.get(this,'refs.listview.scrollProperties.offset',0);
+    let pos = get(this,'refs.listview.scrollProperties.offset',0);
     listtypeiddata[this.props.listtypeid] = {
       offset:this.state.offset,
       limit:this.props.pagenumber,
@@ -101,7 +102,7 @@ class Page extends React.Component {
       if (that.mounted){
         that.initData = [];
         if(!!result){
-          _.map(result.docs,(item)=>{
+          map(result.docs,(item)=>{
             that.initData.push(item);
           });
         }
@@ -137,7 +138,7 @@ class Page extends React.Component {
         })).then(({result})=> {
           if (that.mounted){
               if(!!result){
-                _.map(result.docs,(item)=>{
+                map(result.docs,(item)=>{
                   that.initData.push(item);
                 });
               }

@@ -33,7 +33,7 @@ import {
   getworkusers_request
 } from '../actions';
 import { push,goBack,go,replace } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
-import _ from 'lodash';
+import map from 'lodash.map';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
@@ -112,7 +112,7 @@ export function* wsrecvsagaflow() {
       const {payload:{list}} = action;
       //获取到分组列表
       let groupids = [];
-      _.map(list,(group)=>{
+      map(list,(group)=>{
         groupids.push(group._id);
       });
       yield put(querydevice_request({query:{}}));

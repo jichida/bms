@@ -20,7 +20,7 @@ import coordtransform from 'coordtransform';
 import {getcurrentpos} from './getcurrentpos';
 import { push } from 'react-router-redux';
 import L from 'leaflet';
-import _ from 'lodash';
+
 
 const divmapid_maptrackhistoryplayback = 'maptrackhistoryplayback';
 

@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Table from 'antd/lib/table';
 import Icon  from 'antd/lib/icon';
-import _ from 'lodash';
+import sortBy from 'lodash.sortby';
 import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";
 import { withRouter } from 'react-router-dom';
@@ -43,7 +43,7 @@ class Page extends React.Component {
             key: '故障类型'
         }];
 
-        workorder_datas = _.sortBy(workorder_datas,[(item)=>{
+        workorder_datas = sortBy(workorder_datas,[(item)=>{
           return item.isdone;
         }]);
         return (

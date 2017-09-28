@@ -4,7 +4,8 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
+import get from 'lodash.get';
 import RaisedButton from 'material-ui/RaisedButton';
 import {ui_showhistoryplay,ui_showmenu} from '../actions';
 import translate from 'redux-polyglot/translate';
@@ -102,12 +103,12 @@ class Page extends React.Component {
                 </div>
                 <div className="lists">
                   {
-                    _.map(datasz,(item,gindex)=>{
+                    map(datasz,(item,gindex)=>{
                       let groupname = item.groupname;
                       return (
-                        _.map(item.fieldnames, (fielditem, key)=>{
+                        map(item.fieldnames, (fielditem, key)=>{
                             let name = p.tc(fielditem.name);
-                            let value = _.get(deviceitem,name,'');
+                            let value = get(deviceitem,name,'');
                             // console.log(`name:${name},value:${value}`);
                             return (
                                 <div className="li" key={`${gindex}_${key}`}>

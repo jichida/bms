@@ -4,16 +4,17 @@ import {
     set_weui,
 } from '../actions';
 import { push } from 'react-router-redux';
-import _ from 'lodash';
+import endsWith from 'lodash.endswith';
+import split from 'lodash.split';
 
 export function* createloadingflow(){
   let action_request = (action)=>{
     let actiontype = action.type;
-    return _.endsWith(actiontype,'_request');
+    return endsWith(actiontype,'_request');
   }
 
   yield takeLatest(action_request, function*(actionreq) {
-    let actionstringsz = _.split(actionreq.type,/[ _]/);
+    let actionstringsz = split(actionreq.type,/[ _]/);
     let actionstring = actionstringsz[actionstringsz.length - 2];//肯定大于1，因为已经判断有_了
     if(actionstring === 'loginwithtoken'){
       actionstring = 'login';
@@ -22,7 +23,7 @@ export function* createloadingflow(){
     if(actionstring !== 'login' && actionstring !== 'logout'){
       let action_result = (action)=>{
         let actiontype = action.type;
-        let isresult = _.endsWith(actiontype,`${actionstring}_result`);
+        let isresult = endsWith(actiontype,`${actionstring}_result`);
         if(isresult){
           return true;
         }
@@ -31,7 +32,7 @@ export function* createloadingflow(){
 
       let action_commonerr = (action)=>{
         let actiontype = action.type;
-        let iscommon_err = _.endsWith(actiontype,'common_err');
+        let iscommon_err = endsWith(actiontype,'common_err');
         if(iscommon_err){
           const {payload} = action;
           if(!!payload){

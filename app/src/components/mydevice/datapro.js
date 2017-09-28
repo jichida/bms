@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Table from 'antd/lib/table';
 import Icon  from 'antd/lib/icon';
-import _ from 'lodash';
+import map from 'lodash.map';
 import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";
 import "../../css/antd.min.css";
@@ -21,10 +21,10 @@ class Page extends React.Component {
     render() {
         const {groupidlist,groups,g_devicesdb} = this.props;
         let data = [];
-        _.map(groupidlist,(gid)=>{
+        map(groupidlist,(gid)=>{
           let item = groups[gid];
           let devicenum = 0;
-          _.map(g_devicesdb,(device)=>{
+          map(g_devicesdb,(device)=>{
             if(device.groupid === gid){
               devicenum++;
             }

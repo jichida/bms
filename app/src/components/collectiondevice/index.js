@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
 import Devicestar from "../../img/16.png";
 import { withRouter } from 'react-router-dom';
 import {ui_selworkorder} from '../../actions';
@@ -13,7 +13,7 @@ class Page extends React.Component {
     render() {
         let data = [];
         const {carcollections,g_devicesdb} = this.props;
-        _.map(carcollections,(id)=>{
+        map(carcollections,(id)=>{
           let item = g_devicesdb[id];
           data.push({name :`${id}`,id});
         });
@@ -21,7 +21,7 @@ class Page extends React.Component {
         return (
             <div className="mydevicelist">
                 {
-                    _.map(data, (d, i)=>{
+                    map(data, (d, i)=>{
                         return (
                             <div className="li" key={i} onClick={()=>{
                               // this.props.history.push(`/deviceinfo/${d.id}`)}

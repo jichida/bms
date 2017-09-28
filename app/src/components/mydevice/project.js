@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
 import Devicestar from "../../img/16.png";
 import Moresetting from "../../img/17.png";
 import Footer from "../index/footer.js";
@@ -43,7 +43,7 @@ class Page extends React.Component {
         let count_running = 0;
         let count_error = 0;
         const {g_devicesdb} = this.props;
-        _.map(g_devicesdb,(item)=>{
+        map(g_devicesdb,(item)=>{
           if(item.groupid === groupid){
             deviceidlist.push(item.DeviceId);
             if(item.isconnected){
@@ -58,7 +58,7 @@ class Page extends React.Component {
           }
         });
         return (
-            <div 
+            <div
                 className="mydevicePage AppPage customtable"
                 style={{
                     background: "none",
@@ -72,7 +72,7 @@ class Page extends React.Component {
                     </div>
                 </div>
                 <div className="searchcontent headsearch">
-                    <SelectDevice 
+                    <SelectDevice
                         placeholder={"请输入设备ID"}
                         initdeviceid={this.state.deviceid}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}

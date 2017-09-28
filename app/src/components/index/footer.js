@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import './index.css';
 import { withRouter } from 'react-router-dom';
 import {ui_sel_tabindex} from '../../actions';
-import _ from 'lodash';
+import map from "lodash.map";
 import Avatar from "../../img/2.png";
 import Footer1 from "../../img/1.png";
 import Footer2 from "../../img/2.png";
@@ -68,7 +68,7 @@ const mapStateToProps = ({app,workorder,searchresult}) => {
     let count_unreadalarms = 0;
     let count_undoworkorders = 0;
     const {curallworkorder,workorders} = workorder;
-    _.map(curallworkorder,(id)=>{
+    map(curallworkorder,(id)=>{
       let item = workorders[id];
       //统计
       if(!item.isdone){
@@ -76,7 +76,7 @@ const mapStateToProps = ({app,workorder,searchresult}) => {
       }
     });
     const {curallalarm,alarms} = searchresult;
-    _.map(curallalarm,(aid)=>{
+    map(curallalarm,(aid)=>{
       let item = alarms[aid];
       if(!item.isreaded){
         count_unreadalarms++;

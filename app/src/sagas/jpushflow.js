@@ -10,7 +10,7 @@ import {
     setJPushAlias,
     cancelJPushAlisa
 } from '../env/jpush';
-import _ from 'lodash';
+import get from 'lodash.get';
 import { push } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 
 let async_setJPushAlias =(userid)=> {
@@ -47,7 +47,7 @@ export function* jpushflow(){//仅执行一次
           //yield call(alertmessage,`jpushlistenInMessage ===>${JSON.stringify(msgobj)}`);
           if(!!msgobj){
             let message = '接收到一条消息';
-            message = _.get(msgobj,'aps.alert',message);
+            message = get(msgobj,'aps.alert',message);
             yield put(set_weui({
               toast:{
               text:message,
@@ -91,7 +91,7 @@ export function* jpushflow(){//仅执行一次
             else{
               alert(`err->jpushlistenInMessage ===>${JSON.stringify(msgobj)}`);
               // let message = '接收到一条消息';
-              // message = _.get(msgobj,'aps.alert',message);
+              // message = get(msgobj,'aps.alert',message);
               // yield put(set_weui({
               //   toast:{
               //   text:message,

@@ -21,7 +21,7 @@ import Footer from "../index/footer.js";
 import Seltime from "../tools/seltime.js";
 import Button  from 'antd/lib/button';
 import moment from 'moment';
-import _ from 'lodash';
+import map from 'lodash.map';
 import SelectDevice from '../mydevice/selectdevice.js';
 
 const innerHeight = window.innerHeight;
@@ -117,7 +117,7 @@ class Page extends React.Component {
     render() {
         const {g_devicesdb} = this.props;
         let deviceidlist = [];
-        _.map(g_devicesdb,(item)=>{
+        map(g_devicesdb,(item)=>{
             deviceidlist.push(item.DeviceId);
         });
         const formstyle={width:"100%",flexGrow:"1"};

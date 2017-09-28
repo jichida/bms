@@ -5,7 +5,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Table from 'antd/lib/table';
 import Icon  from 'antd/lib/icon';
-import _ from 'lodash';
+import filter from 'lodash.filter';
+import sortBy from 'lodash.sortby';
+import map from 'lodash.map';
 import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";
 import { withRouter } from 'react-router-dom';
@@ -23,11 +25,11 @@ class Page extends React.Component {
 
     render() {
         let {g_devicesdb,alarms,searchresult_alaram,alaram_data} = this.props;
-        // const columns = _.map
+        // const columns = map
         const {seltype} = this.props;
 
         let dataalarm = [];
-        dataalarm = _.filter(alaram_data,(item) => {
+        dataalarm = filter(alaram_data,(item) => {
           if(seltype === 0){
             return !item.isreaded;
           }
@@ -67,7 +69,7 @@ class Page extends React.Component {
             key: '告警位置',
             render: (v) => <span>{v}</span>,
         }];
-        alaram_data = _.sortBy(alaram_data,[(item)=>{
+        alaram_data = sortBy(alaram_data,[(item)=>{
           return item.isreaded;
         },
         (item)=>{
@@ -98,11 +100,11 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];
-    _.map(searchresult_alaram,(aid)=>{
+    map(searchresult_alaram,(aid)=>{
       alaram_data.push(alarms[aid]);
     });
 
-    let columns = _.map(column_data, (data, index)=>{
+    let columns = map(column_data, (data, index)=>{
         return {
             title: index,
             dataIndex: index,

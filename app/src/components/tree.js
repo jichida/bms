@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
 import RaisedButton from 'material-ui/RaisedButton';
-import _ from 'lodash';
+
 import {
   mapmain_seldistrict,
   ui_selcurdevice,

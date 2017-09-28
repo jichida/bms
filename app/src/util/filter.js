@@ -1,13 +1,13 @@
-import _ from 'lodash';
+import get from 'lodash.get';
 // Helper functions for filtering
 export const defaultMatcher = (filterText, node) => {
     if(!!node.children){
       return false;
     }
 
-    // 
-    // 
-    let devicetype = _.get(node,'type','');
+    //
+    //
+    let devicetype = get(node,'type','');
     if(devicetype === 'device'){
         if(!!node.device && !!filterText.inputtreevalue){
           if(node.device.DeviceId.toLowerCase().indexOf(filterText.inputtreevalue.toLowerCase()) !== -1){
