@@ -9,7 +9,7 @@ import Moresetting from "../../img/17.png";
 import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";
 import {ui_sel_tabindex} from '../../actions';
-import { Button } from 'antd';
+import Button  from 'antd/lib/button';
 import {
     ui_index_addcollection,
     ui_index_unaddcollection,

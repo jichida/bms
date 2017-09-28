@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TreeSelect } from 'antd';
+import TreeSelect  from 'antd/lib/tree-select';
 import _ from 'lodash';
 
 const TreeNode = TreeSelect.TreeNode;
@@ -43,7 +43,7 @@ class SelectDevice extends React.Component {
         onChange={this.onChange}
         treeData={treeData}
         placeholder={this.props.placeholder}
-        
+
         />
 
     );

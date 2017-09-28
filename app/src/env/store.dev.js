@@ -24,7 +24,7 @@ let configureStore = (initialState)=> {
     const store = createStore(
         reducer, initialState,
         compose(
-            applyMiddleware(thunk,sagaMiddleware,middleware),
+            applyMiddleware(sagaMiddleware,middleware),
             DevTools.instrument()
         )
     );

@@ -3,7 +3,8 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Icon } from 'antd';
+import Table from 'antd/lib/table';
+import Icon  from 'antd/lib/icon';
 import _ from 'lodash';
 import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";
@@ -59,11 +60,11 @@ class Page extends React.Component {
             render: (v) => <span>{v}</span>
         }];
         return (
-            <Table 
-                columns={columns} 
-                dataSource={mydevices} 
+            <Table
+                columns={columns}
+                dataSource={mydevices}
                 pagination={false}
-                style={{flexGrow: 1}} 
+                style={{flexGrow: 1}}
                 onRowClick={this.rowClick}
                 scroll={{ y: this.props.tableheight }}
                 />

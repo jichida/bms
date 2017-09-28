@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import {grey900} from 'material-ui/styles/colors';
-import { DatePicker } from 'antd';
+
 import NavBar from "../tools/nav.js";
 
 import SelectField from 'material-ui/SelectField';
@@ -15,7 +15,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Searchimg from '../../img/13.png';
 import Searchimg2 from '../../img/15.png';
 import Seltime from "../tools/seltime.js";
-import { Button } from 'antd';
+import DatePicker  from 'antd/lib/date-picker';
+import Button  from 'antd/lib/button';
 import Avatar from '../../img/19.png';
 import {List, ListItem} from 'material-ui/List';
 import Settingicon from '../../img/20.png';
@@ -27,7 +28,7 @@ const { RangePicker } = DatePicker;
 class Page extends React.Component {
 
     render() {
-        
+
         return (
             <div className="usercenterPage AppPage"
                 style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
@@ -46,18 +47,18 @@ class Page extends React.Component {
                         <span className="changepwd">修改密码</span>
                     </div>
                     <List style={{background: "#FFF",padding:"0"}}>
-                        <ListItem 
-                            primaryText="设置" 
-                            leftIcon={<img src={Settingicon} />} 
-                            rightIcon={<Rightlnk />} 
+                        <ListItem
+                            primaryText="设置"
+                            leftIcon={<img src={Settingicon} />}
+                            rightIcon={<Rightlnk />}
                             style={{marginBottom: "1px"}}
                             onClick={()=>{this.props.history.push("/setting")}}
                             />
                             <div style={{height:"1px",width : "100%", background:"#EEE"}}></div>
-                        <ListItem 
-                            primaryText="关于" 
-                            leftIcon={<img src={Users} />} 
-                            rightIcon={<Rightlnk />}  
+                        <ListItem
+                            primaryText="关于"
+                            leftIcon={<img src={Users} />}
+                            rightIcon={<Rightlnk />}
                             style={{background : "#FFF"}}
                             onClick={()=>{}}
                             />

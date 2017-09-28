@@ -3,7 +3,8 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Icon } from 'antd';
+import Table from 'antd/lib/table';
+import Icon  from 'antd/lib/icon';
 import _ from 'lodash';
 import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";

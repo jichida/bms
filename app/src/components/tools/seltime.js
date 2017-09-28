@@ -3,7 +3,7 @@
     底部点击展开菜单栏
  */
 import React from 'react';
-import { DatePicker} from 'antd';
+import DatePicker from 'antd/lib/date-picker';
 
 
 class DateRange extends React.Component {
