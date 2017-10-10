@@ -58,7 +58,8 @@ import {
   ui_menuclick_logout
 }from '../actions';
 
-import _ from 'lodash';
+import map from 'lodash.map';
+import countBy from 'lodash.countby';
 import {jsondata_bms_chargingpile} from '../test/bmsdata.js';
 
 /**
@@ -410,16 +411,16 @@ class Page extends React.Component {
                 </div>
             );
         }
-        // let count_0 = _.countBy(jsondata_bms_chargingpile,(item)=>{
+        // let count_0 = countBy(jsondata_bms_chargingpile,(item)=>{
         //   return item.imagetype == 4;
         // });
-        // let count_1 = _.countBy(jsondata_bms_chargingpile,(item)=>{
+        // let count_1 = countBy(jsondata_bms_chargingpile,(item)=>{
         //   return item.imagetype == 5;
         // });
-        // let count_2 = _.countBy(jsondata_bms_chargingpile,(item)=>{
+        // let count_2 = countBy(jsondata_bms_chargingpile,(item)=>{
         //   return item.imagetype == 6;
         // });
-        let count_chargingpile_obj = _.countBy(jsondata_bms_chargingpile,'imagetype');
+        let count_chargingpile_obj = countBy(jsondata_bms_chargingpile,'imagetype');
         //充电桩模式
         return (
             <div className="BadgeStyle">
@@ -503,7 +504,7 @@ const mapStateToPropsTip = ({device,app,searchresult:{curallalarm,alarms}}) => {
 
    let count_online = 0;
    let count_offline = 0;
-   _.map(g_devicesdb,(item)=>{
+   map(g_devicesdb,(item)=>{
       if(item.isonline){
         count_online++;
       }
@@ -517,7 +518,7 @@ const mapStateToPropsTip = ({device,app,searchresult:{curallalarm,alarms}}) => {
    let count_red = 0;
    let count_orange = 0;
 
-   _.map(curallalarm,(aid)=>{
+   map(curallalarm,(aid)=>{
      if(alarms[aid].warninglevel === 0){
        count_red++;
      }

@@ -14,7 +14,7 @@ import {
   ui_resetsearch,
   setalarmreaded_result
 } from '../actions';
-import _ from 'lodash';
+import map from 'lodash.map';
 
 const initial = {
   searchresult:{
@@ -42,7 +42,7 @@ const searchresult = createReducer({
       let curallalarm =[];
       let alarms = {...state.alarms};
       const {list} = payload;
-      _.map(list,(alarm)=>{
+      map(list,(alarm)=>{
         curallalarm.push(alarm._id);
         alarms[alarm._id] = alarm;
       });
@@ -68,7 +68,7 @@ const searchresult = createReducer({
   [searchbattery_result]: (state, payload) => {
     let searchresult_battery = [];
     const {list} = payload;
-    _.map(list,(device)=>{
+    map(list,(device)=>{
       searchresult_battery.push(device.DeviceId);
     });
     return { ...state, searchresult_battery};
@@ -77,7 +77,7 @@ const searchresult = createReducer({
     const {list} = payload;
     let alarms = {...state.alarms};
     let searchresult_alaram = [];
-    _.map(list,(alaram)=>{
+    map(list,(alaram)=>{
       alarms[alaram._id] = alaram;
       searchresult_alaram.push(alaram._id);
     });
@@ -87,7 +87,7 @@ const searchresult = createReducer({
     const {list} = payload;
     let alarms = {...state.alarms};
     let searchresult_alaramsingle = [];
-    _.map(list,(alaram)=>{
+    map(list,(alaram)=>{
       alarms[alaram._id] = alaram;
       searchresult_alaramsingle.push(alaram._id);
     });

@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
-import _ from 'lodash';
+import map from 'lodash.map';
 // import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -96,11 +96,11 @@ const mapStateToProps = ({device:{g_devicesdb},workorder:{searchresult_workorder
     "责任人" : "",
   };
   const workorder_data = [];
-  _.map(searchresult_workorder,(aid)=>{
+  map(searchresult_workorder,(aid)=>{
     workorder_data.push(workorders[aid]);
   });
 
-  let columns = _.map(column_data, (data, index)=>{
+  let columns = map(column_data, (data, index)=>{
         let column_item = {
             title: index,
             dataIndex: index,

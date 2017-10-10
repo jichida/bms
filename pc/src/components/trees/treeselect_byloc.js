@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { TreeSelect } from 'antd';
-import _ from 'lodash';
+import map from 'lodash.map';
 const TreeNode = TreeSelect.TreeNode;
 
 class Treeselect extends React.Component {
@@ -27,7 +27,7 @@ class Treeselect extends React.Component {
       return (
         <TreeNode value={adcode} title={gmap_acode_treename[datatreenode.adcode]} key={adcode} >
           {
-            _.map(datatreenode.children,(node)=>{
+            map(datatreenode.children,(node)=>{
                return renderComponentFromNode(node)
             })
           }

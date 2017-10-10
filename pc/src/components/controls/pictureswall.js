@@ -4,7 +4,7 @@ import Upload from 'antd/lib/upload';
 import Icon from 'antd/lib/icon';
 import message from 'antd/lib/message';
 import Modal from 'antd/lib/modal';
-import _ from "lodash";
+import map from 'lodash.map';
 import { connect } from 'react-redux';
 import './pictureswall.css';
 import 'antd/dist/antd.css';
@@ -17,7 +17,7 @@ class PicturesWall extends React.Component {
       super(props);
       let fileList = [];
       if(!!props.value){
-        _.map(props.value, (v, l)=>{
+        map(props.value, (v, l)=>{
            fileList.push({
                name : undefined,
                status : "done",

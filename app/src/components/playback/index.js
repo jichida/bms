@@ -53,7 +53,14 @@ class Page extends React.Component {
         const {deviceid,startDate,endDate} = this.state;
         const {g_devicesdb} = this.props;
         if(!!g_devicesdb[deviceid]){
-          this.props.dispatch(mapplayback_start({isloop:false,speed:60,query:{DeviceId:deviceid,startDate,endDate}}));
+          const query = {
+            DeviceId:deviceid
+          };
+          query.GPSTime = {
+            $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
+            $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
+          }
+          this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
           this.showset();
         }
         else{

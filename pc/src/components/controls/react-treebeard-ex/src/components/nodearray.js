@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TreeNode from './node.js';
-import _ from 'lodash';
+import map from 'lodash.map';
 
 class NodeArray extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class NodeArray extends React.Component {
       if(this.state.expanded){
         return (<div>
           {
-            _.map(subnodes,(child,index)=>{
+            map(subnodes,(child,index)=>{
               return (<TreeNode {..._eventBubbles}
                     animations={animations}
                     decorators={propDecorators}

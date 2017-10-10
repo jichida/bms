@@ -2,7 +2,7 @@ import get from 'lodash.get';
 import store from '../env/store';
 import {ui_showmenu} from '../actions';
 import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
-
+import moment from 'moment';
 //地图上点图标的样式【图标类型】
 export const getgroupStyleMap = ()=>{
   let groupsz = [
@@ -93,6 +93,61 @@ export const getgroupStyleMap = ()=>{
 // formattedAddress
 // :
 //设备
+
+const getCoureName = (course)=> {
+
+    var name = "";
+    if(typeof course === 'string'){
+      course = parseFloat(course);
+    }
+
+    if ((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360)) // 0
+    {
+        name = "正北";
+    }
+    else if (course >= 22.5 && course < 67.5) // 45
+    {
+        name = "东北";
+    }
+    else if (course >= 67.5 && course < 112.5) // 90
+    {
+        name = "正东";
+    }
+    else if (course >= 112.5 && course < 157.5) //135
+    {
+        name = "东南";
+    }
+    else if (course >= 157.5 && course < 202.5) //180
+    {
+        name = "正南";
+    }
+    else if (course >= 202.5 && course < 247.5) //225
+    {
+        name = "西南";
+    }
+    else if (course >= 247.5 && course < 292.5) //270
+    {
+        name = "正西";
+    }
+    else if (course >= 292.5 && course < 337.5) //315
+    {
+        name = "西北";
+    }
+    else {
+        name = "未知.";
+    }
+    return name;
+}
+
+const gettyname = (tp)=>{
+  if(typeof tp === 'string'){
+    tp = parseFloat(tp);
+  }
+  tp = tp/10;
+  tp = tp.toFixed(1);
+  return `${tp}bar`;
+};
+
 window.clickfn_device =(DeviceId)=>{
   store.dispatch(push(`/deviceinfo/${DeviceId}`));
 }
@@ -117,17 +172,33 @@ const getpop_device =(deviceitem)=>{
   let jxzk = get(deviceitem,'电池绝缘电阻(KΩ)',9000);
   let zgwd = get(deviceitem,'最高温度值(℃)',30);
   let bjxx = get(deviceitem,'报警信息','无');
+
+  const sd = get(deviceitem,'LastHistoryTrack.Speed','');
+  const hx = get(deviceitem,'LastHistoryTrack.Course','');
+  const cysj = get(deviceitem,'TPData.DataTime','');
+  const TP1 = get(deviceitem,'TPData.TP1','');
+  const TP2 = get(deviceitem,'TPData.TP2','');
+  const TP3 = get(deviceitem,'TPData.TP3','');
+  const TP4 = get(deviceitem,'TPData.TP4','');
+  const TP5 = get(deviceitem,'TPData.TP5','');
+  let lasttime = get(deviceitem,'updated_at','');
+  try{
+    lasttime = moment(lasttime).format('YYYY-MM-DD HH:mm:ss');
+  }
+  catch(e){
+
+  }
   return {
       infoBody: `<p>车辆编号:${DeviceId}</p>
-      <p class='l'><span class='t'>总电流</span><span class='color_warning'>${zdl}A</span></p>
-      <p class='l'><span class='t'>总电压</span><span class='color_warning'>${zdy}V</span></p>
-      <p class='l'><span class='t'>SOC</span><span class='color_warning'>${soc}%</span></p>
-      <p class='l'><span class='t'>车速</span><span class='color_warning'>${cs}km/h</span> </p>
-      <p class='l'><span class='t'>总里程</span><span class='color_warning'>${zlc}km</span></p>
-      <p class='l'><span class='t'>绝缘阻抗</span><span class='color_warning'>${jxzk}KΩ</span></p>
-      <p class='l'><span class='t'>电池最高温度</span><span class='color_warning'>${zgwd}℃</span></p>
-      <p class='l'><span class='t'>车辆当前位置</span><span class='color_warning'>${province}${city}${district}</span></p>
-      <p class='l'><span class='t'>当前报警信息</span><span class='color_warning'>${bjxx}</span></p>
+      <p class='l'><span class='t'>速度</span><span class='color_warning'>${sd}km/h</span></p>
+      <p class='l'><span class='t'>航向</span><span class='color_warning'>${getCoureName(hx)}</span></p>
+      <p class='l'><span class='t'>采样时间</span><span class='color_warning'>${cysj}</span></p>
+      <p class='l'><span class='t'>最后更新时间</span><span class='color_warning'>${lasttime}</span></p>
+      <p class='l'><span class='t'>左前胎压</span><span class='color_warning'>${gettyname(TP1)}</span> </p>
+      <p class='l'><span class='t'>右前胎压</span><span class='color_warning'>${gettyname(TP2)}</span></p>
+      <p class='l'><span class='t'>右后胎压</span><span class='color_warning'>${gettyname(TP3)}</span></p>
+      <p class='l'><span class='t'>左后胎压</span><span class='color_warning'>${gettyname(TP4)}</span></p>
+      <p class='l'><span class='t'>胎压故障码</span><span class='color_warning'>${TP5}</span></p>
       <button onclick="clickfn_device(${DeviceId})">查看详情</button>`
   };
 }

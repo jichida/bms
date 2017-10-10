@@ -8,12 +8,12 @@
 import jsondataprovinces from './provinces.json';
 import jsondatacities from './cities.json';
 import jsondataareas from './areas.json';
-import _ from 'lodash';
+import map from 'lodash.map';
 
 
 export function get_initgeotree(){
   //获取第一次完整树结构
-  
+
   //root
   let gmap_acode_treename = {};
   let gmap_acode_treecount = {};
@@ -29,7 +29,7 @@ export function get_initgeotree(){
   gmap_acode_treename[100000] = '全国';
   gmap_acode_treecount[100000] = 0;
 
-  _.map(jsondataprovinces,(province)=>{
+  map(jsondataprovinces,(province)=>{
     let provicecode = parseInt(province.code);
     let provicenode = {
       adcode:provicecode,
@@ -41,7 +41,7 @@ export function get_initgeotree(){
     gmap_acode_treename[provicecode] = province.name;
     gmap_acode_treecount[provicecode] = 0;
 
-    _.map(jsondatacities,(city)=>{
+    map(jsondatacities,(city)=>{
       let citycode = parseInt(city.code);
       let parent_code = parseInt(city.parent_code);
       if(parent_code === provicecode){
@@ -55,7 +55,7 @@ export function get_initgeotree(){
         gmap_acode_treename[citycode] = city.name;
         gmap_acode_treecount[citycode] = 0;
 
-        _.map(jsondataareas,(area)=>{
+        map(jsondataareas,(area)=>{
           let areacode = parseInt(area.code);
           parent_code = parseInt(area.parent_code);
           if(parent_code === citycode){
@@ -72,7 +72,7 @@ export function get_initgeotree(){
               citynode.children.push(areanode);
             }
             else{
-              
+
               provicenode.children.push(areanode);
             }
           }
@@ -84,7 +84,7 @@ export function get_initgeotree(){
     });
     datatree.children.push(provicenode);
   });
-  
-  
+
+
   return {datatree,gmap_acode_treename,gmap_acode_treecount};
 };

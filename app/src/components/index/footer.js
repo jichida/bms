@@ -49,11 +49,7 @@ class Page extends React.Component {
                         <img src={tabindex===2?Footer5:Footer6} />
                         <span className={tabindex===2?"sel":""}>车辆信息</span>
                     </li>
-                    <li onClick={this.pushurl.bind(this, "/workorder",3)}>
-                        <img src={tabindex===3?Footer7:Footer8} />
-                        <span className={tabindex===3?"sel":""}>工单处理</span>
-                        {count_undoworkorders > 0 && <span className="num">{count_undoworkorders}</span>}
-                    </li>
+
                     <li onClick={this.pushurl.bind(this, "/playback/0",4)}>
                         <img src={tabindex===4?Footer9:Footer10} />
                         <span className={tabindex===4?"sel":""}>轨迹监控</span></li>

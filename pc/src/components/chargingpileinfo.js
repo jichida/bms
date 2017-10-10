@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
 import RaisedButton from 'material-ui/RaisedButton';
 import {ui_showhistoryplay,ui_showmenu,searchbatteryalarm_request} from '../actions';
 import translate from 'redux-polyglot/translate';
@@ -113,7 +113,7 @@ class Page extends React.Component {
 
                 <div className="lists deviceinfolist">
                     {
-                        _.map(datapower,(item,i)=>{
+                        map(datapower,(item,i)=>{
                             return (
                                 <div className="li" key={i}>
                                     <div>

@@ -20,7 +20,7 @@ import {
 } from '../../actions';
 import Seltime from '../search/seltime.js';
 import moment from 'moment';
-import _ from 'lodash';
+import map from 'lodash.map';
 import SelectDevice from './selectdevice.js';
 
 const fGetCurrentWeek=function(m){
@@ -94,7 +94,7 @@ class Page extends React.Component {
           DeviceId = deviceitem.DeviceId;
         }
         let deviceidlist = [];
-        _.map(g_devicesdb,(item)=>{
+        map(g_devicesdb,(item)=>{
             deviceidlist.push(item.DeviceId);
         });
         const formstyle={width:"10px",flexGrow:"1"};
@@ -110,7 +110,7 @@ class Page extends React.Component {
                     </div>
                     <div className="selcar">
                       <span className="t">车辆ID：</span>
-                      <SelectDevice 
+                      <SelectDevice
                         placeholder={"请输入设备ID"}
                         initdeviceid={this.state.deviceid}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}

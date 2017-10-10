@@ -1,4 +1,4 @@
-import { select,put,call,take,takeLatest } from 'redux-saga/effects';
+import { select,put,call,take,takeLatest,takeEvery } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   mapmain_setzoomlevel,
@@ -146,17 +146,6 @@ let createmap =({mapcenterlocation,zoomlevel})=> {
   });
 }
 
-// const listenmapevent = (eventname)=>{
-//   return new Promise(resolve => {
-//     if(!!window.amaptrackhistoryplayback){
-//       window.amaptrackhistoryplayback.on(eventname, (e)=> {
-//           resolve(eventname);
-//       });
-//     }
-//
-//   });
-// }
-//
 
 const getmapstate_curdevice = (state) => {
   const {device:{g_devicesdb,mapseldeviceid}} = state;
@@ -174,7 +163,7 @@ const getmapstate_curdevice = (state) => {
 export function* createmaptrackhistoryplaybackflow(){
 
     //创建地图
-    yield takeLatest(`${carmapshow_createmap}`, function*(action_createmap) {
+    yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_maptrackhistoryplayback){
@@ -195,15 +184,6 @@ export function* createmaptrackhistoryplaybackflow(){
           yield call(CreateMapUI,window.amaptrackhistoryplayback);
 
 
-          // let task_zoomend =  yield fork(function*(eventname){
-          //   while(true){
-          //     yield call(listenmapevent,eventname);
-          //     // let centerlocation = window.amapmain.getCenter();
-          //     // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
-          //     yield put(mapmain_setzoomlevel(window.amaptrackhistoryplayback.getZoom()));
-          //   }
-          // },'zoomend');
-
           while(true){
             let {payload:{divmapid}} = yield take(`${carmapshow_destorymap}`);
             if(divmapid === divmapid_maptrackhistoryplayback){
@@ -211,7 +191,6 @@ export function* createmaptrackhistoryplaybackflow(){
             }
           }
 
-          // yield cancel(task_zoomend);
         }
       }
       catch(e){
@@ -221,17 +200,17 @@ export function* createmaptrackhistoryplaybackflow(){
     });
 
     //销毁地图
-    yield takeLatest(`${carmapshow_destorymap}`, function*(action_destorymap) {
+    yield takeEvery(`${carmapshow_destorymap}`, function*(action_destorymap) {
         let {payload:{divmapid}} = action_destorymap;
         if(divmapid === divmapid_maptrackhistoryplayback){
           window.amaptrackhistoryplayback = null;
+          navg0 = null;
+          gPathSimplifier = null;
+          pathSimplifierIns = null;
         }
-        navg0 = null;
-        gPathSimplifier = null;
-        pathSimplifierIns = null;
     });
 
-    yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
+    yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       try{
         if(!!window.amaptrackhistoryplayback){
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
@@ -279,11 +258,16 @@ export function* createmaptrackhistoryplaybackflow(){
             let amapboounds = new window.AMap.Bounds(southWest,northEast);
             window.amaptrackhistoryplayback.setBounds(amapboounds);
             pathSimplifierIns.setData([{
-              name: '车辆1602010008',
+              name: `车辆:${query.DeviceId}`,
               path
             }]);
-
             yield call(startplayback,{isloop,speed});
+
+
+            console.log(`路线:${JSON.stringify({
+              name: `车辆:${query.DeviceId}`,
+              path
+            })}`);
           }
 
         }

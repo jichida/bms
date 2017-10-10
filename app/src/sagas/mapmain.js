@@ -553,7 +553,7 @@ const getclustertree_one =(adcode)=>{
 export function* createmapmainflow(){
 
     //创建地图
-    yield takeLatest(`${carmapshow_createmap}`, function*(action_createmap) {
+    yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
         let {payload:{divmapid}} = action_createmap;
         if(divmapid === divmapid_mapmain){
@@ -674,7 +674,7 @@ export function* createmapmainflow(){
       }
     });
     //销毁地图
-    yield takeLatest(`${carmapshow_destorymap}`, function*(action_destorymap) {
+    yield takeEvery(`${carmapshow_destorymap}`, function*(action_destorymap) {
       let {payload:{divmapid}} = action_destorymap;
       if(divmapid === divmapid_mapmain){
         window.amapmain = null;
@@ -685,7 +685,7 @@ export function* createmapmainflow(){
     });
 
     //选择一个车辆请求
-    yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
+    yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       const {payload:{DeviceId,deviceitem}} = actioncurdevice;
       try{
             //强制展开树
@@ -839,12 +839,13 @@ export function* createmapmainflow(){
         let {payload:isshow} = action_showflag;
         try{
           if(!!distCluster){
-            if(isshow){
-              pointSimplifierIns.show();
-            }
-            else{
-              pointSimplifierIns.hide();
-            }
+            // if(isshow){
+            //   pointSimplifierIns.show();
+            // }
+            // else{
+            //   pointSimplifierIns.hide();
+            // }
+            pointSimplifierIns.show();
             pointSimplifierIns.render();
           }
         }

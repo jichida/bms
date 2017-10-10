@@ -1,7 +1,7 @@
 /**
  * Created by jinsebainian on 2017/5/19.
  */
-import _ from "lodash";
+import merge from 'lodash.merge';
 
 /**
  * pica库处理图片
@@ -24,7 +24,7 @@ class PicaDisposePhoto {
       }
     }
 
-    let newConfig = _.merge(defaultConfig, config)
+    let newConfig = merge(defaultConfig, config)
     this.picaQuality = newConfig.picaQuality
     this.picaOptions = newConfig.picaOptions
     this.maxWidthOrHeight = newConfig.maxWidthOrHeight

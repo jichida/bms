@@ -16,7 +16,10 @@ import{
   ui_index_addcollection,
   ui_index_unaddcollection
 } from '../actions';
-import _ from 'lodash';
+import filter from 'lodash.filter';
+import map from 'lodash.map';
+import get from 'lodash.get';
+import groupBy from 'lodash.groupby';
 import {getadcodeinfo} from '../util/addressutil';
 import {get_initgeotree} from '../util/treedata';
 import {jsondata_bms_carcollections} from '../test/bmsdata';
@@ -64,7 +67,7 @@ const device = createReducer({
   },
   [ui_index_unaddcollection]:(state,payload)=>{
     let carcollections = [...state.carcollections];
-    carcollections = _.filter(carcollections,(item)=>{
+    carcollections = filter(carcollections,(item)=>{
       return item !== payload;
     })
     return {...state,carcollections};
@@ -81,7 +84,7 @@ const device = createReducer({
       children:[]
     };
     let children = [];
-    _.map(devicelist,(deviceid)=>{
+    map(devicelist,(deviceid)=>{
       children.push({
         type:'device',
         loading:false,
@@ -161,7 +164,7 @@ const device = createReducer({
            if(!!tmpnode){
              //<---
              let children = [];
-             _.map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
+             map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
                children.push({
                  type:'device',
                  loading:false,
@@ -239,7 +242,7 @@ const device = createReducer({
     const {list} = payload;
     let groupidlist = [];
     let groups = {};
-    _.map(list,(grouprecord)=>{
+    map(list,(grouprecord)=>{
       groupidlist.push(grouprecord._id);
       groups[grouprecord._id] = grouprecord;
     });
@@ -249,7 +252,7 @@ const device = createReducer({
     const {list} = payload;
     // let mapdeviceidlist = [];
     let g_devicesdb = {};
-    _.map(list,(devicerecord)=>{
+    map(list,(devicerecord)=>{
       // mapdeviceidlist.push(devicerecord.DeviceId);
       g_devicesdb[devicerecord.DeviceId] = devicerecord;
     });
@@ -263,11 +266,11 @@ const device = createReducer({
       children:[]
     };
 
-    const devicesgroups = _.groupBy(list,(dev)=>{
+    const devicesgroups = groupBy(list,(dev)=>{
       return dev.groupid;
     });
-    _.map(devicesgroups,(csz,ckey)=>{
-        let name = _.get(state.groups[ckey],'name','');
+    map(devicesgroups,(csz,ckey)=>{
+        let name = get(state.groups[ckey],'name','');
         let node = {
           id:ckey,
           type:'group_leaf',
@@ -276,7 +279,7 @@ const device = createReducer({
           toggled:false,
         };
 
-        _.map(csz,(v,k)=>{
+        map(csz,(v,k)=>{
           node.children.push({
             type:'device',
             id:`${v.DeviceId}`,

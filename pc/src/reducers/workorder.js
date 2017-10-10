@@ -7,7 +7,7 @@ import {
     getworkusers_result,
     createworkorder_result,
 } from '../actions';
-import _ from 'lodash';
+import map from 'lodash.map';
 
 const initial = {
   workorder:{
@@ -29,7 +29,7 @@ const workorder = createReducer({
   [getworkusers_result]:(state,payload)=>{
      let workusers = {};
      const {list} = payload;
-     _.map(list,(item)=>{
+     map(list,(item)=>{
        workusers[item._id] = item;
      });
      return { ...state, workusers};
@@ -44,7 +44,7 @@ const workorder = createReducer({
     let curallworkorder =[];
     let workorders = {...state.workorders};
     const {list} = payload;
-    _.map(list,(item)=>{
+    map(list,(item)=>{
       curallworkorder.push(item._id);
       workorders[item._id] = item;
     });
@@ -55,7 +55,7 @@ const workorder = createReducer({
     let searchresult_workorder =[];
     let workorders = {...state.workorders};
     const {list} = payload;
-    _.map(list,(item)=>{
+    map(list,(item)=>{
       searchresult_workorder.push(item._id);
       workorders[item._id] = item;
     });

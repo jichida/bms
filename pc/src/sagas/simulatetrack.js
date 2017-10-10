@@ -1,5 +1,5 @@
 import {getRandomLocation} from '../env/geo';
-import _ from 'lodash';
+import map from 'lodash.map';
 let mapidlocation = {};
 //id:{loclst,curindex}
 
@@ -14,14 +14,14 @@ const getnavdrawroute =({startlnglat,endlnglat})=> {
        new window.AMap.LngLat(endlnglat.lng, endlnglat.lat),
       (status,result)=>{
             if(status === 'complete'){
-              _.map(result.routes,(route)=>{
+              map(result.routes,(route)=>{
                 let latlngs = [];
                 let instruction = '';
-                _.map(route.steps,(drivestep)=>{
+                map(route.steps,(drivestep)=>{
                   if(instruction.length === 0){
                     instruction = drivestep.instruction;
                   }
-                  _.map(drivestep.path,(pt)=>{
+                  map(drivestep.path,(pt)=>{
                       latlngs.push({
                         lat:pt.lat,
                         lng:pt.lng

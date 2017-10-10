@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {Treebeard,decorators} from './controls/react-treebeard-ex/src/index.js';
 import RaisedButton from 'material-ui/RaisedButton';
 import Search from './search/searchtree.js';
-import _ from 'lodash';
+
 
 import treestyle from './treestyle.js';
 import '../css/treestyle.css';

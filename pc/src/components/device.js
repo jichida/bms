@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
-import _ from 'lodash';
+import map from 'lodash.map';
 // import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -89,7 +89,7 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
         "省市区" : "江苏常州武进区"
     }];
 
-    let columns = _.map(alaram_data[0], (data, index)=>{
+    let columns = map(alaram_data[0], (data, index)=>{
         return {
             title: index,
             dataIndex: index,

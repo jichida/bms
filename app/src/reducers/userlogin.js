@@ -7,9 +7,11 @@ import {
 
 const initial = {
   userlogin:{
-    loginsuccess:false,
-    username:'',
-    token:'',
+    loginsuccess: false,
+    username: '',
+    token: '',
+    avatar : "",
+    role:'admin'//operator
   },
 };
 

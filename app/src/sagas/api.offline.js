@@ -82,6 +82,8 @@ import filter from 'lodash.filter';
 import find from 'lodash.find';
 import sampleSize from 'lodash.samplesize';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
+import restfulapi from './restfulapi';
+
 //获取地理位置信息，封装为promise
 
 import moment from 'moment';
@@ -474,12 +476,15 @@ export function* apiflow(){//
         const {payload} = action;
         const {query} = payload;
         const {startDate,endDate} = query;
+
+        const {list} = yield call(restfulapi.gethistorytrack,{query});
+        yield put(queryhistorytrack_result({list}));
         // let mstart = moment(startDate).format('2017-07-31 HH:mm:ss');
         // let mend = moment(endDate).format('2017-07-31 HH:mm:ss');
-        let index = getrandom(0,list_historyplayback_sz.length -1);
-        let resultlist = list_historyplayback_sz[index];
-        console.log(`resultlist:index:${index}:${JSON.stringify(resultlist.length)}`);
-        yield put(queryhistorytrack_result({list:resultlist}));
+        // let index = getrandom(0,list_historyplayback_sz.length -1);
+        // let resultlist = list_historyplayback_sz[index];
+        // console.log(`resultlist:index:${index}:${JSON.stringify(resultlist.length)}`);
+        // yield put(queryhistorytrack_result({list:resultlist}));
       }
       catch(e){
         console.log(e);
@@ -489,40 +494,31 @@ export function* apiflow(){//
   //  模拟服务端推送消息
   yield takeLatest(`${serverpush_devicegeo_sz_request}`, function*(action) {
      try{
-        let {modeview,carcollections} = yield select((state)=>{
+        let {modeview,carcollections,g_devicesdb} = yield select((state)=>{
           let carcollections = state.device.carcollections;
           let modeview = state.app.modeview;
-          return {modeview,carcollections};
+          let g_devicesdb = state.device.g_devicesdb;
+          return {modeview,carcollections,g_devicesdb};
         });
         if('device' === modeview){
+            const {list} = yield call(restfulapi.getdevicegeo);
 
-            const list = sampleSize(jsondata_bms_mydevice, jsondata_bms_mydevice.length);
+            // console.log(`serverpush_devicegeo_sz_request===>${JSON.stringify(list)}`)
+            // const list = sampleSize(jsondata_bms_mydevice, jsondata_bms_mydevice.length);
             let items = [];
+            //本地坐标转换
             for(let i = 0;i < list.length; i++){
               let item = {...list[i]};
-              let locationsz = [];
-              let findeditem = find(carcollections,(col)=>{
-                return col === item.DeviceId;
-              });
-              if(!!findeditem){
-                const wgs84togcj02=coordtransform.wgs84togcj02(item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude);
-                locationsz = yield call(getRandomLocation_track,item.DeviceId,wgs84togcj02[1],wgs84togcj02[0]);
-                //坐标转换
-                const gcj02towgs84=coordtransform.gcj02towgs84(locationsz[0],locationsz[1]);
-                item.LastHistoryTrack.Longitude = gcj02towgs84[0];
-                item.LastHistoryTrack.Latitude = gcj02towgs84[1];
-                item.locz = locationsz;
-              }
-              else{
-                locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,getrandom(5,60));
-                item.LastHistoryTrack.Latitude = locationsz[1];
-                item.LastHistoryTrack.Longitude  =  locationsz[0];
-                let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
-                const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-                item.locz = wgs84togcj02;
-              }
+              // const wgs84togcj02=coordtransform.wgs84togcj02(item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude);
+              // const locationsz = yield call(getRandomLocation_track,item.DeviceId,wgs84togcj02[1],wgs84togcj02[0]);
+              // //坐标转换
+              // const gcj02towgs84=coordtransform.gcj02towgs84(locationsz[0],locationsz[1]);
+              // item.LastHistoryTrack.Longitude = gcj02towgs84[0];
+              // item.LastHistoryTrack.Latitude = gcj02towgs84[1];
+              // item.locz = locationsz;
 
-
+              // item.groupid = jsondata_bms_groups[getrandom(0,jsondata_bms_groups.length-1)]._id;
+              item = {...g_devicesdb[item.DeviceId],...item};
               items.push(item);
             };
             yield put(serverpush_devicegeo_sz_result({list:items}));

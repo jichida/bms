@@ -2,7 +2,8 @@ import React from 'react';
 import ListView from 'rmc-list-view';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
+import get from 'lodash.get';
 import './listview.css';
 //https://github.com/edwardhotchkiss/mongoose-paginate
 //https://github.com/react-component/m-list-view
@@ -61,7 +62,7 @@ class Page extends React.Component {
   }
   componentWillUnmount() {
     this.mounted = false;
-    let pos = _.get(this,'refs.listview.scrollProperties.offset',0);
+    let pos = get(this,'refs.listview.scrollProperties.offset',0);
     listtypeiddata[this.props.listtypeid] = {
       offset:this.state.offset,
       limit:this.props.pagenumber,
@@ -69,15 +70,15 @@ class Page extends React.Component {
       listdata:this.initData,
       pos:pos//document.body.scrollTop||document.documentElement.scrollTop
     };
-    
+
   }
   componentDidMount(){
     this.mounted = true;
-    
+
     this.refs.listview.scrollTo(0,this.state.pos);
   }
   onRefresh() {
-    
+
     this.setState({ refreshing: true });
     this.onAjax(this.props.query,this.props.sort,this.props.pagenumber);
   }
@@ -101,7 +102,7 @@ class Page extends React.Component {
       if (that.mounted){
         that.initData = [];
         if(!!result){
-          _.map(result.docs,(item)=>{
+          map(result.docs,(item)=>{
             that.initData.push(item);
           });
         }
@@ -119,7 +120,7 @@ class Page extends React.Component {
   //到达底部事件
   _onEndReached(event) {
     // load new data
-    
+
     if(this.state.offset + this.props.pagenumber < this.state.total){
         this.setState({
           isLoading: true,//加载中
@@ -137,7 +138,7 @@ class Page extends React.Component {
         })).then(({result})=> {
           if (that.mounted){
               if(!!result){
-                _.map(result.docs,(item)=>{
+                map(result.docs,(item)=>{
                   that.initData.push(item);
                 });
               }

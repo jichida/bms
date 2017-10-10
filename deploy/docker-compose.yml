@@ -1,0 +1,53 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+        - "50000:8080"
+    volumes:
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        - ./dist:/usr/share/nginx/html
+    depends_on:
+      - demoserver
+  zookeeper:
+      image: wurstmeister/zookeeper
+      ports:
+        - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper:zk
+    environment:
+      KAFKA_CREATE_TOPICS: "BMS.bms:2:2,BMS.position:2:2"
+      KAFKA_ADVERTISED_HOST_NAME: 101.89.141.136
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  demoserver:
+    image: node:6.11.2
+    command: node ./index.js
+    working_dir: /app
+    volumes:
+      - ./restfulsrv:/app
+    environment:
+      - MONGO_URL=mongodb://172.17.0.1:27017/catldemo
+      - listenport=50002
+    links:
+      - mongodb
+    ports:
+       - "50002:50002"
+    expose:
+       - "50002"
+  mongodb:
+    image:  mongo:3.4
+    expose:
+       - "27017"
+    volumes:
+       - "/db/dbdata:/data/db -d"
+    ports:
+       - "27017:27017"

@@ -4,7 +4,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
-import _ from 'lodash';
+
 import {ui_selworkorder} from '../../actions';
 import PicturesWall  from '../controls/pictureswall.js';
 

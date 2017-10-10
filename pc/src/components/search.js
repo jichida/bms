@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
-import _ from 'lodash';
+
 // import {ui_selcurdevice_request} from '../actions';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';

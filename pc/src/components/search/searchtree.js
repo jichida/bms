@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard} from 'react-treebeard';
-import _ from 'lodash';
+import map from 'lodash.map';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -123,7 +123,7 @@ class TreeSearchBattery extends React.Component {
                     <InputGroup compact>
                         <Select defaultValue="选择编号类型" style={{ width: 120 }} onChange={this.onChange_notype.bind(this)}>
                             {
-                                _.map(selitem_devicefields,(field,key)=>{
+                                map(selitem_devicefields,(field,key)=>{
                                     return (<Option key={key} value={field.value}>{field.text}</Option>)
                                 })
                             }
@@ -138,7 +138,7 @@ class TreeSearchBattery extends React.Component {
                     <InputGroup compact>
                         <Select defaultValue="选择代码类型" style={{ width: 120 }}  onChange={this.onChange_alarmtype.bind(this)}>
                             {
-                                _.map(selitem_alarmfields,(field,key)=>{
+                                map(selitem_alarmfields,(field,key)=>{
                                   return (<Option key={key} value={field.value}>{field.text}</Option>)
                                 })
                             }

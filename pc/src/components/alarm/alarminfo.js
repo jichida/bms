@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import map from 'lodash.map';
 import { Button, Modal, Icon, message } from 'antd';
 import { ui_alarm_selcurdevice,createworkorder_request } from '../../actions';
 import moment from 'moment';
@@ -106,13 +106,13 @@ class Page extends React.Component {
                     style={{overflowY: "scroll"}}
                     >
                     {
-                      _.map(datadevice,(item,index)=>{
+                      map(datadevice,(item,index)=>{
 
                         return (
                             <div key={index}>
                                 <div className="tit">{index}</div>
                                 {
-                                    _.map(item,(i,k)=>{
+                                    map(item,(i,k)=>{
                                         return (<div key={k} className="li"><div><div className="name">{`${i.name}`}</div><div className="text">{`${i.value}`}</div></div></div>)
                                     })
                                 }
@@ -131,7 +131,7 @@ class Page extends React.Component {
                     className="showworderlist"
                     >
                     {
-                        _.map(workusers, (worder, index)=>{
+                        map(workusers, (worder, index)=>{
                             return (
                                 <p
                                     onClick={()=>{this.selworderfn(worder._id)}}

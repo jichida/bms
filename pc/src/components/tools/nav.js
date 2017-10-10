@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 
 import '../../../public/newcss/nav.css';
-import _ from 'lodash';
+import map from 'lodash.map';
 import { withRouter } from 'react-router-dom';
 
 export class Page extends React.Component {
@@ -105,7 +105,7 @@ export class Page extends React.Component {
                     back?(<span className="back" onClick={()=>{this.pageBack()}} />):''
                 }
                 {
-                    _.map(leftnav, (nav, index)=>{
+                    map(leftnav, (nav, index)=>{
                         return this.getuserbtn(nav,index);
                     })
                 }
@@ -118,7 +118,7 @@ export class Page extends React.Component {
                     share?(<span className="share"></span>):''
                 }
                 {
-                    _.map(rightnav, (nav, index)=>{
+                    map(rightnav, (nav, index)=>{
                         return this.getuserbtn(nav,index);
                     })
                 }

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Table} from 'antd';
-import _ from 'lodash';
-
 
 
 class EditableTable extends React.Component {
@@ -12,7 +10,7 @@ class EditableTable extends React.Component {
     render() {
 
         const { data,columns } = this.props;
-        
+
         return (
             <div>
                 <Table columns={columns} dataSource={data} bordered />
@@ -22,4 +20,3 @@ class EditableTable extends React.Component {
 }
 
 export default EditableTable;
-

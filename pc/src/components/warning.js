@@ -21,7 +21,7 @@ import {
   ui_selcurdevice_result,
   searchbatteryalarmsingle_request
 } from '../actions';
-import _ from 'lodash';
+import map from 'lodash.map';
 
 class Page extends React.Component {
     constructor(props){
@@ -55,7 +55,7 @@ class Page extends React.Component {
                     </TableHeader>
                     <TableBody>
                       {
-                        _.map(searchresult_alaramsingle,(alarmid,key)=>{
+                        map(searchresult_alaramsingle,(alarmid,key)=>{
                           const alarm =alarms[alarmid];
                           if(!!alarm){
                             return (

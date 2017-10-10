@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TreeNode from './node.js';
-import _ from 'lodash';
+import chunk from 'lodash.chunk';
+import flattenDeep from 'lodash.flattendeep';
+import isArray from 'lodash.isarray';
+import map from 'lodash.map';
 import NodeArray from './nodearray.js';
 
 class NodeRenderChildren extends React.Component {
@@ -19,13 +22,13 @@ class NodeRenderChildren extends React.Component {
 
     getsplitarray =(children)=>{
       let retchildren = [];
-      let splitsz = _.chunk(children,80);
+      let splitsz = chunk(children,80);
       if(splitsz.length > 1){
-        let firstsz = _.flattenDeep(splitsz[0]);
+        let firstsz = flattenDeep(splitsz[0]);
         let lastsz = [];
         retchildren = [...firstsz];
         if(splitsz.length > 2){
-           lastsz = _.flattenDeep(splitsz[splitsz.length-1]);
+           lastsz = flattenDeep(splitsz[splitsz.length-1]);
            for(let i=1;i<splitsz.length-2;i++){
              retchildren.push(splitsz[i]);
            }
@@ -55,7 +58,7 @@ class NodeRenderChildren extends React.Component {
         }
 
         let children = node.children;
-        if (!_.isArray(children)) {
+        if (!isArray(children)) {
             children = children ? [children] : [];
         }
         let retchildren = (node.type==='group_area' || node.type==='group_leaf')?this.getsplitarray(children):children;
@@ -64,8 +67,8 @@ class NodeRenderChildren extends React.Component {
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
                 {
-                  _.map(retchildren,(child,index)=>{
-                    if(_.isArray(child)){
+                  map(retchildren,(child,index)=>{
+                    if(isArray(child)){
                       //
                       return (<NodeArray subnodes={child}
                           treeviewstyle={treeviewstyle}

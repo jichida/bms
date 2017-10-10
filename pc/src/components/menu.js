@@ -8,7 +8,7 @@ import "onsenui/css/onsenui.min.css";
 import "onsenui/css-components-src/src/onsen-css-components.css";
 import ons from 'onsenui';
 import {SpeedDial,Fab,Toolbar,Icon,SpeedDialItem,Page} from 'react-onsenui';
-import _  from "lodash";
+import map from 'lodash.map';
 import Draggable from 'react-draggable';
 import { withRouter } from 'react-router-dom';
 import {ui_showmenu} from '../actions';
@@ -77,7 +77,7 @@ class Menu extends React.Component {
                 <Fab className="menuMain cursor" >
                     <i className="fa fa-bars" aria-hidden="true"></i>
                 </Fab>
-                {_.map(menuData, (menu, index)=>{
+                {map(menuData, (menu, index)=>{
                     return (
 
                         <SpeedDialItem
@@ -99,7 +99,7 @@ class Menu extends React.Component {
                             <i className={menu.icon} aria-hidden="true" style={{fontSize:"20px"}}></i>
                             <span className={`name ${this.state.showitemtext[index]}`}>{menu.name}</span>
                         </SpeedDialItem>
-                        
+
                     )
                 })}
             </SpeedDial>
@@ -126,10 +126,10 @@ class Menu extends React.Component {
     render() {
         const dragHandlers = {onStop: this.onStop.bind(this)};
         return (
-            <Draggable  
-                defaultPosition={{x: this.state.innerWidth-100, y: this.state.innerHeight-100}} 
+            <Draggable
+                defaultPosition={{x: this.state.innerWidth-100, y: this.state.innerHeight-100}}
                 position={{x: this.state.dragx, y: this.state.dragy}}
-                
+
                 {...dragHandlers}
                 >
                 <div style={{display:"none"}}>
