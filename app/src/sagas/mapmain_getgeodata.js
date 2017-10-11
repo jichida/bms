@@ -3,7 +3,7 @@ import coordtransform from 'coordtransform';
 import map from 'lodash.map';
 import clone from 'lodash.clone';
 //转换数据,批量转换所有数据
-export const getgeodatabatch =(devicelist)=> {
+ const getgeodatabatch =(devicelist)=> {
   return new Promise((resolve,reject) => {
     let resultdevicelist = [];
     map(devicelist,(deviceitem)=>{
@@ -31,7 +31,7 @@ export const getgeodatabatch =(devicelist)=> {
   });
 };
 
-export const getgeodata =(deviceitem)=>{
+ const getgeodata =(deviceitem)=>{
   return new Promise((resolve,reject) => {
 
     const geocoder = new window.AMap.Geocoder({
@@ -60,8 +60,7 @@ export const getgeodata =(deviceitem)=>{
     });
   });
 }
-
-export const getgeodatabatch2 =(devicelist)=> {
+ const getgeodatabatch2 =(devicelist)=> {
   return new Promise((resolve,reject) => {
     const geocoder = new window.AMap.Geocoder({
             radius: 1000,
@@ -162,3 +161,5 @@ export const getgeodatabatch2 =(devicelist)=> {
     });
   });
 }
+
+export {getgeodatabatch,getgeodata,getgeodatabatch2};

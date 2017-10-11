@@ -65,7 +65,7 @@ import jsondataprovinces from '../util/provinces.json';
 import jsondatacities from '../util/cities.json';
 import config from '../config.js';
 import store from '../env/store';
-import {getdevicelist} from './datapiple';
+import {getdevicelist,getdeviceinfo} from './datapiple';
 
 const divmapid_mapmain = 'mapmain';
 const maxzoom = config.softmode === 'pc'?18:19;
@@ -706,9 +706,12 @@ export function* createmapmainflow(){
 
     //选择一个车辆请求
     yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
-      const {payload:{DeviceId,deviceitem}} = actioncurdevice;
+      let {payload:{DeviceId,deviceitem}} = actioncurdevice;
       try{
-            //强制展开树
+            if(!deviceitem.locz){
+              deviceitem = yield call(getdeviceinfo,deviceitem,true);
+            }
+            console.log(`ui_selcurdevice_request==>${JSON.stringify(deviceitem)}`);
             //获取该车辆所在经纬度
             const result = yield call(getgeodata,deviceitem);
             //调用一次citycode，防止加载不到AreaNode
@@ -717,7 +720,7 @@ export function* createmapmainflow(){
               yield call(getclustertree_one,adcodeinfo.parent_code);
             }
             catch(e){
-
+              console.log(e);
             }
             const adcodetop = parseInt(result.adcode);
             //展开左侧树结构
@@ -734,7 +737,7 @@ export function* createmapmainflow(){
     //选择一个车辆
     yield takeLatest(`${ui_selcurdevice_result}`,function*(actioncurdevice){
       try{
-          const {payload:{DeviceId,deviceitem}} = actioncurdevice;
+          const {payload:{DeviceId}} = actioncurdevice;
           yield put(mapmain_showpopinfo({DeviceId}));
         }
         catch(e){

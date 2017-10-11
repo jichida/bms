@@ -239,15 +239,19 @@ export function* createmaptrackhistoryplaybackflow(){
           const {payload:{list}} = yield take(`${queryhistorytrack_result}`);
           let path = [];
           let latlngs = [];
-          let center = [];
+          let center;
           for(let i = 0;i < list.length ;i ++){
             let cor = [list[i].Longitude,list[i].Latitude];
+            if(cor[0] !== 0 && cor[1] !== 0){
             let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
             latlngs.push([wgs84togcj02[1],wgs84togcj02[0]]);
             path.push(wgs84togcj02);
-            if(i === 0){
+
+              if(!center){
               center = wgs84togcj02;
             }
+          }
+
           }
 
           if(path.length > 0){

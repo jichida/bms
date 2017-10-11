@@ -42,12 +42,19 @@ import {
     serverpush_devicegeo_sz_result,
 
     collectdevice_request,
-    collectdevice_result
+    collectdevice_result,
+
+    searchbatteryalarm_request,
+    searchbatteryalarm_result,
+
+    searchbatteryalarmsingle_request,
+    searchbatteryalarmsingle_result
   } from '../actions';
 
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'searchbatteryalarmsingle_result':searchbatteryalarmsingle_result,
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
   'getnotifymessage_result':getnotifymessage_result,
   'getnotifymessageone_result':getnotifymessageone_result,
@@ -65,7 +72,7 @@ let recvmessagetoresultpair = {
   'queryrealtimealarm_result':queryrealtimealarm_result,
   'queryhistorytrack_result':queryhistorytrack_result,
   'searchbattery_result':searchbattery_result,
-
+  'searchbatteryalarm_result':searchbatteryalarm_result,
   'collectdevice_result':collectdevice_result,
 };
 
@@ -91,7 +98,9 @@ let sendmessageauthfnsz = {
   'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
   'queryrealtimealarm':`${queryrealtimealarm_request}`,
   'queryhistorytrack':`${queryhistorytrack_request}`,
-  'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`
+  'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
+  'searchbatteryalarm':`${searchbatteryalarm_request}`,
+  'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

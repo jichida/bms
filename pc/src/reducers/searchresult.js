@@ -54,7 +54,7 @@ const searchresult = createReducer({
     return { ...state, curseldeviceid,searchresult_alaramsingle};
   },
   [searchbattery_request]: (state, payload) => {
-    let searchresult_battery = [];
+    const searchresult_battery = [];
     return { ...state, searchresult_battery};
   },
   [searchbatteryalarm_request]: (state, payload) => {

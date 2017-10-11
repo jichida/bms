@@ -81,7 +81,10 @@ export function* wsrecvsagaflow() {
   });
 
   yield takeLatest(`${md_login_result}`, function*(action) {
+      try{
       let {payload:result} = action;
+        console.log(`md_login_result==>${JSON.stringify(result)}`);
+        if(!!result){
       yield put(login_result(result));
       if(result.loginsuccess){
         localStorage.setItem('bms_pc_token',result.token);
@@ -94,6 +97,13 @@ export function* wsrecvsagaflow() {
         yield put(getallworkorder_request({}));
 
       }
+        }
+
+      }
+      catch(e){
+        console.log(e);
+      }
+
   });
 
 
