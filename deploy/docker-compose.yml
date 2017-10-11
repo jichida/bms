@@ -24,7 +24,7 @@ services:
       - zookeeper:zk
     environment:
       KAFKA_CREATE_TOPICS: "BMS.bms:2:2,BMS.position:2:2"
-      KAFKA_ADVERTISED_HOST_NAME: vpn.czjcd.com
+      KAFKA_ADVERTISED_HOST_NAME: bms.com28.cn
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./restfulsrv:/app
     environment:
-      - MONGO_URL=mongodb://192.168.0.1:27017/bms
+      - MONGO_URL=mongodb://192.168.0.1:27018/bms
       - listenport=50002
     links:
       - mongodb
@@ -46,8 +46,8 @@ services:
   mongodb:
     image:  mongo:3.4
     expose:
-       - "27017"
+       - "27018"
     volumes:
        - "/db/dbdata:/data/db -d"
     ports:
-       - "27017:27017"
+       - "27018:27018"
