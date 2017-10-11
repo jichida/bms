@@ -1,5 +1,5 @@
 let islocalhost = true;
-let serverurl = islocalhost?'http://localhost:12004':'http://yunqi.com28.cn:12004';
+let serverurl = localhost?'http://localhost:5011':'http://bms.com28.cn',
 export default {
     restserverurl:serverurl +'/adminapi',
     serverurl:serverurl

@@ -1,7 +1,7 @@
 let config =  {
   secretkey:'bmskey',
   listenport:process.env.listenport ||50002,
-  rooturl:process.env.rooturl || 'http://yunqi.com28.cn:50002',
+  rooturl:process.env.rooturl || 'http://bms.com28.cn',
   issmsdebug:process.env.issmsdebug || false,
   publishdirtest:'../../../bms/test/build',
   publishdirapp:'../../../bms/app/build',
