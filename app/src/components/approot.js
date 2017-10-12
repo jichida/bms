@@ -18,6 +18,7 @@ import Warningdevice from './warningdevice/data.js';
 import Warningdevicelist from './warningdevice/data.js';
 import Mydevice from './mydevice';
 import Myproject from './mydevice/project';
+import Selcart from './selcart';
 
 import Systems from './system';
 import Deviceinfo from './mydevice/deviceinfo';
@@ -99,6 +100,7 @@ class AppRoot extends React.Component {
                     <Route path="/settinguser" component={Settinguser} />
                     <Route path="/settingmessage" component={Settingmessage} />
                     <Route path="/alarminfo/:alarmid" component={Alaraminfo} />
+                    <Route path="/selcart" component={Selcart} />
                 </Switch>
                 <AppMap />
             </div>

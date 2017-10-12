@@ -15,6 +15,9 @@ import MenuItem from 'material-ui/MenuItem';
 import Searchimg from '../../img/13.png';
 import Searchimg2 from '../../img/14.png';
 import Searchimg3 from '../../img/15.png';
+import Searchimg4 from '../../img/23.png';
+import Car from '../../img/5.png';
+
 import Footer from "../index/footer.js";
 import Datalist from "./datalist";
 import MapPage from '../admincontent';
@@ -157,12 +160,20 @@ class Page extends React.Component {
                     this.state.showdata &&
                     <div className="set warningmessageset">
                         <div className="title">告警车辆搜索</div>
-                        <div className="formlist">
-                            <div className="li">
-                                <img src={Searchimg2} width={30} />
-                                <SelectField value={this.state.warninglevel}
-                                  onChange={this.onChangeWarninglevel.bind(this)}
-                                  fullWidth={true} style={{flexGrow: "1",marginLeft: "10px"}}>
+                        <div className="formlist ">
+                            <div className="seltimecontent selcarts" onClick={()=>{this.props.history.push("/selcart")}}>
+                                <img src={Car} width={30} />
+                                <span className="txt1">车辆信息:WRER-23-43</span>
+                                <span className="txt2">选择车辆</span>
+                            </div>
+                            <div className="li" style={{borderBottom: "1px solid #EEE"}}>
+                                <img src={Searchimg2} width={26} />
+                                <SelectField 
+                                    value={this.state.warninglevel}
+                                    onChange={this.onChangeWarninglevel.bind(this)}
+                                    fullWidth={true} style={{flexGrow: "1",marginLeft: "10px"}}
+                                    underlineStyle={{border: "none"}}
+                                    >
                                     <MenuItem value={-1} primaryText="告警等级" />
                                     <MenuItem value={0} primaryText="高" />
                                     <MenuItem value={1} primaryText="中" />
@@ -170,13 +181,14 @@ class Page extends React.Component {
                                 </SelectField>
                             </div>
                             <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
-                                <img src={Searchimg3} />
+                                <img src={Searchimg3} width={26} />
                                 <span>起始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
                             <div className="seltimecontent" onClick={this.handleClick.bind(this, 1)} style={{marginBottom: "10px"}}>
-                                <img src={Searchimg3} />
+                                <img src={Searchimg3} width={26} />
                                 <span>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
+                            
                             <RaisedButton
                                 onClick={(e)=>{this.onClickSearch(e);}}
                                 label="搜索"

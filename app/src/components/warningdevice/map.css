@@ -98,6 +98,18 @@
     -webkit-flex-direction: row;
     flex-direction: row;
 }
+
+.playbackPage.warningmessagePage .seltimecontent.selcarts {
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.playbackPage.warningmessagePage .seltimecontent.selcarts .txt1 {
+    flex-grow: 1;
+}
+.playbackPage.warningmessagePage .seltimecontent.selcarts .txt2 {
+    margin-right: 24px;
+}
 .playbackPage.warningmessagePage .seltimecontent:active{
     background: #EEE;
 }
@@ -161,7 +173,8 @@
     align-items: center;
 }
 .playbackPage .formlist >div.li img{
-    margin-left: 10px;
+    margin-left: 17px;
+    width: 26px;
 }
 .playbackPage .btnlist{
     display: flex;

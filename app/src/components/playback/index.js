@@ -16,6 +16,9 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Searchimg from '../../img/13.png';
 import Searchimg2 from '../../img/15.png';
+import Searchimg4 from '../../img/23.png';
+import Searchimg5 from '../../img/24.png';
+import Slider from 'material-ui/Slider';
 import Car from '../../img/5.png';
 import Footer from "../index/footer.js";
 import Seltime from "../tools/seltime.js";
@@ -141,25 +144,32 @@ class Page extends React.Component {
                 </div>
                 {
                     this.state.showset &&
-                    <div className="set seltimewamp">
-                        <div className="deviceinfo">
-                            <img src={Car} />
-                            <span>车辆信息</span>
-                            <span>
-                                <SelectDevice placeholder={"请输入设备ID"}
-                                    initdeviceid={this.state.deviceid}
-                                    onSelDeviceid={this.onSelDeviceid.bind(this)}
-                                    deviceidlist={deviceidlist}
-                                />
-                            </span>
-                        </div>
+                    <div className="set seltimewamp" style={{height: "260px"}}>
+                        <div className="seltimecontent selcarts" onClick={()=>{this.props.history.push("/selcart")}}>
+                                <img src={Car} width={30} />
+                                <span className="txt1">车辆信息:WRER-23-43</span>
+                                <span className="txt2">选择车辆</span>
+                            </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
-                            <img src={Searchimg2} />
+                            <img src={Searchimg2} width={26} />
                             <span>起始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                         </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 1)}>
-                            <img src={Searchimg2} />
+                            <img src={Searchimg2} width={26} />
                             <span>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
+                        </div>
+                        <div className="seltimecontent setsudu" style={{marginBottom: "10px"}}>
+                            <img src={Searchimg5} width={26} />
+                            <span>播放速度:</span>
+                            <Slider 
+                                step={0.10} 
+                                value={0.5} 
+                                onChange={(e,v)=>{console.log(v)}} 
+                                style={{flexGrow: 1, margin: "10px"}} 
+                                sliderStyle={{margin: 0,marginTop: "10px"}}
+                                onChange={(e,v)=>{console.log(v)}}
+                                />
+                            <span className="shownumber">50</span>
                         </div>
                         <div className="seltimebtn">
                             <RaisedButton label="开始"
