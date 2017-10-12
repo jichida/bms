@@ -40,8 +40,13 @@ const SystemconfigShow = (props) => (
 
 export {SystemconfigShow};
 export const SystemconfigList = props => (
-    <ShowPageOne resource={props.resource} location={props.location} ShowPage={SystemconfigShow} hasEdit={true}>
-    </ShowPageOne>
+    <List title="系统设置" {...props}>
+        <ShowPageOne defaultTitle='系统设置'>
+          <SimpleForm>
+            <TextInput label="客服电话" source="servicephonenumber"/>
+          </SimpleForm>
+        </ShowPageOne>
+    </List>
 );
 
 const SystemconfigCreateTitle = ({ record }) => {

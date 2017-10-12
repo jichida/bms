@@ -22,7 +22,9 @@ const styles = {
     },
 };
 
-
+// const getMenuItem = ({title,link,onMenuTap,item})=>{
+//   if(item.name === 'systemconfig')
+// }
 
 let getallmenus = (valuesel, translate,onMenuTap)=>{
   let getChildItems =(item, translate,onMenuTap)=>{

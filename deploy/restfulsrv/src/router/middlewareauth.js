@@ -6,7 +6,7 @@ let middlewareauth = (req,res,next)=>{
   console.log("in middlewareauth");
   console.log("req.path:" + req.path);
 
-    let token = req.headers['authorization'];
+    const token = req.headers['authorization'];
     if (!token) {
       res.sendStatus(401);
       res.end();
@@ -16,6 +16,11 @@ let middlewareauth = (req,res,next)=>{
             let decodeduser = jwt.verify(token.replace('Bearer ', ''), config.secretkey);
             console.log("===>" + JSON.stringify(decodeduser));
             req.userid = decodeduser._id;
+            req.usertype = decodeduser.usertype;
+            if(req.usertype === 'user'){
+              groupid = decodeduser.groupid;
+              organizationid = decodeduser.organizationid;
+            }
             next();
         } catch (e) {
             res.sendStatus(401);

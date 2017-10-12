@@ -1,6 +1,6 @@
 let config =  {
   secretkey:'bmskey',
-  listenport:process.env.listenport ||50002,
+  listenport:process.env.listenport ||5011,
   rooturl:process.env.rooturl || 'http://bms.com28.cn',
   issmsdebug:process.env.issmsdebug || false,
   publishdirtest:'../../../bms/test/build',
@@ -16,7 +16,7 @@ let config =  {
   maxDistance:3,
   authexptime:120,//验证码有效期，2分钟
   loginuserexptime:60*60*24*30,//用户登录有效期,30天
-  mongodburl:process.env.MONGO_URL || 'mongodb://localhost/catldemo',
+  mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
 };
 
 
