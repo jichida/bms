@@ -63,7 +63,10 @@ class Page extends React.Component {
                             onClick={()=>{}}
                             />
                     </List>
+                    <div className="loginout">退出登录</div>
                 </div>
+
+
             </div>
         );
     }

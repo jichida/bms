@@ -1,0 +1,17 @@
+.selcartPage .searchtools{
+	height: 50px;
+	text-align: center;
+	position: relative;
+	background:#EEE;
+}
+.selcartPage .searchtools input{
+	width: 80%;
+	height: 36px;
+	border-radius: 40px;
+	margin: 7px auto;
+	text-align: center;
+	outline: none;
+}
+.selcartrow{
+	background:#C00;
+}

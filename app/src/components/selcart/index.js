@@ -4,16 +4,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './style.css';
-import NavBar from "../tools/nav.js";
-import Avatars from "../../img/2.png"; 
-import Avatar from 'material-ui/Avatar';
-import DatePicker from 'material-ui/DatePicker';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
-
+import Datalist from "./datalist";
+import Fillerimg from '../../img/25.png';
 
 class Page extends React.Component {
     render() {
@@ -22,40 +14,20 @@ class Page extends React.Component {
         const formstyle={width:"100%",flexGrow:"1"};
         const textFieldStyle={width:"100%",flexGrow:"1"};
         return (
-            <div className="systemPage AppPage"
-                style={{
-                    minHeight : `${window.innerHeight}px`,
-                }}
+            <div className="selcartPage AppPage"
+                style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
                 >
-                <NavBar back={true} title="系统设置" />
-                <div className="content">
-                    <div className="li" >
-                        <span>系统配置项</span>
-                        <TextField hintText="Full width" 
-                            fullWidth={true} 
-                            underlineShow={false}
-                            hintStyle={{right:"0"}}
-                            inputStyle={{textAlign:"right"}}
-                            />
-                    </div>
-                    <div className="li" >
-                        <span>系统配置项</span>
-                        <TextField hintText="Full width" 
-                            fullWidth={true} 
-                            underlineShow={false}
-                            hintStyle={{right:"0"}}
-                            inputStyle={{textAlign:"right"}}
-                            />
-                    </div>
-                    <div className="li" >
-                        <Toggle label="系统配置项" className="litoggle" />
-                    </div>
+                <div className="navhead">
+                    <a className="back" onClick={()=>{this.props.history.goBack()}}></a>
+                    <span className="title" style={{paddingRight : "30px"}}>选择汽车</span>
+                    <div className="filler"><img src={Fillerimg} /></div>
+                </div>
+                <div className="selcartfiller">
 
+                </div>
+                <div className="searchtools"><input placeholder="输入设备ID" /></div>
+                <div className="list">
                     
-
-                    <div className="submitBtn">
-                        <span className="btn Primary" > 保存 </span>
-                    </div>
                 </div>
             </div>
         );

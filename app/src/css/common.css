@@ -534,6 +534,19 @@ input,textarea {
     width: 70px;
     height: 83px;
 }
+.usercenterPage .content .loginout{
+    width: 80%;
+    background: #60bdaa;
+    color: #FFF;
+    height: 40px;
+    margin: 30px auto;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+}
+.usercenterPage .content .loginout:active{
+    background: #4da391;
+}
 .usercenterPage .content .username{
     flex-grow: 1;
     display: flex;
@@ -744,4 +757,18 @@ div.mydevicebtn{
 }
 .customtable .ant-table-thead>tr>th:first-child{
     padding-left: 26px;
+}
+.selcartPage .filler{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+
+}
+.selcartPage .filler img{
+    width: 20px;
 }
