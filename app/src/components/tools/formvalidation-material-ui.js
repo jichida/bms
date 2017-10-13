@@ -9,6 +9,11 @@ import moment from 'moment';
 import { _getBankInfoByCardNo } from "./validationbank";
 import { set_weui } from '../../actions';
 import './formvalidation-material-ui.css';
+import map from 'lodash.map';
+import SelectField from 'material-ui/SelectField';
+import Toggle from 'material-ui/Toggle';
+
+import MenuItem from 'material-ui/MenuItem'
 
 //判断是否必填
 export const required = value => value ? undefined : '必填项'
@@ -107,8 +112,95 @@ let InputValidation = (props) => {
 	);
 }
 
+//input表单验证
+let InputHiddenValidation = (props) => {
+	const {onError,input, placeholder, type, meta: { touched, error, warning }} = props;
+	let err1 = (touched && error);
+	let err2 = (touched && warning);
+	let style = "formvalidation form_input";
+	style = err1||err2?"formvalidation form_input_hidden warning":"formvalidation form_input_hidden";
+	return (
+	  	<div className={style}>
+		    <input {...input} placeholder={placeholder} type="hidden" />
+	  	</div>
+	);
+}
+
+//下拉选择
+let SelectValidation = (props) => {
+	const {
+		onError,
+		Option,
+		input,
+		meta: { touched, error, warning }
+	} = props;
+	let err1 = (touched && error);
+	let err2 = (touched && warning);
+	let style = "formvalidation form_input";
+	style = err1||err2?"formvalidation form_select warning":"formvalidation form_select";
+	return (
+		<div className={style} >
+		  	<select
+	            {...input}
+	            >
+	            {
+	            	map(Option, (list,key)=>{
+						return (<option value={list.value} key={key} >{list.name}</option>)
+	            	})
+	            }
+	        </select>
+	        {	touched &&
+		    	((error &&
+		    		<span
+		    			className="warningtext"
+		    			onClick={()=>{onError(error)}}
+		    			>!</span>
+		    		)
+		    		|| (warning &&
+		    			<span
+			    			className="warningtext"
+			    			onClick={()=>{onError(warning)}}
+			    			>!</span>
+		    		))
+		    }
+        </div>
+	);
+}
+
+let ToggleInput = (props) => {
+	const {
+		label,
+		input,
+		style,
+		labelStyle,
+		rippleStyle
+	} = props;
+	console.log(input)
+	return (
+		<Toggle 
+			label={label}
+			style={style}
+			labelStyle={labelStyle} 
+			thumbStyle={rippleStyle} 
+			thumbSwitchedStyle={rippleStyle}
+			trackStyle={rippleStyle}
+			trackSwitchedStyle={rippleStyle}
+			{...input} 
+			/>
+    )
+}
+
+ToggleInput = connect(inputData,inputDispatchToProps)(ToggleInput);
+export {ToggleInput};
+
 InputValidation = connect(inputData,inputDispatchToProps)(InputValidation);
 export {InputValidation};
+
+InputHiddenValidation = connect(inputData,inputDispatchToProps)(InputHiddenValidation);
+export {InputHiddenValidation};
+
+SelectValidation = connect(inputData,inputDispatchToProps)(SelectValidation);
+export {SelectValidation};
 
 
 
