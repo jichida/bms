@@ -102,7 +102,7 @@ class Fillerform extends React.Component{
                         disabled={pristine || submitting}
                         onClick={handleSubmit(onsubmit)}
                         >
-                        登录
+                        确定
                     </span>
                 </div>
 
