@@ -89,8 +89,8 @@ let InputValidation = (props) => {
 	style = err1||err2?"formvalidation form_input warning":"formvalidation form_input";
 	return (
 	  	<div className={style}>
-	  		<TextField 
-	  			hintText = {placeholder} 
+	  		<TextField
+	  			hintText = {placeholder}
 	  			inputStyle = {{width: "100%"}}
 	  			underlineStyle = {{bottom: "0px"}}
 	  			style={{width: "100%"}}
@@ -117,4 +117,3 @@ let InputValidation = (props) => {
 
 InputValidation = connect(inputData,inputDispatchToProps)(InputValidation);
 export {InputValidation};
-

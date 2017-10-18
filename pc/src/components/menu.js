@@ -4,9 +4,9 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import "onsenui/css/onsenui.min.css";
-import "onsenui/css-components-src/src/onsen-css-components.css";
-import ons from 'onsenui';
+// import "onsenui/css/onsenui.min.css";
+// import "onsenui/css-components-src/src/onsen-css-components.css";
+// import ons from 'onsenui';
 import {SpeedDial,Fab,Toolbar,Icon,SpeedDialItem,Page} from 'react-onsenui';
 import map from 'lodash.map';
 import Draggable from 'react-draggable';
