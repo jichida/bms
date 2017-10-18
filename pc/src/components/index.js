@@ -101,8 +101,7 @@ class Page extends React.Component {
                         <AppBar
                             title={
                                 <div className="titlenav">
-                                    <span className={modeview==='device'?"sel":""} onClick={this.titleNavClick.bind(this, 0)}>地图模式</span>
-                                    <span className={modeview!=='device'?"sel":""} onClick={this.titleNavClick.bind(this, 1)}>充电桩模式</span>
+                                    <span className={modeview==='device'?"":""} onClick={this.titleNavClick.bind(this, 0)}>监控平台</span>
                                 </div>
                             }
                             onLeftIconButtonTouchTap={this.menuevent}

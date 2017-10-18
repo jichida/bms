@@ -8,7 +8,6 @@ import { set_weui } from '../../actions';
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
 import idCard from "idcard";
-import BIN from "bankcardinfo";
 import TextField from 'material-ui/TextField';
 
 //判断是否必填
