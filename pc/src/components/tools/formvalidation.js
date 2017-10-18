@@ -8,7 +8,7 @@ import { set_weui } from '../../actions';
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
 import idCard from "idcard";
-import BIN from "bankcardinfo";
+// import BIN from "bankcardinfo";
 import TextField from 'material-ui/TextField';
 
 //判断是否必填
@@ -90,8 +90,8 @@ let InputValidation = (props) => {
 	style = err1||err2?"formvalidation form_input warning":"formvalidation form_input";
 	return (
 	  	<div className={style}>
-	  		<TextField 
-	  			hintText = {placeholder} 
+	  		<TextField
+	  			hintText = {placeholder}
 	  			inputStyle = {{width: "100%"}}
 	  			underlineStyle = {{bottom: "0px"}}
 	  			style={{width: "100%"}}
@@ -118,4 +118,3 @@ let InputValidation = (props) => {
 
 InputValidation = connect(inputData,inputDispatchToProps)(InputValidation);
 export {InputValidation};
-
