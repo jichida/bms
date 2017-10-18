@@ -94,11 +94,7 @@ class Page extends React.Component {
                             icon="environment"
                             onClick={()=>{this.props.dispatch(ui_alarm_selcurdevice(deviceid));}}
                             >定位车辆</Button>
-                        <Button
-                            type="primary"
-                            icon="contacts"
-                            onClick={()=>{this.showworderlist(true)}}
-                            >派发工单</Button>
+                        
                     </div>
                 </div>
                 <div
