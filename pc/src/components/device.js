@@ -51,7 +51,7 @@ class MessageAllDevice extends React.Component {
                     <div className="title">查询报表</div>
                 </div>
                 <div className="TreeSearchBattery">
-                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)}/>
+                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} warninglevel={"-1"} />
                 </div>
                 <div className="tablelist">
                     <TableComponents data={alaram_data} columns={columns}/>

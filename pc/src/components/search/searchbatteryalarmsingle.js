@@ -22,6 +22,7 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
+moment.locale('zh-cn');
 
 const Option = Select.Option;
 class TreeSearchBatteryAlarmSingle extends React.Component {

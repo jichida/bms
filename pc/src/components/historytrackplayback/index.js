@@ -22,6 +22,7 @@ import Seltime from '../search/seltime.js';
 import moment from 'moment';
 import map from 'lodash.map';
 import SelectDevice from './selectdevice.js';
+moment.locale('zh-cn');
 
 const fGetCurrentWeek=function(m){
         let sWeek=m.format('dddd');

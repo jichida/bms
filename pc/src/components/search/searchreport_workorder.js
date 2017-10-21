@@ -15,6 +15,7 @@ import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Bu
 import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
 import TreeselectByloc from "../trees/treeselect_byloc.js";
 import moment from 'moment';
+moment.locale('zh-cn');
 
 const InputGroup = Input.Group;
 const Option = Select.Option;

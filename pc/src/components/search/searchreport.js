@@ -15,6 +15,7 @@ import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Bu
 import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
 import TreeselectByloc from "../trees/treeselect_byloc.js";
 import moment from 'moment';
+moment.locale('zh-cn');
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -45,13 +46,13 @@ const selitem_alarmfields = [
 class TreeSearchBattery extends React.Component {
     constructor(props) {
         super(props);
-        let warninglevel = props.warninglevel + '';
+        let warninglevel = props.warninglevel || "-1";
         this.state = {
             notype:  '',
             notypevalue : '',
             alarmtype : '',
             alarmtypevalue:'',
-            alarmlevel:warninglevel,
+            alarmlevel: warninglevel,
             startDate:moment().subtract(7, 'days'),
             endDate:moment(),
             groupid:'0',
@@ -165,11 +166,11 @@ class TreeSearchBattery extends React.Component {
 
 
 
-                    <Select defaultValue={this.state.alarmlevel}   onChange={this.onChange_alarmlevel.bind(this)}>
-                        <Option value={'-1'}>选择警告级别</Option>
-                        <Option value={'0'} >严重告警</Option>
-                        <Option value={'1'} >紧急告警</Option>
-                        <Option value={'2'} >一般告警</Option>
+                    <Select defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
+                        <Option value={"-1"}>选择警告级别</Option>
+                        <Option value={"0"} >严重告警</Option>
+                        <Option value={"1"} >紧急告警</Option>
+                        <Option value={"2"} >一般告警</Option>
                     </Select>
 
                 </div>

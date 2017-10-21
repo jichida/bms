@@ -7,6 +7,7 @@ import map from 'lodash.map';
 import { Button, Modal, Icon, message } from 'antd';
 import { ui_alarm_selcurdevice,createworkorder_request } from '../../actions';
 import moment from 'moment';
+moment.locale('zh-cn');
 
 class Page extends React.Component {
     constructor(props) {

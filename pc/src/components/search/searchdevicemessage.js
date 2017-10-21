@@ -14,6 +14,7 @@ import Seltime from './seltime.js';
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
 import TreeSelect from "../trees/tree_select.js";
 import moment from 'moment';
+moment.locale('zh-cn');
 
 const InputGroup = Input.Group;
 const Option = Select.Option;

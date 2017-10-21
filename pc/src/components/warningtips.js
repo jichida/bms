@@ -112,6 +112,7 @@ class UserMenu extends React.Component {
 // this.props.history.push("/device")
   render() {
     const {username,role,avatar} = this.props;
+    const defaultavatar = Avatar;
     let mapcontent = {
       '0':{
         title:'运营分析',
@@ -160,7 +161,7 @@ class UserMenu extends React.Component {
       <div>
         <div className="topuser" onClick={this.handleTouchTap}>
             <span>{username}</span>
-            <img src={avatar}  />
+            <img src={defaultavatar}  />
         </div>
         <Popover
           open={this.state.open}

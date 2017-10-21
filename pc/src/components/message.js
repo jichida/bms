@@ -92,10 +92,10 @@ class MessageAllDevice extends React.Component {
     render(){
         let warninglevel = this.props.match.params.warninglevel;
         if(warninglevel === 'all'){
-          warninglevel = -1;
+          warninglevel = "-1";
         }
         else{
-          warninglevel = parseInt(warninglevel);
+          // warninglevel = parseInt(warninglevel);
         }
         let {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
         let delrow = (row)=>{
