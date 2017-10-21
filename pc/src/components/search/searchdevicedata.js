@@ -63,9 +63,6 @@ class TreeSearchBattery extends React.Component {
   onChange_alarmlevel(alarmlevel){
     this.setState({alarmlevel});
   }
-
-
-  //查询数据
   onClickQuery=()=>{
     let query = {
       queryalarm:{
@@ -90,12 +87,6 @@ class TreeSearchBattery extends React.Component {
                       startDate = {this.state.startDate}
                       endDate = {this.state.endDate}
                       onChangeSelDate={this.onChangeSelDate.bind(this)} />
-                      <Select defaultValue={'-1'}   onChange={this.onChange_alarmlevel.bind(this)}>
-                         <Option value={'-1'} >选择警告等级</Option>
-                         <Option value={'0'} >严重告警</Option>
-                         <Option value={'1'} >紧急告警</Option>
-                         <Option value={'2'} >一般告警</Option>
-                     </Select>
                 </div>
                 <div className="b">
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>

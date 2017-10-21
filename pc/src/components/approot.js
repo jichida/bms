@@ -13,6 +13,7 @@ import Device from './device.js';
 import Deviceinfo from './deviceinfo.js';
 import Chargingpileinfo from './chargingpileinfo.js';
 import Devicemessage from './devicemessage.js';
+import Devicedata from './devicedata.js';
 import Historyplay from './historytrackplayback';
 import Chartlist from './chartlist';
 import Workorder from './workorder';
@@ -65,6 +66,7 @@ class AppRoot extends React.Component {
                     <Route path="/deviceinfo/:id" component={requireAuthentication(Deviceinfo)} />
                     <Route path="/chargingpileinfo/:id" component={requireAuthentication(Chargingpileinfo)} />
                     <Route path="/devicemessage/:id" component={requireAuthentication(Devicemessage)} />
+                    <Route path="/devicedata/:id" component={requireAuthentication(Devicedata)} />
                     <Route path="/historyplay/:deviceid" component={requireAuthentication(Historyplay)} />
                     <Route path="/workorder" component={requireAuthentication(Workorder)} />
                     <Route path="/chartlist/:id" component={requireAuthentication(Chartlist)} />
