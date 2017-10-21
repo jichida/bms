@@ -171,8 +171,8 @@ class UserMenu extends React.Component {
           animation={PopoverAnimationVertical}
         >
           <Menu>
-            {menuitems}
-            <MenuItem primaryText="运营分析" leftIcon={<img src={Userlist_6} />} onClick={()=>{
+            {/* {menuitems} */}
+            {/* <MenuItem primaryText="运营分析" leftIcon={<img src={Userlist_6} />} onClick={()=>{
                 this.handleRequestClose();
                 // this.props.history.push("/chartlist/1");
                 window.open(`${mapcontent[0].link}`,'_blank');
@@ -185,27 +185,27 @@ class UserMenu extends React.Component {
              <MenuItem primaryText="减排量统计" leftIcon={<img src={Userlist_8} />} onClick={()=>{
                     this.handleRequestClose();
                     window.open(`${mapcontent[2].link}`,'_blank');
-            }}/>
+            }}/> */}
             <MenuItem primaryText="车辆轨迹监控" leftIcon={<img src={Userlist_4} />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.dispatch(ui_changemodeview('device'));
                 this.props.history.push(`/historyplay/0`);
                 //this.props.dispatch(ui_clickplayback(0));
             }}/>
-            <MenuItem primaryText="工单查询" leftIcon={<Assignment />} onClick={()=>{
+            {/* <MenuItem primaryText="工单查询" leftIcon={<Assignment />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.dispatch(ui_changemodeview('device'));
                 this.props.history.push("/workorder");
-            }}/>
-            {/* <MenuItem primaryText="查询报表" leftIcon={<Car />} onClick={()=>{
+            }}/> */}
+            {<MenuItem primaryText="查询报表" leftIcon={<Car />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.history.push("/device");
-            }}/> */}
-            <MenuItem primaryText="后台管理" leftIcon={<Settings />} onClick={()=>{
+            }}/>}
+            {/* <MenuItem primaryText="后台管理" leftIcon={<Settings />} onClick={()=>{
                 this.handleRequestClose();
                 window.open('http://catldemo.com28.cn/admin/build/','_blank');
                 // this.props.dispatch(ui_menuclick_settings({}));
-            }}/>
+            }}/> */}
             <MenuItem primaryText="退出登录" leftIcon={<Exit />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.dispatch(ui_menuclick_logout({}));
