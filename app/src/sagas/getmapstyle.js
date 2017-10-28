@@ -3,6 +3,7 @@ import store from '../env/store';
 import {ui_showmenu} from '../actions';
 import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import moment from 'moment';
+import lodashmap from 'lodash.map';
 //地图上点图标的样式【图标类型】
 export const getgroupStyleMap = ()=>{
   let groupsz = [
@@ -188,19 +189,32 @@ const getpop_device =(deviceitem)=>{
   catch(e){
 
   }
+  // return {
+  //     infoBody: `<p>车辆编号:${DeviceId}</p>
+  //     <p class='l'><span class='t'>速度</span><span class='color_warning'>${sd}km/h</span></p>
+  //     <p class='l'><span class='t'>航向</span><span class='color_warning'>${getCoureName(hx)}</span></p>
+  //     <p class='l'><span class='t'>采样时间</span><span class='color_warning'>${cysj}</span></p>
+  //     <p class='l'><span class='t'>最后更新时间</span><span class='color_warning'>${lasttime}</span></p>
+  //     <p class='l'><span class='t'>左前胎压</span><span class='color_warning'>${gettyname(TP1)}</span> </p>
+  //     <p class='l'><span class='t'>右前胎压</span><span class='color_warning'>${gettyname(TP2)}</span></p>
+  //     <p class='l'><span class='t'>右后胎压</span><span class='color_warning'>${gettyname(TP3)}</span></p>
+  //     <p class='l'><span class='t'>左后胎压</span><span class='color_warning'>${gettyname(TP4)}</span></p>
+  //     <p class='l'><span class='t'>胎压故障码</span><span class='color_warning'>${TP5}</span></p>
+  //     <button onclick="clickfn_device(${DeviceId})">查看详情</button>`
+  // };
   return {
-      infoBody: `<p>车辆编号:${DeviceId}</p>
-      <p class='l'><span class='t'>速度</span><span class='color_warning'>${sd}km/h</span></p>
-      <p class='l'><span class='t'>航向</span><span class='color_warning'>${getCoureName(hx)}</span></p>
-      <p class='l'><span class='t'>采样时间</span><span class='color_warning'>${cysj}</span></p>
-      <p class='l'><span class='t'>最后更新时间</span><span class='color_warning'>${lasttime}</span></p>
-      <p class='l'><span class='t'>左前胎压</span><span class='color_warning'>${gettyname(TP1)}</span> </p>
-      <p class='l'><span class='t'>右前胎压</span><span class='color_warning'>${gettyname(TP2)}</span></p>
-      <p class='l'><span class='t'>右后胎压</span><span class='color_warning'>${gettyname(TP3)}</span></p>
-      <p class='l'><span class='t'>左后胎压</span><span class='color_warning'>${gettyname(TP4)}</span></p>
-      <p class='l'><span class='t'>胎压故障码</span><span class='color_warning'>${TP5}</span></p>
-      <button onclick="clickfn_device(${DeviceId})">查看详情</button>`
-  };
+        infoBody: `<p>车辆编号:${DeviceId}</p>
+        <p class='l'><span class='t'>总电流</span><span class='color_warning'>${zdl}A</span></p>
+        <p class='l'><span class='t'>总电压</span><span class='color_warning'>${zdy}V</span></p>
+        <p class='l'><span class='t'>SOC</span><span class='color_warning'>${soc}%</span></p>
+        <p class='l'><span class='t'>车速</span><span class='color_warning'>${cs}km/h</span> </p>
+        <p class='l'><span class='t'>总里程</span><span class='color_warning'>${zlc}km</span></p>
+        <p class='l'><span class='t'>绝缘阻抗</span><span class='color_warning'>${jxzk}KΩ</span></p>
+        <p class='l'><span class='t'>电池最高温度</span><span class='color_warning'>${zgwd}℃</span></p>
+        <p class='l'><span class='t'>车辆当前位置</span><span class='color_warning'>${province}${city}${district}</span></p>
+        <p class='l'><span class='t'>当前报警信息</span><span class='color_warning'>${bjxx}</span></p>
+        <button onclick="clickfn_device(${DeviceId})">查看详情</button>`
+    };
 }
 //充电桩
 const getpop_chargingpile =(deviceitem)=>{
@@ -246,4 +260,15 @@ export const getpopinfowindowstyle = (deviceitem)=>{
   }
 
   return getpop_device(deviceitem);
+}
+
+
+export const getlistpopinfowindowstyle = (deviceitemlist)=>{
+  let info = '';
+  lodashmap(deviceitemlist,(deviceitem)=>{
+    info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})">车辆编号:${deviceitem.DeviceId}</p>`;
+  });
+  return {
+        infoBody: `${info}`
+    };
 }
