@@ -177,5 +177,5 @@ map(tydata,(item,index)=>{
   jsondata.push(item2);
 });
 
-
+jsondata = jsondataexport;
 export {jsondata};
