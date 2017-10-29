@@ -155,7 +155,7 @@ const getMarkCluster_showMarks = (isshow)=>{
             const marker = new window.AMap.Marker({
                position:pos,
               //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-              //  offset: new window.AMap.Pixel(-15,-15),
+               offset: new window.AMap.Pixel(0, 0),//-113, -140
                extData:key
             });
             marker.on('click',()=>{
