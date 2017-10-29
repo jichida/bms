@@ -150,25 +150,27 @@ const getMarkCluster_showMarks = (isshow)=>{
       let markers = [];
       lodashmap(g_devicesdb,(item,key)=>{
         if(!!item){//AMap.LngLat(lng:Number,lat:Number)
-          const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
-          const marker = new window.AMap.Marker({
-             position:pos,
-            //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-            //  offset: new window.AMap.Pixel(-15,-15),
-             extData:key
-          });
-          marker.on('click',()=>{
-            console.log(`click marker ${key}`);
-            window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
-                if(!!item.locz){
-                  window.amapmain.setCenter(pos);
-                }
-                infoWindow.open(window.amapmain,pos);
-
+          if(!!item.locz){
+            const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
+            const marker = new window.AMap.Marker({
+               position:pos,
+              //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+              //  offset: new window.AMap.Pixel(-15,-15),
+               extData:key
             });
-          });
-          markers.push(marker);
+            marker.on('click',()=>{
+              console.log(`click marker ${key}`);
+              window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+                  infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
+                  if(!!item.locz){
+                    window.amapmain.setCenter(pos);
+                  }
+                  infoWindow.open(window.amapmain,pos);
+
+              });
+            });
+            markers.push(marker);
+          }
         }
       });
       markCluster.setMarkers(markers);
