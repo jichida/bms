@@ -105,7 +105,7 @@ let getmapzoollevel = (nowzoomlevel,oldzoomlevel)=>{
 }
 
 //新建聚合点
-const CreateMapUI_MarkCluster = (map,isshow)=>{
+const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
       if(!window.AMapUI){
         alert('未加载到AMapUI！');
@@ -117,57 +117,68 @@ const CreateMapUI_MarkCluster = (map,isshow)=>{
         markCluster.clearMarkers();
         markCluster.setMap(null);
         markCluster = null;
-
       }
 
-      if(isshow){
-        let markers = [];
-        lodashmap(g_devicesdb,(item,key)=>{
-          if(!!item){
-            const marker = new window.AMap.Marker({
-               position:item.locz,
-               content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-                 offset: new window.AMap.Pixel(-15,-15),
-              extData:key
-            });
-            marker.on('click',()=>{
-              console.log(`click marker ${key}`);
-              window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                  infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
-                  if(!!item.locz){
-                    window.amapmain.setCenter(item.locz);
-                    infoWindow.open(window.amapmain, item.locz);
-                  }
-                  else{
-                    infoWindow.open(window.amapmain, window.amapmain.getCenter());
-                  }
-              });
-            });
-            markers.push(marker);
-          }
+      markCluster = new window.AMap.MarkerClusterer(map, [],{gridSize:80});
+      markCluster.on('click',({cluster,lnglat,target,markers})=>{
+        let itemdevicelist = [];
+        lodashmap(markers,(mark)=>{
+          itemdevicelist.push(g_devicesdb[mark.getExtData()]);
         });
-        markCluster = new window.AMap.MarkerClusterer(map, markers,{gridSize:80});
-        markCluster.on('click',({cluster,lnglat,target,markers})=>{
-          let itemdevicelist = [];
-          lodashmap(markers,(mark)=>{
-            itemdevicelist.push(g_devicesdb[mark.getExtData()]);
+        const curzoom = markCluster.getMap().getZoom();
+        // 在PC上，默认为[3,18]，取值范围[3-18]；
+        // 在移动设备上，默认为[3,19],取值范围[3-19]
+        const maxzoom = config.softmode === 'pc'?18:19;
+        if(curzoom === maxzoom || curzoom>=18){
+          window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+              infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
+              window.amapmain.setCenter(lnglat);
+              infoWindow.open(window.amapmain, lnglat);
           });
-          const curzoom = markCluster.getMap().getZoom();
-          // 在PC上，默认为[3,18]，取值范围[3-18]；
-          // 在移动设备上，默认为[3,19],取值范围[3-19]
-          const maxzoom = config.softmode === 'pc'?18:19;
-          if(curzoom === maxzoom || curzoom>=18){
-            window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
-                window.amapmain.setCenter(lnglat);
-                infoWindow.open(window.amapmain, lnglat);
-            });
-            //弹框
-          }
-          console.log(`click device list:${JSON.stringify(itemdevicelist)},curzoom:${curzoom}`);
-        });
-      }
+          //弹框
+        }
+        console.log(`click device list:${JSON.stringify(itemdevicelist)},curzoom:${curzoom}`);
+      });
+
       resolve();
+  });
+}
+
+const getMarkCluster_showMarks = (isshow)=>{
+  return new Promise((resolve,reject) => {
+    if(isshow){
+      let markers = [];
+      lodashmap(g_devicesdb,(item,key)=>{
+        if(!!item){//AMap.LngLat(lng:Number,lat:Number)
+          const pos = new window.AMap.LngLat(item.locz[0],item.locz[1]);
+          const marker = new window.AMap.Marker({
+             position:pos,
+            //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+            //  offset: new window.AMap.Pixel(-15,-15),
+             extData:key
+          });
+          marker.on('click',()=>{
+            console.log(`click marker ${key}`);
+            window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+                infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
+                if(!!item.locz){
+                  window.amapmain.setCenter(item.locz);
+                  infoWindow.open(window.amapmain, item.locz);
+                }
+                else{
+                  infoWindow.open(window.amapmain, window.amapmain.getCenter());
+                }
+            });
+          });
+          markers.push(marker);
+        }
+      });
+      markCluster.setMarkers(markers);
+    }
+    else{
+      markCluster.clearMarkers();
+    }
+    resolve();
   });
 }
 //新建行政区域&海量点
@@ -648,6 +659,7 @@ export function* createmapmainflow(){
           yield call(CreateMap,{mapcenterlocation,zoomlevel});//创建地图
 
           // yield call(CreateMapUI_PointSimplifier,window.amapmain);
+          yield call(CreateMapUI_MarkCluster,window.amapmain);
           yield call(CreateMapUI_DistrictCluster,window.amapmain);
 
           let listentask =  yield fork(function*(eventname){
@@ -913,7 +925,7 @@ export function* createmapmainflow(){
           // pointSimplifierIns.hide();
           //   pointSimplifierIns.render();
           // }
-          yield call(CreateMapUI_MarkCluster,window.amapmain,isshow);
+          yield call(getMarkCluster_showMarks,isshow);
         }
         catch(e){
 
