@@ -2,7 +2,8 @@ import data_bms_mydevice from '../test/bms_mydevice.json';
 import data_bms_alarm from '../test/bms_alarm.json';
 import data_bms_workorder from '../test/workorder.json';
 import jsondatareadonly_chargingpile from '../test/bmsdata_chargingpile.json';
-import _ from 'lodash';
+import filter from 'lodash.filter';
+import map from 'lodash.map';
 import moment from 'moment';
 import jsondatatrack from '../test/1602010008.json';
 import jsondataalarm from '../test/json-BMS2.json';
@@ -20,10 +21,10 @@ let jsondata_bms_groups = groups;
 //充电桩
 let gmap_chargingpile = {};
 let jsondata_bms_chargingpile = [];
-let jsondata_chargingpile = _.filter(jsondatareadonly_chargingpile,(item) => {
+let jsondata_chargingpile = filter(jsondatareadonly_chargingpile,(item) => {
   return true;
 });
-_.map(jsondata_chargingpile,(item,index)=>{
+map(jsondata_chargingpile,(item,index)=>{
     item.DeviceId = item['充电桩编号'];
     item.LastHistoryTrack = {
       Latitude:item.LastHistoryTrack__Latitude,
@@ -91,13 +92,13 @@ let jsondata_bms_workorder =[];
 const test_alaram_text=['绝缘故障','高压互锁','SOC过低'];
 const test_warning_level_text=['严重告警','紧急告警','一般告警'];
 let indexalarm  = 0;
-for(let i=0;i<10;i++){
-  _.map(data_bms_alarm,(item,index)=>{
+for(let i=0;i<100;i++){
+  map(data_bms_alarm,(item,index)=>{
     let cloneitem = {...item};
     indexalarm++;
     let deviceindexalarm = indexalarm%jsondata.length;
 
-    cloneitem.DeviceId = jsondata[deviceindexalarm].DeviceId;
+    cloneitem.DeviceId = jsondata[deviceindexalarm%jsondata.length].DeviceId;
     //修改数据
     cloneitem.warninglevel = getrandom(0,2);
     cloneitem.key = indexalarm + '';
@@ -117,10 +118,10 @@ for(let i=0;i<10;i++){
 
 //<------处理设备的报警信息到设备------
 let mapdata_bms_alarm = {};
-_.map(jsondata_bms_alarm,(item)=>{
+map(jsondata_bms_alarm,(item)=>{
   mapdata_bms_alarm[item['DeviceId']] = item['报警信息'];
 });
-_.map(jsondata_bms_mydevice,(item,index)=>{
+map(jsondata_bms_mydevice,(item,index)=>{
   if(!!mapdata_bms_alarm[item.DeviceId]){
     let cloneitem = {...item};
     cloneitem['报警信息'] = mapdata_bms_alarm[item.DeviceId];
@@ -148,7 +149,7 @@ const test_workorder_feedback_text = ['某零件损坏','某零件脱落','使�
 let indexworkorder  = 0;
 
 let jsondata_bms_workusers = [];
-_.map(test_workorder_assgin_text,(item,index)=>{
+map(test_workorder_assgin_text,(item,index)=>{
   jsondata_bms_workusers.push({
     _id:index+'',
     name:item
@@ -157,11 +158,11 @@ _.map(test_workorder_assgin_text,(item,index)=>{
 
 
 for(let i=0;i<20;i++){
-  _.map(data_bms_workorder,(item,index)=>{
+  map(data_bms_workorder,(item,index)=>{
     let cloneitem = {...item};
     indexworkorder++;
     let deviceindexalarm = indexalarm%jsondata.length;
-    cloneitem.DeviceId = jsondata[deviceindexalarm].DeviceId;
+    cloneitem.DeviceId = jsondata[deviceindexalarm%jsondata.length].DeviceId;
     cloneitem.key = indexworkorder + '';
     cloneitem._id = cloneitem.key;
 
@@ -192,13 +193,14 @@ for(let i=0;i<20;i++){
 }
 
 let jsondata_bms_carcollections = [];
-for(let i=0;i<5;i++){
-  jsondata_bms_carcollections.push(jsondata[i].DeviceId);
+const max_collections = 5 > jsondata.length?jsondata.length:5;
+for(let i=0;i<max_collections;i++){
+  jsondata_bms_carcollections.push(jsondata[i%jsondata.length].DeviceId);
 }
 
 let jsondata_bms_track = jsondatatrack;
 
-
+// jsondata_bms_alarm = [];//告警信息不要
 
 export {
   jsondata_bms_chargingpile,
