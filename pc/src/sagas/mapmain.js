@@ -62,7 +62,7 @@ const divmapid_mapmain = 'mapmain';
 
 let infoWindow;
 const loczero = L.latLng(0,0);
-let distCluster,pointSimplifierIns,markCluster;
+let distCluster,markCluster;
 let groupStyleMap = {};
 
 //=====数据部分=====
@@ -105,7 +105,7 @@ let getmapzoollevel = (nowzoomlevel,oldzoomlevel)=>{
 }
 
 //新建聚合点
-const CreateMapUI_MarkCluster = (map,isshow)=>{
+const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
       if(!window.AMapUI){
         alert('未加载到AMapUI！');
@@ -114,150 +114,162 @@ const CreateMapUI_MarkCluster = (map,isshow)=>{
       }
 
       if(!!markCluster){
-          markCluster.setMap(null);
+        markCluster.clearMarkers();
+        markCluster.setMap(null);
+        markCluster = null;
       }
 
-      if(isshow){
-        let markers = [];
-        lodashmap(g_devicesdb,(item,key)=>{
-          if(!!item){
-            const marker = new window.AMap.Marker({
-               position:item.locz,
-               content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-                 offset: new window.AMap.Pixel(-15,-15),
-              extData:key
-            });
-            marker.on('click',()=>{
-              console.log(`click marker ${key}`);
-              window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                  infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
-                  if(!!item.locz){
-                    window.amapmain.setCenter(item.locz);
-                    infoWindow.open(window.amapmain, item.locz);
-                  }
-                  else{
-                    infoWindow.open(window.amapmain, window.amapmain.getCenter());
-                  }
-              });
-            });
-            markers.push(marker);
-          }
+      markCluster = new window.AMap.MarkerClusterer(map, [],{gridSize:80});
+      markCluster.on('click',({cluster,lnglat,target,markers})=>{
+        let itemdevicelist = [];
+        lodashmap(markers,(mark)=>{
+          itemdevicelist.push(g_devicesdb[mark.getExtData()]);
         });
-        markCluster = new window.AMap.MarkerClusterer(map, markers,{gridSize:80});
-        markCluster.on('click',({cluster,lnglat,target,markers})=>{
-          let itemdevicelist = [];
-          lodashmap(markers,(mark)=>{
-            itemdevicelist.push(g_devicesdb[mark.getExtData()]);
+        const curzoom = markCluster.getMap().getZoom();
+        // 在PC上，默认为[3,18]，取值范围[3-18]；
+        // 在移动设备上，默认为[3,19],取值范围[3-19]
+        const maxzoom = config.softmode === 'pc'?18:19;
+        if(curzoom === maxzoom || curzoom>=18){
+          window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+              infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
+              window.amapmain.setCenter(lnglat);
+              infoWindow.open(window.amapmain, lnglat);
           });
-          const curzoom = markCluster.getMap().getZoom();
-          // 在PC上，默认为[3,18]，取值范围[3-18]；
-          // 在移动设备上，默认为[3,19],取值范围[3-19]
-          const maxzoom = config.softmode === 'pc'?18:19;
-          if(curzoom === maxzoom || curzoom>=18){
-            window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
-                window.amapmain.setCenter(lnglat);
-                infoWindow.open(window.amapmain, lnglat);
-            });
-            //弹框
-          }
-          console.log(`click device list:${JSON.stringify(itemdevicelist)},curzoom:${curzoom}`);
-        });
-      }
+          //弹框
+        }
+        console.log(`click device list:${JSON.stringify(itemdevicelist)},curzoom:${curzoom}`);
+      });
+
       resolve();
   });
 }
-//新建行政区域&海量点
-const CreateMapUI_PointSimplifier =  (map)=>{
+
+const getMarkCluster_showMarks = (isshow)=>{
   return new Promise((resolve,reject) => {
-      if(!window.AMapUI){
-        alert('未加载到AMapUI！');
-        reject();
-        return;
-      }
-      window.AMapUI.load(['ui/misc/PointSimplifier',
-    ],(PointSimplifier)=> {
-           if (!PointSimplifier.supportCanvas) {
-               alert('当前环境不支持 Canvas！');
-               reject();
-               return;
-           }
-           //分组样式
-           let groupsz = getgroupStyleMap();
+    if(isshow){
+      let markers = [];
+      lodashmap(g_devicesdb,(item,key)=>{
+        if(!!item){//AMap.LngLat(lng:Number,lat:Number)
+          const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
+          const marker = new window.AMap.Marker({
+             position:pos,
+            //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+            //  offset: new window.AMap.Pixel(-15,-15),
+             extData:key
+          });
+          marker.on('click',()=>{
+            console.log(`click marker ${key}`);
+            window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+                infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
+                if(!!item.locz){
+                  window.amapmain.setCenter(pos);
+                }
+                infoWindow.open(window.amapmain,pos);
 
-           lodashmap(groupsz,(group)=>{
-             const {name,image,...rest} = group;
-             groupStyleMap[name] = {
-                pointStyle: {
-                 content:PointSimplifier.Render.Canvas.getImageContent(
-                     image, onIconLoad, onIconError),
-                 ...rest
-               }
-             }
-           });
-
-           const onIconLoad = ()=> {
-               pointSimplifierIns.renderLater();
-           }
-
-           const onIconError = (e)=> {
-               alert('图片加载失败！');
-           }
-           //海量点控件
-           pointSimplifierIns = new PointSimplifier({
-               zIndex: 115,
-               autoSetFitView: false,
-               map: map, //所属的地图实例
-               getPosition: (deviceitem)=> {
-                   let itemnew = g_devicesdb[deviceitem.DeviceId];
-                   if(!!itemnew){
-                    //
-                     return itemnew.locz;
-                   }
-                  //
-                   return deviceitem.locz;
-                   //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
-               },
-               getHoverTitle: (deviceitem, idx)=> {
-                   let imagetype = deviceitem.imagetype || 0;
-                   if(typeof imagetype === 'string'){
-                     imagetype = parseInt(imagetype);
-                   }
-                   if(imagetype >= 4 ){
-                     return `充电桩编号:${deviceitem.DeviceId}`;
-                   }
-                   return `车辆编号:${deviceitem.DeviceId}`;
-               },
-               //使用GroupStyleRender
-               renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
-               renderOptions: {
-                   //点的样式,海量点样式
-                   pointStyle: {
-                       width: 5,
-                       height: 5,
-                       fillStyle:'#A2D0FA'
-                   },
-                   getGroupId: (deviceitem, idx)=> {
-                       let idex = parseInt(deviceitem.locz[0]) + parseInt(deviceitem.locz[1]);
-                       let groupid = idex%3;
-
-                       if(!!deviceitem.imagetype){
-                         groupid = deviceitem.imagetype;
-                       }
-                       //这里显示图标
-                       return groupid;
-                   },
-                   groupStyleOptions: (gid)=> {
-                       return groupStyleMap[gid];
-                   }
-
-               }
-           });
-           resolve(pointSimplifierIns);
-       });
-
-   });
+            });
+          });
+          markers.push(marker);
+        }
+      });
+      markCluster.setMarkers(markers);
+    }
+    else{
+      markCluster.clearMarkers();
+    }
+    resolve();
+  });
 }
+//新建行政区域&海量点
+// const CreateMapUI_PointSimplifier =  (map)=>{
+//   return new Promise((resolve,reject) => {
+//       if(!window.AMapUI){
+//         alert('未加载到AMapUI！');
+//         reject();
+//         return;
+//       }
+//       window.AMapUI.load(['ui/misc/PointSimplifier',
+//     ],(PointSimplifier)=> {
+//            if (!PointSimplifier.supportCanvas) {
+//                alert('当前环境不支持 Canvas！');
+//                reject();
+//                return;
+//            }
+//            //分组样式
+//            let groupsz = getgroupStyleMap();
+//
+//            lodashmap(groupsz,(group)=>{
+//              const {name,image,...rest} = group;
+//              groupStyleMap[name] = {
+//                 pointStyle: {
+//                  content:PointSimplifier.Render.Canvas.getImageContent(
+//                      image, onIconLoad, onIconError),
+//                  ...rest
+//                }
+//              }
+//            });
+//
+//            const onIconLoad = ()=> {
+//                pointSimplifierIns.renderLater();
+//            }
+//
+//            const onIconError = (e)=> {
+//                alert('图片加载失败！');
+//            }
+//            //海量点控件
+//            pointSimplifierIns = new PointSimplifier({
+//                zIndex: 115,
+//                autoSetFitView: false,
+//                map: map, //所属的地图实例
+//                getPosition: (deviceitem)=> {
+//                    let itemnew = g_devicesdb[deviceitem.DeviceId];
+//                    if(!!itemnew){
+//                     //
+//                      return itemnew.locz;
+//                    }
+//                   //
+//                    return deviceitem.locz;
+//                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
+//                },
+//                getHoverTitle: (deviceitem, idx)=> {
+//                    let imagetype = deviceitem.imagetype || 0;
+//                    if(typeof imagetype === 'string'){
+//                      imagetype = parseInt(imagetype);
+//                    }
+//                    if(imagetype >= 4 ){
+//                      return `充电桩编号:${deviceitem.DeviceId}`;
+//                    }
+//                    return `车辆编号:${deviceitem.DeviceId}`;
+//                },
+//                //使用GroupStyleRender
+//                renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
+//                renderOptions: {
+//                    //点的样式,海量点样式
+//                    pointStyle: {
+//                        width: 5,
+//                        height: 5,
+//                        fillStyle:'#A2D0FA'
+//                    },
+//                    getGroupId: (deviceitem, idx)=> {
+//                        let idex = parseInt(deviceitem.locz[0]) + parseInt(deviceitem.locz[1]);
+//                        let groupid = idex%3;
+//
+//                        if(!!deviceitem.imagetype){
+//                          groupid = deviceitem.imagetype;
+//                        }
+//                        //这里显示图标
+//                        return groupid;
+//                    },
+//                    groupStyleOptions: (gid)=> {
+//                        return groupStyleMap[gid];
+//                    }
+//
+//                }
+//            });
+//            resolve(pointSimplifierIns);
+//        });
+//
+//    });
+// }
 
 //新建行政区域
 const CreateMapUI_DistrictCluster =  (map)=>{
@@ -448,13 +460,13 @@ const listenmapevent = (eventname)=>{
 }
 
 //监听标记事件
-const listenmarkclickevent = (eventname)=>{
-  return new Promise(resolve => {
-    pointSimplifierIns.on(eventname, (e,record)=> {
-        resolve(record);
-    });
-  });
-}
+// const listenmarkclickevent = (eventname)=>{
+//   return new Promise(resolve => {
+//     pointSimplifierIns.on(eventname, (e,record)=> {
+//         resolve(record);
+//     });
+//   });
+// }
 
 //监听弹框事件
 const listenwindowinfoevent = (eventname)=>{
@@ -644,7 +656,8 @@ export function* createmapmainflow(){
           }
           yield call(CreateMap,{mapcenterlocation,zoomlevel});//创建地图
 
-          yield call(CreateMapUI_PointSimplifier,window.amapmain);
+          // yield call(CreateMapUI_PointSimplifier,window.amapmain);
+          yield call(CreateMapUI_MarkCluster,window.amapmain);
           yield call(CreateMapUI_DistrictCluster,window.amapmain);
 
           let listentask =  yield fork(function*(eventname){
@@ -675,19 +688,19 @@ export function* createmapmainflow(){
             }
           },'zoomend');
 
-          let task_markclick = yield fork(function*(eventname){
-            while(true){
-                const dataitem = yield call(listenmarkclickevent,eventname);
-                if(!!dataitem){
-                  let deviceitem = dataitem.data;
-
-                  if(!!deviceitem){
-                    yield put(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
-                  }
-                }
-              //
-            }
-          },'pointClick');//'pointClick pointMouseover pointMouseout'
+          // let task_markclick = yield fork(function*(eventname){
+          //   while(true){
+          //       const dataitem = yield call(listenmarkclickevent,eventname);
+          //       if(!!dataitem){
+          //         let deviceitem = dataitem.data;
+          //
+          //         if(!!deviceitem){
+          //           yield put(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
+          //         }
+          //       }
+          //     //
+          //   }
+          // },'pointClick');//'pointClick pointMouseover pointMouseout'
 
           let task_mapclick = yield fork(function*(eventname){
             while(true){
@@ -720,7 +733,7 @@ export function* createmapmainflow(){
           yield cancel(listentask);
           yield cancel(task_dragend);
           yield cancel(task_zoomend);
-          yield cancel(task_markclick);
+          // yield cancel(task_markclick);
           yield cancel(task_mapclick);
         }
       }
@@ -742,7 +755,7 @@ export function* createmapmainflow(){
         window.amapmain = null;
         infoWindow=null;
         distCluster=null;
-        pointSimplifierIns=null;
+        // pointSimplifierIns=null;
       }
     });
 
@@ -804,7 +817,7 @@ export function* createmapmainflow(){
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
       try{
-          while(!pointSimplifierIns || !distCluster){
+          while( !distCluster){
             yield call(delay,2500);
           }
           //批量转换一次
@@ -819,7 +832,7 @@ export function* createmapmainflow(){
           });
 
           distCluster.setData(data);
-          pointSimplifierIns.setData(data);
+          // pointSimplifierIns.setData(data);
 
           //初始化清空
           gmap_acode_devices={};
@@ -893,7 +906,7 @@ export function* createmapmainflow(){
           }
         }
         catch(e){
-
+          console.log(e);
         }
     });
     //显示海量点
@@ -907,13 +920,13 @@ export function* createmapmainflow(){
           //   else{
           //     pointSimplifierIns.hide();
           //   }
-          pointSimplifierIns.hide();
+          // pointSimplifierIns.hide();
           //   pointSimplifierIns.render();
           // }
-          yield call(CreateMapUI_MarkCluster,window.amapmain,isshow);
+          yield call(getMarkCluster_showMarks,isshow);
         }
         catch(e){
-
+          console.log(e);
         }
     });
 
@@ -1009,7 +1022,7 @@ export function* createmapmainflow(){
       try{
         g_devicesdb[deviceitem.DeviceId] = deviceitem;
         yield put(devicelistgeochange_distcluster({}));
-        yield put(devicelistgeochange_pointsimplifierins({}));
+        // yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
@@ -1057,7 +1070,7 @@ export function* createmapmainflow(){
         }
         //
         yield put(devicelistgeochange_distcluster({}));
-        yield put(devicelistgeochange_pointsimplifierins({}));
+        // yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
@@ -1082,20 +1095,20 @@ export function* createmapmainflow(){
     });
 
     // yield throttle(1700,`${devicelistgeochange_pointsimplifierins}`,function*(action){
-    yield takeLatest(`${devicelistgeochange_pointsimplifierins}`,function*(action){
-      try{
-        if(!!pointSimplifierIns){
-          let data = [];
-          lodashmap(g_devicesdb,(item)=>{
-            data.push(item);
-          });
-          pointSimplifierIns.setData(data);//刷新海量点
-        }
-      }
-      catch(e){
-
-      }
-    });
+    // yield takeLatest(`${devicelistgeochange_pointsimplifierins}`,function*(action){
+    //   try{
+    //     if(!!pointSimplifierIns){
+    //       let data = [];
+    //       lodashmap(g_devicesdb,(item)=>{
+    //         data.push(item);
+    //       });
+    //       pointSimplifierIns.setData(data);//刷新海量点
+    //     }
+    //   }
+    //   catch(e){
+    //
+    //   }
+    // });
 
     //刷新行政区域树
     // yield throttle(1900,`${devicelistgeochange_geotreemenu}`,function*(action){

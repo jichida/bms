@@ -150,7 +150,7 @@ const getMarkCluster_showMarks = (isshow)=>{
       let markers = [];
       lodashmap(g_devicesdb,(item,key)=>{
         if(!!item){//AMap.LngLat(lng:Number,lat:Number)
-          const pos = new window.AMap.LngLat(item.locz[0],item.locz[1]);
+          const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
           const marker = new window.AMap.Marker({
              position:pos,
             //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
@@ -162,12 +162,10 @@ const getMarkCluster_showMarks = (isshow)=>{
             window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
                 infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
                 if(!!item.locz){
-                  window.amapmain.setCenter(item.locz);
-                  infoWindow.open(window.amapmain, item.locz);
+                  window.amapmain.setCenter(pos);
                 }
-                else{
-                  infoWindow.open(window.amapmain, window.amapmain.getCenter());
-                }
+                infoWindow.open(window.amapmain,pos);
+
             });
           });
           markers.push(marker);
@@ -908,7 +906,7 @@ export function* createmapmainflow(){
           }
         }
         catch(e){
-
+          console.log(e);
         }
     });
     //显示海量点
@@ -928,7 +926,7 @@ export function* createmapmainflow(){
           yield call(getMarkCluster_showMarks,isshow);
         }
         catch(e){
-
+          console.log(e);
         }
     });
 
