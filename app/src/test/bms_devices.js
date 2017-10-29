@@ -100,6 +100,7 @@ const gettest_item = (item,index)=>{
   item['温度探针总数'] =getrandom(60,120);
   item['动力蓄电池包总数(动力)'] =6;
 
+  item['angle'] = getrandom(0,360);
   return {...item};
 }
 

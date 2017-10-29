@@ -50,6 +50,7 @@ import L from 'leaflet';
 import lodashmap from 'lodash.map';
 import find from 'lodash.find';
 import sampleSize from 'lodash.samplesize';
+import get from 'lodash.get';
 import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
@@ -154,6 +155,12 @@ const getMarkCluster_showMarks = (isshow)=>{
             const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
             const marker = new window.AMap.Marker({
                position:pos,
+               icon: new window.AMap.Icon({
+                   size: new window.AMap.Size(24, 48),  //图标大小
+                   image: `${process.env.PUBLIC_URL}/images/car.png`,
+                   imageOffset: new window.AMap.Pixel(0, 0)
+               }),
+               angle:get(item,'angle',0),
               //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
                offset: new window.AMap.Pixel(0, 0),//-113, -140
                extData:key
