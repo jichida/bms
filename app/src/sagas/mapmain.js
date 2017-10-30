@@ -714,9 +714,10 @@ export function* createmapmainflow(){
           let task_mapclick = yield fork(function*(eventname){
             while(true){
               yield call(listenmapevent,eventname);
-              console.log(`click map!!!`);
+              console.log(`click map!!!${!!infoWindow}`);
               if(!!infoWindow){
                 infoWindow.close();
+                infoWindow = null;
               }
             }
           },'click');//'click'
@@ -790,7 +791,7 @@ export function* createmapmainflow(){
 
       }
       catch(e){
-
+        console.log(e);
       }
       yield put(ui_selcurdevice_result(actioncurdevice.payload));
     });
@@ -818,7 +819,7 @@ export function* createmapmainflow(){
 
         }
         catch(e){
-
+          console.log(e);
         }
     });
 
@@ -861,7 +862,7 @@ export function* createmapmainflow(){
 
         }
         catch(e){
-
+          console.log(e);
         }
 
     });
@@ -1018,7 +1019,7 @@ export function* createmapmainflow(){
         yield put(ui_settreefilter(payload));
       }
       catch(e){
-
+        console.log(e);
       }
     });
     //serverpush_devicegeo
@@ -1035,7 +1036,7 @@ export function* createmapmainflow(){
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
-
+        console.log(e);
       }
     });
 
@@ -1083,7 +1084,7 @@ export function* createmapmainflow(){
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
-
+        console.log(e);
       }
     });
     //devicelistgeochange
@@ -1099,7 +1100,7 @@ export function* createmapmainflow(){
         }
       }
       catch(e){
-
+        console.log(e);
       }
     });
 
