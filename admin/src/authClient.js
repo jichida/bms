@@ -1,9 +1,10 @@
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_CHECK, AUTH_ERROR,AUTH_GET_PERMISSIONS } from 'admin-on-rest';
 import {apipost} from './util/util.js';
 import decodeJwt from 'jwt-decode';
+import config from './env/config.js';
 export default (type, params) => {
     if (type === AUTH_LOGIN) {
-        return apipost('/adminauth',params).then(response => {
+        return apipost(config.adminauthserverurl,params).then(response => {
                 if (response.status < 200 || response.status >= 300) {
                     throw new Error(response.statusText);
                 }

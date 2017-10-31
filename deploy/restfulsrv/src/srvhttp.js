@@ -27,9 +27,9 @@ let startsrv = ()=>{
   console.log("static test:" + logdir);
   app.use('/log', express.static(logdir));
 
-  // let admindir = path.join(__dirname,config.publishdiradmin);
-  // console.log("static admin:" + admindir);
-  // app.use('/admin', express.static(admindir));
+  let admindir = path.join(__dirname,config.publishdiradmin);
+  console.log("static admin:" + admindir);
+  app.use('/admin', express.static(admindir));
 
   let uploaddir = path.join(__dirname,'./router',config.uploaddir);
   console.log("static upload:" + uploaddir);
@@ -46,7 +46,7 @@ let startsrv = ()=>{
   app.use((req, res, next)=> {
       console.log('req.url:' + req.url);
       res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+      res.setHeader('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
       next();
   });
