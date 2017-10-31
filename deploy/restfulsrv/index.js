@@ -14,7 +14,7 @@ mongoose.connect(config.mongodburl,{
     reconnectTries: Number.MAX_VALUE
   });
 
-console.log(`rooturl:${config.rooturl}`);
+console.log(`rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
 console.log(`issmsdebug:${config.issmsdebug}`);
 
 srvsystem.job();
