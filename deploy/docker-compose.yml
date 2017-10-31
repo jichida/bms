@@ -36,13 +36,13 @@ services:
       - ./restfulsrv:/app
     environment:
       - MONGO_URL=mongodb://192.168.0.1:27018/bms
-      - listenport=5011
+      - listenport=5012
     links:
       - mongodb
     ports:
-       - "5011:5011"
+       - "5012:5012"
     expose:
-       - "5011"
+       - "5012"
   mongodb:
     image:  mongo:3.4
     expose:
