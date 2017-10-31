@@ -184,7 +184,7 @@ app.post('/adminauth/v1/:organizationid',(req,res)=>{
   const actiondata =   req.body;
   console.log("actiondata=>" + JSON.stringify(actiondata));
   const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
-  console.log(`organizationid=>${organizationid}`);
+  console.log(`--organizationid=>${organizationid}`);
   if(actiondata.username === 'admin'){
     const userModel = DBModels.UserAdminModel;
     userModel.findOne({ username: actiondata.username,organizationid}, (err, user)=> {
