@@ -180,7 +180,7 @@ const curd = (schmodel)=>{
 // let defaultmiddlewareauth = (req,res,next)=>{
 //   next();
 // };
-app.post('/apisrv/adminauth/v1/:organizationid',(req,res)=>{
+app.post('/adminauth/v1/:organizationid',(req,res)=>{
   const actiondata =   req.body;
   console.log("actiondata=>" + JSON.stringify(actiondata));
   const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
@@ -276,7 +276,7 @@ app.post('/apisrv/adminauth/v1/:organizationid',(req,res)=>{
 
 for(let keyname in dbs){
     let schmodel = dbs[keyname];
-    let urlname = `/apisrv/adminapi/v1/:organizationid${schmodel.urlname}`;
+    let urlname = `/adminapi/v1/:organizationid${schmodel.urlname}`;
     console.log(`urlname:${urlname}`);
     app.post(urlname,middlewareauth,curd(schmodel));
     app.get(urlname,middlewareauth,curd(schmodel));
