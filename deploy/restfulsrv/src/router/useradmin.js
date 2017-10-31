@@ -188,6 +188,7 @@ app.post('/adminauth/v1/:organizationid',(req,res)=>{
   if(actiondata.username === 'admin'){
     const userModel = DBModels.UserAdminModel;
     userModel.findOne({ username: actiondata.username,organizationid}, (err, user)=> {
+      console.log(`user=>${JSON.stringify(user)}`);
       if (!!err) {
         res.status(200).json({
           loginsuccess:false,
