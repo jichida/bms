@@ -105,6 +105,7 @@ const curd = (schmodel)=>{
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       let createddata = queryparam.params.data;
       if(schmodel.collectionname === 'systemconfig' ||
+          schmodel.collectionname === 'device' ||
           schmodel.collectionname === 'devicegroup' ||
           schmodel.collectionname === 'user' ||
           schmodel.collectionname === 'usergroup' ||
