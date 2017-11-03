@@ -1,6 +1,6 @@
 version: '2'
 services:
-  nginx:
+  nginxbms:
     image: nginx
     restart: always
     ports:
