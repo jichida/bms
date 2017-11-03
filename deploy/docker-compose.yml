@@ -43,6 +43,17 @@ services:
        - "5012:5012"
     expose:
        - "5012"
+  kafkadb:
+    image: node:6.11.2
+    command: node ./index.js
+    working_dir: /app
+    volumes:
+      - ./kafkadb:/app
+    environment:
+      - MONGO_URL=mongodb://192.168.0.1:27018/bms
+      - KAFKA_HOST=192.168.0.1:2181
+    links:
+      - mongodb
   mongodb:
     image:  mongo:3.4
     expose:
