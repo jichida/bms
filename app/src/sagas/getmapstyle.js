@@ -218,34 +218,34 @@ const getpop_device =(deviceitem)=>{
 }
 //充电桩
 const getpop_chargingpile =(deviceitem)=>{
-  let DeviceId = get(deviceitem,'DeviceId','');
-  let no = get(deviceitem,'充电桩编号','');
-  let sccj = get(deviceitem,'生产厂家','');
-  let cdms = get(deviceitem,'充电模式','');
-  let dqzt = get(deviceitem,'当前状态','');
-  let sysc = get(deviceitem,'开机时长（h）','');
+    let DeviceId = get(deviceitem,'DeviceId','');
+    let no = get(deviceitem,'充电桩编号','');
+    let sccj = get(deviceitem,'生产厂家','');
+    let cdms = get(deviceitem,'充电模式','');
+    let dqzt = get(deviceitem,'当前状态','');
+    let sysc = get(deviceitem,'开机时长（h）','');
 
-  let dqdl = get(deviceitem,'当前电流（A）','');
-  let jyzk = get(deviceitem,'绝缘阻抗','');
-  let dqgl = get(deviceitem,'当前功率（kW）','');
+    let dqdl = get(deviceitem,'当前电流（A）','');
+    let jyzk = get(deviceitem,'绝缘阻抗','');
+    let dqgl = get(deviceitem,'当前功率（kW）','');
 
-  let adcode = get(deviceitem,'adcode','');
-  let province = get(deviceitem,'province','');
-  let city = get(deviceitem,'city','');
-  let district = get(deviceitem,'district','');
-  let formattedAddress = get(deviceitem,'formattedAddress','');
+    let adcode = get(deviceitem,'adcode','');
+    let province = get(deviceitem,'province','');
+    let city = get(deviceitem,'city','');
+    let district = get(deviceitem,'district','');
+    let formattedAddress = get(deviceitem,'formattedAddress','');
 
-  return {
-      infoBody: `<p>充电桩编号: ${no}</p>,
-      <p class='l'><span class='t'>当前状态:</span><span>${dqzt}</span></p>
-      <p class='l'><span class='t'>充电模式:</span><span class='color_warning'>${cdms}</span></p>
-      <p class='l'><span class='t'>当前电流:</span><span class='color_warning'>${dqdl}</span></p>
-      <p class='l'><span class='t'>当前功率:</span><span class='color_warning'>${dqgl}</span></p>
-      <p class='l'><span class='t'>绝缘阻抗:</span><span class='color_warning'>${jyzk}</span></p>
-      <p class='l'><span class='t'>充电桩位置:</span><span class='color_warning'>${formattedAddress}</span></p>
-      <p class='l'><span class='t'>当前报警状态:</span><span class='color_warning'>无</span></p>
-      <button onclick="clickfn_chargingpile('${DeviceId}')">查看详情</button>`
-  };
+    return {
+        infoBody: `<p>充电桩编号: ${no}</p>,
+        <p class='l'><span class='t'>当前状态:</span><span>${dqzt}</span></p>
+        <p class='l'><span class='t'>充电模式:</span><span class='color_warning'>${cdms}</span></p>
+        <p class='l'><span class='t'>当前电流:</span><span class='color_warning'>${dqdl}</span></p>
+        <p class='l'><span class='t'>当前功率:</span><span class='color_warning'>${dqgl}</span></p>
+        <p class='l'><span class='t'>绝缘阻抗:</span><span class='color_warning'>${jyzk}</span></p>
+        <p class='l'><span class='t'>充电桩位置:</span><span class='color_warning'>${formattedAddress}</span></p>
+        <p class='l'><span class='t'>当前报警状态:</span><span class='color_warning'>无</span></p>
+        <button onclick="clickfn_chargingpile('${DeviceId}')">查看详情</button>`
+    };
 }
 
 
@@ -264,11 +264,12 @@ export const getpopinfowindowstyle = (deviceitem)=>{
 
 
 export const getlistpopinfowindowstyle = (deviceitemlist)=>{
-  let info = '';
-  lodashmap(deviceitemlist,(deviceitem)=>{
-    info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})">车辆编号:${deviceitem.DeviceId}</p>`;
-  });
-  return {
+    let info = '<div class="getmapstylepage">';
+    lodashmap(deviceitemlist,(deviceitem)=>{
+        info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})"><i class="t">车辆ID:${deviceitem.DeviceId}</i><i>总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,</i></p>`;
+    });
+    info += '</div>'
+    return {
         infoBody: `${info}`
     };
 }

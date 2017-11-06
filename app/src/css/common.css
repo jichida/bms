@@ -772,3 +772,56 @@ div.mydevicebtn{
 .selcartPage .filler img{
     width: 20px;
 }
+
+.amap-overlays .amap-ui-smp-ifwn-info-content{
+    position: relative;
+    padding: 0;
+    padding-bottom: 10px;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage{
+    height: 300px;
+    overflow-y: scroll;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p {
+    display: flex;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid #CCC;
+    margin: 0 10px 0 10px;
+    padding:10px 0;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p i{
+    display: inline-block;
+    font-style: normal;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p i.t{
+    background: #5fbaa7;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 40px;
+    flex-shrink: 0;
+    font-size: 12px;
+    text-align: center;
+    color: #FFF;
+    padding:0 10px;
+    margin-right: 10px;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p span:first-child{
+    width: 25%;
+    text-align: right;
+    flex-shrink: 0;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p span:last-child{
+    padding-left: 15px;
+    flex-grow: 1;
+    margin-right: 60px;
+}

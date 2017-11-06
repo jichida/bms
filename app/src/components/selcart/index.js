@@ -156,7 +156,7 @@ class Page extends React.Component {
                 >
                 <div className="navhead">
                     <a className="back" onClick={()=>{this.props.history.goBack()}}></a>
-                    <span className="title" style={{paddingRight : "30px"}}>选择汽车</span>
+                    <span className="title" style={{paddingRight : "30px"}}>选择车辆</span>
                     <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}><img src={Fillerimg} /></div>
                 </div>
                 { this.state.fillerisOpen && 
