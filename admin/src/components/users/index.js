@@ -28,9 +28,6 @@ const UserCreate = (props) => (
       <ReferenceInput label="用户组" source="groupid" reference="usergroup" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
-      <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
-        <SelectInput optionText="name" />
-      </ReferenceInput>
     </SimpleForm>
   </Create>
 );
@@ -43,9 +40,6 @@ const UserEdit = (props) => {
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
         <ReferenceInput label="用户组" source="groupid" reference="usergroup" allowEmpty>
-          <SelectInput optionText="name" />
-        </ReferenceInput>
-        <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
       </SimpleForm>
@@ -66,9 +60,6 @@ const UserList = (props) => (
         <DateField label="注册时间" source="created_at" showTime />
         <DateField label="上次登陆时间" source="updated_at" showTime />
         <ReferenceField label="用户组" source="groupid" reference="usergroup" allowEmpty>
-          <TextField source="name" />
-        </ReferenceField>
-        <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>
           <TextField source="name" />
         </ReferenceField>
         <ResestPassword />

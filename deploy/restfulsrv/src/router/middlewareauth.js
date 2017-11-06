@@ -5,7 +5,7 @@ const config = require('../config.js');
 let middlewareauth = (req,res,next)=>{
   console.log("in middlewareauth");
   console.log("req.path:" + req.path);
-
+  console.log("req.headers:" + JSON.stringify(req.headers));
     const token = req.headers['authorization'];
     if (!token) {
       res.sendStatus(401);

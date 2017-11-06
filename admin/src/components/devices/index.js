@@ -45,9 +45,6 @@ const DeviceCreate = (props) => (
       <ReferenceInput label="设备分组" source="groupid" reference="devicegroup" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
-      <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
-        <SelectInput optionText="name" />
-      </ReferenceInput>
     </SimpleForm>
   </Create>
 );
@@ -65,9 +62,6 @@ const DeviceEdit = (props) => {
           <DateField label="创建时间" source="created_at" showTime />
           <DateField label="插入数据库时间" source="updated_at" showTime />
           <ReferenceInput label="设备分组" source="groupid" reference="devicegroup" allowEmpty>
-            <SelectInput optionText="name" />
-          </ReferenceInput>
-          <ReferenceInput label="所在组织" source="organizationid" reference="organization" allowEmpty>
             <SelectInput optionText="name" />
           </ReferenceInput>
         </FormTab>
@@ -179,9 +173,6 @@ const DeviceList = (props) => (
       <DateField label="创建时间" source="created_at" showTime />
       <DateField label="更新时间" source="updated_at" showTime />
       <ReferenceField label="设备分组" source="groupid" reference="devicegroup" allowEmpty>
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField label="所在组织" source="organizationid" reference="organization" allowEmpty>
         <TextField source="name" />
       </ReferenceField>
       <EditButton/>

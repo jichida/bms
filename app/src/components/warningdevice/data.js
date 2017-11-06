@@ -29,10 +29,13 @@ import moment from 'moment';
 class Page extends React.Component {
     constructor(props) {
         super(props);
+        let deviceid =  this.props.match.params.deviceid;
+        if(deviceid === '0'){
+          deviceid = '';
+        }
         this.state = {
             warninglevel:-1,
             showdata : false,
-            seltype : 0,
             time: new Date(),
             isOpen: false,
             seltype : 0,
@@ -40,6 +43,7 @@ class Page extends React.Component {
             endDate:moment(),
             mindata : new Date(1970, 0, 1),
             showset : false,
+            deviceid,
         };
     }
     componentWillMount () {
@@ -134,12 +138,7 @@ class Page extends React.Component {
         }
     }
     render() {
-        // const {mapseldeviceid,devices} = this.props;
-        // let DeviceId;
-        // let deviceitem = devices[mapseldeviceid];
-        // if(!!deviceitem){
-        //   DeviceId = deviceitem.DeviceId;
-        // }
+
         const formstyle={width:"100%",flexGrow:"1"};
         const textFieldStyle={width:"100%",flexGrow:"1"};
         const height =  window.innerHeight - 65 - 209;
@@ -161,14 +160,14 @@ class Page extends React.Component {
                     <div className="set warningmessageset">
                         <div className="title">告警车辆搜索</div>
                         <div className="formlist ">
-                            <div className="seltimecontent selcarts" onClick={()=>{this.props.history.push("/selcart")}}>
+                            <div className="seltimecontent selcarts" onClick={()=>{this.props.history.replace(`/selcart/warningdevice/${this.props.match.params.deviceid}`)}}>
                                 <img src={Car} width={30} />
-                                <span className="txt1">车辆信息:WRER-23-43</span>
+                                <span className="txt1">车辆信息:{`${this.state.deviceid}`}</span>
                                 <span className="txt2">选择车辆</span>
                             </div>
                             <div className="li" style={{borderBottom: "1px solid #EEE"}}>
                                 <img src={Searchimg2} width={26} />
-                                <SelectField 
+                                <SelectField
                                     value={this.state.warninglevel}
                                     onChange={this.onChangeWarninglevel.bind(this)}
                                     fullWidth={true} style={{flexGrow: "1",marginLeft: "10px"}}
@@ -188,7 +187,7 @@ class Page extends React.Component {
                                 <img src={Searchimg3} width={26} />
                                 <span>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
-                            
+
                             <RaisedButton
                                 onClick={(e)=>{this.onClickSearch(e);}}
                                 label="搜索"
@@ -220,7 +219,8 @@ class Page extends React.Component {
         );
     }
 }
-// const mapStateToProps = ({device:{mapseldeviceid,devices}}) => {
-//   return {mapseldeviceid,devices};
+// const mapStateToProps= ({device}) => {
+//     const {g_devicesdb} = device;
+//     return {g_devicesdb};
 // }
 export default connect()(Page);

@@ -7,6 +7,7 @@ const moment = require('moment');
 mongoose.Promise = global.Promise;
 //系统设置
 let SystemConfigSchema = new Schema({
+  organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   mappopfields:[],//地图上显示的字读列表
 
 });
@@ -160,6 +161,7 @@ let PermissionSchema = new Schema({
   permissionvalue:Schema.Types.Number,
   name:String,
   memo:String,
+  organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
 });
 PermissionSchema.plugin(mongoosePaginate);
 let PermissionModel =mongoose.model('permission',  PermissionSchema);
@@ -275,6 +277,7 @@ let HistoryDeviceModel =mongoose.model('historydevice',  HistoryDeviceSchema);
 //登录日志
 let UserLogSchema = new Schema({
     username:String,
+    organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
     created_at:{ type: Date, default:new Date()},
     creator:{ type: Schema.Types.ObjectId, ref: 'user' },
     type:{type:String,default:'login'}
@@ -287,6 +290,7 @@ UserAdminSchema = new Schema({
   username:String,
   passwordhash: String,
   passwordsalt: String,
+  organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   created_at: { type: Date, default:new Date()},
   updated_at: Date,
 });

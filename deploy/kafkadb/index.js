@@ -1,8 +1,7 @@
-const srvhttp = require('./src/srvhttp.js');
-const srvwebsocket = require('./src/srvws.js');
-const srvsystem = require('./src/srvsystem.js');
-
+const srvkafka = require('./src/kafkaconsumergroup.js');
+const srvdb = require('./src/srvdbinsert.js');
 const config = require('./src/config');
+
 let mongoose     = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodburl,{
@@ -14,12 +13,9 @@ mongoose.connect(config.mongodburl,{
     reconnectTries: Number.MAX_VALUE
   });
 
-console.log(`rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
-console.log(`issmsdebug:${config.issmsdebug}`);
+const onError =(error)=> {
+  console.error(error);
+  console.error(error.stack);
+}
 
-srvsystem.job();
-srvwebsocket.startsrv(srvhttp.startsrv());
-
-process.on('uncaughtException', (err)=> {
-    console.log(err);
-});
+srvkafka.startsrv(config,srvdb.onMessage,onError);

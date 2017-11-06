@@ -86,7 +86,7 @@ class AppRoot extends React.Component {
                     <Route path="/carlist" component={Carlist} />
                     <Route path="/collection" component={Collection} />
                     <Route path="/playback/:deviceid" component={Playback} />
-                    <Route path="/warningdevice" component={Warningdevice} />
+                    <Route path="/warningdevice/:deviceid" component={Warningdevice} />
                     <Route path="/warningdevicelist" component={Warningdevicelist} />
                     <Route path="/warning" component={Warning} />
                     <Route path="/system" component={Systems} />
@@ -100,7 +100,7 @@ class AppRoot extends React.Component {
                     <Route path="/settinguser" component={Settinguser} />
                     <Route path="/settingmessage" component={Settingmessage} />
                     <Route path="/alarminfo/:alarmid" component={Alaraminfo} />
-                    <Route path="/selcart" component={Selcart} />
+                    <Route path="/selcart/:prevuri/:deviceid" component={Selcart} />
                 </Switch>
                 <AppMap />
             </div>

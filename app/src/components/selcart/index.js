@@ -32,7 +32,7 @@ class Fillerform extends React.Component{
                 onSubmit={handleSubmit(onsubmit)}
                 >
                 <div className="li" >
-                    
+
                     <Field
                         name="bianhaotype"
                         id="bianhaotype"
@@ -144,7 +144,11 @@ class Page extends React.Component {
     fillersubmit =(values)=>{
         console.log(values);
     }
-
+    onBack = ()=>{
+      const deviceid =  this.props.match.params.deviceid;
+      const prevuri = this.props.match.params.prevuri;
+      this.props.history.replace(`/${prevuri}/${deviceid}`)
+    }
     render() {
         const {mapseldeviceid,devices} = this.props;
         let DeviceId;
@@ -155,11 +159,11 @@ class Page extends React.Component {
                 style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
                 >
                 <div className="navhead">
-                    <a className="back" onClick={()=>{this.props.history.goBack()}}></a>
+                    <a className="back" onClick={()=>{this.onBack();}}></a>
                     <span className="title" style={{paddingRight : "30px"}}>选择车辆</span>
                     <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}><img src={Fillerimg} /></div>
                 </div>
-                { this.state.fillerisOpen && 
+                { this.state.fillerisOpen &&
                     <div className="selcartfiller">
                         <Fillerform onsubmit={this.fillersubmit} />
                         <div className="bg" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}></div>
