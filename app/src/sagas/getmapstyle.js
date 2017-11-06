@@ -244,7 +244,8 @@ const getpop_chargingpile =(deviceitem)=>{
       <p class='l'><span class='t'>绝缘阻抗:</span><span class='color_warning'>${jyzk}</span></p>
       <p class='l'><span class='t'>充电桩位置:</span><span class='color_warning'>${formattedAddress}</span></p>
       <p class='l'><span class='t'>当前报警状态:</span><span class='color_warning'>无</span></p>
-      <button onclick="clickfn_chargingpile('${DeviceId}')">查看详情</button>`
+      <button onclick="clickfn_chargingpile('${DeviceId}')">查看详情</button>`,
+      offset: new window.AMap.Pixel(0, -31)
   };
 }
 
