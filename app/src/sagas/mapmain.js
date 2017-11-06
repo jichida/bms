@@ -60,7 +60,7 @@ import jsondataprovinces from '../util/provinces.json';
 import jsondatacities from '../util/cities.json';
 import config from '../config.js';
 const divmapid_mapmain = 'mapmain';
-
+const maxzoom = config.softmode === 'pc'?18:19;
 let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,markCluster;
@@ -129,8 +129,7 @@ const CreateMapUI_MarkCluster = (map)=>{
         const curzoom = markCluster.getMap().getZoom();
         // 在PC上，默认为[3,18]，取值范围[3-18]；
         // 在移动设备上，默认为[3,19],取值范围[3-19]
-        const maxzoom = config.softmode === 'pc'?18:19;
-        if(curzoom === maxzoom || curzoom>=18){
+        if(curzoom === maxzoom ){
           window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
               infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
               window.amapmain.setCenter(lnglat);
@@ -805,6 +804,9 @@ export function* createmapmainflow(){
           yield put(querydeviceinfo_request({query:{DeviceId}}));
           const {payload} = yield take(`${querydeviceinfo_result}`);
           g_devicesdb[DeviceId] = payload;
+          //地图缩放到最大
+          yield put(md_mapmain_setzoomlevel(maxzoom));
+
           //弹框
           yield call(showinfowindow,payload);
 
