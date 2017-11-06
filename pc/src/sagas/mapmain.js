@@ -60,7 +60,7 @@ import jsondataprovinces from '../util/provinces.json';
 import jsondatacities from '../util/cities.json';
 import config from '../config.js';
 const divmapid_mapmain = 'mapmain';
-
+const maxzoom = config.softmode === 'pc'?18:19;
 let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,markCluster;
@@ -129,8 +129,7 @@ const CreateMapUI_MarkCluster = (map)=>{
         const curzoom = markCluster.getMap().getZoom();
         // 在PC上，默认为[3,18]，取值范围[3-18]；
         // 在移动设备上，默认为[3,19],取值范围[3-19]
-        const maxzoom = config.softmode === 'pc'?18:19;
-        if(curzoom === maxzoom || curzoom>=18){
+        if(curzoom === maxzoom ){
           window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
               infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
               window.amapmain.setCenter(lnglat);
@@ -714,9 +713,10 @@ export function* createmapmainflow(){
           let task_mapclick = yield fork(function*(eventname){
             while(true){
               yield call(listenmapevent,eventname);
-              console.log(`click map!!!`);
+              console.log(`click map!!!${!!infoWindow}`);
               if(!!infoWindow){
                 infoWindow.close();
+                infoWindow = null;
               }
             }
           },'click');//'click'
@@ -790,7 +790,7 @@ export function* createmapmainflow(){
 
       }
       catch(e){
-
+        console.log(e);
       }
       yield put(ui_selcurdevice_result(actioncurdevice.payload));
     });
@@ -804,6 +804,9 @@ export function* createmapmainflow(){
           yield put(querydeviceinfo_request({query:{DeviceId}}));
           const {payload} = yield take(`${querydeviceinfo_result}`);
           g_devicesdb[DeviceId] = payload;
+          //地图缩放到最大
+          yield put(md_mapmain_setzoomlevel(maxzoom));
+
           //弹框
           yield call(showinfowindow,payload);
 
@@ -818,7 +821,7 @@ export function* createmapmainflow(){
 
         }
         catch(e){
-
+          console.log(e);
         }
     });
 
@@ -861,7 +864,7 @@ export function* createmapmainflow(){
 
         }
         catch(e){
-
+          console.log(e);
         }
 
     });
@@ -1018,7 +1021,7 @@ export function* createmapmainflow(){
         yield put(ui_settreefilter(payload));
       }
       catch(e){
-
+        console.log(e);
       }
     });
     //serverpush_devicegeo
@@ -1035,7 +1038,7 @@ export function* createmapmainflow(){
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
-
+        console.log(e);
       }
     });
 
@@ -1083,7 +1086,7 @@ export function* createmapmainflow(){
         yield put(devicelistgeochange_geotreemenu({}));
       }
       catch(e){
-
+        console.log(e);
       }
     });
     //devicelistgeochange
@@ -1099,7 +1102,7 @@ export function* createmapmainflow(){
         }
       }
       catch(e){
-
+        console.log(e);
       }
     });
 

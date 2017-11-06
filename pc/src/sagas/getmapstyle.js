@@ -264,11 +264,12 @@ export const getpopinfowindowstyle = (deviceitem)=>{
 
 
 export const getlistpopinfowindowstyle = (deviceitemlist)=>{
-  let info = '';
-  lodashmap(deviceitemlist,(deviceitem)=>{
-    info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})">车辆编号:${deviceitem.DeviceId}</p>`;
-  });
-  return {
+    let info = '<div class="getmapstylepage">';
+    lodashmap(deviceitemlist,(deviceitem)=>{
+        info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})"><i class="t">车辆ID:${deviceitem.DeviceId}</i><i>总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,</i></p>`;
+    });
+    info += '</div>'
+    return {
         infoBody: `${info}`
     };
 }
