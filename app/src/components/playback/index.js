@@ -24,7 +24,7 @@ import Footer from "../index/footer.js";
 import Seltime from "../tools/seltime.js";
 import Button  from 'antd/lib/button';
 import moment from 'moment';
-import map from 'lodash.map';
+import get from 'lodash.get';
 import SelectDevice from '../mydevice/selectdevice.js';
 
 const innerHeight = window.innerHeight;
@@ -126,10 +126,7 @@ class Page extends React.Component {
     }
     render() {
         const {g_devicesdb} = this.props;
-        let deviceidlist = [];
-        map(g_devicesdb,(item)=>{
-            deviceidlist.push(item.DeviceId);
-        });
+
         const formstyle={width:"100%",flexGrow:"1"};
         const textFieldStyle={width:"100%",flexGrow:"1"};
         const height = innerHeight-(66+58);
@@ -145,9 +142,9 @@ class Page extends React.Component {
                 {
                     this.state.showset &&
                     <div className="set seltimewamp" style={{height: "260px"}}>
-                        <div className="seltimecontent selcarts" onClick={()=>{this.props.history.push("/selcart")}}>
+                        <div className="seltimecontent selcarts" onClick={()=>{this.props.history.replace(`/selcart/playback/${this.props.match.params.deviceid}`)}}>
                                 <img src={Car} width={30} />
-                                <span className="txt1">车辆信息:WRER-23-43</span>
+                                <span className="txt1">车辆信息:{`${this.state.deviceid}`}</span>
                                 <span className="txt2">选择车辆</span>
                             </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
@@ -161,11 +158,11 @@ class Page extends React.Component {
                         <div className="seltimecontent setsudu" style={{marginBottom: "10px"}}>
                             <img src={Searchimg5} width={26} />
                             <span>播放速度:</span>
-                            <Slider 
-                                step={0.10} 
-                                value={0.5} 
-                                onChange={(e,v)=>{console.log(v)}} 
-                                style={{flexGrow: 1, margin: "10px"}} 
+                            <Slider
+                                step={0.10}
+                                value={0.5}
+                                onChange={(e,v)=>{console.log(v)}}
+                                style={{flexGrow: 1, margin: "10px"}}
                                 sliderStyle={{margin: 0,marginTop: "10px"}}
                                 onChange={(e,v)=>{console.log(v)}}
                                 />
@@ -202,8 +199,8 @@ class Page extends React.Component {
         );
     }
 }
-const mapStateToProps= ({device}) => {
-    const {g_devicesdb} = device;
-    return {g_devicesdb};
-}
-export default connect(mapStateToProps)(Page);
+// const mapStateToProps= ({device}) => {
+//     const {g_devicesdb} = device;
+//     return {g_devicesdb};
+// }
+export default connect()(Page);
