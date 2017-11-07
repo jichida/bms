@@ -266,7 +266,27 @@ export const getpopinfowindowstyle = (deviceitem)=>{
 export const getlistpopinfowindowstyle = (deviceitemlist)=>{
     let info = '<div class="getmapstylepage">';
     lodashmap(deviceitemlist,(deviceitem)=>{
-        info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})"><i class="t">车辆ID:${deviceitem.DeviceId}</i><i>总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,总电流: 234432,</i></p>`;
+        let DeviceId = get(deviceitem,'DeviceId','');
+        let txtLatitude = get(deviceitem,'LastHistoryTrack.Latitude','');
+        let txtLongitude = get(deviceitem,'LastHistoryTrack.Longitude','');
+        let adcode = get(deviceitem,'adcode','');
+        let province = get(deviceitem,'province','');
+        let city = get(deviceitem,'city','');
+        let district = get(deviceitem,'district','');
+        let formattedAddress = get(deviceitem,'formattedAddress','');
+
+        let zdl = get(deviceitem,'总电流(A)',0);
+        let zdy = get(deviceitem,'总电压(V)',374);
+        let soc = get(deviceitem,'SOC(%)',50);
+        let cs = get(deviceitem,'车速(km/h)',60);
+        let zlc = get(deviceitem,'里程(km)',100000);
+        let jxzk = get(deviceitem,'电池绝缘电阻(KΩ)',9000);
+        let zgwd = get(deviceitem,'最高温度值(℃)',30);
+        let bjxx = get(deviceitem,'报警信息','无');
+        info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})">
+        <i class="t">总电流${zdl}A</i>
+        <i>总电压${zdy}V,SOC${soc}%,车速${cs}km/h,总里程${zlc}km,绝缘阻抗${jxzk}KΩ,电池最高温度${zgwd}℃,车辆当前位置${province}${city}${district},当前报警信息${bjxx}</i>
+              </p>`;
     });
     info += '</div>'
     return {
