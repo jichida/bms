@@ -186,92 +186,53 @@ app.post('/adminauth/v1/:organizationid',(req,res)=>{
   console.log("actiondata=>" + JSON.stringify(actiondata));
   const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
   console.log(`--organizationid=>${organizationid}`);
-  if(actiondata.username === 'admin'){
-    const userModel = DBModels.UserAdminModel;
-    userModel.findOne({ username: actiondata.username,organizationid}, (err, user)=> {
-      console.log(`user=>${JSON.stringify(user)}`);
-      if (!!err) {
-        res.status(200).json({
-          loginsuccess:false,
-          err:'服务器内部错误'
-        });
-        return;
-      }
-      if (!user) {
-        res.status(200).json({
-          loginsuccess:false,
-          err:'用户找不到'
-        });
-        return;
-      }
-      pwd.checkPassword(user.passwordhash,user.passwordsalt,actiondata.password,(err,isloginsuccess)=>{
-        if(!err && isloginsuccess){
-          let token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) +config.loginuserexptime,
-                _id:user._id,
-                usertype:'admin',
-              },config.secretkey, {});
-          res.status(200).json({
-            loginsuccess:true,
-            token:token
-          });
-        }
-        else{
-          res.status(200).json({
-            loginsuccess:false,
-            err:'密码错误'
-          });
-        }
+
+  const userModel = DBModels.UserModel;
+  userModel.findOne({ username: actiondata.username,adminflag:1 }, (err, user)=> {
+    if (!!err) {
+      res.status(200).json({
+        loginsuccess:false,
+        err:'服务器内部错误'
       });
-    });
-  }
-  else{
-    const userModel = DBModels.UserModel;
-    userModel.findOne({ username: actiondata.username }, (err, user)=> {
-      if (!!err) {
-        res.status(200).json({
-          loginsuccess:false,
-          err:'服务器内部错误'
-        });
-        return;
-      }
-      if (!user) {
-        res.status(200).json({
-          loginsuccess:false,
-          err:'用户找不到'
-        });
-        return;
-      }
-      if(!user.organizationid){
-        res.status(200).json({
-          loginsuccess:false,
-          err:'用户尚未分配'
-        });
-        return;
-      }
-      pwd.checkPassword(user.passwordhash,user.passwordsalt,actiondata.password,(err,isloginsuccess)=>{
-        if(!err && isloginsuccess){
-          let token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) +config.loginuserexptime,
-                _id:user._id,
-                usertype:'user',
-                groupid:user.groupid,
-                organizationid:user.organizationid,
-              },config.secretkey, {});
-          res.status(200).json({
-            loginsuccess:true,
-            token:token
-          });
-        }
-        else{
-          res.status(200).json({
-            loginsuccess:false,
-            err:'用户密码错误'
-          });
-        }
+      return;
+    }
+    if (!user) {
+      res.status(200).json({
+        loginsuccess:false,
+        err:'用户找不到'
       });
+      return;
+    }
+    if(!user.organizationid){
+      res.status(200).json({
+        loginsuccess:false,
+        err:'用户尚未分配'
+      });
+      return;
+    }
+    pwd.checkPassword(user.passwordhash,user.passwordsalt,actiondata.password,(err,isloginsuccess)=>{
+      if(!err && isloginsuccess){
+        let token = jwt.sign({
+              exp: Math.floor(Date.now() / 1000) +config.loginuserexptime,
+              _id:user._id,
+              usertype:'user',
+              groupid:user.groupid,
+              organizationid:user.organizationid,
+            },config.secretkey, {});
+        res.status(200).json({
+          loginsuccess:true,
+          token:token
+        });
+      }
+      else{
+        res.status(200).json({
+          loginsuccess:false,
+          err:'用户密码错误'
+        });
+      }
     });
-  }
+  });
+
 
 
 });
