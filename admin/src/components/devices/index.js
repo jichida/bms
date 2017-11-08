@@ -42,9 +42,6 @@ const DeviceCreate = (props) => (
   <Create title="创建设备"  {...props}>
     <SimpleForm defaultValue={deviceDefaultValue}>
       <TextInput label="设备" source="DeviceId" validate={required} />
-      <ReferenceInput label="设备分组" source="groupid" reference="devicegroup" allowEmpty>
-        <SelectInput optionText="name" />
-      </ReferenceInput>
     </SimpleForm>
   </Create>
 );
@@ -61,9 +58,6 @@ const DeviceEdit = (props) => {
           <TextField label="设备ID" source="DeviceId"  validate={required} />
           <DateField label="创建时间" source="created_at" showTime />
           <DateField label="插入数据库时间" source="updated_at" showTime />
-          <ReferenceInput label="设备分组" source="groupid" reference="devicegroup" allowEmpty>
-            <SelectInput optionText="name" />
-          </ReferenceInput>
         </FormTab>
         <FormTab label="最近实时报警-基本信息">
           <TextField label="数据包序号" source="LastRealtimeAlarm.SN" />
@@ -172,9 +166,6 @@ const DeviceList = (props) => (
       <TextField label="设备ID" source="DeviceId" />
       <DateField label="创建时间" source="created_at" showTime />
       <DateField label="更新时间" source="updated_at" showTime />
-      <ReferenceField label="设备分组" source="groupid" reference="devicegroup" allowEmpty>
-        <TextField source="name" />
-      </ReferenceField>
       <EditButton/>
     </Datagrid>
   </List>

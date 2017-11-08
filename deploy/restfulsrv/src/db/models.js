@@ -129,7 +129,6 @@ let UserSchema = new Schema({
   passwordsalt: String,
   created_at: { type: Date, default:new Date()},
   updated_at: Date,
-  groupid:{ type: Schema.Types.ObjectId, ref: 'usergroup' },
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   roleid:{ type: Schema.Types.ObjectId, ref: 'role' },
   adminflag:{ type: Schema.Types.Number,default: 0 },

@@ -25,6 +25,10 @@ const UserCreate = (props) => (
     <SimpleForm defaultValue={userDefaultValue}>
       <TextInput label="用户名" source="username" validate={required} />
       <TextInput label="密码" source="password" validate={required} />
+      <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
+        <SelectInput optionText="name" />
+      </ReferenceInput>
+
     </SimpleForm>
   </Create>
 );
@@ -36,6 +40,9 @@ const UserEdit = (props) => {
       <SimpleForm>
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
+        <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
+          <SelectInput optionText="name" />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

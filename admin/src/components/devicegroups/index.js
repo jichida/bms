@@ -7,8 +7,8 @@ import { required,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
  Filter,Filters,ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
+ import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest';
 
-import { Field,FieldArray } from 'redux-form';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
@@ -24,9 +24,26 @@ const DeviceGroupCreate = (props) => (
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
+      <ReferenceArrayInput source="deviceids" reference="device" allowEmpty>
+          <SelectArrayInput optionText="DeviceId" />
+      </ReferenceArrayInput>
     </SimpleForm>
   </Create>
 );
+
+const DeviceGroupEdit = (props) => {
+  return (<Edit title="编辑设备组" {...props}>
+    <SimpleForm>
+      <TextInput label="分组名称" source="name" validate={required} />
+      <TextInput label="备注" source="memo" />
+      <TextInput label="联系人" source="contact" />
+      <ReferenceArrayInput source="deviceids" reference="device" allowEmpty>
+          <SelectArrayInput optionText="DeviceId" />
+      </ReferenceArrayInput>
+    </SimpleForm>
+  </Edit>
+  );
+};
 
 const DeviceGroupList = (props) => (
   <List title={<DeviceGroupTitle />} {...props}>
@@ -41,15 +58,6 @@ const DeviceGroupList = (props) => (
 );
 
 
-const DeviceGroupEdit = (props) => {
-  return (<Edit title="编辑设备组" {...props}>
-    <SimpleForm>
-      <TextInput label="分组名称" source="name" validate={required} />
-      <TextInput label="备注" source="memo" />
-      <TextInput label="联系人" source="contact" />
-    </SimpleForm>
-  </Edit>
-  );
-};
+
 
 export {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit};

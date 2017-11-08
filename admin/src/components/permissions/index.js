@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { required,NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
- Filter,Filters } from 'admin-on-rest/lib/mui';
+ Filter,Filters,SelectInput,ChipField } from 'admin-on-rest/lib/mui';
 
 
 import { Field,FieldArray } from 'redux-form';
@@ -18,8 +18,12 @@ const PermissionCreate = (props) => (
   <Create title="新建权限" {...props} >
     <SimpleForm>
       <TextInput label="名称" source="name" validate={required} />
+      <SelectInput  label="权限类型"  source="type" choices={[
+          { id: 'data', name: '数据权限' },
+          { id: 'operator', name: '操作权限' },
+          { id: 'function', name: '功能权限' },
+      ]} />
       <TextInput label="唯一字符串" source="keyname" validate={required} />
-      <NumberInput label="权限数值" source="permissionvalue" />
       <TextInput label="备注" source="memo" />
     </SimpleForm>
   </Create>
@@ -35,6 +39,7 @@ const PermissionList = (props) => (
       <NumberField label="ID" source="id" />
       <TextField label="名称" source="name" />
       <TextField label="唯一字符串" source="keyname" />
+      <ChipField  label="权限类型" source="type" />
       <TextField label="备注" source="memo" />
       <EditButton />
     </Datagrid>
@@ -48,7 +53,11 @@ const PermissionEdit = (props) => {
         <DisabledInput label="ID" source="id" />
         <TextInput label="名称" source="name" validate={required} />
         <TextInput label="唯一字符串" source="keyname" validate={required} />
-        <NumberInput label="权限数值" source="permissionvalue" />
+        <SelectInput  label="权限类型"  source="type" choices={[
+            { id: 'data', name: '数据权限' },
+            { id: 'operator', name: '操作权限' },
+            { id: 'function', name: '功能权限' },
+        ]} />
         <TextInput label="备注" source="memo" />
       </SimpleForm>
     </Edit>

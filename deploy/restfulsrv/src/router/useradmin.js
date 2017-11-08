@@ -108,7 +108,7 @@ const curd = (schmodel)=>{
           schmodel.collectionname === 'device' ||
           schmodel.collectionname === 'devicegroup' ||
           schmodel.collectionname === 'user' ||
-          schmodel.collectionname === 'usergroup' ||
+          schmodel.collectionname === 'role' ||
           schmodel.collectionname === 'permission' ){
           createddata.organizationid = organizationid;
       }
