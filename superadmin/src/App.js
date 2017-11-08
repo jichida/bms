@@ -25,7 +25,7 @@ import {UserCreate,UserList,UserEdit} from './components/users/index.js';
 import {UserlogList} from './components/userlogs/index.js';
 import {PermissionCreate,PermissionList,PermissionEdit} from './components/permissions/index.js';
 import {UserAdminCreate,UserAdminList,UserAdminEdit} from './components/useradmins/index.js';
-import {RoleCreate,RoleList,RoleEdit} from './components/roles/index.js';
+import {UserGroupCreate,UserGroupList,UserGroupEdit} from './components/usergroups/index.js';
 import {OrganizationCreate,OrganizationEdit,OrganizationList} from './components/organization/index.js';
 
 class App extends Component {
@@ -53,8 +53,9 @@ class App extends Component {
                 <Resource name="devicegroup" list={DeviceGroupList} edit={DeviceGroupEdit} create={DeviceGroupCreate} />,
                 <Resource name="device" list={DeviceList} edit={DeviceEdit} create={DeviceCreate} />,
                 <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} />,
-                <Resource name="role" list={RoleList} edit={RoleEdit} create={RoleCreate} />,
+                <Resource name="usergroup" list={UserGroupList} edit={UserGroupEdit} create={UserGroupCreate} />,
                 <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate} />,
+
 
                 <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />,
                 <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />,

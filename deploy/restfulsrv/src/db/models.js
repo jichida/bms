@@ -9,14 +9,12 @@ mongoose.Promise = global.Promise;
 let SystemConfigSchema = new Schema({
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   mappopfields:[],//地图上显示的字读列表
-
 });
 SystemConfigSchema.plugin(mongoosePaginate);
 let SystemConfigModel =mongoose.model('systemconfig',  SystemConfigSchema);
 
 //设备
 let DeviceSchema = new Schema({
-  groupid:{ type: Schema.Types.ObjectId, ref: 'devicegroup' },
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   DeviceId:String,
   LastRealtimeAlarm:{
@@ -118,6 +116,7 @@ let DeviceGroupSchema = new Schema({
   name:String,
   memo:String,
   contact:String,
+  deviceids:[{ type: Schema.Types.ObjectId, ref: 'device', default: [] }],
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
 });
 DeviceGroupSchema.plugin(mongoosePaginate);
@@ -132,10 +131,13 @@ let UserSchema = new Schema({
   updated_at: Date,
   groupid:{ type: Schema.Types.ObjectId, ref: 'usergroup' },
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
+  roleid:{ type: Schema.Types.ObjectId, ref: 'role' },
+  adminflag:{ type: Schema.Types.Number,default: 0 },
 });
 UserSchema.plugin(mongoosePaginate);
 let UserModel =mongoose.model('user',  UserSchema);
 
+//组织
 let OrganizationSchema = new Schema({
   name:String,
   memo:String,
@@ -148,7 +150,7 @@ let OrganizationModel =mongoose.model('organization',  OrganizationSchema);
 let UserGroupSchema = new Schema({
   name:String,
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
-  permissions:[{ type: Schema.Types.ObjectId, ref: 'permission', default: [] }],
+  roleid:{ type: Schema.Types.ObjectId, ref: 'role' },
   memo:String,
   contact:String,
 });
@@ -158,13 +160,23 @@ let UserGroupModel =mongoose.model('usergroup',  UserGroupSchema);
 //权限
 let PermissionSchema = new Schema({
   keyname:String,
-  permissionvalue:Schema.Types.Number,
+  type:String,//数据/功能
   name:String,
   memo:String,
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
 });
 PermissionSchema.plugin(mongoosePaginate);
 let PermissionModel =mongoose.model('permission',  PermissionSchema);
+
+//角色
+let RoleSchema = new Schema({
+  name:String,
+  memo:String,
+  permissions:[{ type: Schema.Types.ObjectId, ref: 'permission', default: [] }],
+  organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
+});
+RoleSchema.plugin(mongoosePaginate);
+let RoleModel =mongoose.model('role',  RoleSchema);
 
 //实时告警信息
 let RealtimeAlarmSchema= new Schema({
@@ -306,6 +318,7 @@ exports.OrganizationSchema = OrganizationSchema;
 exports.UserSchema = UserSchema;
 exports.UserGroupSchema = UserGroupSchema;
 exports.PermissionSchema = PermissionSchema;
+exports.RoleSchema = RoleSchema;
 exports.RealtimeAlarmSchema = RealtimeAlarmSchema;
 exports.CanRawDataSchema = CanRawDataSchema;
 exports.HistoryTrackSchema = HistoryTrackSchema;
@@ -320,6 +333,7 @@ exports.OrganizationModel = OrganizationModel;
 exports.UserModel = UserModel;
 exports.UserGroupModel = UserGroupModel;
 exports.PermissionModel = PermissionModel;
+exports.RoleModel = RoleModel;
 exports.RealtimeAlarmModel = RealtimeAlarmModel;
 exports.CanRawDataModel = CanRawDataModel;
 exports.HistoryTrackModel = HistoryTrackModel;

@@ -30,6 +30,11 @@ let dbs ={
     schema:db.UserGroupSchema,
     collectionname:'usergroup',
   },
+  'role':{
+    urlname:'/role',
+    schema:db.RoleSchema,
+    collectionname:'role',
+  },
   'permission':{
     urlname:'/permission',
     schema:db.PermissionSchema,

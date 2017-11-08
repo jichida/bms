@@ -28,12 +28,6 @@ export default {
         resetuserpassword_failed:'重置密码失败',
       }
     },
-    role:{
-      name: '角色管理 |||| 角色管理',
-      fields:{
-        organizationid:'所在组织',
-      }
-    },
     usergroup:{
       name: '用户分组管理 |||| 用户分组管理',
       fields:{
