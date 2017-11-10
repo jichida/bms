@@ -8,8 +8,6 @@ services:
     volumes:
         - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
         - ./dist:/usr/share/nginx/html
-    depends_on:
-      - bmsserver
   zookeeper:
       image: wurstmeister/zookeeper
       ports:
