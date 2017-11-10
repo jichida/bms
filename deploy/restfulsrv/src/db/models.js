@@ -134,9 +134,11 @@ let UserSchema = new Schema({
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   roleid:{ type: Schema.Types.ObjectId, ref: 'role' },
   adminflag:{ type: Schema.Types.Number,default: 0 },
+  devicecollections:[]
 });
 UserSchema.plugin(mongoosePaginate);
 let UserModel =mongoose.model('user',  UserSchema);
+
 
 //组织
 let OrganizationSchema = new Schema({

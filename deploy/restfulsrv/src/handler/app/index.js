@@ -1,13 +1,28 @@
 const systemconfig = require('../common/systemconfig');
-
-
+const userlogin = require('../common/userlogin');
+const device = require('../common/device.js');
+const realtimealarm = require('../common/realtimealarm.js');
+const moment = require('moment');
+const historytrack = require('../common/historytrack');
+const userrelate = require('../common/userrelate');
 //司机端
 const actiondatahandler = {
   'getsystemconfig':systemconfig.getsystemconfig,
+  'loginwithtoken':userlogin.loginwithtoken,
+  'logout':userlogin.logout,
+  'login':userlogin.loginuser,
+  //正式版本中下面的删除
 };
 
 const authhandler = {
-
+  'querydevice':device.querydevice,
+  'querydevicegroup':device.querydevicegroup,
+  'queryrealtimealarm':realtimealarm.queryrealtimealarm,
+  'querydeviceinfo':device.querydeviceinfo,
+  'searchbattery':device.searchbattery,
+  'queryhistorytrack':historytrack.queryhistorytrack,
+  'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
+  'collectdevice':userrelate.collectdevice
 };
 
 module.exports = (socket,actiondata,ctx)=>{
@@ -26,7 +41,7 @@ module.exports = (socket,actiondata,ctx)=>{
         });
       }
       else{
-        if(!authhandler[actiondata.cmd]){
+        if(!!authhandler[actiondata.cmd]){
           if(!ctx['userid']){
             console.log("需要登录--->" + actiondata.cmd);
             socket.emit('common_err',{errmsg:'请先重新登录'});

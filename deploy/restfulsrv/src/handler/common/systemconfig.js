@@ -8,12 +8,12 @@ exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
             let payload = {};
             if(ctx.usertype === 'pc'){
                 payload = {
-
+                  mappopfields:systemconfig.mappopfields
                 };
             }
             else if(ctx.usertype === 'app'){
                 payload = {
-
+                  mappopfields:systemconfig.mappopfields
                 };
             }
             callbackfn({

@@ -22,6 +22,7 @@ let getdatafromuser =(user)=>{
   return {
     username: user.username,
     userid:user._id,
+    devicecollections:user.collectdevice || []
   };
 };
 
