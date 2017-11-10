@@ -783,14 +783,11 @@ div.mydevicebtn{
     overflow-y: scroll;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p {
-    display: flex;
     flex-wrap: nowrap;
-    border-bottom: 1px solid #CCC;
-    margin: 0 10px 0 10px;
-    padding:10px 0;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-align-items: center;
+    border-bottom: 1px solid #EEE;
+    padding:10px;
+    display: block;
+    position: relative;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p i{
     display: inline-block;
@@ -802,18 +799,31 @@ div.mydevicebtn{
     -webkit-box-align: center;
     align-items: center;
     -webkit-align-items: center;
+    color: #999;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p i.t{
-    background: #5fbaa7;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 40px;
-    flex-shrink: 0;
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: bold;
     text-align: center;
-    color: #FFF;
-    padding:0 10px;
     margin-right: 10px;
+    color:#333;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p:after{
+    content: " ";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-width: 2px 2px 0 0;
+    border-color: #c8c8cd;
+    border-style: solid;
+    -webkit-transform: matrix(.71,.71,-.71,.71,0,0);
+    transform: matrix(.71,.71,-.71,.71,0,0);
+    position: relative;
+    top: -2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -4px;
+    right: 10px;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content > .getmapstylepage > p span:first-child{
     width: 25%;

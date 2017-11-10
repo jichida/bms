@@ -284,9 +284,8 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
         let zgwd = get(deviceitem,'最高温度值(℃)',30);
         let bjxx = get(deviceitem,'报警信息','无');
         info +=  `<p onclick="clickfn_device(${deviceitem.DeviceId})">
-        <i class="t">总电流${zdl}A</i>
-        <i>总电压${zdy}V,SOC${soc}%,车速${cs}km/h,总里程${zlc}km,绝缘阻抗${jxzk}KΩ,电池最高温度${zgwd}℃,车辆当前位置${province}${city}${district},当前报警信息${bjxx}</i>
-              </p>`;
+        <i class="t">车辆ID:${DeviceId}</i>
+        <i>总电流${zdl}A,总电压${zdy}V,SOC${soc}%,车速${cs}km/h</i></p>`;
     });
     info += '</div>'
     return {
