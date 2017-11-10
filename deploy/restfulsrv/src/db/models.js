@@ -127,6 +127,8 @@ let UserSchema = new Schema({
   username:String,
   passwordhash: String,
   passwordsalt: String,
+  truename:String,
+  memo:String,
   created_at: { type: Date, default:new Date()},
   updated_at: Date,
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
@@ -158,7 +160,6 @@ let UserGroupModel =mongoose.model('usergroup',  UserGroupSchema);
 
 //权限
 let PermissionSchema = new Schema({
-  keyname:String,
   type:String,//数据/功能
   name:String,
   memo:String,

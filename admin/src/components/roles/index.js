@@ -20,7 +20,6 @@ const RoleCreate = (props) => {
       <SimpleForm>
         <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
-        <TextInput label="联系人" source="contact" />
         <ReferenceArrayInput label="权限" reference="permission" source="permissions" allowEmpty>
               <SelectArrayInput optionText="name" />
         </ReferenceArrayInput>
@@ -33,9 +32,8 @@ const RoleEdit = (props) => {
   return (
     <Edit title="编辑角色" {...props} >
       <SimpleForm>
-        <TextInput label="分组名称" source="name" validate={required} />
+        <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
-        <TextInput label="联系人" source="contact" />
         <ReferenceArrayInput label="权限" reference="permission" source="permissions" allowEmpty>
               <SelectArrayInput optionText="name" />
         </ReferenceArrayInput>
@@ -51,8 +49,6 @@ const RoleList = (props) => (
   <List title={<RoleTitle />} {...props} >
     <Datagrid >
       <TextField label="角色名称" source="name" />
-      <TextField label="备注" source="memo" />
-      <TextField label="联系人" source="contact" />
       <ReferenceArrayField label="权限" reference="permission" source="permissions" >
               <SingleFieldList>
                   <ChipField source="name" />

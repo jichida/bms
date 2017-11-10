@@ -25,10 +25,11 @@ const UserCreate = (props) => (
     <SimpleForm defaultValue={userDefaultValue}>
       <TextInput label="用户名" source="username" validate={required} />
       <TextInput label="密码" source="password" validate={required} />
+      <TextInput label="真实姓名" source="truename"/>
+      <TextInput label="备注" source="demo" />
       <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
-
     </SimpleForm>
   </Create>
 );
@@ -40,6 +41,8 @@ const UserEdit = (props) => {
       <SimpleForm>
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
+        <TextInput label="真实姓名" source="truename"/>
+        <TextInput label="备注" source="demo" />
         <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
@@ -58,8 +61,12 @@ const UserList = (props) => (
   <List title="用户列表" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}} >
     <Datagrid>
         <TextField label="用户名" source="username" />
+        <TextField label="真实姓名" source="truename" />
         <DateField label="注册时间" source="created_at" showTime />
         <DateField label="上次登陆时间" source="updated_at" showTime />
+        <ReferenceField label="用户角色" source="roleid" reference="role" >
+          <TextField source="name" />
+        </ReferenceField>
         <ResestPassword />
         <EditButton />
     </Datagrid>
