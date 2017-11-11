@@ -59,7 +59,7 @@ import get from 'lodash.get';
 import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
-import {getpopinfowindowstyle,getgroupStyleMap,getlistpopinfowindowstyle} from './getmapstyle';
+import {getpopinfowindowstyle,getlistpopinfowindowstyle} from './getmapstyle';
 import jsondataareas from '../util/areas.json';
 import jsondataprovinces from '../util/provinces.json';
 import jsondatacities from '../util/cities.json';
@@ -197,97 +197,6 @@ const getMarkCluster_showMarks = (isshow)=>{
     resolve();
   });
 }
-//新建行政区域&海量点
-// const CreateMapUI_PointSimplifier =  (map)=>{
-//   return new Promise((resolve,reject) => {
-//       if(!window.AMapUI){
-//         alert('未加载到AMapUI！');
-//         reject();
-//         return;
-//       }
-//       window.AMapUI.load(['ui/misc/PointSimplifier',
-//     ],(PointSimplifier)=> {
-//            if (!PointSimplifier.supportCanvas) {
-//                alert('当前环境不支持 Canvas！');
-//                reject();
-//                return;
-//            }
-//            //分组样式
-//            let groupsz = getgroupStyleMap();
-//
-//            lodashmap(groupsz,(group)=>{
-//              const {name,image,...rest} = group;
-//              groupStyleMap[name] = {
-//                 pointStyle: {
-//                  content:PointSimplifier.Render.Canvas.getImageContent(
-//                      image, onIconLoad, onIconError),
-//                  ...rest
-//                }
-//              }
-//            });
-//
-//            const onIconLoad = ()=> {
-//                pointSimplifierIns.renderLater();
-//            }
-//
-//            const onIconError = (e)=> {
-//                alert('图片加载失败！');
-//            }
-//            //海量点控件
-//            pointSimplifierIns = new PointSimplifier({
-//                zIndex: 115,
-//                autoSetFitView: false,
-//                map: map, //所属的地图实例
-//                getPosition: (deviceitem)=> {
-//                    let itemnew = g_devicesdb[deviceitem.DeviceId];
-//                    if(!!itemnew){
-//                     //
-//                      return itemnew.locz;
-//                    }
-//                   //
-//                    return deviceitem.locz;
-//                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
-//                },
-//                getHoverTitle: (deviceitem, idx)=> {
-//                    let imagetype = deviceitem.imagetype || 0;
-//                    if(typeof imagetype === 'string'){
-//                      imagetype = parseInt(imagetype);
-//                    }
-//                    if(imagetype >= 4 ){
-//                      return `充电桩编号:${deviceitem.DeviceId}`;
-//                    }
-//                    return `车辆编号:${deviceitem.DeviceId}`;
-//                },
-//                //使用GroupStyleRender
-//                renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
-//                renderOptions: {
-//                    //点的样式,海量点样式
-//                    pointStyle: {
-//                        width: 5,
-//                        height: 5,
-//                        fillStyle:'#A2D0FA'
-//                    },
-//                    getGroupId: (deviceitem, idx)=> {
-//                        let idex = parseInt(deviceitem.locz[0]) + parseInt(deviceitem.locz[1]);
-//                        let groupid = idex%3;
-//
-//                        if(!!deviceitem.imagetype){
-//                          groupid = deviceitem.imagetype;
-//                        }
-//                        //这里显示图标
-//                        return groupid;
-//                    },
-//                    groupStyleOptions: (gid)=> {
-//                        return groupStyleMap[gid];
-//                    }
-//
-//                }
-//            });
-//            resolve(pointSimplifierIns);
-//        });
-//
-//    });
-// }
 
 //新建行政区域
 const CreateMapUI_DistrictCluster =  (map)=>{

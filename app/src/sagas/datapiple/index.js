@@ -1,6 +1,7 @@
 import {call} from 'redux-saga/effects';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../../sagas/mapmain_getgeodata';
+import {bridge_deviceinfo} from './bridgedb';
 
 export function* getdevicelist(list_org){
   let list_new = [];
@@ -36,7 +37,7 @@ export function* getdevicelist(list_org){
       }
     }
 
-    list_new.push(deviceinfo);
+    list_new.push(bridge_deviceinfo(deviceinfo));
   }
 
   //======这里转换字段======
