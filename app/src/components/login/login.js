@@ -65,7 +65,7 @@ export class PageForm extends Component {
                         >
                         登录
                     </span>
-                    
+
 
                 </div>
             </Form>
@@ -118,22 +118,22 @@ export class Page extends Component {
     }
 
     onClickLogin = (values)=>{
-        // let payload = {
-        //     username:values.phonenumber,
-        //     password:values.password,
-        // };
+        let payload = {
+            username:values.phonenumber,
+            password:values.password,
+        };
 
-        // this.props.dispatch(login_request(payload));
-        this.props.history.push("./");
+        this.props.dispatch(login_request(payload));
+        // this.props.history.push("./");
     }
     render(){
         return (
-            <div className="loginPage AppPage" 
+            <div className="loginPage AppPage"
                 style={{
                     backgroundSize: "100% 100%",
                     height : `${window.innerHeight}px`
                 }}>
-                
+
                 <div className="content">
                     <PageForm onClickLogin={this.onClickLogin}/>
                 </div>

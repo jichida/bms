@@ -22,7 +22,7 @@ import {
 let issocketconnected = false;
 
 function connect() {
-    const socket = io(config.serverurl);
+    const socket = io(config.serverurl,{path:config.wspath});
     return new Promise(resolve => {
         socket.on('connect', () => {
             issocketconnected = true;
@@ -63,7 +63,7 @@ function* write(socket,fun,cmd) {
         let { payload } = yield take(fun);
 
         if(issocketconnected){
-          socket.emit('pc',{cmd:cmd,data:payload});
+          socket.emit(`${config.softmode}`,{cmd:cmd,data:payload});
         }
         else{
           yield put(common_err({type:cmd,errmsg:`服务器连接断开!无法发送命令${cmd}`}))
@@ -102,7 +102,7 @@ function* handleIO(socket) {
 }
 
 
-export function* apiflow() {
+export function* wsflow() {
     const socket = yield call(connect);
     yield fork(read, socket);
     yield fork(handleIOWithAuth, socket);

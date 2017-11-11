@@ -129,6 +129,29 @@ exports.querydeviceinfo =  (actiondata,ctx,callback)=>{
   });
 }
 
+exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
+  let deviceModel = DBModels.DeviceModel;
+  let query = actiondata.query || {};
+  let queryexec = deviceModel.find(query);
+  queryexec.exec((err,list)=>{
+    if(!err){
+      if(list.length > 0){
+        console.log(`-->${JSON.stringify(list[0])}`);
+      }
+      callback({
+        cmd:'querydeviceinfo_list_result',
+        payload:{list}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'querydeviceinfo_list'}
+      });
+    }
+  });
+}
+
 //获取的是设备完整信息
 exports.searchbattery = (actiondata,ctx,callback)=>{
   let deviceModel = DBModels.DeviceModel;

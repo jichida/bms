@@ -31,6 +31,7 @@ export const ui_index_selstatus= createAction('ui_index_selstatus');
 
 export const ui_index_addcollection= createAction('ui_index_addcollection');
 export const ui_index_unaddcollection= createAction('ui_index_unaddcollection');
+
 //轨迹回放
 export const mapplayback_start = createAction('mapplayback_start');
 export const mapplayback_end = createAction('mapplayback_end');
@@ -48,3 +49,6 @@ export const mapmain_clusterMarkerClick = createAction('mapmain_clusterMarkerCli
 
 export const mapmain_areamountdevices_request= createAction('mapmain_areamountdevices_request');
 export const mapmain_areamountdevices_result= createAction('mapmain_areamountdevices_result');
+
+export const mapmain_showpopinfo = createAction('mapmain_showpopinfo');
+export const mapmain_showpopinfo_list = createAction('mapmain_showpopinfo_list');

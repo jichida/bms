@@ -30,6 +30,7 @@ import Settinguser from './index/settinguser';
 import Settingmessage from './index/settingmessage';
 import MapPage from './admincontent';
 import Alaraminfo from './warningdevice/alarminfo';
+import {requireAuthentication} from './requireauthentication';
 import "../css/common.css";
 
 class AppMap extends React.Component {
@@ -80,27 +81,25 @@ class AppRoot extends React.Component {
 
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)} />
-                    <Route path="/index" component={Index} />
+                    <Route path="/index" component={requireAuthentication(Index)} />
                     <Route path="/login" component={Login} />
-                    <Route path="/overview" component={Overview} />
-                    <Route path="/carlist" component={Carlist} />
-                    <Route path="/collection" component={Collection} />
-                    <Route path="/playback/:deviceid" component={Playback} />
-                    <Route path="/warningdevice/:deviceid" component={Warningdevice} />
-                    <Route path="/warningdevicelist" component={Warningdevicelist} />
-                    <Route path="/warning" component={Warning} />
+                    <Route path="/overview" component={requireAuthentication(Overview)} />
+                    <Route path="/carlist" component={requireAuthentication(Carlist)} />
+                    <Route path="/collection" component={requireAuthentication(Collection)} />
+                    <Route path="/playback/:deviceid" component={requireAuthentication(Playback)} />
+                    <Route path="/warningdevice/:deviceid" component={requireAuthentication(Warningdevice)} />
+                    <Route path="/warningdevicelist" component={requireAuthentication(Warningdevicelist)} />
+                    <Route path="/warning" component={requireAuthentication(Warning)} />
                     <Route path="/system" component={Systems} />
-                    <Route path="/mydevice" component={Mydevice} />
-                    <Route path="/project/:groupid" component={Myproject} />
-                    <Route path="/deviceinfo/:deviceid" component={Deviceinfo} />
-                    <Route path="/workorder" component={Workorder} />
-                    <Route path="/workorderinfo/:workid" component={Workorderinfo} />
-                    <Route path="/usercenter" component={Usercenter} />
-                    <Route path="/setting" component={Setting} />
-                    <Route path="/settinguser" component={Settinguser} />
-                    <Route path="/settingmessage" component={Settingmessage} />
-                    <Route path="/alarminfo/:alarmid" component={Alaraminfo} />
-                    <Route path="/selcart/:prevuri/:deviceid" component={Selcart} />
+                    <Route path="/mydevice" component={requireAuthentication(Mydevice)} />
+                    <Route path="/project/:groupid" component={requireAuthentication(Myproject)} />
+                    <Route path="/deviceinfo/:deviceid" component={requireAuthentication(Deviceinfo)} />
+                    <Route path="/usercenter" component={requireAuthentication(Usercenter)} />
+                    <Route path="/setting" component={requireAuthentication(Setting)} />
+                    <Route path="/settinguser" component={requireAuthentication(Settinguser)} />
+                    <Route path="/settingmessage" component={requireAuthentication(Settingmessage)} />
+                    <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
+                    <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
                 </Switch>
                 <AppMap />
             </div>

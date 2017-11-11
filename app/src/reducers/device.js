@@ -13,8 +13,8 @@ import{
   ui_changetreestyle,
   ui_settreefilter,
   ui_searchbattery_result,
-  ui_index_addcollection,
-  ui_index_unaddcollection
+  login_result,
+  collectdevice_result,
 } from '../actions';
 import filter from 'lodash.filter';
 import map from 'lodash.map';
@@ -22,13 +22,13 @@ import get from 'lodash.get';
 import groupBy from 'lodash.groupby';
 import {getadcodeinfo} from '../util/addressutil';
 import {get_initgeotree} from '../util/treedata';
-import {jsondata_bms_carcollections} from '../test/bmsdata';
+
 
 const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
   device:{
     treefilter:undefined,
-    carcollections:jsondata_bms_carcollections,
+    carcollections:[],
     mapseldeviceid:undefined,//当前选中的车辆
     // mapdeviceidlist:[],
     gmap_acode_treename,//key:acode/value:name
@@ -60,16 +60,15 @@ const initial = {
 };
 
 const device = createReducer({
-  [ui_index_addcollection]:(state,payload)=>{
-    let carcollections = [...state.carcollections];
-    carcollections.push(payload);
+  [login_result]:(state,payload)=>{
+    let carcollections = state.carcollections;
+    if(payload.loginsuccess){
+      carcollections = [...payload.devicecollections];
+    }
     return {...state,carcollections};
   },
-  [ui_index_unaddcollection]:(state,payload)=>{
-    let carcollections = [...state.carcollections];
-    carcollections = filter(carcollections,(item)=>{
-      return item !== payload;
-    })
+  [collectdevice_result]:(state,payload)=>{
+    let carcollections = [...payload.devicecollections];
     return {...state,carcollections};
   },
   [ui_searchbattery_result]:(state,payload)=>{
