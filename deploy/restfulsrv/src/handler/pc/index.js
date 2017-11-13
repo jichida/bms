@@ -23,9 +23,8 @@ const authhandler = {
   'searchbattery':device.searchbattery,
   'queryhistorytrack':historytrack.queryhistorytrack,
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
-  // 'searchbattery_request':
-  // 'searchbatteryalarm_request':
-  // 'searchbatteryalarmsingle_request':
+  'searchbatteryalarm':realtimealarm.searchbatteryalarm,
+  'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
 };
 
 module.exports = (socket,actiondata,ctx)=>{
@@ -53,7 +52,7 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              // console.log("服务端回复--->" + JSON.stringify(result));
+              console.log("服务端回复--->" + JSON.stringify(result));
               console.log(`${actiondata.cmd}回复时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
               socket.emit(result.cmd,result.payload);
             });

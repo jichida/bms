@@ -47,9 +47,10 @@ export function* wsrecvsagaflow() {
       yield put(goBack());
   });
 
-  yield takeLatest(`${querydevice_result}`, function*(action) {
-    yield put(start_serverpush_devicegeo_sz({}));
-  });
+  //链接远程数据,暂时注释
+  // yield takeLatest(`${querydevice_result}`, function*(action) {
+  //   yield put(start_serverpush_devicegeo_sz({}));
+  // });
 
 
   yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {

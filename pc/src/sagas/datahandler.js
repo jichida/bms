@@ -24,8 +24,10 @@ import {
     querydevice_result,
 
     querydeviceinfo_request,
-    md_querydeviceinfo_result,
     querydeviceinfo_result,
+
+    querydeviceinfo_list_request,
+    querydeviceinfo_list_result,
 
     queryrealtimealarm_request,
     queryrealtimealarm_result,
@@ -37,7 +39,13 @@ import {
     searchbattery_result,
 
     serverpush_devicegeo_sz_request,
-    serverpush_devicegeo_sz_result
+    serverpush_devicegeo_sz_result,
+
+    collectdevice_request,
+    collectdevice_result,
+
+    searchbatteryalarm_request,
+    searchbatteryalarm_result
   } from '../actions';
 
 
@@ -55,10 +63,13 @@ let recvmessagetoresultpair = {
   'logout_result':logout_result,
   'querydevicegroup_result':querydevicegroup_result,
   'querydevice_result':querydevice_result,
-  'querydeviceinfo_result':md_querydeviceinfo_result,
+  'querydeviceinfo_result':querydeviceinfo_result,
+  'querydeviceinfo_list_result':querydeviceinfo_list_result,
   'queryrealtimealarm_result':queryrealtimealarm_result,
   'queryhistorytrack_result':queryhistorytrack_result,
   'searchbattery_result':searchbattery_result,
+  'searchbatteryalarm_result':searchbatteryalarm_result,
+  'collectdevice_result':collectdevice_result,
 };
 
 //非验证发送接口
@@ -75,13 +86,17 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'collectdevice':`${collectdevice_request}`,
   'querydevicegroup':`${querydevicegroup_request}`,
   'searchbattery':`${searchbattery_request}`,
   'querydevice':`${querydevice_request}`,
   'querydeviceinfo':`${querydeviceinfo_request}`,
+  'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
   'queryrealtimealarm':`${queryrealtimealarm_request}`,
   'queryhistorytrack':`${queryhistorytrack_request}`,
-  'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`
+  'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
+  'searchbatteryalarm':`${searchbatteryalarm_request}`,
+
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

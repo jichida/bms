@@ -8,6 +8,9 @@ export const querydevice_result = createAction('querydevice_result');
 //获取一个device所有信息
 export const querydeviceinfo_request = createAction('querydeviceinfo_request');
 export const querydeviceinfo_result = createAction('querydeviceinfo_result');
+
+export const querydeviceinfo_list_request = createAction('querydeviceinfo_list_request');
+export const querydeviceinfo_list_result = createAction('querydeviceinfo_list_result');
 //查询告警信息
 export const queryrealtimealarm_request = createAction('queryrealtimealarm_request');
 export const queryrealtimealarm_result = createAction('queryrealtimealarm_result');
@@ -49,3 +52,7 @@ export const stop_serverpush_devicegeo_sz= createAction('stop_serverpush_deviceg
 //设置报警信息已读
 export const setalarmreaded_request= createAction('setalarmreaded_request');
 export const setalarmreaded_result= createAction('setalarmreaded_result');
+
+//收藏设备/取消收藏
+export const collectdevice_request = createAction('collectdevice_request');
+export const collectdevice_result = createAction('collectdevice_result');

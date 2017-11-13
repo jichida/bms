@@ -2,5 +2,5 @@
 if (process.env.NODE_ENV === 'production') {
     module.exports = require('./api.offline.js');//暂时调试
 } else {
-    module.exports = require('./api.offline.js');
+    module.exports = require('./api.online.js');
 }

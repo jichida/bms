@@ -4,8 +4,8 @@ let mongoose  = require('mongoose');
 const winston = require('../../log/log.js');
 
 exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
-  let realtimealarmModel = DBModels.RealtimeAlarmModel;
-  let query = actiondata.query || {};
+  const realtimealarmModel = DBModels.RealtimeAlarmModel;
+  const query = actiondata.query || {};
   realtimealarmModel.find(query,(err,list)=>{
     if(!err){
       callback({
@@ -17,6 +17,50 @@ exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
       callback({
         cmd:'common_err',
         payload:{errmsg:err.message,type:'queryrealtimealarm'}
+      });
+    }
+  });
+}
+
+exports.searchbatteryalarm =  (actiondata,ctx,callback)=>{
+  const realtimealarmModel = DBModels.RealtimeAlarmModel;
+  let query = actiondata.query || {};
+  if(!!query.queryalarm){
+    query = query.queryalarm;
+  }
+  realtimealarmModel.find(query,(err,list)=>{
+    if(!err){
+      callback({
+        cmd:'searchbatteryalarm_result',
+        payload:{list}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'searchbatteryalarm'}
+      });
+    }
+  });
+}
+
+exports.searchbatteryalarmsingle =  (actiondata,ctx,callback)=>{
+  const realtimealarmModel = DBModels.RealtimeAlarmModel;
+  let query = actiondata.query || {};
+  if(!!query.queryalarm){
+    query = query.queryalarm;
+  }
+  realtimealarmModel.find(query,(err,list)=>{
+    if(!err){
+      callback({
+        cmd:'searchbatteryalarmsingle_result',
+        payload:{list}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'searchbatteryalarmsingle'}
       });
     }
   });

@@ -13,6 +13,8 @@ import {
   ui_selcurdevice_result,
   querydeviceinfo_request,
   querydeviceinfo_result,
+  querydeviceinfo_list_request,
+  querydeviceinfo_list_result,
   ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
@@ -40,7 +42,10 @@ import {
   ui_selworkorder,
   ui_sel_tabindex,
 
-  ui_changemodeview
+  ui_changemodeview,
+
+  mapmain_showpopinfo,
+  mapmain_showpopinfo_list
 } from '../actions';
 import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -54,11 +59,14 @@ import get from 'lodash.get';
 import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
-import {getpopinfowindowstyle,getgroupStyleMap,getlistpopinfowindowstyle} from './getmapstyle';
+import {getpopinfowindowstyle,getlistpopinfowindowstyle} from './getmapstyle';
 import jsondataareas from '../util/areas.json';
 import jsondataprovinces from '../util/provinces.json';
 import jsondatacities from '../util/cities.json';
 import config from '../config.js';
+import store from '../env/store';
+import {getdevicelist} from './datapiple';
+
 const divmapid_mapmain = 'mapmain';
 const maxzoom = config.softmode === 'pc'?18:19;
 let infoWindow;
@@ -120,7 +128,10 @@ const CreateMapUI_MarkCluster = (map)=>{
         markCluster = null;
       }
 
-      markCluster = new window.AMap.MarkerClusterer(map, [],{gridSize:80});
+      markCluster = new window.AMap.MarkerClusterer(map, [],{
+        maxZoom:maxzoom,
+        gridSize:80,
+      });
       markCluster.on('click',({cluster,lnglat,target,markers})=>{
         let itemdevicelist = [];
         lodashmap(markers,(mark)=>{
@@ -131,9 +142,7 @@ const CreateMapUI_MarkCluster = (map)=>{
         // 在移动设备上，默认为[3,19],取值范围[3-19]
         if(curzoom === maxzoom ){
           window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-              infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
-              window.amapmain.setCenter(lnglat);
-              infoWindow.open(window.amapmain, lnglat);
+              store.dispatch(mapmain_showpopinfo_list({itemdevicelist,lnglat}));
           });
           //弹框
         }
@@ -167,11 +176,12 @@ const getMarkCluster_showMarks = (isshow)=>{
             marker.on('click',()=>{
               console.log(`click marker ${key}`);
               window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                  infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
-                  if(!!item.locz){
-                    window.amapmain.setCenter(pos);
-                  }
-                  infoWindow.open(window.amapmain,pos);
+                  store.dispatch(mapmain_showpopinfo({DeviceId:item.DeviceId}));
+                  // infoWindow = new SimpleInfoWindow(getpopinfowindowstyle(item));
+                  // if(!!item.locz){
+                  //   window.amapmain.setCenter(pos);
+                  // }
+                  // infoWindow.open(window.amapmain,pos);
 
               });
             });
@@ -187,97 +197,6 @@ const getMarkCluster_showMarks = (isshow)=>{
     resolve();
   });
 }
-//新建行政区域&海量点
-// const CreateMapUI_PointSimplifier =  (map)=>{
-//   return new Promise((resolve,reject) => {
-//       if(!window.AMapUI){
-//         alert('未加载到AMapUI！');
-//         reject();
-//         return;
-//       }
-//       window.AMapUI.load(['ui/misc/PointSimplifier',
-//     ],(PointSimplifier)=> {
-//            if (!PointSimplifier.supportCanvas) {
-//                alert('当前环境不支持 Canvas！');
-//                reject();
-//                return;
-//            }
-//            //分组样式
-//            let groupsz = getgroupStyleMap();
-//
-//            lodashmap(groupsz,(group)=>{
-//              const {name,image,...rest} = group;
-//              groupStyleMap[name] = {
-//                 pointStyle: {
-//                  content:PointSimplifier.Render.Canvas.getImageContent(
-//                      image, onIconLoad, onIconError),
-//                  ...rest
-//                }
-//              }
-//            });
-//
-//            const onIconLoad = ()=> {
-//                pointSimplifierIns.renderLater();
-//            }
-//
-//            const onIconError = (e)=> {
-//                alert('图片加载失败！');
-//            }
-//            //海量点控件
-//            pointSimplifierIns = new PointSimplifier({
-//                zIndex: 115,
-//                autoSetFitView: false,
-//                map: map, //所属的地图实例
-//                getPosition: (deviceitem)=> {
-//                    let itemnew = g_devicesdb[deviceitem.DeviceId];
-//                    if(!!itemnew){
-//                     //
-//                      return itemnew.locz;
-//                    }
-//                   //
-//                    return deviceitem.locz;
-//                    //return [LastHistoryTrack.Latitude,LastHistoryTrack.Longitude];
-//                },
-//                getHoverTitle: (deviceitem, idx)=> {
-//                    let imagetype = deviceitem.imagetype || 0;
-//                    if(typeof imagetype === 'string'){
-//                      imagetype = parseInt(imagetype);
-//                    }
-//                    if(imagetype >= 4 ){
-//                      return `充电桩编号:${deviceitem.DeviceId}`;
-//                    }
-//                    return `车辆编号:${deviceitem.DeviceId}`;
-//                },
-//                //使用GroupStyleRender
-//                renderConstructor: PointSimplifier.Render.Canvas.GroupStyleRender,
-//                renderOptions: {
-//                    //点的样式,海量点样式
-//                    pointStyle: {
-//                        width: 5,
-//                        height: 5,
-//                        fillStyle:'#A2D0FA'
-//                    },
-//                    getGroupId: (deviceitem, idx)=> {
-//                        let idex = parseInt(deviceitem.locz[0]) + parseInt(deviceitem.locz[1]);
-//                        let groupid = idex%3;
-//
-//                        if(!!deviceitem.imagetype){
-//                          groupid = deviceitem.imagetype;
-//                        }
-//                        //这里显示图标
-//                        return groupid;
-//                    },
-//                    groupStyleOptions: (gid)=> {
-//                        return groupStyleMap[gid];
-//                    }
-//
-//                }
-//            });
-//            resolve(pointSimplifierIns);
-//        });
-//
-//    });
-// }
 
 //新建行政区域
 const CreateMapUI_DistrictCluster =  (map)=>{
@@ -530,6 +449,23 @@ const showinfowindow = (deviceitem)=>{
       });
   });
 }
+
+const showinfowindow_cluster = ({itemdevicelist,lnglat})=>{
+  return new Promise((resolve,reject) =>{
+      if(!window.AMapUI){
+        alert('未加载到AMapUI！');
+        reject();
+        return;
+      }
+      window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+          infoWindow = new SimpleInfoWindow(getlistpopinfowindowstyle(itemdevicelist));
+          window.amapmain.setCenter(lnglat);
+          infoWindow.open(window.amapmain, lnglat);
+          resolve(infoWindow);
+      });
+  });
+}
+
 
 //获取根结点的数据
 const getclustertree_root =()=>{
@@ -799,16 +735,32 @@ export function* createmapmainflow(){
     yield takeLatest(`${ui_selcurdevice_result}`,function*(actioncurdevice){
       try{
           const {payload:{DeviceId,deviceitem}} = actioncurdevice;
+          yield put(mapmain_showpopinfo({DeviceId}));
+        }
+        catch(e){
+          console.log(e);
+        }
+    });
 
-          //获取该车辆信息
-          yield put(querydeviceinfo_request({query:{DeviceId}}));
-          const {payload} = yield take(`${querydeviceinfo_result}`);
-          g_devicesdb[DeviceId] = payload;
+    //单个设备弹框
+    yield takeLatest(`${mapmain_showpopinfo}`, function*(actiondevice) {
+      //显示弹框
+      try{
+        const {payload:{DeviceId}} = actiondevice;
+        //获取该车辆信息
+        yield put(querydeviceinfo_request({query:{DeviceId}}));
+        const {payload} = yield take(`${querydeviceinfo_result}`);
+        let list = [];
+        list.push(payload);
+        const listitem = yield call(getdevicelist,list);
+        if(listitem.length === 1){
+          //1
+          g_devicesdb[listitem[0].DeviceId] = listitem[0];
           //地图缩放到最大
           yield put(md_mapmain_setzoomlevel(maxzoom));
 
           //弹框
-          yield call(showinfowindow,payload);
+          yield call(showinfowindow,listitem[0]);
 
           yield fork(function*(eventname){
            //while(true){//关闭时触发的事件
@@ -817,12 +769,50 @@ export function* createmapmainflow(){
              infoWindow = null;
            //}
           },'close');
-          // yield put(ui_showmenu("showdevice"));
+        }
 
-        }
-        catch(e){
-          console.log(e);
-        }
+      }
+      catch(e){
+        console.log(e);
+      }
+    });
+    //多个设备弹出框
+    yield takeLatest(`${mapmain_showpopinfo_list}`, function*(actiondevice) {
+      //显示弹框
+      try{
+        const {payload:{itemdevicelist,lnglat}} = actiondevice;
+        //获取该车辆信息
+        let deviceids = [];
+        lodashmap(itemdevicelist,(item)=>{
+          deviceids.push(item.DeviceId);
+        });
+        yield put(querydeviceinfo_list_request({query:{DeviceId:{'$in':deviceids}}}));
+        const {payload:{list}} = yield take(`${querydeviceinfo_list_result}`);
+        //
+        const listitem = yield call(getdevicelist,list);
+
+        lodashmap(listitem,(item)=>{
+          g_devicesdb[item.DeviceId] = item;
+        });
+
+        //地图缩放到最大
+        //yield put(md_mapmain_setzoomlevel(maxzoom));
+
+        //弹框
+        yield call(showinfowindow_cluster,{itemdevicelist:listitem,lnglat});
+
+        yield fork(function*(eventname){
+         //while(true){//关闭时触发的事件
+           yield call(listenwindowinfoevent,eventname);//触发一次
+          //  yield put(ui_showmenu("showdevice_no"));
+           infoWindow = null;
+         //}
+        },'close');
+
+      }
+      catch(e){
+        console.log(e);
+      }
     });
 
     //查询所有车辆返回
