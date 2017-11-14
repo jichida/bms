@@ -10,10 +10,12 @@ services:
         - ./dist:/usr/share/nginx/html
   zookeeper:
       image: wurstmeister/zookeeper
+      restart: always
       ports:
         - "2181:2181"
   kafka:
     image: wurstmeister/kafka
+    restart: always
     ports:
       - "9092:9092"
     depends_on:
@@ -28,6 +30,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
   bmsserver:
     image: node:6.11.2
+    restart: always
     command: node ./index.js
     working_dir: /app
     volumes:
@@ -43,6 +46,7 @@ services:
        - "5012"
   kafkadb:
     image: node:6.11.2
+    restart: always
     command: node ./index.js
     working_dir: /app
     volumes:
@@ -54,6 +58,7 @@ services:
       - mongodb
   mongodb:
     image:  mongo:3.4
+    restart: always
     expose:
        - "27018"
     volumes:
