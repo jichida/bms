@@ -1,8 +1,17 @@
 const map = require('lodash.map');
 const device = require('../handler/common/device.js');
 const historytrack = require('../handler/common/historytrack');
+const kafakautil = require('../kafka/producer');
 
 let startmodule = (app)=>{
+  app.post('/m2mgw/setdata',(req,res)=>{
+    console.log(`setdata m2m data:${JSON.stringify(req.body)}`);
+    const data = req.body;
+    kafakautil.sendtokafka(data,(err,result)=>{
+      
+    });
+
+  });
   //获取所有地理位置
   app.get('/api/getdevicegeo',(req,res)=>{
     device.querydevice({

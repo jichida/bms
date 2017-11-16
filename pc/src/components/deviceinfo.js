@@ -541,7 +541,7 @@ class Page extends React.Component {
                         <Button type="primary" icon="play-circle-o" onClick={
                           ()=>
                           {
-                            this.props.dispatch(ui_clickplayback(mapseldeviceid));
+                            this.props.dispatch(ui_clickplayback(this.props.match.params.deviceid));
                           }
 
                         }>车辆轨迹监控</Button>

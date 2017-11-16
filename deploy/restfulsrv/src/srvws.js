@@ -19,7 +19,7 @@ let startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'pc';
       }
-      console.log('\npc get message:' + JSON.stringify(payload));
+      // console.log('\npc get message:' + JSON.stringify(payload));
       winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserpc(socket,payload,ctx);
     });
@@ -28,7 +28,7 @@ let startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'app';
       }
-      console.log('\napp get message:' + JSON.stringify(payload));
+      // console.log('\napp get message:' + JSON.stringify(payload));
       winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserapp(socket,payload,ctx);
     });
