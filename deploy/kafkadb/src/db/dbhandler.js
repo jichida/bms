@@ -1,13 +1,14 @@
-const DBModels = require('../../../restfulsrv/src/db/models.js');
 const mongoose  = require('mongoose');
+// const DBModels = require('../../../restfulsrv/src/db/models.js');
+const DBModels = require('./models.js');
 const _ = require('lodash');
 exports.insertdatatodb= (data,callback)=>{
 
-  const userModel = DBModels.UserAdminModel;// mongoose.model('UserAdmin', DBModels.UserAdminSchema);//DBModels.UserAdminModel;
-  userModel.findOne({username: 'admin'}, (err, adminuser)=> {
-    console.log(`find UserAdmin...`);
-    console.log(`useradmin:${JSON.stringify(err)}`);
-  });
+  // const userModel = DBModels.UserAdminModel;// mongoose.model('UserAdmin', DBModels.UserAdminSchema);//DBModels.UserAdminModel;
+  // userModel.findOne({username: 'admin'}, (err, adminuser)=> {
+  //   console.log(`find UserAdmin...`);
+  //   console.log(`useradmin:${JSON.stringify(err)}`);
+  // });
 
   const LastRealtimeAlarm = _.clone(data.BMSData);
   const LastHistoryTrack = _.clone(data.Position);
