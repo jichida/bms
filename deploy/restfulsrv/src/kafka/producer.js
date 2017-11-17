@@ -26,7 +26,8 @@ exports.sendtokafka = (payload,callbackfn)=>{
   producer.send(payloads, (err, data)=> {
     if(!!callbackfn){
       if(!!err){//错误，直接插入数据库
-        dbhandler(payload,callbackfn);
+        console.log(`kafka err:${JSON.stringify(err)}`);
+        dbhandler.insertdatatodb(payload,callbackfn);
       }
       else{
         callbackfn(err,data);
