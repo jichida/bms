@@ -3,17 +3,18 @@ const mongoose  = require('mongoose');
 const DBModels = require('./models.js');
 const _ = require('lodash');
 exports.insertdatatodb= (data,callback)=>{
-
+const organizationid = '599af5dc5f943819f10509e6';
   // const userModel = DBModels.UserAdminModel;// mongoose.model('UserAdmin', DBModels.UserAdminSchema);//DBModels.UserAdminModel;
   // userModel.findOne({username: 'admin'}, (err, adminuser)=> {
   //   console.log(`find UserAdmin...`);
   //   console.log(`useradmin:${JSON.stringify(err)}`);
   // });
 
-  const LastRealtimeAlarm = _.clone(data.BMSData);
-  const LastHistoryTrack = _.clone(data.Position);
+  let LastRealtimeAlarm = _.clone(data.BMSData);
+  let LastHistoryTrack = _.clone(data.Position);
 
   const devicedata = _.omit(data,['BMSData','Position']);
+  devicedata.organizationid = organizationid;
 
   if(!!LastRealtimeAlarm){
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
@@ -39,6 +40,7 @@ exports.insertdatatodb= (data,callback)=>{
 
   console.log(`start save LastRealtimeAlarm...${!!LastRealtimeAlarm}`);
   if(!!LastRealtimeAlarm){
+    LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
     const entity = new dbRealtimeAlarmModel(LastRealtimeAlarm);
     entity.save((err,result)=>{
@@ -48,6 +50,7 @@ exports.insertdatatodb= (data,callback)=>{
 
   console.log(`start save LastHistoryTrack...${!!LastHistoryTrack}`);
   if(!!LastHistoryTrack){
+    LastHistoryTrack.DeviceId = devicedata.DeviceId;
     const dbHistoryTrackModel =  DBModels.HistoryTrackModel;
     const entity = new dbHistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
@@ -55,4 +58,5 @@ exports.insertdatatodb= (data,callback)=>{
     });
   }
 
+  callback(null,true);
 };
