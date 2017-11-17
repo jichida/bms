@@ -6,6 +6,7 @@ const client = new Client(process.env.KAFKA_HOST ||'127.0.0.1:2181');
 // const argv = require('optimist').argv;
 const producer = new Producer(client, { requireAcks: 1 });
 // const moment = require('moment');
+const dbhandler = require('../db/dbhandler.js');
 
 
 // let rate = 2000;
@@ -24,7 +25,13 @@ exports.sendtokafka = (payload,callbackfn)=>{
   ];
   producer.send(payloads, (err, data)=> {
     if(!!callbackfn){
-      callbackfn(err,data);
+      if(!!err){//错误，直接插入数据库
+        dbhandler(payload,callbackfn);
+      }
+      else{
+        callbackfn(err,data);
+      }
+
     }
   });
 }
