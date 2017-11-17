@@ -52,7 +52,9 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              console.log("服务端回复--->" + JSON.stringify(result));
+              if(JSON.stringify(result).length < 1000){
+                console.log("服务端回复--->" + JSON.stringify(result));
+              }
               console.log(`${actiondata.cmd}回复时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
               socket.emit(result.cmd,result.payload);
             });

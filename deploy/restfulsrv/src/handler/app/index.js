@@ -49,7 +49,9 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              console.log("服务端回复--->" + JSON.stringify(result));
+              if(JSON.stringify(result).length < 1000){
+                console.log("服务端回复--->" + JSON.stringify(result));
+              }
               socket.emit(result.cmd,result.payload);
             });
           }

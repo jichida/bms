@@ -56,6 +56,7 @@ const initial = {
     groupidlist:[],
     groups:{},
     g_devicesdb:{},
+    g_devicesdb_id:{},
   }
 };
 
@@ -246,16 +247,7 @@ const device = createReducer({
       groupidlist.push(grouprecord._id);
       groups[grouprecord._id] = grouprecord;
     });
-    return {...state,groups,groupidlist};
-  },
-  [querydevice_result]:(state,payload)=>{
-    const {list} = payload;
-    // let mapdeviceidlist = [];
-    let g_devicesdb = {};
-    map(list,(devicerecord)=>{
-      // mapdeviceidlist.push(devicerecord.DeviceId);
-      g_devicesdb[devicerecord.DeviceId] = devicerecord;
-    });
+
     let datatreegroup = {
       id:'0',
       loading: false,
@@ -266,25 +258,24 @@ const device = createReducer({
       children:[]
     };
 
-    const devicesgroups = groupBy(list,(dev)=>{
-      return dev.groupid;
-    });
-    map(devicesgroups,(csz,ckey)=>{
-        let name = get(state.groups[ckey],'name','');
+    const g_devicesdb_id = state.g_devicesdb_id;
+
+    map(list,(grouprecord)=>{
+        let name = get(grouprecord,'name','');
         let node = {
-          id:ckey,
+          id:grouprecord._id,
           type:'group_leaf',
-          name:`${name}(${csz.length})`,
+          name:`${name}(${grouprecord.deviceids.length})`,
           children:[],
           toggled:false,
         };
 
-        map(csz,(v,k)=>{
+        map(grouprecord.deviceids,(id)=>{
           node.children.push({
             type:'device',
-            id:`${v.DeviceId}`,
-            name:`${v.DeviceId}`,
-            device:g_devicesdb[v.DeviceId],
+            id:`${grouprecord._id}_${g_devicesdb_id[id]}`,
+            name:`${g_devicesdb_id[id].DeviceId}`,
+            device:g_devicesdb_id[id],
             toggled:false,
             active:false,
           });
@@ -292,7 +283,19 @@ const device = createReducer({
 
         datatreegroup.children.push(node);
     });
-    return {...state,g_devicesdb,datatreegroup};
+    return {...state,groups,groupidlist,datatreegroup};
+  },
+  [querydevice_result]:(state,payload)=>{
+    const {list} = payload;
+    // let mapdeviceidlist = [];
+    let g_devicesdb = {};
+    let g_devicesdb_id = {};
+    map(list,(devicerecord)=>{
+      g_devicesdb_id[devicerecord._id] = devicerecord;
+      g_devicesdb[devicerecord.DeviceId] = devicerecord;
+    });
+
+    return {...state,g_devicesdb,g_devicesdb_id};
   },
   [mapmain_selgroup]:(state,payload)=>{
     let {groupid,forcetoggled} = payload;
