@@ -8,7 +8,7 @@ let startmodule = (app)=>{
     console.log(`setdata m2m data:${JSON.stringify(req.body)}`);
     const data = req.body;
     kafakautil.sendtokafka(data,(err,result)=>{
-      
+      res.status(200).json({result:result,err:err});
     });
 
   });
@@ -28,7 +28,7 @@ let startmodule = (app)=>{
         res.status(200).json({list:result.payload.list});
       }
       else{
-        callback({list:[]});
+        res.status(200).json({list:[]});
       }
     });
   });
@@ -90,7 +90,7 @@ let startmodule = (app)=>{
         res.status(200).json({list:result.payload.list});
       }
       else{
-        callback({list:[]});
+        res.status(200).json({list:[]});
       }
     });
   });
