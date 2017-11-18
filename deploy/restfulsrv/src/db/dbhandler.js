@@ -3,7 +3,7 @@ const mongoose  = require('mongoose');
 const DBModels = require('./models.js');
 const _ = require('lodash');
 exports.insertdatatodb= (data,callback)=>{
-const organizationid = '599af5dc5f943819f10509e6';
+const organizationid = mongoose.Types.ObjectId('599af5dc5f943819f10509e6');
   // const userModel = DBModels.UserAdminModel;// mongoose.model('UserAdmin', DBModels.UserAdminSchema);//DBModels.UserAdminModel;
   // userModel.findOne({username: 'admin'}, (err, adminuser)=> {
   //   console.log(`find UserAdmin...`);
