@@ -100,7 +100,7 @@ export class Page extends Component {
                 this.props.history.replace(redirectRoute);
             }
             else{
-                this.props.history.goBack();
+                this.props.history.replace('/');
             }
             return;
         }

@@ -23,7 +23,7 @@ import {
 
   ui_sel_tabindex
 }from '../actions';
-import { push } from 'react-router-redux';
+import { push,replace } from 'react-router-redux';
 
 export function* uiflow(){//仅执行一次
   //app点击底部菜单
@@ -113,7 +113,7 @@ export function* uiflow(){//仅执行一次
     console.log(`点击注销`);
     yield put(logout_request());
     yield take(`${logout_result}`);
-    yield put(push('/login'));
+    yield put(replace('/login'));
   });
 
 }

@@ -28,7 +28,8 @@ const { RangePicker } = DatePicker;
 class Page extends React.Component {
 
     render() {
-
+        const {username,role,avatar} = this.props;
+        let avatarurl = avatar || Avatar;
         return (
             <div className="usercenterPage AppPage"
                 style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
@@ -39,10 +40,10 @@ class Page extends React.Component {
                 </div>
                 <div className="content">
                     <div className="head">
-                        <img src={Avatar} />
+                        <img src={avatarurl} />
                         <div className="username">
                             <span>用户名</span>
-                            <span>ID:88888888888</span>
+                            <span>{username}</span>
                         </div>
                         <span className="changepwd">修改密码</span>
                     </div>
@@ -75,4 +76,9 @@ class Page extends React.Component {
         );
     }
 }
-export default connect()(Page);
+
+const mapStateToProps = ({userlogin}) => {
+   const {username,role,avatar} = userlogin;
+   return {username,role,avatar};
+}
+export default connect(mapStateToProps)(Page);

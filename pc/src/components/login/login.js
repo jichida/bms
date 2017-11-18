@@ -23,7 +23,7 @@ import {
                 className="loginForm formStyle1"
                 onSubmit={handleSubmit(onClickLogin)}
                 >
-                
+
                 <div className="li" >
                     <Field
                         name="phonenumber"
@@ -47,10 +47,10 @@ import {
                 </div>
 
                 <div className="submitBtn">
-                    <RaisedButton 
+                    <RaisedButton
                         label="登录"
-                        fullWidth={true} 
-                        primary={true} 
+                        fullWidth={true}
+                        primary={true}
                         disabled={pristine || submitting}
                         onClick={handleSubmit(onClickLogin)}
                     />
@@ -86,7 +86,7 @@ export class Page extends Component {
                 this.props.history.replace(redirectRoute);
             }
             else{
-                this.props.history.goBack();
+                this.props.history.replace('/');
             }
             return;
         }
