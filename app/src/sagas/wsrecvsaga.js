@@ -81,19 +81,29 @@ export function* wsrecvsagaflow() {
   });
 
   yield takeLatest(`${md_login_result}`, function*(action) {
-      let {payload:result} = action;
-      yield put(login_result(result));
-      if(result.loginsuccess){
-        localStorage.setItem('bms_pc_token',result.token);
-        yield put(querydevicegroup_request({}));
-        //
-        yield put(getworkusers_request({}));
-        //登录成功,获取今天所有报警信息列表
-        yield put(getcurallalarm_request({}));
-        //获取所有工单
-        yield put(getallworkorder_request({}));
+      try{
+        let {payload:result} = action;
+        console.log(`md_login_result==>${JSON.stringify(result)}`);
+        if(!!result){
+          yield put(login_result(result));
+          if(result.loginsuccess){
+            localStorage.setItem('bms_pc_token',result.token);
+            yield put(querydevicegroup_request({}));
+            //
+            yield put(getworkusers_request({}));
+            //登录成功,获取今天所有报警信息列表
+            yield put(getcurallalarm_request({}));
+            //获取所有工单
+            yield put(getallworkorder_request({}));
+
+          }
+        }
 
       }
+      catch(e){
+        console.log(e);
+      }
+
   });
 
 

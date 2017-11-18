@@ -25,16 +25,16 @@ export class PageForm extends Component {
                 >
                 <div className="logo">
                     <span className="logoimg"></span>
-                    <span className="logospan">LOGO</span>
+                    <span className="logospan">CATL</span>
                 </div>
                 <div className="li" >
                     <span className="icon">
-                        <img src="newimg/25.png" alt='' />
+                        <img src="./newimg/25.png" alt='' />
                     </span>
                     <Field
                         name="phonenumber"
                         id="phonenumber"
-                        placeholder="User name"
+                        placeholder="用户名"
                         type="text"
                         component={ InputValidation }
                         validate={[ required, phone ]}
@@ -47,7 +47,7 @@ export class PageForm extends Component {
                     <Field
                         name="password"
                         id="password"
-                        placeholder="Password"
+                        placeholder="密码"
                         type="password"
                         component={ InputValidation }
                         validate={[ required ]}
