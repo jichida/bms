@@ -84,6 +84,12 @@ class Page extends React.Component {
           $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
           $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
         }
+        query.Latitude = {
+          $ne:0
+        };
+        query.Longitude = {
+          $ne:0
+        };
         this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
       }
       else{

@@ -21,11 +21,14 @@ exports.queryhistorytrack = (actiondata,ctx,callback)=>{
       // let validdata = [];
       //注：这段代码无法理解，过滤Latitude为0的数据，为什么是undefined??
       // _.map(list,(dataitem)=>{
+      //   _.map(dataitem,(v,k)=>{
+      //     console.log(`dataitem.v:${v},k:${k}`)
+      //   });
       //   console.log(`validdata dataitem:${JSON.stringify(dataitem)}`)
+      //   console.log(`validdata dataitem:${typeof dataitem}`)
       //   console.log(`dataitem.Latitude:${dataitem.Latitude}`)
-      //   if(dataitem.Latitude > 0 && dataitem.Longitude > 0 ){
-      //     validdata.push(dataitem);
-      //   }
+      //   console.log(`dataitem.DeviceId:${dataitem.DeviceId}`)
+      //
       // });
 
       if(list.length > 0){
