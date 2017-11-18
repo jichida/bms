@@ -22,7 +22,7 @@ import {List, ListItem} from 'material-ui/List';
 import Settingicon from '../../img/20.png';
 import Users from '../../img/21.png';
 import Rightlnk from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
-
+import {ui_menuclick_logout}  from '../../actions';
 const { RangePicker } = DatePicker;
 
 class Page extends React.Component {
@@ -63,7 +63,11 @@ class Page extends React.Component {
                             onClick={()=>{}}
                             />
                     </List>
-                    <div className="loginout">退出登录</div>
+                    <div className="loginout" onClick={
+                      ()=>{
+                        this.props.dispatch(ui_menuclick_logout());
+                      }
+                    }>退出登录</div>
                 </div>
 
 
