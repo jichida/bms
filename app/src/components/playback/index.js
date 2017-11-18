@@ -54,22 +54,17 @@ class Page extends React.Component {
     }
     onClickStart(){
         const {deviceid,startDate,endDate} = this.state;
-        const {g_devicesdb} = this.props;
-        if(!!g_devicesdb[deviceid]){
-          const query = {
-            DeviceId:deviceid
-          };
-          query.GPSTime = {
-            $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
-            $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
-          }
-          this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
-          this.showset();
+
+        const query = {
+          DeviceId:deviceid
+        };
+        query.GPSTime = {
+          $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
+          $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
         }
-        else{
-          console.log(`无效的设备id`);
-          alert(`请选择可用车辆`);
-        }
+        this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
+        this.showset();
+
     }
     onClickEnd(){
         this.showset();

@@ -49,7 +49,7 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              if(JSON.stringify(result).length < 1000){
+              if(JSON.stringify(result).length < 10000){
                 console.log("服务端回复--->" + JSON.stringify(result));
               }
               socket.emit(result.cmd,result.payload);

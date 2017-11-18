@@ -18,17 +18,20 @@ exports.queryhistorytrack = (actiondata,ctx,callback)=>{
   let queryexec = historytrackModel.find(query).sort({ GPSTime: 1 }).select(fields);
   queryexec.exec((err,list)=>{
     if(!err){
-      let validdata = [];
-      _.map(list,(data)=>{
-        if(data.Latitude !== 0 && data.Longitude !== 0){
-          validdata.push(data);
-        }
-      });
+      // let validdata = [];
+      //注：这段代码无法理解，过滤Latitude为0的数据，为什么是undefined??
+      // _.map(list,(dataitem)=>{
+      //   console.log(`validdata dataitem:${JSON.stringify(dataitem)}`)
+      //   console.log(`dataitem.Latitude:${dataitem.Latitude}`)
+      //   if(dataitem.Latitude > 0 && dataitem.Longitude > 0 ){
+      //     validdata.push(dataitem);
+      //   }
+      // });
 
-      if(validdata.length > 0){
+      if(list.length > 0){
         callback({
           cmd:'queryhistorytrack_result',
-          payload:{list:validdata}
+          payload:{list}
         });
       }
       else{
