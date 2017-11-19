@@ -20,6 +20,7 @@ const authhandler = {
   'querydevicegroup':device.querydevicegroup,
   'queryrealtimealarm':realtimealarm.queryrealtimealarm,
   'querydeviceinfo':device.querydeviceinfo,
+  'querydeviceinfo_list':device.querydeviceinfo_list,
   'searchbattery':device.searchbattery,
   'queryhistorytrack':historytrack.queryhistorytrack,
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
