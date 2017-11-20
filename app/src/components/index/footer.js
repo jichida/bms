@@ -42,7 +42,7 @@ class Page extends React.Component {
                     </li>
                     <li onClick={this.pushurl.bind(this, "/warningdevice/0",1)}>
                         <img src={tabindex===1?Footer3:Footer4} />
-                        <span className={tabindex===1?"sel":""}>预警信息</span>
+                        <span className={tabindex===1?"sel":""}>报警信息</span>
                         {count_unreadalarms > 0 && <span className="num">{count_unreadalarms}</span>}
                     </li>
                     <li onClick={this.pushurl.bind(this, "/mydevice",2)}>

@@ -42,7 +42,7 @@ class Page extends React.Component {
                     minHeight : `${window.innerHeight}px`,
                 }}
                 >
-                <NavBar back={true} title="预警信息" />
+                <NavBar back={true} title="报警信息" />
                 <div className="set">
                     <div>车辆编号：{DeviceId || '23423-24cdc-wef'}</div>
                     <div className="formlist">
