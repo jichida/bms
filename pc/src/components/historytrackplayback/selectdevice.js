@@ -1,50 +1,54 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { TreeSelect } from 'antd';
 import map from 'lodash.map';
+import filter from 'lodash.filter';
 
-const TreeNode = TreeSelect.TreeNode;
+import { Select } from 'antd';
+const Option = Select.Option;
 
 class SelectDevice extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-        value:props.initdeviceid
+        options: []
       }
   }
 
-  onChange = (value) => {
-    console.log(arguments);
-    this.setState({ value });
-    this.props.onSelDeviceid(value);
+  componentWillMount(){
   }
-  render() {
-    const treeData = [];
-    let {g_devicesdb,deviceidlist} = this.props;
-    deviceidlist = deviceidlist || [];
-    map(deviceidlist,(deviceid)=>{
-      let item = g_devicesdb[deviceid];
-      let data = {
-          label: `${item.DeviceId}`,
-          value: `${item.DeviceId}`,
-          key: `${item.DeviceId}`,
-      };
-      treeData.push(data);
-    });
-    return (
-      <TreeSelect
-        showSearch
-        style={{ width: '100%',fontSize: "16px"}}
-        value={this.state.value}
-        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-        placeholder={this.props.placeholder}
-        allowClear
-        treeDefaultExpandAll
-        onChange={this.onChange}
-        treeData={treeData}
-        placeholder={this.props.placeholder}
 
-        />
+  onChange = (value) => {
+    this.getdata(value);
+  }
+
+  getdata =(value)=>{
+
+    let options=[];
+    let optionsarr=[];
+    let {deviceidlist} = this.props;
+
+    if (!!deviceidlist) {
+      optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!=-1; })
+      if(optionsarr.length>100){optionsarr.length=100}
+      options = map(optionsarr,(deviceid,index)=>{
+        return <Option key={deviceid}>{deviceid}</Option>;
+      });
+    }
+    this.setState({ options });
+  }
+
+  render() {
+    
+    return (
+      <Select
+        mode="combobox"
+        style={{ width: 160 }}
+        onChange={this.onChange}
+        filterOption={false}
+        placeholder={this.props.placeholder}
+        >
+          {this.state.options}
+      </Select>
 
     );
   }
