@@ -549,7 +549,8 @@ class Page extends React.Component {
                           ()=>
                           {
                             // this.props.dispatch(ui_clickplayback(mapseldeviceid));
-                            this.props.history.push("/devicedata/001");// ./devicedata.js
+                            const id = this.props.match.params.id;
+                            this.props.history.push(`/devicedata/${id}`);// ./devicedata.js
                           }
 
                         }>车辆历史数据</Button>
