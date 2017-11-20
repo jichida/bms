@@ -75,26 +75,22 @@ class Page extends React.Component {
 
     onClickStart(){
       const {deviceid,startDate,endDate} = this.state;
-      const {g_devicesdb} = this.props;
-      if(!!g_devicesdb[deviceid]){
-        const query = {
-          DeviceId:deviceid
-        };
-        query.GPSTime = {
-          $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
-          $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
-        }
-        query.Latitude = {
-          $ne:0
-        };
-        query.Longitude = {
-          $ne:0
-        };
-        this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
+      
+      const query = {
+        DeviceId:deviceid
+      };
+      query.GPSTime = {
+        $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
+        $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
       }
-      else{
-        console.log(`无效的设备id`);
-      }
+      query.Latitude = {
+        $ne:0
+      };
+      query.Longitude = {
+        $ne:0
+      };
+      this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
+
   }
     onClickEnd(){
       this.props.dispatch(mapplayback_end({}));
