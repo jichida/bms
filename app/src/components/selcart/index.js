@@ -11,8 +11,31 @@ import { required,phone,InputValidation,length4,SelectValidation,InputHiddenVali
 
 
 //编号类型数据
-const bianhaolistdata = [{"name":"编号类型1", "value":"B1"},{"name":"编号类型2", "value":"B2"},{"name":"编号类型3", "value":"B3"}];
-const daimalistdata = [{"name":"代码类型1", "value":"D1"},{"name":"代码类型2", "value":"D2"},{"name":"代码类型3", "value":"D3"}];
+const selitem_devicefields = [
+  {
+    value:'RdbNo',
+    name:'RDB编号'
+  },
+  {
+    value:'PackNo',
+    name:'BMU PACK号'
+  },
+  {
+    value:'PnNo',
+    name:'车辆PN料号'
+  },
+];
+const selitem_alarmfields = [
+  {
+    value:'ALARM_H',
+    name:'警告代码'
+  },
+  {
+    value:'ALARM_L',
+    name:'故障代码'
+  },
+];
+
 //告警等级
 let warningtype = 0;
 
@@ -34,15 +57,15 @@ class Fillerform extends React.Component{
                 <div className="li" >
 
                     <Field
-                        name="bianhaotype"
-                        id="bianhaotype"
-                        Option={ bianhaolistdata }
+                        name="notype"
+                        id="notype"
+                        Option={ selitem_devicefields }
                         component={ SelectValidation }
                         validate={[ required ]}
                     />
                     <Field
-                        name="bianhao"
-                        id="bianhao"
+                        name="notypevalue"
+                        id="notypevalue"
                         placeholder="请输入编号"
                         type="text"
                         component={ InputValidation }
@@ -52,15 +75,15 @@ class Fillerform extends React.Component{
 
                 <div className="li">
                     <Field
-                        name="daimatype"
-                        id="daimatype"
-                        Option={ daimalistdata }
+                        name="alarmtype"
+                        id="alarmtype"
+                        Option={ selitem_alarmfields }
                         component={ SelectValidation }
                         validate={[ required ]}
                     />
                     <Field
-                        name="daima"
-                        id="daima"
+                        name="alarmtypevalue"
+                        id="alarmtypevalue"
                         placeholder="请输入代码"
                         type="text"
                         component={ InputValidation }
@@ -115,18 +138,18 @@ class Fillerform extends React.Component{
 Fillerform = reduxForm({
     form: 'FillerForm',
     initialValues:{
-        bianhaotype: "B1",
-        daimatype: "D1",
+        notype: "RdbNo",
+        alarmtype: "ALARM_H",
         online: false
     }
 })(Fillerform);
 
-const inputconnect = formValueSelector('LoginPageForm');
+const inputconnect = formValueSelector('FillerForm');
 Fillerform = connect(
     state => {
-        const bianhaotype = inputconnect(state, 'bianhaotype');
+        const notype = inputconnect(state, 'notype');
         return {
-            bianhaotype
+            notype
         }
     }
 )(Fillerform)
@@ -169,7 +192,7 @@ class Page extends React.Component {
                         <div className="bg" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}></div>
                     </div>
                 }
-                <div className="searchtools"><input placeholder="输入设备ID" /></div>
+
                 <div className="list">
                     <Datalist tableheight={window.innerHeight-55}/>
                 </div>
