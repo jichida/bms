@@ -8,7 +8,7 @@ import Datalist from "./datalist";
 import Fillerimg from '../../img/25.png';
 import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
 import { required,phone,InputValidation,length4,SelectValidation,InputHiddenValidation,ToggleInput } from "../tools/formvalidation-material-ui"
-
+import {searchbattery_request,searchbattery_result} from '../../actions';
 
 //编号类型数据
 const selitem_devicefields = [
@@ -166,12 +166,22 @@ class Page extends React.Component {
 
     fillersubmit =(values)=>{
         console.log(values);
+        this.setState({fillerisOpen:false});
+        this.props.dispatch(searchbattery_request(values));
     }
     onBack = ()=>{
       const deviceid =  this.props.match.params.deviceid;
       const prevuri = this.props.match.params.prevuri;
-      this.props.history.replace(`/${prevuri}/${deviceid}`)
+      this.props.history.replace(`/${prevuri}/${deviceid}`);
+      this.props.dispatch(searchbattery_result({list:[]}));
     }
+
+    onClickSel(seldeviceid){
+      const prevuri = this.props.match.params.prevuri;
+      this.props.history.replace(`/${prevuri}/${seldeviceid}`);
+      this.props.dispatch(searchbattery_result({list:[]}));
+    }
+
     render() {
         const {mapseldeviceid,devices} = this.props;
         let DeviceId;
@@ -194,7 +204,7 @@ class Page extends React.Component {
                 }
 
                 <div className="list">
-                    <Datalist tableheight={window.innerHeight-55}/>
+                    <Datalist tableheight={window.innerHeight-55} onClickSel={this.onClickSel.bind(this)}/>
                 </div>
             </div>
         );
