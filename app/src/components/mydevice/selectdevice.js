@@ -24,12 +24,15 @@ class SelectDevice extends React.Component {
     deviceidlist = deviceidlist || [];
     map(deviceidlist,(deviceid)=>{
       let item = g_devicesdb[deviceid];
-      let data = {
-          label: `${item.DeviceId}`,
-          value: `${item.DeviceId}`,
-          key: `${item.DeviceId}`,
-      };
-      treeData.push(data);
+      if(!!item){
+        let data = {
+            label: `${item.DeviceId}`,
+            value: `${item.DeviceId}`,
+            key: `${item.DeviceId}`,
+        };
+        treeData.push(data);
+      }
+
     });
     return (
       <TreeSelect

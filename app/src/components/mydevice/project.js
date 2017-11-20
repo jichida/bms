@@ -81,7 +81,6 @@ class Page extends React.Component {
                         initdeviceid={this.state.deviceid}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}
                         deviceidlist={deviceidlist}
-
                     />
                 </div>
                 <div className="mydevicecontent" style={mydevicecontentstyle}>
