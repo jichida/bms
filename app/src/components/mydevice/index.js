@@ -28,21 +28,21 @@ class Page extends React.Component {
     render() {
         const height =  window.innerHeight - 70 - 60 - 66.08;
         const mydevicecontentstyle = this.props.ui_mydeivce_showtype===0?{pointerEvents: "none",background : "none"}:{};
-        let count_connected = 0;
-        let count_running = 0;
-        let count_error = 0;
-        const {g_devicesdb} = this.props;
-        map(g_devicesdb,(item)=>{
-            if(item.isconnected){
-              count_connected++;
-            }
-            if(item.isrunning){
-              count_running++;
-            }
-            if(item.iserror){
-              count_error++;
-            }
-        });
+        // let count_connected = 0;
+        // let count_running = 0;
+        // let count_error = 0;
+        // const {g_devicesdb} = this.props;
+        // map(g_devicesdb,(item)=>{
+        //     if(item.isconnected){
+        //       count_connected++;
+        //     }
+        //     if(item.isrunning){
+        //       count_running++;
+        //     }
+        //     if(item.iserror){
+        //       count_error++;
+        //     }
+        // });
         return (
             <div className="mydevicePage AppPage"
                 style={{
@@ -56,10 +56,7 @@ class Page extends React.Component {
                     </div>
                 </div>
                 <div className="mydevicecontentlist">
-                    <div className="devicenum"><span>联网车辆：{`${count_connected}`}辆</span>
-                    <span className='c'>运行车辆：{`${count_running}`}辆</span>
-                    <span>故障车辆：{`${count_error}`}辆</span></div>
-                    <Datapro tableheight = {innerHeight-38-50-55-68} />
+                    <Datapro tableheight = {innerHeight-50-55-68} />
                 </div>
                 <Footer sel={2} />
             </div>
@@ -68,7 +65,6 @@ class Page extends React.Component {
 }
 const data = ({app,device}) => {
   const {ui_mydeivce_showtype} = app;
-  const {g_devicesdb} = device;
-  return {ui_mydeivce_showtype,g_devicesdb};
+  return {ui_mydeivce_showtype};
 }
 export default connect(data)(Page);

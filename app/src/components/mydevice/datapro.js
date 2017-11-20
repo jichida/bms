@@ -19,18 +19,13 @@ class Page extends React.Component {
         this.props.history.push(`/project/${record._id}`);
     }
     render() {
-        const {groupidlist,groups,g_devicesdb} = this.props;
+        const {groupidlist,groups} = this.props;
         let data = [];
         map(groupidlist,(gid)=>{
           let item = groups[gid];
-          let devicenum = 0;
-          map(g_devicesdb,(device)=>{
-            if(device.groupid === gid){
-              devicenum++;
-            }
-          });
-          item['devicenum'] = devicenum;
-          data.push(groups[gid]);
+          item['devicenum'] = item.deviceids.length;
+          item['key'] = gid;
+          data.push(item);
         });
 
 
@@ -42,18 +37,6 @@ class Page extends React.Component {
             title: '车辆数',
             dataIndex: 'devicenum',
             key: 'devicenum',
-        }, {
-            title: '电池厂商',
-            dataIndex: '电池厂商',
-            key: '电池厂商',
-        }, {
-            title: '电机厂商',
-            dataIndex: '电机厂商',
-            key: '电机厂商',
-        },{
-            title: '电控厂商',
-            dataIndex: '电控厂商',
-            key: '电控厂商',
         }];
         return (
             <Table columns={columns} dataSource={data} pagination={false} style={{flexGrow: 1}} onRowClick={this.rowClick}  scroll={{ y: this.props.tableheight }}/>
@@ -63,7 +46,7 @@ class Page extends React.Component {
 
 Page = withRouter(Page);
 const mapStateToProps = ({device}) => {
-    const {groupidlist,groups,g_devicesdb} = device;
-    return {groupidlist,groups,g_devicesdb};
+    const {groupidlist,groups} = device;
+    return {groupidlist,groups};
 }
 export default connect(mapStateToProps)(Page);
