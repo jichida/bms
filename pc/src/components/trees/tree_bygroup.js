@@ -5,6 +5,7 @@ import treestyle from '../treestyle.js';
 import HeaderCo from './treeheader';
 import {
     mapmain_selgroup,
+    mapmain_selgroup_deviceid,
     ui_selcurdevice_request,
 } from '../../actions';
 
@@ -31,11 +32,11 @@ class Tree extends React.Component {
         }else{
             // node.toggled = toggled;
             let deviceid = node.name;
-            const {g_devicesdb} = this.props;
-            const deviceitem = g_devicesdb[deviceid];
-            if(!!deviceitem && toggled){
-              this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
-            }
+            const deviceitem = node.device;
+            console.log(`deviceitem==>${JSON.stringify(deviceitem)},deviceid:${(deviceid)}`)
+            this.props.dispatch(mapmain_selgroup_deviceid({DeviceId:deviceitem.DeviceId,devicenodeid:node.id}));
+            this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
+
 
         }
         this.setState({ cursor: node });
@@ -55,8 +56,8 @@ class Tree extends React.Component {
   }
 }
 
-const mapStateToProps = ({device:{datatreegroup:datatree,g_devicesdb}}) => {
-  return {datatree,g_devicesdb};
+const mapStateToProps = ({device:{datatreegroup:datatree}}) => {
+  return {datatree};
 }
 
 export default connect(mapStateToProps)(Tree);

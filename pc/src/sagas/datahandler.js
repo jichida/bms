@@ -45,12 +45,16 @@ import {
     collectdevice_result,
 
     searchbatteryalarm_request,
-    searchbatteryalarm_result
+    searchbatteryalarm_result,
+
+    searchbatteryalarmsingle_request,
+    searchbatteryalarmsingle_result
   } from '../actions';
 
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'searchbatteryalarmsingle_result':searchbatteryalarmsingle_result,
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
   'getnotifymessage_result':getnotifymessage_result,
   'getnotifymessageone_result':getnotifymessageone_result,
@@ -96,7 +100,7 @@ let sendmessageauthfnsz = {
   'queryhistorytrack':`${queryhistorytrack_request}`,
   'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
   'searchbatteryalarm':`${searchbatteryalarm_request}`,
-
+  'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

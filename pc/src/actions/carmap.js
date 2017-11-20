@@ -40,6 +40,7 @@ export const mapmain_seldistrict = createAction('mapmain_seldistrict');
 export const mapmain_init_device = createAction('mapmain_init_device');
 export const mapmain_getdistrictresult = createAction('mapmain_getdistrictresult');
 export const mapmain_selgroup = createAction('mapmain_selgroup');
+export const mapmain_selgroup_deviceid = createAction('mapmain_selgroup_deviceid');
 
 //获取地理位置【城市】
 export const mapmain_getgeoresult = createAction('mapmain_getgeoresult');

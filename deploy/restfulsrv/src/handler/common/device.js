@@ -54,11 +54,12 @@ const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
 exports.querydevicegroup= (actiondata,ctx,callback)=>{
   let devicegroupModel = DBModels.DeviceGroupModel;
   let query = actiondata.query || {};
-  let fields = actiondata.fields || {'DeviceId':1,'LastHistoryTrack.Latitude':1,'LastHistoryTrack.Longitude':1};
+  const devicesfields = actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude';
 
-  console.log(`fields-->${JSON.stringify(fields)}`);
-  let queryexec = devicegroupModel.find(query).select(fields);
-  queryexec.exec((err,list)=>{
+  console.log(`devicesfields-->${JSON.stringify(devicesfields)}`);
+  let queryexec = devicegroupModel.find(query).populate([
+      {path:'deviceids', select:devicesfields, model: 'device'},
+  ]).exec((err,list)=>{
     if(!err){
       if(list.length > 0){
         console.log(`-->${JSON.stringify(list[0])}`);
@@ -66,7 +67,7 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
       //for test only
       callback({
         cmd:'querydevicegroup_result',
-        payload:{list:[]}
+        payload:{list}
       });
     }
     else{
