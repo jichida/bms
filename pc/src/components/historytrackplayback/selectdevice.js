@@ -35,6 +35,7 @@ class SelectDevice extends React.Component {
       });
     }
     this.setState({ options });
+    this.props.onSelDeviceid(value);
   }
 
   render() {
@@ -46,6 +47,7 @@ class SelectDevice extends React.Component {
         onChange={this.onChange}
         filterOption={false}
         placeholder={this.props.placeholder}
+        defaultValue={this.props.initdeviceid}
         >
           {this.state.options}
       </Select>
