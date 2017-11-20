@@ -40,7 +40,7 @@ class Page extends React.Component {
         });
         const columns = [
           {
-            title: '预警时间',
+            title: '报警时间',
             dataIndex: '告警时间',
             key: '告警时间',
             render: (text, record, index) => {

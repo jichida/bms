@@ -39,24 +39,28 @@ class Page extends React.Component {
         const height =  innerHeight - 70 - 60 - 66.08;
         const mydevicecontentstyle = {pointerEvents: "none",background : "#FFF", flexGrow : "1"};
         let groupid = this.props.match.params.groupid;
-        let count_connected = 0;
-        let count_running = 0;
-        let count_error = 0;
-        const {g_devicesdb} = this.props;
-        map(g_devicesdb,(item)=>{
-          if(item.groupid === groupid){
-            deviceidlist.push(item.DeviceId);
-            if(item.isconnected){
-              count_connected++;
-            }
-            if(item.isrunning){
-              count_running++;
-            }
-            if(item.iserror){
-              count_error++;
-            }
-          }
+        const {groups} = this.props;
+        map(groups[groupid].deviceids,(deviceinfo)=>{
+          deviceidlist.push(deviceinfo.DeviceId);
         });
+        // let count_connected = 0;
+        // let count_running = 0;
+        // let count_error = 0;
+
+        // map(g_devicesdb,(item)=>{
+        //   if(item.groupid === groupid){
+        //     deviceidlist.push(item.DeviceId);
+        //     if(item.isconnected){
+        //       count_connected++;
+        //     }
+        //     if(item.isrunning){
+        //       count_running++;
+        //     }
+        //     if(item.iserror){
+        //       count_error++;
+        //     }
+        //   }
+        // });
         return (
             <div
                 className="mydevicePage AppPage customtable"
@@ -77,15 +81,11 @@ class Page extends React.Component {
                         initdeviceid={this.state.deviceid}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}
                         deviceidlist={deviceidlist}
-
                     />
                 </div>
                 <div className="mydevicecontent" style={mydevicecontentstyle}>
                     <div className="mydevicecontentlist">
-                        <div className="devicenum"><span>联网车辆：{`${count_connected}`}辆</span>
-                        <span className='c'>运行车辆：{`${count_running}`}辆</span>
-                        <span>故障车辆：{`${count_error}`}辆</span></div>
-                        <Datalist groupid={groupid} curdeviceid={this.state.deviceid} tableheight = {innerHeight-38-48-55-68} />
+                        <Datalist groupid={groupid} curdeviceid={this.state.deviceid} tableheight = {innerHeight-48-55-68} />
                     </div>
                 </div>
             </div>
@@ -94,8 +94,8 @@ class Page extends React.Component {
 }
 const mapStateToProps = ({app,device}) => {
   const {ui_mydeivce_showtype} = app;
-  const {groups,g_devicesdb} = device;
-  return {ui_mydeivce_showtype,groups,g_devicesdb};
+  const {groups} = device;
+  return {ui_mydeivce_showtype,groups};
 }
 
 export default connect(mapStateToProps)(Page);

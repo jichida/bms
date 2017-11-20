@@ -27,7 +27,7 @@ class Page extends React.Component {
                 <div className="settingmessage">
                     <div className="title">消息设置</div>
                     <div className="li">
-                        <Toggle label="预警信息推送提醒" style={{padding: "15px", background: "#FFF",borderBottom: "1px solid #EEE"}}/>
+                        <Toggle label="报警信息推送提醒" style={{padding: "15px", background: "#FFF",borderBottom: "1px solid #EEE"}}/>
                         <Toggle label="工单处理推送提醒" style={{padding: "15px", background: "#FFF"}}/>
                     </div>
                     <div className="title">隐私设置</div>

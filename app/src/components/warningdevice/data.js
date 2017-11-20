@@ -152,7 +152,7 @@ class Page extends React.Component {
                 }}
                 >
                 <div className="navhead">
-                    <span className="title" style={{paddingLeft : "30px"}}>预警信息</span>
+                    <span className="title" style={{paddingLeft : "30px"}}>报警信息</span>
                     <a className="searchlnk" onClick={()=>{this.setState({showdata: !this.state.showdata})}} ><img src={Searchimg} /></a>
                 </div>
                 {
