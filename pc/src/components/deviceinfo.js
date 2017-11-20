@@ -549,13 +549,13 @@ class Page extends React.Component {
                           ()=>
                           {
                             // this.props.dispatch(ui_clickplayback(mapseldeviceid));
-                            const id = this.props.match.params.id;
+                            const id = this.props.match.params.deviceid;
                             this.props.history.push(`/devicedata/${id}`);// ./devicedata.js
                           }
 
                         }>车辆历史数据</Button>
                         <Button type="primary" icon="clock-circle-o" onClick={()=>{
-                          const id = this.props.match.params.id;
+                          const id = this.props.match.params.deviceid;
                           this.props.dispatch(ui_btnclick_devicemessage({DeviceId:id}));
                           //this.props.history.push(`/devicemessage/${mapseldeviceid}`)
                         }}>历史警告</Button>
