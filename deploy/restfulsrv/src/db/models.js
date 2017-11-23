@@ -218,6 +218,18 @@ UserAdminSchema = new Schema({
 });
 let UserAdmin  = mongoose.model('useradmin',  UserAdminSchema);
 
+//数据字典
+let DataDictSchema = new Schema({
+  organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
+  name:{type:String},//字段名
+  fullname:{type:String},//字段全名
+  showname:{type:String},//字段显示名
+  type:{type:String},//字段类型
+  desc:{type:String},//字段描述
+  unit:{type:String},//字段单位
+});
+DataDictSchema.plugin(mongoosePaginate);
+let DataDictModel =mongoose.model('datadict',  DataDictSchema);
 
 
 exports.UserAdminSchema = UserAdminSchema;
@@ -234,6 +246,7 @@ exports.CanRawDataSchema = CanRawDataSchema;
 exports.HistoryTrackSchema = HistoryTrackSchema;
 exports.HistoryDeviceSchema = HistoryDeviceSchema;
 exports.UserLogSchema = UserLogSchema;
+exports.DataDictSchema = DataDictSchema;
 
 exports.UserAdminModel = UserAdmin;
 exports.SystemConfigModel = SystemConfigModel;
@@ -249,3 +262,4 @@ exports.CanRawDataModel = CanRawDataModel;
 exports.HistoryTrackModel = HistoryTrackModel;
 exports.HistoryDeviceModel = HistoryDeviceModel;
 exports.UserLogModel = UserLogModel;
+exports.DataDictModel = DataDictModel;

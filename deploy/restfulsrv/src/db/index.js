@@ -1,5 +1,10 @@
 let db = require('./models.js');
 let dbs ={
+  'datadict':{
+    urlname:'/datadict',
+    schema:db.DataDictSchema,
+    collectionname:'datadict',
+  },
   'systemconfig':{
     urlname:'/systemconfig',
     schema:db.SystemConfigSchema,

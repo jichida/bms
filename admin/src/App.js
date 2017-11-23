@@ -17,6 +17,7 @@ import restClient from './restClient';
 
 import {SystemconfigList,SystemconfigShow,SystemconfigEdit,SystemconfigCreate} from './components/systemconfig/index.js';
 import {CanRawDataList,CanRawDataShow} from './components/canrowdatas/index.js';
+import {DataDictCreate,DataDictList,DataDictEdit} from './components/datadict/index.js';
 import {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit} from './components/devicegroups/index.js';
 import {DeviceCreate,DeviceList,DeviceEdit} from './components/devices/index.js';
 import {HistoryTrackList,HistoryTrackShow} from './components/historytracks/index.js';
@@ -55,7 +56,7 @@ class App extends Component {
                 <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} />,
                 <Resource name="role" list={RoleList} edit={RoleEdit} create={RoleCreate} />,
                 <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate} />,
-
+                <Resource name="datadict" list={DataDictList} edit={DataDictEdit} create={DataDictCreate} />,
                 <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />,
                 <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />,
                 <Resource name="userlog" list={UserlogList} />,
