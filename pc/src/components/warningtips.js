@@ -255,7 +255,7 @@ class Page extends React.Component {
 
         const iconstyle1 = {
             width:"27px",
-            height:"32",
+            height:"32px",
             fontSize:"26px",
             textAlign:"center",
             display:"flex",
@@ -298,7 +298,7 @@ class Page extends React.Component {
                       }}
                       onClick={this.onClickMenu.bind(this,'online')}
                       >
-                      <img src={CarOnline} style={{marginBottom: "-6px", width:"27px", height:"32"}} onClick={this.onClickMenu.bind(this,'online')} />
+                      <img src={CarOnline} style={{marginBottom: "-6px", width:"27px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
                   </Badge>
                   <Badge
                       badgeContent={count_offline}
@@ -319,7 +319,7 @@ class Page extends React.Component {
                       }}
                       onClick={this.onClickMenu.bind(this,'offline')}
                       >
-                      <img src={CarOutline} style={{marginBottom: "-6px", width:"27px", height:"32"}} onClick={this.onClickMenu.bind(this,'offline')} />
+                      <img src={CarOutline} style={{marginBottom: "-6px", width:"27px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
                   </Badge>
                   <Badge
                       badgeContent={`(${count_red})`}
