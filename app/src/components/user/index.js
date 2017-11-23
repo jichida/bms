@@ -45,7 +45,7 @@ class Page extends React.Component {
                             <span>用户名</span>
                             <span>{username}</span>
                         </div>
-                        <span className="changepwd">修改密码</span>
+                        <span className="changepwd" onClick={()=>{this.props.history.push("/changepwd")}}>修改密码</span>
                     </div>
                     <List style={{background: "#FFF",padding:"0"}}>
                         <ListItem
