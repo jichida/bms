@@ -130,7 +130,9 @@ class TreeSearchBattery extends React.Component {
                     <Seltime  startDate = {this.state.startDate}
                       endDate = {this.state.endDate}
                      onChangeSelDate={this.onChangeSelDate.bind(this)}/>
+                        
 
+                    <div style={{display:"none"}}>
                     <TreeSelectBygroup placeholder={"请选择分组"} width={200} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
                     <TreeselectByloc placeholder={"请选择地区"} width={200} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
 
@@ -173,10 +175,12 @@ class TreeSearchBattery extends React.Component {
                         <Option value={"2"} >一般告警</Option>
                     </Select>
 
+                    </div>
+
                 </div>
                 <div className="b">
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
-                    <Button icon="download" onClick={this.onClickExport}>导出结果</Button>
+                    <Button icon="download" onClick={this.onClickExport} style={{display:"none"}}>导出结果</Button>
                 </div>
             </div>
 

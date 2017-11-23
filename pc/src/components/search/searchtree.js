@@ -120,9 +120,21 @@ class TreeSearchBattery extends React.Component {
                     <br/>
                     <TreeSelectBygroup placeholder={"请选择分组"} width={370} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
                     <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
+                    <AutoComplete
+                            style={{ width: 370 }}
+                            onChange={this.handleChange_notypevalue.bind(this)}
+                            placeholder="请输入编号"
+                        />
 
+
+
+                        <div style={{display:"none"}}>
                     <InputGroup compact>
-                        <Select defaultValue="选择编号类型" style={{ width: 120 }} onChange={this.onChange_notype.bind(this)}>
+                        <Select 
+                            defaultValue="选择编号类型" 
+                            style={{ width: 120 }} 
+                            onChange={this.onChange_notype.bind(this)}
+                            >
                             {
                                 map(selitem_devicefields,(field,key)=>{
                                     return (<Option key={key} value={field.value}>{field.text}</Option>)
@@ -163,6 +175,7 @@ class TreeSearchBattery extends React.Component {
                         <Option value="online" >在线</Option>
                         <Option value="offline" >离线</Option>
                     </Select>
+                    </div>
 
                     <Button type="primary" icon="search"  onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
             </div>
