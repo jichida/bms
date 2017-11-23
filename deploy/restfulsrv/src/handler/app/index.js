@@ -23,7 +23,9 @@ const authhandler = {
   'searchbattery':device.searchbattery,
   'queryhistorytrack':historytrack.queryhistorytrack,
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
-  'collectdevice':userrelate.collectdevice
+  'collectdevice':userrelate.collectdevice,
+  'searchbatteryalarm':realtimealarm.searchbatteryalarm,
+  'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
 };
 
 module.exports = (socket,actiondata,ctx)=>{
