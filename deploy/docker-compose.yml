@@ -39,6 +39,8 @@ services:
       - MONGO_URL=mongodb://172.17.0.1:27018/bms
       - KAFKA_HOST=172.17.0.1:2181
       - listenport=5012
+    net:
+      - host=172.17.0.1
     links:
       - mongodb
     ports:
@@ -61,6 +63,8 @@ services:
       - KAFKA_HOST=172.17.0.1:2181
     links:
       - mongodb
+    net:
+      - host=172.17.0.1
     depends_on:
        - mongodb
        - zookeeper
