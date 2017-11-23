@@ -24,7 +24,7 @@ services:
       - zookeeper:zk
     environment:
       KAFKA_CREATE_TOPICS: "BMS.Data:2:2,BMS.bms:2:2,BMS.position:2:2"
-      KAFKA_ADVERTISED_HOST_NAME: 114.55.89.241
+      KAFKA_ADVERTISED_HOST_NAME: 118.31.41.232
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
