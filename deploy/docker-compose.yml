@@ -36,8 +36,8 @@ services:
     volumes:
       - ./restfulsrv:/app
     environment:
-      - MONGO_URL=mongodb://192.168.0.1:27018/bms
-      - KAFKA_HOST=192.168.0.1:2181
+      - MONGO_URL=mongodb://172.17.0.1:27018/bms
+      - KAFKA_HOST=172.17.0.1:2181
       - listenport=5012
     links:
       - mongodb
@@ -57,8 +57,8 @@ services:
     volumes:
       - ./kafkadb:/app
     environment:
-      - MONGO_URL=mongodb://192.168.0.1:27018/bms
-      - KAFKA_HOST=192.168.0.1:2181
+      - MONGO_URL=mongodb://172.17.0.1:27018/bms
+      - KAFKA_HOST=172.17.0.1:2181
     links:
       - mongodb
     depends_on:
