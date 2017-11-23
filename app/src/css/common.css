@@ -532,7 +532,7 @@ input,textarea {
 }
 .usercenterPage .content .head img{
     width: 70px;
-    height: 83px;
+    height: 70px;
 }
 .usercenterPage .content .loginout{
     width: 80%;
@@ -734,7 +734,7 @@ div.mydevicebtn{
 .customtable .ant-table-tbody>tr.ant-table-row>td:first-child >p{
     white-space: nowrap;
     text-overflow:ellipsis;
-    width: 60px;
+    width: 120px;
     height: 20px;
     overflow:hidden;
     line-height: 20px;
@@ -835,3 +835,17 @@ div.mydevicebtn{
     flex-grow: 1;
     margin-right: 60px;
 }
+
+.ant-table-thead > tr > th.column-money{
+    text-align: right;
+    padding-right: 20px;
+}
+
+.weuiPage{
+    position: relative;
+    z-index: 10000;
+}
+.weuiPage{
+    pointer-events: none;
+}
+

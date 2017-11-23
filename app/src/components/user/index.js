@@ -52,7 +52,7 @@ class Page extends React.Component {
                             primaryText="设置"
                             leftIcon={<img src={Settingicon} />}
                             rightIcon={<Rightlnk />}
-                            style={{marginBottom: "1px"}}
+                            style={{marginBottom: "1px",display: "none"}}
                             onClick={()=>{this.props.history.push("/setting")}}
                             />
                             <div style={{height:"1px",width : "100%", background:"#EEE"}}></div>

@@ -9,6 +9,7 @@ import { Route,Redirect,Switch} from 'react-router-dom';
 
 import Index from './index/';
 import Login from './login/login';
+import Changepwd from './login/changepwd';
 import Overview from './overview/overview';
 import Carlist from './mycars/carlist';
 import Collection from './collection/collection';
@@ -32,6 +33,7 @@ import MapPage from './admincontent';
 import Alaraminfo from './warningdevice/alarminfo';
 import {requireAuthentication} from './requireauthentication';
 import "../css/common.css";
+import WeuiTool from './tools/weuitool';
 
 class AppMap extends React.Component {
     componentWillMount() {
@@ -78,11 +80,12 @@ class AppRoot extends React.Component {
 
         return (
             <div className="AppContainer">
-
+                
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)} />
                     <Route path="/index" component={requireAuthentication(Index)} />
                     <Route path="/login" component={Login} />
+                    <Route path="/changepwd" component={Changepwd} />
                     <Route path="/overview" component={requireAuthentication(Overview)} />
                     <Route path="/carlist" component={requireAuthentication(Carlist)} />
                     <Route path="/collection" component={requireAuthentication(Collection)} />
@@ -101,6 +104,7 @@ class AppRoot extends React.Component {
                     <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
                     <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
                 </Switch>
+                <WeuiTool />
                 <AppMap />
             </div>
         );

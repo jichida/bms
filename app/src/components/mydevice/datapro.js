@@ -22,10 +22,10 @@ class Page extends React.Component {
         const {groupidlist,groups} = this.props;
         let data = [];
         map(groupidlist,(gid)=>{
-          let item = groups[gid];
-          item['devicenum'] = item.deviceids.length;
-          item['key'] = gid;
-          data.push(item);
+            let item = groups[gid];
+            item['devicenum'] = item.deviceids.length;
+            item['key'] = gid;
+            data.push(item);
         });
 
 
@@ -34,9 +34,11 @@ class Page extends React.Component {
             dataIndex: 'name',
             key: 'name'
         }, {
-            title: '车辆数',
+            title: "车辆数",
             dataIndex: 'devicenum',
+            className: 'column-money',
             key: 'devicenum',
+            render: text => <span style={{display:"block", textAlign: "right", paddingRight:"20px"}}>{text}</span>,
         }];
         return (
             <Table columns={columns} dataSource={data} pagination={false} style={{flexGrow: 1}} onRowClick={this.rowClick}  scroll={{ y: this.props.tableheight }}/>

@@ -101,7 +101,7 @@ export class Page extends Component {
         } = this.props;
 
         return (
-            <div className="weuiPage">
+            <div className="weuiPage" style={{height: window.innerHeight+"px"}}>
 
                 <Toast
                     icon={icon[toast.type]}

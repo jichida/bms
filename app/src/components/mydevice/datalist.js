@@ -25,14 +25,14 @@ class Page extends React.Component {
         let mydevices = [];
 
         if(!!g_devicesdb[curdeviceid]){
-          let item = {...g_devicesdb[curdeviceid],key:curdeviceid};
-          mydevices.push(item);
+            let item = {...g_devicesdb[curdeviceid],key:curdeviceid};
+            mydevices.push(item);
         }
         else{
-          let groupitem = groups[groupid];
-          map(groupitem.deviceids,(item)=>{
-            mydevices.push({...item,key:item.DeviceId});
-          });
+            let groupitem = groups[groupid];
+            map(groupitem.deviceids,(item)=>{
+                mydevices.push({...item,key:item.DeviceId});
+            });
         }
 
 
@@ -49,7 +49,7 @@ class Page extends React.Component {
         }];
         return (
             <Table
-                columns={columns}
+                columns={this.props.columns || columns}
                 dataSource={mydevices}
                 pagination={false}
                 style={{flexGrow: 1}}

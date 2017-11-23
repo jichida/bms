@@ -34,19 +34,21 @@ class Page extends React.Component {
           deviceid
         });
     }
+    rowClick = (id)=>{
+        this.props.history.push(`/deviceinfo/${id}`);
+    }
     render() {
         let deviceidlist = [];
         const height =  innerHeight - 70 - 60 - 66.08;
         const mydevicecontentstyle = {pointerEvents: "none",background : "#FFF", flexGrow : "1"};
         let groupid = this.props.match.params.groupid;
-        const {groups} = this.props;
+        const {groups,g_devicesdb} = this.props;
         map(groups[groupid].deviceids,(deviceinfo)=>{
           deviceidlist.push(deviceinfo.DeviceId);
         });
         // let count_connected = 0;
         // let count_running = 0;
         // let count_error = 0;
-
         // map(g_devicesdb,(item)=>{
         //   if(item.groupid === groupid){
         //     deviceidlist.push(item.DeviceId);
@@ -61,6 +63,18 @@ class Page extends React.Component {
         //     }
         //   }
         // });
+        const columns = [{
+            title: '车牌',
+            dataIndex: 'DeviceId',
+            key: 'DeviceId',
+            render: text => <p>{text}</p>
+        }]
+        let mydevices = [];
+        if(!!g_devicesdb[this.state.deviceid]){
+            let item = {...g_devicesdb[this.state.deviceid],key:this.state.deviceid};
+            mydevices.push(item);
+        }
+        console.log(groups[groupid]);
         return (
             <div
                 className="mydevicePage AppPage customtable"
@@ -72,10 +86,10 @@ class Page extends React.Component {
                 <div className="navhead">
                     <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
                     <div className="title" style={{paddingRight: "30px"}}>
-                        项目信息
+                        {groups[groupid].name}
                     </div>
                 </div>
-                <div className="searchcontent headsearch">
+                <div className="searchcontent headsearch" style={{display: "none"}}>
                     <SelectDevice
                         placeholder={"请输入设备ID"}
                         initdeviceid={this.state.deviceid}
@@ -85,7 +99,11 @@ class Page extends React.Component {
                 </div>
                 <div className="mydevicecontent" style={mydevicecontentstyle}>
                     <div className="mydevicecontentlist">
-                        <Datalist groupid={groupid} curdeviceid={this.state.deviceid} tableheight = {innerHeight-48-55-68} />
+                        {  !!groups[groupid].deviceids && groups[groupid].deviceids.length >0 && 
+                            map(groups[groupid].deviceids,(data,i)=>{
+                                return <div onClick={this.rowClick.bind(data.DeviceId)} style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>{data.DeviceId}</div>
+                            })
+                        }
                     </div>
                 </div>
             </div>
@@ -94,8 +112,8 @@ class Page extends React.Component {
 }
 const mapStateToProps = ({app,device}) => {
   const {ui_mydeivce_showtype} = app;
-  const {groups} = device;
-  return {ui_mydeivce_showtype,groups};
+  const {groups, g_devicesdb} = device;
+  return {ui_mydeivce_showtype,groups, g_devicesdb};
 }
 
 export default connect(mapStateToProps)(Page);

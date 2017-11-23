@@ -41,6 +41,31 @@
     text-indent: 15px;
     color: #FFF;
 }
+.changepwdPage .changepwdForm .li{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    border-bottom: 1px solid #EEE;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    padding: 0 20px;
+}
+.changepwdPage {
+    z-index: 1000;
+    position: relative;
+}
+.changepwdPage .changepwdForm .formvalidation input{
+    height: 46px;
+    background: none;
+    font-size: 16px;
+    text-indent: 20px;
+    color: #333;
+}
+.changepwdPage .changepwdForm .li span{
+    font-size: 16px;
+}
 .loginForm .logoimg{
     display:block;
     width:40px;
@@ -56,6 +81,12 @@
     border: none;
     border-bottom: 1px solid #FFF;
     border-radius: 0;
+}
+
+.changepwdPage .btn.Default{
+    background: #5cbeaa;
+    color: #FFF;
+    margin: 0 20px;
 }
 
 
