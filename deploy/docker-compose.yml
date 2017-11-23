@@ -40,8 +40,6 @@ services:
       - KAFKA_HOST=172.17.0.1:2181
       - listenport=5012
     network_mode: "host"
-    links:
-      - mongodb
     ports:
        - "5012:5012"
     expose:
@@ -60,8 +58,6 @@ services:
     environment:
       - MONGO_URL=mongodb://172.17.0.1:27018/bms
       - KAFKA_HOST=172.17.0.1:2181
-    links:
-      - mongodb
     network_mode: "host"
     depends_on:
        - mongodb
