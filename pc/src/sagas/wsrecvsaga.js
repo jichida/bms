@@ -1,6 +1,7 @@
 import { put,call,takeLatest,fork,take,race} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
+
   common_err,
 
   md_login_result,
@@ -42,6 +43,9 @@ import {g_devicesdb} from './mapmain';
 // } from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
+
+
+
   yield takeLatest(`${setworkorderdone_request}`, function*(action) {
       yield take(`${setworkorderdone_result}`);
       yield put(goBack());
@@ -85,20 +89,19 @@ export function* wsrecvsagaflow() {
       let {payload:result} = action;
         console.log(`md_login_result==>${JSON.stringify(result)}`);
         if(!!result){
-      yield put(login_result(result));
-      if(result.loginsuccess){
-        localStorage.setItem('bms_pc_token',result.token);
-        yield put(querydevicegroup_request({}));
-        //
-        yield put(getworkusers_request({}));
-        //登录成功,获取今天所有报警信息列表
-        yield put(getcurallalarm_request({}));
-        //获取所有工单
-        yield put(getallworkorder_request({}));
+            yield put(login_result(result));
+            if(result.loginsuccess){
+              localStorage.setItem('bms_pc_token',result.token);
+              yield put(querydevicegroup_request({}));
+              //
+              yield put(getworkusers_request({}));
+              //登录成功,获取今天所有报警信息列表
+              yield put(getcurallalarm_request({}));
+              //获取所有工单
+              yield put(getallworkorder_request({}));
 
-      }
+            }
         }
-
       }
       catch(e){
         console.log(e);

@@ -18,7 +18,7 @@ import "../css/antd.css";
 import TreeByloc from './trees/tree_byloc';
 import TreeBygroup from './trees/tree_bygroup';
 import TreeBysearchresult from './trees/tree_bysearchresult';
-import {searchbattery_request} from '../actions';
+import {searchbatterylocal_request} from '../actions';
 
 const TabPane = Tabs.TabPane;
 
@@ -35,7 +35,8 @@ class TreeExample extends React.Component {
         // this.props.dispatch(md_ui_settreefilter({inputtreevalue:filter}));
     }
     onClickQuery =(query)=>{
-      this.props.dispatch(searchbattery_request(query));
+      this.props.dispatch(searchbatterylocal_request(query));
+      //SERACH LOCAL
     }
 
     render(){
@@ -48,7 +49,7 @@ class TreeExample extends React.Component {
                 </div>
 
                 {
-                    modeview === 'device' && 
+                    modeview === 'device' &&
                     <Tabs
                         defaultActiveKey="1"
                         style={{ height: window.innerHeight-109}}
@@ -74,7 +75,7 @@ class TreeExample extends React.Component {
                     </Tabs>
                 }
                 {
-                    modeview !== 'device' && 
+                    modeview !== 'device' &&
                         <TreeByloc />
                 }
             </div>

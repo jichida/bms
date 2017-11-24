@@ -1,6 +1,9 @@
 import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join,throttle } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
+  common_err,
+  searchbatterylocal_request,
+  searchbatterylocal_result,
   md_mapmain_setzoomlevel,
   mapmain_setzoomlevel,
   mapmain_setmapcenter,
@@ -566,6 +569,7 @@ const getclustertree_one =(adcode)=>{
     });
   });
 }
+
 
 //地图主流程
 export function* createmapmainflow(){
@@ -1248,33 +1252,122 @@ export function* createmapmainflow(){
     });
 
 
-        yield takeLatest(`${ui_selworkorder}`, function*(action) {
-          //预警模式选择车辆
-          try{
-            //切换到首页
-            let {payload:DeviceId} = action;
-            // if(typeof DeviceId === 'string'){
-            //   DeviceId = parseInt(DeviceId);
+    yield takeLatest(`${ui_selworkorder}`, function*(action) {
+      //预警模式选择车辆
+      try{
+        //切换到首页
+        let {payload:DeviceId} = action;
+        // if(typeof DeviceId === 'string'){
+        //   DeviceId = parseInt(DeviceId);
+        // }
+        //先定位到地图模式,然后选择车辆
+        let deviceitem = g_devicesdb[DeviceId];
+        console.log(`${deviceitem}`)
+        yield put(ui_sel_tabindex(0));
+        //选择第一个tab
+        yield put(ui_index_selstatus(0));
+
+        yield put(replace('/index'));
+        //选择车辆
+        if(!!deviceitem){
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+        }
+      }
+      catch(e){
+        console.log(e);
+      }
+    });
+
+    yield takeLatest(`${searchbatterylocal_request}`, function*(action) {
+        //搜索本地电池包
+        try{
+          const {payload:{query}} = action;
+          console.log(`搜索本地电池包===>${JSON.stringify(query)}`);
+          //groupid/adcode/deviceid
+          if(!query.groupid && !query.adcode && query.deviceid.length < 4){
+            yield put(common_err({type:'searchbatterylocal',errmsg:`搜索范围太大,请至少输入4位以上id或选择分组和行政区域`}));
+            return;
+          }
+          let searchresult_deviceids = [];
+          if(!!query.adcode){
+            let areaids = [];
+            const {datatreeloc} = yield select((state)=>{
+              return {datatreeloc:state.device.datatreeloc};
+            });
+
+            const setnode_pushdevice = (node)=>{
+              if(node.type === 'group_area'){
+                areaids.push(node.adcode);
+              }
+              if(!!node.children){
+                for(let i = 0; i<node.children.length ;i++){
+                  const subnode = node.children[i];
+                  setnode_pushdevice(subnode);
+                }
+              }
+            };
+
+            const findnode = (node,adcode)=>{
+              if(node.adcode === adcode){
+                if(node.type !== 'group_root'){
+                  return node;
+                }
+              }
+              let retnode = null;
+              if(!!node.children){
+                for(let i = 0; i<node.children.length ;i++){
+                  const subnode = node.children[i];
+                  let tmpnode = findnode(subnode,adcode);
+                  if(!!tmpnode){//subnode为tmpnode,目标选中
+                    if(tmpnode.adcode === adcode){
+                      //选中／展开//equal
+                      setnode_pushdevice(subnode);
+                      return;
+                    }
+                    retnode = node;
+                  }//find ok
+                }//end for
+              }
+              return retnode;
+            };//function end
+            console.log(`选择编码[${query.adcode}]`);
+            findnode(datatreeloc,query.adcode);
+            console.log(`找到所有区域[${areaids}]`);
+
+            //==============
+            // let forkhandles = [];
+            // for(let i=0;i<areaids.length ;i++){
+            //   const handlefork = yield fork(function*(adcode){
+            //     const result = yield call(getclustertree_one,adcode);
+            //     if(result.type === 'device'){
+            //         searchresult_deviceids = [...searchresult_deviceids,...result.deviceids];
+            //     }
+            //   },areaids[i]);
+            //   forkhandles.push(handlefork);
+            // };
+            //
+            // if(forkhandles.length > 0){
+            //   yield join(...forkhandles);
             // }
-            //先定位到地图模式,然后选择车辆
-            let deviceitem = g_devicesdb[DeviceId];
-            console.log(`${deviceitem}`)
-            yield put(ui_sel_tabindex(0));
-            //选择第一个tab
-            yield put(ui_index_selstatus(0));
+            for(let i=0;i<areaids.length ;i++){
+                const result = yield call(getclustertree_one,areaids[i]);
+                if(result.type === 'device'){
+                    searchresult_deviceids = [...searchresult_deviceids,...result.deviceids];
+                }
+            };
 
-            yield put(replace('/index'));
-            //选择车辆
-            if(!!deviceitem){
-              yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
-            }
-          }
-          catch(e){
-            console.log(e);
-          }
-        });
+            console.log(`找到所有设备Id[${searchresult_deviceids.length}]`);
+            console.log(`找到所有设备Id[${searchresult_deviceids}]`);
+
+          }//query
 
 
+        }
+        catch(e){
+          console.log(e);
+        }
+
+    });
 }
 
 export {g_devicesdb};

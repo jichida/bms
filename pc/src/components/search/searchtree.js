@@ -55,7 +55,8 @@ class TreeSearchBattery extends React.Component {
           alarmlevel:'-1',
           groupid:'0',
           adcode:10000,
-          onlinestatus:'all'
+          onlinestatus:'all',
+          deviceid:''
         };
     }
     onSelTreeNode_Group(groupid){
@@ -63,6 +64,9 @@ class TreeSearchBattery extends React.Component {
     }
     onSelTreeNode_Loc(adcode){
       this.setState({adcode});
+    }
+    onChange_deviceid(deviceid){
+        this.setState({deviceid});
     }
     onChange_onlinestatus(onlinestatus){
         this.setState({onlinestatus});
@@ -84,10 +88,7 @@ class TreeSearchBattery extends React.Component {
     }
 
     onClickQuery=()=>{
-      let query = {
-        querydevice:{},
-        queryalarm:{}
-      };
+      let query = {};
 
       if(this.state.groupid !== '0'){
         query['groupid'] = this.state.groupid;
@@ -95,21 +96,25 @@ class TreeSearchBattery extends React.Component {
       if(this.state.adcode !== 10000){
         query['adcode'] = this.state.adcode;
       }
-      if(this.state.notype!== '' && this.state.notypevalue!=''){
-        query.querydevice[this.state.notype] = this.state.notypevalue;
-      }
-      if(this.state.alarmtype!== '' && this.state.alarmtypevalue!=''){
-        query.querydevice[this.state.alarmtype] = this.state.alarmtypevalue;
+      if(this.state.adcode !== ''){
+        query['deviceid'] = this.state.deviceid;
       }
 
-      if(this.state.alarmlevel !== '-1'){
-        query.queryalarm['warninglevel'] = parseInt(this.state.alarmlevel);
-      }
-
-      if(this.state.onlinestatus !== 'all'){
-        query.querydevice['onlinestatus'] = this.state.onlinestatus;
-      }
-      console.log(`【searchreport】查询条件:${JSON.stringify(query)}`);
+      // if(this.state.notype!== '' && this.state.notypevalue!=''){
+      //   query.querydevice[this.state.notype] = this.state.notypevalue;
+      // }
+      // if(this.state.alarmtype!== '' && this.state.alarmtypevalue!=''){
+      //   query.querydevice[this.state.alarmtype] = this.state.alarmtypevalue;
+      // }
+      //
+      // if(this.state.alarmlevel !== '-1'){
+      //   query.queryalarm['warninglevel'] = parseInt(this.state.alarmlevel);
+      // }
+      //
+      // if(this.state.onlinestatus !== 'all'){
+      //   query.querydevice['onlinestatus'] = this.state.onlinestatus;
+      // }
+      console.log(`【searchtree】查询条件:${JSON.stringify(query)}`);
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }
@@ -122,7 +127,7 @@ class TreeSearchBattery extends React.Component {
                     <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
                     <AutoComplete
                             style={{ width: 370 }}
-                            onChange={this.handleChange_notypevalue.bind(this)}
+                            onChange={this.onChange_deviceid.bind(this)}
                             placeholder="请输入编号"
                         />
 
@@ -130,9 +135,9 @@ class TreeSearchBattery extends React.Component {
 
                         <div style={{display:"none"}}>
                     <InputGroup compact>
-                        <Select 
-                            defaultValue="选择编号类型" 
-                            style={{ width: 120 }} 
+                        <Select
+                            defaultValue="选择编号类型"
+                            style={{ width: 120 }}
                             onChange={this.onChange_notype.bind(this)}
                             >
                             {
