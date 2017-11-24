@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
 import { connect } from 'react-redux';
-import {loginsendauth_request,login_request} from '../../actions';
+import {changepwd_request} from '../../actions';
 import NavBar from '../tools/nav.js';
 import { withRouter } from 'react-router-dom';
 import { set_weui } from '../../actions';
@@ -87,7 +87,7 @@ PageForm = withRouter(PageForm);
 
 export class Page extends Component {
     componentWillReceiveProps (nextProps) {
-        
+
     }
     onClickReturn =()=>{
         this.props.history.goBack();
@@ -109,10 +109,10 @@ export class Page extends Component {
 
         console.log("修改密码::::"+JSON.stringify(payload));
 
-        // this.props.dispatch(login_request(payload));
+        this.props.dispatch(changepwd_request(payload));
         // this.props.history.push("./");
         //调用修改密码后台接口
-        
+
 
     }
     render(){

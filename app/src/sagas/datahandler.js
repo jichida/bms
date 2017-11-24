@@ -48,7 +48,10 @@ import {
     searchbatteryalarm_result,
 
     searchbatteryalarmsingle_request,
-    searchbatteryalarmsingle_result
+    searchbatteryalarmsingle_result,
+
+    changepwd_request,
+    changepwd_result
   } from '../actions';
 
 
@@ -74,6 +77,7 @@ let recvmessagetoresultpair = {
   'searchbattery_result':searchbattery_result,
   'searchbatteryalarm_result':searchbatteryalarm_result,
   'collectdevice_result':collectdevice_result,
+  'changepwd_result':changepwd_result
 };
 
 //非验证发送接口
@@ -90,6 +94,7 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,
   'querydevicegroup':`${querydevicegroup_request}`,
   'searchbattery':`${searchbattery_request}`,

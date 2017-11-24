@@ -30,7 +30,9 @@ import {
   setworkorderdone_request,
   setworkorderdone_result,
 
-  getworkusers_request
+  getworkusers_request,
+
+  changepwd_result
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
@@ -52,6 +54,15 @@ export function* wsrecvsagaflow() {
   //   yield put(start_serverpush_devicegeo_sz({}));
   // });
 
+  yield takeLatest(`${changepwd_result}`, function*(action) {
+    yield put(set_weui({
+      toast:{
+        text:'修改密码成功',
+        show: true,
+        type:'success'
+    }}));
+    yield put(goBack());
+  });
 
   yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {
       yield fork(function*(){

@@ -15,6 +15,7 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'changepwd':userlogin.changepwd,
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,
   'queryrealtimealarm':realtimealarm.queryrealtimealarm,

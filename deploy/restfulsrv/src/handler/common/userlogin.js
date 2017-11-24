@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config.js');
 const winston = require('../../log/log.js');
 const pwd = require('../../util/pwd.js');
+const uuid = require('uuid');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -120,4 +121,59 @@ exports.logout = (actiondata,ctx,callback)=>{
     cmd:'logout_result',
     payload:{}
   });
+};
+
+exports.changepwd = (actiondata,ctx,callback)=>{
+
+  const dbModel = DBModels.UserModel;
+  dbModel.findOne({ username: ctx.username }, (err, user)=> {
+    if (!!err) {
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'changepwd'}
+      });
+      return;
+    }
+    if (!user) {
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'旧密码错误',type:'changepwd'}
+      });
+      return;
+    }
+    pwd.hashPassword(actiondata.password, user.passwordsalt, (err, passwordHash)=> {
+
+        if (passwordHash === user.passwordhash) {
+            const salt = uuid.v4();
+            pwd.hashPassword(actiondata.passwordA,salt,(err,hashedpassword)=>{
+              const newUser = {
+                passwordhash:hashedpassword,
+                passwordsalt:salt
+              };
+              //<------开始更新密码
+              dbModel.findByIdAndUpdate(user._id,{$set:newUser},{new: true},(err,result)=>{
+                if(!err && !!result){
+                  callback({
+                    cmd:'changepwd_result',
+                    payload:{result:true}
+                  });
+                }
+                else{
+                  callback({
+                    cmd:'common_err',
+                    payload:{errmsg:'找不到该用户',type:'changepwd'}
+                  });
+                }
+              });
+        });
+      }
+      else{
+        callback({
+          cmd:'common_err',
+          payload:{errmsg:'旧密码错误',type:'changepwd'}
+        });
+      }
+  });
+  });
+
 };
