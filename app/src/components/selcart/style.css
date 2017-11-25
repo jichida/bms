@@ -193,3 +193,22 @@
 	margin-right: 15px;
 }
 
+
+
+.onseldevice{
+    height: 50px;
+    border-bottom:1px solid #DDD;
+    padding: 0 15px
+}
+.onseldevice .titleinput input{
+    height: 48px;
+    text-align: center;
+    width: 100%;
+    outline: none;
+}
+.onseldevice .list >div{
+	text-align: center;
+	line-height: 40px;
+	border-bottom: 1px solid #EEE
+}
+

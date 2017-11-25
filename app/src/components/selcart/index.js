@@ -9,7 +9,8 @@ import Fillerimg from '../../img/25.png';
 import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
 import { required,phone,InputValidation,length4,SelectValidation,InputHiddenValidation,ToggleInput } from "../tools/formvalidation-material-ui"
 import {searchbattery_request,searchbattery_result} from '../../actions';
-
+import SelectDevice from './selectdevice.js';
+import map from 'lodash.map';
 //编号类型数据
 const selitem_devicefields = [
   {
@@ -183,10 +184,16 @@ class Page extends React.Component {
     }
 
     render() {
-        const {mapseldeviceid,devices} = this.props;
+        const {mapseldeviceid,devices, g_devicesdb} = this.props;
         let DeviceId;
         const formstyle={width:"100%",flexGrow:"1"};
         const textFieldStyle={width:"100%",flexGrow:"1"};
+
+        let deviceidlist = [];
+        map(g_devicesdb,(item)=>{
+            deviceidlist.push(item.DeviceId);
+        });
+
         return (
             <div className="selcartPage AppPage"
                 style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
@@ -194,16 +201,17 @@ class Page extends React.Component {
                 <div className="navhead">
                     <a className="back" onClick={()=>{this.onBack();}}></a>
                     <span className="title" style={{paddingRight : "30px"}}>选择汽车</span>
-                    <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}><img src={Fillerimg} /></div>
+                    <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}  style={{display:"none"}}><img src={Fillerimg} /></div>
                 </div>
+                <SelectDevice deviceidlist={deviceidlist} />
                 { this.state.fillerisOpen &&
-                    <div className="selcartfiller">
+                    <div className="selcartfiller" style={{display:"none"}}>
                         <Fillerform onsubmit={this.fillersubmit} />
                         <div className="bg" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}></div>
                     </div>
                 }
 
-                <div className="list">
+                <div className="list"  style={{display:"none"}}>
                     <Datalist tableheight={window.innerHeight-55} onClickSel={this.onClickSel.bind(this)}/>
                 </div>
             </div>
@@ -211,4 +219,8 @@ class Page extends React.Component {
     }
 }
 
-export default connect()(Page);
+
+const mapStateToProps = ({device:{g_devicesdb}}) => {
+  return {g_devicesdb};
+}
+export default connect(mapStateToProps)(Page);
