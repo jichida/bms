@@ -124,7 +124,9 @@ class TreeSearchBattery extends React.Component {
             <div className="searchtree" style={{textAlign: "center"}}>
                     <br/>
                     <TreeSelectBygroup placeholder={"请选择分组"} width={370} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
-                    <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
+                    <div style={{display:"none"}} >
+                      <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
+                    </div>
                     <AutoComplete
                             style={{ width: 370 }}
                             onChange={this.onChange_deviceid.bind(this)}
