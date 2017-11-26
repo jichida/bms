@@ -4,12 +4,6 @@ const DBModels = require('./models.js');
 const _ = require('lodash');
 exports.insertdatatodb= (data,callback)=>{
 
-  // const userModel = DBModels.UserAdminModel;// mongoose.model('UserAdmin', DBModels.UserAdminSchema);//DBModels.UserAdminModel;
-  // userModel.findOne({username: 'admin'}, (err, adminuser)=> {
-  //   console.log(`find UserAdmin...`);
-  //   console.log(`useradmin:${JSON.stringify(err)}`);
-  // });
-
   const LastRealtimeAlarm = _.clone(data.BMSData);
   const LastHistoryTrack = _.clone(data.Position);
 
@@ -39,6 +33,7 @@ exports.insertdatatodb= (data,callback)=>{
 
   console.log(`start save LastRealtimeAlarm...${!!LastRealtimeAlarm}`);
   if(!!LastRealtimeAlarm){
+    LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
     const entity = new dbRealtimeAlarmModel(LastRealtimeAlarm);
     entity.save((err,result)=>{
@@ -48,6 +43,7 @@ exports.insertdatatodb= (data,callback)=>{
 
   console.log(`start save LastHistoryTrack...${!!LastHistoryTrack}`);
   if(!!LastHistoryTrack){
+    LastHistoryTrack.DeviceId = devicedata.DeviceId;
     const dbHistoryTrackModel =  DBModels.HistoryTrackModel;
     const entity = new dbHistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
