@@ -11,6 +11,10 @@ export default {
   resources: {
     systemconfig:{
       name: '系统设置 |||| 系统设置',
+      notification:{
+        'save_success':'保存成功',
+        'save_error':'保存失败'
+      }
     },
     organization:{
       name: '组织 |||| 组织',

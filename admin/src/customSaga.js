@@ -1,9 +1,11 @@
-import { put, takeEvery } from 'redux-saga/effects';
-import { push } from 'react-router-redux';
-import { showNotification } from 'admin-on-rest';
+import { fork } from 'redux-saga/effects';
+import systemconfigsaga from './components/systemconfig/saga';
 
-export default function* reviewSaga() {
-    yield [
-
-    ];
+export default function* rootSaga() {
+  try{
+    yield fork(systemconfigsaga);
+  }
+  catch(e){
+      console.log(e);
+  }
 }

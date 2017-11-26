@@ -1,6 +1,4 @@
 import customSaga from './customSaga';
 
 
-export default [
-
-];
+export default [customSaga];

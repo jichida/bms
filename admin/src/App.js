@@ -29,6 +29,8 @@ import {UserAdminCreate,UserAdminList,UserAdminEdit} from './components/useradmi
 import {RoleCreate,RoleList,RoleEdit} from './components/roles/index.js';
 import {OrganizationCreate,OrganizationEdit,OrganizationList} from './components/organization/index.js';
 
+import systemconfigreducer from './components/systemconfig/reducer';
+
 class App extends Component {
 
     render() {
@@ -36,7 +38,7 @@ class App extends Component {
             <Admin
                 title="电池包监控平台"
                 restClient={restClient}
-                customReducers={{ theme: themeReducer }}
+                customReducers={{ theme:themeReducer,systemconfig:systemconfigreducer }}
                 customSagas={sagas}
                 customRoutes={CustomRoutes}
                 authClient={authClient}
@@ -49,7 +51,6 @@ class App extends Component {
 
             {
               permissions => [
-                permissions === 'admin'?  <Resource name="systemconfig" list={SystemconfigList} show={SystemconfigShow} edit={SystemconfigEdit} create={SystemconfigCreate} />:null,
 
                 <Resource name="devicegroup" list={DeviceGroupList} edit={DeviceGroupEdit} create={DeviceGroupCreate} />,
                 <Resource name="device" list={DeviceList} edit={DeviceEdit} create={DeviceCreate} />,
