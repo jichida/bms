@@ -8,8 +8,7 @@ mongoose.Promise = global.Promise;
 //系统设置
 let SystemConfigSchema = new Schema({
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
-  mappopfields:[],//地图上显示的字读列表
-});
+}, { strict: false });
 SystemConfigSchema.plugin(mongoosePaginate);
 let SystemConfigModel =mongoose.model('systemconfig',  SystemConfigSchema);
 

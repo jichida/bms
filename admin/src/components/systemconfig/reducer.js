@@ -4,10 +4,10 @@ export default (previousState = {
   warningrulelevel2:'',
 }, { type, payload }) => {
     if (type === 'SYSTEM_SAVE_SUCCESS') {
-        return payload.systemconfig;
+        return {...previousState,...payload};
     }
     else if (type === 'SYSTEM_LOAD_SUCCESS') {
-        return payload.systemconfig;
+        return {...previousState,...payload};
     }
     return previousState;
 }

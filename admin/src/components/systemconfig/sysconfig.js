@@ -83,13 +83,15 @@ let SystemconfigForm = reduxForm({
 SystemconfigForm = connect(
   ({systemconfig},props)=>{
       console.log(`systemconfig form ==>${JSON.stringify(systemconfig)}`)
-      return {
+      let retboj = {
         initialValues:{
             warningrulelevel0:lodashget(systemconfig,'warningrulelevel0',''),
             warningrulelevel1:lodashget(systemconfig,'warningrulelevel1',''),
             warningrulelevel2:lodashget(systemconfig,'warningrulelevel2',''),
         },
-      }
+      };
+      console.log(`systemconfig retboj ==>${JSON.stringify(retboj)}`)
+      return retboj;
   }
 )(SystemconfigForm);
 
