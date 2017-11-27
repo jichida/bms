@@ -46,7 +46,7 @@ exports.dofilter= (DeviceId,alarmdata,callback)=>{
         }
       }
     });
-    const CurDay = moment().format('YYYY-MM-DD');
+    const CurDay = moment(alarmdata.DataTime).format('YYYY-MM-DD');
     callback(null,{
       DeviceId,
       CurDay,
