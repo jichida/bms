@@ -92,9 +92,9 @@ class TreeSearchBattery extends React.Component {
                       onChangeSelDate={this.onChangeSelDate.bind(this)} />
                       <Select defaultValue={'-1'}   onChange={this.onChange_alarmlevel.bind(this)}>
                          <Option value={'-1'} >选择警告等级</Option>
-                         <Option value={'0'} >严重告警</Option>
-                         <Option value={'1'} >紧急告警</Option>
-                         <Option value={'2'} >一般告警</Option>
+                         <Option value={'0'} >严重报警</Option>
+                         <Option value={'1'} >紧急报警</Option>
+                         <Option value={'2'} >一般报警</Option>
                      </Select>
                 </div>
                 <div className="b">

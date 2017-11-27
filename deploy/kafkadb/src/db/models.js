@@ -88,70 +88,17 @@ let RoleSchema = new Schema({
 RoleSchema.plugin(mongoosePaginate);
 let RoleModel =mongoose.model('role',  RoleSchema);
 
-//实时告警信息
+//实时告警信息[按天]
 let RealtimeAlarmSchema= new Schema({
-  // DeviceId:String,//	1627100306	string
-  // DataTime:{ type: Date, default:new Date()},	//2017-03-28 08:00:00	date	 	采集本地时间，格式：yyyy-MM-dd HH:mm:ss
-  // MessageTime:{ type: Date, default:new Date()},//	2017-03-28 08:00:00	date	 	Gateway接收到数据的本地时间，格式：yyyy-MM-dd HH:mm:ss
-  // SN:{ type: Schema.Types.Number,default: 0 },//CAN数据包序号，循环自增
-  // BAT_U_Out_HVS:{ type: Schema.Types.Number,default: 0 },//箱体测量电压(外侧)_(正值为正向电压，负值为反向电压)
-  // BAT_U_TOT_HVS:{ type: Schema.Types.Number,default: 0 },//箱体累加电压
-  // BAT_I_HVS:{ type: Schema.Types.Number,default: 0 },//箱体电流
-  // BAT_SOC_HVS:{ type: Schema.Types.Number,default: 0 },//真实SOC
-  // BAT_SOH_HVS:{ type: Schema.Types.Number,default: 0 },//SOH
-  // BAT_Ucell_Max:{ type: Schema.Types.Number,default: 0 },//最高单体电压
-  // BAT_Ucell_Min:{ type: Schema.Types.Number,default: 0 },//最低单体电压
-  // BAT_Ucell_Max_CSC:{ type: Schema.Types.Number,default: 0 },//最高单体电压所在CSC号
-  // BAT_Ucell_Max_CELL:{ type: Schema.Types.Number,default: 0 },//最高单体电压所在电芯位置
-  // BAT_Ucell_Min_CSC:{ type: Schema.Types.Number,default: 0 },//最低单体电压所在CSC号
-  // BAT_Ucell_Min_CELL:{ type: Schema.Types.Number,default: 0 },//最低单体电压所在电芯位置
-  // BAT_T_Max:{ type: Schema.Types.Number,default: 0 },//最高单体温度
-  // BAT_T_Min:{ type: Schema.Types.Number,default: 0 },//最低单体温度
-  // BAT_T_Avg:{ type: Schema.Types.Number,default: 0 },//平均单体温度
-  // BAT_T_Max_CSC:{ type: Schema.Types.Number,default: 0 },//最高温度所在CSC号
-  // BAT_T_Min_CSC:{ type: Schema.Types.Number,default: 0 },//最低温度所在CSC号
-  // BAT_User_SOC_HVS:{ type: Schema.Types.Number,default: 0 },//显示用SOC
-  // BAT_Ucell_Avg:{ type: Schema.Types.Number,default: 0 },//平均单体电压
-  // ALARM_H:{ type: Schema.Types.Number,default: 0 },
-  // ALARM_L:{ type: Schema.Types.Number,default: 0 },
-  // ALARM:String,
-  // ALIV_ST_SW_HVS:{ type: Schema.Types.Number,default: 0 },//生命信号,0~15循环
-  // ST_AC_SW_HVS:{ type: Schema.Types.Number,default: 0 },//空调继电器状态，0 "Off" 1 "On"
-  // ST_Aux_SW_HVS:{ type: Schema.Types.Number,default: 0 },//附件继电器状态，0 "Off" 1 "On"
-  // ST_Main_Neg_SW_HVS:{ type: Schema.Types.Number,default: 0 },//主负继电器状态，0 "Off" 1 "On"
-  // ST_Pre_SW_HVS:{ type: Schema.Types.Number,default: 0 },//预充电继电器状态，0 "Off" 1 "On"
-  // ST_Main_Pos_SW_HVS:{ type: Schema.Types.Number,default: 0 },//主正继电器状态，0 "Off" 1 "On"
-  // ST_Chg_SW_HVS:{ type: Schema.Types.Number,default: 0 },//充电继电器状态，0 "Off" 1 "On"
-  // ST_Fan_SW_HVS:{ type: Schema.Types.Number,default: 0 },//风扇控制继电器状态，0 "Off" 1 "On"
-  // ST_Heater_SW_HVS:{ type: Schema.Types.Number,default: 0 },//加热继电器状态，0 "Off" 1 "On"
-  // BAT_U_HVS:{ type: Schema.Types.Number,default: 0 },//继电器内侧电压_(正值为正向电压，负值为反向电压)
-  // BAT_Allow_Discharge_I:{ type: Schema.Types.Number,default: 0 },//允许放电电流
-  // BAT_Allow_Charge_I:{ type: Schema.Types.Number,default: 0 },//允许充电电流
-  // BAT_ISO_R_Pos:{ type: Schema.Types.Number,default: 0 },//正极绝缘阻抗
-  // BAT_ISO_R_Neg:{ type: Schema.Types.Number,default: 0 },//负极绝缘阻抗
-  // KeyOnVoltage:{ type: Schema.Types.Number,default: 0 },//KeyOn信号电压
-  // PowerVoltage:{ type: Schema.Types.Number,default: 0 },//BMU供电电压
-  // ChargeACVoltage:{ type: Schema.Types.Number,default: 0 },//交流充电供电电压
-  // ChargeDCVoltage:{ type: Schema.Types.Number,default: 0 },//直流充电供电电压
-  // CC2Voltage:{ type: Schema.Types.Number,default: 0 },//CC2检测电压
-  // ChargedCapacity:{ type: Schema.Types.Number,default: 0 },//本次充电容量
-  // TotalWorkCycle:{ type: Schema.Types.Number,default: 0 },//总充放电循环次数
-  // CSC_Power_Current:{ type: Schema.Types.Number,default: 0 },//BMU采的CSC功耗电流
-  // BAT_MAX_SOC_HVS:{ type: Schema.Types.Number,default: 0 },//单体最大SOC
-  // BAT_MIN_SOC_HVS:{ type: Schema.Types.Number,default: 0 },//单体最小SOC
-  // BAT_WEI_SOC_HVS:{ type: Schema.Types.Number,default: 0 },//系统权重SOC
-  // BAT_Chg_AmperReq:{ type: Schema.Types.Number,default: 0 },//充电需求电流
-  // BPM_24V_Uout:{ type: Schema.Types.Number,default: 0 },//BPM24V，Uout电压采样
-  // ST_NegHeater_SW_HVS:{ type: Schema.Types.Number,default: 0 },//加热2继电器状态
-  // ST_WirelessChg_SW:{ type: Schema.Types.Number,default: 0 },//无线充电继电器状态
-  // ST_SpearChg_SW_2:{ type: Schema.Types.Number,default: 0 },//双枪充电继电器2
-  // ST_PowerGridChg_SW:{ type: Schema.Types.Number,default: 0 },//集电网充电继电器
-  // CC2Voltage_2:{ type: Schema.Types.Number,default: 0 },//CC2检测电压2
-  // ALARM_Text:String,	 	//string	 	报警信息，报警信息格式见BMS Alarm Text	BMS Alarm Text
-  // Diagnostic_Text:String,//	辅助诊断代码(155)	string	 	辅助诊断代码
 }, { strict: false });
 RealtimeAlarmSchema.plugin(mongoosePaginate);
 let RealtimeAlarmModel =mongoose.model('realtimealarm',  RealtimeAlarmSchema);
+
+//原始信息
+let RealtimeAlarmRawSchema= new Schema({
+}, { strict: false });
+RealtimeAlarmRawSchema.plugin(mongoosePaginate);
+let RealtimeAlarmRawModel =mongoose.model('realtimealarmraw',  RealtimeAlarmRawSchema);
 
 //设备轨迹
 let HistoryTrackSchema = new Schema({
@@ -230,6 +177,7 @@ exports.UserGroupSchema = UserGroupSchema;
 exports.PermissionSchema = PermissionSchema;
 exports.RoleSchema = RoleSchema;
 exports.RealtimeAlarmSchema = RealtimeAlarmSchema;
+exports.RealtimeAlarmRawSchema = RealtimeAlarmRawSchema;
 exports.CanRawDataSchema = CanRawDataSchema;
 exports.HistoryTrackSchema = HistoryTrackSchema;
 exports.HistoryDeviceSchema = HistoryDeviceSchema;
@@ -245,6 +193,7 @@ exports.UserGroupModel = UserGroupModel;
 exports.PermissionModel = PermissionModel;
 exports.RoleModel = RoleModel;
 exports.RealtimeAlarmModel = RealtimeAlarmModel;
+exports.RealtimeAlarmRawModel = RealtimeAlarmRawModel;
 exports.CanRawDataModel = CanRawDataModel;
 exports.HistoryTrackModel = HistoryTrackModel;
 exports.HistoryDeviceModel = HistoryDeviceModel;

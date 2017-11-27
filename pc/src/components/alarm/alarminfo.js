@@ -7,6 +7,8 @@ import map from 'lodash.map';
 import { Button, Modal, Icon, message } from 'antd';
 import { ui_alarm_selcurdevice,createworkorder_request } from '../../actions';
 import moment from 'moment';
+import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
+
 moment.locale('zh-cn');
 
 class Page extends React.Component {
@@ -40,7 +42,7 @@ class Page extends React.Component {
             cloneitem['故障描述'] = curalarm['故障描述'];
             // cloneitem['部位'] = test_workorder_part_text[getrandom(0,test_workorder_part_text.length-1)];
             cloneitem['责任人'] = workusers[this.state.selworderid].name;
-            cloneitem['故障地点'] =curalarm['告警位置'];
+            cloneitem['故障地点'] =curalarm['报警位置'];
             cloneitem.isdone = false;
             cloneitem.pics = [];
             this.props.dispatch(createworkorder_request(cloneitem));
@@ -54,33 +56,34 @@ class Page extends React.Component {
         const {g_devicesdb,alarms,workusers} = this.props;
         let alarmid = this.props.match.params.alarmid;
         let curalarm =  alarms[alarmid];
-        let deviceid = curalarm.DeviceId;
+        curalarm = bridge_alarminfo(curalarm);
+        let deviceid = curalarm['车辆ID'];
 
         const datadevice = {
             "基本信息" :[ {
-                    name:'告警等级',
-                    value: `${curalarm['告警等级']}`,
+                    name:'报警等级',
+                    value: `${curalarm['报警等级']}`,
                 },
                 {
                     name:'车辆ID',
                     value: `${curalarm['车辆ID']}`,
                 },
                 {
-                  name:'告警时间',
-                  value: `${curalarm['告警时间']}`,
+                  name:'报警时间',
+                  value: `${curalarm['报警时间']}`,
                 },
                 {
                   name:'报警信息',
                   value: `${curalarm['报警信息']}`,
                 },
             ],
-            "位置信息" : [
-                {
-                  name:'告警位置',
-                  value: `${curalarm['告警位置']}`,
-                },
-
-          ],
+            // "位置信息" : [
+            //     {
+            //       name:'报警位置',
+            //       value: `${curalarm['报警位置']}`,
+            //     },
+            //
+            // ],
         };
         return (
 
@@ -88,14 +91,14 @@ class Page extends React.Component {
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
-                    <div className="title">告警详情</div>
+                    <div className="title">报警详情</div>
                     <div className="devicebtnlist">
                         <Button
                             type="primary"
                             icon="environment"
                             onClick={()=>{this.props.dispatch(ui_alarm_selcurdevice(deviceid));}}
                             >定位车辆</Button>
-                        
+
                     </div>
                 </div>
                 <div

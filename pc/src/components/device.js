@@ -30,6 +30,7 @@ import {
   ui_selcurdevice_request,
   searchbatteryalarm_request
 } from '../actions';
+import get from 'lodash.get';
 
 class MessageAllDevice extends React.Component {
 
@@ -37,7 +38,16 @@ class MessageAllDevice extends React.Component {
         super(props);
     }
     onClickQuery(query){
-      this.props.dispatch(searchbatteryalarm_request(query));
+      const startDate = get(query,'query.queryalarm.startDate','');
+      const endDate = get(query,'query.queryalarm.endDate','');
+      // 【searchreport】查询条件:{"querydevice":{},"queryalarm":{"startDate":"2017-11-18 10:51:10","endDate":"2017-11-25 10:51:10","warninglevel":0}}
+      let queryalarm = {};
+      queryalarm['DataTime'] = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+      console.log(`查询报表报警信息:${JSON.stringify(queryalarm)}`);
+      this.props.dispatch(searchbatteryalarm_request({query:queryalarm}));
     }
 
     render(){

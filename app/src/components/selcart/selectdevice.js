@@ -13,6 +13,7 @@ class SelectDevice extends React.Component {
   }
 
   componentWillMount(){
+    this.getdata('');
   }
 
   onChange = (e) => {
@@ -21,6 +22,7 @@ class SelectDevice extends React.Component {
 
   onClick = (id)=>{
       console.log(`选择车辆:${id}`);
+      this.props.onClickSel(id);
   }
 
   getdata =(value)=>{
@@ -40,7 +42,7 @@ class SelectDevice extends React.Component {
   }
 
   render() {
-    
+
     return (
       <div className="onseldevice">
         <div className="titleinput">
@@ -56,17 +58,3 @@ const mapStateToPropsSelectDevice = ({device}) => {
     return {g_devicesdb};
 }
 export default connect(mapStateToPropsSelectDevice)(SelectDevice);
-
-
-
-
-
-
-
-
-
-
-
-
-
-

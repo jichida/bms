@@ -23,12 +23,15 @@ exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
 }
 
 exports.searchbatteryalarm =  (actiondata,ctx,callback)=>{
+  // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const realtimealarmModel = DBModels.RealtimeAlarmModel;
   let query = actiondata.query || {};
   if(!!query.queryalarm){
     query = query.queryalarm;
   }
+  console.log(`查询条件:${JSON.stringify(query)}`);
   realtimealarmModel.find(query,(err,list)=>{
+  //realtimealarmModel.aggregate({$sample: {size: 15}}).exec((err,list)=>{
     if(!err){
       callback({
         cmd:'searchbatteryalarm_result',

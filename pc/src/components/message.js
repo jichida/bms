@@ -16,6 +16,7 @@ import Deraultimg from "../img/1.png";
 import "../css/message.css";
 import TableComponents from "./table.js";
 import Seltime from "./search/seltime.js";
+import {bridge_alarminfo} from '../sagas/datapiple/bridgedb';
 
 import {
     Table,
@@ -31,6 +32,7 @@ import {
     ui_selcurdevice_request,
     searchbatteryalarm_request
 } from '../actions';
+import get from 'lodash.get';
 
 class ModalApp extends React.Component {
     state = {
@@ -86,7 +88,17 @@ class MessageAllDevice extends React.Component {
     }
 
     onClickQuery(query){
-        this.props.dispatch(searchbatteryalarm_request(query));
+      console.log(query);
+      const startDate = get(query,'query.queryalarm.startDate','');
+      const endDate = get(query,'query.queryalarm.endDate','');
+      // 【searchreport】查询条件:{"querydevice":{},"queryalarm":{"startDate":"2017-11-18 10:51:10","endDate":"2017-11-25 10:51:10","warninglevel":0}}
+      let queryalarm = {};
+      queryalarm['DataTime'] = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+      console.log(`查询报警信息:${JSON.stringify(queryalarm)}`);
+      this.props.dispatch(searchbatteryalarm_request({query:queryalarm}));
     }
 
     render(){
@@ -98,9 +110,9 @@ class MessageAllDevice extends React.Component {
           // warninglevel = parseInt(warninglevel);
         }
         let {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
-        let delrow = (row)=>{
+        let viewrow = (row)=>{
             console.log(row);
-            this.props.history.push(`/alarminfo/${row._id}`);
+            this.props.history.push(`/alarminfo/${row.key}`);
         }
 
         let columns_action ={
@@ -108,7 +120,7 @@ class MessageAllDevice extends React.Component {
             dataIndex: '',
             key: 'x',
             render: (text, row, index) => {
-                return (<a onClick={()=>{delrow(row)}}>查看</a>);
+                return (<a onClick={()=>{viewrow(row)}}>查看</a>);
             }
         }
 
@@ -135,14 +147,14 @@ class MessageAllDevice extends React.Component {
 const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
     const column_data = {
       "车辆ID" : "",
-      "告警时间" : "",
-      "告警等级" : "",
-      "告警位置" : "江苏常州武进区",
+      "报警时间" : "",
+      "报警等级" : "",
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];
     map(searchresult_alaram,(aid)=>{
-      alaram_data.push(alarms[aid]);
+      let alarminfo = alarms[aid];
+      alaram_data.push(bridge_alarminfo(alarminfo));
     });
 
     let columns = map(column_data, (data, index)=>{

@@ -113,9 +113,9 @@ class TreeSearch extends React.Component {
                     <TableHeader>
                       <TableRow>
                         <TableHeaderColumn>车辆号</TableHeaderColumn>
-                        <TableHeaderColumn>告警时间</TableHeaderColumn>
-                        <TableHeaderColumn>告警等级</TableHeaderColumn>
-                        <TableHeaderColumn>告警内容</TableHeaderColumn>
+                        <TableHeaderColumn>报警时间</TableHeaderColumn>
+                        <TableHeaderColumn>报警等级</TableHeaderColumn>
+                        <TableHeaderColumn>报警内容</TableHeaderColumn>
                         <TableHeaderColumn>操作</TableHeaderColumn>
                       </TableRow>
                     </TableHeader>

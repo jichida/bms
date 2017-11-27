@@ -247,7 +247,7 @@ export function* apiflow(){//
 
   yield takeLatest(`${getcurallalarm_request}`, function*(action) {
     try{
-      //获取今天所有告警信息列表
+      //获取今天所有报警信息列表
 
       // jsondata_bms_alarm
       yield put(getcurallalarm_result({list:jsondata_bms_alarm}));
@@ -380,7 +380,7 @@ export function* apiflow(){//
         let enddatestring = get(query,'queryalarm.endDate','');
         if(startdatestring !== '' && enddatestring !== ''){
           list = filter(list,(item)=>{
-            let waringtime = item['告警时间'];
+            let waringtime = item['报警时间'];
             let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
             return match;
          });
@@ -431,7 +431,7 @@ export function* apiflow(){//
           let enddatestring = get(query,'queryalarm.endDate','');
           if(startdatestring !== '' && enddatestring !== ''){
             list = filter(list,(item)=>{
-              let waringtime = item['告警时间'];
+              let waringtime = item['报警时间'];
               let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
               return match;
            });

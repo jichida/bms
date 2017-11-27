@@ -119,7 +119,7 @@ class TreeSearch extends React.Component {
                         >
                       <TableRow>
                         <TableHeaderColumn>图标及车辆号</TableHeaderColumn>
-                        <TableHeaderColumn>告警信息</TableHeaderColumn>
+                        <TableHeaderColumn>报警信息</TableHeaderColumn>
                       </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>

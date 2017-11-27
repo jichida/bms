@@ -11,13 +11,13 @@ export const querydeviceinfo_result = createAction('querydeviceinfo_result');
 
 export const querydeviceinfo_list_request = createAction('querydeviceinfo_list_request');
 export const querydeviceinfo_list_result = createAction('querydeviceinfo_list_result');
-//查询告警信息
+//查询报警信息
 export const queryrealtimealarm_request = createAction('queryrealtimealarm_request');
 export const queryrealtimealarm_result = createAction('queryrealtimealarm_result');
 //查询历史轨迹数据
 export const queryhistorytrack_request  = createAction('queryhistorytrack_request');
 export const queryhistorytrack_result  = createAction('queryhistorytrack_result');
-//查询今天所有告警信息列表
+//查询今天所有报警信息列表
 export const getcurallalarm_request= createAction('getcurallalarm_request');
 export const getcurallalarm_result = createAction('getcurallalarm_result');
 

@@ -16,6 +16,7 @@ import {
     ui_alarm_selcurdevice,
     setalarmreaded_request
 } from '../../actions';
+import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 
 
 class Page extends React.Component {
@@ -23,13 +24,15 @@ class Page extends React.Component {
         super(props);
     }
     componentWillMount () {
-        this.props.dispatch(setalarmreaded_request(this.props.match.params.alarmid));
+        // this.props.dispatch(setalarmreaded_request(this.props.match.params.alarmid));
     }
     render() {
         const {carcollections,g_devicesdb,alarms} = this.props;
         let alarmid = this.props.match.params.alarmid;
         let curalarm =  alarms[alarmid];
-        let deviceid = curalarm.DeviceId;
+        curalarm = bridge_alarminfo(curalarm);
+        let deviceid = curalarm['车辆ID'];
+
         let isincollections = false;
         map(carcollections,(id)=>{
             if(id === deviceid){
@@ -38,28 +41,28 @@ class Page extends React.Component {
         });
         const datadevice = {
             "基本信息" :[{
-                    name:'告警等级',
-                    value: `${curalarm['告警等级']}`,
+                    name:'报警等级',
+                    value: `${curalarm['报警等级']}`,
                 },
                 {
                     name:'车辆ID',
                     value: `${curalarm['车辆ID']}`,
                 },
                 {
-                    name:'告警时间',
-                    value: `${curalarm['告警时间']}`,
+                    name:'报警时间',
+                    value: `${curalarm['报警时间']}`,
                 },
                 {
                     name:'报警信息',
                     value: `${curalarm['报警信息']}`,
                 },
             ],
-            "位置信息":[
-                {
-                    name:'告警位置',
-                    value: `${curalarm['告警位置']}`,
-                },
-            ],
+            // "位置信息":[
+            //     {
+            //         name:'报警位置',
+            //         value: `${curalarm['报警位置']}`,
+            //     },
+            // ],
         };
         return (
             <div className="mydevicePage AppPage"
@@ -69,7 +72,7 @@ class Page extends React.Component {
                 }}>
                 <div className="navhead">
                     <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
-                    <span className="title" style={{paddingRight : "30px"}}>告警详情</span>
+                    <span className="title" style={{paddingRight : "30px"}}>报警详情</span>
                     <a className="moresetting"></a>
                 </div>
                 <div className="deviceinfocontent">
