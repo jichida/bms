@@ -148,12 +148,17 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
       "车辆ID" : "",
       "告警时间" : "",
       "告警等级" : "",
-      "告警位置" : "江苏常州武进区",
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];
     map(searchresult_alaram,(aid)=>{
-      alaram_data.push(alarms[aid]);
+      let alarminfo = alarms[aid];
+      alarminfo[`key`] = alarminfo._id;
+      alarminfo[`车辆ID`] = alarminfo[`DeviceId`];
+      alarminfo[`告警时间`] = alarminfo[`DataTime`];
+      alarminfo[`告警等级`] = 0;
+      alarminfo[`报警信息`] = '报警信息';
+      alaram_data.push(alarminfo);
     });
 
     let columns = map(column_data, (data, index)=>{

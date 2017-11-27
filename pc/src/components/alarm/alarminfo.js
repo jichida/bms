@@ -74,13 +74,13 @@ class Page extends React.Component {
                   value: `${curalarm['报警信息']}`,
                 },
             ],
-            "位置信息" : [
-                {
-                  name:'告警位置',
-                  value: `${curalarm['告警位置']}`,
-                },
-
-          ],
+            // "位置信息" : [
+            //     {
+            //       name:'告警位置',
+            //       value: `${curalarm['告警位置']}`,
+            //     },
+            //
+            // ],
         };
         return (
 
@@ -95,7 +95,7 @@ class Page extends React.Component {
                             icon="environment"
                             onClick={()=>{this.props.dispatch(ui_alarm_selcurdevice(deviceid));}}
                             >定位车辆</Button>
-                        
+
                     </div>
                 </div>
                 <div
