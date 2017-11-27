@@ -2,6 +2,9 @@ const mongoose  = require('mongoose');
 // const DBModels = require('../../../restfulsrv/src/db/models.js');
 const DBModels = require('./models.js');
 const _ = require('lodash');
+const alarmplugin = require('../plugins/alarmfilter/index');
+
+
 exports.insertdatatodb= (data,callback)=>{
 
   const LastRealtimeAlarm = _.clone(data.BMSData);
@@ -17,9 +20,9 @@ exports.insertdatatodb= (data,callback)=>{
     devicedata.LastHistoryTrack = LastHistoryTrack;
   }
 
-  console.log(`insertdatatodb LastRealtimeAlarm===>${JSON.stringify(LastRealtimeAlarm)}`);
-  console.log(`insertdatatodb LastHistoryTrack===>${JSON.stringify(LastHistoryTrack)}`);
-  console.log(`insertdatatodb devicedata===>${JSON.stringify(devicedata)}`);
+  // console.log(`insertdatatodb LastRealtimeAlarm===>${JSON.stringify(LastRealtimeAlarm)}`);
+  // console.log(`insertdatatodb LastHistoryTrack===>${JSON.stringify(LastHistoryTrack)}`);
+  // console.log(`insertdatatodb devicedata===>${JSON.stringify(devicedata)}`);
 
   console.log('\n');
 
@@ -34,11 +37,37 @@ exports.insertdatatodb= (data,callback)=>{
   console.log(`start save LastRealtimeAlarm...${!!LastRealtimeAlarm}`);
   if(!!LastRealtimeAlarm){
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
-    const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
-    const entity = new dbRealtimeAlarmModel(LastRealtimeAlarm);
-    entity.save((err,result)=>{
-      console.log(`LastRealtimeAlarm error:${JSON.stringify(err)}`);
+    alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm.Alarm,(err,result_alarm)=>{
+      console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+      if(!err){
+        let updated_data = { $inc: result_alarm.inc_data, CurDay:result_alarm.CurDay,DeviceId:result_alarm.DeviceId,DataTime:LastRealtimeAlarm.DataTime};
+        if(!!LastHistoryTrack){
+          updated_data.Longitude = LastHistoryTrack.Longitude;
+          updated_data.Latitude = LastHistoryTrack.Latitude;
+        }
+        const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
+        dbRealtimeAlarmModel.findOneAndUpdate({DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
+          updated_data,
+          {upsert:true,new: true},(err, result)=> {
+            console.log(`LastRealtimeAlarm error:${JSON.stringify(err)}`);
+          });
+
+          let  result_alarm_raw = LastRealtimeAlarm.Alarm;
+          result_alarm_raw.DeviceId = result_alarm.DeviceId;
+          result_alarm_raw.DataTime = LastRealtimeAlarm.DataTime;
+
+          if(!!LastHistoryTrack){
+            result_alarm_raw.Longitude = LastHistoryTrack.Longitude;
+            result_alarm_raw.Latitude = LastHistoryTrack.Latitude;
+          }
+
+          const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
+          entity.save((err,result)=>{
+            console.log(`LastRealtimeAlarm error:${JSON.stringify(err)}`);
+          });
+      }
     });
+
   }
 
   console.log(`start save LastHistoryTrack...${!!LastHistoryTrack}`);
