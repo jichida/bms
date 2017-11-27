@@ -1,4 +1,7 @@
 import get from 'lodash.get';
+import {datafieldsmap} from './datafieldsmapconst';
+import startsWith from 'lodash.startswith';
+import map from 'lodash.map';
 
 export const bridge_deviceinfo = (deviceinfo)=>{
   const {LastRealtimeAlarm,...rest} = deviceinfo;
@@ -22,4 +25,35 @@ export const bridge_deviceinfo = (deviceinfo)=>{
   deviceinfonew['电池绝缘电阻(KΩ)'] = get(LastRealtimeAlarm,'AL_Over_U_HVS',0);
 
   return deviceinfonew;
+}
+
+export const getalarmfieldtotxt = (alarmfield)=>{
+    if(startsWith(alarmfield, 'AL_') || startsWith(alarmfield, 'F[')){
+      if(startsWith(alarmfield, 'AL_')){
+        return datafieldsmap[alarmfield];
+      }
+      return alarmfield;
+    }
+    return undefined;
+};
+
+//转换报警信息
+export const bridge_alarminfo = (alarminfo)=>{
+  let alarmtxt = '';
+  let alarminfonew = {};
+  let {_id,CurDay,DeviceId,__v,DataTime,warninglevel,Longitude,Latitude,...rest} = alarminfo;
+  map(rest,(v,key)=>{
+    let keytxt = getalarmfieldtotxt(key);
+    if(!!keytxt){
+      alarmtxt += `${keytxt} ${v}次|`
+    }
+
+  });
+  alarminfonew[`key`] = alarminfo._id;
+  alarminfonew[`车辆ID`] = alarminfo[`DeviceId`];
+  alarminfonew[`告警时间`] = alarminfo[`DataTime`];
+  alarminfonew[`告警等级`] = alarminfo[`warninglevel`];
+  alarminfonew[`报警信息`] = alarmtxt;
+  return alarminfonew;
+
 }

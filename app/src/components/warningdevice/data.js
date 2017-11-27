@@ -47,30 +47,44 @@ class Page extends React.Component {
         };
     }
     componentWillMount () {
-        this.props.dispatch(searchbatteryalarm_request({query:{
-          queryalarm:{
-            isreaded:false
+        this.props.dispatch(searchbatteryalarm_request({
+          query:{
+            CurDay:moment().format('YYYY-MM-DD')
           }
-        }}));
+        }));
         //this.onSearch(this.state.seltype);
     }
     onSearch(v){
       let query = {};
-      const {startDate,endDate,warninglevel} = this.state;
-
-      query.queryalarm = {
-        startDate:startDate.format('YYYY-MM-DD HH:mm:ss'),
-        endDate:endDate.format('YYYY-MM-DD HH:mm:ss'),
-      };
+      const {startDate,endDate,warninglevel,deviceid} = this.state;
+      if(deviceid != ''){
+        query.DeviceId = deviceid;
+      }
+      query.DataTime = {
+        $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
+        $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
+      }
+      // query.queryalarm = {
+      //   startDate:startDate.format('YYYY-MM-DD HH:mm:ss'),
+      //   endDate:endDate.format('YYYY-MM-DD HH:mm:ss'),
+      // };
       if(warninglevel != -1){
-        query.queryalarm.warninglevel = warninglevel;
+        if(warninglevel === 0){
+          query.warninglevel = '高';
+        }
+        else if(warninglevel === 1){
+          query.warninglevel = '中';
+        }
+        else if(warninglevel === 2){
+          query.warninglevel = '低';
+        }
       }
-      if(v === 0){
-        query.queryalarm.isreaded = false;
-      }
-      else if(v === 1){
-        query.queryalarm.isreaded = true;
-      }
+      // if(v === 0){
+      //   query.queryalarm.isreaded = false;
+      // }
+      // else if(v === 1){
+      //   query.queryalarm.isreaded = true;
+      // }
       this.props.dispatch(searchbatteryalarm_request({query}));
     }
     onClickSearch(e){
@@ -125,7 +139,7 @@ class Page extends React.Component {
 
     }
     showset =()=>{
-        console.log("sssss")
+        // console.log("sssss")
         this.setState({ showset: !this.state.showset });
     }
     handleSelect = (time) => {
@@ -199,12 +213,8 @@ class Page extends React.Component {
                         <div style={{flexGrow: 1}} onClick={()=>{this.setState({showdata: !this.state.showdata})}}></div>
                     </div>
                 }
-                <div className="workordernav">
-                    <span className={this.state.seltype===0?"sel":""} onClick={this.seltype.bind(this,0)}>未读报警</span>
-                    <span className={this.state.seltype===1?"sel":""} onClick={this.seltype.bind(this,1)}>已读报警</span>
-                    <span className={this.state.seltype===2?"sel":""} onClick={this.seltype.bind(this,2)}>所有报警</span>
-                </div>
-                <Datalist seltype={this.state.seltype} tableheight={window.innerHeight-58-40-65-50}/>
+
+                <Datalist seltype={this.state.seltype} tableheight={window.innerHeight-58-65-50}/>
                 <Footer sel={1} />
                 <DatePicker
                     value={this.state.time}

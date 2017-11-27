@@ -16,6 +16,7 @@ import Deraultimg from "../img/1.png";
 import "../css/message.css";
 import TableComponents from "./table.js";
 import Seltime from "./search/seltime.js";
+import {bridge_alarminfo} from '../sagas/datapiple/bridgedb';
 
 import {
     Table,
@@ -153,12 +154,7 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
     const alaram_data = [];
     map(searchresult_alaram,(aid)=>{
       let alarminfo = alarms[aid];
-      alarminfo[`key`] = alarminfo._id;
-      alarminfo[`车辆ID`] = alarminfo[`DeviceId`];
-      alarminfo[`告警时间`] = alarminfo[`DataTime`];
-      alarminfo[`告警等级`] = 0;
-      alarminfo[`报警信息`] = '报警信息';
-      alaram_data.push(alarminfo);
+      alaram_data.push(bridge_alarminfo(alarminfo));
     });
 
     let columns = map(column_data, (data, index)=>{

@@ -30,8 +30,8 @@ exports.searchbatteryalarm =  (actiondata,ctx,callback)=>{
     query = query.queryalarm;
   }
   console.log(`查询条件:${JSON.stringify(query)}`);
-  //realtimealarmModel.find(query,(err,list)=>{
-  realtimealarmModel.aggregate({$sample: {size: 15}}).exec((err,list)=>{
+  realtimealarmModel.find(query,(err,list)=>{
+  //realtimealarmModel.aggregate({$sample: {size: 15}}).exec((err,list)=>{
     if(!err){
       callback({
         cmd:'searchbatteryalarm_result',

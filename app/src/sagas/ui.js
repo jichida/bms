@@ -24,6 +24,7 @@ import {
   ui_sel_tabindex
 }from '../actions';
 import { push,replace } from 'react-router-redux';
+import moment from 'moment';
 
 export function* uiflow(){//仅执行一次
   //app点击底部菜单
@@ -33,6 +34,7 @@ export function* uiflow(){//仅执行一次
     if(payload === 1){
       yield put(searchbatteryalarm_request({
         query:{
+          CurDay:moment().format('YYYY-MM-DD')
         }
       }));
     }
