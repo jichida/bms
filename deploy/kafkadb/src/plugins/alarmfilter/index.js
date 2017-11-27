@@ -16,10 +16,11 @@ exports.initplugin = ()=>{
 
 }
 
-exports.dofilter= (DeviceId,alarmdata,callback)=>{
+exports.dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   //输入alarmdata,输出：经过处理的alarmdata
   // "AL_Trouble_Code" : 181
   //1级：黄色；2级：橙色；3级：红色
+  let alarmdata = LastRealtimeAlarm.Alarm;
   console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
   console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
 
@@ -46,7 +47,8 @@ exports.dofilter= (DeviceId,alarmdata,callback)=>{
         }
       }
     });
-    const CurDay = moment(alarmdata.DataTime).format('YYYY-MM-DD');
+    console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
+    const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
     callback(null,{
       DeviceId,
       CurDay,

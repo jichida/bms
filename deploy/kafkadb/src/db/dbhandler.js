@@ -37,7 +37,7 @@ exports.insertdatatodb= (data,callback)=>{
   console.log(`start save LastRealtimeAlarm...${!!LastRealtimeAlarm}`);
   if(!!LastRealtimeAlarm){
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
-    alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm.Alarm,(err,result_alarm)=>{
+    alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
       console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err){
         let updated_data = {
