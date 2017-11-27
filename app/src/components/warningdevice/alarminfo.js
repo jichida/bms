@@ -16,6 +16,7 @@ import {
     ui_alarm_selcurdevice,
     setalarmreaded_request
 } from '../../actions';
+import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 
 
 class Page extends React.Component {
@@ -23,13 +24,15 @@ class Page extends React.Component {
         super(props);
     }
     componentWillMount () {
-        this.props.dispatch(setalarmreaded_request(this.props.match.params.alarmid));
+        // this.props.dispatch(setalarmreaded_request(this.props.match.params.alarmid));
     }
     render() {
         const {carcollections,g_devicesdb,alarms} = this.props;
         let alarmid = this.props.match.params.alarmid;
         let curalarm =  alarms[alarmid];
-        let deviceid = curalarm.DeviceId;
+        curalarm = bridge_alarminfo(curalarm);
+        let deviceid = curalarm['车辆ID'];
+
         let isincollections = false;
         map(carcollections,(id)=>{
             if(id === deviceid){
@@ -54,12 +57,12 @@ class Page extends React.Component {
                     value: `${curalarm['报警信息']}`,
                 },
             ],
-            "位置信息":[
-                {
-                    name:'告警位置',
-                    value: `${curalarm['告警位置']}`,
-                },
-            ],
+            // "位置信息":[
+            //     {
+            //         name:'告警位置',
+            //         value: `${curalarm['告警位置']}`,
+            //     },
+            // ],
         };
         return (
             <div className="mydevicePage AppPage"

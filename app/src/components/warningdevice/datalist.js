@@ -13,14 +13,17 @@ import Footer from "../index/footer.js";
 import { withRouter } from 'react-router-dom';
 import "../../css/antd.min.css";
 import {ui_resetsearch} from '../../actions';
+import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
+
 
 class Page extends React.Component {
     componentWillMount() {
       // this.props.dispatch(ui_resetsearch({}));
     }
     rowClick(record, index, event){
-        console.log(record.DeviceId);
-        this.props.history.push(`/alarminfo/${record._id}`)
+        // console.log(record.DeviceId);
+        let alaramid = record[`key`];
+        this.props.history.push(`/alarminfo/${alaramid}`)
     }
 
     render() {
@@ -53,21 +56,16 @@ class Page extends React.Component {
             }
         }, {
             title: '车辆ID',
-            dataIndex: 'DeviceId',
+            dataIndex: '车辆ID',
             key: 'deviceid',
             sorter: (a, b) => {
               console.log(`sort:${JSON.stringify(a)},${JSON.stringify(b)}`)
-              return a['DeviceId'] > b['DeviceId']?1:-1;
+              return a['车辆ID'] > b['车辆ID']?1:-1;
             }
         }, {
             title: '故障信息',
             dataIndex: '报警信息',
             key: '报警信息',
-        }, {
-            title: '所在位置',
-            dataIndex: '告警位置',
-            key: '告警位置',
-            render: (v) => <span>{v}</span>,
         }];
         alaram_data = sortBy(alaram_data,[(item)=>{
           return item.isreaded;
@@ -96,12 +94,12 @@ const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram
       "车辆ID" : "",
       "告警时间" : "",
       "告警等级" : "",
-      "告警位置" : "江苏常州武进区",
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];
     map(searchresult_alaram,(aid)=>{
-      alaram_data.push(alarms[aid]);
+      let alarminfo = alarms[aid];
+      alaram_data.push(bridge_alarminfo(alarminfo));
     });
 
     let columns = map(column_data, (data, index)=>{
