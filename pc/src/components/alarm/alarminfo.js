@@ -54,7 +54,7 @@ class Page extends React.Component {
         const {g_devicesdb,alarms,workusers} = this.props;
         let alarmid = this.props.match.params.alarmid;
         let curalarm =  alarms[alarmid];
-        let deviceid = curalarm.DeviceId;
+        let deviceid = curalarm['车辆ID'];
 
         const datadevice = {
             "基本信息" :[ {
