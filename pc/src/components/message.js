@@ -110,9 +110,9 @@ class MessageAllDevice extends React.Component {
           // warninglevel = parseInt(warninglevel);
         }
         let {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
-        let delrow = (row)=>{
+        let viewrow = (row)=>{
             console.log(row);
-            this.props.history.push(`/alarminfo/${row._id}`);
+            this.props.history.push(`/alarminfo/${row.key}`);
         }
 
         let columns_action ={
@@ -120,7 +120,7 @@ class MessageAllDevice extends React.Component {
             dataIndex: '',
             key: 'x',
             render: (text, row, index) => {
-                return (<a onClick={()=>{delrow(row)}}>查看</a>);
+                return (<a onClick={()=>{viewrow(row)}}>查看</a>);
             }
         }
 
@@ -147,8 +147,8 @@ class MessageAllDevice extends React.Component {
 const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
     const column_data = {
       "车辆ID" : "",
-      "告警时间" : "",
-      "告警等级" : "",
+      "报警时间" : "",
+      "报警等级" : "",
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];

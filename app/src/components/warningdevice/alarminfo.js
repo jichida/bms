@@ -41,16 +41,16 @@ class Page extends React.Component {
         });
         const datadevice = {
             "基本信息" :[{
-                    name:'告警等级',
-                    value: `${curalarm['告警等级']}`,
+                    name:'报警等级',
+                    value: `${curalarm['报警等级']}`,
                 },
                 {
                     name:'车辆ID',
                     value: `${curalarm['车辆ID']}`,
                 },
                 {
-                    name:'告警时间',
-                    value: `${curalarm['告警时间']}`,
+                    name:'报警时间',
+                    value: `${curalarm['报警时间']}`,
                 },
                 {
                     name:'报警信息',
@@ -59,8 +59,8 @@ class Page extends React.Component {
             ],
             // "位置信息":[
             //     {
-            //         name:'告警位置',
-            //         value: `${curalarm['告警位置']}`,
+            //         name:'报警位置',
+            //         value: `${curalarm['报警位置']}`,
             //     },
             // ],
         };
@@ -72,7 +72,7 @@ class Page extends React.Component {
                 }}>
                 <div className="navhead">
                     <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
-                    <span className="title" style={{paddingRight : "30px"}}>告警详情</span>
+                    <span className="title" style={{paddingRight : "30px"}}>报警详情</span>
                     <a className="moresetting"></a>
                 </div>
                 <div className="deviceinfocontent">

@@ -44,13 +44,13 @@ class Page extends React.Component {
         const {g_devicesdb,alarms,curseldeviceid,searchresult_alaramsingle} = this.props;
         return (
             <div className="warningPage">
-                <div className="tit">车辆：{curseldeviceid} 历史告警</div>
+                <div className="tit">车辆：{curseldeviceid} 历史报警</div>
                 <TreeSearchBatteryAlarmSingle onClickQuery={this.onClickQuery.bind(this)}/>
                 <Table onRowSelection={this.onRowSelection.bind(this)}>
                     <TableHeader>
                       <TableRow selectable={false}>
-                        <TableHeaderColumn>告警时间</TableHeaderColumn>
-                        <TableHeaderColumn>告警内容</TableHeaderColumn>
+                        <TableHeaderColumn>报警时间</TableHeaderColumn>
+                        <TableHeaderColumn>报警内容</TableHeaderColumn>
                       </TableRow>
                     </TableHeader>
                     <TableBody>

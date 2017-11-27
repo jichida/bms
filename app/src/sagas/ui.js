@@ -64,7 +64,7 @@ export function* uiflow(){//仅执行一次
 
   yield takeLatest(`${ui_btnclick_alaramall}`, function*(action) {
     yield put(searchbatteryalarm_request({}));
-    console.log(`点击所有告警`);
+    console.log(`点击所有报警`);
     yield put(push('/message/all'));
   });
 
@@ -76,7 +76,7 @@ export function* uiflow(){//仅执行一次
         }
       }
     }));
-    console.log(`点击红色告警`);
+    console.log(`点击红色报警`);
     yield take(`${searchbatteryalarm_result}`);
     yield put(push('/message/0'));
   });
@@ -89,7 +89,7 @@ export function* uiflow(){//仅执行一次
         }
       }
     }));
-    console.log(`点击橙色告警`);
+    console.log(`点击橙色报警`);
     yield take(`${searchbatteryalarm_result}`);
     yield put(push('/message/1'));
   });
@@ -102,7 +102,7 @@ export function* uiflow(){//仅执行一次
         }
       }
     }));
-    console.log(`点击黄色告警`);
+    console.log(`点击黄色报警`);
     yield take(`${searchbatteryalarm_result}`);
     yield put(push('/message/2'));
   });

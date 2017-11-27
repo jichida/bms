@@ -172,7 +172,7 @@ class Page extends React.Component {
                 {
                     this.state.showdata &&
                     <div className="set warningmessageset">
-                        <div className="title">告警车辆搜索</div>
+                        <div className="title">报警车辆搜索</div>
                         <div className="formlist ">
                             <div className="seltimecontent selcarts" onClick={()=>{this.props.history.replace(`/selcart/warningdevice/${this.props.match.params.deviceid}`)}}>
                                 <img src={Car} width={30} />
@@ -187,7 +187,7 @@ class Page extends React.Component {
                                     fullWidth={true} style={{flexGrow: "1",marginLeft: "10px"}}
                                     underlineStyle={{border: "none"}}
                                     >
-                                    <MenuItem value={-1} primaryText="告警等级" />
+                                    <MenuItem value={-1} primaryText="报警等级" />
                                     <MenuItem value={0} primaryText="高" />
                                     <MenuItem value={1} primaryText="中" />
                                     <MenuItem value={2} primaryText="低" />

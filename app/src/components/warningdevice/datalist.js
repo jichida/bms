@@ -44,15 +44,15 @@ class Page extends React.Component {
         const columns = [
           {
             title: '报警时间',
-            dataIndex: '告警时间',
-            key: '告警时间',
+            dataIndex: '报警时间',
+            key: '报警时间',
             render: (text, record, index) => {
                 let warningtext = ["高","中","低"];
                 return (<span className="warningtdtitle"><b className={`warningtype_${record.warninglevel}`}>{warningtext[record.warninglevel]}</b><span>{text}</span></span>)
             },
             sorter: (a, b) => {
               console.log(`sort:${JSON.stringify(a)},${JSON.stringify(b)}`)
-              return a['告警时间'] > b['告警时间']?1:-1;
+              return a['报警时间'] > b['报警时间']?1:-1;
             }
         }, {
             title: '车辆ID',
@@ -92,8 +92,8 @@ class Page extends React.Component {
 const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
     const column_data = {
       "车辆ID" : "",
-      "告警时间" : "",
-      "告警等级" : "",
+      "报警时间" : "",
+      "报警等级" : "",
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];

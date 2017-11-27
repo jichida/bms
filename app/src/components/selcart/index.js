@@ -37,7 +37,7 @@ const selitem_alarmfields = [
   },
 ];
 
-//告警等级
+//报警等级
 let warningtype = 0;
 
 class Fillerform extends React.Component{
@@ -93,11 +93,11 @@ class Fillerform extends React.Component{
                 </div>
 
                 <div className="li warninglist">
-                    <div className="t">告警级别</div>
+                    <div className="t">报警级别</div>
                     <div className="l">
-                        <span className={this.state.warningtypes===1?"sel":""} onClick={()=>{this.setState({warningtypes: 1});warningtype=1}}>一般告警</span>
-                        <span className={this.state.warningtypes===2?"sel":""} onClick={()=>{this.setState({warningtypes: 2});warningtype=2}}>紧急告警</span>
-                        <span className={this.state.warningtypes===3?"sel":""} onClick={()=>{this.setState({warningtypes: 3});warningtype=3}}>严重告警</span>
+                        <span className={this.state.warningtypes===1?"sel":""} onClick={()=>{this.setState({warningtypes: 1});warningtype=1}}>一般报警</span>
+                        <span className={this.state.warningtypes===2?"sel":""} onClick={()=>{this.setState({warningtypes: 2});warningtype=2}}>紧急报警</span>
+                        <span className={this.state.warningtypes===3?"sel":""} onClick={()=>{this.setState({warningtypes: 3});warningtype=3}}>严重报警</span>
                     </div>
                 </div>
 

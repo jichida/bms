@@ -84,9 +84,8 @@ class MessageAllDevice extends React.Component {
 const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaramsingle,alarms}}) => {
     const column_data = {
       "车辆ID" : "",
-      "告警时间" : "",
-      "告警等级" : "",
-      "告警位置" : "江苏常州武进区",
+      "报警时间" : "",
+      "报警等级" : "",
       "报警信息" : "绝缘故障",
     };
     const alaram_data = [];

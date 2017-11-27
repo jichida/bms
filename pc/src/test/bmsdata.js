@@ -90,7 +90,7 @@ let jsondata_bms_workorder =[];
 
 //制造报警数据
 const test_alaram_text=['绝缘故障','高压互锁','SOC过低'];
-const test_warning_level_text=['严重告警','紧急告警','一般告警'];
+const test_warning_level_text=['严重报警','紧急报警','一般报警'];
 let indexalarm  = 0;
 for(let i=0;i<100;i++){
   map(data_bms_alarm,(item,index)=>{
@@ -103,13 +103,13 @@ for(let i=0;i<100;i++){
     cloneitem.warninglevel = getrandom(0,2);
     cloneitem.key = indexalarm + '';
     cloneitem._id = cloneitem.key;
-    cloneitem['告警等级'] = test_warning_level_text[cloneitem.warninglevel];
+    cloneitem['报警等级'] = test_warning_level_text[cloneitem.warninglevel];
     cloneitem['车辆ID'] = cloneitem.DeviceId;
     let secago = getrandom(0,60*60*12);
     cloneitem.isreaded = i<7?false:true;
-    cloneitem['告警时间'] = moment().subtract(secago, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+    cloneitem['报警时间'] = moment().subtract(secago, 'seconds').format('YYYY-MM-DD HH:mm:ss');
     cloneitem['报警信息'] = test_alaram_text[getrandom(0,test_alaram_text.length-1)];
-    cloneitem['告警位置'] = jsondatareadonly_chargingpile[getrandom(0,jsondatareadonly_chargingpile.length-1)].address.formattedAddress;
+    cloneitem['报警位置'] = jsondatareadonly_chargingpile[getrandom(0,jsondatareadonly_chargingpile.length-1)].address.formattedAddress;
 
     jsondata_bms_alarm.push(cloneitem);
   });
@@ -144,7 +144,7 @@ const test_workorder_errorcode_text = ['U87','S22','F34','E22'];
 const test_workorder_part_text = ['车身','发动机','方向盘','坐骑'];
 const test_workorder_assgin_text = ['张三','李四','王五','赵六','钱七','付八','焦九'];
 const test_workorder_carid_text = ['苏AXM872','沪BMT722','沪ATJ722','沪A72EF2','沪A9FE2','沪AZM993','沪AME777','沪AAS995','沪AKJ773','沪AFL872','沪A4FJJE','沪ATF335'];
-const test_workorder_type_text = ['告警排查','急需维修','正常维护','定时检测','正常维修',];
+const test_workorder_type_text = ['报警排查','急需维修','正常维护','定时检测','正常维修',];
 const test_workorder_feedback_text = ['某零件损坏','某零件脱落','使用不当','被风刮坏了','使用次数过多',];
 let indexworkorder  = 0;
 
@@ -200,7 +200,7 @@ for(let i=0;i<max_collections;i++){
 
 let jsondata_bms_track = jsondatatrack;
 
-// jsondata_bms_alarm = [];//告警信息不要
+// jsondata_bms_alarm = [];//报警信息不要
 
 export {
   jsondata_bms_chargingpile,

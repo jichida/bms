@@ -51,8 +51,8 @@ export const bridge_alarminfo = (alarminfo)=>{
   });
   alarminfonew[`key`] = alarminfo._id;
   alarminfonew[`车辆ID`] = alarminfo[`DeviceId`];
-  alarminfonew[`告警时间`] = alarminfo[`DataTime`];
-  alarminfonew[`告警等级`] = alarminfo[`warninglevel`];
+  alarminfonew[`报警时间`] = alarminfo[`DataTime`];
+  alarminfonew[`报警等级`] = alarminfo[`warninglevel`];
   alarminfonew[`报警信息`] = alarmtxt;
   return alarminfonew;
 
