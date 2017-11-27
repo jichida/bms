@@ -203,7 +203,7 @@ class Page extends React.Component {
                     <span className="title" style={{paddingRight : "30px"}}>选择汽车</span>
                     <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}  style={{display:"none"}}><img src={Fillerimg} /></div>
                 </div>
-                <SelectDevice deviceidlist={deviceidlist} />
+                <SelectDevice deviceidlist={deviceidlist} onClickSel={this.onClickSel.bind(this)}/>
                 { this.state.fillerisOpen &&
                     <div className="selcartfiller" style={{display:"none"}}>
                         <Fillerform onsubmit={this.fillersubmit} />
