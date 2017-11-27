@@ -40,7 +40,13 @@ exports.insertdatatodb= (data,callback)=>{
     alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm.Alarm,(err,result_alarm)=>{
       console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err){
-        let updated_data = { $inc: result_alarm.inc_data, CurDay:result_alarm.CurDay,DeviceId:result_alarm.DeviceId,DataTime:LastRealtimeAlarm.DataTime};
+        let updated_data = {
+          $inc: result_alarm.inc_data,
+          CurDay:result_alarm.CurDay,
+          DeviceId:result_alarm.DeviceId,
+          DataTime:LastRealtimeAlarm.DataTime,
+          warninglevel:result_alarm.warninglevel
+        };
         if(!!LastHistoryTrack){
           updated_data.Longitude = LastHistoryTrack.Longitude;
           updated_data.Latitude = LastHistoryTrack.Latitude;

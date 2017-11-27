@@ -50,6 +50,7 @@ exports.dofilter= (DeviceId,alarmdata,callback)=>{
     callback(null,{
       DeviceId,
       CurDay,
+      warninglevel,
       inc_data,
     });
     return;
