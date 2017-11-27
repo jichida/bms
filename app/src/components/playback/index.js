@@ -45,6 +45,7 @@ class Page extends React.Component {
             deviceid,
             mindata : new Date(1970, 0, 1),
             showset : true,
+            speed:50,
         };
     }
     onSelDeviceid(deviceid){
@@ -53,7 +54,7 @@ class Page extends React.Component {
         });
     }
     onClickStart(){
-        const {deviceid,startDate,endDate} = this.state;
+        const {deviceid,startDate,endDate,speed} = this.state;
 
         const query = {
           DeviceId:deviceid
@@ -68,7 +69,7 @@ class Page extends React.Component {
         query.Longitude = {
           $ne:0
         };
-        this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
+        this.props.dispatch(mapplayback_start({isloop:false,speed,query}));
         this.showset();
 
     }
@@ -160,14 +161,16 @@ class Page extends React.Component {
                             <img src={Searchimg5} width={26} />
                             <span>播放速度:</span>
                             <Slider
-                                step={0.10}
-                                value={0.5}
+                                step={1}
+                                value={this.state.speed}
+                                max={500}
+                                min={1}
                                 onChange={(e,v)=>{console.log(v)}}
                                 style={{flexGrow: 1, margin: "10px"}}
                                 sliderStyle={{margin: 0,marginTop: "10px"}}
-                                onChange={(e,v)=>{console.log(v)}}
+                                onChange={(e,v)=>{this.setState({speed:v})}}
                                 />
-                            <span className="shownumber">50</span>
+                            <span className="shownumber">{this.state.speed}</span>
                         </div>
                         <div className="seltimebtn">
                             <RaisedButton label="开始"
