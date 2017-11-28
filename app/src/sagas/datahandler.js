@@ -53,10 +53,11 @@ import {
     changepwd_request,
     changepwd_result
   } from '../actions';
-
+import {ui_searchalarm_request,ui_searchalarm_result} from './pagination';
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'ui_searchalarm_result':ui_searchalarm_result,
   'searchbatteryalarmsingle_result':searchbatteryalarmsingle_result,
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
   'getnotifymessage_result':getnotifymessage_result,
@@ -105,7 +106,8 @@ let sendmessageauthfnsz = {
   'queryhistorytrack':`${queryhistorytrack_request}`,
   'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
   'searchbatteryalarm':`${searchbatteryalarm_request}`,
-  'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`
+  'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`,
+  'ui_searchalarm':`${ui_searchalarm_request}`,
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

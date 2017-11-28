@@ -27,6 +27,7 @@ const authhandler = {
   'collectdevice':userrelate.collectdevice,
   'searchbatteryalarm':realtimealarm.searchbatteryalarm,
   'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
+  'ui_searchalarm':realtimealarm.ui_searchalarm,
 };
 
 module.exports = (socket,actiondata,ctx)=>{

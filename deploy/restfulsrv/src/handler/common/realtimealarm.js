@@ -22,6 +22,26 @@ exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
   });
 }
 
+exports.ui_searchalarm =  (actiondata,ctx,callback)=>{
+  // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
+  const realtimealarmModel = DBModels.RealtimeAlarmModel;
+  let query = actiondata.query || {};
+  realtimealarmModel.paginate(query,actiondata.options,(err,result)=>{
+    if(!err){
+      callback({
+        cmd:'ui_searchalarm_result',
+        payload:{result}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'ui_searchalarm'}
+      });
+    }
+  });
+}
+
 exports.searchbatteryalarm =  (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const realtimealarmModel = DBModels.RealtimeAlarmModel;
