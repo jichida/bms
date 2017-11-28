@@ -25,7 +25,7 @@ import {searchbatteryalarm_request} from '../../actions';
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
 
-let g_showset = false;
+let g_showdata = false;
 let g_startDate,g_endDate,g_warninglevel;
 let g_usecachealarm = false;
 
@@ -38,14 +38,13 @@ class Page extends React.Component {
         }
         this.state = {
             warninglevel:g_warninglevel || -1,
-            showdata : false,
+            showdata : g_showdata,
             time: new Date(),
             isOpen: false,
             seltype : 0,
             startDate:g_startDate || moment(moment().format('YYYY-MM-DD 00:00:00')),
             endDate:g_endDate || moment(),
             mindata : new Date(1970, 0, 1),
-            showset : g_showset,
             deviceid,
         };
     }
@@ -57,14 +56,13 @@ class Page extends React.Component {
       });
     }
     componentDidMount () {
+      g_showdata = false;
       g_usecachealarm = false;
       g_startDate = null;
       g_endDate = null;
       g_warninglevel = null;
     }
-    componentWillUnmount () {
-      g_showset = this.state.showset;
-    }
+
     getquery({startDate,endDate,warninglevel,deviceid}){
       let query = {};
       if(deviceid != ''){
@@ -169,6 +167,7 @@ class Page extends React.Component {
     }
 
     onClickRow = (id)=>{
+      g_showdata = this.state.showdata;
       g_usecachealarm = true;
       g_startDate = this.state.startDate;
       g_endDate = this.state.endDate;
@@ -199,6 +198,7 @@ class Page extends React.Component {
                         <div className="title">报警车辆搜索</div>
                         <div className="formlist ">
                             <div className="seltimecontent selcarts" onClick={()=>{
+                              g_showdata = this.state.showdata;
                               g_startDate = this.state.startDate;
                               g_endDate = this.state.endDate;
                               g_warninglevel = this.state.warninglevel;
