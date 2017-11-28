@@ -51,9 +51,10 @@ class SelectDevice extends React.Component {
   //   this.setState({ options });
   // }
 
-  updateContent = (deviceid)=> {
+  updateContent = (item)=> {
+      console.log(`item:${JSON.stringify(item)}`);
       return  (
-        <div key={deviceid} onClick={this.onClick.bind(this,deviceid)}>{deviceid}</div>
+        <div key={item.DeviceId} onClick={this.onClick.bind(this,item.DeviceId)}>{item.DeviceId}</div>
       );
   }
   render() {
