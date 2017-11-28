@@ -17,9 +17,8 @@ import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import {
   callthen,ui_searchalarm_request,ui_searchalarm_result
 } from '../../sagas/pagination';
-
 import InfinitePage from '../controls/listview';
-let usecachealarm = false;
+
 
 
 class Page extends React.Component {
@@ -27,9 +26,7 @@ class Page extends React.Component {
       // this.props.dispatch(ui_resetsearch({}));
     }
     rowClick(id){
-        // console.log(record.DeviceId);
-        // let alaramid = record[`key`];
-        this.props.history.push(`/alarminfo/${id}`);
+        this.props.onClickRow(id);
     }
     updateContent = (item)=> {
         let warningtext = {
@@ -97,21 +94,23 @@ class Page extends React.Component {
         // (item)=>{
         //   return item.warninglevel;
         // }]);
-        return <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
-
+        console.log(`search alarm:${JSON.stringify(this.props.query)}`);
+        return (
+        <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
         <InfinitePage
-            usecache={usecachealarm}
-            listtypeid='msg'
+            usecache={this.props.usecachealarm}
+            listtypeid='listalarm'
+            ref='alarmlist'
             pagenumber={20}
             updateContent={this.updateContent}
             queryfun={(payload)=>{
               return callthen(ui_searchalarm_request,ui_searchalarm_result,payload);
             }}
             listheight={window.innerHeight-58-66}
-            query={{}}
-            sort={{created_at: -1}}
+            query={this.props.query}
+            sort={{warninglevel: -1}}
         />
-      </div>
+      </div>);
         // return (
         //     <Table
         //         columns={columns}
@@ -154,5 +153,5 @@ class Page extends React.Component {
 
 //     return {g_devicesdb,alarms,searchresult_alaram, alaram_data, columns};
 // }
-Page = withRouter(Page);
-export default connect()(Page);
+// Page = withRouter(Page);
+export default connect(null, null, null, { withRef: true })(Page);

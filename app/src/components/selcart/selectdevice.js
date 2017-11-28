@@ -73,7 +73,7 @@ class SelectDevice extends React.Component {
         <div className="list">
           <InfinitePage
               usecache={usecachedevice}
-              listtypeid='msg'
+              listtypeid='listdevice'
               ref="listviewpage"
               pagenumber={30}
               updateContent={this.updateContent}

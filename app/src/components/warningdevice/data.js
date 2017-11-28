@@ -26,6 +26,9 @@ import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
 
 let g_showset = false;
+let g_startDate,g_endDate,g_warninglevel;
+let g_usecachealarm = false;
+
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -34,32 +37,36 @@ class Page extends React.Component {
           deviceid = '';
         }
         this.state = {
-            warninglevel:-1,
+            warninglevel:g_warninglevel || -1,
             showdata : false,
             time: new Date(),
             isOpen: false,
             seltype : 0,
-            startDate:moment(moment().format('YYYY-MM-DD 00:00:00')),
-            endDate:moment(),
+            startDate:g_startDate || moment(moment().format('YYYY-MM-DD 00:00:00')),
+            endDate:g_endDate || moment(),
             mindata : new Date(1970, 0, 1),
             showset : g_showset,
             deviceid,
         };
     }
     componentWillMount () {
-        this.props.dispatch(searchbatteryalarm_request({
-          query:{
-            CurDay:moment().format('YYYY-MM-DD')
-          }
-        }));
-        //this.onSearch(this.state.seltype);
+      const {startDate,endDate,warninglevel,deviceid} = this.state;
+      let query = this.getquery({startDate,endDate,warninglevel,deviceid});
+      this.setState({
+        query
+      });
+    }
+    componentDidMount () {
+      g_usecachealarm = false;
+      g_startDate = null;
+      g_endDate = null;
+      g_warninglevel = null;
     }
     componentWillUnmount () {
       g_showset = this.state.showset;
     }
-    onSearch(v){
+    getquery({startDate,endDate,warninglevel,deviceid}){
       let query = {};
-      const {startDate,endDate,warninglevel,deviceid} = this.state;
       if(deviceid != ''){
         query.DeviceId = deviceid;
       }
@@ -82,13 +89,21 @@ class Page extends React.Component {
           query.warninglevel = '低';
         }
       }
-      // if(v === 0){
-      //   query.queryalarm.isreaded = false;
-      // }
-      // else if(v === 1){
-      //   query.queryalarm.isreaded = true;
-      // }
-      this.props.dispatch(searchbatteryalarm_request({query}));
+      return query;
+    }
+    onSearch(v){
+
+      const {startDate,endDate,warninglevel,deviceid} = this.state;
+      let query = this.getquery({startDate,endDate,warninglevel,deviceid});
+
+      this.setState({
+        query
+      });
+      window.setTimeout(()=>{
+        console.log(this.refs.alarmdatalist);
+        this.refs.alarmdatalist.getWrappedInstance().refs.alarmlist.getWrappedInstance().onRefresh();
+          // this.refs.alarmdatalist.getWrappedInstance().onRefresh();
+      },0);
     }
     onClickSearch(e){
       e.stopPropagation();
@@ -152,6 +167,14 @@ class Page extends React.Component {
             this.setState({ endDate: t, isOpen: false });
         }
     }
+
+    onClickRow = (id)=>{
+      g_usecachealarm = true;
+      g_startDate = this.state.startDate;
+      g_endDate = this.state.endDate;
+      g_warninglevel = this.state.warninglevel;
+      this.props.history.push(`/alarminfo/${id}`);
+    }
     render() {
 
         const formstyle={width:"100%",flexGrow:"1"};
@@ -175,7 +198,13 @@ class Page extends React.Component {
                     <div className="set warningmessageset">
                         <div className="title">报警车辆搜索</div>
                         <div className="formlist ">
-                            <div className="seltimecontent selcarts" onClick={()=>{this.props.history.replace(`/selcart/warningdevice/${this.props.match.params.deviceid}`)}}>
+                            <div className="seltimecontent selcarts" onClick={()=>{
+                              g_startDate = this.state.startDate;
+                              g_endDate = this.state.endDate;
+                              g_warninglevel = this.state.warninglevel;
+                              g_usecachealarm = true;
+                              this.props.history.replace(`/selcart/warningdevice/${this.props.match.params.deviceid}`)
+                            }}>
                                 <img src={Car} width={30} />
                                 <span className="txt1">车辆信息:{`${this.state.deviceid}`}</span>
                                 <span className="txt2">选择车辆</span>
@@ -215,7 +244,14 @@ class Page extends React.Component {
                     </div>
                 }
 
-                <Datalist seltype={this.state.seltype} tableheight={window.innerHeight-58-65-50}/>
+                <Datalist
+                  usecachealarm={g_usecachealarm}
+                  seltype={this.state.seltype}
+                  tableheight={window.innerHeight-58-65-50}
+                  query={this.state.query}
+                  ref='alarmdatalist'
+                  onClickRow={this.onClickRow}
+                />
                 <Footer sel={1} />
                 <DatePicker
                     value={this.state.time}
