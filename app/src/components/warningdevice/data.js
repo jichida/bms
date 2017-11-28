@@ -25,7 +25,7 @@ import {searchbatteryalarm_request} from '../../actions';
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
 
-
+let g_showset = false;
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -40,9 +40,9 @@ class Page extends React.Component {
             isOpen: false,
             seltype : 0,
             startDate:moment(moment().format('YYYY-MM-DD 00:00:00')),
-            endDate:moment(moment().format('YYYY-MM-DD 23:59:59')),
+            endDate:moment(),
             mindata : new Date(1970, 0, 1),
-            showset : false,
+            showset : g_showset,
             deviceid,
         };
     }
@@ -53,6 +53,9 @@ class Page extends React.Component {
           }
         }));
         //this.onSearch(this.state.seltype);
+    }
+    componentWillUnmount () {
+      g_showset = this.state.showset;
     }
     onSearch(v){
       let query = {};
@@ -123,11 +126,9 @@ class Page extends React.Component {
         }
         //限制时间
         if(v===1){
-            if(this.state.starttime!==''){
-                this.setState({
-                    mindata: new Date(this.state.startDate)
-                });
-            }
+            this.setState({
+                mindata: new Date(this.state.startDate)
+            });
         }else{
             this.setState({
                 mindata: new Date(1970, 0, 1)
@@ -223,7 +224,7 @@ class Page extends React.Component {
                     onCancel={this.handleCancel}
                     min={this.state.mindata}
                     max={new Date()}
-                    showFormat='YYYY/MM/DD/hh/mm'
+                    showFormat='YYYY/MM/DD hh:mm'
                     dateFormat={['YYYY年', 'MM月', 'DD日', 'hh时', 'mm分']} />
             </div>
         );

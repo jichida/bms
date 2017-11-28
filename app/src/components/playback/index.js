@@ -97,11 +97,10 @@ class Page extends React.Component {
         }
         //限制时间
         if(v===1){
-            if(this.state.starttime!==''){
-                this.setState({
-                    mindata: new Date(this.state.startDate)
-                });
-            }
+            this.setState({
+                mindata: new Date(this.state.startDate)
+            });
+
         }else{
             this.setState({
                 mindata: new Date(1970, 0, 1)
@@ -197,7 +196,7 @@ class Page extends React.Component {
                     onCancel={this.handleCancel}
                     min={this.state.mindata}
                     max={new Date()}
-                    showFormat='YYYY/MM/DD/hh/mm'
+                    showFormat='YYYY/MM/DD hh:mm'
                     dateFormat={['YYYY年', 'MM月', 'DD日', 'hh时', 'mm分']} />
             </div>
         );
