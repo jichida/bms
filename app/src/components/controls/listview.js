@@ -121,43 +121,47 @@ class Page extends React.Component {
   _onEndReached(event) {
     // load new data
     console.log('reach end', event);
-    if(this.state.offset + this.props.pagenumber < this.state.total){
-        this.setState({
-          isLoading: true,//加载中
-          isend:false//是否最后一页
-        });
-        let offset = this.state.offset + this.props.pagenumber;
-        let that = this;
-        this.props.dispatch(this.props.queryfun({
-            query: this.props.query,
-            options: {
-                sort: this.props.sort,
-                offset: offset,
-                limit: this.props.pagenumber,
-            }
-        })).then(({result})=> {
-          if (that.mounted){
-              if(!!result){
-                map(result.docs,(item)=>{
-                  that.initData.push(item);
+    if(!!event){
+      if(this.state.offset + this.props.pagenumber < this.state.total){
+          this.setState({
+            isLoading: true,//加载中
+            isend:false//是否最后一页
+          });
+          let offset = this.state.offset + this.props.pagenumber;
+          let that = this;
+          this.props.dispatch(this.props.queryfun({
+              query: this.props.query,
+              options: {
+                  sort: this.props.sort,
+                  offset: offset,
+                  limit: this.props.pagenumber,
+              }
+          })).then(({result})=> {
+            if (that.mounted){
+                if(!!result){
+                  map(result.docs,(item)=>{
+                    that.initData.push(item);
+                  });
+                }
+                let dateSource =  that.state.dataSource.cloneWithRows([...that.initData]);
+                that.setState({
+                  dataSource:dateSource,
+                  isLoading: false,
+                  offset:result.offset,//当前页
+                  total:result.total,
+                  isend:result.offset + result.limit >= result.total
                 });
               }
-              let dateSource =  that.state.dataSource.cloneWithRows([...that.initData]);
-              that.setState({
-                dataSource:dateSource,
-                isLoading: false,
-                offset:result.offset,//当前页
-                total:result.total,
-                isend:result.offset + result.limit >= result.total
-              });
-            }
-          });
-    }
-    else{
-      this.setState({
-        isLoading: false,
-        isend:true
-      });
+            });
+      }
+      else{
+        this.setState({
+          isLoading: false,
+          isend:true
+        });
+      }
+    }else{
+      return ;
     }
   }
 

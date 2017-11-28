@@ -34,7 +34,7 @@ class Page extends React.Component {
     }
     updateContent = (item)=> {
         return  (
-          <div key={item._id} style={{height: "20px",overflow:"hidden", borderBottom:"1px solid #EEE"}} >{JSON.stringify(item)}</div>
+          <div key={item._id} style={{height: "60px",overflow:"hidden", borderBottom:"1px solid #EEE"}} >{JSON.stringify(item)}</div>
         );
     }
     render() {
@@ -87,7 +87,7 @@ class Page extends React.Component {
         return <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}><InfinitePage
             usecache={usecachealarm}
             listtypeid='msg'
-            pagenumber={300}
+            pagenumber={20}
             updateContent={this.updateContent}
             queryfun={(payload)=>{
               return callthen(ui_searchalarm_request,ui_searchalarm_result,payload);
