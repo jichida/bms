@@ -12,9 +12,11 @@ import {
   getcurallalarm_result,
 
   ui_resetsearch,
-  setalarmreaded_result
+  setalarmreaded_result,
+
 } from '../actions';
 import map from 'lodash.map';
+import {ui_searchalarm_result} from '../sagas/pagination';
 
 const initial = {
   searchresult:{
@@ -28,6 +30,16 @@ const initial = {
 };
 
 const searchresult = createReducer({
+  [ui_searchalarm_result]:(state,payload)=>{
+    const {result} = payload;
+    let alarms = {...state.alarms};
+    if(!!result.docs){
+      map(result.docs,(alaram)=>{
+        alarms[alaram._id] = alaram;
+      });
+    }
+    return { ...state,alarms};
+  },
   [setalarmreaded_result]:(state,payload)=>{
     let item = payload;
     let alarms = {...state.alarms};

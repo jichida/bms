@@ -18,7 +18,6 @@ import {
   callthen,ui_searchalarm_request,ui_searchalarm_result
 } from '../../sagas/pagination';
 
-
 import InfinitePage from '../controls/listview';
 let usecachealarm = false;
 
@@ -40,8 +39,8 @@ class Page extends React.Component {
         };
         console.log(item);
         return  (
-            <div 
-                key={item._id} 
+            <div
+                key={item._id}
                 className={`warningtypelist warningtype_${warningtext[item.warninglevel]}`}
                 onClick={this.rowClick.bind(this,item._id)}
                 >
