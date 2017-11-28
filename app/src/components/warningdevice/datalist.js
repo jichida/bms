@@ -27,14 +27,28 @@ class Page extends React.Component {
     componentWillMount() {
       // this.props.dispatch(ui_resetsearch({}));
     }
-    rowClick(record, index, event){
+    rowClick(id){
         // console.log(record.DeviceId);
-        let alaramid = record[`key`];
-        this.props.history.push(`/alarminfo/${alaramid}`)
+        // let alaramid = record[`key`];
+        this.props.history.push(`/alarminfo/${id}`);
     }
     updateContent = (item)=> {
+        let warningtext = {
+            "高":"1",
+            "中":"2",
+            "低":"3"
+        };
+        console.log(item);
         return  (
-          <div key={item._id} style={{height: "60px",overflow:"hidden", borderBottom:"1px solid #EEE"}} >{JSON.stringify(item)}</div>
+            <div 
+                key={item._id} 
+                className={`warningtypelist warningtype_${warningtext[item.warninglevel]}`}
+                onClick={this.rowClick.bind(this,item._id)}
+                >
+                { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> }
+                <span>车辆: <br/>{item["DeviceId"]}</span>
+                <span className="time">{item["DataTime"]}</span>
+            </div>
         );
     }
     render() {
@@ -84,7 +98,9 @@ class Page extends React.Component {
         // (item)=>{
         //   return item.warninglevel;
         // }]);
-        return <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}><InfinitePage
+        return <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
+
+        <InfinitePage
             usecache={usecachealarm}
             listtypeid='msg'
             pagenumber={20}
@@ -113,31 +129,31 @@ class Page extends React.Component {
 
 
 
-const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
-    const column_data = {
-      "车辆ID" : "",
-      "报警时间" : "",
-      "报警等级" : "",
-      "报警信息" : "绝缘故障",
-    };
-    const alaram_data = [];
-    map(searchresult_alaram,(aid)=>{
-      let alarminfo = alarms[aid];
-      alaram_data.push(bridge_alarminfo(alarminfo));
-    });
+// const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
+//     const column_data = {
+//       "车辆ID" : "",
+//       "报警时间" : "",
+//       "报警等级" : "",
+//       "报警信息" : "绝缘故障",
+//     };
+//     const alaram_data = [];
+//     map(searchresult_alaram,(aid)=>{
+//       let alarminfo = alarms[aid];
+//       alaram_data.push(bridge_alarminfo(alarminfo));
+//     });
 
-    let columns = map(column_data, (data, index)=>{
-        return {
-            title: index,
-            dataIndex: index,
-            key: index,
-            render: (text, row, index) => {
-                return <span>{text}</span>;
-            }
-        }
-    })
+//     let columns = map(column_data, (data, index)=>{
+//         return {
+//             title: index,
+//             dataIndex: index,
+//             key: index,
+//             render: (text, row, index) => {
+//                 return <span>{text}</span>;
+//             }
+//         }
+//     })
 
-    return {g_devicesdb,alarms,searchresult_alaram, alaram_data, columns};
-}
+//     return {g_devicesdb,alarms,searchresult_alaram, alaram_data, columns};
+// }
 Page = withRouter(Page);
 export default connect()(Page);
