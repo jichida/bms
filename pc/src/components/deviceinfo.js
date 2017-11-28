@@ -545,7 +545,7 @@ class Page extends React.Component {
                           }
 
                         }>车辆轨迹监控</Button>
-                        <Button type="primary" icon="area-chart" onClick={
+                        {/* <Button type="primary" icon="area-chart" onClick={
                           ()=>
                           {
                             // this.props.dispatch(ui_clickplayback(mapseldeviceid));
@@ -558,7 +558,7 @@ class Page extends React.Component {
                           const id = this.props.match.params.deviceid;
                           this.props.dispatch(ui_btnclick_devicemessage({DeviceId:id}));
                           //this.props.history.push(`/devicemessage/${mapseldeviceid}`)
-                        }}>历史警告</Button>
+                        }}>历史警告</Button> */}
                     </div>
                 </div>
 
