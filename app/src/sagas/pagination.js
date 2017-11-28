@@ -3,6 +3,7 @@ import { take,put, call,race,takeLatest,select } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import paginate_array from 'paginate-array';
 import lodashmap from 'lodash.map';
+import lodashincludes from 'lodash.includes';
 
 const synccallreq = createAction('synccallreq');
 export const ui_searchdevice_request = createAction('ui_searchdevice_request');
@@ -52,7 +53,15 @@ export function* createsagacallbackflow(){
       });
       let deviceall = [];
       lodashmap(g_devicesdb,(deviceinfo)=>{
-        deviceall.push(deviceinfo);
+        if(!!payload.query.DeviceId){
+          if(lodashincludes(deviceinfo.DeviceId,payload.query.DeviceId)){
+            deviceall.push(deviceinfo);
+          }
+        }
+        else{
+          deviceall.push(deviceinfo);
+        }
+
       });
 
       const {offset,limit} = payload.options;
@@ -78,6 +87,7 @@ export function* createsagacallbackflow(){
         offset:offset,
         limit
       };
+      yield call(delay, 10);
       yield put(ui_searchdevice_result({result}));
     }
     catch(e){

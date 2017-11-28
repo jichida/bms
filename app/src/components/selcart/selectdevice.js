@@ -17,9 +17,9 @@ let usecachedevice = false;
 class SelectDevice extends React.Component {
   constructor(props) {
       super(props);
-      // this.state = {
-      //   options: []
-      // }
+      this.state = {
+        query: {}
+      }
   }
 
   componentWillMount(){
@@ -28,6 +28,13 @@ class SelectDevice extends React.Component {
 
   onChange = (e) => {
       // this.getdata(e.target.value);
+      this.setState({
+        query:{'DeviceId':e.target.value}
+      });
+      window.setTimeout(()=>{
+          this.refs.listviewpage.getWrappedInstance().onRefresh();
+      },0);
+
   }
 
   onClick = (id)=>{
@@ -58,7 +65,6 @@ class SelectDevice extends React.Component {
       );
   }
   render() {
-
     return (
       <div className="onseldevice">
         <div className="titleinput">
@@ -68,13 +74,14 @@ class SelectDevice extends React.Component {
           <InfinitePage
               usecache={usecachedevice}
               listtypeid='msg'
+              ref="listviewpage"
               pagenumber={30}
               updateContent={this.updateContent}
               queryfun={(payload)=>{
                 return callthen(ui_searchdevice_request,ui_searchdevice_result,payload);
               }}
               listheight={window.innerHeight-68}
-              query={{}}
+              query={this.state.query}
               sort={{created_at: -1}}
           />
         </div>
