@@ -24,4 +24,5 @@ export default [
         { name: 'permission', icon: <PermissionIcon /> },
         { name: 'realtimealarm', icon: <RealtimeAlarmIcon /> },
         { name: 'historytrack', icon: <HistoryTrackIcon /> },
+        { name: 'datadict', icon: <DeviceIcon /> },
 ];

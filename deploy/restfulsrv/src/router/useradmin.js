@@ -109,7 +109,8 @@ const curd = (schmodel)=>{
           schmodel.collectionname === 'devicegroup' ||
           schmodel.collectionname === 'user' ||
           schmodel.collectionname === 'role' ||
-          schmodel.collectionname === 'permission' ){
+          schmodel.collectionname === 'permission' ||
+          schmodel.collectionname === 'datadict'){
           createddata.organizationid = organizationid;
       }
       adminaction.preaction('save',schmodel.collectionname,createddata,(err,result)=>{

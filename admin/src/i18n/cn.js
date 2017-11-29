@@ -62,6 +62,9 @@ export default {
     userlog:{
       name: '用户日志管理 |||| 用户日志管理',
     },
+    datadict:{
+      name: '数据字典维护 |||| 数据字典维护',
+    }
   }
 
 };
