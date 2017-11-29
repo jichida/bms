@@ -1,6 +1,5 @@
 import get from 'lodash.get';
 import store from '../../env/store';
-import {datafieldsmap} from './datafieldsmapconst';
 import startsWith from 'lodash.startswith';
 import map from 'lodash.map';
 
@@ -29,9 +28,12 @@ export const bridge_deviceinfo = (deviceinfo)=>{
 }
 
 export const getalarmfieldtotxt = (alarmfield)=>{
+    const {mapdict} = store.getState().app;
     if(startsWith(alarmfield, 'AL_') || startsWith(alarmfield, 'F[')){
       if(startsWith(alarmfield, 'AL_')){
-        return datafieldsmap[alarmfield];
+        if(!!mapdict[alarmfield]){
+          return mapdict[alarmfield].showname;
+        }
       }
       return alarmfield;
     }
@@ -61,7 +63,7 @@ export const bridge_alarminfo = (alarminfo)=>{
 
 export const bridge_deviceinfo_pop =(deviceitem)=>{
   let kvlist = [];
-  let deviceitemnew = bridge_deviceinfo(deviceitem);
+  deviceitem = bridge_deviceinfo(deviceitem);
   const {mappopfields,mapdict} = store.getState().app;
   map(mappopfields,(v)=>{
     if(!!mapdict[v]){

@@ -18,8 +18,14 @@ exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
             });
             allfieldslist = _.uniq(allfieldslist);
             console.log(`allfieldslist==>${JSON.stringify(allfieldslist)}`)
+            const alname = 'AL_';
+            //还应该包括所有AL开头字母的信息
             const dbdictModel = DBModels.DataDictModel;
-            dbdictModel.find({name:{'$in':allfieldslist}},(err,dictlist)=>{
+            dbdictModel.find({
+              $or:[
+                {name:{'$in':allfieldslist}},
+                {name:{'$regex':alname, $options: "i"}}
+              ]},(err,dictlist)=>{
               console.log(`dictlist==>${JSON.stringify(dictlist)}`)
               let mapdict = {};
               if(!err && dictlist.length > 0){
