@@ -50,7 +50,7 @@ const DataDictList = (props) => (
     <Datagrid>
       <TextField label="字段名" source="name" />
       <TextField label="字段显示名" source="showname" />
-      <TextInput label="字段类型" source="type" />
+      <TextField label="字段类型" source="type" />
       <TextField label="字段单位" source="unit" />
       <EditButton />
     </Datagrid>
