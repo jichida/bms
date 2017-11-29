@@ -56,6 +56,7 @@
     "normalizr": "^3.2.3",
     "object-assign": "4.1.1",
     "onsenui": "^2.6.1",
+    "paginate-array": "^2.0.0",
     "pica": "^3.0.6",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.6",
