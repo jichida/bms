@@ -1,6 +1,9 @@
 const datafieldsmap = {
   'DeviceId':'设备Id',
-  'AL_Over_Ucell':'单体过压报警',
+  'AL_Over_Ucell':{
+    value:'单体过压报警',
+    unit:''
+  },
   'AL_Under_Ucell':'单体欠压报警',
   'AL_Over_Tcell':'单体过温报警',
   'AL_Under_Tcell':'单体低温报警',
