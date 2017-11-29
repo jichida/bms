@@ -28,17 +28,17 @@ import moment from 'moment';
 
 export function* uiflow(){//仅执行一次
   //app点击底部菜单
-  yield takeLatest(`${ui_sel_tabindex}`, function*(action) {
-    const {payload} = action;
-    console.log(`点击tab`);
-    if(payload === 1){
-      yield put(searchbatteryalarm_request({
-        query:{
-          CurDay:moment().format('YYYY-MM-DD')
-        }
-      }));
-    }
-  });
+  // yield takeLatest(`${ui_sel_tabindex}`, function*(action) {
+  //   const {payload} = action;
+  //   console.log(`点击在线`);
+  //   if(payload === 1){
+  //     yield put(searchbatteryalarm_request({
+  //       query:{
+  //         CurDay:moment().format('YYYY-MM-DD')
+  //       }
+  //     }));
+  //   }
+  // });
 
 
   //ui_btnclick_devicemessage

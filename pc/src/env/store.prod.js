@@ -4,7 +4,7 @@
 
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-
+import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import reducer from '../reducers';
 import createHistory from 'history/createHashHistory';
@@ -23,7 +23,7 @@ let configureStore = (initialState)=> {
     const store = createStore(
         reducer, initialState,
         compose(
-            applyMiddleware(middleware,sagaMiddleware)
+            applyMiddleware(thunk,middleware,sagaMiddleware)
         )
     );
 

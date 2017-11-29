@@ -1,7 +1,6 @@
 import { put,call,takeLatest,fork,take,race} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
-
   common_err,
 
   md_login_result,
@@ -31,7 +30,9 @@ import {
   setworkorderdone_request,
   setworkorderdone_result,
 
-  getworkusers_request
+  getworkusers_request,
+
+  changepwd_result
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
@@ -43,9 +44,6 @@ import {g_devicesdb} from './mapmain';
 // } from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
-
-
-
   yield takeLatest(`${setworkorderdone_request}`, function*(action) {
       yield take(`${setworkorderdone_result}`);
       yield put(goBack());
@@ -56,6 +54,15 @@ export function* wsrecvsagaflow() {
   //   yield put(start_serverpush_devicegeo_sz({}));
   // });
 
+  yield takeLatest(`${changepwd_result}`, function*(action) {
+    yield put(set_weui({
+      toast:{
+        text:'修改密码成功',
+        show: true,
+        type:'success'
+    }}));
+    yield put(goBack());
+  });
 
   yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {
       yield fork(function*(){
@@ -102,6 +109,7 @@ export function* wsrecvsagaflow() {
 
             }
         }
+
       }
       catch(e){
         console.log(e);

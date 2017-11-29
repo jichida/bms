@@ -1,6 +1,9 @@
 import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join,throttle } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
+  common_err,
+  searchbatterylocal_request,
+  searchbatterylocal_result,
   md_mapmain_setzoomlevel,
   mapmain_setzoomlevel,
   mapmain_setmapcenter,
@@ -56,6 +59,8 @@ import lodashmap from 'lodash.map';
 import find from 'lodash.find';
 import sampleSize from 'lodash.samplesize';
 import get from 'lodash.get';
+import includes from 'lodash.includes';
+import filter from 'lodash.filter';
 import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
@@ -1274,7 +1279,128 @@ export function* createmapmainflow(){
           }
         });
 
+    yield takeLatest(`${searchbatterylocal_request}`, function*(action) {
+        //搜索本地电池包
+        try{
+          const {payload:{query}} = action;
+          console.log(`搜索本地电池包===>${JSON.stringify(query)}`);
+          //groupid/adcode/deviceid
+          if(!query.groupid && !query.adcode && query.deviceid.length < 4){
+            yield put(common_err({type:'searchbatterylocal',errmsg:`搜索范围太大,请至少输入4位以上id或选择分组和行政区域`}));
+            return;
+          }
+          let list = [];
+          if(!!query.groupid){
+            const {groups} = yield select((state)=>{
+              return {groups:state.device.groups};
+            });
+            const groupinfo = groups[query.groupid];
+            if(!!groupinfo){
+              const result = filter(groupinfo.deviceids,(deviceinfo)=>{
+                if(query.deviceid === ''){
+                  return true;
+                }
+                return includes(deviceinfo.DeviceId,query.deviceid);
+              });
+              lodashmap(result,(info)=>{
+                list.push(info);
+              });
+              console.log(`查询分组:${JSON.stringify(result)}`);
+              yield put(searchbattery_result({list}));
+              return;
+            }
+          }
 
+          const result = filter(g_devicesdb,(deviceinfo)=>{
+            if(query.deviceid === ''){
+              return true;
+            }
+            return includes(deviceinfo.DeviceId,query.deviceid);
+          });
+          console.log(`查询设备:${JSON.stringify(result)}`);
+          lodashmap(result,(info)=>{
+            list.push(info);
+          });
+          yield put(searchbattery_result({list}));
+          // if(!!query.adcode){
+          //   let areaids = [];
+          //   const {datatreeloc} = yield select((state)=>{
+          //     return {datatreeloc:state.device.datatreeloc};
+          //   });
+          //
+          //   const setnode_pushdevice = (node)=>{
+          //     if(node.type === 'group_area'){
+          //       areaids.push(node.adcode);
+          //     }
+          //     if(!!node.children){
+          //       for(let i = 0; i<node.children.length ;i++){
+          //         const subnode = node.children[i];
+          //         setnode_pushdevice(subnode);
+          //       }
+          //     }
+          //   };
+          //
+          //   const findnode = (node,adcode)=>{
+          //     if(node.adcode === adcode){
+          //       if(node.type !== 'group_root'){
+          //         return node;
+          //       }
+          //     }
+          //     let retnode = null;
+          //     if(!!node.children){
+          //       for(let i = 0; i<node.children.length ;i++){
+          //         const subnode = node.children[i];
+          //         let tmpnode = findnode(subnode,adcode);
+          //         if(!!tmpnode){//subnode为tmpnode,目标选中
+          //           if(tmpnode.adcode === adcode){
+          //             //选中／展开//equal
+          //             setnode_pushdevice(subnode);
+          //             return;
+          //           }
+          //           retnode = node;
+          //         }//find ok
+          //       }//end for
+          //     }
+          //     return retnode;
+          //   };//function end
+          //   console.log(`选择编码[${query.adcode}]`);
+          //   findnode(datatreeloc,query.adcode);
+          //   console.log(`找到所有区域[${areaids}]`);
+          //
+          //   //==============
+          //   // let forkhandles = [];
+          //   // for(let i=0;i<areaids.length ;i++){
+          //   //   const handlefork = yield fork(function*(adcode){
+          //   //     const result = yield call(getclustertree_one,adcode);
+          //   //     if(result.type === 'device'){
+          //   //         searchresult_deviceids = [...searchresult_deviceids,...result.deviceids];
+          //   //     }
+          //   //   },areaids[i]);
+          //   //   forkhandles.push(handlefork);
+          //   // };
+          //   //
+          //   // if(forkhandles.length > 0){
+          //   //   yield join(...forkhandles);
+          //   // }
+          //   for(let i=0;i<areaids.length ;i++){
+          //       const result = yield call(getclustertree_one,areaids[i]);
+          //       if(result.type === 'device'){
+          //           searchresult_deviceids = [...searchresult_deviceids,...result.deviceids];
+          //       }
+          //   };
+          //
+          //   console.log(`找到所有设备Id[${searchresult_deviceids.length}]`);
+          //   console.log(`找到所有设备Id[${searchresult_deviceids}]`);
+          //
+          // }//query
+
+
+        }
+        catch(e){
+          console.log(e);
+        }
+
+    });
 }
 
 export {g_devicesdb};

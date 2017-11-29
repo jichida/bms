@@ -9,3 +9,6 @@ export const login_result = createAction('login_result');
 
 export const logout_request = createAction('logout_request');
 export const logout_result = createAction('logout_result');
+
+export const changepwd_request = createAction('changepwd_request');
+export const changepwd_result = createAction('changepwd_result');

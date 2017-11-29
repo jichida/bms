@@ -13,7 +13,7 @@ import {
 
   ui_resetsearch,
   setalarmreaded_result,
-
+  searchbatterylocal_result
 } from '../actions';
 import map from 'lodash.map';
 import {ui_searchalarm_result} from '../sagas/pagination';
@@ -64,6 +64,10 @@ const searchresult = createReducer({
     const curseldeviceid = payload.DeviceId;
     let searchresult_alaramsingle = [];
     return { ...state, curseldeviceid,searchresult_alaramsingle};
+  },
+  [searchbatterylocal_result]: (state, payload) => {
+    const searchresult_battery = [...payload.searchresult_deviceids];
+    return { ...state, searchresult_battery};
   },
   [searchbattery_request]: (state, payload) => {
     const searchresult_battery = [];
