@@ -23,7 +23,7 @@ const DataDictCreate = (props) => (
     <SimpleForm>
       <TextInput label="字段名" source="name" validate={required} />
       <TextInput label="字段全名" source="fullname" />
-      <TextInput label="字段显示名" source="showname" />
+      <TextInput label="字段显示名" source="showname" validate={required} />
       <TextInput label="字段类型" source="type" />
       <TextInput label="字段描述" source="desc" />
       <TextInput label="字段单位" source="unit" />
@@ -36,7 +36,7 @@ const DataDictEdit = (props) => {
     <SimpleForm>
       <TextInput label="字段名" source="name" validate={required} />
       <TextInput label="字段全名" source="fullname" />
-      <TextInput label="字段显示名" source="showname" />
+      <TextInput label="字段显示名" source="showname" validate={required} />
       <TextInput label="字段类型" source="type" />
       <TextInput label="字段描述" source="desc" />
       <TextInput label="字段单位" source="unit" />
@@ -48,12 +48,9 @@ const DataDictEdit = (props) => {
 const DataDictList = (props) => (
   <List title={<DataDictTitle />} {...props}>
     <Datagrid>
-      <TextField source="id" />
-      <TextField label="字段名" source="name" validate={required} />
-      <TextField label="字段全名" source="fullname" />
+      <TextField label="字段名" source="name" />
       <TextField label="字段显示名" source="showname" />
-      <TextField label="字段类型" source="type" />
-      <TextField label="字段描述" source="desc" />
+      <TextInput label="字段类型" source="type" />
       <TextField label="字段单位" source="unit" />
       <EditButton />
     </Datagrid>
