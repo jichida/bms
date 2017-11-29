@@ -100,9 +100,9 @@ class Page extends React.Component {
                 <div className="mydevicecontent" style={mydevicecontentstyle}>
                     <div className="mydevicecontentlist">
                         {  !!groups[groupid].deviceids && groups[groupid].deviceids.length >0 &&
-                            map(groups[groupid].deviceids,(data,i)=>{
+                            map(groups[groupid].deviceids,(data)=>{
                                 return <div key={data.DeviceId}
-                                   onClick={this.rowClick.bind(data.DeviceId)} style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>{data.DeviceId}</div>
+                                   onClick={()=>{this.rowClick(data.DeviceId)}} style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>{data.DeviceId}</div>
                             })
                         }
                     </div>
