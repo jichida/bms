@@ -9,7 +9,7 @@ import Moresetting from "../../img/17.png";
 import Footer from "../index/footer.js";
 import Datalist from "./datalist";
 import MapPage from '../admincontent';
-import {ui_mycar_showtype} from '../../actions';
+import {ui_mycar_showtype,ui_viewdevicedetail} from '../../actions';
 import Searchimg from "../../img/22.png";
 import SelectDevice from '../mydevice/selectdevice.js';
 
@@ -35,7 +35,8 @@ class Page extends React.Component {
         });
     }
     rowClick = (id)=>{
-        this.props.history.push(`/deviceinfo/${id}`);
+      this.props.dispatch(ui_viewdevicedetail({DeviceId:id}));
+        // this.props.history.push(`/deviceinfo/${id}`);
     }
     render() {
         let deviceidlist = [];

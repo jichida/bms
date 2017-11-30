@@ -48,7 +48,9 @@ import {
   ui_changemodeview,
 
   mapmain_showpopinfo,
-  mapmain_showpopinfo_list
+  mapmain_showpopinfo_list,
+
+  ui_viewdevicedetail
 } from '../actions';
 import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -1400,6 +1402,23 @@ export function* createmapmainflow(){
           console.log(e);
         }
 
+    });
+
+    yield takeLatest(`${ui_viewdevicedetail}`, function*(action) {
+        //搜索本地电池包
+      try{
+          const {payload:{DeviceId}} = action;
+          //获取该车辆信息
+          yield put(querydeviceinfo_request({query:{DeviceId}}));
+          const {payload} = yield take(`${querydeviceinfo_result}`);
+          let deviceitem = payload;
+          g_devicesdb[deviceitem] = deviceitem;
+
+          yield put(push(`/deviceinfo/${DeviceId}`))
+        }
+        catch(e){
+          console.log(e);
+        }
     });
 }
 

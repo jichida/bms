@@ -26,3 +26,5 @@ export const ui_setmapstyle = createAction('ui_setmapstyle');
 export const ui_resetsearch = createAction('ui_resetsearch');
 
 export const ui_clickplayback = createAction('ui_clickplayback');
+
+export const ui_viewdevicedetail = createAction('ui_viewdevicedetail');
