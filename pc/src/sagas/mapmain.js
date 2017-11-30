@@ -964,29 +964,30 @@ export function* createmapmainflow(){
             if(!!distCluster){//放大到该区域
               if(isarea && !!gmap_acode_devices[adcodetop]){
                 //定位10个
-                const sample_size = 10;
-                const samplesz = gmap_acode_devices[adcodetop].length > sample_size?
-                sampleSize(gmap_acode_devices[adcodetop],sample_size):gmap_acode_devices[adcodetop];
-
-                let latlngs = [];
-                  lodashmap(samplesz,(deviceid)=>{
-                      const deviceitem = g_devicesdb[deviceid];
-                      if(!!deviceitem){
-                        latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
-                      }
-                  });
-
-                  if(latlngs.length > 0){
-                    //  let polyline = L.polyline(latlngs);
-                    //  let lBounds = polyline.getBounds();//LatLngBounds
-                    //  let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
-                    //  let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
-                    //  let amapboounds = new window.AMap.Bounds(southWest,northEast);
-                    //  window.amapmain.setBounds(amapboounds);
-                    let center = new window.AMap.LngLat(latlngs[0][1],latlngs[0][0]);
-                     window.amapmain.setZoomAndCenter(window.amapmain.getZoom()+1,center);
+                // const sample_size = 10;
+                // const samplesz = gmap_acode_devices[adcodetop].length > sample_size?
+                // sampleSize(gmap_acode_devices[adcodetop],sample_size):gmap_acode_devices[adcodetop];
+                //
+                // let latlngs = [];
+                //   lodashmap(samplesz,(deviceid)=>{
+                //       const deviceitem = g_devicesdb[deviceid];
+                //       if(!!deviceitem){
+                //         latlngs.push([deviceitem.locz[1],deviceitem.locz[0]]);
+                //       }
+                //   });
+                //
+                //   if(latlngs.length > 0){
+                //     let center = new window.AMap.LngLat(latlngs[0][1],latlngs[0][0]);
+                //      window.amapmain.setZoomAndCenter(window.amapmain.getZoom()+1,center);
+                //   }
+                if(gmap_acode_devices[adcodetop].length > 0){
+                  const pickone = gmap_acode_devices[adcodetop][0];
+                  const deviceitem = g_devicesdb[pickone];
+                  if(!!deviceitem){
+                    let center = new window.AMap.LngLat(deviceitem.locz[0],deviceitem.locz[1]);
+                    window.amapmain.setZoomAndCenter(window.amapmain.getZoom()+1,center);
                   }
-
+                }
               }
               else{
                 distCluster.zoomToShowSubFeatures(adcodetop);
