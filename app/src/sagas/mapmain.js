@@ -993,7 +993,7 @@ export function* createmapmainflow(){
                   const deviceitem = g_devicesdb[pickone];
                   if(!!deviceitem){
                     let center = new window.AMap.LngLat(deviceitem.locz[0],deviceitem.locz[1]);
-                    window.amapmain.setZoomAndCenter(window.amapmain.getZoom()+1,center);
+                    window.amapmain.setZoomAndCenter(13,center);//fixed window.amapmain.getZoom()+1
                   }
                 }
               }
