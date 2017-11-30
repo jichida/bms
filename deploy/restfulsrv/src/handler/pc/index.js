@@ -28,7 +28,7 @@ const authhandler = {
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
   'searchbatteryalarm':realtimealarm.searchbatteryalarm,
   'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
-
+  'ui_searchalarm':realtimealarm.ui_searchalarm,
 };
 
 module.exports = (socket,actiondata,ctx)=>{

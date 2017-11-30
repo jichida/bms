@@ -78,7 +78,6 @@ class Page extends React.Component {
     this.refs.listview.scrollTo(0,this.state.pos);
   }
   onRefresh() {
-
     this.setState({ refreshing: true });
     this.onAjax(this.props.query,this.props.sort,this.props.pagenumber);
   }

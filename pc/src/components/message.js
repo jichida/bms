@@ -14,9 +14,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Avatar from 'material-ui/Avatar';
 import Deraultimg from "../img/1.png";
 import "../css/message.css";
-import TableComponents from "./table.js";
+import AntdTable from "./controls/antdtable.js";
 import Seltime from "./search/seltime.js";
 import {bridge_alarminfo} from '../sagas/datapiple/bridgedb';
+import moment from 'moment';
 
 import {
     Table,
@@ -29,62 +30,80 @@ import {
 import TreeSearchreport from './search/searchreport';
 import { Modal, Button } from 'antd';
 import {
-    ui_selcurdevice_request,
-    searchbatteryalarm_request
-} from '../actions';
+  callthen,ui_searchalarm_request,ui_searchalarm_result
+} from '../sagas/pagination';
 import get from 'lodash.get';
-
-class ModalApp extends React.Component {
-    state = {
-        ModalText: 'Content of the modal',
-        visible: false,
-    }
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    }
-    handleOk = () => {
-        this.setState({
-            ModalText: 'The modal will be closed after two seconds',
-            confirmLoading: true,
-        });
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-                confirmLoading: false,
-            });
-        }, 2000);
-    }
-    handleCancel = () => {
-        console.log('Clicked cancel button');
-        this.setState({
-            visible: false,
-        });
-    }
-    render() {
-        const { visible, confirmLoading, ModalText } = this.state;
-        return (
-            <div>
-                <Button type="primary" onClick={this.showModal}>Open</Button>
-                <Modal
-                    title="Title"
-                    visible={visible}
-                    onOk={this.handleOk}
-                    confirmLoading={confirmLoading}
-                    onCancel={this.handleCancel}
-                    >
-                    <p>{ModalText}</p>
-                </Modal>
-            </div>
-        );
-    }
-}
+//
+// class ModalApp extends React.Component {
+//     state = {
+//         ModalText: 'Content of the modal',
+//         visible: false,
+//     }
+//     showModal = () => {
+//         this.setState({
+//             visible: true,
+//         });
+//     }
+//     handleOk = () => {
+//         this.setState({
+//             ModalText: 'The modal will be closed after two seconds',
+//             confirmLoading: true,
+//         });
+//         setTimeout(() => {
+//             this.setState({
+//                 visible: false,
+//                 confirmLoading: false,
+//             });
+//         }, 2000);
+//     }
+//     handleCancel = () => {
+//         console.log('Clicked cancel button');
+//         this.setState({
+//             visible: false,
+//         });
+//     }
+//     render() {
+//         const { visible, confirmLoading, ModalText } = this.state;
+//         return (
+//             <div>
+//                 <Button type="primary" onClick={this.showModal}>Open</Button>
+//                 <Modal
+//                     title="Title"
+//                     visible={visible}
+//                     onOk={this.handleOk}
+//                     confirmLoading={confirmLoading}
+//                     onCancel={this.handleCancel}
+//                     >
+//                     <p>{ModalText}</p>
+//                 </Modal>
+//             </div>
+//         );
+//     }
+// }
 
 class MessageAllDevice extends React.Component {
 
     constructor(props) {
         super(props);
+        let warninglevel = props.warninglevel || "-1";
+        let queryalarm = {};
+        queryalarm['DataTime'] = {
+          $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
+          $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
+        };
+        if(warninglevel === 0){
+          queryalarm['warninglevel'] = '高';
+        }
+        else if(warninglevel === 1){
+          queryalarm['warninglevel'] = '中';
+        }
+        else if(warninglevel === 2){
+          queryalarm['warninglevel'] = '低';
+        }
+
+        this.state = {
+          query:queryalarm
+        }
     }
 
     onClickQuery(query){
@@ -109,18 +128,47 @@ class MessageAllDevice extends React.Component {
       }
 
       console.log(`查询报警信息:${JSON.stringify(queryalarm)}`);
-      this.props.dispatch(searchbatteryalarm_request({query:queryalarm}));
+      this.setState({query:queryalarm});
+      window.setTimeout(()=>{
+        console.log(this.refs);
+        this.refs.antdtablealarm.getWrappedInstance().onRefresh();
+          // this.refs.alarmdatalist.getWrappedInstance().onRefresh();
+      },0);
+      // this.props.dispatch(searchbatteryalarm_request({query:queryalarm}));
     }
-
+    onItemConvert(item){
+      return bridge_alarminfo(item);
+    }
     render(){
         let warninglevel = this.props.match.params.warninglevel;
         if(warninglevel === 'all'){
           warninglevel = "-1";
         }
-        else{
-          // warninglevel = parseInt(warninglevel);
-        }
-        let {g_devicesdb,alarms,searchresult_alaram,alaram_data,columns} = this.props;
+        // else{
+        //   // warninglevel = parseInt(warninglevel);
+        // }
+        let column_data = {
+          "车辆ID" : "",
+          "报警时间" : "",
+          "报警等级" : "",
+          "报警信息" : "绝缘故障",
+        };
+        let columns = map(column_data, (data, index)=>{
+          let column_item = {
+              title: index,
+              dataIndex: index,
+              key: index,
+              render: (text, row, index) => {
+                  return <span>{text}</span>;
+              },
+              sorter:(a,b)=>{
+                return a[data] > b[data] ? 1:-1;
+              }
+          };
+          return column_item;
+        });
+
+
         let viewrow = (row)=>{
             console.log(row);
             this.props.history.push(`/alarminfo/${row.key}`);
@@ -134,7 +182,6 @@ class MessageAllDevice extends React.Component {
                 return (<a onClick={()=>{viewrow(row)}}>查看</a>);
             }
         }
-
         columns.push(columns_action);
         return (
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
@@ -147,7 +194,17 @@ class MessageAllDevice extends React.Component {
                     <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} warninglevel={warninglevel}/>
                 </div>
                 <div className="tablelist">
-                    <TableComponents data={alaram_data} columns={columns}/>
+                    <AntdTable
+                      ref='antdtablealarm'
+                      onItemConvert={this.onItemConvert.bind(this)}
+                      columns={columns}
+                      pagenumber={30}
+                      query={this.state.query}
+                      sort={{DataTime: -1}}
+                      queryfun={(payload)=>{
+                        return callthen(ui_searchalarm_request,ui_searchalarm_result,payload);
+                      }}
+                    />
                 </div>
             </div>
 
@@ -155,35 +212,35 @@ class MessageAllDevice extends React.Component {
     }
 }
 
-const mapStateToProps = ({device:{g_devicesdb},searchresult:{searchresult_alaram,alarms}}) => {
-    const column_data = {
-      "车辆ID" : "",
-      "报警时间" : "",
-      "报警等级" : "",
-      "报警信息" : "绝缘故障",
-    };
-    const alaram_data = [];
-    map(searchresult_alaram,(aid)=>{
-      let alarminfo = alarms[aid];
-      alaram_data.push(bridge_alarminfo(alarminfo));
-    });
+// const mapStateToProps = ({device:{g_devicesdb},searchresult:{,alarms}}) => {
+//     const column_data = {
+//       "车辆ID" : "",
+//       "报警时间" : "",
+//       "报警等级" : "",
+//       "报警信息" : "绝缘故障",
+//     };
+//     const alaram_data = [];
+//     // map(searchresult_alaram,(aid)=>{
+//     //   let alarminfo = alarms[aid];
+//     //   alaram_data.push(bridge_alarminfo(alarminfo));
+//     // });
+//
+//     let columns = map(column_data, (data, index)=>{
+//       let column_item = {
+//           title: index,
+//           dataIndex: index,
+//           key: index,
+//           render: (text, row, index) => {
+//               return <span>{text}</span>;
+//           },
+//           sorter:(a,b)=>{
+//             return a[data] > b[data] ? 1:-1;
+//           }
+//       };
+//       return column_item;
+//     });
+//
+//     return {g_devicesdb,alarms,columns};
+// }
 
-    let columns = map(column_data, (data, index)=>{
-      let column_item = {
-          title: index,
-          dataIndex: index,
-          key: index,
-          render: (text, row, index) => {
-              return <span>{text}</span>;
-          },
-          sorter:(a,b)=>{
-            return a[data] > b[data] ? 1:-1;
-          }
-      };
-      return column_item;
-    });
-
-    return {g_devicesdb,alarms,searchresult_alaram, alaram_data, columns};
-}
-
-export default connect(mapStateToProps)(MessageAllDevice);
+export default connect()(MessageAllDevice);
