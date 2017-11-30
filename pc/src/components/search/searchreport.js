@@ -53,8 +53,8 @@ class TreeSearchBattery extends React.Component {
             alarmtype : '',
             alarmtypevalue:'',
             alarmlevel: warninglevel,
-            startDate:moment().subtract(7, 'days'),
-            endDate:moment(),
+            startDate:moment(moment().format('YYYY-MM-DD 00:00:00')),
+            endDate:moment(moment().format('YYYY-MM-DD 23:59:59')),
             groupid:'0',
             adcode:10000
         };
@@ -130,7 +130,7 @@ class TreeSearchBattery extends React.Component {
                     <Seltime  startDate = {this.state.startDate}
                       endDate = {this.state.endDate}
                      onChangeSelDate={this.onChangeSelDate.bind(this)}/>
-                        
+
 
                     <div style={{display:"none"}}>
                     <TreeSelectBygroup placeholder={"请选择分组"} width={200} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
@@ -165,18 +165,13 @@ class TreeSearchBattery extends React.Component {
                             onChange={this.handleChange_alarmtypevalue.bind(this)}
                         />
                     </InputGroup>
-
-
-
+                    </div>
                     <Select defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
                         <Option value={"-1"}>选择警告级别</Option>
                         <Option value={"0"} >严重报警</Option>
                         <Option value={"1"} >紧急报警</Option>
                         <Option value={"2"} >一般报警</Option>
                     </Select>
-
-                    </div>
-
                 </div>
                 <div className="b">
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>

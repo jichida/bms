@@ -91,12 +91,23 @@ class MessageAllDevice extends React.Component {
       console.log(query);
       const startDate = get(query,'query.queryalarm.startDate','');
       const endDate = get(query,'query.queryalarm.endDate','');
+      const warninglevel = get(query,'query.queryalarm.warninglevel',-1);
       // 【searchreport】查询条件:{"querydevice":{},"queryalarm":{"startDate":"2017-11-18 10:51:10","endDate":"2017-11-25 10:51:10","warninglevel":0}}
       let queryalarm = {};
       queryalarm['DataTime'] = {
         $gte: startDate,
         $lte: endDate,
       };
+      if(warninglevel === 0){
+        queryalarm['warninglevel'] = '高';
+      }
+      else if(warninglevel === 1){
+        queryalarm['warninglevel'] = '中';
+      }
+      else if(warninglevel === 2){
+        queryalarm['warninglevel'] = '低';
+      }
+
       console.log(`查询报警信息:${JSON.stringify(queryalarm)}`);
       this.props.dispatch(searchbatteryalarm_request({query:queryalarm}));
     }

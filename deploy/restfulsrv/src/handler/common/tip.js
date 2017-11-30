@@ -3,14 +3,22 @@ const winston = require('../../log/log.js');
 const _ = require('lodash');
 const config = require('../../config.js');
 const async = require('async');
+const moment = require('moment');
+
+const getmoment =()=>{
+  //return moment();
+  return moment('2017-11-18 02:03:05');//for test
+}
 
 exports.gettipcount = (actiondata,ctx,callback)=>{
 
   //统计在线／离线个数
+  const curtimebefore = getmoment().subtract(20, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+  console.log(`curtimebefore:${curtimebefore}`);
   const fn_online = (callbackfn)=>{
       const deviceModel = DBModels.DeviceModel;
       deviceModel.count({
-              'LastHistoryTrack.GPSTime': {$gt: "2017-11-17 14:09:16"}
+              'LastHistoryTrack.GPSTime': {$gt: curtimebefore}
             },(err, list)=> {
                     callbackfn(err,list);
       });
@@ -27,7 +35,8 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
   const fn_alarm0 = (callbackfn)=>{
       const realtimealarmModel = DBModels.RealtimeAlarmModel;
       realtimealarmModel.count({
-          'warninglevel':'高'
+          'warninglevel':'高',
+          CurDay:getmoment().format('YYYY-MM-DD')
           },(err, list)=> {
           callbackfn(err,list);
       });
@@ -36,7 +45,8 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
   const fn_alarm1 = (callbackfn)=>{
       const realtimealarmModel = DBModels.RealtimeAlarmModel;
       realtimealarmModel.count({
-          'warninglevel':'中'
+          'warninglevel':'中',
+          CurDay:getmoment().format('YYYY-MM-DD')
           },(err, list)=> {
           callbackfn(err,list);
       });
@@ -45,7 +55,8 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
   const fn_alarm2 = (callbackfn)=>{
       const realtimealarmModel = DBModels.RealtimeAlarmModel;
       realtimealarmModel.count({
-          'warninglevel':'低'
+          'warninglevel':'低',
+          CurDay:getmoment().format('YYYY-MM-DD')
           },(err, list)=> {
           callbackfn(err,list);
       });
