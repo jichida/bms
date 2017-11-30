@@ -4,6 +4,7 @@ const device = require('../common/device.js');
 const realtimealarm = require('../common/realtimealarm.js');
 const moment = require('moment');
 const historytrack = require('../common/historytrack');
+const tip = require('../common/tip');
 //司机端
 const actiondatahandler = {
 
@@ -16,6 +17,7 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'gettipcount':tip.gettipcount,
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,
   'queryrealtimealarm':realtimealarm.queryrealtimealarm,

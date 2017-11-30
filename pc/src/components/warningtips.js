@@ -499,37 +499,18 @@ class Page extends React.Component {
 
 //this.onClickMenu.bind(this,'low')
 Page = withRouter(Page);
-const mapStateToPropsTip = ({device,app,searchresult:{curallalarm,alarms}}) => {
+const mapStateToPropsTip = ({device,app,searchresult:{curallalarm,alarms},tip}) => {
   const {modeview} = app;
    const {g_devicesdb} = device;
 
-   let count_online = 0;
-   let count_offline = 0;
-   map(g_devicesdb,(item)=>{
-      if(item.isonline){
-        count_online++;
-      }
-      else{
-        count_offline++;
-      }
-   });
+   let count_online = tip.count_online;
+   let count_offline = tip.count_offline;
 
    let count_all = 0;
-   let count_yellow = 0;
-   let count_red = 0;
-   let count_orange = 0;
+   let count_yellow = tip.count_alarm2;
+   let count_red = tip.count_alarm0;
+   let count_orange = tip.count_alarm1;
 
-   map(curallalarm,(aid)=>{
-     if(alarms[aid].warninglevel === 0){
-       count_red++;
-     }
-     if(alarms[aid].warninglevel === 1){
-       count_orange++;
-     }
-     if(alarms[aid].warninglevel === 2){
-       count_yellow++;
-     }
-   });
    count_all = count_red + count_orange + count_yellow;
 
     if(count_all>99){

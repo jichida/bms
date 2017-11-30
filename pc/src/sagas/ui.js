@@ -21,7 +21,9 @@ import {
   logout_request,
   logout_result,
 
-  ui_sel_tabindex
+  ui_sel_tabindex,
+
+  gettipcount_request
 }from '../actions';
 import { push,replace } from 'react-router-redux';
 import moment from 'moment';
@@ -39,8 +41,12 @@ export function* uiflow(){//仅执行一次
   //     }));
   //   }
   // });
-
-
+  // yield fork(function*(action) {
+  //   while (true) {
+  //         yield call(delay, 10000);
+  //         yield put(gettipcount_request({}));
+  //     }//while
+  // });
   //ui_btnclick_devicemessage
 
   yield takeLatest(`${ui_btnclick_devicemessage}`, function*(action) {

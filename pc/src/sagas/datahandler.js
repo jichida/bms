@@ -51,12 +51,16 @@ import {
     searchbatteryalarmsingle_result,
 
     changepwd_request,
-    changepwd_result
+    changepwd_result,
+
+    gettipcount_request,
+    gettipcount_result
   } from '../actions';
 import {ui_searchalarm_request,ui_searchalarm_result} from './pagination';
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'gettipcount_result':gettipcount_result,
   'ui_searchalarm_result':ui_searchalarm_result,
   'searchbatteryalarmsingle_result':searchbatteryalarmsingle_result,
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
@@ -95,6 +99,7 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'gettipcount':`${gettipcount_request}`,
   'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,
   'querydevicegroup':`${querydevicegroup_request}`,

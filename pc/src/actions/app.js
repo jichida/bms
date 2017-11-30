@@ -26,3 +26,6 @@ export const ui_setmapstyle = createAction('ui_setmapstyle');
 export const ui_resetsearch = createAction('ui_resetsearch');
 
 export const ui_clickplayback = createAction('ui_clickplayback');
+
+export const gettipcount_request = createAction('gettipcount_request');
+export const gettipcount_result = createAction('gettipcount_result');

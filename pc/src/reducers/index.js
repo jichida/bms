@@ -11,7 +11,10 @@ import carmap from './carmap';
 import searchresult from './searchresult';
 import workorder from './workorder';
 import pic from './pic';
+import tip from './tip';
+
 export default combineReducers({
+  tip,
   pic,
   app,
   carmap,

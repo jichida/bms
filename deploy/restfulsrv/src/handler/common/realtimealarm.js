@@ -22,6 +22,7 @@ exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
   });
 }
 
+//app中的报警分页
 exports.ui_searchalarm =  (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const realtimealarmModel = DBModels.RealtimeAlarmModel;
