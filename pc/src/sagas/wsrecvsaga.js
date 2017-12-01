@@ -41,6 +41,7 @@ import map from 'lodash.map';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
+import config from '../env/config.js';
 // import  {
 //   getrandom
 // } from '../test/bmsdata.js';
@@ -100,7 +101,7 @@ export function* wsrecvsagaflow() {
         if(!!result){
             yield put(login_result(result));
             if(result.loginsuccess){
-              localStorage.setItem('bms_pc_token',result.token);
+              localStorage.setItem(`bms_${config.softmode}_token`,result.token);
               yield put(gettipcount_request({}));//获取个数
 
               yield put(querydevicegroup_request({}));

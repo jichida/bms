@@ -12,7 +12,7 @@ import PicaDisposePhoto from '../../util/pica_dispose_photo';
 const renderImageupload= (props) => {
 
     let {input,loading,width,height,maxWidthOrHeight} = props;
-    let usertoken = localStorage.getItem("bms_pc_token");
+    let usertoken = localStorage.getItem(`bms_${config.softmode}_token`);
     let beforeUpload =(v)=> {
       let imgInfo = {};
       let restconfig = {
