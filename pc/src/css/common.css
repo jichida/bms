@@ -702,7 +702,7 @@
     margin-bottom: 0;
 }
 .searchtree{
-    height: 120px;
+    height: 40px;
 }
 .searchtree > div,
 .searchtree > span{
@@ -1005,4 +1005,37 @@
     padding-left: 15px;
     flex-grow: 1;
     margin-right: 60px;
+}
+
+
+.treesearchlist{
+    overflow-y: scroll;
+    margin-top: 20px;
+    border-top:1px solid #EEE;
+}
+.treesearchlist > div{
+    text-indent: 28px;
+    border-bottom: 1px solid #EEE;
+    line-height: 30px;
+    position: relative;
+}
+.treesearchlist > div:after{
+    content: " ";
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-width: 2px 2px 0 0;
+    border-color: #c8c8cd;
+    border-style: solid;
+    -webkit-transform: matrix(.71,.71,-.71,.71,0,0);
+    transform: matrix(.71,.71,-.71,.71,0,0);
+    position: relative;
+    top: -2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -4px;
+    right: 20px;
+}
+.treesearchlist > div:active{
+    background: #EEE;
 }

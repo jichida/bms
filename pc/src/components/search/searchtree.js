@@ -14,6 +14,13 @@ import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Bu
 import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
 import TreeselectByloc from "../trees/treeselect_byloc.js";
 import moment from 'moment';
+import filter from 'lodash.filter';
+
+import {
+    set_treesearchlist
+} from '../../actions';
+
+
 moment.locale('zh-cn');
 
 const InputGroup = Input.Group;
@@ -44,6 +51,22 @@ const selitem_alarmfields = [
 ];
 
 class TreeSearchBattery extends React.Component {
+
+
+    componentWillMount(){
+      const {g_devicesdb} = this.props;
+      let deviceidlist = [];
+      map(g_devicesdb,(item)=>{
+          deviceidlist.push(item.DeviceId);
+      });
+      let optionsarr=[];
+
+      if (!!deviceidlist) {
+        if(deviceidlist.length>100){deviceidlist.length=100}
+      }
+      // console.log(deviceidlist);
+      this.props.dispatch(set_treesearchlist(deviceidlist));
+    }
 
     constructor(props) {
         super(props);
@@ -87,6 +110,26 @@ class TreeSearchBattery extends React.Component {
         this.setState({alarmtypevalue});
     }
 
+    onChange=(e)=>{
+      let value = e.target.value;
+
+      const {g_devicesdb} = this.props;
+      let deviceidlist = [];
+      map(g_devicesdb,(item)=>{
+          deviceidlist.push(item.DeviceId);
+      });
+      let optionsarr=[];
+
+      if (!!deviceidlist) {
+        optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!=-1; })
+        if(optionsarr.length>100){optionsarr.length=100}
+      }
+      this.props.dispatch(set_treesearchlist(optionsarr));
+      // this.setState({ options });
+      // this.props.onSelDeviceid(value);
+
+    }
+
     onClickQuery=()=>{
       let query = {};
 
@@ -123,72 +166,88 @@ class TreeSearchBattery extends React.Component {
         return (
             <div className="searchtree" style={{textAlign: "center"}}>
                     <br/>
-                    <TreeSelectBygroup placeholder={"请选择分组"} width={370} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
-                    <div style={{display:"none"}} >
-                      <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
-                    </div>
-                    <AutoComplete
-                            style={{ width: 370 }}
-                            onChange={this.onChange_deviceid.bind(this)}
-                            placeholder="请输入编号"
-                        />
+                    <Input 
+                        name="searchkey" id="searchkey" placeholder="请输入车辆ID" style={{width: "360px"}} 
+                        onChange={this.onChange}
+                    />
+                    
+                    <div style={{display: "none"}}>
+
+                      <TreeSelectBygroup placeholder={"请选择分组"} width={370} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
+                      <div style={{display:"none"}} >
+                        <TreeselectByloc placeholder={"请选择地区"} width={370} onSelTreeNode={this.onSelTreeNode_Loc.bind(this)}/>
+                      </div>
 
 
 
-                        <div style={{display:"none"}}>
-                    <InputGroup compact>
-                        <Select
-                            defaultValue="选择编号类型"
-                            style={{ width: 120 }}
-                            onChange={this.onChange_notype.bind(this)}
-                            >
-                            {
-                                map(selitem_devicefields,(field,key)=>{
+                      <AutoComplete
+                              style={{ width: 370,display: "none" }}
+                              onChange={this.onChange_deviceid.bind(this)}
+                              placeholder="请输入编号"
+                          />
+
+
+
+                          <div style={{display:"none"}}>
+                            <InputGroup compact>
+                              <Select
+                                defaultValue="选择编号类型"
+                                style={{ width: 120 }}
+                                onChange={this.onChange_notype.bind(this)}
+                                >
+                                {
+                                    map(selitem_devicefields,(field,key)=>{
+                                        return (<Option key={key} value={field.value}>{field.text}</Option>)
+                                    })
+                                }
+                              </Select>
+                              <AutoComplete
+                                style={{ width: 250 }}
+                                onChange={this.handleChange_notypevalue.bind(this)}
+                                placeholder="请输入编号"
+                              />
+                            </InputGroup>
+
+                      <InputGroup compact>
+                          <Select defaultValue="选择代码类型" style={{ width: 120 }}  onChange={this.onChange_alarmtype.bind(this)}>
+                              {
+                                  map(selitem_alarmfields,(field,key)=>{
                                     return (<Option key={key} value={field.value}>{field.text}</Option>)
-                                })
-                            }
-                        </Select>
-                        <AutoComplete
-                            style={{ width: 250 }}
-                            onChange={this.handleChange_notypevalue.bind(this)}
-                            placeholder="请输入编号"
-                        />
-                    </InputGroup>
+                                  })
+                              }
+                          </Select>
+                          <AutoComplete
+                              style={{ width: 250 }}
+                              placeholder="请输入代码"
+                              onChange={this.handleChange_alarmtypevalue.bind(this)}
+                          />
+                      </InputGroup>
 
-                    <InputGroup compact>
-                        <Select defaultValue="选择代码类型" style={{ width: 120 }}  onChange={this.onChange_alarmtype.bind(this)}>
-                            {
-                                map(selitem_alarmfields,(field,key)=>{
-                                  return (<Option key={key} value={field.value}>{field.text}</Option>)
-                                })
-                            }
-                        </Select>
-                        <AutoComplete
-                            style={{ width: 250 }}
-                            placeholder="请输入代码"
-                            onChange={this.handleChange_alarmtypevalue.bind(this)}
-                        />
-                    </InputGroup>
+                      <Select defaultValue={'-1'}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
+                          <Option value={'-1'} >选择警告级别</Option>
+                          <Option value={'0'} >严重报警</Option>
+                          <Option value={'1'} >紧急报警</Option>
+                          <Option value={'2'} >一般报警</Option>
+                      </Select>
 
-                    <Select defaultValue={'-1'}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
-                        <Option value={'-1'} >选择警告级别</Option>
-                        <Option value={'0'} >严重报警</Option>
-                        <Option value={'1'} >紧急报警</Option>
-                        <Option value={'2'} >一般报警</Option>
-                    </Select>
+                      <Select defaultValue={"是否在线"} style={{ width: 370 }}  onChange={this.onChange_onlinestatus.bind(this)}>
+                          <Option value="all" >全部</Option>
+                          <Option value="online" >在线</Option>
+                          <Option value="offline" >离线</Option>
+                      </Select>
+                      </div>
 
-                    <Select defaultValue={"是否在线"} style={{ width: 370 }}  onChange={this.onChange_onlinestatus.bind(this)}>
-                        <Option value="all" >全部</Option>
-                        <Option value="online" >在线</Option>
-                        <Option value="offline" >离线</Option>
-                    </Select>
+                      <Button type="primary" icon="search"  onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
                     </div>
-
-                    <Button type="primary" icon="search"  onClick={this.onClickQuery} style={{width: "370px"}}>查询</Button>
             </div>
 
         );
     }
 }
 
-export default connect()(TreeSearchBattery);
+const mapStateToPropsSelectDevice = ({device}) => {
+    const {g_devicesdb} = device;
+    return {g_devicesdb};
+}
+
+export default connect(mapStateToPropsSelectDevice)(TreeSearchBattery);

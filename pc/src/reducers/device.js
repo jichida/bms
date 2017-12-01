@@ -16,6 +16,7 @@ import{
   ui_searchbattery_result,
   login_result,
   collectdevice_result,
+  set_treesearchlist
 } from '../actions';
 import filter from 'lodash.filter';
 import map from 'lodash.map';
@@ -57,10 +58,14 @@ const initial = {
     groupidlist:[],
     groups:{},
     g_devicesdb:{},
+    treesearchlist : []
   }
 };
 
 const device = createReducer({
+  [set_treesearchlist]:(state, payload)=>{
+    return {...state, treesearchlist: payload};
+  },
   [login_result]:(state,payload)=>{
     let carcollections = state.carcollections;
     if(payload.loginsuccess){
