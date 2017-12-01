@@ -952,14 +952,16 @@ export function* createmapmainflow(){
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop);
             if(!!result){
-              if(result.type === 'device'){
-                isarea = true;
-                //如果返回车辆,则将车辆加载到树中
-                yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
-              }
-              else{
-                //刷新树中的数据
-                yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+              isarea = result.type === 'device';
+              if(config.softmode === 'pc'){//仅pc端才需要刷新树
+                if(isarea){
+                  //如果返回车辆,则将车辆加载到树中
+                  yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+                }
+                else{
+                  //刷新树中的数据
+                  yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+                }
               }
             }
 
