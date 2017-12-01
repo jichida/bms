@@ -106,6 +106,7 @@
     justify-content: center;
     position: relative;
     z-index: 100;
+    flex-shrink: 0;
 }
 #historytrackplayback .appbar .anddday .seldayli .dayinfo{
     display: -webkit-box;
@@ -155,6 +156,7 @@
     margin-left: 15px;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 #historytrackplayback  .selcar .ant-select{
     border: none;

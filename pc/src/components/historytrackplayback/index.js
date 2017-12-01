@@ -14,15 +14,54 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Map from './map';
 import "./map.css";
-import {
-  mapplayback_start,
-  mapplayback_end
-} from '../../actions';
 import Seltime from '../search/seltime.js';
 import moment from 'moment';
 import map from 'lodash.map';
 import SelectDevice from './selectdevice.js';
+import { Select } from 'antd';
+import {
+  mapplayback_start,
+  mapplayback_end
+} from '../../actions';
+
+const Option = Select.Option;
 moment.locale('zh-cn');
+
+
+class Setspeed extends React.Component {
+    handleChange=(value)=>{
+      console.log(value);
+    }
+    render() {
+      return (
+        <div className="Setspeed">
+          <span>播放速度: </span>
+          <Select labelInValue defaultValue={{ key: '50' }} style={{ width: 40 }} onChange={this.handleChange}>
+            <Option value="5">5</Option>
+            <Option value="10">10</Option>
+            <Option value="15">15</Option>
+            <Option value="20">20</Option>
+            <Option value="25">25</Option>
+            <Option value="30">30</Option>
+            <Option value="35">35</Option>
+            <Option value="40">40</Option>
+            <Option value="45">45</Option>
+            <Option value="50">50</Option>
+            <Option value="55">55</Option>
+            <Option value="60">60</Option>
+            <Option value="65">65</Option>
+            <Option value="70">70</Option>
+            <Option value="75">75</Option>
+            <Option value="80">80</Option>
+            <Option value="85">85</Option>
+            <Option value="90">90</Option>
+            <Option value="95">95</Option>
+            <Option value="100">100</Option>
+          </Select>
+        </div>
+      )
+    }
+}
 
 const fGetCurrentWeek=function(m){
         let sWeek=m.format('dddd');
@@ -148,6 +187,8 @@ class Page extends React.Component {
                           startDate = {this.state.startDate}
                           endDate = {this.state.endDate}
                          onChangeSelDate={this.onChangeSelDate.bind(this)}/>
+                        
+                        <Setspeed />
                     </div>
 
 

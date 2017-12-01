@@ -756,6 +756,7 @@
 .searchreport >div >span{
     margin-right: 10px;
     margin-bottom: 10px;
+    flex-shrink: 0;
 }
 .searchreport >div .ant-input-group{
     width: auto;
@@ -1038,4 +1039,32 @@
 }
 .treesearchlist > div:active{
     background: #EEE;
+}
+.Setspeed {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    background: #FFF;
+    height: 60px;
+    margin-left: 10px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    padding-left: 20px;
+    width:155px;
+}
+.Setspeed span{
+    display: inline-block;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+#historytrackplayback .ant-select-selection--single{
+    width: 68px;
 }
