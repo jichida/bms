@@ -32,13 +32,16 @@ import {
 
   getworkusers_request,
 
-  changepwd_result
+  changepwd_result,
+
+  gettipcount_request
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
 import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
+import config from '../env/config.js';
 // import  {
 //   getrandom
 // } from '../test/bmsdata.js';
@@ -98,14 +101,17 @@ export function* wsrecvsagaflow() {
         if(!!result){
           yield put(login_result(result));
           if(result.loginsuccess){
-            localStorage.setItem('bms_pc_token',result.token);
+              localStorage.setItem(`bms_${config.softmode}_token`,result.token);
+              if(config.softmode === 'pc){
+              yield put(gettipcount_request({}));//获取个数
+              }
             yield put(querydevicegroup_request({}));
             //
-            yield put(getworkusers_request({}));
-            //登录成功,获取今天所有报警信息列表
-            yield put(getcurallalarm_request({}));
-            //获取所有工单
-            yield put(getallworkorder_request({}));
+              // yield put(getworkusers_request({}));
+              // //登录成功,获取今天所有报警信息列表
+              // yield put(getcurallalarm_request({}));
+              // //获取所有工单
+              // yield put(getallworkorder_request({}));
 
           }
         }

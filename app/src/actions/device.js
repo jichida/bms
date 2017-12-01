@@ -59,3 +59,8 @@ export const setalarmreaded_result= createAction('setalarmreaded_result');
 //收藏设备/取消收藏
 export const collectdevice_request = createAction('collectdevice_request');
 export const collectdevice_result = createAction('collectdevice_result');
+
+export const set_treesearchlist = createAction('set_treesearchlist');
+
+
+

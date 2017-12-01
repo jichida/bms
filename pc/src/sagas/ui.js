@@ -27,6 +27,7 @@ import {
 }from '../actions';
 import { push,replace } from 'react-router-redux';
 import moment from 'moment';
+import config from '../env/config.js';
 
 export function* uiflow(){//仅执行一次
   //app点击底部菜单
@@ -41,6 +42,7 @@ export function* uiflow(){//仅执行一次
   //     }));
   //   }
   // });
+  if(config.softmode === 'pc){
   yield fork(function*(action) {
     while (true) {
           yield call(delay, 10000);//10秒刷新一次
@@ -54,6 +56,7 @@ export function* uiflow(){//仅执行一次
 
       }//while
   });
+}
   //ui_btnclick_devicemessage
 
   yield takeLatest(`${ui_btnclick_devicemessage}`, function*(action) {

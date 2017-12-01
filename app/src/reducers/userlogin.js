@@ -4,6 +4,7 @@ import {
     login_result,
     logout_result,
 } from '../actions';
+import config from '../env/config';
 
 const initial = {
   userlogin:{
@@ -17,7 +18,7 @@ const initial = {
 
 const userlogin = createReducer({
   [logout_result]: (state, payload) => {
-    localStorage.removeItem('bms_pc_token');
+    localStorage.removeItem(`bms_${config.softmode}_token`);
     return { ...initial.userlogin};
   },
   [login_result]: (state, payload) => {

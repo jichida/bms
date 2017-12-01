@@ -48,7 +48,9 @@ import {
   ui_changemodeview,
 
   mapmain_showpopinfo,
-  mapmain_showpopinfo_list
+  mapmain_showpopinfo_list,
+
+  ui_viewdevicedetail
 } from '../actions';
 import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -876,10 +878,10 @@ export function* createmapmainflow(){
         });
         if(zoomlevel !== oldzoomlevel){
           zoomlevel = getmapzoollevel(zoomlevel,oldzoomlevel);
-          if(!!window.amapmain){
-            window.amapmain.setZoom(zoomlevel);
-          }
-          console.log(`结果:${zoomlevel}`)
+          // if(!!window.amapmain){
+          //   window.amapmain.setZoom(zoomlevel);
+          // }
+          console.log(`---》结果:${zoomlevel}`)
           if(zoomlevel > 12){
             yield put(ui_showhugepoints(true));
             yield put(ui_showdistcluster(false));
@@ -950,8 +952,9 @@ export function* createmapmainflow(){
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop);
             if(!!result){
-              if(result.type === 'device'){
-                isarea = true;
+              isarea = result.type === 'device';
+              if(config.softmode === 'pc'){//仅pc端才需要刷新树
+                if(isarea){
                 //如果返回车辆,则将车辆加载到树中
                 yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
               }
@@ -959,6 +962,7 @@ export function* createmapmainflow(){
                 //刷新树中的数据
                 yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
               }
+            }
             }
 
             if(!!distCluster){//放大到该区域
@@ -977,6 +981,12 @@ export function* createmapmainflow(){
                 //   });
                 //
                 //   if(latlngs.length > 0){
+                //     //  let polyline = L.polyline(latlngs);
+                //     //  let lBounds = polyline.getBounds();//LatLngBounds
+                //     //  let southWest = new window.AMap.LngLat(lBounds.getSouthWest().lng,lBounds.getSouthWest().lat);
+                //     //  let northEast = new window.AMap.LngLat(lBounds.getNorthEast().lng,lBounds.getNorthEast().lat);
+                //     //  let amapboounds = new window.AMap.Bounds(southWest,northEast);
+                //     //  window.amapmain.setBounds(amapboounds);
                 //     let center = new window.AMap.LngLat(latlngs[0][1],latlngs[0][0]);
                 //      window.amapmain.setZoomAndCenter(window.amapmain.getZoom()+1,center);
                 //   }
@@ -1002,7 +1012,9 @@ export function* createmapmainflow(){
         }
 
         //在树中将其他结点搜索，该节点展开
+        if(config.softmode === 'pc'){//pc端才有树啊
         yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
+        }
 
     });
 
@@ -1401,6 +1413,23 @@ export function* createmapmainflow(){
           console.log(e);
         }
 
+    });
+
+    yield takeLatest(`${ui_viewdevicedetail}`, function*(action) {
+        //搜索本地电池包
+      try{
+          const {payload:{DeviceId}} = action;
+          //获取该车辆信息
+          yield put(querydeviceinfo_request({query:{DeviceId}}));
+          const {payload} = yield take(`${querydeviceinfo_result}`);
+          let deviceitem = payload;
+          g_devicesdb[deviceitem] = deviceitem;
+
+          yield put(push(`/deviceinfo/${DeviceId}`))
+        }
+        catch(e){
+          console.log(e);
+        }
     });
 }
 

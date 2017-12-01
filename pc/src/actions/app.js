@@ -27,5 +27,7 @@ export const ui_resetsearch = createAction('ui_resetsearch');
 
 export const ui_clickplayback = createAction('ui_clickplayback');
 
+export const ui_viewdevicedetail = createAction('ui_viewdevicedetail');
+
 export const gettipcount_request = createAction('gettipcount_request');
 export const gettipcount_result = createAction('gettipcount_result');
