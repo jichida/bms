@@ -102,10 +102,10 @@ export function* wsrecvsagaflow() {
           yield put(login_result(result));
           if(result.loginsuccess){
               localStorage.setItem(`bms_${config.softmode}_token`,result.token);
-              if(config.softmode === 'pc){
-              yield put(gettipcount_request({}));//获取个数
+              if(config.softmode === 'pc'){
+                yield put(gettipcount_request({}));//获取个数
               }
-            yield put(querydevicegroup_request({}));
+              yield put(querydevicegroup_request({}));
             //
               // yield put(getworkusers_request({}));
               // //登录成功,获取今天所有报警信息列表
