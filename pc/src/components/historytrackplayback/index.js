@@ -98,6 +98,7 @@ class Page extends React.Component {
             startDate:moment().subtract(5, 'hours'),
             endDate:moment(),
             deviceid,
+            speed: 60
           }
       }
       onSelDeviceid(deviceid){
@@ -110,6 +111,10 @@ class Page extends React.Component {
         startDate,
         endDate
       });
+    }
+
+    handleChange=(value)=>{
+      this.setState({speed: parseInt(value.key)});
     }
 
     onClickStart(){
@@ -128,9 +133,9 @@ class Page extends React.Component {
       query.Longitude = {
         $ne:0
       };
-      this.props.dispatch(mapplayback_start({isloop:false,speed:60,query}));
+      this.props.dispatch(mapplayback_start({isloop:false,speed:this.state.speed,query}));
 
-  }
+    }
     onClickEnd(){
       this.props.dispatch(mapplayback_end({}));
     }
@@ -188,7 +193,31 @@ class Page extends React.Component {
                           endDate = {this.state.endDate}
                          onChangeSelDate={this.onChangeSelDate.bind(this)}/>
                         
-                        <Setspeed />
+                        <div className="Setspeed">
+                          <span>播放速度: </span>
+                          <Select labelInValue defaultValue={{ key: '60' }} style={{ width: 40 }} onChange={this.handleChange}>
+                            <Option value="5">5</Option>
+                            <Option value="10">10</Option>
+                            <Option value="15">15</Option>
+                            <Option value="20">20</Option>
+                            <Option value="25">25</Option>
+                            <Option value="30">30</Option>
+                            <Option value="35">35</Option>
+                            <Option value="40">40</Option>
+                            <Option value="45">45</Option>
+                            <Option value="50">50</Option>
+                            <Option value="55">55</Option>
+                            <Option value="60">60</Option>
+                            <Option value="65">65</Option>
+                            <Option value="70">70</Option>
+                            <Option value="75">75</Option>
+                            <Option value="80">80</Option>
+                            <Option value="85">85</Option>
+                            <Option value="90">90</Option>
+                            <Option value="95">95</Option>
+                            <Option value="100">100</Option>
+                          </Select>
+                        </div>
                     </div>
 
 
