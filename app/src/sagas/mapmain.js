@@ -878,10 +878,10 @@ export function* createmapmainflow(){
         });
         if(zoomlevel !== oldzoomlevel){
           zoomlevel = getmapzoollevel(zoomlevel,oldzoomlevel);
-          if(!!window.amapmain){
-            window.amapmain.setZoom(zoomlevel);
-          }
-          console.log(`结果:${zoomlevel}`)
+          // if(!!window.amapmain){
+          //   window.amapmain.setZoom(zoomlevel);
+          // }
+          console.log(`---》结果:${zoomlevel}`)
           if(zoomlevel > 12){
             yield put(ui_showhugepoints(true));
             yield put(ui_showdistcluster(false));
