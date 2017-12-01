@@ -1012,7 +1012,9 @@ export function* createmapmainflow(){
         }
 
         //在树中将其他结点搜索，该节点展开
-        yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
+        if(config.softmode === 'pc'){//pc端才有树啊
+          yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
+        }
 
     });
 
