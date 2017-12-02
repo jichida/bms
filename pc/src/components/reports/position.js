@@ -99,10 +99,10 @@ class TablePosition extends React.Component {
         //   // warninglevel = parseInt(warninglevel);
         // }
         let column_data = {
-          "车辆ID" : "",
-          "报警时间" : "",
-          "报警等级" : "",
-          "报警信息" : "绝缘故障",
+          "设备编号" : "",
+          "省" : "",
+          "市" : "",
+          "区" : "",
         };
         let columns = map(column_data, (data, index)=>{
           let column_item = {
@@ -139,7 +139,7 @@ class TablePosition extends React.Component {
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
-                    <div className="title">新消息</div>
+                    <div className="title">位置报表</div>
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} warninglevel={warninglevel}/>

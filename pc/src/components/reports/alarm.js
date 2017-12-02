@@ -140,7 +140,7 @@ class TableAlarm extends React.Component {
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
-                    <div className="title">新消息</div>
+                    <div className="title">报警报表</div>
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} warninglevel={warninglevel}/>

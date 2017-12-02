@@ -1,7 +1,7 @@
 let config =  {
   secretkey:'bmskey',
   listenport:process.env.listenport ||5011,
-  rooturl:process.env.rooturl || 'http://bmscatl.com28.cn',
+  rooturl:process.env.rooturl || 'http://bms.com28.cn',
   issmsdebug:process.env.issmsdebug || false,
   publishdirtest:'../../../bms/test/build',
   publishdirapp:'../../../bms/app/build',
