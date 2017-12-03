@@ -9,6 +9,7 @@ const routerindex = require("./router/index.js");
 const upload = require('jquery-file-upload-middleware');
 const uuid = require('uuid');
 const _  = require('lodash');
+const json2xls = require('json2xls');
 
 let startsrv = ()=>{
   // let appdir = path.join(__dirname,config.publishdirapp);
@@ -42,6 +43,7 @@ let startsrv = ()=>{
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(json2xls.middleware);
 
   app.options("/*", function(req, res, next){
     res.header('Access-Control-Allow-Origin', '*');

@@ -3,7 +3,29 @@ const device = require('../handler/common/device.js');
 const historytrack = require('../handler/common/historytrack');
 const kafakautil = require('../kafka/producer');
 
+const jsonArr = [{
+    foo: 'bar',
+    qux: 'moo',
+    poo: 123,
+    stux: new Date()
+},
+{
+    foo: 'bar',
+    qux: 'moo',
+    poo: 345,
+    stux: new Date()
+}];
 let startmodule = (app)=>{
+  app.post('/api/report_position',(req,res)=>{
+    res.xls('data.xlsx', jsonArr);
+  });
+  app.post('/api/report_alarm',(req,res)=>{
+    res.xls('data.xlsx', jsonArr);
+  });
+  app.post('/api/report_alarmdetail',(req,res)=>{
+    res.xls('data.xlsx', jsonArr);
+  });
+
   app.post('/m2mgw/setdata',(req,res)=>{
     console.log(`setdata m2m data:${JSON.stringify(req.body)}`);
     const data = req.body;

@@ -13,7 +13,7 @@ import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import moment from 'moment';
 
 import TreeSearchreport from '../search/searchreport_alarm';
-
+import {download_excel} from '../../actions';
 import {
   callthen,ui_searchalarm_request,ui_searchalarm_result
 } from '../../sagas/pagination';
@@ -51,7 +51,7 @@ class TableAlarm extends React.Component {
               query:this.state.query
       };
       console.log(`导出excel:${JSON.stringify(payload)}`);
-      // this.props.dispatch(
+      this.props.dispatch(download_excel(payload));
     }
 
     onClickQuery(query){
