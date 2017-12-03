@@ -16,7 +16,7 @@ import moment from 'moment';
 import TreeSearchreport from '../search/searchreport_alarmdetail';
 
 import {
-  callthen,ui_searchalarm_request,ui_searchalarm_result
+  callthen,ui_searchalarmdetail_request,ui_searchalarmdetail_result
 } from '../../sagas/pagination';
 import get from 'lodash.get';
 
@@ -47,7 +47,7 @@ class TableAlarmDetail extends React.Component {
 
     onClickExport(){
       const payload = {
-              type:'report_position',
+              type:'report_alarmdetail',
               query:this.state.query
       };
       console.log(`导出excel:${JSON.stringify(payload)}`);
@@ -149,7 +149,7 @@ class TableAlarmDetail extends React.Component {
                       query={this.state.query}
                       sort={{DataTime: -1}}
                       queryfun={(payload)=>{
-                        return callthen(ui_searchalarm_request,ui_searchalarm_result,payload);
+                        return callthen(ui_searchalarmdetail_request,ui_searchalarmdetail_result,payload);
                       }}
                     />
                 </div>

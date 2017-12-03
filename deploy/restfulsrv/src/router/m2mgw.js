@@ -2,28 +2,58 @@ const map = require('lodash.map');
 const device = require('../handler/common/device.js');
 const historytrack = require('../handler/common/historytrack');
 const kafakautil = require('../kafka/producer');
+const realtimealarm = require('../handler/common/realtimealarm.js');
 
-const jsonArr = [{
-    foo: 'bar',
-    qux: 'moo',
-    poo: 123,
-    stux: new Date()
-},
-{
-    foo: 'bar',
-    qux: 'moo',
-    poo: 345,
-    stux: new Date()
-}];
+
 let startmodule = (app)=>{
   app.post('/api/report_position',(req,res)=>{
-    res.xls('data.xlsx', jsonArr);
+    const query = req.body;
+    const actiondata = {
+      query,
+      fields:'DeviceId Latitude Longitude GPSTime Course'
+    }
+    historytrack.exportposition(actiondata,{},(result)=>{
+      console.log(`search position:${JSON.stringify(result)}`);
+      let resultList = [];
+      if(result.cmd === 'exportposition_result'){
+        resultList = result.payload.list;
+      }
+
+      res.xls('data.xlsx',resultList );
+    });
+
+
   });
   app.post('/api/report_alarm',(req,res)=>{
-    res.xls('data.xlsx', jsonArr);
+    // res.xls('data.xlsx', jsonArr);？???//exportalarm
+    const query = req.body;
+    const actiondata = {
+      query,
+    }
+    realtimealarm.exportalarm(actiondata,{},(result)=>{
+      console.log(`search realtimealarm:${JSON.stringify(result)}`);
+      let resultList = [];
+      if(result.cmd === 'exportalarm_result'){
+        resultList = result.payload.list;
+      }
+
+      res.xls('data.xlsx',resultList );
+    });
+
   });
   app.post('/api/report_alarmdetail',(req,res)=>{
-    res.xls('data.xlsx', jsonArr);
+    const query = req.body;
+    const actiondata = {
+      query,
+    }
+    realtimealarm.exportalarmdetail(actiondata,{},(result)=>{
+      console.log(`search exportalarmdetail:${JSON.stringify(result)}`);
+      let resultList = [];
+      if(result.cmd === 'exportalarmdetail_result'){
+        resultList = result.payload.list;
+      }
+      res.xls('data.xlsx',resultList );
+    });
   });
 
   app.post('/m2mgw/setdata',(req,res)=>{

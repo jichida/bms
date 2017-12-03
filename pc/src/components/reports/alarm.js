@@ -47,7 +47,7 @@ class TableAlarm extends React.Component {
 
     onClickExport(){
       const payload = {
-              type:'report_position',
+              type:'report_alarm',
               query:this.state.query
       };
       console.log(`导出excel:${JSON.stringify(payload)}`);

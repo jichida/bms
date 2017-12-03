@@ -15,7 +15,7 @@ import moment from 'moment';
 
 import TreeSearchreport from '../search/searchreport_position';
 import {
-  callthen,ui_searchalarm_request,ui_searchalarm_result
+  callthen,ui_searchposition_request,ui_searchposition_result
 } from '../../sagas/pagination';
 import get from 'lodash.get';
 
@@ -24,7 +24,7 @@ class TablePosition extends React.Component {
     constructor(props) {
         super(props);
         let queryalarm = {};
-        queryalarm['DataTime'] = {
+        queryalarm['GPSTime'] = {
           $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
           $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
         };
@@ -48,7 +48,7 @@ class TablePosition extends React.Component {
       const endDate = get(query,'query.queryalarm.endDate','');
       // 【searchreport】查询条件:{"querydevice":{},"queryalarm":{"startDate":"2017-11-18 10:51:10","endDate":"2017-11-25 10:51:10","warninglevel":0}}
       let queryalarm = {};
-      queryalarm['DataTime'] = {
+      queryalarm['GPSTime'] = {
         $gte: startDate,
         $lte: endDate,
       };
@@ -105,7 +105,7 @@ class TablePosition extends React.Component {
                       query={this.state.query}
                       sort={{DataTime: -1}}
                       queryfun={(payload)=>{
-                        return callthen(ui_searchalarm_request,ui_searchalarm_result,payload);
+                        return callthen(ui_searchposition_request,ui_searchposition_result,payload);
                       }}
                     />
                 </div>
