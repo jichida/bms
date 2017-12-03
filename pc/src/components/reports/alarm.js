@@ -5,28 +5,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import map from 'lodash.map';
-// import {ui_selcurdevice_request} from '../actions';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
+
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
-import Seltime from "../search/seltime.js";
+
 import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import moment from 'moment';
 
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
-import TreeSearchreport from '../search/searchreport';
-import { Modal, Button } from 'antd';
+import TreeSearchreport from '../search/searchreport_alarm';
+
 import {
   callthen,ui_searchalarm_request,ui_searchalarm_result
 } from '../../sagas/pagination';
@@ -56,6 +43,15 @@ class TableAlarm extends React.Component {
         this.state = {
           query:queryalarm
         }
+    }
+
+    onClickExport(){
+      const payload = {
+              type:'report_position',
+              query:this.state.query
+      };
+      console.log(`导出excel:${JSON.stringify(payload)}`);
+      // this.props.dispatch(
     }
 
     onClickQuery(query){
@@ -96,9 +92,7 @@ class TableAlarm extends React.Component {
         if(warninglevel === 'all'){
           warninglevel = "-1";
         }
-        // else{
-        //   // warninglevel = parseInt(warninglevel);
-        // }
+
         let column_data = {
           "车辆ID" : "",
           "报警时间" : "",
@@ -143,7 +137,8 @@ class TableAlarm extends React.Component {
                     <div className="title">报警报表</div>
                 </div>
                 <div className="TreeSearchBattery">
-                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} warninglevel={warninglevel}/>
+                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} warninglevel={warninglevel}
+                      onClickExport={this.onClickExport.bind(this)}/>
                 </div>
                 <div className="tablelist">
                     <AntdTable
@@ -163,36 +158,5 @@ class TableAlarm extends React.Component {
         );
     }
 }
-
-// const mapStateToProps = ({device:{g_devicesdb},searchresult:{,alarms}}) => {
-//     const column_data = {
-//       "车辆ID" : "",
-//       "报警时间" : "",
-//       "报警等级" : "",
-//       "报警信息" : "绝缘故障",
-//     };
-//     const alaram_data = [];
-//     // map(searchresult_alaram,(aid)=>{
-//     //   let alarminfo = alarms[aid];
-//     //   alaram_data.push(bridge_alarminfo(alarminfo));
-//     // });
-//
-//     let columns = map(column_data, (data, index)=>{
-//       let column_item = {
-//           title: index,
-//           dataIndex: index,
-//           key: index,
-//           render: (text, row, index) => {
-//               return <span>{text}</span>;
-//           },
-//           sorter:(a,b)=>{
-//             return a[data] > b[data] ? 1:-1;
-//           }
-//       };
-//       return column_item;
-//     });
-//
-//     return {g_devicesdb,alarms,columns};
-// }
 
 export default connect()(TableAlarm);
