@@ -39,6 +39,7 @@ class Page extends React.Component {
         super(props);
         this.state = {
             innerWidth : window.innerWidth,
+            innerHeight : window.innerHeight,
             openaddress : false,
         };
     }
@@ -46,7 +47,10 @@ class Page extends React.Component {
         window.onresize = ()=>{
             window.clearTimeout(resizetime);
             resizetime = window.setTimeout(()=>{
-                this.setState({innerWidth: window.innerWidth});
+                this.setState({
+                    innerWidth: window.innerWidth,
+                    innerHeight: window.innerHeight,
+                });
             }, 10)
         }
     }
@@ -95,7 +99,7 @@ class Page extends React.Component {
         const treestyle = this.getdrawstyle("400px");
 
         return (
-            <div className="AppPage">
+            <div className="AppPage" id="AppPage" style={{height : `${this.state.innerHeight}px`}}>
                 <div className="content">
                     <div className="headcontent">
                         <AppBar
