@@ -12,7 +12,9 @@ import TextField from 'material-ui/TextField';
 import { Notification, translate, } from 'admin-on-rest';
 import {systemLoadAction,systemSaveAction} from './action';
 
+
 import lodashget from 'lodash.get';
+import renderSelect from './asyncselect';
 // see http://redux-form.com/6.4.3/examples/material-ui/
 const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) =>
     <TextField
@@ -41,6 +43,18 @@ class SystemConfig extends Component {
                     <Card >
                         <form onSubmit={handleSubmit(this.systemSave)}>
                             <div >
+                              <div  >
+                                  <Field
+                                      name="mappopfields"
+                                      component={renderSelect}
+                                  />
+                              </div>
+                              <div  >
+                                  <Field
+                                      name="mapdetailfields"
+                                      component={renderSelect}
+                                  />
+                              </div>
                                 <div  >
                                     <Field
                                         name="warningrulelevel0"
@@ -88,6 +102,8 @@ SystemconfigForm = connect(
             warningrulelevel0:lodashget(systemconfig,'warningrulelevel0',''),
             warningrulelevel1:lodashget(systemconfig,'warningrulelevel1',''),
             warningrulelevel2:lodashget(systemconfig,'warningrulelevel2',''),
+            mappopfields:lodashget(systemconfig,'mappopfields',[]),
+            mapdetailfields:lodashget(systemconfig,'mapdetailfields',[]),
         },
       };
       console.log(`systemconfig retboj ==>${JSON.stringify(retboj)}`)
