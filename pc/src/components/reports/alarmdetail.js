@@ -16,7 +16,7 @@ import moment from 'moment';
 import TreeSearchreport from '../search/searchreport_alarmdetail';
 
 import {
-  callthen,ui_searchalarmdetail_request,ui_searchalarmdetail_result
+  callthen,uireport_searchalarmdetail_request,uireport_searchalarmdetail_result
 } from '../../sagas/pagination';
 import get from 'lodash.get';
 
@@ -149,7 +149,7 @@ class TableAlarmDetail extends React.Component {
                       query={this.state.query}
                       sort={{DataTime: -1}}
                       queryfun={(payload)=>{
-                        return callthen(ui_searchalarmdetail_request,ui_searchalarmdetail_result,payload);
+                        return callthen(uireport_searchalarmdetail_request,uireport_searchalarmdetail_result,payload);
                       }}
                     />
                 </div>

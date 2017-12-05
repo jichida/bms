@@ -5,21 +5,21 @@ const winston = require('../../log/log.js');
 const _ = require('lodash');
 
 //app中的报警分页
-exports.ui_searchposition =  (actiondata,ctx,callback)=>{
+exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const historytrackModel = DBModels.HistoryTrackModel;
   const query = actiondata.query || {};
   historytrackModel.paginate(query,actiondata.options,(err,result)=>{
     if(!err){
       callback({
-        cmd:'ui_searchposition_result',
+        cmd:'uireport_searchposition_result',
         payload:{result}
       });
     }
     else{
       callback({
         cmd:'common_err',
-        payload:{errmsg:err.message,type:'ui_searchposition'}
+        payload:{errmsg:err.message,type:'uireport_searchposition'}
       });
     }
   });

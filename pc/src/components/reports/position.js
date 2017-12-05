@@ -15,7 +15,7 @@ import moment from 'moment';
 
 import TreeSearchreport from '../search/searchreport_position';
 import {
-  callthen,ui_searchposition_request,ui_searchposition_result
+  callthen,uireport_searchposition_request,uireport_searchposition_result
 } from '../../sagas/pagination';
 import get from 'lodash.get';
 
@@ -105,7 +105,7 @@ class TablePosition extends React.Component {
                       query={this.state.query}
                       sort={{DataTime: -1}}
                       queryfun={(payload)=>{
-                        return callthen(ui_searchposition_request,ui_searchposition_result,payload);
+                        return callthen(uireport_searchposition_request,uireport_searchposition_result,payload);
                       }}
                     />
                 </div>
