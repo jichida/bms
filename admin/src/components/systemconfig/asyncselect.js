@@ -7,9 +7,9 @@ import _ from 'lodash';
 // {"type":"GET_LIST","params":{"pagination":{"page":1,"perPage":100},"sort":{"field":"id","order":"DESC"},"filter":{"name_q":"AL_"}}}
 const getOptions = (input,callback) => {
   restClient('GET_LIST','datadict',{
-    filter:{
-      name_q:"AL_"
-    },
+    // filter:{
+    //   name_q:"AL_"
+    // },
     pagination:{
       page:1,
       perPage:100
@@ -33,12 +33,19 @@ const getOptions = (input,callback) => {
 }
 
 const renderSelect = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) =>{
+  console.log(`renderSelect form ==>inputProps:${JSON.stringify(inputProps)},props:${JSON.stringify(props)}`)
+  let onChange = (values)=>{
+    let sz = values.split(',');
+    inputProps.onChange(sz);
+  }
 
   return (<Async
         multi
-        {...inputProps}
+        onChange={onChange}
+        value={inputProps.value}
         {...props}
-      loadOptions={getOptions}
+        simpleValue
+        loadOptions={getOptions}
     />);
 }
 

@@ -76,7 +76,6 @@ PageForm = reduxForm({
 //     }
 // )(PageForm)
 // PageForm = withRouter(PageForm);
-
 export class Page extends Component {
     componentWillReceiveProps (nextProps) {
 
