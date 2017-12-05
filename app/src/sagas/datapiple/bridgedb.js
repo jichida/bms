@@ -40,7 +40,6 @@ export const bridge_alarminfo = (alarminfo)=>{
   alarminfonew[`报警等级`] = alarminfo[`warninglevel`];
   alarminfonew[`报警信息`] = alarmtxt;
   return alarminfonew;
-
 }
 
 export const bridge_deviceinfo_pop =(deviceitem)=>{

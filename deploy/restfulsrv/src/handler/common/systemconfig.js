@@ -47,6 +47,8 @@ exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
                 cmd:'getsystemconfig_result',
                 payload
               });
+
+              config.mapdict = _.merge(config.mapdict,mapdict);
             });
 
         }
