@@ -42,6 +42,40 @@ const bridge_alarminfo = (alarminfo)=>{
   return alarminfonew;
 }
 
+const bridge_alarmrawinfo = (alarmrawinfo)=>{
+  const mapdict = config.mapdict;
+  console.log(`alarminfo===>${JSON.stringify(alarmrawinfo)}`);
+  let alarmtxt = '';
+  let alarminfonew = {};
+  alarminfonew[`key`] = alarmrawinfo._id;
+  alarminfonew[`车辆ID`] = alarmrawinfo[`DeviceId`];
+  alarminfonew[`报警时间`] = alarmrawinfo[`DataTime`];
+  alarminfonew[`报警等级`] = alarmrawinfo[`warninglevel`];
+
+  let alarminforawtmp = _.clone(alarmrawinfo);
+  let rest = _.omit(alarminforawtmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
+  // console.log(`rest===>${JSON.stringify(rest)}`);
+  let warninglevelmap = [
+    '无','低','中','高'
+  ];
+  _.map(rest,(v,alarmfield)=>{
+    if(alarmfield === 'AL_Trouble_Code'){
+      alarmtxt += `F[${v}]`;
+    }
+    if(_.startsWith(alarmfield, 'AL_')){
+      if(!!mapdict[alarmfield]){
+         if(v>= 0 && v<= 3){
+           alarmtxt += `${mapdict[alarmfield].showname}[${warninglevelmap[v]}]`;
+         }
+      }
+    }
+  });
+
+  alarminfonew[`报警信息`] = alarmtxt;
+  console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
+  return alarminfonew;
+}
+
 // bridge_alarminfo({"_id":"5a1bfa0f86ce24f6ce62f6d2","CurDay":"2017-11-18","DeviceId":"1702100387","__v":0,"F[214]":6,"DataTime":"2017-11-18 10:04:47","warninglevel":"","Longitude":121.177748,"Latitude":31.442289});
 // console.log(`mapdict==>${JSON.stringify(config.mapdict)}`);
 // config.mapdict = _.merge(config.mapdict,{'AL':1});
@@ -215,6 +249,12 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   realtimealarmrawModel.paginate(query,actiondata.options,(err,result)=>{
     if(!err){
+      result = JSON.parse(JSON.stringify(result));
+      let docs = [];
+      _.map(result.docs,(record)=>{
+        docs.push(bridge_alarmrawinfo(record));
+      });
+      result.docs = docs;
       callback({
         cmd:'uireport_searchalarmdetail_result',
         payload:{result}
@@ -238,6 +278,13 @@ exports.exportalarmdetail = (actiondata,ctx,callback)=>{
   realtimealarmrawModel.find(query,(err,list)=>{
     if(!err){
       list = JSON.parse(JSON.stringify(list));
+      let docs = [];
+      _.map(list,(record)=>{
+        let recordnew = bridge_alarmrawinfo(record);
+        recordnew = _.omit(recordnew,['key']);
+        docs.push(recordnew);
+      });
+      list = docs;
       if(list.length > 0){
         callback({
           cmd:'exportalarmdetail_result',

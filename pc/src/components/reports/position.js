@@ -35,8 +35,8 @@ class TablePosition extends React.Component {
 
     onClickExport(){
       const payload = {
-              type:'report_position',
-              query:this.state.query
+          type:'report_position',
+          query:this.state.query
       };
       console.log(`导出excel:${JSON.stringify(payload)}`);
       this.props.dispatch(download_excel(payload));

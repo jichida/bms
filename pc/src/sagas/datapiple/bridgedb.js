@@ -9,6 +9,19 @@ export const bridge_deviceinfo = (deviceinfo)=>{
   return deviceinfonew;
 }
 
+export const getalarmfieldallfields = (mapdict)=>{
+  let alarmfileds = [];
+  map(mapdict,(v,k)=>{
+    if(startsWith(v.name, 'AL_')){
+      alarmfileds.push({
+        label:v.showname || v.name,
+        value:v.name
+      });
+    }
+  });
+  return alarmfileds;
+}
+
 export const getalarmfieldtotxt = (alarmfield)=>{
     const {mapdict} = store.getState().app;
     if(startsWith(alarmfield, 'AL_') || startsWith(alarmfield, 'F[')){
