@@ -52,7 +52,6 @@ const DeviceGroupEdit = (props) => {
 const DeviceGroupList = (props) => (
   <List title={<DeviceGroupTitle />} {...props}>
     <Datagrid>
-      <TextField source="id" />
       <TextField label="分组名称" source="name" />
       <TextField label="备注" source="memo" />
       <TextField label="联系人" source="contact" />
