@@ -33,7 +33,7 @@ const renderGroupEdit = ({ meta: { touched, error } = {}, input: { ...inputProps
   let rows = [];
   let headers = [
      {value: '分组名', type: 'TextField', width: 200},
-     {value: '字段列表', type: 'ReactSelect', width: 200},
+     {value: '字段列表', type: 'ReactSelect', width: 'auto'},
   ];
 
   _.map(vsz,(v)=>{
