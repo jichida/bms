@@ -122,7 +122,7 @@ let sendmessageauthfnsz = {
   'searchbatteryalarm':`${searchbatteryalarm_request}`,
   'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`,
   'ui_searchalarm':`${ui_searchalarm_request}`,
-  'ui_searchalarmdetail':`${ui_searchalarm_request}`,
+  'ui_searchalarmdetail':`${ui_searchalarmdetail_request}`,
   'ui_searchposition':`${ui_searchposition_request}`,
 };
 

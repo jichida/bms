@@ -12,6 +12,8 @@ import TextField from 'material-ui/TextField';
 import { Notification, translate, } from 'admin-on-rest';
 import {systemLoadAction,systemSaveAction} from './action';
 
+import Paper from 'material-ui/Paper';
+import renderGroupEdit from './devicegroupedit';
 
 import lodashget from 'lodash.get';
 import renderSelect from './asyncselect';
@@ -46,6 +48,13 @@ class SystemConfig extends Component {
                                       name="mappopclusterfields"
                                       component={renderSelect}
                                       placeholder={`选择聚合点弹框的字段列表`}
+                                  />
+                              </div>
+                              <div  >
+                                  <Field
+                                      name="mapdetailfields"
+                                      component={renderGroupEdit}
+                                      placeholder={`编辑车辆详情显示字段列表`}
                                   />
                               </div>
                                 <div  >
@@ -135,9 +144,10 @@ const mapStateToProps = ({systemconfig}) => {
         warningrulelevel2:lodashget(systemconfig,'warningrulelevel2',''),
         mappopfields:lodashget(systemconfig,'mappopfields',[]),
         mappopclusterfields:lodashget(systemconfig,'mappopclusterfields',[]),
+        mapdetailfields:lodashget(systemconfig,'mapdetailfields',[]),
     },
   };
-  console.log(`systemconfig retboj ==>${JSON.stringify(retboj)}`)
+  // console.log(`systemconfig retboj ==>${JSON.stringify(retboj)}`)
   return retboj;
 }
 Page = connect(mapStateToProps)(Page);
