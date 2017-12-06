@@ -5,7 +5,7 @@ import React from 'react';
 import {IconButton, Toggle, TextField, RaisedButton}  from 'material-ui';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Check from 'material-ui/svg-icons/navigation/check';
-
+import _ from 'lodash';
 
 class MaterialUITableEdit extends React.Component {
 
@@ -65,8 +65,12 @@ class MaterialUITableEdit extends React.Component {
       self.setState({rows: rows})
     }
 
-    const onSelectedChange = (e)=>{
-
+    const onSelectedChange = (values)=>{
+      console.log(values);
+      let sz = values.split(',');
+      var rows = self.state.rows
+      rows[rowId].columns[id].value = sz
+      self.setState({rows: rows})
     }
 
     const onToggle = (e) => {
@@ -100,7 +104,17 @@ class MaterialUITableEdit extends React.Component {
     }
 
     if(type === 'ReactSelect'){
+      if (selected) {
+        return (<Async
+              multi
+              onChange={onSelectedChange}
+              value={value}
+              simpleValue
+              loadOptions={getOptions}
+          />);
+        }
       return (<Async
+            disabled
             multi
             onChange={onSelectedChange}
             value={value}
@@ -234,29 +248,29 @@ class MaterialUITableEdit extends React.Component {
     const columnTypes = this.props.headerColumns.map((header) => {
       return header.type
     })
-    //
-    // const onButtonClick = (e) => {
-    //   const newColumns = times(columnTypes.length, (index) => {
-    //     const defaults = {
-    //       'TextField': '',
-    //       'Toggle': true
-    //     }
-    //
-    //     const value = defaults[columnTypes[index]]
-    //
-    //     return {value: value}
-    //   })
-    //
-    //   const updatedRows = rows.map((row) => {
-    //     if (row.selected) {
-    //       self.update()
-    //       row.selected = false
-    //     }
-    //     return row
-    //   })
-    //   updatedRows.push({columns: newColumns, selected: true})
-    //   self.setState({rows: updatedRows})
-    // }
+
+    const onButtonClick = (e) => {
+      const newColumns = _.times(columnTypes.length, (index) => {
+        const defaults = {
+          'TextField': '',
+          'Toggle': true
+        }
+
+        const value = defaults[columnTypes[index]]
+
+        return {value: value}
+      })
+
+      const updatedRows = rows.map((row) => {
+        if (row.selected) {
+          self.update()
+          row.selected = false
+        }
+        return row
+      })
+      updatedRows.push({columns: newColumns, selected: true})
+      self.setState({rows: updatedRows})
+    }
 
     return (
       <div className='container' style={style}>
@@ -265,6 +279,11 @@ class MaterialUITableEdit extends React.Component {
         row.id = id
         return this.renderRow(row)
       })}
+      <RaisedButton
+         onClick={onButtonClick}
+         style={buttonStyle}
+         label='新建'
+       />
       </div>
     )
   }
