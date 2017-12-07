@@ -7,7 +7,7 @@ const start = ()=>{
 
 async.waterfall([
     (callback)=> {
-      db.load_provices((provinces)=>{
+      db.load_provices({},(provinces)=>{
         console.log(`provinces===>${JSON.stringify(provinces)}`)
         if(provinces.length === 0){
           utilgeo.get_provices((err,provinces)=>{
@@ -26,15 +26,40 @@ async.waterfall([
         db.save_provices(provinces);
       }
 
+      let fnsz = [];
        _.map(provinces,(provice)=>{
-         utilgeo.get_cities(provice,callback);
-        //  if(provinces.adcode !== '820000'){
-        //    utilgeo.get_cities(provice,callback);
-        //  }
-        //  if(provice.adcode === '320000'){
-        //    console.log(`start get cities....`);
-        //    utilgeo.get_cities(provice,callback);
-        //  }
+         console.log(`provinces===>${JSON.stringify(provice)}`);
+         db.load_cities({provice_adcode:provice.adcode},(cities)=>{
+           console.log(`数据库中获取cities===>${JSON.stringify(cities)}`);
+
+           if(cities.length === 0){//数据库中没有
+             let fn = (callback)=>{
+               utilgeo.get_cities(provice,(err,cities)=>{
+                 console.log(`geo 获取cities===>${JSON.stringify(cities)}`);
+                 db.save_cities(cities);
+                 callback(null,cities);
+               });
+             }
+             fnsz.push(fn);
+           }
+           else{
+             let fn = (callback)=>{
+                 callback(null,cities);
+             }
+             fnsz.push(fn);
+           }
+         });
+       });
+       console.log(`函数个数===>${fnsz.length}`);
+       async.parallel(fnsz,(err,result)=>{
+         console.log(`async.parallel===>err:${JSON.stringify(err)},${JSON.stringify(result)}`);
+
+         let cities = [];
+         _.map(result,(cts)=>{
+           cities = _.concat(cities,cts);
+         });
+
+         callback(null,cities);
        });
     },
    (cities, callback)=> {
