@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@turf/inside": "^5.0.0",
     "async": "^2.6.0",
     "geolib": "^2.0.24",
     "lodash": "^4.17.4",
     "moment": "^2.19.3",
     "mongoose": "^4.13.6",
     "mongoose-paginate": "^5.0.3",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "turf": "^3.0.14"
   },
   "devDependencies": {},
   "scripts": {

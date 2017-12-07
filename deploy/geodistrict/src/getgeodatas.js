@@ -4,6 +4,7 @@ const utilgeo =  require('./utilgeo.js');
 const db = require('./db/index');
 const geolib = require('geolib');
 const moment = require('moment');
+const turf = require('@turf/turf');
 
 const start = ()=>{
   const insert_db = ()=>{
@@ -47,22 +48,28 @@ const start = ()=>{
   let test_ptinpolygons = ()=>{
 
     let maplist =[];
-    db.load_geos({"provice_adcode" : "110000"},(result_geo_list)=>{
+    db.load_geos({"city_name":"柳州市"},(result_geo_list)=>{
       // console.log(`获取到数据:${result_geo_list.length}`);
       if(result_geo_list.length > 0){
         _.map(result_geo_list,(result_geo)=>{
           if(!!result_geo.adcode){
             let array_polygon = [];
-            let polygons_list = result_geo.polygons['coordinates'][0];
+            let polygons_list = result_geo.polygons['coordinates'];
             let result_geo_new = _.omit(result_geo,'coordinates');
-            _.map(polygons_list,(pt)=>{
-              array_polygon.push({
-                latitude:pt[1],
-                longitude:pt[0]
-              });
-            });
+
+            console.log(`first:${JSON.stringify(polygons_list[0][0])},
+            last:${JSON.stringify(polygons_list[0][polygons_list[0].length-1])}
+            result_geo:${result_geo.name}
+            `);
+            polygons_list[0].push(polygons_list[0][0]);
+            // _.map(polygons_list,(pt)=>{
+            //   array_polygon.push({
+            //     latitude:pt[1],
+            //     longitude:pt[0]
+            //   });
+            // });
             // console.log(`array_polygon:${JSON.stringify(array_polygon)}`)
-            result_geo_new.array_polygon = array_polygon;
+            result_geo_new.array_polygon = polygons_list;
             maplist.push(result_geo_new);
             // mapsz[result_geo.adcode] = result_geo_new;
           }
@@ -75,10 +82,16 @@ const start = ()=>{
         const getgeofrompoint = ((point)=>{
           let matched = {};
           _.map(maplist,(v,k)=>{
+              const pt = turf.point([point.longitude, point.latitude]);
+              // const polysrc = turf.polygon([[[point.longitude, point.latitude],[point.longitude, point.latitude],[point.longitude, point.latitude],[point.longitude, point.latitude]]]);
+              const poly = turf.polygon(v.array_polygon);
             // console.log(`v.array_polygon???===>${JSON.stringify(v.array_polygon)}`)
-            if(geolib.isPointInside(point,v.array_polygon)){
-              return v;
-            }
+              if(turf.booleanPointInPolygon(pt, poly)){
+                return v;
+              }
+              // if(turf.booleanOverlap(polysrc, poly)){
+              //   return v;
+              // }
           });
           return null;
         });
@@ -98,6 +111,22 @@ const start = ()=>{
   }
 
   test_ptinpolygons();
+
+  // const test_turf = ()=>{
+  //   var pt = turf.point([-77, 44]);
+  //   var poly = turf.polygon([[
+  //     [-81, 41],
+  //     [-81, 47],
+  //     [-72, 47],
+  //     [-72, 41],
+  //     [-81, 41]
+  //   ]]);
+  //
+  //   const result = turf.booleanPointInPolygon(pt, poly);
+  //   console.log(`turf -->${result}`);
+  // }
+
+  // test_turf();
 // console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}==>`);
 // let query =
 // {
