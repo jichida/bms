@@ -10,10 +10,13 @@ export const ui_searchdevice_request = createAction('ui_searchdevice_request');
 export const ui_searchdevice_result = createAction('ui_searchdevice_result');
 export const ui_searchalarm_request = createAction('ui_searchalarm_request');
 export const ui_searchalarm_result = createAction('ui_searchalarm_result');
-export const ui_searchalarmdetail_request = createAction('ui_searchalarmdetail_request');
-export const ui_searchalarmdetail_result = createAction('ui_searchalarmdetail_result');
-export const ui_searchposition_request = createAction('ui_searchposition_request');
-export const ui_searchposition_result = createAction('ui_searchposition_result');
+
+export const uireport_searchalarm_request = createAction('uireport_searchalarm_request');
+export const uireport_searchalarm_result = createAction('uireport_searchalarm_result');
+export const uireport_searchalarmdetail_request = createAction('uireport_searchalarmdetail_request');
+export const uireport_searchalarmdetail_result = createAction('uireport_searchalarmdetail_result');
+export const uireport_searchposition_request = createAction('uireport_searchposition_request');
+export const uireport_searchposition_result = createAction('uireport_searchposition_result');
 
 //以下导出放在视图
 export function callthen(actionreq,actionres,payload){
