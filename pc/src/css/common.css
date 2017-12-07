@@ -1123,3 +1123,6 @@
     -webkit-align-items: center;
 
 }
+.Select--multi .Select-value{
+    margin-top:0;
+}
