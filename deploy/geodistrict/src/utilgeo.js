@@ -21,7 +21,7 @@ const get_provices = (callback)=>{
          if(typeof resultobj === 'string'){
              resultobj= JSON.parse(body);
          }
-         console.log(`resultobj:${JSON.stringify(resultobj)}`);
+        //  console.log(`resultobj:${JSON.stringify(resultobj)}`);
          if(resultobj.status == 1){
            let provinces = [];
            _.map(resultobj.districts[0].districts,(district)=>{
@@ -102,11 +102,11 @@ const get_districts = (city,callback)=>{
          if(typeof resultobj === 'string'){
              resultobj= JSON.parse(body);
          }
-         console.log(`get_districts resultobj:${JSON.stringify(resultobj)}`);
+        //  console.log(`get_districts resultobj:${JSON.stringify(resultobj)}`);
          if(resultobj.status == 1){
            let districts = [];
            _.map(resultobj.districts[0].districts,(district)=>{
-             console.log(`get_districts:${JSON.stringify(district)}`);
+            //  console.log(`get_districts:${JSON.stringify(district)}`);
              districts.push({
                provice_adcode:city.provice_adcode,
                provice_name:city.provice_name,
@@ -147,7 +147,7 @@ const get_districts_polyline = (district,callback)=>{
          if(typeof resultobj === 'string'){
              resultobj= JSON.parse(body);
          }
-         console.log(`get_districts resultobj:${JSON.stringify(resultobj)}`);
+        //  console.log(`get_districts resultobj:${JSON.stringify(resultobj)}`);
          if(resultobj.status == 1){
            let district_result = {
              provice_adcode:city.provice_adcode,
