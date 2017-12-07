@@ -88,15 +88,18 @@ class TreeSearchBattery extends React.Component {
                         <Option value={"2"} >一般报警</Option>
                     </Select>
 
+
+                </div>
+                <div className="i">
                     <MultiSelect
-            					closeOnSelect={true}
-            					multi
-            					onChange={this.onSelectChange.bind(this)}
-            					options={this.props.selectoptions}
-            					placeholder="选择报警字段"
-            					simpleValue
-            					value={this.state.selectedvalue}
-            				/>
+                        closeOnSelect={true}
+                        multi
+                        onChange={this.onSelectChange.bind(this)}
+                        options={this.props.selectoptions}
+                        placeholder="选择报警字段"
+                        simpleValue
+                        value={this.state.selectedvalue}
+                      />
                 </div>
                 <div className="b">
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
