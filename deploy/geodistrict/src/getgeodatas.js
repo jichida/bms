@@ -9,29 +9,32 @@ const start = ()=>{
     if(!err && result_geo_list){
       _.map(result_geo_list,(result_geo)=>{
         console.log(`处理数据:${JSON.stringify(result_geo)}`);
-        db.load_geos(result_geo,(result_list)=>{
-          console.log(`从数据库中读取:${JSON.stringify(result_list)}`);
-          let result_geo_rec = result_geo;
-          if(result_list.length === 1){
-            result_geo_rec = result_list[0];
-          }
-          else{
-            db.save_geos(result_geo);
-          }
+        setTimeout(()=>{
+          db.load_geos(result_geo,(result_list)=>{
+            console.log(`从数据库中读取:${JSON.stringify(result_list)}`);
+            let result_geo_rec = result_geo;
+            if(result_list.length === 1){
+              result_geo_rec = result_list[0];
+            }
+            else{
+              db.save_geos(result_geo);
+            }
 
-          if(!result_geo.polygons){
-            utilgeo.get_districts_polyline(result_geo,(err,polyline)=>{
-              console.log(`polyline=>${JSON.stringify(polyline)}`)
-              result_geo.polygons = {
-                "type" : "Polygon",
-                "coordinates" : []
-              };
-              result_geo.polygons['coordinates'].push(polyline);
-            });
+            if(!result_geo_rec.polygons){
+              console.log(`找不到 polyline=>${JSON.stringify(result_geo_rec)}`)
+              utilgeo.get_districts_polyline(result_geo,(err,polyline)=>{
+                console.log(`polyline=>${JSON.stringify(polyline)}`)
+                result_geo.polygons = {
+                  "type" : "Polygon",
+                  "coordinates" : []
+                };
+                result_geo.polygons['coordinates'].push(polyline);
+                db.update_geos(result_geo);
+              });
+            }
+          });
+        },100);//timeout
 
-            db.update_geos(result_geo);
-          }
-        });
       });
     }
 

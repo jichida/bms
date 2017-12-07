@@ -14,7 +14,10 @@ const get_allgeos = (callback)=>{
       }
     };
    request(options, function (error, response, body) {
-     if (error) throw new Error(error);
+       if (!!error) {
+         callback(error,null);
+         return;
+       };
 
        try{
          let resultobj = body;
@@ -199,7 +202,10 @@ const get_districts_polyline = (district,callback)=>{
       }
     };
    request(options, function (error, response, body) {
-     if (error) throw new Error(error);
+        if (!!error) {
+          callback(error,null);
+          return;
+        };
 
        try{
          let resultobj = body;
@@ -252,10 +258,10 @@ const get_districts_polyline = (district,callback)=>{
 //     })
 //   }
 // });
-const district = {"provice_adcode":"330000","provice_name":"浙江省","city_adcode":"330900","city_name":"舟山市","adcode":"330902","name":"定海区","level":"district"}
-get_districts_polyline(district,(err,polyline)=>{
-  console.log(`polyline=>${JSON.stringify(polyline)}`)
-});
+// const district = {"provice_adcode":"330000","provice_name":"浙江省","city_adcode":"330900","city_name":"舟山市","adcode":"330902","name":"定海区","level":"district"}
+// get_districts_polyline(district,(err,polyline)=>{
+//   console.log(`polyline=>${JSON.stringify(polyline)}`)
+// });
 // exports.get_provices = get_provices;
 // exports.get_cities = get_cities;
 // exports.get_districts = get_districts;
