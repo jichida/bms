@@ -36,42 +36,42 @@ class SystemConfig extends Component {
                     <Card >
                         <form onSubmit={handleSubmit(this.props.onClickSave)}>
                             <div >
-                              <div  >
+                              <div style={{padding: "15px 15px 0 15px"}}>
                                   <Field
                                       name="mappopfields"
                                       component={renderSelect}
                                       placeholder={`选择弹框的字段列表`}
                                   />
                               </div>
-                              <div  >
+                              <div  style={{padding: "15px 15px 0 15px"}}>
                                   <Field
                                       name="mappopclusterfields"
                                       component={renderSelect}
                                       placeholder={`选择聚合点弹框的字段列表`}
                                   />
                               </div>
-                              <div  >
+                              <div  style={{paddingTop: "15px 15px 0 15px"}}>
                                   <Field
                                       name="mapdetailfields"
                                       component={renderGroupEdit}
                                       placeholder={`编辑车辆详情显示字段列表`}
                                   />
                               </div>
-                                <div  >
+                                <div style={{padding: "15px 15px 0 15px"}}>
                                     <Field
                                         name="warningrulelevel0"
                                         component={renderInput}
                                         floatingLabelText={`报警规则设置(高)`}
                                     />
                                 </div>
-                                <div >
+                                <div style={{padding: "15px 15px 0 15px"}}>
                                     <Field
                                         name="warningrulelevel1"
                                         component={renderInput}
                                         floatingLabelText={`报警规则设置(中)`}
                                     />
                                 </div>
-                                <div >
+                                <div style={{padding: "15px 15px 0 15px"}}>
                                     <Field
                                         name="warningrulelevel2"
                                         component={renderInput}

@@ -145,20 +145,23 @@ class MaterialUITableEdit extends React.Component {
     const self = this
     const columns = row.columns
     const rowStyle = {
-      width: '100%',
+      flexGrow: "1",
       display: 'flex',
       flexFlow: 'row nowrap',
       padding: row.header ? 0 : 12,
       border: 0,
       borderBottom: '1px solid #ccc',
-      height: 50
+      alignSelf: "normal",
+      justifyContent: "flex-start"
     }
     const checkboxStyle = {
       display: 'flex',
       flexFlow: 'row nowrap',
       width: 50,
-      height: 24,
-      alignItems: 'center'
+      height: 50,
+      alignItems: 'center',
+      flexShrink : 0,
+      alignSelf: "center",
     }
 
     const rowId = row.id
@@ -203,11 +206,11 @@ class MaterialUITableEdit extends React.Component {
           const cellStyle = {
             display: 'flex',
             flexFlow: 'row nowrap',
-            flexGrow: 0.15,
+            flexGrow: 1,
             flexBasis: 'content',
             alignItems: 'center',
-            height: 30,
-            width: width || 200
+            width: 150,
+            flexShrink : 0
           }
 
           const columnKey = ['column', id].join('-')
