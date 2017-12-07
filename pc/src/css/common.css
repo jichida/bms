@@ -1107,3 +1107,7 @@
     justify-content: space-between;
     border-bottom:1px solid #EEE;
 }   
+.Select.Select--multi{
+    min-width : 140px;
+    max-width: 300px;
+}
