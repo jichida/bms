@@ -1,0 +1,19 @@
+{
+  "name": "geodistrict",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "async": "^2.6.0",
+    "lodash": "^4.17.4",
+    "mongoose": "^4.13.6",
+    "mongoose-paginate": "^5.0.3",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
