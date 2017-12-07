@@ -44,10 +44,10 @@ const start = ()=>{
   // });
 
 
-let mapsz = {};
-db.load_geos({},(result_geo_list)=>{
+let maplist =[];
+db.load_geos({"adcode" : "450202"},(result_geo_list)=>{
   console.log(`获取到数据:${result_geo_list.length}`);
-  if(!err && result_geo_list){
+  if(result_geo_list.length > 0){
     _.map(result_geo_list,(result_geo)=>{
       if(!!result_geo.adcode){
         let array_polygon = [];
@@ -59,8 +59,10 @@ db.load_geos({},(result_geo_list)=>{
             longitude:pt[0]
           });
         });
+        console.log(`array_polygon:${JSON.stringify(array_polygon)}`)
         result_geo_new.array_polygon = array_polygon;
-        mapsz[result_geo.adcode] = result_geo_new;
+        maplist.push(result_geo_new);
+        // mapsz[result_geo.adcode] = result_geo_new;
       }
       else{
         console.log(`mapsz[result_geo.adcode]???===>${JSON.stringify(result_geo)}`)
@@ -70,7 +72,8 @@ db.load_geos({},(result_geo_list)=>{
 
     const getgeofrompoint = ((point)=>{
       let matched = {};
-      _.map(mapsz,(v,k)=>{
+      _.map(maplist,(v,k)=>{
+        console.log(`v.array_polygon???===>${JSON.stringify(v.array_polygon)}`)
         if(geolib.isPointInside(point,v.array_polygon)){
           return v;
         }
@@ -78,13 +81,13 @@ db.load_geos({},(result_geo_list)=>{
       return null;
     });
 
+    console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}==>${maplist.length}`);
     let point = {latitude: 40.2207700000, longitude: 116.2312800000};
-    console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}开始判断${JSON.stringify(point)}`);
     let result = getgeofrompoint(point);
     console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}判断结果${JSON.stringify(result)}`);
     point = {latitude: 24.350483, longitude: 109.433671};
     result = getgeofrompoint(point);
-    console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}判断结果${JSON.stringify(point)}`);
+    console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}判断结果${JSON.stringify(result)}`);
     point = {latitude: 26.258009, longitude: 119.378868};
     result = getgeofrompoint(point);
     console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}判断结果${JSON.stringify(result)}`);
