@@ -81,7 +81,6 @@ async.waterfall([
       // console.log(`函数个数===>${fnsz.length}`);
       async.parallel(fnsz,(err,result)=>{
         // console.log(`async.parallel===>err:${JSON.stringify(err)},${JSON.stringify(result)}`);
-
         let districts = [];
         _.map(result,(cts)=>{
           districts = _.concat(districts,cts);
