@@ -8,10 +8,10 @@ const start = ()=>{
 async.waterfall([
     (callback)=> {
       db.load_provices({},(provinces)=>{
-        console.log(`provinces===>${JSON.stringify(provinces)}`)
+        // console.log(`provinces===>${JSON.stringify(provinces)}`)
         if(provinces.length === 0){
           utilgeo.get_provices((err,provinces)=>{
-            console.log(`provinces===>${JSON.stringify(provinces)}`)
+            // console.log(`provinces===>${JSON.stringify(provinces)}`)
             callback(null,{isindb:false,provinces});
           });
         }
@@ -21,34 +21,31 @@ async.waterfall([
       });
     },
     ({isindb,provinces}, callback)=> {
-      console.log(`isindb:${isindb},provinces===>${JSON.stringify(provinces)}`);
+      // console.log(`isindb:${isindb},provinces===>${JSON.stringify(provinces)}`);
       if(!isindb){
         db.save_provices(provinces);
       }
 
       let fnsz = [];
        _.map(provinces,(provice)=>{
-         console.log(`provinces===>${JSON.stringify(provice)}`);
-         db.load_cities({provice_adcode:provice.adcode},(cities)=>{
-           console.log(`数据库中获取cities===>${JSON.stringify(cities)}`);
+           let fn = (callback)=>{
+            //  console.log(`provinces===>${JSON.stringify(provice)}`);
+             db.load_cities({provice_adcode:provice.adcode},(cities)=>{
+              //  console.log(`数据库中获取cities===>${JSON.stringify(cities)}`);
+               if(cities.length === 0){//数据库中没有
+                   utilgeo.get_cities(provice,(err,cities)=>{
+                    //  console.log(`geo 获取cities===>${JSON.stringify(cities)}`);
+                     db.save_cities(cities);
+                     callback(null,cities);
+                   });
 
-           if(cities.length === 0){//数据库中没有
-             let fn = (callback)=>{
-               utilgeo.get_cities(provice,(err,cities)=>{
-                 console.log(`geo 获取cities===>${JSON.stringify(cities)}`);
-                 db.save_cities(cities);
-                 callback(null,cities);
-               });
-             }
-             fnsz.push(fn);
-           }
-           else{
-             let fn = (callback)=>{
-                 callback(null,cities);
-             }
-             fnsz.push(fn);
-           }
-         });
+               }
+               else{
+                  callback(null,cities);
+               }
+             });
+         }
+         fnsz.push(fn);
        });
        console.log(`函数个数===>${fnsz.length}`);
        async.parallel(fnsz,(err,result)=>{
@@ -63,12 +60,9 @@ async.waterfall([
        });
     },
    (cities, callback)=> {
-     console.log(`cities===>${JSON.stringify(cities)}`);
+     console.log(`全部城市===>${JSON.stringify(cities)}`);
       _.map(cities,(city)=>{
         if(city.level === 'district'){
-          // let district = {
-          //
-          // }
         }
         else{
           db.load_onecity(city,(result)=>{
