@@ -134,7 +134,7 @@ class TableAlarm extends React.Component {
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
                 <div className="appbar">
-                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
                     <div className="title">报警报表</div>
                 </div>
                 <div className="TreeSearchBattery">
