@@ -35,7 +35,7 @@ export function* createsagacallbackflow(){
 
     const { response, timeout } = yield race({
        response: take(actionres),
-       timeout: call(delay, 5000)
+       timeout: call(delay, 30000)
     });
     if(!!timeout){
       reject('请求超时!');
