@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
-import {bridge_alarminfo,getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
+import {getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
 import {download_excel} from '../../actions';
 import moment from 'moment';
 

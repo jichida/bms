@@ -9,7 +9,7 @@ import map from 'lodash.map';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
-import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
+// import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import moment from 'moment';
 
 import TreeSearchreport from '../search/searchreport_alarm';

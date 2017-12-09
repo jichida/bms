@@ -9,7 +9,7 @@ import map from 'lodash.map';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
-import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
+import {bridge_positioninfo} from '../../sagas/datapiple/bridgedb';
 import {download_excel} from '../../actions';
 import moment from 'moment';
 
@@ -61,11 +61,19 @@ class TablePosition extends React.Component {
       },0);
     }
     onItemConvert(item){
-      return bridge_alarminfo(item);
+      let itemnew = {...item};
+      //DeviceId Latitude Longitude GPSTime
+      itemnew['设备编号'] = get(item,'DeviceId','');
+      itemnew['定位时间'] = get(item,'GPSTime','');
+      itemnew['省'] = get(item,'Provice','');
+      itemnew['市'] = get(item,'City','');
+      itemnew['区'] = get(item,'Area','');
+      return itemnew;
     }
     render(){
         let column_data = {
           "设备编号" : "",
+          "定位时间" : "",
           "省" : "",
           "市" : "",
           "区" : "",
