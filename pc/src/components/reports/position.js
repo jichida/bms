@@ -63,6 +63,7 @@ class TablePosition extends React.Component {
     onItemConvert(item){
       let itemnew = {...item};
       //DeviceId Latitude Longitude GPSTime
+      itemnew['key'] = get(item,'_id','');
       itemnew['设备编号'] = get(item,'DeviceId','');
       itemnew['定位时间'] = get(item,'GPSTime','');
       itemnew['省'] = get(item,'Provice','');
