@@ -15,6 +15,8 @@ const getpoint = (v)=>{
 let startmodule = (app)=>{
   app.post('/api/report_position',(req,res)=>{
     const query = req.body|| {};
+    console.log(`query====>${JSON.stringify(query)}`);
+
     const historytrackModel = DBModels.HistoryTrackModel;
     const fields = 'DeviceId Latitude Longitude GPSTime';
 
