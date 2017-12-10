@@ -29,27 +29,40 @@ let startmodule = (app)=>{
     res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv'});
     res.write(csvfields + '\n');
 
+    let cancelRequest = false;
+    req.on('close', (err)=>{
+       cancelRequest = true;
+    });
+
     const cursor = historytrackModel.find(query,fields).cursor();
     cursor.on('error', (err)=> {
-      res.write('Error:' + err);
-      throw new Error(err);
+      // res.write('Error:' + err);
+      // throw new Error(err);
+      console.log(`算结束了啊..............`);
+      res.end('');
     });
 
     cursor.on('data', (doc)=>
     {
-      doc = JSON.parse(JSON.stringify(doc));
-      // console.log(`doc-->${JSON.stringify(doc)}`);
-      utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
-        const newdoc = _.merge(doc,retobj);
-        // console.log(`newdoc-->${JSON.stringify(newdoc)}`);
-        // console.log(`retobj-->${JSON.stringify(retobj)}`);
-        csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-          // console.log(`csv-->${csv}`);
-           if (!err && !!csv) {
-             res.write(csv);
-           }
+      if(cancelRequest){
+        cursor.close();
+        console.log(`取消下载了..............`);
+      }
+      else{
+        doc = JSON.parse(JSON.stringify(doc));
+        // console.log(`doc-->${JSON.stringify(doc)}`);
+        utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
+          const newdoc = _.merge(doc,retobj);
+          // console.log(`newdoc-->${JSON.stringify(newdoc)}`);
+          // console.log(`retobj-->${JSON.stringify(retobj)}`);
+          csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+            // console.log(`csv-->${csv}`);
+             if (!err && !!csv) {
+               res.write(csv);
+             }
+           });
          });
-       });
+      }
     }).
     on('end', ()=> {
       setTimeout(()=> {
@@ -71,15 +84,24 @@ let startmodule = (app)=>{
     const filename = 'db-data-' + new Date().getTime() + '.csv';
     res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv'});
     res.write(csvfields + '\n');
+    let cancelRequest = false;
+    req.on('close', (err)=>{
+       cancelRequest = true;
+    });
 
     const cursor = realtimealarmModel.find(query).cursor();
     cursor.on('error', (err)=> {
-      res.write('Error:' + err);
-      throw new Error(err);
+      console.log(`算结束了啊..............`);
+      res.end('');
     });
 
     cursor.on('data', (doc)=>
     {
+      if(cancelRequest){
+        cursor.close();
+        console.log(`取消下载了..............`);
+      }
+      else{
         doc = JSON.parse(JSON.stringify(doc));
       // console.log(`doc-->${JSON.stringify(doc)}`);
       // utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
@@ -92,6 +114,7 @@ let startmodule = (app)=>{
              res.write(csv);
            }
          });
+       }
       //  });
     }).
     on('end', ()=> {
@@ -114,15 +137,23 @@ let startmodule = (app)=>{
     const filename = 'db-data-' + new Date().getTime() + '.csv';
     res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv'});
     res.write(csvfields + '\n');
-
+    let cancelRequest = false;
+    req.on('close', (err)=>{
+       cancelRequest = true;
+    });
     const cursor = realtimealarmrawModel.find(query).cursor();
     cursor.on('error', (err)=> {
-      res.write('Error:' + err);
-      throw new Error(err);
+      console.log(`算结束了啊..............`);
+      res.end('');
     });
 
     cursor.on('data', (doc)=>
     {
+      if(cancelRequest){
+        cursor.close();
+        console.log(`取消下载了..............`);
+      }
+      else{
         doc = JSON.parse(JSON.stringify(doc));
       // console.log(`doc-->${JSON.stringify(doc)}`);
       // utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
@@ -135,6 +166,7 @@ let startmodule = (app)=>{
              res.write(csv);
            }
          });
+       }
       //  });
     }).
     on('end', ()=> {
