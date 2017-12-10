@@ -57,7 +57,7 @@ let startmodule = (app)=>{
           // console.log(`retobj-->${JSON.stringify(retobj)}`);
           csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
             // console.log(`csv-->${csv}`);
-             if (!err && !!csv) {
+             if (!err && !!csv && !cancelRequest) {
                res.write(csv);
              }
            });
@@ -110,7 +110,7 @@ let startmodule = (app)=>{
         // console.log(`retobj-->${JSON.stringify(retobj)}`);
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
           // console.log(`csv-->${csv}`);
-           if (!err && !!csv) {
+           if (!err && !!csv && !cancelRequest) {
              res.write(csv);
            }
          });
@@ -162,7 +162,7 @@ let startmodule = (app)=>{
         // console.log(`retobj-->${JSON.stringify(retobj)}`);
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
           // console.log(`csv-->${csv}`);
-           if (!err && !!csv) {
+           if (!err && !!csv && !cancelRequest) {
              res.write(csv);
            }
          });
