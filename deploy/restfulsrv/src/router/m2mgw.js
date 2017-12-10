@@ -12,10 +12,20 @@ const getpoint = (v)=>{
   return [v.Longitude,v.Latitude];
 }
 
+
 let startmodule = (app)=>{
   app.post('/api/report_position',(req,res)=>{
-    const query = req.body|| {};
-    console.log(`query====>${JSON.stringify(query)}`);
+    let query = {};
+    try{
+      let sv = new Buffer(req.body.queryparam, 'hex').toString();
+      console.log(`sv:${sv}`);
+      query = JSON.parse(sv);
+    }
+    catch(e){
+      console.dir(e);
+    }
+
+    console.dir(query);
 
     const historytrackModel = DBModels.HistoryTrackModel;
     const fields = 'DeviceId Latitude Longitude GPSTime';
@@ -75,7 +85,17 @@ let startmodule = (app)=>{
   });
   app.post('/api/report_alarm',(req,res)=>{
     // res.xls('data.xlsx', jsonArr);？???//exportalarm
-    const query = req.body|| {};
+    let query = {};
+    try{
+      let sv = new Buffer(req.body.queryparam, 'hex').toString();
+      console.log(`sv:${sv}`);
+      query = JSON.parse(sv);
+    }
+    catch(e){
+      console.dir(e);
+    }
+
+    console.dir(query);
     const realtimealarmModel = DBModels.RealtimeAlarmModel;
     const fields = '车辆ID 报警时间 报警等级 报警信息';
 
@@ -128,7 +148,17 @@ let startmodule = (app)=>{
 
   });
   app.post('/api/report_alarmdetail',(req,res)=>{
-    const query = req.body|| {};
+    let query = {};
+    try{
+      let sv = new Buffer(req.body.queryparam, 'hex').toString();
+      console.log(`sv:${sv}`);
+      query = JSON.parse(sv);
+    }
+    catch(e){
+      console.dir(e);
+    }
+
+    console.dir(query);
     const realtimealarmrawModel = DBModels.RealtimeAlarmRawModel;
     const fields = '车辆ID 报警时间 报警等级 报警信息';
 

@@ -3,59 +3,20 @@ import config from '../env/config';
 import map from 'lodash.map';
 const fetchurl =`${config.serverurlrestful}`;
 
-const getForm =(url, target, values, method)=> {
-  function grabValues(x) {
-    const path = [];
-    let depth = 0;
-    const results = [];
+const getForm =(url, target, value, method)=> {
 
-    function iterate(x) {
-      switch (typeof x) {
-        case 'function':
-        case 'undefined':
-        case 'null':
-          break;
-        case 'object':
-          if (Array.isArray(x))
-            for (let i = 0; i < x.length; i++) {
-              path[depth++] = i;
-              iterate(x[i]);
-            }
-          else
-            map(x,(i)=>{
-              path[depth++] = i;
-              iterate(x[i]);
-            });
-          break;
-        default:
-          results.push({
-            path: path.slice(0),
-            value: x
-          })
-          break;
-      }
-      path.splice(--depth);
-    }
-    iterate(x);
-    return results;
-  }
   let form = document.createElement("form");
   form.method = method;
   form.action = url;
   form.target = target;
 
-  values = grabValues(values);
+  let input = document.createElement("input");
+  input.type = "hidden";
+  input.value = value;
+  input.name = 'queryparam';
 
-  for (let j = 0; j < values.length; j++) {
-    let input = document.createElement("input");
-    input.type = "hidden";
-    input.value = values[j].value;
-    input.name = values[j].path[0];
-    for (let k = 1; k < values[j].path.length; k++) {
-      input.name += "[" + values[j].path[k] + "]";
-    }
-    form.appendChild(input);
-  }
+  form.appendChild(input);
+
   return form;
 };
 
@@ -67,10 +28,20 @@ const statusHelper = (response)=> {
   }
 }
 
+const toHex =(str)=> {
+    var result = '';
+    for (var i=0; i<str.length; i++) {
+      result += str.charCodeAt(i).toString(16);
+    }
+    return result;
+  };
+
 const restfulapi = {
   getexcelfile({type,query}){
     return new Promise((resolve,reject) => {
-      const form = getForm(`${fetchurl}/${type}`, "_blank", query, "post");
+      let vs = toHex(JSON.stringify(query));
+      console.log(`query:${vs}`);
+      const form = getForm(`${fetchurl}/${type}`, "_self", vs, "post");
 
       document.body.appendChild(form);
       form.submit();
