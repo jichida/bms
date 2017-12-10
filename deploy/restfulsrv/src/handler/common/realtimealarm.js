@@ -75,7 +75,8 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
   return alarminfonew;
 }
-
+exports.bridge_alarminfo = bridge_alarminfo;
+exports.bridge_alarmrawinfo = bridge_alarmrawinfo;
 // bridge_alarminfo({"_id":"5a1bfa0f86ce24f6ce62f6d2","CurDay":"2017-11-18","DeviceId":"1702100387","__v":0,"F[214]":6,"DataTime":"2017-11-18 10:04:47","warninglevel":"","Longitude":121.177748,"Latitude":31.442289});
 // console.log(`mapdict==>${JSON.stringify(config.mapdict)}`);
 // config.mapdict = _.merge(config.mapdict,{'AL':1});

@@ -1,59 +1,160 @@
 const map = require('lodash.map');
+const _ = require('lodash');
+const csvwriter = require('csvwriter');
 const device = require('../handler/common/device.js');
 const historytrack = require('../handler/common/historytrack');
 const kafakautil = require('../kafka/producer');
 const realtimealarm = require('../handler/common/realtimealarm.js');
+let DBModels = require('../db/models.js');
+const utilposition = require('../handler/common/util_position');
 
+const getpoint = (v)=>{
+  return [v.Longitude,v.Latitude];
+}
 
 let startmodule = (app)=>{
   app.post('/api/report_position',(req,res)=>{
-    const query = req.body;
-    const actiondata = {
-      query,
-      fields:'DeviceId Latitude Longitude GPSTime Course'
-    }
-    historytrack.exportposition(actiondata,{},(result)=>{
-      console.log(`search position:${JSON.stringify(result)}`);
-      let resultList = [];
-      if(result.cmd === 'exportposition_result'){
-        resultList = result.payload.list;
-      }
+    const query = req.body|| {};
+    const historytrackModel = DBModels.HistoryTrackModel;
+    const fields = 'DeviceId Latitude Longitude GPSTime';
 
-      res.xls('data.xlsx',resultList );
+    let sz = fields.split(' ');
+    sz.push('Provice');
+    sz.push('City');
+    sz.push('Area');
+    const csvfields = sz.join(',');
+    console.log(`csvfields-->${csvfields}`);
+
+    const filename = 'db-data-' + new Date().getTime() + '.csv';
+    res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv'});
+    res.write(csvfields + '\n');
+
+    const cursor = historytrackModel.find(query,fields).cursor();
+    cursor.on('error', (err)=> {
+      res.write('Error:' + err);
+      throw new Error(err);
     });
 
+    cursor.on('data', (doc)=>
+    {
+      doc = JSON.parse(JSON.stringify(doc));
+      // console.log(`doc-->${JSON.stringify(doc)}`);
+      utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
+        const newdoc = _.merge(doc,retobj);
+        // console.log(`newdoc-->${JSON.stringify(newdoc)}`);
+        // console.log(`retobj-->${JSON.stringify(retobj)}`);
+        csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+          // console.log(`csv-->${csv}`);
+           if (!err && !!csv) {
+             res.write(csv);
+           }
+         });
+       });
+    }).
+    on('end', ()=> {
+      setTimeout(()=> {
+        res.end('');
+      }, 1000);
+    });
 
   });
   app.post('/api/report_alarm',(req,res)=>{
     // res.xls('data.xlsx', jsonArr);？???//exportalarm
-    const query = req.body;
-    const actiondata = {
-      query,
-    }
-    realtimealarm.exportalarm(actiondata,{},(result)=>{
-      console.log(`search realtimealarm:${JSON.stringify(result)}`);
-      let resultList = [];
-      if(result.cmd === 'exportalarm_result'){
-        resultList = result.payload.list;
-      }
+    const query = req.body|| {};
+    const realtimealarmModel = DBModels.RealtimeAlarmModel;
+    const fields = '车辆ID 报警时间 报警等级 报警信息';
 
-      res.xls('data.xlsx',resultList );
+    let sz = fields.split(' ');
+    const csvfields = sz.join(',');
+    console.log(`csvfields-->${csvfields}`);
+
+    const filename = 'db-data-' + new Date().getTime() + '.csv';
+    res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv'});
+    res.write(csvfields + '\n');
+
+    const cursor = realtimealarmModel.find(query).cursor();
+    cursor.on('error', (err)=> {
+      res.write('Error:' + err);
+      throw new Error(err);
     });
+
+    cursor.on('data', (doc)=>
+    {
+        doc = JSON.parse(JSON.stringify(doc));
+      // console.log(`doc-->${JSON.stringify(doc)}`);
+      // utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
+        const newdoc = realtimealarm.bridge_alarminfo(doc);
+        // console.log(`newdoc-->${JSON.stringify(newdoc)}`);
+        // console.log(`retobj-->${JSON.stringify(retobj)}`);
+        csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+          // console.log(`csv-->${csv}`);
+           if (!err && !!csv) {
+             res.write(csv);
+           }
+         });
+      //  });
+    }).
+    on('end', ()=> {
+      setTimeout(()=> {
+        res.end('');
+      }, 1000);
+    });
+
 
   });
   app.post('/api/report_alarmdetail',(req,res)=>{
-    const query = req.body;
-    const actiondata = {
-      query,
-    }
-    realtimealarm.exportalarmdetail(actiondata,{},(result)=>{
-      console.log(`search exportalarmdetail:${JSON.stringify(result)}`);
-      let resultList = [];
-      if(result.cmd === 'exportalarmdetail_result'){
-        resultList = result.payload.list;
-      }
-      res.xls('data.xlsx',resultList );
+    const query = req.body|| {};
+    const realtimealarmrawModel = DBModels.RealtimeAlarmRawModel;
+    const fields = '车辆ID 报警时间 报警等级 报警信息';
+
+    let sz = fields.split(' ');
+    const csvfields = sz.join(',');
+    console.log(`csvfields-->${csvfields}`);
+
+    const filename = 'db-data-' + new Date().getTime() + '.csv';
+    res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv'});
+    res.write(csvfields + '\n');
+
+    const cursor = realtimealarmrawModel.find(query).cursor();
+    cursor.on('error', (err)=> {
+      res.write('Error:' + err);
+      throw new Error(err);
     });
+
+    cursor.on('data', (doc)=>
+    {
+        doc = JSON.parse(JSON.stringify(doc));
+      // console.log(`doc-->${JSON.stringify(doc)}`);
+      // utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
+        const newdoc = realtimealarm.bridge_alarmrawinfo(doc);
+        // console.log(`newdoc-->${JSON.stringify(newdoc)}`);
+        // console.log(`retobj-->${JSON.stringify(retobj)}`);
+        csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+          // console.log(`csv-->${csv}`);
+           if (!err && !!csv) {
+             res.write(csv);
+           }
+         });
+      //  });
+    }).
+    on('end', ()=> {
+      setTimeout(()=> {
+        res.end('');
+      }, 1000);
+    });
+
+    // const query = req.body;
+    // const actiondata = {
+    //   query,
+    // }
+    // realtimealarm.exportalarmdetail(actiondata,{},(result)=>{
+    //   console.log(`search exportalarmdetail:${JSON.stringify(result)}`);
+    //   let resultList = [];
+    //   if(result.cmd === 'exportalarmdetail_result'){
+    //     resultList = result.payload.list;
+    //   }
+    //   res.xls('data.xlsx',resultList );
+    // });
   });
 
   app.post('/m2mgw/setdata',(req,res)=>{
