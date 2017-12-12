@@ -1126,3 +1126,36 @@
 .Select--multi .Select-value{
     margin-top:0;
 }
+.prompt{
+    position: fixed;
+    z-index: 2000;
+    width: 260px;
+    border-radius: 10px;
+    background: #FFF;
+    padding: 10px;
+    box-shadow: 1px 1px 5px #888888;
+    bottom: 10px;
+    right: 10px;
+}
+.prompt .head,
+.prompt .btn{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+.prompt .body{
+    margin: 10px 0;
+}
+.prompt .btn a{
+    border: 1px solid #108ee9;
+    border-radius: 6px;
+    line-height: 20px;
+    padding: 0 5px;
+}
+
+
+
