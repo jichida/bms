@@ -1156,6 +1156,12 @@
     line-height: 20px;
     padding: 0 5px;
 }
+.prompt.hide{
+    display: none;
+}
+.prompt.show{
+    display: block;
+}
 
 
 

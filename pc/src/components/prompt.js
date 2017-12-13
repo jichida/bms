@@ -1,10 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 class Prompt extends React.Component{
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            curmessage : {}
+        };
+    }
+
     render(){
         return (
-            <div className="prompt">
+            <div className={this.props.promptdata.length>0 ? "prompt show": "prompt hide"}>
                 <div className="head">
                     <span>严重警告</span>
                     <a>设置</a>
@@ -23,7 +31,9 @@ class Prompt extends React.Component{
             </div>
         )
     }
-
 }
 
-export default Prompt;
+const data = ({app:{promptdata}}) => {
+    return { promptdata };
+}
+export default connect(data)(Prompt);

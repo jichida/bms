@@ -10,7 +10,9 @@ import {
     ui_mycar_showtype,
     ui_index_selstatus,
     ui_sel_tabindex,
-    ui_setmapstyle
+    ui_setmapstyle,
+    ui_showprompt,
+    set_promptdata
 } from '../actions';
 
 
@@ -32,7 +34,10 @@ const initial = {
         mapstyle : {
             height : 0,
             top : 0
-        }
+        },
+        //全局提示
+        showprompt: false,
+        promptdata: [],
     },
 };
 
@@ -84,6 +89,10 @@ const app = createReducer({
     [ui_setmapstyle]:(state,style)=>{
         return {...state, mapstyle:style };
     },
+
+    [set_promptdata]:(state,payload)=>{
+        return {...state, promptdata:payload };
+    }
 
 }, initial.app);
 
