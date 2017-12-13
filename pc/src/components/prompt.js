@@ -9,6 +9,18 @@ class Prompt extends React.Component{
             curmessage : {}
         };
     }
+    //快速定位
+    getaddress=(id)=>{
+        console.log(id);
+    }
+    //查看详情
+    getdeviceinfo=(id)=>{
+        console.log(id);
+    }
+    //查看下一条
+    next=()=>{
+        
+    }
 
     render(){
         return (
@@ -24,9 +36,9 @@ class Prompt extends React.Component{
                     <p><span>位置信息:</span><span>上海市普陀区桃浦镇上海应用技术学院普陀教学部上海信息技术学校</span></p>
                 </div>
                 <div className="btn">
-                    <a href="#">快速定位</a>
-                    <a href="#">查看详情</a>
-                    <a href="#">(2/10)下一条</a>
+                    <a onClick={this.getaddress.bind("设备id")}>快速定位</a>
+                    <a onClick={this.getdeviceinfo.bind("设备id")}>查看详情</a>
+                    <a onClick={this.next}>(2/10)下一条</a>
                 </div>
             </div>
         )
