@@ -37,5 +37,3 @@ export const download_excel = createAction('download_excel');
 
 export const ui_showprompt = createAction('ui_showprompt');
 export const set_promptdata = createAction('set_promptdata');
-// ui_showprompt,
-//     set_promptdata,
