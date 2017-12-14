@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {ui_alarm_selcurdevice} from '../actions';
 
 class Prompt extends React.Component{
 
@@ -12,10 +13,14 @@ class Prompt extends React.Component{
     //快速定位
     getaddress=(id)=>{
         console.log(id);
+        let DeviceId = '1727208808';
+        this.props.dispatch(ui_alarm_selcurdevice(DeviceId));
     }
     //查看详情
     getdeviceinfo=(id)=>{
         console.log(id);
+        let DeviceId = '1727208808';
+        this.props.history.push(`/deviceinfo/${DeviceId}`);
     }
     //查看下一条
     next=()=>{
@@ -25,7 +30,7 @@ class Prompt extends React.Component{
     render(){
         const {promptdata} = this.props;
         console.log(promptdata);
-        
+
         return (
             <div className={this.props.promptdata.length>0 ? "prompt show": "prompt hide"}>
                 <div className="head">
