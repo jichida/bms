@@ -75,44 +75,56 @@ export function* wsrecvsagaflow() {
 
   yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {
       yield fork(function*(){
-        while(true){
-          const { resstop, timeout } = yield race({
-             resstop: take(`${stop_serverpush_devicegeo_sz}`),
-             timeout: call(delay,5000)
-          });
-          if(!!resstop){
-            break;
+        try{
+          while(true){
+            const { resstop, timeout } = yield race({
+               resstop: take(`${stop_serverpush_devicegeo_sz}`),
+               timeout: call(delay,5000)
+            });
+            if(!!resstop){
+              break;
+            }
+            //
+            // console.log(`开始获取变化数据...`)
+            yield put(serverpush_devicegeo_sz_request({}));
+            yield race({
+              resstop: take(`${serverpush_devicegeo_sz_result}`),
+              timeout: call(delay, 10000)
+           });
           }
-          //
-          // console.log(`开始获取变化数据...`)
-          yield put(serverpush_devicegeo_sz_request({}));
-          yield race({
-            resstop: take(`${serverpush_devicegeo_sz_result}`),
-            timeout: call(delay, 10000)
-         });
+        }
+        catch(e){
+          console.log(e);
         }
       });
+
   });
 
   yield takeLatest(`${start_serverpush_alarm_sz}`, function*(action) {
       yield fork(function*(){
-        while(true){
-          const { resstop, timeout } = yield race({
-             resstop: take(`${stop_serverpush_alarm_sz}`),
-             timeout: call(delay,5000)
-          });
-          if(!!resstop){
-            break;
+        try{
+          while(true){
+            const { resstop, timeout } = yield race({
+               resstop: take(`${stop_serverpush_alarm_sz}`),
+               timeout: call(delay,5000)
+            });
+            if(!!resstop){
+              break;
+            }
+            //
+            // console.log(`开始获取变化数据...`)
+            yield put(serverpush_alarm_sz_request({}));
+            yield race({
+              resstop: take(`${serverpush_alarm_sz_result}`),
+              timeout: call(delay, 10000)
+           });
           }
-          //
-          // console.log(`开始获取变化数据...`)
-          yield put(serverpush_alarm_sz_request({}));
-          yield race({
-            resstop: take(`${serverpush_alarm_sz_result}`),
-            timeout: call(delay, 10000)
-         });
+        }
+        catch(e){
+          console.log(e);
         }
       });
+
   });
 
   yield takeLatest(`${serverpush_devicegeo_sz_result}`, function*(action) {
@@ -134,7 +146,7 @@ export function* wsrecvsagaflow() {
               yield put(querydevicegroup_request({}));
 
               if(config.ispopalarm){
-
+                yield put(start_serverpush_alarm_sz({}));
               }
               //
               // yield put(getworkusers_request({}));

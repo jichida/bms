@@ -3,6 +3,7 @@ const DBModels = require('../../db/models.js');
 const mongoose  = require('mongoose');
 const winston = require('../../log/log.js');
 const _ = require('lodash');
+const moment = require('moment');
 
 const getalarmfieldtotxt = (alarmfield)=>{
     const mapdict = config.mapdict;
@@ -303,6 +304,40 @@ exports.exportalarmdetail = (actiondata,ctx,callback)=>{
       callback({
         cmd:'common_err',
         payload:{errmsg:err.message,type:'exportalarmdetail'}
+      });
+    }
+  });
+}
+
+//<<=============报警推送===============================
+exports.serverpush_alarm_sz = (actiondata,ctx,callback)=>{
+  const realtimealarmModel = DBModels.RealtimeAlarmModel;
+  const query = {
+    CurDay:moment().format('YYYY-MM-DD')
+  };
+  realtimealarmModel.find(query,null,{
+    skip: 0,
+    limit: 10,
+    sort:{ "DataTime":-1}
+  },(err,list)=>{
+    if(!err){
+      list = JSON.parse(JSON.stringify(list));
+      let docs = [];
+      _.map(list,(record)=>{
+        let recordnew = bridge_alarminfo(record);
+        recordnew = _.omit(recordnew,['key']);
+        docs.push(recordnew);
+      });
+      list = docs;
+      callback({
+        cmd:'serverpush_alarm_sz_result',
+        payload:{list}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'serverpush_alarm_sz'}
       });
     }
   });
