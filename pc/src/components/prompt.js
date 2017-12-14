@@ -19,10 +19,13 @@ class Prompt extends React.Component{
     }
     //查看下一条
     next=()=>{
-        
+
     }
 
     render(){
+        const {promptdata} = this.props;
+        console.log(promptdata);
+        
         return (
             <div className={this.props.promptdata.length>0 ? "prompt show": "prompt hide"}>
                 <div className="head">
@@ -45,7 +48,7 @@ class Prompt extends React.Component{
     }
 }
 
-const data = ({app:{promptdata}}) => {
+const data = ({alarmpop:{promptdata}}) => {
     return { promptdata };
 }
 export default connect(data)(Prompt);

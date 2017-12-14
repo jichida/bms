@@ -34,7 +34,13 @@ import {
 
   changepwd_result,
 
-  gettipcount_request
+  gettipcount_request,
+
+  start_serverpush_alarm_sz,
+  stop_serverpush_alarm_sz,
+  serverpush_alarm_sz_request,
+  serverpush_alarm_sz_result,
+
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
@@ -88,6 +94,26 @@ export function* wsrecvsagaflow() {
       });
   });
 
+  yield takeLatest(`${start_serverpush_alarm_sz}`, function*(action) {
+      yield fork(function*(){
+        while(true){
+          const { resstop, timeout } = yield race({
+             resstop: take(`${stop_serverpush_alarm_sz}`),
+             timeout: call(delay,5000)
+          });
+          if(!!resstop){
+            break;
+          }
+          //
+          // console.log(`开始获取变化数据...`)
+          yield put(serverpush_alarm_sz_request({}));
+          yield race({
+            resstop: take(`${serverpush_alarm_sz_result}`),
+            timeout: call(delay, 10000)
+         });
+        }
+      });
+  });
 
   yield takeLatest(`${serverpush_devicegeo_sz_result}`, function*(action) {
       let {payload:result} = action;
@@ -106,6 +132,10 @@ export function* wsrecvsagaflow() {
                 yield put(gettipcount_request({}));//获取个数
               }
               yield put(querydevicegroup_request({}));
+
+              if(config.ispopalarm){
+
+              }
               //
               // yield put(getworkusers_request({}));
               // //登录成功,获取今天所有报警信息列表
