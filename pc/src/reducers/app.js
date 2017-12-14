@@ -37,7 +37,14 @@ const initial = {
         },
         //全局提示
         showprompt: false,
-        promptdata: [],
+        promptdata: [
+          {
+            _id:'xxx',
+          },
+          {
+            _id:'xxx'
+          }
+        ],
     },
 };
 
