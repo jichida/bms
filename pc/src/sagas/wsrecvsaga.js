@@ -116,7 +116,7 @@ export function* wsrecvsagaflow() {
             yield put(serverpush_alarm_sz_request({}));
             yield race({
               resstop: take(`${serverpush_alarm_sz_result}`),
-              timeout: call(delay, 10000)
+              timeout: call(delay, 60000)
            });
           }
         }

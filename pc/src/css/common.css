@@ -1146,6 +1146,9 @@
     -moz-justify-content: space-between;
     -webkit-justify-content: space-between;
     justify-content: space-between;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
 }
 .prompt .body{
     margin: 10px 0;
@@ -1162,6 +1165,27 @@
 .prompt.show{
     display: block;
 }
+.prompt.show.min{
+    width: 32px;
+    line-height: 14px;
+    height: 103px;
+    cursor: pointer;
+    color: rgb(237, 148, 47);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
 
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -moz-box-direction:normal;
+        flex-direction:column;
+        -webkit-flex-direction:column;
+}
 
 
