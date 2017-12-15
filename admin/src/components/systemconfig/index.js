@@ -36,21 +36,35 @@ const SystemconfigCreateTitle = ({ record }) => {
 };
  const SystemconfigCreate = (props) => (
        <Create {...props} title={<SystemconfigCreateTitle />} >
-       <SimpleForm>
+       <TabbedForm>
+         <FormTab label="弹框信息">
           <CfSelectArrayInput label="选择弹框的字段列表" source="mappopfields"/>
           <CfSelectArrayInput label="选择聚合点弹框的字段列表" source="mappopclusterfields"/>
           <CfSelectArrayInputDetail label="编辑车辆详情显示字段列表" source="mapdetailfields"/>
-       </SimpleForm>
+       </FormTab>
+       <FormTab label="报警规则">
+       <TextInput label="报警规则设置(高)" source="warningrulelevel0" />
+       <TextInput label="报警规则设置(中)" source="warningrulelevel1" />
+       <TextInput label="报警规则设置(低)" source="warningrulelevel2" />
+         </FormTab>
+       </TabbedForm>
        </Create>
 );
 
  const SystemconfigEdit = (props) => (
     <EditPage {...props} title={<SystemconfigTitle />}>
-        <SimpleForm>
+        <TabbedForm>
+        <FormTab label="弹框信息">
           <CfSelectArrayInput label="选择弹框的字段列表" source="mappopfields"/>
           <CfSelectArrayInput label="选择聚合点弹框的字段列表" source="mappopclusterfields"/>
           <CfSelectArrayInputDetail label="编辑车辆详情显示字段列表" source="mapdetailfields"/>
-        </SimpleForm>
+          </FormTab>
+          <FormTab label="报警规则">
+          <TextInput label="报警规则设置(高)" source="warningrulelevel0" />
+          <TextInput label="报警规则设置(中)" source="warningrulelevel1" />
+          <TextInput label="报警规则设置(低)" source="warningrulelevel2" />
+        </FormTab>
+          </TabbedForm>
     </EditPage>
 );
 
