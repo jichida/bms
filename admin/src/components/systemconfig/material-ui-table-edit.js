@@ -237,7 +237,7 @@ class MaterialUITableEdit extends React.Component {
       display: 'flex',
       flexFlow: 'column nowrap',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'stretch',
       fontFamily: 'Roboto, sans-serif'
     }
 
