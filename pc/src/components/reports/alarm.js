@@ -19,6 +19,7 @@ import {
 } from '../../sagas/pagination';
 
 
+let resizetimecontent = null;
 
 class TableAlarm extends React.Component {
 
@@ -40,7 +41,23 @@ class TableAlarm extends React.Component {
           query['warninglevel'] = '低';
         }
 
-        this.state = {query};
+        this.state = {query, innerHeight: window.innerHeight};
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.onWindowResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize);
+    }
+
+    onWindowResize=()=> {
+        window.clearTimeout(resizetimecontent);
+        resizetimecontent = window.setTimeout(()=>{
+            this.setState({
+                innerHeight: window.innerHeight,
+            });
+        },10)
     }
 
     onClickExport(query){
@@ -109,7 +126,7 @@ class TableAlarm extends React.Component {
         }
         columns.push(columns_action);
         return (
-            <div className="warningPage" style={{height : window.innerHeight+"px"}}>
+            <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
