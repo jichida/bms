@@ -1,4 +1,4 @@
-let islocalhost = false;
+let islocalhost = true;
 const serverurl = islocalhost?'http://localhost:5011':'http://bms.com28.cn';
 const serverurlrestful = islocalhost?`${serverurl}/api`:`${serverurl}/apisrv/api`;
 const wspath = islocalhost?'/socket.io':'/apisrv/socket.io';
@@ -8,7 +8,7 @@ let config = {
     serverurl:`${serverurl}`,
     wspath:`${wspath}`,
     requesttimeout:5000,
-    appversion:'1.1.3',
+    appversion:'1.1.5',
     sendlocationinterval:20000,
     softmode:'app'
 };
