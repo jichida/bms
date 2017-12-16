@@ -18,6 +18,8 @@ import {
 import map from 'lodash.map';
 import moment from 'moment';
 
+let resizetimecontent = null;
+
 class TableAlarmDetail extends React.Component {
 
     constructor(props) {
@@ -38,7 +40,10 @@ class TableAlarmDetail extends React.Component {
           query['warninglevel'] = '低';
         }
 
-        this.state = {query};
+        this.state = {
+          query,
+          innerHeight : window.innerHeight
+        };
     }
 
     onClickExport(query){
@@ -63,6 +68,23 @@ class TableAlarmDetail extends React.Component {
       // return bridge_alarminfo(item);
       return item;
     }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.onWindowResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize);
+    }
+
+    onWindowResize=()=> {
+        window.clearTimeout(resizetimecontent);
+        resizetimecontent = window.setTimeout(()=>{
+            this.setState({
+                innerHeight: window.innerHeight,
+            });
+        },10)
+    }
+
     render(){
         let warninglevel = this.props.match.params.warninglevel;
         if(warninglevel === 'all'){
@@ -91,7 +113,7 @@ class TableAlarmDetail extends React.Component {
         });
 
         return (
-            <div className="warningPage" style={{height : window.innerHeight+"px"}}>
+            <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
                 <div className="appbar">
                     <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
