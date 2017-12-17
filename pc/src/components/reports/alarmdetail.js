@@ -19,29 +19,30 @@ import map from 'lodash.map';
 import moment from 'moment';
 
 let resizetimecontent = null;
+let g_querysaved;
 
 class TableAlarmDetail extends React.Component {
 
     constructor(props) {
         super(props);
-        let query = {};
-        query['DataTime'] = {
+        let queryalarm = {};
+        queryalarm['DataTime'] = {
           $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
           $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
         };
         let warninglevel = props.warninglevel || "-1";
         if(warninglevel === '0'){
-          query['warninglevel'] = '高';
+          queryalarm['warninglevel'] = '高';
         }
         else if(warninglevel === '1'){
-          query['warninglevel'] = '中';
+          queryalarm['warninglevel'] = '中';
         }
         else if(warninglevel === '2'){
-          query['warninglevel'] = '低';
+          queryalarm['warninglevel'] = '低';
         }
 
         this.state = {
-          query,
+          query: g_querysaved || queryalarm,
           innerHeight : window.innerHeight
         };
     }
@@ -70,6 +71,7 @@ class TableAlarmDetail extends React.Component {
     }
 
     componentDidMount() {
+        g_querysaved = null;
         window.addEventListener('resize', this.onWindowResize);
     }
     componentWillUnmount() {
@@ -123,12 +125,14 @@ class TableAlarmDetail extends React.Component {
                     <TreeSearchreport
                       onClickQuery={this.onClickQuery.bind(this)}
                       mapdict={this.props.mapdict}
-                      warninglevel={warninglevel}
+                      query={this.state.query}
                       onClickExport={this.onClickExport.bind(this)}
                     />
                 </div>
                 <div className="tablelist">
                     <AntdTable
+                      listtypeiddata = 'alarmdetail'
+                      usecache = {!!g_querysaved}
                       ref='antdtablealarm'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}

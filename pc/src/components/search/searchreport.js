@@ -46,6 +46,7 @@ const selitem_alarmfields = [
 class TreeSearchBattery extends React.Component {
     constructor(props) {
         super(props);
+
         let warninglevel = "-1";
         if(!!props.query.warninglevel){
           if(props.query.warninglevel = '高'){

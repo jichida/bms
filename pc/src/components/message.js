@@ -35,7 +35,6 @@ import {
 import get from 'lodash.get';
 
 let g_querysaved;
-
 class MessageAllDevice extends React.Component {
 
     constructor(props) {
@@ -153,6 +152,8 @@ class MessageAllDevice extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
+                      listtypeiddata = 'message'
+                      usecache = {!!g_querysaved}
                       ref='antdtablealarm'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
