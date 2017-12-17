@@ -11,7 +11,10 @@ const renderGroupEdit = ({ meta: { touched, error } = {}, input: { ...inputProps
   let vsz = inputProps.value;
   let onDelete =(values)=>{
     console.log(`onDelete :${JSON.stringify(values)}`);
-    let index = _.get(values,'id',-1);
+    let index = _.get(values,'rowId',-1);
+
+    console.log(`onDelete index:${index}`);
+
     let newv = [];
     if(index !== -1 && index < vsz.length ){
       for(let i = 0;i < vsz.length; i++){
