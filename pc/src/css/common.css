@@ -1061,7 +1061,7 @@
     font-size: 14px;
     flex-shrink: 0;
 }
-#historytrackplayback .ant-select-selection--single{
+#historytrackplayback .bfsd .ant-select-selection--single{
     width: 68px;
 }
 .devicePage .lists.deviceinfolist{
