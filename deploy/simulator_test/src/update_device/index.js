@@ -11,7 +11,7 @@ const do_update_device = ()=>{
 
   const realtimealarmModel = DBModels.RealtimeAlarmModel;
   const query = {
-    curDay:{$ne:moment().format('YYYY-MM-DD')}
+    CurDay:{$ne:moment().format('YYYY-MM-DD')}
   };
   console.log(`do_update_device...`);
   realtimealarmModel.find(query,null,{
@@ -23,7 +23,7 @@ const do_update_device = ()=>{
       list = JSON.parse(JSON.stringify(list));
       _.map(list,(device)=>{
         let devicenew = _.clone(device);
-        devicenew.curDay = moment().format('YYYY-MM-DD');
+        devicenew.CurDay = moment().format('YYYY-MM-DD');
         devicenew.DataTime = moment().subtract(1, 'second').format('YYYY-MM-DD HH:mm:ss');
         realtimealarmModel.findByIdAndUpdate(devicenew._id,devicenew,{new: true},(err, result)=> {
           console.log(`findByIdAndUpdate===>${JSON.stringify(result)}`)
