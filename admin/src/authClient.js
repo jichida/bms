@@ -26,7 +26,7 @@ export default (type, params) => {
                         reject('用户名或密码错误');
                         return;
                     }
-                    Promise.resolve();
+                    resolve();
                 });
           });
         };
