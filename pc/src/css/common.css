@@ -602,11 +602,8 @@
     font-size: 18px;
 }
 .topuser img{
-    border-radius: 30px;
     width: 30px;
     height: 30px;
-    border-radius: 30px;
-    border:2px solid #EEE;
 }
 .appbar{
     display: -webkit-box;
