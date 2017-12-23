@@ -56,7 +56,7 @@ class App extends Component {
                 <Resource name="systemconfig" list={SystemconfigList} />,
                 <Resource name="devicegroup" list={DeviceGroupList} edit={DeviceGroupEdit} create={DeviceGroupCreate}  remove={Delete} />,
                 <Resource name="device" list={DeviceList} edit={DeviceEdit} create={DeviceCreate}  remove={Delete} />,
-                <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} />,
+                <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />,
                 <Resource name="role" list={RoleList} edit={RoleEdit} create={RoleCreate}  remove={Delete} />,
                 <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate}  remove={Delete} />,
                 <Resource name="datadict" list={DataDictList} edit={DataDictEdit} create={DataDictCreate}  remove={Delete} />,

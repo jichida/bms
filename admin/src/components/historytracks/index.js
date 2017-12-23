@@ -67,8 +67,14 @@ const HistoryTrackShow = (props)=> {
   );
 };
 
+const DeviceFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="搜索设备" source="DeviceId_q" />
+  </Filter>
+)
+
 const HistoryTrackList = (props)=> (
-  <List title={<HistoryTrackTitle />} sort={{field:'created_at',order:'DESC'}} {...props}>
+  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}>
     <Datagrid>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="CellId" source="CellId" />

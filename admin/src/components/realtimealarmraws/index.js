@@ -102,10 +102,19 @@ const RealtimeAlarmRawShow = (props) => {
   );
 };
 
-
+const DeviceFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="搜索设备" source="DeviceId_q" />
+    <SelectInput  label="报警等级"  source="warninglevel" choices={[
+        { id: '高', name: '高' },
+        { id: '中', name: '中' },
+        { id: '低', name: '低' },
+    ]} />
+  </Filter>
+)
 
 const RealtimeAlarmRawList = (props) => (
-  <List title={<RealtimeAlamTitle />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
+  <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
     <Datagrid>
       <TextField label="设备" source="DeviceId" />
       <TextField label="报警等级" source="warninglevel" />

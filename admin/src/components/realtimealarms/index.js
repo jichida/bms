@@ -93,10 +93,14 @@ const RealtimeAlarmShow = (props) => {
   );
 };
 
-
+const DeviceFilter = (props) => (
+  <Filter {...props}>
+    <TextInput label="搜索设备" source="DeviceId_q" />
+  </Filter>
+)
 
 const RealtimeAlarmList = (props) => (
-  <List title={<RealtimeAlamTitle />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
+  <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
     <Datagrid>
       <TextField label="设备" source="DeviceId" />
       <TextField label="日期" source="CurDay" />
