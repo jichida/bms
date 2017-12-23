@@ -10,6 +10,7 @@ import UserGroupIcon from 'material-ui/svg-icons/action/supervisor-account';//�
 import UserLogIcon from 'material-ui/svg-icons/action/book';//用户登陆日志
 import PermissionIcon from 'material-ui/svg-icons/action/info';//权限
 import RealtimeAlarmIcon from 'material-ui/svg-icons/action/alarm';//实时报警
+import RealtimeAlarmRawIcon from 'material-ui/svg-icons/action/alarm';//实时报警
 import HistoryTrackIcon from 'material-ui/svg-icons/action/history';//历史轨迹
 import CanrowDataIcon from 'material-ui/svg-icons/action/timeline';//原始数据
 
@@ -23,6 +24,7 @@ export default [
         { name: 'role', icon: <UserGroupIcon /> },
         { name: 'permission', icon: <PermissionIcon /> },
         { name: 'realtimealarm', icon: <RealtimeAlarmIcon /> },
+        { name: 'realtimealarmraw', icon: <RealtimeAlarmRawIcon /> },
         { name: 'historytrack', icon: <HistoryTrackIcon /> },
         { name: 'datadict', icon: <DeviceIcon /> },
 ];
