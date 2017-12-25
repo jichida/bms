@@ -111,6 +111,7 @@ class ResetPassword extends React.Component {
             onChange={this.handleChange}
             floatingLabelText="请输入密码"
           />
+          <br/>
         <TextField
           id="password2"
           type="password"
