@@ -66,7 +66,7 @@ import filter from 'lodash.filter';
 import moment from 'moment';
 import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
-import {getpopinfowindowstyle,getlistpopinfowindowstyle} from './getmapstyle';
+import {getpopinfowindowstyle,getlistpopinfowindowstyle,getimageicon} from './getmapstyle';
 import jsondataareas from '../util/areas.json';
 import jsondataprovinces from '../util/provinces.json';
 import jsondatacities from '../util/cities.json';
@@ -172,7 +172,7 @@ const getMarkCluster_showMarks = (isshow)=>{
                position:pos,
                icon: new window.AMap.Icon({
                    size: new window.AMap.Size(24, 48),  //图标大小
-                   image: `${process.env.PUBLIC_URL}/images/car.png`,
+                   image: getimageicon(item),
                    imageOffset: new window.AMap.Pixel(0, 0)
                }),
                angle:get(item,'angle',0),

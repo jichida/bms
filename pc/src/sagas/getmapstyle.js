@@ -126,3 +126,15 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
         infoBody: `${info}`
     };
 }
+
+
+export const getimageicon = (item)=>{
+  //这里根据不同item显示不同图标
+  const online_png = `${process.env.PUBLIC_URL}/images/car_online.png`;
+  const offline_png = `${process.env.PUBLIC_URL}/images/car_offline.png`;
+  let curpng = online_png;
+  if(parseInt(item.DeviceId)%2 === 0){ //在线／离线条件判断
+    curpng = offline_png;
+  }
+  return curpng;
+}
