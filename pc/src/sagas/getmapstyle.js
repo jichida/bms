@@ -70,6 +70,12 @@ const getCoureName = (course)=> {
 window.clickfn_device =(DeviceId)=>{
   store.dispatch(push(`/deviceinfo/${DeviceId}`));
 }
+window.clickfn_historyplay =(DeviceId)=>{
+  store.dispatch(push(`/historyplay/${DeviceId}`));
+}
+window.clickfn_showhistory =(DeviceId)=>{
+  // store.dispatch(push(`/showhistory/${DeviceId}`));
+}
 
 const getpop_device =({deviceitem,kvlist})=>{
   let DeviceId = get(deviceitem,'DeviceId','');
@@ -83,7 +89,9 @@ const getpop_device =({deviceitem,kvlist})=>{
   return {
         infoBody: `<p>车辆编号:${DeviceId}</p>
         ${contentxt}
-        <button onclick="clickfn_device(${DeviceId})">查看详情</button>`
+        <button onclick="clickfn_device(${DeviceId})" class='clickfn_device'>查看详情</button>
+        <button onclick="clickfn_historyplay(${DeviceId})" class='clickfn_historyplay'>历史轨迹回放</button>
+        <button onclick="clickfn_showhistory(${DeviceId})" class='clickfn_showhistory'>历史信息</button>`
     };
 }
 

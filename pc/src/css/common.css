@@ -893,6 +893,15 @@
     background: none;
     padding-right: 10px;
 }
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button.clickfn_device{
+
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button.clickfn_historyplay{
+    margin-top: -40px;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button.clickfn_showhistory{
+    margin-top: 40px;
+}
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button:after{
     content: "";
     display: inline-block;
