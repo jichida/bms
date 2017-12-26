@@ -113,7 +113,7 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
         let contentxt = '';
         lodashmap(kvlist,(v)=>{
           const fieldvalue = get(deviceitem,v.name,'');
-          const unit = get(deviceitem,v.name,'');
+          const unit = get(deviceitem,v.unit,'');
           contentxt += `${v.showname}${fieldvalue}${unit}|`;
         });
 
