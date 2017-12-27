@@ -4,18 +4,21 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import map from 'lodash.map';
+
 import Seltime from './seltime.js';
-import { Input,Select, AutoComplete,Button } from 'antd';
+import { Select,Button } from 'antd';
 import {getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
 import MultiSelect from 'react-select';
 import moment from 'moment';
+import SelectDevice from '../historytrackplayback/selectdevice.js';
+import get from 'lodash.get';
+import map from 'lodash.map';
 
 import 'react-select/dist/react-select.css';
 
 moment.locale('zh-cn');
 
-const InputGroup = Input.Group;
+
 const Option = Select.Option;
 
 //sample:https://github.com/JedWatson/react-select/blob/master/examples/src/components/Multiselect.js
@@ -42,14 +45,20 @@ class TreeSearchBattery extends React.Component {
           startDate = moment(props.query.DataTime['$gte']);
           endDate = moment(props.query.DataTime['$lte']);
         }
-
+        let DeviceId = get(props.query,'DeviceId','');
         this.state = {
             alarmlevel: warninglevel,
             startDate,
             endDate,
+            DeviceId,
             selectedvalue: [],
             columndata_extra:[]
           };
+    }
+    onSelDeviceid(DeviceId){
+        this.setState({
+            DeviceId
+        });
     }
     onSelectChange (value) {
       let sz = value.split(',');
@@ -92,6 +101,10 @@ class TreeSearchBattery extends React.Component {
          else if(this.state.alarmlevel === '2'){
            query1['warninglevel'] = '低';
          }
+         if(this.state.DeviceId !== ''){
+           query1['DeviceId'] = this.state.DeviceId;
+         }
+
          let query = {};
          if(this.state.columndata_extra.length > 0){
            let query2 = {
@@ -137,6 +150,12 @@ class TreeSearchBattery extends React.Component {
       }
     }
     render(){
+      const {g_devicesdb} = this.props;
+
+      let deviceidlist = [];
+      map(g_devicesdb,(item)=>{
+          deviceidlist.push(item.DeviceId);
+      });
         return (
             <div className="searchreport" style={{textAlign: "center"}}>
                 <div className="i">
@@ -151,7 +170,15 @@ class TreeSearchBattery extends React.Component {
                         <Option value={"1"} >紧急报警</Option>
                         <Option value={"2"} >一般报警</Option>
                     </Select>
-
+                    <div className="selcar">
+                      <span className="t">车辆ID：</span>
+                      <SelectDevice
+                        placeholder={"请输入设备ID"}
+                        initdeviceid={this.state.DeviceId}
+                        onSelDeviceid={this.onSelDeviceid.bind(this)}
+                        deviceidlist={deviceidlist}
+                      />
+                    </div>
 
                 </div>
                 <div className="i">
@@ -174,5 +201,7 @@ class TreeSearchBattery extends React.Component {
         );
     }
 }
-
-export default connect()(TreeSearchBattery);
+const mapStateToProps = ({device:{g_devicesdb}}) => {
+  return {g_devicesdb};
+}
+export default connect(mapStateToProps)(TreeSearchBattery);
