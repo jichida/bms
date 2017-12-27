@@ -715,27 +715,35 @@ export function* createmapmainflow(){
     yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       let {payload:{DeviceId,deviceitem}} = actioncurdevice;
       try{
+          if(!deviceitem && !!DeviceId){
+            deviceitem = g_devicesdb[DeviceId];
+          }
+          if(!!deviceitem){//？？？？
             if(!deviceitem.locz){
               deviceitem = yield call(getdeviceinfo,deviceitem,true);
             }
             console.log(`ui_selcurdevice_request==>${JSON.stringify(deviceitem)}`);
             //获取该车辆所在经纬度
-            const result = yield call(getgeodata,deviceitem);
-            //调用一次citycode，防止加载不到AreaNode
-            try{
-              let adcodeinfo = getadcodeinfo(result.adcode);
-              yield call(getclustertree_one,adcodeinfo.parent_code);
+            if(!!deviceitem.locz){
+              const result = yield call(getgeodata,deviceitem);
+              //调用一次citycode，防止加载不到AreaNode
+              if(!!result.adcode){
+                try{
+                  let adcodeinfo = getadcodeinfo(result.adcode);
+                  yield call(getclustertree_one,adcodeinfo.parent_code);
+                }
+                catch(e){
+                  console.log(e);
+                }
+                const adcodetop = parseInt(result.adcode);
+                //展开左侧树结构
+                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
+                if(config.softmode === 'pc'){//pc端才有树啊
+                  yield take(`${mapmain_getdistrictresult}`);//等待数据完成
+                }
+              }
             }
-            catch(e){
-              console.log(e);
-            }
-            const adcodetop = parseInt(result.adcode);
-            //展开左侧树结构
-            yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
-            if(config.softmode === 'pc'){//pc端才有树啊
-              yield take(`${mapmain_getdistrictresult}`);//等待数据完成
-            }
-
+          }
       }
       catch(e){
         console.log(e);
