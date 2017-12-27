@@ -9,8 +9,6 @@ import { Route,Redirect,Switch} from 'react-router-dom';
 import Index from './home';
 
 import Message from './message/message.js';
-import Devicemessage from './message/devicemessage.js';
-
 
 // import Device from './device/device.js';
 import Deviceinfo from './device/deviceinfo.js';
@@ -69,11 +67,11 @@ class AppRoot extends React.Component {
                     <Route path="/index" component={requireAuthentication(()=>(<div></div>))} />
 
                     <Route path="/login" component={Login} />
-                    <Route path="/message/:warninglevel" component={requireAuthentication(Message)} />
+                    <Route path="/message/:warninglevel/:deviceid" component={requireAuthentication(Message)} />
 
                     <Route path="/deviceinfo/:deviceid" component={requireAuthentication(Deviceinfo)} />
                     <Route path="/alarminfo/:alarmid" component={Alaraminfo} />
-                    <Route path="/devicemessage/:id" component={requireAuthentication(Devicemessage)} />
+
                     <Route path="/historyplay/:deviceid" component={requireAuthentication(Historyplay)} />
 
                     {/* // <Route path="/device" component={requireAuthentication(Device)} />
