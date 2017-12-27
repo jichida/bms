@@ -4,35 +4,41 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Treebeard} from 'react-treebeard';
 import map from 'lodash.map';
+import get from 'lodash.get';
 // import {ui_selcurdevice_request} from '../actions';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
-import Deraultimg from "../img/1.png";
-import "../css/message.css";
-import AntdTable from "./controls/antdtable.js";
-import Seltime from "./search/seltime.js";
-import {bridge_alarminfo} from '../sagas/datapiple/bridgedb';
+// import TextField from 'material-ui/TextField';
+// import SelectField from 'material-ui/SelectField';
+// import MenuItem from 'material-ui/MenuItem';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import Avatar from 'material-ui/Avatar';
+// import Deraultimg from "../img/1.png";
+// import {
+//     Table,
+//     TableBody,
+//     TableHeader,
+//     TableHeaderColumn,
+//     TableRow,
+//     TableRowColumn,
+// } from 'material-ui/Table';
+// import { Modal, Button } from 'antd';
+// import Seltime from "../search/seltime.js";
+
+import AntdTable from "../controls/antdtable.js";
+
+import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import moment from 'moment';
 
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
-import TreeSearchreport from './search/searchreport';
-import { Modal, Button } from 'antd';
+
+import TreeSearchreport from '../search/searchreport';
+
 import {
   callthen,ui_searchalarm_request,ui_searchalarm_result
-} from '../sagas/pagination';
-import get from 'lodash.get';
+} from '../../sagas/pagination';
+
+
+import "../../css/message.css";
+
 
 let g_querysaved;
 class MessageAllDevice extends React.Component {

@@ -5,31 +5,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {map_setmapinited} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
-import AdminContent from "./admincontent";
-import Index from './index';
-import Datatable from './datatable/index.js';
-import Message from './message.js';
-import Device from './device.js';
-import Deviceinfo from './deviceinfo.js';
-import Chargingpileinfo from './chargingpileinfo.js';
-import Devicemessage from './devicemessage.js';
-import Devicedata from './devicedata.js';
+
+import Index from './home';
+
+import Message from './message/message.js';
+import Devicemessage from './message/devicemessage.js';
+
+
+// import Device from './device/device.js';
+import Deviceinfo from './device/deviceinfo.js';
+
+
 import Historyplay from './historytrackplayback';
-import Chartlist from './chartlist';
-import Workorder from './workorder';
+
 
 import Login from './login/login.js';
-import MapPage from './admincontent';
 import WeuiTool from './tools/weuitool';
 
 import Alaraminfo from './alarm/alarminfo';
-import Workorderinfo from './workorder/info';
+
 import ReportAlarm from './reports/alarm';
 import ReportPosition from './reports/position';
 import ReportAlarmDetail from './reports/alarmdetail';
+import ReportDevice from './reports/device';
 
 import {requireAuthentication} from './requireauthentication';
-import { carmapshow_createmap, carmapshow_destorymap} from '../actions';
+
 import "../css/common.css";
 
 class AppRoot extends React.Component {
@@ -60,9 +61,10 @@ class AppRoot extends React.Component {
                 <WeuiTool />
                 <Switch>
                     <Route exact path="/" component={()=>(<Redirect to="/index"/>)} />
-                    <Route path="/reports/alarm" component={requireAuthentication(ReportAlarm)} />
-                    <Route path="/reports/alarmdetail" component={requireAuthentication(ReportAlarmDetail)} />
-                    <Route path="/reports/position" component={requireAuthentication(ReportPosition)} />
+                    <Route path="/reports/alarm/:deviceid" component={requireAuthentication(ReportAlarm)} />
+                    <Route path="/reports/alarmdetail/:deviceid" component={requireAuthentication(ReportAlarmDetail)} />
+                    <Route path="/reports/position/:deviceid" component={requireAuthentication(ReportPosition)} />
+                    <Route path="/reports/device/:deviceid" component={requireAuthentication(ReportDevice)} />
 
                     <Route path="/index" component={requireAuthentication(()=>(<div></div>))} />
 
@@ -74,13 +76,13 @@ class AppRoot extends React.Component {
                     <Route path="/devicemessage/:id" component={requireAuthentication(Devicemessage)} />
                     <Route path="/historyplay/:deviceid" component={requireAuthentication(Historyplay)} />
 
-                    // <Route path="/device" component={requireAuthentication(Device)} />
+                    {/* // <Route path="/device" component={requireAuthentication(Device)} />
                     // <Route path="/chartlist/:id" component={requireAuthentication(Chartlist)} />
                     // <Route path="/devicedata/:id" component={requireAuthentication(Devicedata)} />
                     // <Route path="/chargingpileinfo/:id" component={requireAuthentication(Chargingpileinfo)} />
                     // <Route path="/workorder" component={requireAuthentication(Workorder)} />
                     // <Route path="/datatable" component={requireAuthentication(Datatable)} />
-                    // <Route path="/workorderinfo/:workid" component={Workorderinfo} />
+                    // <Route path="/workorderinfo/:workid" component={Workorderinfo} /> */}
                 </Switch>
                 <div>
                     <Index history={this.props.history}/>

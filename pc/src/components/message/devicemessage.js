@@ -4,32 +4,16 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Treebeard} from 'react-treebeard';
-import map from 'lodash.map';
-// import {ui_selcurdevice_request} from '../actions';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import Avatar from 'material-ui/Avatar';
-import Deraultimg from "../img/1.png";
-import "../css/message.css";
-import TableComponents from "./table.js";
-import Seltime from "./search/seltime.js";
 
+import map from 'lodash.map';
+
+import "../../css/message.css";
+import TableComponents from "../controls/table.js";
+
+import TreeSearchreport from '../search/searchdevicemessage';
 import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
-import TreeSearchreport from './search/searchdevicemessage';
-import {
-  ui_selcurdevice_request,
   searchbatteryalarmsingle_request
-} from '../actions';
+} from '../../actions';
 
 class MessageAllDevice extends React.Component {
 
@@ -46,7 +30,7 @@ class MessageAllDevice extends React.Component {
     }
 
     render(){
-        let {g_devicesdb,alarms,alaram_data,columns} = this.props;
+        let {alaram_data,columns} = this.props;
         const id = this.props.match.params.id;
         let delrow = (row)=>{
             console.log(row);
