@@ -336,3 +336,16 @@ exports.uireport_searchdevice =  (actiondata,ctx,callback)=>{
     }
   });
 }
+
+const bridge_deviceinfo = (deviceinfo)=>{
+  let deviceinfonew = {};
+  deviceinfonew[`key`] = deviceinfo._id;
+  deviceinfonew[`车辆ID`] = deviceinfo[`DeviceId`];
+  deviceinfonew[`更新时间`] = deviceinfo[`UpdateTime`];
+  deviceinfonew[`设备类型`] = deviceinfo[`DeviceType`];
+  deviceinfonew[`序列号`] = deviceinfo[`SN64`];
+
+  return deviceinfonew;
+};
+
+exports.bridge_deviceinfo =  bridge_deviceinfo;
