@@ -29,6 +29,11 @@ class TablePosition extends React.Component {
           $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
           $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
         };
+        let DeviceId =  this.props.match.params.deviceid;
+        if(DeviceId !== '0'){
+          query.DeviceId = DeviceId;
+        }
+
         this.state = {query, innerHeight: window.innerHeight};
     }
 
@@ -108,7 +113,11 @@ class TablePosition extends React.Component {
                     <div className="title">设备报表</div>
                 </div>
                 <div className="TreeSearchBattery">
-                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} onClickExport={this.onClickExport.bind(this)}/>
+                    <TreeSearchreport
+                      onClickQuery={this.onClickQuery.bind(this)}
+                      onClickExport={this.onClickExport.bind(this)}
+                      query={this.state.query}
+                    />
                 </div>
                 <div className="tablelist">
                     <AntdTable

@@ -74,7 +74,7 @@ window.clickfn_historyplay =(DeviceId)=>{
   store.dispatch(push(`/historyplay/${DeviceId}`));
 }
 window.clickfn_showhistory =(DeviceId)=>{
-  // store.dispatch(push(`/showhistory/${DeviceId}`));
+  store.dispatch(push(`/reports/device/${DeviceId}`));
 }
 
 const getpop_device =({deviceitem,kvlist})=>{
