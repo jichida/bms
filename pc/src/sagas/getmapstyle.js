@@ -97,7 +97,7 @@ const getpop_device =({deviceitem,kvlist})=>{
         <button onclick="clickfn_device(${DeviceId})" class='clickfn_device'>查看详情</button>
         <button onclick="clickfn_historyplay(${DeviceId})" class='clickfn_historyplay'>历史轨迹回放</button>
         <button onclick="clickfn_showhistory(${DeviceId})" class='clickfn_showhistory'>历史位置信息</button>
-        <button onclick="clickfn_showmessage(${DeviceId})" class='clickfn_showhistory'>历史报警信息</button>`
+        <button onclick="clickfn_showmessage(${DeviceId})" class='clickfn_showmessage'>历史报警信息</button>`
     };
 }
 
