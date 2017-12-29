@@ -35,6 +35,7 @@ Toggle.propTypes = {
 
 let Header = ({node, style,gmap_acode_treename,gmap_acode_treecount,treeviewstyle}) => {
     let title = node.name || '';
+    let icon = false;
     if(node.type !== 'device'){
       if(treeviewstyle === 'byloc'){
         const name = gmap_acode_treename[node.adcode];
@@ -45,7 +46,19 @@ let Header = ({node, style,gmap_acode_treename,gmap_acode_treecount,treeviewstyl
         }
       }
     }
-
+    else{
+      icon = treeviewstyle === 'byloc';
+    }
+    if(!icon){
+      return (
+          <div style={style.base}>
+              <div style={style.title}>
+                  {title}
+              </div>
+          </div>
+      );
+    }
+    let iconname = '';
     return (
         <div style={style.base}>
             <div style={style.title}>
@@ -53,6 +66,7 @@ let Header = ({node, style,gmap_acode_treename,gmap_acode_treecount,treeviewstyl
             </div>
         </div>
     );
+
 };
 Header.propTypes = {
     style: PropTypes.object,
