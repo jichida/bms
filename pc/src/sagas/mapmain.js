@@ -492,16 +492,32 @@ const getclustertree_root =()=>{
           reject();
           return;
         }
-        gmap_acode_treecount[adcodetop]=dataItems.length;//全国
+        let count_online = 0;
+        let count_offline = dataItems.length;
+        gmap_acode_treecount[adcodetop]= {
+          count_total:dataItems.length,
+          count_online,
+          count_offline
+        };//全国
 
         let childadcodelist = [];
         lodashmap(children,(child)=>{
           if(child.dataItems.length > 0){
             childadcodelist.push(child.adcode);
-            gmap_acode_treecount[child.adcode]=child.dataItems.length;
+            count_online = 0;
+            count_offline = child.dataItems.length;
+            gmap_acode_treecount[child.adcode]= {
+              count_total:child.dataItems.length,
+              count_online,
+              count_offline
+            }
           }
           else{
-            gmap_acode_treecount[child.adcode]=0;
+            gmap_acode_treecount[child.adcode]= {
+              count_total:0,
+              count_online:0,
+              count_offline:0,
+            };
           }
         });
         resolve(childadcodelist);
@@ -532,7 +548,11 @@ const getclustertree_one =(adcode)=>{
               }
             });
           }
-          gmap_acode_treecount[adcode]=deviceids.length;
+          gmap_acode_treecount[adcode]={
+            count_total:deviceids.length,
+            count_online:0,
+            count_offline:deviceids.length,
+          };
           gmap_acode_devices[adcode]=deviceids;
           resolve({
             type:'device',
@@ -543,21 +563,37 @@ const getclustertree_one =(adcode)=>{
           //group
           let childadcodelist = [];
           if(!dataItems || dataItems.length === 0){
-            gmap_acode_treecount[adcode]=0;
+            gmap_acode_treecount[adcode]={
+              count_total:0,
+              count_online:0,
+              count_offline:0,
+            };
             resolve({
               type:'group',
               childadcodelist
             });
             return;
           }
-          gmap_acode_treecount[adcode]=dataItems.length;
+          gmap_acode_treecount[adcode]={
+            count_total:dataItems.length,
+            count_online:0,
+            count_offline:dataItems.length,
+          };
           lodashmap(children,(child)=>{
               if(child.dataItems.length > 0){
-                gmap_acode_treecount[child.adcode]=child.dataItems.length;
+                gmap_acode_treecount[child.adcode]={
+                  count_total:child.dataItems.length,
+                  count_online:0,
+                  count_offline:child.dataItems.length,
+                }
                 childadcodelist.push(child.adcode);
               }
               else{
-                gmap_acode_treecount[child.adcode]=0;
+                gmap_acode_treecount[child.adcode]={
+                  count_total:0,
+                  count_online:0,
+                  count_offline:0,
+                };
               }
 
           });

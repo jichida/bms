@@ -13,9 +13,9 @@ const HeaderCo = (props) => {
       if(props.treeviewstyle === 'byloc'){
         const name = props.gmap_acode_treename[props.node.adcode];
         title = `${name}`;
-        const count = props.gmap_acode_treecount[props.node.adcode];
-        if(!!count){
-          title = `${name}(${count})`;
+        const countobj = props.gmap_acode_treecount[props.node.adcode];
+        if(!!countobj){
+          title = `${name}(${countobj.count_total})`;
         }
       }
     }

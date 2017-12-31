@@ -40,9 +40,9 @@ let Header = ({node, style,gmap_acode_treename,gmap_acode_treecount,treeviewstyl
       if(treeviewstyle === 'byloc'){
         const name = gmap_acode_treename[node.adcode];
         title = `${name}`;
-        const count = gmap_acode_treecount[node.adcode];
-        if(!!count){
-          title = `${name}(${count})`;
+        const countobj = gmap_acode_treecount[node.adcode];
+        if(!!countobj){
+          title = `${name}(${countobj.count_total})`;
         }
       }
     }
