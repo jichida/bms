@@ -821,10 +821,12 @@ export function* createmapmainflow(){
 
           yield fork(function*(eventname){
            //while(true){//关闭时触发的事件
-             yield call(listenwindowinfoevent,eventname);//触发一次
-            //  yield put(ui_showmenu("showdevice_no"));
-             infoWindow = null;
-           //}
+            yield call(listenwindowinfoevent,eventname);//触发一次
+            if(!!infoWindow){
+                infoWindow.close();
+                infoWindow = null;
+            }
+
           },'close');
         }
 
@@ -862,7 +864,10 @@ export function* createmapmainflow(){
          //while(true){//关闭时触发的事件
            yield call(listenwindowinfoevent,eventname);//触发一次
           //  yield put(ui_showmenu("showdevice_no"));
-           infoWindow = null;
+           if(!!infoWindow){
+              infoWindow.close();
+              infoWindow = null;
+           }
          //}
         },'close');
 
