@@ -166,11 +166,11 @@ class TreeSearchBattery extends React.Component {
         return (
             <div className="searchtree" style={{textAlign: "center"}}>
                     <br/>
-                    <Input 
-                        name="searchkey" id="searchkey" placeholder="请输入车辆ID" style={{width: "360px"}} 
+                    <Input
+                        name="searchkey" id="searchkey" placeholder="请输入车辆ID" style={{width: "360px"}}
                         onChange={this.onChange}
                     />
-                    
+
                     <div style={{display: "none"}}>
 
                       <TreeSelectBygroup placeholder={"请选择分组"} width={370} onSelTreeNode={this.onSelTreeNode_Group.bind(this)}/>
