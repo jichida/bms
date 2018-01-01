@@ -813,6 +813,7 @@ export function* createmapmainflow(){
           //1
           g_devicesdb[listitem[0].DeviceId] = listitem[0];
           //地图缩放到最大
+          window.amapmain.setZoom(maxzoom);
           yield put(md_mapmain_setzoomlevel(maxzoom));
 
           //弹框
