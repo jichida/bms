@@ -63,7 +63,7 @@ const curd = (schmodel)=>{
 
 
     if(queryparam.type === GET_LIST){
-      let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
+      const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       query['organizationid'] = organizationid;
       dbModel.paginate(query, options,(err,result)=>{
         console.log("GET_LIST result=>" + JSON.stringify(result));
@@ -239,55 +239,69 @@ app.post('/adminauth/v1/:organizationid',(req,res)=>{
       }
     });
   });
-
-
-
 });
 
-for(let keyname in dbs){
-    let schmodel = dbs[keyname];
-    let urlname = `/adminapi/v1/:organizationid${schmodel.urlname}`;
+const getlist = (schmodel)=>{
+  return (req,res)=>{
+    const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
+    const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
+    let query = _.get(req,'body.query',{});
+    let fields = _.get(req,'body.fields',{});
+    query['organizationid'] = organizationid;
+    const queryexec = dbModel.find(query).select(fields);
+    queryexec.exec((err,result)=>{
+      res.status(200)
+          .json(result);
+    });
+  };
+};
+
+_.map(dbs,(schmodel,keyname)=>{
+    const urlname = `/adminapi/v1/:organizationid${schmodel.urlname}`;
     console.log(`urlname:${urlname}`);
     app.post(urlname,middlewareauth,curd(schmodel));
     app.get(urlname,middlewareauth,curd(schmodel));
     app.put(urlname,middlewareauth,curd(schmodel));
     app.delete(urlname,middlewareauth,curd(schmodel));
     app.options(urlname,middlewareauth,curd(schmodel));
-  }
+    const customurlname = `/admincustomapi/v1/:organizationid${schmodel.urlname}`;
+    app.post(customurlname,middlewareauth,getlist(schmodel));
+});
 
-
-  app.post('/admincustomapi/v1/:organizationid/:actionname',(req,res)=>{
-    const actionname = req.params.actionname;
-    const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
-    console.log(`--organizationid=>${organizationid},actionname:${actionname}`);
-    if(actionname === 'systemload' || actionname === 'systemsave'){
-      const systemconfigModel = DBModels.SystemConfigModel;
-      if(actionname === 'systemload'){
-        systemconfigModel.findOne({ organizationid: organizationid }, (err, systemconfig)=> {
-          if(!err && !!systemconfig){
-            res.status(200).json(systemconfig);
-          }
-          else{
-            res.status(200).json({});
-          }
-        });
-      }
-      else{//actionname === 'systemsave'
-        const updateddata = req.body;
-        console.log(`开始保存:${JSON.stringify(updateddata)}`);
-        systemconfigModel.findOneAndUpdate({ organizationid: organizationid },{$set:updateddata}, {upsert:true,new: true},(err, systemconfig)=> {
-          if(!err && !!systemconfig){
-            res.status(200).json(systemconfig);
-          }
-          else{
-            res.status(200).json({});
-          }
-        });
-      }
-    }//<---if(actionname === 'systemload' || actionname === 'systemsave'){
-  });
+const systemloadsave = (req,res)=>{
+  const actionname = req.params.actionname;
+  const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
+  console.log(`--organizationid=>${organizationid},actionname:${actionname}`);
+  if(actionname === 'systemload' || actionname === 'systemsave'){
+    const systemconfigModel = DBModels.SystemConfigModel;
+    if(actionname === 'systemload'){
+      systemconfigModel.findOne({ organizationid: organizationid }, (err, systemconfig)=> {
+        if(!err && !!systemconfig){
+          res.status(200).json(systemconfig);
+        }
+        else{
+          res.status(200).json({});
+        }
+      });
+    }
+    else{//actionname === 'systemsave'
+      const updateddata = req.body;
+      console.log(`开始保存:${JSON.stringify(updateddata)}`);
+      systemconfigModel.findOneAndUpdate({ organizationid: organizationid },{$set:updateddata}, {upsert:true,new: true},(err, systemconfig)=> {
+        if(!err && !!systemconfig){
+          res.status(200).json(systemconfig);
+        }
+        else{
+          res.status(200).json({});
+        }
+      });
+    }
+  }//<---if(actionname === 'systemload' || actionname === 'systemsave'){
 };
 
+app.post('/admincustomapi/v1/:organizationid/systemload',middlewareauth,systemloadsave);
+app.post('/admincustomapi/v1/:organizationid/systemsave',middlewareauth,systemloadsave);
 
+};
 
 module.exports=  startmodule;
