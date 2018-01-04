@@ -80,6 +80,7 @@ const RoleEdit = (props) => {
       <SimpleForm>
         <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
+        
         <ReferenceArrayInput label="权限" reference="permission" source="permissions"
             filterToQuery={searchText => ({ name_q: searchText })}
             options={{ fullWidth: true }}

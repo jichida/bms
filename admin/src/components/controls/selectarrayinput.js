@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Async } from 'react-select';
-import {getOptions} from './getselect.js';
+import { Field } from 'redux-form';
 import 'react-select/dist/react-select.css';
-import _ from 'lodash';
-// {"type":"GET_LIST","params":{"pagination":{"page":1,"perPage":100},"sort":{"field":"id","order":"DESC"},"filter":{"name_q":"AL_"}}}
 
 
 const renderSelect = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) =>{
@@ -19,15 +17,25 @@ const renderSelect = ({ meta: { touched, error } = {}, input: { ...inputProps },
         value={inputProps.value}
         {...props}
         simpleValue
-        loadOptions={getOptions}
     />);
 }
 
-// closeOnSelect={true}
-// multi
-// onChange={this.onSelectChange.bind(this)}
-// options={this.props.selectoptions}
-// placeholder="选择报警字段"
-// simpleValue
-// value={this.state.selectedvalue}
-export default renderSelect;
+const CfSelectArrayInput = ({source,label,loadOptions}) => {
+  return(
+      <span>
+        <Field
+            name={source}
+            component={renderSelect}
+            label={label}
+            loadOptions={loadOptions}
+        />
+    </span>
+  )
+}
+
+CfSelectArrayInput.defaultProps = {
+    addLabel: true,
+};
+
+
+export  {CfSelectArrayInput};
