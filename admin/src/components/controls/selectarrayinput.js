@@ -13,6 +13,7 @@ const renderSelect = ({ meta: { touched, error } = {}, input: { ...inputProps },
 
   return (<Async
         multi
+        matchProp={"label"}
         onChange={onChange}
         value={inputProps.value}
         {...props}
