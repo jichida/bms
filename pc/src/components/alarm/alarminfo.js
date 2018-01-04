@@ -9,7 +9,7 @@ import { ui_alarm_selcurdevice,createworkorder_request } from '../../actions';
 import moment from 'moment';
 import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import get from 'lodash.get';
-moment.locale('zh-cn');
+
 
 class Page extends React.Component {
     constructor(props) {
