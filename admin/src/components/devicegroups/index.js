@@ -13,46 +13,9 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import {CreateActions,EditActions} from '../controls/createeditactions';
+import {getOptions} from '../controls/getselect.js';
+import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
 
-
-//<----打了个补丁----
-const SelectArrayInputEx = (props)=>{
-  console.log(props);
-  let {choices,input,...rest} = props;
-  let newchoices=[];
-  let mapoptions = {
-
-  };
-  _.map(choices,(v)=>{
-    newchoices.push({
-      id:v.id,
-      name:v.DeviceId
-    });
-    mapoptions[v.DeviceId] = v.id;
-  });
-  let onChangeNew = (vz)=>{
-    let nw = [];
-    _.map(vz,(v)=>{
-      if(!!mapoptions[v]){
-        nw.push(mapoptions[v]);
-      }
-      else{
-        nw.push(v);
-      }
-
-    });
-    input.onChange(nw);
-  };
-  console.log(newchoices);
-  let {value,onChange,...restinput} = input;
-  let newinput = {
-    value:input.value,
-    onChange:onChangeNew,
-    ...restinput
-  };
-  return <SelectArrayInput choices={newchoices} input={newinput} {...rest} />
-}
-//<----打了个补丁----
 
 const DeviceGroupTitle = ({record}) => {
   return <span>设备分组管理</span>
@@ -64,11 +27,7 @@ const DeviceGroupCreate = (props) => (
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
-      <ReferenceArrayInput source="deviceids" reference="device" allowEmpty
-        options={{ fullWidth: true }}
-        filterToQuery={searchText => ({ DeviceId_q: searchText })}>
-          <SelectArrayInputEx />
-      </ReferenceArrayInput>
+      <CfSelectArrayInput label="选择设备列表" source="deviceids" loadOptions={getOptions('device','DeviceId','_id')}/>
     </SimpleForm>
   </Create>
 );
@@ -79,11 +38,7 @@ const DeviceGroupEdit = (props) => {
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
-      <ReferenceArrayInput source="deviceids" reference="device" allowEmpty
-        options={{ fullWidth: true }}
-        filterToQuery={searchText => ({ DeviceId_q: searchText })}>
-          <SelectArrayInputEx  />
-      </ReferenceArrayInput>
+      <CfSelectArrayInput label="选择设备列表" source="deviceids" loadOptions={getOptions('device','DeviceId','_id')}/>
     </SimpleForm>
   </Edit>
   );

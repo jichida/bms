@@ -15,46 +15,8 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import _ from 'lodash';
 import {CreateActions,EditActions} from '../controls/createeditactions';
-
-
-//<----打了个补丁----
-const SelectArrayInputEx = (props)=>{
-  console.log(props);
-  let {choices,input,...rest} = props;
-  let newchoices=[];
-  let mapoptions = {
-
-  };
-  _.map(choices,(v)=>{
-    newchoices.push({
-      id:v.id,
-      name:v.name
-    });
-    mapoptions[v.name] = v.id;
-  });
-  let onChangeNew = (vz)=>{
-    let nw = [];
-    _.map(vz,(v)=>{
-      if(!!mapoptions[v]){
-        nw.push(mapoptions[v]);
-      }
-      else{
-        nw.push(v);
-      }
-
-    });
-    input.onChange(nw);
-  };
-  console.log(newchoices);
-  let {value,onChange,...restinput} = input;
-  let newinput = {
-    value:input.value,
-    onChange:onChangeNew,
-    ...restinput
-  };
-  return <SelectArrayInput choices={newchoices} input={newinput} {...rest} />
-}
-//<----打了个补丁----
+import {getOptions} from '../controls/getselect.js';
+import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
 
 
 const RoleCreate = (props) => {
@@ -63,12 +25,7 @@ const RoleCreate = (props) => {
       <SimpleForm>
         <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
-        <ReferenceArrayInput label="权限" reference="permission" source="permissions"
-            options={{ fullWidth: true }}
-            filterToQuery={searchText => ({ name_q: searchText })}
-          allowEmpty>
-              <SelectArrayInputEx />
-        </ReferenceArrayInput>
+        <CfSelectArrayInput label="权限" source="permissions" loadOptions={getOptions('permission','name','_id')}/>
       </SimpleForm>
     </Create>
   );
@@ -80,13 +37,7 @@ const RoleEdit = (props) => {
       <SimpleForm>
         <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
-        
-        <ReferenceArrayInput label="权限" reference="permission" source="permissions"
-            filterToQuery={searchText => ({ name_q: searchText })}
-            options={{ fullWidth: true }}
-          allowEmpty>
-              <SelectArrayInputEx  />
-        </ReferenceArrayInput>
+        <CfSelectArrayInput label="权限" source="permissions" loadOptions={getOptions('permission','name','_id')}/>
       </SimpleForm>
     </Edit>
   );
