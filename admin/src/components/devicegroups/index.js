@@ -15,6 +15,23 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import _ from 'lodash';
 
+
+import { ListButton, DeleteButton } from 'admin-on-rest';
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const DeviceGroupEditActions = ({ basePath, data, refresh }) => (
+    <CardActions style={cardActionStyle}>
+        <ListButton basePath={basePath} label="返回"/>
+        <DeleteButton basePath={basePath} record={data} />
+        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+    </CardActions>
+);
+
+
 //<----打了个补丁----
 const SelectArrayInputEx = (props)=>{
   console.log(props);
@@ -74,7 +91,7 @@ const DeviceGroupCreate = (props) => (
 );
 
 const DeviceGroupEdit = (props) => {
-  return (<Edit title="编辑设备组" {...props}>
+  return (<Edit title="编辑设备组" actions={<DeviceGroupEditActions />} {...props}>
     <SimpleForm>
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
