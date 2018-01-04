@@ -114,10 +114,10 @@ class SearchMessage extends React.Component {
                      onChangeSelDate={this.onChangeSelDate.bind(this)}/>
 
                     <Select defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
-                        <Option value={"-1"}>选择警告级别</Option>
-                        <Option value={"0"} >严重报警</Option>
-                        <Option value={"1"} >紧急报警</Option>
-                        <Option value={"2"} >一般报警</Option>
+                        <Option value={"-1"}>选择报警等级</Option>
+                        <Option value={"0"} >高</Option>
+                        <Option value={"1"} >中</Option>
+                        <Option value={"2"} >低</Option>
                     </Select>
 
                     <div className="selcar">
