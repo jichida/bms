@@ -13,6 +13,7 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
+import {CreateActions,EditActions} from '../controls/createeditactions';
 
 const DataDictTitle = ({record}) => {
   return <span>数据字典维护</span>
@@ -26,7 +27,7 @@ export const DDFilter = props => (
 
 
 const DataDictCreate = (props) => (
-  <Create title="创建数据字典字段" {...props}>
+  <Create title="创建数据字典字段" {...props}  actions={<CreateActions />}>
     <SimpleForm>
       <TextInput label="字段名" source="name" validate={required} />
       <TextInput label="字段全名" source="fullname" />
@@ -39,7 +40,7 @@ const DataDictCreate = (props) => (
 );
 
 const DataDictEdit = (props) => {
-  return (<Edit title="编辑数据字典字段" {...props}>
+  return (<Edit title="编辑数据字典字段" {...props}  actions={<EditActions />}>
     <SimpleForm>
       <TextInput label="字段名" source="name" validate={required} />
       <TextInput label="字段全名" source="fullname" />

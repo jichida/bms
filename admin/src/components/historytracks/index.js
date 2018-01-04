@@ -32,6 +32,7 @@ import { NumberInput,
 import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
+import {ShowActions} from '../controls/createeditactions';
 
 const HistoryTrackTitle = ({record}) => {
   return <span>历史轨迹管理</span>
@@ -43,7 +44,7 @@ const choices = [
 ];
 
 const HistoryTrackShow = (props)=> {
-  return (<Show title={<HistoryTrackTitle />} {...props}>
+  return (<Show title={<HistoryTrackTitle />} {...props} actions={<ShowActions />}>
    <SimpleShowLayout>
     <TextField label="设备ID" source="DeviceId" />
     <TextField label="设备状态" source="DeviceStatus" />

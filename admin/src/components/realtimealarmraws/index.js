@@ -33,6 +33,7 @@ import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import _ from 'lodash';
+import {ShowActions} from '../controls/createeditactions';
 
 const RealtimeAlamTitle = ({record}) => {
    return <span>实时报警明细</span>
@@ -91,7 +92,7 @@ const AlarmField = ({ record = {} }) => {
 
 
 const RealtimeAlarmRawShow = (props) => {
-  return (<Show title={<RealtimeAlamTitle />} {...props}>
+  return (<Show title={<RealtimeAlamTitle />} {...props} actions={<ShowActions />}>
     <SimpleShowLayout>
      <TextField label="设备ID" source="DeviceId" />
      <TextField label="报警等级" source="warninglevel" />

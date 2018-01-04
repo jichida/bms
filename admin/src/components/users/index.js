@@ -14,6 +14,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import ResestPassword from './resetpassword';
+import {CreateActions,EditActions} from '../controls/createeditactions';
 
 const UserListTitle = ({ record }) => {
   return <span>显示 用户</span>;
@@ -21,7 +22,7 @@ const UserListTitle = ({ record }) => {
 const userDefaultValue = {created_at:new Date()};
 
 const UserCreate = (props) => (
-  <Create title="新建用户" {...props}>
+  <Create title="新建用户" {...props} actions={<CreateActions />}>
     <SimpleForm defaultValue={userDefaultValue}>
       <TextInput label="用户名" source="username" validate={required} />
       <TextInput label="密码" source="password" validate={required} />
@@ -37,7 +38,7 @@ const UserCreate = (props) => (
 
 const UserEdit = (props) => {
   return (
-    <Edit title="编辑用户信息" {...props} >
+    <Edit title="编辑用户信息" {...props}  actions={<EditActions />}>
       <SimpleForm>
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />

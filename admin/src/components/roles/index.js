@@ -14,6 +14,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import _ from 'lodash';
+import {CreateActions,EditActions} from '../controls/createeditactions';
+
+
 //<----打了个补丁----
 const SelectArrayInputEx = (props)=>{
   console.log(props);
@@ -56,7 +59,7 @@ const SelectArrayInputEx = (props)=>{
 
 const RoleCreate = (props) => {
   return (
-    <Create title="创建角色" {...props} >
+    <Create title="创建角色" {...props}  actions={<CreateActions />}>
       <SimpleForm>
         <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />
@@ -73,7 +76,7 @@ const RoleCreate = (props) => {
 
 const RoleEdit = (props) => {
   return (
-    <Edit title="编辑角色" {...props} >
+    <Edit title="编辑角色" {...props}  actions={<EditActions />}>
       <SimpleForm>
         <TextInput label="角色名称" source="name" validate={required} />
         <TextInput label="备注" source="memo" />

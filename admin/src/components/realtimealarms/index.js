@@ -33,6 +33,7 @@ import { NumberInput,
  import TimePicker from 'material-ui/TimePicker';
  import moment from 'moment';
 import _ from 'lodash';
+import {ShowActions} from '../controls/createeditactions';
 
 const RealtimeAlamTitle = ({record}) => {
    return <span>每日报警统计</span>
@@ -82,7 +83,7 @@ const AlarmField = ({ record = {} }) => {
 
 
 const RealtimeAlarmShow = (props) => {
-  return (<Show title={<RealtimeAlamTitle />} {...props}>
+  return (<Show title={<RealtimeAlamTitle />} {...props}  actions={<ShowActions />}> 
     <SimpleShowLayout>
      <TextField label="设备ID" source="DeviceId" />
      <TextField label="日期" source="CurDay" />

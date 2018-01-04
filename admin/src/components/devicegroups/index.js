@@ -1,35 +1,18 @@
 import React from 'react';
 import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
-import { CardActions } from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
+
 import { required,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
  Filter,Filters,ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
  import { ReferenceArrayInput, SelectArrayInput } from 'admin-on-rest';
 
-import ActionDelete from 'material-ui/svg-icons/action/delete';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import _ from 'lodash';
 
-
-import { ListButton, DeleteButton } from 'admin-on-rest';
-const cardActionStyle = {
-    zIndex: 2,
-    display: 'inline-block',
-    float: 'right',
-};
-
-const DeviceGroupEditActions = ({ basePath, data, refresh }) => (
-    <CardActions style={cardActionStyle}>
-        <ListButton basePath={basePath} label="返回"/>
-        <DeleteButton basePath={basePath} record={data} />
-        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
-    </CardActions>
-);
+import {CreateActions,EditActions} from '../controls/createeditactions';
 
 
 //<----打了个补丁----
@@ -76,7 +59,7 @@ const DeviceGroupTitle = ({record}) => {
 };
 
 const DeviceGroupCreate = (props) => (
-  <Create title="创建设备组" {...props}>
+  <Create title="创建设备组" {...props}  actions={<CreateActions />} >
     <SimpleForm>
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
@@ -91,7 +74,7 @@ const DeviceGroupCreate = (props) => (
 );
 
 const DeviceGroupEdit = (props) => {
-  return (<Edit title="编辑设备组" actions={<DeviceGroupEditActions />} {...props}>
+  return (<Edit title="编辑设备组" actions={<EditActions />} {...props}>
     <SimpleForm>
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />

@@ -13,9 +13,11 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
+import {CreateActions,EditActions} from '../controls/createeditactions';
+
   // { id: 'operator', name: '操作权限' },
 const PermissionCreate = (props) => (
-  <Create title="新建权限" {...props} >
+  <Create title="新建权限" {...props}  actions={<CreateActions />}>
     <SimpleForm>
       <TextInput label="名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
@@ -30,7 +32,7 @@ const PermissionTitle = ({record}) => {
 
 const PermissionEdit = (props) => {
   return (
-    <Edit title="编辑权限" {...props} >
+    <Edit title="编辑权限" {...props}  actions={<EditActions />}>
       <SimpleForm>
         <DisabledInput label="ID" source="id" />
         <TextInput label="名称" source="name" validate={required} />
