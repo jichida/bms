@@ -35,7 +35,7 @@ import { NumberInput,
 import _ from 'lodash';
 
 const RealtimeAlamTitle = ({record}) => {
-   return <span>实时报警</span>
+   return <span>每日报警统计</span>
 };
 
 const bridge_deviceinfo = (deviceinfo)=>{

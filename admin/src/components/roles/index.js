@@ -89,7 +89,7 @@ const RoleEdit = (props) => {
 };
 
 const RoleTitle = ({record}) => {
-  return <span>角色列表</span>
+  return <span>角色管理</span>
 };
 const RoleList = (props) => (
   <List title={<RoleTitle />} {...props} >

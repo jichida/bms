@@ -41,7 +41,7 @@ const PermissionEdit = (props) => {
 };
 
 const PermissionList = (props) => (
-  <List title="用户权限列表" {...props}>
+  <List title="权限管理" {...props}>
     <Datagrid>
       <TextField label="名称" source="name" />
       <TextField label="备注" source="memo" />

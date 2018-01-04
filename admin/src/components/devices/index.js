@@ -161,7 +161,7 @@ const DeviceFilter = (props) => (
 )
 
 const DeviceList = (props) => (
-  <List title="设备列表" filters={<DeviceFilter />} sort={{field:'LastRealtimeAlarm.DataTime',order:'DESC'}} {...props}>
+  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'LastRealtimeAlarm.DataTime',order:'DESC'}} {...props}>
     <Datagrid>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="设备类型" source="DeviceType"/>

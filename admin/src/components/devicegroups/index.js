@@ -55,7 +55,7 @@ const SelectArrayInputEx = (props)=>{
 //<----打了个补丁----
 
 const DeviceGroupTitle = ({record}) => {
-  return <span>设备分组</span>
+  return <span>设备分组管理</span>
 };
 
 const DeviceGroupCreate = (props) => (

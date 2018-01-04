@@ -162,6 +162,8 @@ exports.searchbattery = (actiondata,ctx,callback)=>{
     'DeviceId':1,
     'LastHistoryTrack.Latitude':1,
     'LastHistoryTrack.Longitude':1,
+    'LastHistoryTrack.GPSTime':1,
+    'LastRealtimeAlarm.warninglevel':1,
   };
 
   deviceModel.aggregate({$sample: {size: 50}}).exec((err,list)=>{

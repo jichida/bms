@@ -15,7 +15,7 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 
 const DataDictTitle = ({record}) => {
-  return <span>数据字典</span>
+  return <span>数据字典维护</span>
 };
 
 export const DDFilter = props => (

@@ -34,7 +34,7 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 
 const HistoryTrackTitle = ({record}) => {
-  return <span>设备轨迹</span>
+  return <span>历史轨迹管理</span>
 };
 
 const choices = [
