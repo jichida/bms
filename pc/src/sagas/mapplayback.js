@@ -269,9 +269,9 @@ export function* createmaptrackhistoryplaybackflow(){
 
 
             //console.log(`路线:${JSON.stringify({
-              name: `车辆:${query.DeviceId}`,
-              path
-            })}`);
+            //   name: `车辆:${query.DeviceId}`,
+            //   path
+            // })}`);
           }
 
         }
