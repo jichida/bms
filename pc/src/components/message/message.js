@@ -56,11 +56,11 @@ class MessageAllDevice extends React.Component {
       g_querysaved = null;
     }
     onClickQuery(query){
-      console.log(query);
+      //console.log(query);
 
       this.setState({query});
       window.setTimeout(()=>{
-        console.log(this.refs);
+        //console.log(this.refs);
         this.refs.antdtablealarm.getWrappedInstance().onRefresh();
       },0);
     }
@@ -99,7 +99,7 @@ class MessageAllDevice extends React.Component {
 
 
         let viewrow = (row)=>{
-            console.log(row);
+            //console.log(row);
             g_querysaved = this.state.query;
             this.props.history.push(`/alarminfo/${row.key}`);
         }

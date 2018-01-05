@@ -31,7 +31,7 @@ let resizetimecontent = null;
 
 class Setspeed extends React.Component {
     handleChange=(value)=>{
-      console.log(value);
+      //console.log(value);
     }
     render() {
       return (

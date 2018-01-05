@@ -53,7 +53,7 @@ const HeaderCo = (props) => {
     else if(parseInt(deviceitem.DeviceId)%3 === 2){ //报警数据判断
       iconname = icon_car3;
     }
-    console.log(deviceitem);
+    //console.log(deviceitem);
     return (
         <div style={props.style.base}  className={treeseled}>
             <div style={props.style.title}>

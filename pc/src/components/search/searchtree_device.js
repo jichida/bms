@@ -64,7 +64,7 @@ class TreeSearchBattery extends React.Component {
       if (!!deviceidlist) {
         if(deviceidlist.length>100){deviceidlist.length=100}
       }
-      // console.log(deviceidlist);
+      // //console.log(deviceidlist);
       this.props.dispatch(set_treesearchlist(deviceidlist));
     }
 
@@ -157,7 +157,7 @@ class TreeSearchBattery extends React.Component {
       // if(this.state.onlinestatus !== 'all'){
       //   query.querydevice['onlinestatus'] = this.state.onlinestatus;
       // }
-      console.log(`【searchtree】查询条件:${JSON.stringify(query)}`);
+      //console.log(`【searchtree】查询条件:${JSON.stringify(query)}`);
       if(!!this.props.onClickQuery){
         this.props.onClickQuery({query});
       }

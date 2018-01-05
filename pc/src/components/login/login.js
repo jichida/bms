@@ -109,7 +109,7 @@ export class Page extends Component {
             username:values.phonenumber,
             password:values.password,
         };
-        console.log(`onClickLogin:${JSON.stringify(payload)}`);
+        //console.log(`onClickLogin:${JSON.stringify(payload)}`);
         this.props.dispatch(login_request(payload));
     }
     render(){

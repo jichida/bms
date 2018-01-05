@@ -60,7 +60,7 @@ class Page extends React.Component {
 
           datadevice.push(record);
         });
-        console.log(datadevice);
+        //console.log(datadevice);
       return (
 
             <div className="warningPage devicePage deviceinfoPage">
