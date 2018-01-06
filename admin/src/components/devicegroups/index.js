@@ -46,12 +46,14 @@ const DeviceGroupEdit = (props) => {
 
 const DeviceGroupList = (props) => (
   <List title={<DeviceGroupTitle />} {...props}>
-    <Datagrid>
-      <TextField label="分组名称" source="name" />
-      <TextField label="备注" source="memo" />
-      <TextField label="联系人" source="contact" />
-      <EditButton />
-    </Datagrid>
+    {permissions =>
+      <Datagrid>
+        <TextField label="分组名称" source="name" />
+        <TextField label="备注" source="memo" />
+        <TextField label="联系人" source="contact" />
+        {permissions==='admin'?<EditButton />:null}
+      </Datagrid>
+    }
   </List>
 );
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { translate,DashboardMenuItem } from 'admin-on-rest';
+import { translate,DashboardMenuItem, WithPermission } from 'admin-on-rest';
 import compose from 'recompose/compose';
 import MenuItem from 'material-ui/MenuItem';
 import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import LabelIcon from 'material-ui/svg-icons/action/label';
-
+import _ from 'lodash';
 import Icon from 'material-ui/svg-icons/social/person';
 
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
@@ -45,7 +45,7 @@ let getallmenus = (valuesel, translate,onMenuTap)=>{
    let menuitemsco =[];
    allmenus.map((item)=> {
      let title = translate(`resources.${item.name}.name`, { smart_count: 2 });
-     if(item.children){
+     if(!!item.children){
         menuitemsco.push(<MenuItem
             primaryText={title}
             key={item.name}
@@ -55,15 +55,29 @@ let getallmenus = (valuesel, translate,onMenuTap)=>{
         />);
      }
      else{
-          let link = `/${item.name}`;
-            menuitemsco.push(<MenuItem
-            primaryText={title}
-            key={item.name}
-            leftIcon={item.icon}
-            onTouchTap={onMenuTap}
-            containerElement={<Link to={link} />}
-        />);
-     }
+            const link = `/${item.name}`;
+            if(item.adminonly){
+              menuitemsco.push(
+                <WithPermission value="admin">
+                  <MenuItem
+                  primaryText={title}
+                  key={item.name}
+                  leftIcon={item.icon}
+                  onTouchTap={onMenuTap}
+                  containerElement={<Link to={link} />} />
+               </WithPermission>);
+            }
+            else{
+              menuitemsco.push(
+                <MenuItem
+                  primaryText={title}
+                  key={item.name}
+                  leftIcon={item.icon}
+                  onTouchTap={onMenuTap}
+                  containerElement={<Link to={link} />}
+                />);
+            }
+        }
    });
    return menuitemsco;
 }
