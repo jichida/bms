@@ -35,6 +35,16 @@ const initjson = [
       "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
   },
 ];
+
+let groupobj = {
+    "_id" : mongoose.Types.ObjectId("599b88f5f63f591defcf5f71"),
+    "name" : "全部设备",
+    "memo" : "全部设备",
+    "contact" : "admin",
+    "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+    "deviceids" : [],
+};
+
 const initDB = ()=>{
   const dbModel = DBModels.PermissionModel;
   _.map(initjson,(v)=>{
@@ -58,6 +68,20 @@ const initDB = ()=>{
     }
   });
 
+  //新建一个全部数据的分组
+  const deviceModel = DBModels.DeviceModel;
+  const queryexec = deviceModel.find({}).select({
+    '_id':1});
+  queryexec.exec((err,list)=>{
+    if(!err && !!list){
+      _.map(list,(deviceinfo)=>{
+        groupobj.deviceids.push(mongoose.Types.ObjectId(deviceinfo._id));
+      });
+    }
+    const devicegroupModel = DBModels.DeviceGroupModel;
+    devicegroupModel.findOneAndUpdate({_id:groupobj._id}, {$set:groupobj},{new: true,upsert:true},(err,result)=>{
+    });
+  });
 }
 
 module.exports= initDB;
