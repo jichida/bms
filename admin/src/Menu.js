@@ -27,7 +27,8 @@ const styles = {
 //   if(item.name === 'systemconfig')
 // }
 
-let getallmenus = (translate,onMenuTap,permission)=>{
+let getallmenus = (translate,onMenuTap)=>{
+  const permission = localStorage.getItem('usertype');
   let getChildItems =(item, translate,onMenuTap)=>{
      let itemsco =[];
      item.children.map((child)=>{
@@ -90,9 +91,9 @@ let getallmenus = (translate,onMenuTap,permission)=>{
    return menuitemsco;
 }
 
-const MenuC = ({ onMenuTap, translate, logout,resourcename,permission }) => (
+const MenuC = ({ onMenuTap, translate, logout,resourcename }) => (
     <Menu style={styles.main}  value={resourcename} selectedMenuItemStyle={ {color: 'rgb(0,188,212)', borderLeft: '8px solid rgb(0,188,212)'}} >
-        {getallmenus(translate,onMenuTap,permission)}
+        {getallmenus(translate,onMenuTap)}
         {logout}
     </Menu>
 );
@@ -115,7 +116,6 @@ const enhance = compose(
         theme: state.theme,
         locale: state.locale,
         resourcename,
-        permission:'admin'
     }
   }
   ),
