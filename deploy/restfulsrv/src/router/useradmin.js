@@ -50,7 +50,7 @@ const curd = (schmodel)=>{
         let keysz = key.split('_');
         if(keysz.length === 2){
           if(keysz[1]=== 'q'){
-            query[keysz[0]] = new RegExp(value);
+            query[keysz[0]] = new RegExp(value,'ig');
           }
         }
         else{
