@@ -21,8 +21,10 @@ const getdevicesids = (userid,callbackfn)=>{
       // console.log(JSON.stringify(user));
       let deviceIds = [];
       let devicegroupIds = [];
+      let adminflag = 0;
       if(!err && !!user){
         user = user.toJSON();
+        adminflag = _.get(user,'adminflag',0);
         const devicegrouplist = _.get(user,'devicegroups',[]);
         _.map(devicegrouplist,(groupinfo)=>{
           devicegroupIds.push(mongoose.Types.ObjectId(groupinfo._id));
@@ -39,6 +41,7 @@ const getdevicesids = (userid,callbackfn)=>{
       // console.log(`deviceIds==>${JSON.stringify(deviceIds)}`)
       deviceIds = _.uniq(deviceIds);
       callbackfn({
+        adminflag,
         devicegroupIds,
         deviceIds
       });

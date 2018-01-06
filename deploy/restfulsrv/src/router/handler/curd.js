@@ -2,6 +2,8 @@ const mongoose     = require('mongoose');
 const DBModels = require('../../db/models.js');
 const adminaction = require('../../db/adminaction.js');
 const dbs = require('../../db/index.js');
+const getquery = require('./getquery.js');
+const _ = require('lodash');
 //
 // const config = require('../config.js');
 // const _  = require('lodash');
@@ -68,10 +70,13 @@ const curd = (schmodel)=>{
     if(queryparam.type === GET_LIST){
       const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       query['organizationid'] = organizationid;
-      dbModel.paginate(query, options,(err,result)=>{
-        console.log("GET_LIST result=>" + JSON.stringify(result));
-        res.status(200).json(result);
+      getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
+        dbModel.paginate(querynew, options,(err,result)=>{
+          console.log("GET_LIST result=>" + JSON.stringify(result));
+          res.status(200).json(result);
+        });
       });
+
     }
     else if(queryparam.type === GET_ONE){
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
@@ -104,10 +109,12 @@ const curd = (schmodel)=>{
       query['organizationid'] = organizationid;
       console.log("GET_MANY_REFERENCE 查询条件=>" + JSON.stringify(query));
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-      dbModel.paginate(query,options,(err,result)=>{
-        console.log("GET_MANY_REFERENCE result=>" + JSON.stringify(result));
-        res.status(200)
-            .json(result);
+      getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
+        dbModel.paginate(querynew,options,(err,result)=>{
+            console.log("GET_MANY_REFERENCE result=>" + JSON.stringify(result));
+            res.status(200)
+                .json(result);
+          });
       });
     }
     else if(queryparam.type === CREATE){
