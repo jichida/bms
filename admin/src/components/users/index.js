@@ -15,6 +15,8 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import ResestPassword from './resetpassword';
 import {CreateActions,EditActions} from '../controls/createeditactions';
+import {getOptions} from '../controls/getselect.js';
+import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
 
 const UserListTitle = ({ record }) => {
   return <span>显示 用户</span>;
@@ -31,6 +33,7 @@ const UserCreate = (props) => (
       <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
+      <CfSelectArrayInput label="设备组" source="devicegroups" loadOptions={getOptions('devicegroup','name','_id')}/>
     </SimpleForm>
   </Create>
 );
@@ -47,6 +50,7 @@ const UserEdit = (props) => {
         <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
+        <CfSelectArrayInput label="设备组" source="devicegroups" loadOptions={getOptions('devicegroup','name','_id')}/>
       </SimpleForm>
     </Edit>
   );
@@ -57,6 +61,7 @@ const UserFilter = (props) => (
     <TextInput label="搜索用户" source="username_q" />
   </Filter>
 );
+
 
 const UserList = (props) => (
   <List title="用户管理" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}} >

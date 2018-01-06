@@ -8,6 +8,7 @@ const dbs = require('../db/index.js');
 const middlewareauth = require('./middlewareauth.js');
 const adminaction = require('../db/adminaction.js');
 const pwd = require('../util/pwd.js');
+const adminauth = require('./handler/adminauth.js');
 
 const startmodule = (app)=>{
 
@@ -187,59 +188,11 @@ const curd = (schmodel)=>{
 }
 // let defaultmiddlewareauth = (req,res,next)=>{
 //   next();
-// };
-app.post('/adminauth/v1/:organizationid',(req,res)=>{
-  const actiondata =   req.body;
-  console.log("actiondata=>" + JSON.stringify(actiondata));
-  const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
-  console.log(`--organizationid=>${organizationid}`);
-
-  const userModel = DBModels.UserModel;
-  userModel.findOne({ username: actiondata.username,adminflag:1 }, (err, user)=> {
-    if (!!err) {
-      res.status(200).json({
-        loginsuccess:false,
-        err:'服务器内部错误'
-      });
-      return;
-    }
-    if (!user) {
-      res.status(200).json({
-        loginsuccess:false,
-        err:'用户找不到'
-      });
-      return;
-    }
-    if(!user.organizationid){
-      res.status(200).json({
-        loginsuccess:false,
-        err:'用户尚未分配'
-      });
-      return;
-    }
-    pwd.checkPassword(user.passwordhash,user.passwordsalt,actiondata.password,(err,isloginsuccess)=>{
-      if(!err && isloginsuccess){
-        let token = jwt.sign({
-              exp: Math.floor(Date.now() / 1000) +config.loginuserexptime,
-              _id:user._id,
-              usertype:'user',
-              groupid:user.groupid,
-              organizationid:user.organizationid,
-            },config.secretkey, {});
-        res.status(200).json({
-          loginsuccess:true,
-          token:token
-        });
-      }
-      else{
-        res.status(200).json({
-          loginsuccess:false,
-          err:'用户密码错误'
-        });
-      }
-    });
-  });
-});
+// };adminauth
+app.post('/adminauth/v1/:organizationid',adminauth);
+// app.post('/adminauth/v1/:organizationid',(req,res)=>{
+//
+// });
 
 const getlist = (schmodel)=>{
   return (req,res)=>{
