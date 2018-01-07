@@ -73,44 +73,44 @@ export function* uiflow(){//仅执行一次
   });
 
   yield takeLatest(`${ui_btnclick_alaramall}`, function*(action) {
-    yield put(searchbatteryalarm_request({}));
+    // yield put(searchbatteryalarm_request({}));
     //console.log(`点击所有报警`);
     yield put(push('/message/all/0'));
   });
 
   yield takeLatest(`${ui_btnclick_alaramred}`, function*(action) {
-    yield put(searchbatteryalarm_request({
-      query:{
-        warninglevel:'高',
-        CurDay:moment().format('YYYY-MM-DD')
-      }
-    }));
-    //console.log(`点击红色报警`);
-    yield take(`${searchbatteryalarm_result}`);
+    // yield put(searchbatteryalarm_request({
+    //   query:{
+    //     warninglevel:'高',
+    //     CurDay:moment().format('YYYY-MM-DD')
+    //   }
+    // }));
+    // //console.log(`点击红色报警`);
+    // yield take(`${searchbatteryalarm_result}`);
     yield put(push('/message/0/0'));
   });
 
   yield takeLatest(`${ui_btnclick_alaramorange}`, function*(action) {
-    yield put(searchbatteryalarm_request({
-      query:{
-        warninglevel:'中',
-        CurDay:moment().format('YYYY-MM-DD')
-      }
-    }));
+    // yield put(searchbatteryalarm_request({
+    //   query:{
+    //     warninglevel:'中',
+    //     CurDay:moment().format('YYYY-MM-DD')
+    //   }
+    // }));
     //console.log(`点击橙色报警`);
-    yield take(`${searchbatteryalarm_result}`);
+    // yield take(`${searchbatteryalarm_result}`);
     yield put(push('/message/1/0'));
   });
 
   yield takeLatest(`${ui_btnclick_alaramyellow}`, function*(action) {
-    yield put(searchbatteryalarm_request({
-      query:{
-        warninglevel:'低',
-        CurDay:moment().format('YYYY-MM-DD')
-      }
-    }));
-    //console.log(`点击黄色报警`);
-    yield take(`${searchbatteryalarm_result}`);
+    // yield put(searchbatteryalarm_request({
+    //   query:{
+    //     warninglevel:'低',
+    //     CurDay:moment().format('YYYY-MM-DD')
+    //   }
+    // }));
+    // //console.log(`点击黄色报警`);
+    // yield take(`${searchbatteryalarm_result}`);
     yield put(push('/message/2/0'));
   });
 
