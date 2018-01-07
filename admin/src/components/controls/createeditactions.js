@@ -6,7 +6,7 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import ActionBack from 'material-ui/svg-icons/navigation/arrow-back';
 import { Link } from 'react-router-dom';
-
+import _ from 'lodash';
 
 import { ListButton, DeleteButton } from 'admin-on-rest';
 const cardActionStyle = {
@@ -34,7 +34,7 @@ const EditActions = ({ basePath, data, refresh }) => (
         icon={<ActionBack />}
         containerElement={<Link to={basePath} />}
         style={{ overflow: 'inherit' }} />
-        <DeleteButton basePath={basePath} record={data} />
+        {_.get(data,'systemflag',0) === 0 ?<DeleteButton basePath={basePath} record={data} />:null}
         <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
     </CardActions>
 );

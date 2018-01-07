@@ -25,6 +25,7 @@ let DeviceGroupSchema = new Schema({
   contact:String,
   deviceids:[{ type: Schema.Types.ObjectId, ref: 'device', default: [] }],
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
+  systemflag:{ type: Schema.Types.Number,default: 0 },
 });
 DeviceGroupSchema.plugin(mongoosePaginate);
 let DeviceGroupModel =mongoose.model('devicegroup',  DeviceGroupSchema);
@@ -73,6 +74,7 @@ let PermissionSchema = new Schema({
   name:String,
   memo:String,
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
+  systemflag:{ type: Schema.Types.Number,default: 0 },
 });
 PermissionSchema.plugin(mongoosePaginate);
 let PermissionModel =mongoose.model('permission',  PermissionSchema);

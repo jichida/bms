@@ -83,7 +83,7 @@ const AlarmField = ({ record = {} }) => {
 
 
 const RealtimeAlarmShow = (props) => {
-  return (<Show title={<RealtimeAlamTitle />} {...props}  actions={<ShowActions />}> 
+  return (<Show title={<RealtimeAlamTitle />} {...props}  actions={<ShowActions />}>
     <SimpleShowLayout>
      <TextField label="设备ID" source="DeviceId" />
      <TextField label="日期" source="CurDay" />
@@ -102,7 +102,7 @@ const DeviceFilter = (props) => (
 
 const RealtimeAlarmList = (props) => (
   <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
-    <Datagrid>
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备" source="DeviceId" />
       <TextField label="日期" source="CurDay" />
       <DateField label="采集时间" source="DataTime" showTime />

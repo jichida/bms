@@ -44,7 +44,7 @@ const PermissionEdit = (props) => {
 
 const PermissionList = (props) => (
   <List title="权限管理" {...props}>
-    <Datagrid>
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="名称" source="name" />
       <TextField label="备注" source="memo" />
       <EditButton />

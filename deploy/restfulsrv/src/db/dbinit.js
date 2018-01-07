@@ -9,30 +9,35 @@ const initjson = [
         "name" : "管理平台",
         "memo" : "管理平台",
         "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+        systemflag:1,
   },
   {
       "_id" : mongoose.Types.ObjectId("5a03b61f13e7410cd0ef3091"),
       "name" : "综合信息平台",
       "memo" : "综合信息平台",
       "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+      systemflag:1,
   },
   {
       "_id" : mongoose.Types.ObjectId("5a03b65113e7410cd0ef3092"),
       "name" : "综合信息APP",
       "memo" : "综合信息APP",
       "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+      systemflag:1,
   },
   {
       "_id" : mongoose.Types.ObjectId("5a03b66013e7410cd0ef3093"),
       "name" : "电池包监控平台",
       "memo" : "电池包监控平台",
       "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+      systemflag:1,
   },
   {
       "_id" : mongoose.Types.ObjectId("5a03b66e13e7410cd0ef3094"),
       "name" : "电池包监控APP",
       "memo" : "电池包监控APP",
       "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+      systemflag:1,
   },
 ];
 
@@ -43,6 +48,7 @@ let groupobj = {
     "contact" : "admin",
     "organizationid" : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
     "deviceids" : [],
+    systemflag:1,
 };
 
 const initDB = ()=>{

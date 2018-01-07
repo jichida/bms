@@ -48,7 +48,7 @@ const RoleTitle = ({record}) => {
 };
 const RoleList = (props) => (
   <List title={<RoleTitle />} {...props} >
-    <Datagrid >
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="角色名称" source="name" />
       <ReferenceArrayField label="权限" reference="permission" source="permissions" >
               <SingleFieldList>

@@ -65,7 +65,7 @@ const UserFilter = (props) => (
 
 const UserList = (props) => (
   <List title="用户管理" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}} >
-    <Datagrid>
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
         <TextField label="用户名" source="username" />
         <TextField label="真实姓名" source="truename" />
         <DateField label="注册时间" source="created_at" showTime />
