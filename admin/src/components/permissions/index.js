@@ -7,7 +7,7 @@ import { required,NumberInput,NumberField,Create, Edit, SimpleForm, DisabledInpu
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
  Filter,Filters,SelectInput,ChipField,SelectField } from 'admin-on-rest/lib/mui';
 
-
+import _ from 'lodash';
 import { Field,FieldArray } from 'redux-form';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -42,12 +42,16 @@ const PermissionEdit = (props) => {
   );
 };
 
+const EditBtnif = (props)=>{
+  const {record} = props;
+  return _.get(record,'systemflag',0) === 0?<EditButton {...props}/>:null;
+}
 const PermissionList = (props) => (
   <List title="权限管理" {...props}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="名称" source="name" />
       <TextField label="备注" source="memo" />
-      <EditButton />
+      <EditBtnif />
     </Datagrid>
   </List>
 );

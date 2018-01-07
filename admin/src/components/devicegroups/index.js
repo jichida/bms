@@ -44,6 +44,11 @@ const DeviceGroupEdit = (props) => {
   );
 };
 
+const EditBtnif = (props)=>{
+  const {record} = props;
+  return _.get(record,'systemflag',0) === 0?<EditButton {...props}/>:null;
+}
+
 const DeviceGroupList = (props) => (
   <List title={<DeviceGroupTitle />} {...props}>
     {permissions =>
@@ -51,7 +56,7 @@ const DeviceGroupList = (props) => (
         <TextField label="分组名称" source="name" />
         <TextField label="备注" source="memo" />
         <TextField label="联系人" source="contact" />
-        {permissions==='admin'?<EditButton />:null}
+        {permissions==='admin'?<EditBtnif />:null}
       </Datagrid>
     }
   </List>
