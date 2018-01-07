@@ -164,7 +164,7 @@ class TreeSearchBattery extends React.Component {
                       endDate = {this.state.endDate}
                      onChangeSelDate={this.onChangeSelDate.bind(this)}/>
 
-                    <Select defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
+                    <Select className="Selectalarmlevel" defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
                         <Option value={"-1"}>选择报警等级</Option>
                         <Option value={"0"} >高</Option>
                         <Option value={"1"} >中</Option>

@@ -223,7 +223,7 @@ class TreeSearchBattery extends React.Component {
                           />
                       </InputGroup>
 
-                      <Select defaultValue={'-1'}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
+                      <Select className="Selectalarmlevel" defaultValue={'-1'}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
                           <Option value={"-1"}>选择报警等级</Option>
                           <Option value={"0"} >高</Option>
                           <Option value={"1"} >中</Option>
