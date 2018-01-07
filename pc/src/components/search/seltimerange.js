@@ -69,8 +69,9 @@ class DateRange extends React.Component {
             startDate={startDate}
             endDate={endDate}
             onApply={this.handleApply}
+            className="settimepicker"
           >
-            <button>
+            <button className="settimeinput">
                 <i className="fa fa-calendar"/> &nbsp;
                 <span>{label}</span>
                 <i className="fa fa-angle-down"/>
