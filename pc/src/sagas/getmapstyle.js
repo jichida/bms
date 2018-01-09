@@ -6,6 +6,7 @@ import moment from 'moment';
 import lodashmap from 'lodash.map';
 import {bridge_deviceinfo_pop,bridge_deviceinfo_popcluster} from './datapiple/bridgedb';
 import {ui_btnclick_devicemessage} from '../actions';
+import {getdevicestatus_alaramlevel} from '../util/getdeviceitemstatus';
 //地图上点图标的样式【图标类型】
 
 
@@ -136,11 +137,19 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
 
 export const getimageicon = (item)=>{
   //这里根据不同item显示不同图标
-  const online_png = `${process.env.PUBLIC_URL}/images/car_online.png`;
-  const offline_png = `${process.env.PUBLIC_URL}/images/car_offline.png`;
-  let curpng = online_png;
-  if(parseInt(item.DeviceId)%2 === 0){ //在线／离线条件判断
-    curpng = offline_png;
+  const icon_car1 = `${process.env.PUBLIC_URL}/images/icon_car1.png`;
+  const icon_car2 = `${process.env.PUBLIC_URL}/images/icon_car2.png`;
+  const icon_car3 = `${process.env.PUBLIC_URL}/images/icon_car3.png`;
+  const warninglevel = getdevicestatus_alaramlevel(item);
+  let curpng = icon_car1;
+  if(warninglevel === '高'){
+    curpng = icon_car1;
+  }
+  else if(warninglevel === '中'){
+    curpng = icon_car2;
+  }
+  else if(warninglevel === '低'){
+    curpng = icon_car3;
   }
   return curpng;
 }
