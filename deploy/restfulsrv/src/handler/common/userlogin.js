@@ -6,6 +6,7 @@ const winston = require('../../log/log.js');
 const pwd = require('../../util/pwd.js');
 const uuid = require('uuid');
 const _ = require('lodash');
+const moment = require('moment');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -78,7 +79,7 @@ exports.loginuser = (actiondata,ctx,callback)=>{
       });
       return;
     }
-    console.log(user);
+    //console.log(user);
     pwd.hashPassword(oneUser.password, user.passwordsalt, (err, passwordHash)=> {
       if(!err && !!passwordHash){
         if (passwordHash === user.passwordhash) {
@@ -114,10 +115,10 @@ exports.loginuser = (actiondata,ctx,callback)=>{
 exports.loginwithtoken = (actiondata,ctx,callback)=>{
   try {
       let decodeduser = jwt.verify(actiondata.token, config.secretkey);
-      console.log("decode user===>" + JSON.stringify(decodeduser));
+      //console.log("decode user===>" + JSON.stringify(decodeduser));
       let userid = decodeduser._id;
       let userModel = DBModels.UserModel;
-      userModel.findByIdAndUpdate(userid,{updated_at:new Date()},{new: true},(err,result)=>{
+      userModel.findByIdAndUpdate(userid,{updated_at:moment().format('YYYY-MM-DD HH:mm:ss')},{new: true},(err,result)=>{
         if(!err && !!result){
           setloginsuccess(ctx,result,callback);
         }
@@ -131,8 +132,8 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
 
     //  PubSub.publish(userid, {msg:'allriders',data:'bbbb',topic:'name'});
   } catch (e) {
-    console.log("invalied token===>" + JSON.stringify(actiondata.token));
-    console.log("invalied token===>" + JSON.stringify(e));
+    //console.log("invalied token===>" + JSON.stringify(actiondata.token));
+    //console.log("invalied token===>" + JSON.stringify(e));
     callback({
       cmd:'common_err',
       payload:{errmsg:`${e.message}`,type:'login'}

@@ -11,7 +11,7 @@ const pwd = require('../util/pwd.js');
 
 let startmodule = (app)=>{
   app.post('/findone/:resourcename',(req,res)=>{
-    console.log("findone:" + req.params.resourcename);
+    //console.log("findone:" + req.params.resourcename);
     let schmodel = dbs[req.params.resourcename];
     let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
     dbModel.findOne({},(err,result)=>{
@@ -28,7 +28,7 @@ let startmodule = (app)=>{
 
   app.post('/adminapi/resetuserpassword',middlewareauth,(req,res)=>{
     let actiondata =   req.body;
-    console.log("actiondata=>" + JSON.stringify(actiondata));
+    //console.log("actiondata=>" + JSON.stringify(actiondata));
     if(typeof actiondata.userid === "string"){
        actiondata.userid = mongoose.Types.ObjectId(actiondata.userid);
     }

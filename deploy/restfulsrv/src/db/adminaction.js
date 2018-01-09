@@ -3,7 +3,7 @@ const jpush = require('../smspush/push.js');
 const pwd = require('../util/pwd');
 
 let preaction =(actionname,collectionname,doc,fnresult)=>{
-  console.log(`preaction doc:${JSON.stringify(doc)}`);
+  //console.log(`preaction doc:${JSON.stringify(doc)}`);
   if(actionname === 'save' && collectionname === 'user'){
     //新建用户,hashpassword
     let retdoc = doc;

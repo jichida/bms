@@ -1,6 +1,7 @@
-let mongoose     = require('mongoose');
-let Schema       = mongoose.Schema;
-let mongoosePaginate = require('mongoose-paginate');
+const mongoose     = require('mongoose');
+const Schema       = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate');
+const moment = require('moment');
 // const config = require('../config.js');
 // const moment = require('moment');
 
@@ -37,8 +38,8 @@ let UserSchema = new Schema({
   passwordsalt: String,
   truename:String,
   memo:String,
-  created_at: { type: Date, default:new Date()},
-  updated_at: Date,
+  created_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+  updated_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   roleid:{ type: Schema.Types.ObjectId, ref: 'role' },
   adminflag:{ type: Schema.Types.Number,default: 0 },
@@ -103,36 +104,17 @@ let RealtimeAlarmRawModel =mongoose.model('realtimealarmraw',  RealtimeAlarmRawS
 
 //设备轨迹
 let HistoryTrackSchema = new Schema({
-  // DeviceId:String,//设备id
-  // GPSStatus:String,//A: 定位; V: 不定位;
-  // GPSTime:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},//定位的UTC时间，格式：yyyy-MM-dd HH:mm:ss
-  // MessageTime:{ type: Date, default:new Date()},//way接收到数据的本地时间，格式：yyyy-MM-dd HH:mm:ss
-  // Longitude:{ type: Schema.Types.Number,default: 0 },//经度
-  // Latitude:{ type: Schema.Types.Number,default: 0 },//纬度
-  // Speed:{ type: Schema.Types.Number,default: 0 },//速度
-  // Course:{ type: Schema.Types.Number,default: 0 },//航向
-  // DeviceStatus:String,//设备状态
-  // LAC:{ type: Schema.Types.Number,default: 0 },//	30065	uint16	蜂窝 Location Area Code
-  // CellId:{ type: Schema.Types.Number,default: 0 },//	53033	uint16	蜂窝 Cell Id
-  // ADC1:{ type: Schema.Types.Number,default: 0 },//	37.8	 	主板温度，单位：摄氏度
-  // Altitude:{ type: Schema.Types.Number,default: 0 },//	59	 	海拔，单位：米。
-  // SN:{ type: Schema.Types.Number,default: 0 },//	1	uint16	Position数据包序号，循环自增
-  // Province:String,//	海南省	string	省
-  // City:String,//	海口市	string	市
-  // County:String,//	 	string	县
-  // created_at:{ type: Date, default:new Date()},//插入数据库时间
-  // updated_at:{ type: Date, default:new Date()},//插入数据库时间
 }, { strict: false });
 HistoryTrackSchema.plugin(mongoosePaginate);
 let HistoryTrackModel =mongoose.model('historytrack',  HistoryTrackSchema);
 //CAN 数据,原始数据
 let CanRawDataSchema = new Schema({
   DeviceId:String,//设备id
-  DataTime:{ type: Date, default:new Date()},	//2017-03-28 08:00:00	date	 	采集本地时间，格式：yyyy-MM-dd HH:mm:ss
-  MessageTime:{ type: Date, default:new Date()},//	2017-03-28 08:00:00	date	 	Gateway接收到数据的本地时间，格式：yyyy-MM-dd HH:mm:ss
+  DataTime:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},	//2017-03-28 08:00:00	date	 	采集本地时间，格式：yyyy-MM-dd HH:mm:ss
+  MessageTime:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},//	2017-03-28 08:00:00	date	 	Gateway接收到数据的本地时间，格式：yyyy-MM-dd HH:mm:ss
   SN:String,//sn
   Data:String,//
-  created_at:{ type: Date, default:new Date()},//插入数据库时间
+  created_at:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},//插入数据库时间
 });
 CanRawDataSchema.plugin(mongoosePaginate);
 let CanRawDataModel =mongoose.model('canrawdata',  CanRawDataSchema);
@@ -148,7 +130,7 @@ let HistoryDeviceModel =mongoose.model('historydevice',  HistoryDeviceSchema);
 let UserLogSchema = new Schema({
     username:String,
     organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
-    created_at:{ type: Date, default:new Date()},
+    created_at:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
     creator:{ type: Schema.Types.ObjectId, ref: 'user' },
     type:{type:String,default:'login'}
 });
@@ -161,8 +143,8 @@ UserAdminSchema = new Schema({
   passwordhash: String,
   passwordsalt: String,
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
-  created_at: { type: Date, default:new Date()},
-  updated_at: Date,
+  created_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+  updated_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
 });
 let UserAdmin  = mongoose.model('useradmin',  UserAdminSchema);
 
@@ -179,6 +161,14 @@ let DataDictSchema = new Schema({
 DataDictSchema.plugin(mongoosePaginate);
 let DataDictModel =mongoose.model('datadict',  DataDictSchema);
 
+//数据字典
+let ExportTokenSchema = new Schema({
+  userid:{ type: Schema.Types.ObjectId, ref: 'user' },
+  queryobjstring:String,
+  tokenid:String
+});
+ExportTokenSchema.plugin(mongoosePaginate);
+let ExportTokenModel =mongoose.model('exporttoken',  ExportTokenSchema);
 
 exports.UserAdminSchema = UserAdminSchema;
 exports.SystemConfigSchema = SystemConfigSchema;
@@ -195,6 +185,7 @@ exports.HistoryTrackSchema = HistoryTrackSchema;
 exports.HistoryDeviceSchema = HistoryDeviceSchema;
 exports.UserLogSchema = UserLogSchema;
 exports.DataDictSchema = DataDictSchema;
+exports.ExportTokenSchema = ExportTokenSchema;
 
 exports.UserAdminModel = UserAdmin;
 exports.SystemConfigModel = SystemConfigModel;
@@ -212,3 +203,4 @@ exports.HistoryTrackModel = HistoryTrackModel;
 exports.HistoryDeviceModel = HistoryDeviceModel;
 exports.UserLogModel = UserLogModel;
 exports.DataDictModel = DataDictModel;
+exports.ExportTokenModel = ExportTokenModel;
