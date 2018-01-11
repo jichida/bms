@@ -5,6 +5,7 @@ const realtimealarm = require('../common/realtimealarm.js');
 const moment = require('moment');
 const historytrack = require('../common/historytrack');
 const tip = require('../common/tip');
+const userrelate = require('../common/userrelate');
 //司机端
 const actiondatahandler = {
   'getsystemconfig':systemconfig.getsystemconfig,
@@ -21,6 +22,7 @@ const authhandler = {
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,
   'querydeviceinfo':device.querydeviceinfo,
   'querydeviceinfo_list':device.querydeviceinfo_list,
+  'collectdevice':userrelate.collectdevice,
   // 'searchbattery':device.searchbattery,
   'queryhistorytrack':historytrack.queryhistorytrack,
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,

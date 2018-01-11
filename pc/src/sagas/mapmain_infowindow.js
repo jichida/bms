@@ -6,6 +6,10 @@ import Car_outline from "../img/3.png";
 import Point_list_img from "../img/13.png";
 import store from '../env/store';
 import { push,goBack,go  } from 'react-router-redux';
+import {
+    ui_index_addcollection,
+    ui_index_unaddcollection
+} from '../actions';
 
 window.clickfn_device =(DeviceId)=>{
     store.dispatch(push(`/deviceinfo/${DeviceId}`));
@@ -16,24 +20,41 @@ window.clickfn_historyplay =(DeviceId)=>{
 window.clickfn_showhistory =(DeviceId)=>{
     store.dispatch(push(`/reports/device/${DeviceId}`));
 }
+window.clickfn_collection =(DeviceId)=>{
+    store.dispatch(ui_index_addcollection(DeviceId));
+}
+window.clickfn_cancelcollection =(DeviceId)=>{
+    store.dispatch(ui_index_unaddcollection(DeviceId));
+}
 
 const createInfoWindow_popinfo =(data)=> {
     // console.log(map);
     // console.log(data);
     //iscollection
+    const state = store.getState();
+    const carcollections = state.device;
+    let isincollections = false;
+    map(carcollections,(id)=>{
+        if(id === data.DeviceId){
+          isincollections = true;
+        }
+    });
+
     let title = '车辆编号:'+data.DeviceId;
-    let collectimg = !!data.iscollection?CollectImg2:CollectImg;
+    let collectimg = isincollections?CollectImg2:CollectImg;
 
     let contenthtml = "<ul>";
     map(data.fields, (v,i)=>{
         return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
     })
-
-    contenthtml = 
+    let collection_html = `<div class='collect'  onclick="clickfn_collection(${data.DeviceId})"><img src='${collectimg}' />收藏车辆</div>`;
+    if(!isincollections){
+      collection_html = `<div class='collect' onclick="clickfn_cancelcollection(${data.DeviceId})"><img src='${collectimg}' />取消收藏车辆</div>`;
+    }
+    contenthtml =
         `
         ${contenthtml}
         <div class='pop_info_btn'>
-            <div class='collect'><img src='${collectimg}' />收藏车辆</div>
             <div class='lnk'>
                 <span onclick="clickfn_historyplay(${data.DeviceId})">历史轨迹回放</span>
                 <span onclick="clickfn_device(${data.DeviceId})">查看详情</span>
@@ -79,7 +100,7 @@ const createInfoWindow_popinfo =(data)=> {
     // sharp.src = "https://webapi.amap.com/images/sharp.png";
     // bottom.appendChild(sharp);
     // info.appendChild(bottom);
-    
+
     return {
         isCustom: true,  //使用自定义窗体
         content: info,
@@ -149,7 +170,7 @@ const createInfoWindow_poplistinfo =(data)=> {
     // sharp.src = "https://webapi.amap.com/images/sharp.png";
     // bottom.appendChild(sharp);
     // info.appendChild(bottom);
-    
+
     return {
         isCustom: true,  //使用自定义窗体
         content: info,
