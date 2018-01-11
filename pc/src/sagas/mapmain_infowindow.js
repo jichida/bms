@@ -1,174 +1,145 @@
-//http://lbs.amap.com/api/javascript-api/guide/draw-on-map/infowindow
+import map from "lodash.map";
+import CollectImg from "../img/11.png";
+import CollectImg2 from "../img/12.png";
+import store from '../env/store';
+import { push,goBack,go  } from 'react-router-redux';
+
+window.clickfn_device =(DeviceId)=>{
+    store.dispatch(push(`/deviceinfo/${DeviceId}`));
+}
+window.clickfn_historyplay =(DeviceId)=>{
+    store.dispatch(push(`/historyplay/${DeviceId}`));
+}
+window.clickfn_showhistory =(DeviceId)=>{
+    store.dispatch(push(`/reports/device/${DeviceId}`));
+}
+
+const createInfoWindow_popinfo =(data)=> {
+    // console.log(map);
+    // console.log(data);
+    //iscollection
+    let title = '车辆编号:'+data.DeviceId;
+    let collectimg = !!data.iscollection?CollectImg2:CollectImg;
+
+    let contenthtml = "<ul>";
+    map(data.fields, (v,i)=>{
+        return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
+    })
+
+    contenthtml = 
+        `
+        ${contenthtml}
+        <div class='pop_info_btn'>
+            <div class='collect'><img src='${collectimg}' />收藏车辆</div>
+            <div class='lnk'>
+                <span onclick="clickfn_historyplay(${data.DeviceId})">历史轨迹回放</span>
+                <span onclick="clickfn_device(${data.DeviceId})">查看详情</span>
+                <span onclick="clickfn_showhistory(${data.DeviceId})">历史报警信息</span>
+            </div>
+        </div>
+        `;
+
+    let content = [];
+
+
+    content.push(contenthtml);
+    let info = document.createElement("div");
+    info.className = "Window_pop_info";
+
+    //可以通过下面的方式修改自定义窗体的宽高
+    info.style.width = "800px";
+    // 定义顶部标题
+    let top = document.createElement("div");
+    let titleD = document.createElement("div");
+    // let closeX = document.createElement("img");
+    top.className = "info-top";
+    titleD.innerHTML = title;
+
+    top.appendChild(titleD);
+    // top.appendChild(closeX);
+    info.appendChild(top);
+
+    // 定义中部内容
+    var middle = document.createElement("div");
+    middle.className = "info-middle";
+    middle.style.backgroundColor = 'white';
+    middle.innerHTML = content;
+    info.appendChild(middle);
+
+    // 定义底部内容
+    // var bottom = document.createElement("div");
+    // bottom.className = "info-bottom";
+    // bottom.style.position = 'relative';
+    // bottom.style.top = '0px';
+    // bottom.style.margin = '0 auto';
+    // var sharp = document.createElement("img");
+    // sharp.src = "https://webapi.amap.com/images/sharp.png";
+    // bottom.appendChild(sharp);
+    // info.appendChild(bottom);
+    
+    return {
+        isCustom: true,  //使用自定义窗体
+        content: info,
+        // offset: new AMap.Pixel(16, -50)//-113, -140
+    }
+}
 
 //构建自定义信息窗体
-// {
-// 	"DeviceId": "1719101777",
-// 	"fields": [{
-// 		"fieldname": "BAT_ISO_R_Neg",
-// 		"showname": "负极绝缘阻抗",
-// 		"fieldvalue": 65534,
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "BAT_Ucell_Avg",
-// 		"showname": "平均单体电压",
-// 		"fieldvalue": 3.356,
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "BAT_T_Max",
-// 		"showname": "最高单体温度",
-// 		"fieldvalue": -8,
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "BAT_T_Min",
-// 		"showname": "最低单体温度",
-// 		"fieldvalue": -9,
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "BAT_T_Avg",
-// 		"showname": "平均单体温度",
-// 		"fieldvalue": -8,
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "AL_Over_Ucell",
-// 		"showname": "单体过压报警",
-// 		"fieldvalue": "",
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "AL_Over_Tcell",
-// 		"showname": "单体过温报警",
-// 		"fieldvalue": "",
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "AL_Err_Cldu",
-// 		"showname": "电池漏液告警",
-// 		"fieldvalue": "",
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "Flag_Charging",
-// 		"showname": "充电状态",
-// 		"fieldvalue": "",
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "ChargeACVoltage",
-// 		"showname": "交流充电供电电压",
-// 		"fieldvalue": 4.6,
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "AL_Under_Tcell",
-// 		"showname": "单体低温报警",
-// 		"fieldvalue": "",
-// 		"unit": ""
-// 	}, {
-// 		"fieldname": "AL_Under_Ucell",
-// 		"showname": "单体欠压报警",
-// 		"fieldvalue": "",
-// 		"unit": ""
-// 	}]
-// }
-const createInfoWindow_popinfo =(data)=> {
+const createInfoWindow_poplistinfo =(data)=> {
+    // console.log(map);
+    // console.log(data);
+    //iscollection
+    let title = '聚合点车辆';
+    let collectimg = !!data.iscollection?CollectImg2:CollectImg;
 
-      console.log(JSON.stringify(data));
+    let contenthtml = "<ul>";
+    map(data.fields, (v,i)=>{
+        return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
+    })
 
-      const title = 'title';
-      const content = 'content';
-
-      var info = document.createElement("div");
-      info.className = "info";
-
-      //可以通过下面的方式修改自定义窗体的宽高
-      //info.style.width = "400px";
-      // 定义顶部标题
-      var top = document.createElement("div");
-      var titleD = document.createElement("div");
-      var closeX = document.createElement("img");
-      top.className = "info-top";
-      titleD.innerHTML = title;
-      closeX.src = "http://webapi.amap.com/images/close2.gif";
-      // closeX.onclick = closeInfoWindow;
-
-      top.appendChild(titleD);
-      top.appendChild(closeX);
-      info.appendChild(top);
-
-      // 定义中部内容
-      var middle = document.createElement("div");
-      middle.className = "info-middle";
-      middle.style.backgroundColor = 'white';
-      middle.innerHTML = content;
-      info.appendChild(middle);
-
-      // 定义底部内容
-      var bottom = document.createElement("div");
-      bottom.className = "info-bottom";
-      bottom.style.position = 'relative';
-      bottom.style.top = '0px';
-      bottom.style.margin = '0 auto';
-      var sharp = document.createElement("img");
-      sharp.src = "http://webapi.amap.com/images/sharp.png";
-      bottom.appendChild(sharp);
-      info.appendChild(bottom);
-
-      // let info = [];
-      //    info.push("<div><img src="\"" http:="" webapi.amap.com="" images="" autonavi.png="" \"=""> ");<br>
-      //    info.push("<div style="\"padding:0px" 0px="" 4px;\"=""><b>高德软件有限公司</b>");<br>
-      //    info.push("电话 : 010-84107000   邮编 : 100102");<br>
-      //    info.push("地址 : 北京市望京阜通东大街方恒国际中心A座16层</div></div>");<br>
-
-      return {
-          // isCustom: true,  //使用自定义窗体
-          content: 'ok',
-          // offset: new AMap.Pixel(16, -50)//-113, -140
-      }
-  }
-
-  //构建自定义信息窗体
-  const createInfoWindow_poplistinfo =(data)=> {
-        console.log(JSON.stringify(data));
+    let content = [];
 
 
-        const title = 'title';
-        const content = 'content';
-        var info = document.createElement("div");
-        info.className = "info";
+    content.push(contenthtml);
+    let info = document.createElement("div");
+    info.className = "juhe_pop_info";
 
-        //可以通过下面的方式修改自定义窗体的宽高
-        //info.style.width = "400px";
-        // 定义顶部标题
-        var top = document.createElement("div");
-        var titleD = document.createElement("div");
-        var closeX = document.createElement("img");
-        top.className = "info-top";
-        titleD.innerHTML = title;
-        closeX.src = "http://webapi.amap.com/images/close2.gif";
-        // closeX.onclick = closeInfoWindow;
+    //可以通过下面的方式修改自定义窗体的宽高
+    info.style.width = "320px";
+    // 定义顶部标题
+    let top = document.createElement("div");
+    let titleD = document.createElement("div");
+    // let closeX = document.createElement("img");
+    top.className = "info-top";
+    titleD.innerHTML = title;
 
-        top.appendChild(titleD);
-        top.appendChild(closeX);
-        info.appendChild(top);
+    top.appendChild(titleD);
+    // top.appendChild(closeX);
+    info.appendChild(top);
 
-        // 定义中部内容
-        var middle = document.createElement("div");
-        middle.className = "info-middle";
-        middle.style.backgroundColor = 'white';
-        middle.innerHTML = content;
-        info.appendChild(middle);
+    // 定义中部内容
+    var middle = document.createElement("div");
+    middle.className = "info-middle";
+    middle.style.backgroundColor = 'white';
+    middle.innerHTML = content;
+    info.appendChild(middle);
 
-        // 定义底部内容
-        var bottom = document.createElement("div");
-        bottom.className = "info-bottom";
-        bottom.style.position = 'relative';
-        bottom.style.top = '0px';
-        bottom.style.margin = '0 auto';
-        var sharp = document.createElement("img");
-        sharp.src = "http://webapi.amap.com/images/sharp.png";
-        bottom.appendChild(sharp);
-        info.appendChild(bottom);
-        // return info;
-        return {
-            isCustom: true,  //使用自定义窗体
-            content: info,
-            // offset: new AMap.Pixel(16, -50)//-113, -140
-        }
+    // 定义底部内容
+    // var bottom = document.createElement("div");
+    // bottom.className = "info-bottom";
+    // bottom.style.position = 'relative';
+    // bottom.style.top = '0px';
+    // bottom.style.margin = '0 auto';
+    // var sharp = document.createElement("img");
+    // sharp.src = "https://webapi.amap.com/images/sharp.png";
+    // bottom.appendChild(sharp);
+    // info.appendChild(bottom);
+    
+    return {
+        isCustom: true,  //使用自定义窗体
+        content: info,
+        // offset: new AMap.Pixel(16, -50)//-113, -140
     }
+}
 
 export {createInfoWindow_popinfo,createInfoWindow_poplistinfo};

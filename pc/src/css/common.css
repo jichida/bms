@@ -1270,17 +1270,115 @@
     display: -ms-flexbox;
     display: flex;
     display: -webkit-flex;
-
     -webkit-box-align: center;
     align-items: center;
     -webkit-align-items: center;
-
     -moz-justify-content: center;
     -webkit-justify-content: center;
     justify-content: center;
     -moz-box-direction:normal;
-        flex-direction:column;
-        -webkit-flex-direction:column;
+    flex-direction:column;
+    -webkit-flex-direction:column;
 }
+.Window_pop_info{
+    background-color: #FFF;
+    border: 2px solid #5cbdaa;
+    margin-left: -224px;
+    margin-bottom: 15px;
+    position: relative;
+}
+.Window_pop_info:after{
+    content: "";
+    position: absolute;
+    display: block;
+    height: 15px;
+    width: 15px;
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 16px solid #5cbdaa;
+    left: 378px;
+}
+.Window_pop_info .info-top{
+    font-weight: bold;
+    font-size: 16px;
+    padding-left: 20px;
+    height: 50px;
+    line-height: 50px;
+    background: #5cbdaa;
+    color: #FFF;
+    text-align: center;
+}
+.Window_pop_info .info-middle ul{
+}
+.Window_pop_info .info-middle ul li{
+    display: inline-block;
+    width: 33.33%;
+    line-height: 50px;
+    border-bottom: 1px solid #999999;
+    text-indent: 20px;
+}
+.Window_pop_info .info-middle ul li span{
+    font-size: 16px;
+}
+.Window_pop_info .info-middle ul li span.t{
+    font-weight: bold;
+    margin-right: 10px;
+}
+.Window_pop_info .pop_info_btn{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    height: 100px;
+}
+.Window_pop_info .pop_info_btn .collect{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 18px;
+    line-height: 40px;
+}
+.Window_pop_info .pop_info_btn .collect img{
+    width: 40px;
+    margin-right: 10px;
+}
+.Window_pop_info .pop_info_btn .lnk{
+    border: 1px solid #999;
+    margin-right: 20px;
+    line-height: 50px;
+}
+.Window_pop_info .pop_info_btn .lnk span{
+    display: inline-block;
+    position: relative;
+    padding: 0 30px;
+    font-size: 18px;
+}
+.Window_pop_info .pop_info_btn .lnk span:after{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    height: 30px;
+    width: 1px;
+    background-color: #999;
+    right: 0;
+    top: 10px;
+}
+.Window_pop_info .pop_info_btn .lnk span:last-child:after{
+    content: none;
+}
+
+
+
+
+
+
+
 
 
