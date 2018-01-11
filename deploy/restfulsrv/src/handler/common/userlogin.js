@@ -7,6 +7,7 @@ const pwd = require('../../util/pwd.js');
 const uuid = require('uuid');
 const _ = require('lodash');
 const moment = require('moment');
+const PubSub = require('pubsub-js');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -21,11 +22,25 @@ let userloginsuccess =(user,callback)=>{
    });
 };
 
+const subscriberuser = (user,ctx)=>{
+  //设置订阅设备消息
+  PubSub.unsubscribe( ctx.userDeviceSubscriber );
+
+  const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
+  _.map(subscriberdeviceids,(DeviceId)=>{
+    PubSub.subscribe(`push.device.${DeviceId}`,ctx.userDeviceSubscriber);
+  });
+}
+
 let getdatafromuser =(user)=>{
   return {
     username: user.username,
     userid:user._id,
-    devicecollections:user.devicecollections || []
+    devicecollections:user.devicecollections || [],
+    alarmsettings:{
+      warninglevel:_.get(user,'alarmsettings.warninglevel',''),
+      subscriberdeviceids:_.get(user,'alarmsettings.subscriberdeviceids',[]),
+    }
   };
 };
 
@@ -35,6 +50,10 @@ let setloginsuccess = (ctx,user,callback)=>{
    if(typeof ctx.userid === "string"){
       ctx.userid = mongoose.Types.ObjectId(ctx.userid);
    }
+  //  ctx.alarmsettings = _.get(user,'alarmsettings',{
+  //    warninglevel:'',
+  //    subscriberdeviceids:[]
+  //  });
 
    let userdata = getdatafromuser(user);
    userdata.token =  jwt.sign({
@@ -49,7 +68,32 @@ let setloginsuccess = (ctx,user,callback)=>{
     });
 
     userloginsuccess(user,callback);
+
+    subscriberuser(user,ctx);
+
 };
+
+
+exports.savealarmsettings = (socket,actiondata,ctx)=>{
+  const alarmsettings = actiondata;
+  const userModel = DBModels.UserModel;
+  userModel.findByIdAndUpdate(ctx.userid,{$set:{alarmsettings}},{new: true},(err,usernew)=>{
+    if(!err && !!usernew){
+        callback({
+          cmd:'savealarmsettings_result',
+          payload:{alarmsettings:usernew.alarmsettings}
+        });
+        subscriberuser(usernew,ctx);
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:`保存报警设置失败`,type:'savealarmsettings'}
+      });
+    }
+  });
+};
+
 
 exports.loginuser = (actiondata,ctx,callback)=>{
   let oneUser = actiondata;

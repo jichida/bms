@@ -44,7 +44,11 @@ let UserSchema = new Schema({
   roleid:{ type: Schema.Types.ObjectId, ref: 'role' },
   adminflag:{ type: Schema.Types.Number,default: 0 },
   devicegroups:[{ type: Schema.Types.ObjectId, ref: 'devicegroup', default: [] }],
-  devicecollections:[]
+  devicecollections:[],
+  alarmsettings:{
+    warninglevel:String,//报警等级
+    subscriberdeviceids:[],//订阅的设备
+  }
 });
 UserSchema.plugin(mongoosePaginate);
 let UserModel =mongoose.model('user',  UserSchema);
