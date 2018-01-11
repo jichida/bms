@@ -1,6 +1,9 @@
 import map from "lodash.map";
 import CollectImg from "../img/11.png";
 import CollectImg2 from "../img/12.png";
+import Car_online from "../img/1.png";
+import Car_outline from "../img/3.png";
+import Point_list_img from "../img/13.png";
 import store from '../env/store';
 import { push,goBack,go  } from 'react-router-redux';
 
@@ -87,25 +90,37 @@ const createInfoWindow_popinfo =(data)=> {
 //构建自定义信息窗体
 const createInfoWindow_poplistinfo =(data)=> {
     // console.log(map);
-    // console.log(data);
+    console.log(data);
     //iscollection
-    let title = '聚合点车辆';
-    let collectimg = !!data.iscollection?CollectImg2:CollectImg;
+    let title = "<span class='p'></span><span>聚合点车辆</span>";
+    let Car_img = Car_online || Car_outline;
 
     let contenthtml = "<ul>";
-    map(data.fields, (v,i)=>{
-        return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
+    map(data, (v,i)=>{
+        let dinfo = `
+            <span>${v.fields[0].showname}:</span><span>${v.fields[0].fieldvalue}</span>
+            <span>${v.fields[1].showname}:</span><span>${v.fields[1].fieldvalue}</span>`;
+
+        return contenthtml = `${contenthtml}
+            <li key=${i} onclick="clickfn_device(${v.DeviceId})">
+                <div class='l'><img src=${Car_img} /></div>
+                <div class='r'>
+                    <p class="t"><span>车辆ID:</span><span>${v.DeviceId}</span></p>
+                    <p><span>${dinfo}</span></p>
+                </div>
+                <img src="${Point_list_img}" />
+            </li>`;
     })
 
     let content = [];
-
+    console.log(contenthtml);
 
     content.push(contenthtml);
     let info = document.createElement("div");
     info.className = "juhe_pop_info";
 
     //可以通过下面的方式修改自定义窗体的宽高
-    info.style.width = "320px";
+    info.style.width = "400px";
     // 定义顶部标题
     let top = document.createElement("div");
     let titleD = document.createElement("div");
