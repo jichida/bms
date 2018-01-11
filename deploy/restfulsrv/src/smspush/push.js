@@ -1,7 +1,7 @@
 const JPush = require('jpush-sdk');
 const config = require('../config.js');
 
-const client = JPush.buildClient('460d89b68a1f3715b8bc3ab5', 'd81fb805922be4d1c0f2d7f4');
+const client = JPush.buildClient(config.jpush_appkey, config.jpush_mastersecret);
 
 // messagetype:String,//all,app
 // touserid:String,
