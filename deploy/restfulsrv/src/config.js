@@ -1,4 +1,4 @@
-let config =  {
+const config =  {
   secretkey:'bmskey',
   listenport:process.env.listenport ||5011,
   rooturl:process.env.rooturl || 'http://bms.com28.cn',
@@ -20,6 +20,13 @@ let config =  {
   loginuserexptime:60*60*24*30,//用户登录有效期,30天
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mapdict:{},
+  kafka_consumersettings:{
+    host: process.env.KAFKA_HOST ||'bmscatl.com28.cn:2181',
+    groupId:  process.env.KAFKA_PUSHDEVICEGROUP ||'PUSHDEVICEGROUP',
+    sessionTimeout: 15000,
+    protocol: ['roundrobin'],
+    fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
+  },
   defaultmappopclusterfields:[
     'TotalWorkCycle','ChargeACVoltage','BAT_I_HVS',
   ],

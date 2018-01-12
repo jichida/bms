@@ -1,11 +1,11 @@
-let winston = require('./log/log.js');
+const winston = require('./log/log.js');
 const config = require('./config.js');
 const handleuserpc = require('./handler/pc/index.js');
 const handleuserapp = require('./handler/app/index.js');
 const PubSub = require('pubsub-js');
 const usersubfn = require('./handler/socketsubscribe');
 
-let startwebsocketsrv = (http)=>{
+const startwebsocketsrv = (http)=>{
   let io = require('socket.io')(http);
 
   io.on('connection', (socket)=>{

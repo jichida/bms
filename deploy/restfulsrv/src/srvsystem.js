@@ -11,7 +11,7 @@ const schedule = require('node-schedule');
 const pwd = require('./util/pwd.js');
 const dbinit = require('./db/dbinit');
 
-let createadmin = ()=>{
+const createadmin = ()=>{
   // let userModel = mongoose.model('UserAdmin', DBModels.UserAdminSchema);
   // userModel.findOne({username: 'admin'}, (err, adminuser)=> {
   //   if(!err && !adminuser) {
@@ -44,7 +44,7 @@ let createadmin = ()=>{
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
 
-let job=()=>{
+const job=()=>{
 
     // createadmin();
 

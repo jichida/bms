@@ -1,4 +1,4 @@
-let winston = require('../log/log.js');
+const winston = require('../log/log.js');
 const _ =  require('lodash');
 
 /*
