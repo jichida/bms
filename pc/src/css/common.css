@@ -1288,6 +1288,13 @@
     margin-bottom: 15px;
     position: relative;
 }
+.Window_pop_info_app{
+    background-color: #FFF;
+    border: 2px solid #5cbdaa;
+    margin-bottom: 15px;
+    position: relative;
+    margin-left: 10px;
+}
 .juhe_pop_info{
     margin-left: -40px;
     margin-bottom: 35px;
@@ -1342,6 +1349,20 @@
     border-right: 14px solid transparent;
     border-top: 16px solid #5cbdaa;
     left: 378px;
+}
+
+.Window_pop_info_app:after{
+    content: "";
+    position: absolute;
+    display: block;
+    height: 15px;
+    width: 15px;
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 16px solid #5cbdaa;
+    left: 145px;
 }
 .juhe_pop_info:after{
     left: 185px;
@@ -1411,6 +1432,7 @@
 .juhe_pop_info .info-middle li>.r >.t >span{
     font-weight: bold;
 }
+.Window_pop_info_app .info-top,
 .Window_pop_info .info-top{
     font-weight: bold;
     font-size: 16px;
@@ -1421,7 +1443,40 @@
     color: #FFF;
     text-align: center;
 }
-.Window_pop_info .info-middle ul{
+.Window_pop_info_app .info-top{
+    height: 30px;
+    line-height: 30px;
+    padding-left: 0;
+}
+.Window_pop_info_app .info-middle ul{
+    height: 200px;
+    overflow-y: scroll;
+    margin-bottom: 0;
+}
+.Window_pop_info_app .info-middle ul li{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    border-bottom: 1px solid #EEE;
+    line-height: 36px;
+}
+.Window_pop_info_app .info-middle ul li span{
+    width: 50%;
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+.Window_pop_info_app .info-middle ul li span.t{
+    text-align: right;
+    margin-right: 15px;
 }
 .Window_pop_info .info-middle ul li{
     display: inline-block;
@@ -1459,6 +1514,26 @@
 .Window_pop_info .pop_info_btn .collect img{
     width: 40px;
     margin-right: 10px;
+}
+.Window_pop_info_app .pop_info_btn .lnk{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: space-around;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+    border-top: 1px solid #5cbdaa;
+    padding: 0 10px;
+}
+.Window_pop_info_app .pop_info_btn .lnk span{
+    line-height: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #5cbdaa;
 }
 .Window_pop_info .pop_info_btn .lnk{
     border: 1px solid #999;

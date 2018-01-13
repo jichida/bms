@@ -47,6 +47,7 @@ const createInfoWindow_popinfo =(data)=> {
     map(data.fields, (v,i)=>{
         return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
     })
+    contenthtml = `${contenthtml}</ul>`;
     let collection_html = `<div class='collect'  onclick="clickfn_collection(${data.DeviceId})"><img src='${collectimg}' />收藏车辆</div>`;
     if(!isincollections){
       collection_html = `<div class='collect' onclick="clickfn_cancelcollection(${data.DeviceId})"><img src='${collectimg}' />取消收藏车辆</div>`;
@@ -68,10 +69,10 @@ const createInfoWindow_popinfo =(data)=> {
 
     content.push(contenthtml);
     let info = document.createElement("div");
-    info.className = "Window_pop_info";
+    info.className = "Window_pop_info_app";
 
     //可以通过下面的方式修改自定义窗体的宽高
-    info.style.width = "800px";
+    info.style.width = "320px";
     // 定义顶部标题
     let top = document.createElement("div");
     let titleD = document.createElement("div");
