@@ -15,6 +15,7 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'savealarmsettings':userlogin.savealarmsettings,
   'changepwd':userlogin.changepwd,
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,

@@ -16,6 +16,7 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'savealarmsettings':userlogin.savealarmsettings,
   'gettipcount':tip.gettipcount,
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,

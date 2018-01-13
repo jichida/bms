@@ -4,7 +4,7 @@ const Chance = require('chance');
 const chance = new Chance();
 
 
-let hashPassword =  (password, salt, callback)=> {
+const hashPassword =  (password, salt, callback)=> {
     // We use pbkdf2 to hash and iterate 10k times by default
     const iterations = 10000;
     const keyLen = 64; // 64 bit.
@@ -20,11 +20,11 @@ let hashPassword =  (password, salt, callback)=> {
     });
 };
 
-let getsalt = ()=>{
+const getsalt = ()=>{
   return uuid.v4();
 }
 
-let checkPassword = (password,passwordsalt,checkedpassword,callback)=>{
+const checkPassword = (password,passwordsalt,checkedpassword,callback)=>{
   //console.log(`checkPassword:${checkedpassword},passwordsalt:${passwordsalt}`);
   hashPassword(checkedpassword, passwordsalt, (err, passwordHash)=> {
     //console.log(`passwordHash:${passwordHash},password:${password}`);

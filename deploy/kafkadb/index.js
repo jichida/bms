@@ -1,5 +1,5 @@
-const srvkafka = require('./src/kafkaconsumergroup.js');
-const srvdb = require('./src/srvdbinsert.js');
+const srvkafka = require('./src/kafka/kafkaconsumergroup.js');
+const srvdb = require('./src/kafka/srvdbinsert.js');
 const config = require('./src/config');
 
 let mongoose     = require('mongoose');
