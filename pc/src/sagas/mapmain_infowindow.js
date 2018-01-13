@@ -2,9 +2,13 @@
  * Created by wangxiaoqing on 2017/5/27.
  */
 import config from '../env/config';
+import {createInfoWindow_popinfo,createInfoWindow_poplistinfo} from './mapmain_infowindow.app.js';
+// if (config.softmode === 'pc') {
+//
+//
+// } else {
+//     import {createInfoWindow_popinfo,createInfoWindow_poplistinfo} from './mapmain_infowindow.pc.js';
+//     export {createInfoWindow_popinfo,createInfoWindow_poplistinfo};
+// }
 
-if (config.softmode === 'pc') {
-    module.exports = require('./mapmain_infowindow.pc.js');//暂时调试
-} else {
-    module.exports = require('./mapmain_infowindow.app.js');
-}
+export {createInfoWindow_popinfo,createInfoWindow_poplistinfo};
