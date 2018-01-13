@@ -661,9 +661,10 @@ div.mydevicebtn{
 }
 .amap-overlays .amap-ui-smp-ifwn-content-body{
     box-shadow: none;
-    border-radius: 15px;
+    border-radius: 5px;
     padding:0;
     overflow:hidden;
+    border: 1px solid #5cbeaa;
 }
 .amap-overlays .amap-ui-smp-ifwn-def-tr-close{
     display: none;
@@ -685,32 +686,59 @@ div.mydevicebtn{
     padding: 0;
     padding-bottom: 10px;
 }
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content .getpop_device_list{
+    max-height: 200px;
+    overflow-y: scroll;
+}
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
     flex-wrap: nowrap;
+    border-bottom: 1px solid #EEE;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p span{
     display: inline-block;
+    line-height: 36px;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p span:first-child{
-    width: 25%;
+    width: 120px;
+
     text-align: right;
     flex-shrink: 0;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content p span:last-child{
     padding-left: 15px;
     flex-grow: 1;
-    margin-right: 60px;
 }
-.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button{
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    z-index: 1000;
-    color: #27b395;
-    font-size: 16px;
-    background: none;
-    padding-right: 10px;
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content .buttonlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    padding: 5px 0 0 0;
+    border-top: 1px solid #27b395;
+}
+.amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content .buttonlist button{
+    background: #27b395;
+    color: #FFF;
+    font-size: 14px;
+    height: 30px;
+    border-radius: 6px;
+    padding: 0 10px;
 }
 .amap-overlays .amap-ui-infowindow-body.amap-ui-smp-ifwn-info-content button:after{
     content: "";

@@ -93,8 +93,14 @@ const getpop_device =({deviceitem,kvlist})=>{
 
   return {
         infoBody: `<p>车辆编号:${DeviceId}</p>
-        ${contentxt}
-        <button onclick="clickfn_device(${DeviceId})" class='clickfn_device'>查看详情</button>`
+        <div class="getpop_device_list">
+          ${contentxt}
+        </div>
+        <div class="buttonlist">
+          <button onclick="clickfn_device(${DeviceId})" class='clickfn_device'>查看详情</button>
+          <button onclick="clickfn_device(${DeviceId})" class='clickfn_device'>查看详情</button>
+          <button onclick="clickfn_device(${DeviceId})" class='clickfn_device'>查看详情</button>
+        </div>`
     };
 }
 
