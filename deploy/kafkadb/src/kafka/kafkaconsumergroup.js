@@ -1,12 +1,11 @@
-//监听来自kafka队列的数据
 const async = require('async');
 const ConsumerGroup = require('kafka-node').ConsumerGroup;
 const uuid = require('uuid');
 const cid = uuid.v4();
 
 const startsrv = (config,onMessage,onError)=>{
-  const consumerOptions = config.kafka_consumersettings;
-  const topics =  ['push.device'];
+  const consumerOptions = config.consumerOptions;
+  const topics = config.consumertopics;
   const consumerGroup = new ConsumerGroup(Object.assign({id: cid}, consumerOptions), topics);
   consumerGroup.on('error', onError);
   consumerGroup.on('message', onMessage);
@@ -18,4 +17,4 @@ const startsrv = (config,onMessage,onError)=>{
   });
 }
 
-exports.startsrv = startsrv;
+module.exports == start_kafkaconsumergroup;
