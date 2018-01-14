@@ -13,8 +13,8 @@ let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
 
     //写入登录日志
-    let loginlogModel = DBModels.UserLogModel;
-    let loginlogentity = new loginlogModel({
+    const loginlogModel = DBModels.UserLogModel;
+    const loginlogentity = new loginlogModel({
                         creator:user._id,
                         username:user.username
                       });
@@ -28,8 +28,10 @@ const subscriberuser = (user,ctx)=>{
 
   const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
   _.map(subscriberdeviceids,(DeviceId)=>{
-    PubSub.subscribe(`push.device.${DeviceId}`,ctx.userDeviceSubscriber);
+    PubSub.subscribe(`${config.kafka_pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
   });
+
+  console.log(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
 }
 
 let getdatafromuser =(user)=>{

@@ -3,11 +3,11 @@ const config = require('../config.js');
 
 const client = JPush.buildClient(config.jpush_appkey, config.jpush_mastersecret);
 
+// _id
 // messagetype:String,//all,app
 // touserid:String,
 // messagetitle:String,
 // messagecontent:String,
-// created_at:{ type: Date, default:new Date()},
 
 let sendallmsg = (notifymessage,fncallback)=>{
   client.push().setPlatform('ios', 'android')

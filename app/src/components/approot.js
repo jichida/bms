@@ -20,6 +20,7 @@ import Warningdevicelist from './warningdevice/data.js';
 import Mydevice from './mydevice';
 import Myproject from './mydevice/project';
 import Selcart from './selcart';
+import Setting from './setting';
 
 import Systems from './system';
 import Deviceinfo from './mydevice/deviceinfo';
@@ -89,6 +90,7 @@ class AppRoot extends React.Component {
                     <Route path="/overview" component={requireAuthentication(Overview)} />
                     <Route path="/carlist" component={requireAuthentication(Carlist)} />
                     <Route path="/collection" component={requireAuthentication(Collection)} />
+                    <Route path="/historyplay/:deviceid" component={requireAuthentication(Playback)} />
                     <Route path="/playback/:deviceid" component={requireAuthentication(Playback)} />
                     <Route path="/warningdevice/:deviceid" component={requireAuthentication(Warningdevice)} />
                     <Route path="/warningdevicelist" component={requireAuthentication(Warningdevicelist)} />
@@ -103,6 +105,7 @@ class AppRoot extends React.Component {
                     <Route path="/settingmessage" component={requireAuthentication(Settingmessage)} />
                     <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
                     <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
+                    <Route path="/setting" component={requireAuthentication(Setting)} />
                 </Switch>
                 <WeuiTool />
                 <AppMap />

@@ -2,7 +2,7 @@
  * Created by wangxiaoqing on 2017/3/25.
  */
 const dbinit = require('./db/dbinit');
-const startsrv_devpush = require('./kafka/devpush');
+const startsrv_devpush = require('./kafka/devpush.js');
 const config = require('./config');
 // const mongoose = require('mongoose');
 // const winston = require('./log/log.js');

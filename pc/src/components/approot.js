@@ -26,6 +26,7 @@ import ReportAlarm from './reports/alarm';
 import ReportPosition from './reports/position';
 import ReportAlarmDetail from './reports/alarmdetail';
 import ReportDevice from './reports/device';
+import Setting from './setting';
 
 import {requireAuthentication} from './requireauthentication';
 
@@ -63,16 +64,13 @@ class AppRoot extends React.Component {
                     <Route path="/reports/alarmdetail/:deviceid" component={requireAuthentication(ReportAlarmDetail)} />
                     <Route path="/reports/position/:deviceid" component={requireAuthentication(ReportPosition)} />
                     <Route path="/reports/device/:deviceid" component={requireAuthentication(ReportDevice)} />
-
                     <Route path="/index" component={requireAuthentication(()=>(<div></div>))} />
-
                     <Route path="/login" component={Login} />
                     <Route path="/message/:warninglevel/:deviceid" component={requireAuthentication(Message)} />
-
                     <Route path="/deviceinfo/:deviceid" component={requireAuthentication(Deviceinfo)} />
                     <Route path="/alarminfo/:alarmid" component={Alaraminfo} />
-
                     <Route path="/historyplay/:deviceid" component={requireAuthentication(Historyplay)} />
+                    <Route path="/setting" component={requireAuthentication(Setting)} />
 
                     {/* // <Route path="/device" component={requireAuthentication(Device)} />
                     // <Route path="/chartlist/:id" component={requireAuthentication(Chartlist)} />

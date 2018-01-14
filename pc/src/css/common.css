@@ -134,6 +134,10 @@
     -moz-flex-shrink: 0;
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
 }
 .AppPage .bodycontainer{
     display: -webkit-box;

@@ -96,7 +96,6 @@ class Page extends React.Component {
                 <div className="lists deviceinfolist"
                     style={{
                         flexGrow: 0,
-                        overflow: "scroll"
                     }}
                     >
                     {
