@@ -4,7 +4,7 @@ const serverurlrestful = islocalhost?`${serverurl}/api`:`${serverurl}/apisrv/api
 const wspath = islocalhost?'/socket.io':'/apisrv/socket.io';
 const organizationid = '599af5dc5f943819f10509e6';
 let config = {
-    ispopalarm:true,
+    ispopalarm:false,
     serverurlrestful,
     serverurl:`${serverurl}`,
     wspath:`${wspath}`,
