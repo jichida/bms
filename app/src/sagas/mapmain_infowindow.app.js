@@ -18,7 +18,7 @@ window.clickfn_historyplay =(DeviceId)=>{
     store.dispatch(push(`/historyplay/${DeviceId}`));
 }
 window.clickfn_showhistory =(DeviceId)=>{
-    store.dispatch(push(`/reports/device/${DeviceId}`));
+    store.dispatch(push(`/reports/alarm/${DeviceId}`));
 }
 window.clickfn_collection =(DeviceId)=>{
     store.dispatch(ui_index_addcollection(DeviceId));
@@ -29,7 +29,7 @@ window.clickfn_cancelcollection =(DeviceId)=>{
 
 const createInfoWindow_popinfo =(data)=> {
     // console.log(map);
-    // console.log(data);
+    console.log(data);
     //iscollection
     const state = store.getState();
     const carcollections = state.device;
