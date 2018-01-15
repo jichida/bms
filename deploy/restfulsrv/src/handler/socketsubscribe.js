@@ -10,7 +10,7 @@ topic:push.device.DeviceId
 }
 */
 const pushusermessage = (socket,ctx,DeviceId,data)=>{
-
+  console.log(`开始推送了,注意啊----->${JSON.stringify(data)}`);
 }
 
 const usersubfn  = (socket,ctx)=>{

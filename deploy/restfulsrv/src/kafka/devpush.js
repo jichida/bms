@@ -6,7 +6,17 @@ const PubSub = require('pubsub-js');
 
 function onMessage (message) {
   console.log(`获取来自kafka设备消息:${JSON.stringify(message)}`);
-  PubSub.publish(`push.device.${message.DeviceId}`, message);
+  try{
+    const data = JSON.parse(message.value);
+    const DeviceId = data.DeviceId;
+    const payload = data;
+    console.log(`重新publish出去:${DeviceId},数据:${payload}`);
+
+    PubSub.publish(`push.device.${DeviceId}`, payload);
+  }
+  catch(e){
+    console.log(e);
+  }
 }
 
 const onError =(error)=> {
@@ -16,7 +26,7 @@ const onError =(error)=> {
 
 const start_kafkaconsumergroup = (config)=>{
 
-  const consumerOptions = config.consumerOptions;
+  const consumerOptions = config.kafka_consumersettings;
   const topics = ['push.device'];
   const consumerGroup = new ConsumerGroup(Object.assign({id: cid}, consumerOptions), topics);
   consumerGroup.on('error', onError);
@@ -29,4 +39,4 @@ const start_kafkaconsumergroup = (config)=>{
   });
 }
 
-module.exports == start_kafkaconsumergroup;
+module.exports = start_kafkaconsumergroup;
