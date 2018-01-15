@@ -57,7 +57,9 @@ import {
     gettipcount_result,
 
     serverpush_alarm_sz_request,
-    serverpush_alarm_sz_result
+    serverpush_alarm_sz_result,
+
+    serverpush_alarm
   } from '../actions';
 import {
   ui_searchalarm_request,
@@ -74,6 +76,7 @@ import {
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'serverpush_alarm':serverpush_alarm,
   'serverpush_alarm_sz_result':serverpush_alarm_sz_result,
   'gettipcount_result':gettipcount_result,
   'ui_searchalarm_result':ui_searchalarm_result,

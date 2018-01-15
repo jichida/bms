@@ -3,6 +3,7 @@ const ConsumerGroup = require('kafka-node').ConsumerGroup;
 const uuid = require('uuid');
 const cid = uuid.v4();
 const PubSub = require('pubsub-js');
+const config = require('../config.js');
 
 function onMessage (message) {
   console.log(`获取来自kafka设备消息:${JSON.stringify(message)}`);
@@ -12,7 +13,7 @@ function onMessage (message) {
     const payload = data;
     console.log(`重新publish出去:${DeviceId},数据:${payload}`);
 
-    PubSub.publish(`push.device.${DeviceId}`, payload);
+    PubSub.publish(`${config.kafka_pushalaramtopic}.${DeviceId}`, payload);
   }
   catch(e){
     console.log(e);
@@ -27,7 +28,7 @@ const onError =(error)=> {
 const start_kafkaconsumergroup = (config)=>{
 
   const consumerOptions = config.kafka_consumersettings;
-  const topics = ['push.device'];
+  const topics = [config.kafka_pushalaramtopic];
   const consumerGroup = new ConsumerGroup(Object.assign({id: cid}, consumerOptions), topics);
   consumerGroup.on('error', onError);
   consumerGroup.on('message', onMessage);

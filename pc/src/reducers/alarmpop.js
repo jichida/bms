@@ -2,6 +2,7 @@ import { createReducer } from 'redux-act';
 import {
     ui_showprompt,
     set_promptdata,
+    serverpush_alarm,
     serverpush_alarm_sz_result
 } from '../actions';
 
@@ -16,6 +17,10 @@ const initial = {
 };
 
 const alarmpop = createReducer({
+    [serverpush_alarm]:(state,payload)=>{
+      const promptdata = [payload];
+      return {...state, promptdata };
+    },
     [serverpush_alarm_sz_result]:(state,payload)=>{
       const {list} = payload;
       const promptdata = [...list];

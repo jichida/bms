@@ -28,7 +28,7 @@ const subscriberuser = (user,ctx)=>{
 
   const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
   _.map(subscriberdeviceids,(DeviceId)=>{
-    PubSub.subscribe(`push.device.${DeviceId}`,ctx.userDeviceSubscriber);
+    PubSub.subscribe(`${config.kafka_pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
   });
 
   console.log(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
