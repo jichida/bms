@@ -202,6 +202,10 @@ class UserMenu extends React.Component {
                 window.open('http://catldemo.com28.cn/admin/build/','_blank');
                 // this.props.dispatch(ui_menuclick_settings({}));
             }}/> */}
+            <MenuItem primaryText="系统设置" leftIcon={<Exit />} onClick={()=>{
+                this.handleRequestClose();
+                this.props.dispatch(ui_menuclick_logout({}));
+            }}/>
             <MenuItem primaryText="退出登录" leftIcon={<Exit />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.dispatch(ui_menuclick_logout({}));
