@@ -3,7 +3,8 @@ import {
     ui_showprompt,
     set_promptdata,
     serverpush_alarm,
-    serverpush_alarm_sz_result
+    serverpush_alarm_sz_result,
+    logout_result
 } from '../actions';
 
 
@@ -28,8 +29,10 @@ const alarmpop = createReducer({
     },
     [set_promptdata]:(state,payload)=>{
         return {...state, promptdata:payload };
+    },
+    [logout_result]:(state,payload)=>{
+      return {...initial.alarmpop};
     }
-
 }, initial.alarmpop);
 
 export default alarmpop;

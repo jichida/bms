@@ -59,6 +59,9 @@ import {
     serverpush_alarm_sz_request,
     serverpush_alarm_sz_result,
 
+    savealarmsettings_request,
+    savealarmsettings_result,
+
     serverpush_alarm
   } from '../actions';
 import {
@@ -76,6 +79,7 @@ import {
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'savealarmsettings_result':savealarmsettings_result,
   'serverpush_alarm':serverpush_alarm,
   'serverpush_alarm_sz_result':serverpush_alarm_sz_result,
   'gettipcount_result':gettipcount_result,
@@ -121,6 +125,7 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'savealarmsettings_request':`${savealarmsettings_request}`,
   'serverpush_alarm_sz':`${serverpush_alarm_sz_request}`,
   'gettipcount':`${gettipcount_request}`,
   'changepwd':`${changepwd_request}`,
