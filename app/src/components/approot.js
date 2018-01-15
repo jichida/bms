@@ -20,6 +20,7 @@ import Warningdevicelist from './warningdevice/data.js';
 import Mydevice from './mydevice';
 import Myproject from './mydevice/project';
 import Selcart from './selcart';
+import Setting from './setting';
 
 import Systems from './system';
 import Deviceinfo from './mydevice/deviceinfo';
@@ -104,6 +105,7 @@ class AppRoot extends React.Component {
                     <Route path="/settingmessage" component={requireAuthentication(Settingmessage)} />
                     <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
                     <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
+                    <Route path="/setting" component={requireAuthentication(Setting)} />
                 </Switch>
                 <WeuiTool />
                 <AppMap />
