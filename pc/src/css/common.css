@@ -1549,16 +1549,10 @@
     position: relative;
     padding: 0 30px;
     font-size: 18px;
+    color: #5cbdaa;
 }
 .Window_pop_info .pop_info_btn .lnk span:after{
-    content: "";
-    display: inline-block;
-    position: absolute;
-    height: 30px;
-    width: 1px;
-    background-color: #999;
-    right: 0;
-    top: 10px;
+    
 }
 .Window_pop_info .pop_info_btn .lnk span:last-child:after{
     content: none;

@@ -137,9 +137,12 @@ class TableAlarm extends React.Component {
                     <div className="title">报警信息统计</div>
                 </div>
                 <div className="TreeSearchBattery">
-                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)}
+                    <TreeSearchreport 
+                      onClickQuery={this.onClickQuery.bind(this)}
                       query={this.state.query}
-                      onClickExport={this.onClickExport.bind(this)}/>
+                      onClickExport={this.onClickExport.bind(this)}
+                      DeviceId={this.props.match.params.deviceid}
+                      />
                 </div>
                 <div className="tablelist">
                     <AntdTable
