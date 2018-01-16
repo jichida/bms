@@ -26,7 +26,7 @@ import ReportAlarm from './reports/alarm';
 import ReportPosition from './reports/position';
 import ReportAlarmDetail from './reports/alarmdetail';
 import ReportDevice from './reports/device';
-import Setting from './setting';
+import Setting from './settings';
 
 import {requireAuthentication} from './requireauthentication';
 

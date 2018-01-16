@@ -76,10 +76,12 @@ let setloginsuccess = (ctx,user,callback)=>{
 };
 
 
-exports.savealarmsettings = (socket,actiondata,ctx)=>{
+exports.savealarmsettings = (actiondata,ctx,callback)=>{
   const alarmsettings = actiondata;
   const userModel = DBModels.UserModel;
   userModel.findByIdAndUpdate(ctx.userid,{$set:{alarmsettings}},{new: true},(err,usernew)=>{
+    console.log(err);
+    console.log(usernew);
     if(!err && !!usernew){
         callback({
           cmd:'savealarmsettings_result',

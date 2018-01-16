@@ -3,7 +3,6 @@ import {jpushlistenInMessage,jpushpostNotification} from '../actions';
 
 export const cancelJPushAlisa=()=>{
     try{
-
         xview.cancelJPushAlisa();
     }
     catch(e){
