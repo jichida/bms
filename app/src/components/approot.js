@@ -20,7 +20,7 @@ import Warningdevicelist from './warningdevice/data.js';
 import Mydevice from './mydevice';
 import Myproject from './mydevice/project';
 import Selcart from './selcart';
-import Setting from './setting';
+// import Setting from './setting';
 
 import Systems from './system';
 import Deviceinfo from './mydevice/deviceinfo';

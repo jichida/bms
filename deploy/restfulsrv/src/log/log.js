@@ -3,7 +3,7 @@ const moment = require('moment');
 const path = require('path');
 let logger;
 exports.initLog =  ()=>{
-  const filename = "bms_"+moment().format('YYYY-MM-DD-HHmmss');
+   const filename = "bms";//"bms_"+moment().format('YYYY-MM-DD-HHmmss');
 
   const logfile = filename+".log";
   const logpath = path.resolve(__dirname,'../../../log', logfile);
