@@ -126,7 +126,7 @@
     justify-content: space-between;
     height: 50px;
 }
-.formlist >div p{
+.formlist >div >div.p{
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -139,6 +139,7 @@
     -webkit-align-items: center;
     height: 30px;
     margin: 0;
+    flex-grow: 0;
 }
 .formlist .ant-select-selection__placeholder{
     height: 28px;
@@ -184,5 +185,10 @@
     line-height: 30px;
 }
 
+
+.settingform .Select.Select--multi{
+    min-width: 200px;
+    padding-top: 0;
+}
 
 

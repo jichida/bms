@@ -79,8 +79,8 @@ class Setting extends React.Component {
                     <div className="title">消息提示设置</div>
                     <div className="formlist">
                         <div>
-                            <p>选择报警等级</p>
-                            <p>
+                            <div className="p">选择报警等级</div>
+                            <div className="p">
                                 <Select
                                     value={this.state.warninglevel}
                                     style={{ width: 120 }}
@@ -91,16 +91,16 @@ class Setting extends React.Component {
                                     <Option value={"中"}>中</Option>
                                     <Option value={"低"}>低</Option>
                                 </Select>
-                            </p>
+                            </div>
                         </div>
                         <div>
-                            <p>选择报警车辆</p>
-                            <p>
+                            <div className="p">选择报警车辆</div>
+                            <div className="p">
                                 <ReactSelect
                                   onChange={this.handleChange_devicelist}
                                   value={this.state.devicelist}
                                 />
-                            </p>
+                            </div>
                         </div>
                     </div>
                     <div className="button" onClick={()=>{this.clickSend();}}><a className="btnclick">确定</a></div>
