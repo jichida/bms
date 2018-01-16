@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 // import map from 'lodash.map';
 import "../../css/message.css";
-import { Select } from "antd";
+import  Select  from "antd/lib/select";
 import {savealarmsettings_request} from '../../actions';
 import ReactSelect from "../controls/reactselect";
 const Option = Select.Option;

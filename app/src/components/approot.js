@@ -28,6 +28,7 @@ import Workorder from './workorder';
 import Workorderinfo from './workorder/info';
 import Usercenter from './user';
 import Setting from './index/setting';
+import Settings from './settings';
 import Settinguser from './index/settinguser';
 import Settingmessage from './index/settingmessage';
 import MapPage from './map';
@@ -105,7 +106,8 @@ class AppRoot extends React.Component {
                     <Route path="/settingmessage" component={requireAuthentication(Settingmessage)} />
                     <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
                     <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
-                    <Route path="/setting" component={requireAuthentication(Setting)} />
+                    <Route path="/settings" component={requireAuthentication(Settings)} />
+
                 </Switch>
                 <WeuiTool />
                 <AppMap />

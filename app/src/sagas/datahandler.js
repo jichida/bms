@@ -125,7 +125,7 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
-  'savealarmsettings_request':`${savealarmsettings_request}`,
+  'savealarmsettings':`${savealarmsettings_request}`,
   'serverpush_alarm_sz':`${serverpush_alarm_sz_request}`,
   'gettipcount':`${gettipcount_request}`,
   'changepwd':`${changepwd_request}`,
