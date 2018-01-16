@@ -4,6 +4,7 @@ const config = require('../config.js');
 const realtimealarm = require('./common/realtimealarm');
 const smspush = require('../smspush/push');
 
+
 const pushusermessage = (socket,ctx,DeviceId,data)=>{
   console.log(`开始推送了,注意啊----->${JSON.stringify(data)}`);
 
@@ -28,7 +29,9 @@ const pushusermessage = (socket,ctx,DeviceId,data)=>{
       messagetitle:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`,
       messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`
     };
+    winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
     smspush.sendnotifymessage(messagenotify,(err,result)=>{
+      winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
       console.log(err);
       console.log(result);
     });
