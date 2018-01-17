@@ -24,6 +24,8 @@ const createInfoWindow_popinfo =(data)=> {
         ${contenthtml}
         <div class='pop_info_btn'>
             <div class='lnk'>
+                <span onclick="clickfn_historyplay(${data.DeviceId})">历史数据</span>
+                <span onclick="clickfn_historyplay(${data.DeviceId})">详细地址</span>
                 <span onclick="clickfn_historyplay(${data.DeviceId})">历史轨迹回放</span>
                 <span onclick="clickfn_device(${data.DeviceId})">查看详情</span>
                 <span onclick="clickfn_showhistory(${data.DeviceId})">历史报警信息</span>
