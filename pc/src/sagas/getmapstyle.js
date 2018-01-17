@@ -84,17 +84,23 @@ const getCoureName = (course)=> {
 // }
 
 const getpop_device =({deviceitem,kvlist})=>{
+  console.log(deviceitem);
   const DeviceId = get(deviceitem,'DeviceId','');
   // let contentxt = '';
   let fields = [];
   lodashmap(kvlist,(v)=>{
     const fieldvalue = get(deviceitem,v.name,'');
     const unit = get(deviceitem,v.unit,'');
+    let systemflag = 0;
+    if(v.name === 'formattedAddress'){
+      systemflag = 1;
+    }
     fields.push({
       fieldname:v.name,
       showname:v.showname,
       fieldvalue,
-      unit
+      unit,
+      systemflag
     });
     // contentxt += `<p class='l'><span class='t'>${v.showname}</span><span class='color_warning'>${fieldvalue}${unit}</span></p>`;
   });

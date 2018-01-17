@@ -16,6 +16,7 @@ const createInfoWindow_popinfo =(data)=> {
 
     let contenthtml = "<ul>";
     map(data.fields, (v,i)=>{
+        console.log(v);
         return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
     })
 
@@ -24,8 +25,7 @@ const createInfoWindow_popinfo =(data)=> {
         ${contenthtml}
         <div class='pop_info_btn'>
             <div class='lnk'>
-                <span onclick="clickfn_historyplay(${data.DeviceId})">历史数据</span>
-                <span onclick="clickfn_historyplay(${data.DeviceId})">详细地址</span>
+                <span onclick="clickfn_historydevice(${data.DeviceId})">历史数据</span>
                 <span onclick="clickfn_historyplay(${data.DeviceId})">历史轨迹回放</span>
                 <span onclick="clickfn_device(${data.DeviceId})">查看详情</span>
                 <span onclick="clickfn_showhistory(${data.DeviceId})">历史报警信息</span>
