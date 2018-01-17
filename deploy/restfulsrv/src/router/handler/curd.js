@@ -156,8 +156,8 @@ const curd = (schmodel)=>{
       adminaction.preaction('findByIdAndUpdate',schmodel.collectionname,updateddata,(err,result)=>{
         if(!err && result){
           dbModel.findByIdAndUpdate(queryparam.params.id,updateddata, {new: true},(err, result)=> {
-                  //console.log("UPDATE err=>" + JSON.stringify(err));
-                  //console.log("UPDATE result=>" + JSON.stringify(result));
+                  console.log("UPDATE err=>" + JSON.stringify(err));
+                  console.log("UPDATE result=>" + JSON.stringify(result));
                     if(!err){
                       res.status(200)
                           .json(result);
