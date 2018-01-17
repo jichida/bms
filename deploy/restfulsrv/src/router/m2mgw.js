@@ -21,57 +21,53 @@ let startmodule = (app)=>{
   app.post('/api/report_position',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
     const dbModel = DBModels.HistoryTrackModel;
-    const fields = 'DeviceId Latitude Longitude GPSTime';
-    let sz = fields.split(' ');
-    sz.push('Provice');
-    sz.push('City');
-    sz.push('Area');
-    const csvfields = sz.join(',');
+    const csvfields = `设备编号,定位时间,省,市,区`;
+    const dbfields = 'DeviceId Latitude Longitude GPSTime';
     const fn_convert = (doc,callbackfn)=>{
       utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
         const newdoc = _.merge(doc,retobj);
-        callbackfn(newdoc);
+        callbackfn({
+          '设备编号':newdoc.DeviceId,
+          '定位时间':newdoc.GPSTime,
+          '省':newdoc.Provice,
+          '市':newdoc.City,
+          '区':newdoc.Area,
+        });
       });
     };
-    export_downloadexcel({req,res,dbModel,fields,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:dbfields,csvfields,fn_convert});
 
   });
   app.post('/api/report_alarm',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
     const dbModel = DBModels.RealtimeAlarmModel;
-    const fields = '车辆ID 报警时间 报警等级 报警信息';
-
-    let sz = fields.split(' ');
-    const csvfields = sz.join(',');
+    const csvfields = '车辆ID,报警时间,报警等级,报警信息';
     const fn_convert = (doc,callbackfn)=>{
       const newdoc = realtimealarm.bridge_alarminfo(doc);
       callbackfn(newdoc);
+
     }
-    export_downloadexcel({req,res,dbModel,fields,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
   });
   app.post('/api/report_alarmdetail',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
     const dbModel = DBModels.RealtimeAlarmRawModel;
-    const fields = '车辆ID 报警时间 报警等级 报警信息';
-    const sz = fields.split(' ');
-    const csvfields = sz.join(',');
+    const csvfields = '车辆ID,报警时间,报警等级,报警信息';
     const fn_convert = (doc,callbackfn)=>{
       const newdoc = realtimealarm.bridge_alarmrawinfo(doc);
       callbackfn(newdoc);
     }
-    export_downloadexcel({req,res,dbModel,fields,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
   });
   app.post('/api/report_device',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
     const dbModel = DBModels.DeviceModel;
-    const fields = '车辆ID 更新时间 设备类型 序列号';
-    const sz = fields.split(' ');
-    const csvfields = sz.join(',');
+    const csvfields = '车辆ID,更新时间,设备类型,序列号';
     const fn_convert = (doc,callbackfn)=>{
       const newdoc = device.bridge_deviceinfo(doc);
       callbackfn(newdoc);
     }
-    export_downloadexcel({req,res,dbModel,fields,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
   });
 
   app.post('/m2mgw/setdata',(req,res)=>{
