@@ -35,8 +35,7 @@ import {
     queryhistorytrack_request,
     queryhistorytrack_result,
 
-    searchbattery_request,
-    searchbattery_result,
+
 
     serverpush_devicegeo_sz_request,
     serverpush_devicegeo_sz_result,
@@ -105,7 +104,7 @@ let recvmessagetoresultpair = {
   'querydeviceinfo_list_result':querydeviceinfo_list_result,
   'queryrealtimealarm_result':queryrealtimealarm_result,
   'queryhistorytrack_result':queryhistorytrack_result,
-  'searchbattery_result':searchbattery_result,
+
   'searchbatteryalarm_result':searchbatteryalarm_result,
   'collectdevice_result':collectdevice_result,
   'changepwd_result':changepwd_result
