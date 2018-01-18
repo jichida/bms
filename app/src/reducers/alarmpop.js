@@ -14,13 +14,18 @@ const initial = {
         showprompt: false,
         promptdata: [
         ],
+        alaramraws:{
+
+        }
     },
 };
 
 const alarmpop = createReducer({
     [serverpush_alarm]:(state,payload)=>{
       const promptdata = [payload];
-      return {...state, promptdata };
+      let alaramraws = {...state.alaramraws};
+      alaramraws[payload.key] = payload;
+      return {...state, promptdata ,alaramraws};
     },
     [serverpush_alarm_sz_result]:(state,payload)=>{
       const {list} = payload;
