@@ -109,8 +109,10 @@ class TablePosition extends React.Component {
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
                 <div className="appbar">
-                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
+
                     <div className="title">设备报表</div>
+                    <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
+
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport
