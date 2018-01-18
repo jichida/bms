@@ -2,7 +2,7 @@ const winston = require('../log/log.js');
 const _ =  require('lodash');
 const config = require('../config.js');
 const realtimealarm = require('./common/realtimealarm');
-const smspush = require('../smspush/push');
+// const smspush = require('../smspush/push');
 
 
 const pushusermessage = (socket,ctx,DeviceId,data)=>{
@@ -14,27 +14,27 @@ const pushusermessage = (socket,ctx,DeviceId,data)=>{
   socket.emit('serverpush_alarm',recordnew);
 
 
-  if(ctx.usertype === 'app'){
-    // _id
-    // messagetype:String,//all,app
-    // touserid:String,
-    // messagetitle:String,
-    // messagecontent:String,
-    //推送到app,调用接口|serverpush_alarm
-    const messagenotify = {
-      _id:recordnew.key,
-      messagetype:'msg',
-      touserid:ctx.userid.toString(),
-      messagetitle:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`,
-      messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`
-    };
-    winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
-    smspush.sendnotifymessage(messagenotify,(err,result)=>{
-      winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
-      console.log(err);
-      console.log(result);
-    });
-  }
+  // if(ctx.usertype === 'app'){
+  //   // _id
+  //   // messagetype:String,//all,app
+  //   // touserid:String,
+  //   // messagetitle:String,
+  //   // messagecontent:String,
+  //   //推送到app,调用接口|serverpush_alarm
+  //   const messagenotify = {
+  //     _id:recordnew.key,
+  //     messagetype:'msg',
+  //     touserid:ctx.userid.toString(),
+  //     messagetitle:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`,
+  //     messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`
+  //   };
+  //   winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
+  //   smspush.sendnotifymessage(messagenotify,(err,result)=>{
+  //     winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
+  //     console.log(err);
+  //     console.log(result);
+  //   });
+  // }
 }
 
 const usersubfn  = (socket,ctx)=>{
