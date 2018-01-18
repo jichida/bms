@@ -130,7 +130,7 @@ let sendmessageauthfnsz = {
   'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,
   'querydevicegroup':`${querydevicegroup_request}`,
-  'searchbattery':`${searchbattery_request}`,
+
   'querydevice':`${querydevice_request}`,
   'querydeviceinfo':`${querydeviceinfo_request}`,
   'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
