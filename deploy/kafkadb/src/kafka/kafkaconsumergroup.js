@@ -17,4 +17,4 @@ const startsrv = (config,onMessage,onError)=>{
   });
 }
 
-module.exports = start_kafkaconsumergroup;
+module.exports = startsrv;
