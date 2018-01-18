@@ -51,7 +51,6 @@
 .settingform{
     margin-top: 20px;
     width: 100%;
-    margin:  auto;
     max-width: 600px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -149,4 +148,38 @@
     height: 30px;
     text-align: center;
     line-height: 30px;
+}
+.formlist >div.selectform{
+    height: auto;
+}
+.selectform .s{
+    
+    min-height: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.selectform .s >span{
+    display: block;
+}
+.selectform .s >span .Select-control{
+
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    height: auto;
 }

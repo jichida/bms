@@ -68,15 +68,15 @@ class Setting extends React.Component {
         // const { subscriberdeviceids } = this.props;
 
         return (
-            <div className="settingPage" style={{height : this.state.innerHeight+"px"}}>
-
-                <div className="appbar">
-                    <i className="fa fa-angle-left back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
-                    <div className="title" style={{color: "#FFF"}}>报警信息统计</div>
+            <div className="settingPage AppPage"
+                style={{height:`${this.state.innerHeight}px`,overflow:"hidden",paddingBottom:"0"}}
+                >
+                <div className="navhead">
+                    <a className="back" onClick={()=>{this.props.history.goBack()}}></a>
+                    <span className="title" style={{paddingRight : "30px"}}>消息提示设置</span>
                 </div>
 
                 <div className="settingform">
-                    <div className="title">消息提示设置</div>
                     <div className="formlist">
                         <div>
                             <div className="p">选择报警等级</div>
@@ -93,9 +93,9 @@ class Setting extends React.Component {
                                 </Select>
                             </div>
                         </div>
-                        <div>
+                        <div className="selectform">
                             <div className="p">选择报警车辆</div>
-                            <div className="p">
+                            <div className="p s">
                                 <ReactSelect
                                   onChange={this.handleChange_devicelist}
                                   value={this.state.devicelist}

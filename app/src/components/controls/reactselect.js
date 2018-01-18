@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Select from 'react-select';
 import map from 'lodash.map';
+import 'react-select/dist/react-select.css';
 
 class SelectDevice extends React.Component {
 
@@ -43,6 +44,7 @@ class SelectDevice extends React.Component {
             searchPromptText={'输入查询'}
             loadingPlaceholder={'加载中...'}
             simpleValue
+            style={{width: "200px",}}
             />
           </span>
       );
