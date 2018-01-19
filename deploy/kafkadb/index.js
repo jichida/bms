@@ -1,4 +1,4 @@
-const srvkafka = require('./src/kafka/kafkaconsumergroup.js');
+const startsrv = require('./src/kafka/kafkaconsumergroup.js');
 const srvdb = require('./src/kafka/srvdbinsert.js');
 const config = require('./src/config');
 
@@ -18,4 +18,4 @@ const onError =(error)=> {
   console.error(error.stack);
 }
 
-srvkafka.startsrv(config,srvdb.onMessage,onError);
+startsrv(config,srvdb.onMessage,onError);
