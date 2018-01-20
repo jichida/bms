@@ -22,6 +22,7 @@ import { NumberInput,
   TextField,
   DateField,
   EditButton,
+  CreateButton,
   BooleanInput,
   TabbedForm,
   FormTab,
@@ -36,7 +37,7 @@ import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {CreateActions,EditActions} from '../controls/createeditactions';
-
+import {ImportExcelButton} from './importexcelbtn';
 const deviceDefaultValue = {created_at:new Date(),updated_at:new Date()};
 
 const DeviceCreate = (props) => (
@@ -171,8 +172,24 @@ const DeviceFilter = (props) => (
   </Filter>
 )
 
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const DeviceActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+    <CardActions style={cardActionStyle}>
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        <CreateButton basePath={basePath} />
+        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+        <ImportExcelButton />
+    </CardActions>
+);
+
 const DeviceList = (props) => (
-  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'UpdateTime',order:'DESC'}} {...props}>
+  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'UpdateTime',order:'DESC'}} {...props}
+  actions={<DeviceActions />}>
   {permissions =>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
