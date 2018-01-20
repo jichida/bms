@@ -37,8 +37,10 @@ import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {CreateActions,EditActions} from '../controls/createeditactions';
-import {ImportExcelButton} from './importexcelbtn';
-const deviceDefaultValue = {created_at:new Date(),updated_at:new Date()};
+import ImportExcelButton from './importexcelbtn';
+
+
+const deviceDefaultValue = {created_at:moment().format('YYYY-MM-DD HH:mm:ss'),updated_at:moment().format('YYYY-MM-DD HH:mm:ss')};
 
 const DeviceCreate = (props) => (
   <Create title="创建设备"  {...props} actions={<CreateActions />}>

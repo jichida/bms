@@ -18,33 +18,39 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const ImportExcelButton = ({ basePath, data, refresh }) => {
+const ImportExcelButton = () => {
   const usertoken = localStorage.getItem('admintoken');
-  const props = {
-      name: 'file',
-      action: `${config.serverurl}/importexcel`,
-      headers:{
-         'Authorization':'Bearer '+ usertoken,
-         'Content-Type':'application/xls'
-      },
-      // accept:".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-      onChange(info) {
-        if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-          message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-          message.error(`${info.file.name} file upload failed.`);
-        }
-      },
-  };
+  const onChange =(info)=> {
+    console.log(info);
+    // console.log("handleChange info:" + JSON.stringify(info));
+    if (info.file.status !== 'uploading') {
+      // console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      // message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      // message.error(`${info.file.name} file upload failed.`);
+    }
+  }
+
 
   return (
-      <Upload {...props}>
-        <Button>
-         <Icon type="upload" />导入Excel
-       </Button>
+      <Upload
+          name='file'
+          action={`${config.serverurl}/importexcel`}
+          headers={{
+             'Authorization':'Bearer '+ usertoken,
+          }}
+          onChange={onChange}
+          showUploadList={false}
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        >
+        <FlatButton
+         primary
+         label="导入Excel"
+         icon={<ActionBack />}
+         style={{ overflow: 'inherit' }}  >
+       </FlatButton>
     </Upload>
   );
 };
@@ -54,4 +60,4 @@ const ImportExcelButton = ({ basePath, data, refresh }) => {
   icon={<ActionBack />}
   style={{ overflow: 'inherit' }}  >
 </FlatButton> */}
-export {ImportExcelButton};
+export default ImportExcelButton;
