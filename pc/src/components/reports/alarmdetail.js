@@ -97,7 +97,7 @@ class TableAlarmDetail extends React.Component {
           "车辆ID" : "",
           "报警时间" : "",
           "报警等级" : "",
-          "报警信息" : "绝缘故障",
+          "报警信息" : "",
         };
         let columns = map(column_data, (data, index)=>{
           let column_item = {

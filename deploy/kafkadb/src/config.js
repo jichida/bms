@@ -7,6 +7,7 @@ let config =  {
     protocol: ['roundrobin'],
     fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
   },
+  mapdict:{},
   consumertopics:['BMS.Data']
 };
 
