@@ -84,7 +84,7 @@ const bridge_historydeviceinfo = (item)=>{
   itemnew[`平均单体电压`] = get(item,'BAT_Ucell_Avg','');
   itemnew[`报警状态`] = get(item,'alarmtxt','');
 
-  return deviceinfonew;
+  return itemnew;
 };
 
 exports.bridge_historydeviceinfo =  bridge_historydeviceinfo;
