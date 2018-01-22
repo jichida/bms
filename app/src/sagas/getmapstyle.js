@@ -77,7 +77,7 @@ const getCoureName = (course)=> {
 //   store.dispatch(push(`/historyplay/${DeviceId}`));
 // }
 // window.clickfn_showhistory =(DeviceId)=>{
-//   store.dispatch(push(`/reports/device/${DeviceId}`));
+//   store.dispatch(push(`/reports/historydevice/${DeviceId}`));
 // }
 // window.clickfn_showmessage =(DeviceId)=>{
 //   store.dispatch(ui_btnclick_devicemessage({DeviceId}));
