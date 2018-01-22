@@ -12,9 +12,6 @@ import {
   ui_menuclick_settings,
   ui_menuclick_logout,
 
-  searchbatteryalarm_request,
-  searchbatteryalarm_result,
-
 
   logout_request,
   logout_result,
