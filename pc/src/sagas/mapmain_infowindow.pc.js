@@ -15,8 +15,6 @@ const createInfoWindow_popinfo =(data)=> {
     let title = '车辆编号:'+data.DeviceId;
 
     let contenthtml = "<ul>";
-    console.log("data.fields-heihei:");
-    console.log(data.fields);
     map(data.fields, (v,i)=>{
         if(v.systemflag===0){
             return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;

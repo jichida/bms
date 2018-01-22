@@ -84,7 +84,6 @@ const getCoureName = (course)=> {
 // }
 
 const getpop_device =({deviceitem,kvlist})=>{
-  console.log(deviceitem);
   const DeviceId = get(deviceitem,'DeviceId','');
   // let contentxt = '';
   let fields = [];
