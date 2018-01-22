@@ -55,7 +55,7 @@ class TablePosition extends React.Component {
 
     onClickExport(query){
       const payload = {
-          type:'report_device',
+          type:'report_historydevice',
           query
       };
       //console.log(`导出excel:${JSON.stringify(payload)}`);
@@ -72,26 +72,59 @@ class TablePosition extends React.Component {
       },0);
     }
 
+
     onItemConvert(item){
       let itemnew = {...item};
       //DeviceId Latitude Longitude GPSTime
       itemnew['key'] = get(item,'_id','');
-      itemnew['设备编号'] = get(item,'DeviceId','');
-      itemnew['更新时间'] = get(item,'UpdateTime','');
-      itemnew['设备类型'] = get(item,'DeviceType','');
-      itemnew['序列号'] = get(item,'SN64','');
+      itemnew[`采集时间`] = get(item,'DeviceId','');
+      itemnew[`保存时间`] = get(item,'DeviceId','');
+      itemnew[`箱体测量电压(V)`] = get(item,'DeviceId','');
+      itemnew[`箱体累加电压(V)`] = get(item,'DeviceId','');
+      itemnew[`箱体电流(A)`] = get(item,'DeviceId','');
+      itemnew[`真实SOC(%)`] = get(item,'DeviceId','');
+      itemnew[`最高单体电压(V)`] = get(item,'DeviceId','');
+      itemnew[`最低单体电压(V)`] = get(item,'DeviceId','');
+      itemnew[`最高单体电压CSC号`] = get(item,'DeviceId','');
+      itemnew[`最高单体电芯位置`] = get(item,'DeviceId','');
+      itemnew[`最低单体电压CSC号`] = get(item,'DeviceId','');
+      itemnew[`最低单体电压电芯位置`] = get(item,'DeviceId','');
+      itemnew[`最高单体温度`] = get(item,'DeviceId','');
+      itemnew[`最低单体温度`] = get(item,'DeviceId','');
+      itemnew[`平均单体温度`] = get(item,'DeviceId','');
+      itemnew[`最高温度CSC号`] = get(item,'DeviceId','');
+      itemnew[`最低温度CSC号`] = get(item,'DeviceId','');
+      itemnew[`显示用SOC`] = get(item,'DeviceId','');
+      itemnew[`平均单体电压`] = get(item,'DeviceId','');
+      itemnew[`报警状态`] = get(item,'DeviceId','');
       return itemnew;
     }
     render(){
-        let column_data = {
-          "设备编号" : "",
-          "更新时间" : "",
-          "设备类型" : "",
-          "序列号" : "",
-        };
+        let column_data = [
+          '采集时间',
+          '保存时间',
+          '箱体测量电压(V)',
+          '箱体累加电压(V)',
+          '箱体电流(A)',
+          '真实SOC(%)',
+          '最高单体电压(V)',
+          '最低单体电压(V)',
+          '最高单体电压CSC号',
+          '最高单体电芯位置',
+          '最低单体电压CSC号',
+          '最低单体电压电芯位置',
+          '最高单体温度',
+          '最低单体温度',
+          '平均单体温度',
+          '最高温度CSC号',
+          '最低温度CSC号',
+          '显示用SOC',
+          '平均单体电压',
+          '报警状态',
+        ];
         let columns = map(column_data, (data, index)=>{
           let column_item = {
-              title: index,
+              title: data,
               dataIndex: index,
               key: index,
               render: (text, row, index) => {
