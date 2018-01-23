@@ -68,7 +68,7 @@ const adminauth = (req,res)=>{
           }
         }
         let token = jwt.sign({
-              exp: Math.floor(Date.now() / 1000) +config.loginuserexptime,
+              exp: Math.floor(Date.now() / 1000) +config.loginuserexptime_admin || config.loginuserexptime,
               _id:user._id,
               usertype:adminflag === 1?'admin':'user',
               groupid:user.groupid,

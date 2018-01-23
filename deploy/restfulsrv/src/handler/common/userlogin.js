@@ -56,10 +56,19 @@ let setloginsuccess = (ctx,user,callback)=>{
   //    warninglevel:'',
   //    subscriberdeviceids:[]
   //  });
-
+   let loginuserexptime = config.loginuserexptime;
+   if(ctx.usertype === 'pc'){
+     loginuserexptime = config.loginuserexptime_pc;
+   }
+   else if(ctx.usertype === 'app'){
+     loginuserexptime = config.loginuserexptime_app;
+   }
+   else if(ctx.usertype === 'admin'){
+     loginuserexptime = config.loginuserexptime_admin;
+   }
    let userdata = getdatafromuser(user);
    userdata.token =  jwt.sign({
-          exp: Math.floor(Date.now() / 1000) + config.loginuserexptime,
+          exp: Math.floor(Date.now() / 1000) + loginuserexptime,
           _id:user._id,
         },config.secretkey, {});
     userdata.loginsuccess =  true;
