@@ -37,6 +37,11 @@ export default function* uploadExcelSaga() {
       const result = yield call(uploadandimportexcel,payload.event);
       console.log(result);
       yield put({type:UPLOADEXCEL_SUCCESS,payload:{}});
+
+      if(!!result.resultstring){
+        alert(result.resultstring);
+      }
+
     }
     catch(e){
       console.log(e);

@@ -26,6 +26,8 @@ const importexcel = (excelfilepath,callbackfn)=>{
   });
 
   console.log(listdeviceextra);
+  let deviceids_success = [];
+  let deviceids_notfound = [];
 
   let asyncfnsz = [];
   _.map(listdeviceextra,(devicedata)=>{
@@ -36,6 +38,12 @@ const importexcel = (excelfilepath,callbackfn)=>{
     const fn = (callbackfn)=>{
       const dbDevice = DBModels.DeviceModel;
       dbDevice.findOneAndUpdate({DeviceId},{$set:{Ext:devicedata}},{new:true},(err,result)=>{
+        if(!!result){
+          deviceids_success.push(DeviceId);
+        }
+        else{
+          deviceids_notfound.push(DeviceId);
+        }
         callbackfn(err,result);
       });
     }
@@ -45,20 +53,19 @@ const importexcel = (excelfilepath,callbackfn)=>{
 
   async.parallel(asyncfnsz,(err,resultlist)=>{
     if(!err){
-      const success_count = _.filter(resultlist,(v)=>{
-        return !!v;
-      }).length;
-      const notfound_count = resultlist.length - success_count;
       callbackfn({
         result:'OK',
+        resultstring:`成功导入${deviceids_success.length}条,${deviceids_notfound.length}条记录未找到id`,
         list:[
           {
             name:'success',
-            count:success_count
+            count:deviceids_success.length,
+            deviceids:deviceids_success,
           },
           {
             name:'notfound',
-            count:notfound_count
+            count:deviceids_notfound.length,
+            deviceids:deviceids_notfound,
           }
         ]
       });
