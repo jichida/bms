@@ -17,7 +17,10 @@ const config =  {
   maxAge:86400000,
   maxDistance:3,
   authexptime:120,//验证码有效期，2分钟
-  loginuserexptime:60*60*24*30,//用户登录有效期,30天
+  loginuserexptime:60*60*1,//用户登录有效期,1小时
+  loginuserexptime_admin:60*60*1,//用户登录有效期,1小时
+  loginuserexptime_pc:60*60*2,//用户登录有效期,2小时
+  loginuserexptime_app:60*60*24*30,//用户登录有效期,30天
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mapdict:{},
   kafka_pushalaramtopic:'push.alarm',
