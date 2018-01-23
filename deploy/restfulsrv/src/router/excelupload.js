@@ -17,11 +17,11 @@ const startuploader = (app)=>{
 
      var form = new formidable.IncomingForm();
      form.uploadDir = path.join(__dirname,config.uploaddir);
-     //form.keepExtensions = true;
+     form.keepExtensions = true;
 
      form.parse(req, (err, fields, files)=> {
-       console.log('file name:' + util.inspect({fields: fields, files: files}));
-       console.log('file name:' + files['file'].path);
+      //  console.log('file name:' + util.inspect({fields: fields, files: files}));
+      //  console.log('file name:' + files['file'].path);
        let basename = path.basename(files['file'].path);
        let extname = path.extname(fields['filename']);
        let filename = basename + extname;

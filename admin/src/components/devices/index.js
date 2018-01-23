@@ -46,6 +46,38 @@ const DeviceCreate = (props) => (
   <Create title="创建设备"  {...props} actions={<CreateActions />}>
     <SimpleForm defaultValue={deviceDefaultValue}>
       <TextInput label="设备" source="DeviceId" validate={required} />
+      <TextInput label="车工号" source="Ext.车工号"  />
+      <TextInput label="VIN" source="Ext.VIN"  />
+      <TextInput label="类型" source="Ext.类型"  />
+      <TextInput label="容量" source="Ext.容量"  />
+      <TextInput label="串联数" source="Ext.串联数"  />
+      <TextInput label="并联数" source="Ext.并联数"  />
+      <TextInput label="电芯类型" source="Ext.电芯类型" />
+      <TextInput label="CATL项目名称" source="Ext.CATL项目名称"  />
+      <TextInput label="电池系统流水号" source="Ext.电池系统流水号"  />
+      <TextInput label="BMU硬件版本" source="Ext.BMU硬件版本"  />
+      <TextInput label="CSC硬件版本" source="Ext.CSC硬件版本"  />
+      <TextInput label="BMU软件版本" source="Ext.BMU软件版本"  />
+      <TextInput label="CSC软件版本" source="ExtCSC软件版本"  />
+      <TextInput label="电池入库日期" source="Ext.电池入库日期"  />
+      <TextInput label="电池出货日期" source="Ext.电池出货日期"  />
+      <TextInput label="车辆生产厂" source="Ext.车辆生产厂"  />
+      <TextInput label="车辆型号" source="Ext.车辆型号"  />
+      <TextInput label="装车日期" source="Ext.装车日期"  />
+      <TextInput label="整车出厂日期" source="Ext.整车出厂日期"  />
+      <TextInput label="省份" source="Ext.省份"  />
+      <TextInput label="地区" source="Ext.地区"  />
+      <TextInput label="里程" source="Ext.里程"  />
+      <TextInput label="客户名称" source="Ext.客户名称"  />
+      <TextInput label="客户联系地址" source="Ext.客户联系地址"  />
+      <TextInput label="客户联系人" source="Ext.客户联系人"  />
+      <TextInput label="客户联系电话" source="Ext.客户联系电话"  />
+      <TextInput label="客户移动电话" source="Ext.客户移动电话"  />
+      <TextInput label="用途" source="Ext.用途"  />
+      <TextInput label="购买日期" source="Ext.购买日期"  />
+      <TextInput label="新车上牌日期" source="Ext.新车上牌日期"  />
+      <TextInput label="车牌号" source="Ext.车牌号"  />
+      <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
     </SimpleForm>
   </Create>
 );
@@ -59,13 +91,39 @@ const DeviceEdit = (props) => {
   return (<Edit title="设备信息" {...props}  actions={<EditActions />}>
       <TabbedForm>
         <FormTab label="扩展信息">
-          <TextInput label="RDB编号" source="Ext.RDB"  />
-          <TextInput label="车工号" source="Ext.BusNo"  />
-          <TextInput label="小车VIN码" source="Ext.VIN"  />
-          <TextInput label="类型" source="Ext.Type"  />
-          <TextInput label="容量" source="Ext.Capacity"  />
-          <TextInput label="串联数" source="Ext.SerialNumber"  />
-          <TextInput label="并联数" source="Ext.ParallelNumber"  />
+          <TextInput label="RDB编号" source="Ext.RDB编号"  />
+          <TextInput label="车工号" source="Ext.车工号"  />
+          <TextInput label="VIN" source="Ext.VIN"  />
+          <TextInput label="类型" source="Ext.类型"  />
+          <TextInput label="容量" source="Ext.容量"  />
+          <TextInput label="串联数" source="Ext.串联数"  />
+          <TextInput label="并联数" source="Ext.并联数"  />
+          <TextInput label="电芯类型" source="Ext.电芯类型" />
+          <TextInput label="CATL项目名称" source="Ext.CATL项目名称"  />
+          <TextInput label="电池系统流水号" source="Ext.电池系统流水号"  />
+          <TextInput label="BMU硬件版本" source="Ext.BMU硬件版本"  />
+          <TextInput label="CSC硬件版本" source="Ext.CSC硬件版本"  />
+          <TextInput label="BMU软件版本" source="Ext.BMU软件版本"  />
+          <TextInput label="CSC软件版本" source="ExtCSC软件版本"  />
+          <TextInput label="电池入库日期" source="Ext.电池入库日期"  />
+          <TextInput label="电池出货日期" source="Ext.电池出货日期"  />
+          <TextInput label="车辆生产厂" source="Ext.车辆生产厂"  />
+          <TextInput label="车辆型号" source="Ext.车辆型号"  />
+          <TextInput label="装车日期" source="Ext.装车日期"  />
+          <TextInput label="整车出厂日期" source="Ext.整车出厂日期"  />
+          <TextInput label="省份" source="Ext.省份"  />
+          <TextInput label="地区" source="Ext.地区"  />
+          <TextInput label="里程" source="Ext.里程"  />
+          <TextInput label="客户名称" source="Ext.客户名称"  />
+          <TextInput label="客户联系地址" source="Ext.客户联系地址"  />
+          <TextInput label="客户联系人" source="Ext.客户联系人"  />
+          <TextInput label="客户联系电话" source="Ext.客户联系电话"  />
+          <TextInput label="客户移动电话" source="Ext.客户移动电话"  />
+          <TextInput label="用途" source="Ext.用途"  />
+          <TextInput label="购买日期" source="Ext.购买日期"  />
+          <TextInput label="新车上牌日期" source="Ext.新车上牌日期"  />
+          <TextInput label="车牌号" source="Ext.车牌号"  />
+          <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
         </FormTab>
         <FormTab label="设备基本信息">
           <TextField label="设备ID" source="DeviceId"  validate={required} />
