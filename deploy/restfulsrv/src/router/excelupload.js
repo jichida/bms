@@ -6,6 +6,7 @@ const moment  = require('moment');
 const middlewareauth = require('./middlewareauth.js');
 const formidable = require('formidable');
 const util = require('util');
+const importexcel = require('./handler/importexcel.js');
 
 const startuploader = (app)=>{
   app.post('/uploadexcel',middlewareauth,(req,res)=>{
@@ -24,7 +25,8 @@ const startuploader = (app)=>{
        let basename = path.basename(files['file'].path);
        let extname = path.extname(fields['filename']);
        let filename = basename + extname;
-       fs.rename(files['file'].path,files['file'].path+extname,(err)=>{
+       const targetfile = `${files['file'].path}${extname}`;
+       fs.rename(files['file'].path,targetfile,(err)=>{
          if(err){
            res.status(200)
                .json({
@@ -32,13 +34,13 @@ const startuploader = (app)=>{
                });
          }
          else{
-           res.status(200)
-               .json({
-                 result:'OK',
-                 data:{
-                   url:config.uploadurl + '/' + filename
-                 }
-               });
+           importexcel(targetfile,(resultjson)=>{
+              res.status(200)
+                  .json({
+                    result:'OK',
+                    data:resultjson
+                  });
+           });
          }
        })
 
