@@ -56,7 +56,7 @@ export function* jpushflow(){//仅执行一次
             //   show: true,
             //   type:'success'
             // }}));
-            alert(`jpushlistenInMessage->${JSON.stringify(msgobj)}`);
+            // alert(`jpushlistenInMessage->${JSON.stringify(msgobj)}`);
             if(!!msgobj._id){
               if(msgobj.messagetype==='msg'){
                 yield call(delay, 2000);
@@ -87,7 +87,7 @@ export function* jpushflow(){//仅执行一次
 
           const msgobj = get(payload,'data');
           if(!!msgobj){
-            alert(`jpushpostNotification->${JSON.stringify(msgobj)}`);
+            // alert(`jpushpostNotification->${JSON.stringify(msgobj)}`);
             if(!!msgobj._id){
               if(msgobj.messagetype==='msg'){
                 yield call(delay, 2000);
