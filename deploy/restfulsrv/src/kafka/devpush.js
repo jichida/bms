@@ -22,7 +22,7 @@ function onMessage (message) {
 
     getuserpushdeviceid(DeviceId,(userlist)=>{
       console.log(`所有用户id:${JSON.stringify(userlist)}`);
-      
+
       let recordnew = realtimealarm.bridge_alarminfo(payload);
       _.map(userlist,(userid)=>{
         // _id
@@ -31,9 +31,13 @@ function onMessage (message) {
         // messagetitle:String,
         // messagecontent:String,
         //推送到app,调用接口|serverpush_alarm
-        const messagenotify = {
+        const msgpayload = {
           _id:recordnew.key,
+          DeviceId:DeviceId,
           messagetype:'msg',
+        }
+        const messagenotify = {
+          msgpayload,
           touserid:userid,
           messagetitle:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`,
           messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`

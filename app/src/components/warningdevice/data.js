@@ -19,7 +19,7 @@ import Searchimg4 from '../../img/23.png';
 import Car from '../../img/5.png';
 
 import Footer from "../index/footer.js";
-import Datalist from "./datalist";
+import Datalist from "./datalist_infos";
 
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
@@ -47,6 +47,7 @@ class Page extends React.Component {
             deviceid,
         };
     }
+
     componentWillMount () {
       const {startDate,endDate,warninglevel,deviceid} = this.state;
       let query = this.getquery({startDate,endDate,warninglevel,deviceid});

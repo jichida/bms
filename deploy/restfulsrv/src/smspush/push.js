@@ -10,11 +10,12 @@ const client = JPush.buildClient(config.jpush_appkey, config.jpush_mastersecret)
 // messagecontent:String,
 
 let sendallmsg = (notifymessage,fncallback)=>{
+  const msgpayload = notifymessage.msgpayload;
   client.push().setPlatform('ios', 'android')
     .setAudience(JPush.ALL)
     .setNotification(notifymessage.messagetitle,
-        JPush.ios(notifymessage.messagetitle, 'happy', 1,false,{_id:notifymessage._id,messagetype:notifymessage.messagetype}),
-        JPush.android(notifymessage.messagetitle, null, 1,{_id:notifymessage._id,messagetype:notifymessage.messagetype})
+        JPush.ios(notifymessage.messagetitle, 'happy', 1,false,msgpayload),
+        JPush.android(notifymessage.messagetitle, null, 1,msgpayload)
     )
     .setMessage(notifymessage.messagecontent)
     .send( (err, res)=> {
@@ -35,11 +36,12 @@ let sendallmsg = (notifymessage,fncallback)=>{
 
 //useralias 用逗号分隔
 let sendusermsg = (notifymessage,fncallback)=>{
+  const msgpayload = notifymessage.msgpayload;
   client.push().setPlatform('ios', 'android')
     .setAudience(JPush.alias(notifymessage.touserid))
     .setNotification(notifymessage.messagetitle,
-        JPush.ios(notifymessage.messagetitle, 'happy', 1,false,{_id:notifymessage._id,messagetype:notifymessage.messagetype}),
-        JPush.android(notifymessage.messagetitle, null, 1,{_id:notifymessage._id,messagetype:notifymessage.messagetype})
+        JPush.ios(notifymessage.messagetitle, 'happy', 1,false,msgpayload),
+        JPush.android(notifymessage.messagetitle, null, 1,msgpayload)
     )
     .setMessage(notifymessage.messagecontent)
     .setOptions(null, 60)

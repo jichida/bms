@@ -33,7 +33,7 @@ import Settinguser from './index/settinguser';
 import Settingmessage from './index/settingmessage';
 import MapPage from './map';
 import Alaraminfo from './warningdevice/alarminfo';
-import Alaramrawinfo from './warningdevice/alarmrawinfo';
+import Alaramrawinfos from './warningdevice/alarmrawinfos';
 
 import {requireAuthentication} from './requireauthentication';
 import "../css/common.css";
@@ -107,7 +107,7 @@ class AppRoot extends React.Component {
                     <Route path="/settinguser" component={requireAuthentication(Settinguser)} />
                     <Route path="/settingmessage" component={requireAuthentication(Settingmessage)} />
                     <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
-                    <Route path="/alarmrawinfo/:alarmid" component={requireAuthentication(Alaramrawinfo)} />
+                    <Route path="/alarmrawinfos/:deviceid" component={requireAuthentication(Alaramrawinfos)} />
                     <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
                     <Route path="/settings" component={requireAuthentication(Settings)} />
 

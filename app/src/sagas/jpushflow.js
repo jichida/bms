@@ -56,8 +56,8 @@ export function* jpushflow(){//仅执行一次
               type:'success'
             }}));
             if(!!msgobj._id){
-              if(msgobj.subtype==='msg'){
-                yield put(push(`/alarmrawinfo/${msgobj._id}`));
+              if(msgobj.messagetype==='msg'){
+                yield put(push(`/alarmrawinfos/${msgobj.DeviceId}`));
               }
               // else{
               //   yield put(push(`${msgobj.messagecontent}`));
@@ -83,8 +83,8 @@ export function* jpushflow(){//仅执行一次
           const msgobj = get(payload,'data');
           if(!!msgobj){
             if(!!msgobj._id){
-              if(msgobj.subtype==='msg'){
-                yield put(push(`/alarmrawinfo/${msgobj._id}`));
+              if(msgobj.messagetype==='msg'){
+                yield put(push(`/alarmrawinfos/${msgobj.DeviceId}`));
               }
               // else{
               //   yield put(push(`${msgobj.messagecontent}`));

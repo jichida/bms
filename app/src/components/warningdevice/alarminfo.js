@@ -30,7 +30,7 @@ class Page extends React.Component {
         const {carcollections,g_devicesdb,alarms} = this.props;
         let alarmid = this.props.match.params.alarmid;
         let curalarm =  alarms[alarmid];
-        curalarm = bridge_alarminfo(curalarm);
+        // curalarm = bridge_alarminfo(curalarm);
         let deviceid = curalarm['车辆ID'];
 
         let isincollections = false;
