@@ -3,6 +3,7 @@ const config =  {
   listenport:process.env.listenport ||5011,
   rooturl:process.env.rooturl || 'http://bms.com28.cn',
   issmsdebug:process.env.issmsdebug || false,
+  mongos:process.env.mongos==='true'?true:false,
   publishdirtest:'../../../bms/test/build',
   publishdirapp:'../../../bms/app/build',
   publishdirpc:'../../../dist/pc/build',
@@ -25,7 +26,7 @@ const config =  {
   mapdict:{},
   kafka_pushalaramtopic:'push.alarm',
   kafka_consumersettings:{
-    host: process.env.KAFKA_HOST ||'bmscatl.com28.cn:2181',
+    host: process.env.KAFKA_HOST ||'101.89.141.109:2181',
     groupId:  process.env.KAFKA_PUSHDEVICEGROUP ||'PUSHDEVICEGROUP',
     sessionTimeout: 15000,
     protocol: ['roundrobin'],
