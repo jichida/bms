@@ -26,8 +26,11 @@ class Page extends React.Component {
     componentWillMount () {
         // this.props.dispatch(setalarmreaded_request(this.props.match.params.alarmid));
     }
+    onClickAlarmtxt =(DeviceId)=>{
+      this.props.history.push(`/alarmrawinfos/${DeviceId}`);
+    }
     render() {
-        const {carcollections,g_devicesdb,alarms} = this.props;
+        const {carcollections,alarms} = this.props;
         let alarmid = this.props.match.params.alarmid;
         let curalarm =  alarms[alarmid];
         // curalarm = bridge_alarminfo(curalarm);
@@ -84,7 +87,13 @@ class Page extends React.Component {
                                 <div className="tit">{index}</div>
                                 {
                                     map(item,(i,k)=>{
-                                        return (<div key={k} className="li"><span>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
+                                        return (<div key={k} className="li" onClick={
+                                          ()=>{
+                                            if(i.name === '报警信息'){
+                                              this.onClickAlarmtxt(deviceid);
+                                            }
+                                          }
+                                        }><span>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
                                     })
                                 }
                             </div>
@@ -119,9 +128,9 @@ class Page extends React.Component {
 }
 
 const mapStateToProps = ({device,searchresult}) => {
-    const {carcollections,g_devicesdb} = device;
+    const {carcollections} = device;
     const {alarms} = searchresult;
-    return {carcollections,g_devicesdb,alarms};
+    return {carcollections,alarms};
 }
 
 export default connect(mapStateToProps)(Page);
