@@ -1485,8 +1485,7 @@
 .Window_pop_info .info-middle ul li{
     display: inline-block;
     width: 33.33%;
-    line-height: 50px;
-    border-bottom: 1px solid #999999;
+    line-height: 40px;
     text-indent: 20px;
 }
 .Window_pop_info .info-middle ul li.show_1{
