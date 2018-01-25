@@ -14,11 +14,9 @@ import { withRouter } from 'react-router-dom';
 import "../../css/antd.min.css";
 import {ui_resetsearch} from '../../actions';
 import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
-import {
-  callthen,uireport_searchalarmdetail_request,uireport_searchalarmdetail_result
-} from '../../sagas/pagination';
+import { callthen,uireport_searchalarmdetail_request,uireport_searchalarmdetail_result } from '../../sagas/pagination';
 import InfinitePage from '../controls/listview';
-
+import moment from 'moment';
 
 
 class Page extends React.Component {
@@ -34,6 +32,8 @@ class Page extends React.Component {
             "中":"2",
             "低":"3"
         };
+
+        console.log("itemitem");
         console.log(item);
 //
 // key
@@ -51,13 +51,15 @@ class Page extends React.Component {
         return  (
             <div
                 key={item._id}
-                className={`warningtypelist warningtype_${warningtext[item.warninglevel]}`}
+                className={`warningtypelist warningtype_${warningtext[item.warninglevel]} alarmrawinfos`}
                 onClick={this.rowClick.bind(this,item.key)}
                 >
                 {/* { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> } */}
-                <span className="time">{item["报警时间"]}</span>
-                <span>车辆: <br/>{item["车辆ID"]}</span>
-                <span>报警信息: <br/>{item["报警信息"]}</span>
+                <i className="warninglevel warninglevel_1">高</i>
+                <i className="warninglevel warninglevel_2">中</i>
+                <i className="warninglevel warninglevel_3">低</i>
+                <span className="warningtext">{item["报警信息"]}</span>
+                <span className="time">{moment(item["报警时间"]).format("YYYY-MM-DD H:mm")}</span>
             </div>
         );
     }
@@ -65,6 +67,11 @@ class Page extends React.Component {
         console.log(`search alarm:${JSON.stringify(this.props.query)}`);
         return (
         <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
+        <div className="datalist_rawinfos_tt">
+            <span>等级</span>
+            <span className="c">信息</span>
+            <span>时间</span>
+        </div>
         <InfinitePage
             usecache={this.props.usecachealarm}
             listtypeid='listalarm'
