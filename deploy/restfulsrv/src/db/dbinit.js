@@ -66,7 +66,9 @@ const initDB = ()=>{
         username:'admin',
         passwordsalt,
         passwordhash,
-        adminflag:1
+        adminflag:1,
+        organizationid : mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+        devicegroups:[mongoose.Types.ObjectId("599b88f5f63f591defcf5f71")]
       };
       const userModel = DBModels.UserModel;
       userModel.findOneAndUpdate({username:adminuser.username}, {$set:adminuser},{new: true,upsert:true},(err,result)=>{

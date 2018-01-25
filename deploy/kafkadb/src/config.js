@@ -1,7 +1,8 @@
 let config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   consumerOptions:{
-    host: process.env.KAFKA_HOST ||'bmscatl.com28.cn:2181',
+    host: process.env.KAFKA_HOST ||'101.89.141.109:2181',
+    mongos:process.env.mongos==='true'?true:false,
     groupId: 'BMSRecvGroup',
     sessionTimeout: 15000,
     protocol: ['roundrobin'],

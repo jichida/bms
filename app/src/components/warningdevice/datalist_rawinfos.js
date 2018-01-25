@@ -74,8 +74,8 @@ class Page extends React.Component {
         </div>
         <InfinitePage
             usecache={this.props.usecachealarm}
-            listtypeid='listalarm'
-            ref='alarmlist'
+            listtypeid='listalarmraw'
+            ref='alarmrawlist'
             pagenumber={20}
             updateContent={this.updateContent}
             queryfun={(payload)=>{
