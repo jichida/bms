@@ -35,6 +35,14 @@ class Page extends React.Component {
 
         console.log("itemitem");
         console.log(item);
+
+        let  LevelDiv = (<i className="warninglevel warninglevel_3">低</i>);
+        if(item["报警信息"] === '高'){
+          LevelDiv = (<i className="warninglevel warninglevel_1">高</i>);
+        }
+        else if(item["报警信息"] === '低'){
+          LevelDiv = (<i className="warninglevel warninglevel_2">中</i>);
+        }
 //
 // key
 // :
@@ -55,9 +63,7 @@ class Page extends React.Component {
                 onClick={this.rowClick.bind(this,item.key)}
                 >
                 {/* { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> } */}
-                <i className="warninglevel warninglevel_1">高</i>
-                <i className="warninglevel warninglevel_2">中</i>
-                <i className="warninglevel warninglevel_3">低</i>
+                {LevelDiv}
                 <span className="warningtext">{item["报警信息"]}</span>
                 <span className="time">{moment(item["报警时间"]).format("YYYY-MM-DD H:mm")}</span>
             </div>
