@@ -71,6 +71,7 @@ class SelectDevice extends React.Component {
             <input name="" placeholder="请输入车辆ID" type="number" onChange={this.onChange.bind(this)} />
         </div>
         <div className="list">
+          <div key={'0'} onClick={this.onClick.bind(this,'0')}>不选择</div>
           <InfinitePage
               usecache={usecachedevice}
               listtypeid='listdevice'
