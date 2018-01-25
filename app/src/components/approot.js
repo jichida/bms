@@ -15,8 +15,7 @@ import Carlist from './mycars/carlist';
 import Collection from './collection/collection';
 import Playback from './playback';
 import Warning from './warning/';
-import Warningdevice from './warningdevice/data.js';
-import Warningdevicelist from './warningdevice/data.js';
+import Warningdevice from './warningdevice/index.js';
 import Mydevice from './mydevice';
 import Myproject from './mydevice/project';
 import Selcart from './selcart';
@@ -96,7 +95,6 @@ class AppRoot extends React.Component {
                     <Route path="/historyplay/:deviceid" component={requireAuthentication(Playback)} />
                     <Route path="/playback/:deviceid" component={requireAuthentication(Playback)} />
                     <Route path="/warningdevice/:deviceid" component={requireAuthentication(Warningdevice)} />
-                    <Route path="/warningdevicelist" component={requireAuthentication(Warningdevicelist)} />
                     <Route path="/warning" component={requireAuthentication(Warning)} />
                     <Route path="/system" component={Systems} />
                     <Route path="/mydevice" component={requireAuthentication(Mydevice)} />

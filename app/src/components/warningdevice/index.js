@@ -206,8 +206,9 @@ class Page extends React.Component {
                               this.props.history.replace(`/selcart/warningdevice/${this.props.match.params.deviceid}`)
                             }}>
                                 <img src={Car} width={30} />
-                                <span className="txt1">车辆信息:{`${this.state.deviceid}`}</span>
-                                <span className="txt2">选择车辆</span>
+                                {this.state.deviceid !== ''?
+                                <span className="txt2">车辆信息:{`${this.state.deviceid}`}</span>:
+                                <span className="txt2">选择车辆</span>}
                             </div>
                             <div className="li" style={{borderBottom: "1px solid #EEE"}}>
                                 <img src={Searchimg2} width={26} />

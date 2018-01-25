@@ -145,8 +145,9 @@ class Page extends React.Component {
                     <div className="set seltimewamp" style={{height: "260px"}}>
                         <div className="seltimecontent selcarts" onClick={()=>{this.props.history.replace(`/selcart/playback/${this.props.match.params.deviceid}`)}}>
                                 <img src={Car} width={30} />
-                                <span className="txt1">车辆信息:{`${this.state.deviceid}`}</span>
-                                <span className="txt2">选择车辆</span>
+                                {this.state.deviceid !== ''?
+                                  <span className="txt2">车辆信息:{`${this.state.deviceid}`}</span>:
+                                  <span className="txt2">选择车辆</span>}
                             </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
                             <img src={Searchimg2} width={26} />
