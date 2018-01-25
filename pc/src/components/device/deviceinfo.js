@@ -10,14 +10,25 @@ import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-
+import {
+    deviceinfoquerychart_request,
+} from '../../actions';
 
 class Page extends React.Component {
 
-
+    componentWillMount() {
+      this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
+    }
     render(){
-      const {g_devicesdb,mapdetailfields,mapdict} = this.props;
+      const {g_devicesdb,mapdetailfields,mapdict,alarmchart} = this.props;
         let deviceid = this.props.match.params.deviceid;
+
+        const alarmchartdata = alarmchart[deviceid];
+        if(!!alarmchartdata){
+          console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
+        }
+        //如果alarmchartdata 为空，则正在加载图表中，否则是图表数据
+
         // let isincollections = false;
         // map(carcollections,(id)=>{
         //     if(id === deviceid){
@@ -118,10 +129,11 @@ class Page extends React.Component {
 }
 
 
-const mapStateToProps = ({device,app}) => {
+const mapStateToProps = ({device,app,deviceinfoquerychart}) => {
     const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
-    return { g_devicesdb, mapdetailfields, mapdict };
+    const {alarmchart} = deviceinfoquerychart;
+    return { g_devicesdb, mapdetailfields, mapdict,alarmchart };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

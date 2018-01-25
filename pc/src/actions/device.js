@@ -60,3 +60,6 @@ export const collectdevice_request = createAction('collectdevice_request');
 export const collectdevice_result = createAction('collectdevice_result');
 
 export const set_treesearchlist = createAction('set_treesearchlist');
+
+export const deviceinfoquerychart_request = createAction('deviceinfoquerychart_request');
+export const deviceinfoquerychart_result = createAction('deviceinfoquerychart_result');
