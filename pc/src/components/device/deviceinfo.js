@@ -9,37 +9,21 @@ import map from 'lodash.map';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
-import {
-  ui_showhistoryplay,
-  ui_showmenu,
-  searchbatteryalarm_request,
-  ui_clickplayback
-} from '../../actions';
-// import TableComponents from "../controls/table.js";
-
-import { Button } from 'antd';
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
 
 
 class Page extends React.Component {
-    onClickMenu(menuitemstring){
-        this.props.dispatch(ui_showmenu(menuitemstring));
-    }
-    showhistoryplay(){
-      this.props.dispatch(ui_showhistoryplay(true));
-    }
-    onClickQuery(query){
-      this.props.dispatch(searchbatteryalarm_request(query));
-    }
+
+
     render(){
-      const {carcollections,g_devicesdb,mapdetailfields,mapdict} = this.props;
+      const {g_devicesdb,mapdetailfields,mapdict} = this.props;
         let deviceid = this.props.match.params.deviceid;
-        let isincollections = false;
-        map(carcollections,(id)=>{
-            if(id === deviceid){
-                isincollections = true;
-            }
-        });
+        // let isincollections = false;
+        // map(carcollections,(id)=>{
+        //     if(id === deviceid){
+        //         isincollections = true;
+        //     }
+        // });
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
         map(mapdetailfields,(v)=>{
@@ -66,7 +50,7 @@ class Page extends React.Component {
             <div className="warningPage devicePage deviceinfoPage">
 
                 <div className="appbar">
-                    
+
                     <div className="title">车辆详情</div>
                     <div className="devicebtnlist">
                       {/*   <Button type="primary" icon="play-circle-o" onClick={
@@ -135,9 +119,9 @@ class Page extends React.Component {
 
 
 const mapStateToProps = ({device,app}) => {
-    const { carcollections, g_devicesdb, mapseldeviceid } = device;
+    const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
-    return { carcollections, g_devicesdb, mapdetailfields, mapdict, mapseldeviceid };
+    return { g_devicesdb, mapdetailfields, mapdict };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

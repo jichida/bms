@@ -6,8 +6,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import map from 'lodash.map';
-import RaisedButton from 'material-ui/RaisedButton';
-import {ui_showhistoryplay,ui_showmenu,searchbatteryalarm_request} from '../actions';
+
 import translate from 'redux-polyglot/translate';
 import TableComponents from "./table.js";
 import TreeSearchmessage from './search/searchmessage';
@@ -107,7 +106,7 @@ class Page extends React.Component {
             <div className="warningPage devicePage deviceinfoPage">
 
                 <div className="appbar">
-                    
+
                     <div className="title">充电桩详情</div>
                     <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                 </div>

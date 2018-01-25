@@ -80,7 +80,6 @@ class TableAlarm extends React.Component {
         this.refs.antdtablealarm.getWrappedInstance().onRefresh();
           // this.refs.alarmdatalist.getWrappedInstance().onRefresh();
       },0);
-      // this.props.dispatch(searchbatteryalarm_request({query:queryalarm}));
     }
     onItemConvert(item){
       // return bridge_alarminfo(item);
@@ -138,7 +137,7 @@ class TableAlarm extends React.Component {
 
                 </div>
                 <div className="TreeSearchBattery">
-                    <TreeSearchreport 
+                    <TreeSearchreport
                       onClickQuery={this.onClickQuery.bind(this)}
                       query={this.state.query}
                       onClickExport={this.onClickExport.bind(this)}

@@ -1,12 +1,10 @@
 import { createReducer } from 'redux-act';
 import {
   searchbattery_request,
-  searchbatteryalarm_request,
-  searchbatteryalarmsingle_request,
+
 
   searchbattery_result,
-  searchbatteryalarm_result,
-  searchbatteryalarmsingle_result,
+
 
   ui_selcurdevice_result,
   getcurallalarm_result,
@@ -77,14 +75,7 @@ const searchresult = createReducer({
     const searchresult_battery = [];
     return { ...state, searchresult_battery};
   },
-  [searchbatteryalarm_request]: (state, payload) => {
-    let searchresult_alaram = [];
-    return { ...state, searchresult_alaram};
-  },
-  [searchbatteryalarmsingle_request]: (state, payload) => {
-    let searchresult_alaramsingle = [];
-    return { ...state, searchresult_alaramsingle};
-  },
+
   [searchbattery_result]: (state, payload) => {
     let searchresult_battery = [];
     const {list} = payload;
@@ -93,26 +84,7 @@ const searchresult = createReducer({
     });
     return { ...state, searchresult_battery};
   },
-  [searchbatteryalarm_result]: (state, payload) => {
-    const {list} = payload;
-    let alarms = {...state.alarms};
-    let searchresult_alaram = [];
-    map(list,(alaram)=>{
-      alarms[alaram._id] = alaram;
-      searchresult_alaram.push(alaram._id);
-    });
-    return { ...state,alarms,searchresult_alaram};
-  },
-  [searchbatteryalarmsingle_result]: (state, payload) => {
-    const {list} = payload;
-    let alarms = {...state.alarms};
-    let searchresult_alaramsingle = [];
-    map(list,(alaram)=>{
-      alarms[alaram._id] = alaram;
-      searchresult_alaramsingle.push(alaram._id);
-    });
-    return { ...state,alarms, searchresult_alaramsingle};
-  },
+
   [logout_result]:(state,payload)=>{
     return {...initial.searchresult};
   }
