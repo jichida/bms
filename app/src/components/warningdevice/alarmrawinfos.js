@@ -64,7 +64,7 @@ class Page extends React.Component {
                 >
                 <div className="navhead">
                     <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
-                    <span className="title" style={{paddingRight : "30px"}}>报警信息</span>
+                    <span className="title" style={{paddingRight : "30px"}}>{`车辆:${this.props.match.params.deviceid}的报警信息`}</span>
                     <a className="moresetting"></a>
                 </div>
 
