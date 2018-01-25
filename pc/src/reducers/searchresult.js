@@ -18,7 +18,6 @@ import {
 } from '../actions';
 import map from 'lodash.map';
 import {
-  ui_searchalarm_result,
   uireport_searchalarm_result
 } from '../sagas/pagination';
 
@@ -41,16 +40,6 @@ const searchresult = createReducer({
       map(result.docs,(alaram)=>{
         alaram._id = alaram.key;
         alarms[alaram.key] = alaram; //<----特别注意：报表字段是key!
-      });
-    }
-    return { ...state,alarms};
-  },
-  [ui_searchalarm_result]:(state,payload)=>{
-    const {result} = payload;
-    let alarms = {...state.alarms};
-    if(!!result.docs){
-      map(result.docs,(alaram)=>{
-        alarms[alaram._id] = alaram;
       });
     }
     return { ...state,alarms};

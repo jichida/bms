@@ -15,8 +15,6 @@ import {
 
   searchbatteryalarm_request,
   searchbatteryalarm_result,
-  searchbatteryalarmsingle_request,
-  searchbatteryalarmsingle_result,
   searchbattery_request,
   searchbattery_result,
 
@@ -408,44 +406,7 @@ export function* apiflow(){//
     }
   });
 
-  yield takeLatest(`${searchbatteryalarmsingle_request}`, function*(action) {
-    try{
-        const {payload:{query}} = action;
-
-        //console.log(`${JSON.stringify(query)}`);
-
-        let list = [];
-        if(!!query){
-           list = filter(jsondata_bms_alarm,(item)=>{
-            return item.DeviceId === query.DeviceId;
-          });
-
-          let warninglevel = get(query,'queryalarm.warninglevel',-1);
-          if(warninglevel != -1){
-            list = filter(list,(item)=>{
-             return item.warninglevel === warninglevel;
-           });
-          }
-
-          let startdatestring = get(query,'queryalarm.startDate','');
-          let enddatestring = get(query,'queryalarm.endDate','');
-          if(startdatestring !== '' && enddatestring !== ''){
-            list = filter(list,(item)=>{
-              let waringtime = item['报警时间'];
-              let match = (startdatestring <= waringtime) && (waringtime <= enddatestring);
-              return match;
-           });
-          }
-          // //console.log(jsondata_bms_alarm);
-          // //console.log(`query.DeviceId:${query.DeviceId},list:${JSON.stringify(list)}`);
-        }
-
-        yield put(searchbatteryalarmsingle_result({list}));
-      }
-      catch(e){
-        console.log(e);
-      }
-  });
+  
 
 
 

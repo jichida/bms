@@ -29,8 +29,6 @@ import {
     querydeviceinfo_list_request,
     querydeviceinfo_list_result,
 
-    queryrealtimealarm_request,
-    queryrealtimealarm_result,
 
     queryhistorytrack_request,
     queryhistorytrack_result,
@@ -64,8 +62,6 @@ import {
     serverpush_alarm
   } from '../actions';
 import {
-  ui_searchalarm_request,
-  ui_searchalarm_result,
   uireport_searchalarm_request,
   uireport_searchalarm_result,
   uireport_searchalarmdetail_request,
@@ -82,7 +78,6 @@ let recvmessagetoresultpair = {
   'serverpush_alarm':serverpush_alarm,
   'serverpush_alarm_sz_result':serverpush_alarm_sz_result,
   'gettipcount_result':gettipcount_result,
-  'ui_searchalarm_result':ui_searchalarm_result,
   'uireport_searchalarm_result':uireport_searchalarm_result,
   'uireport_searchalarmdetail_result':uireport_searchalarmdetail_result,
   'uireport_searchposition_result':uireport_searchposition_result,
@@ -102,7 +97,7 @@ let recvmessagetoresultpair = {
   'querydevice_result':querydevice_result,
   'querydeviceinfo_result':querydeviceinfo_result,
   'querydeviceinfo_list_result':querydeviceinfo_list_result,
-  'queryrealtimealarm_result':queryrealtimealarm_result,
+
   'queryhistorytrack_result':queryhistorytrack_result,
 
   'searchbatteryalarm_result':searchbatteryalarm_result,
@@ -134,12 +129,10 @@ let sendmessageauthfnsz = {
   'querydevice':`${querydevice_request}`,
   'querydeviceinfo':`${querydeviceinfo_request}`,
   'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
-  'queryrealtimealarm':`${queryrealtimealarm_request}`,
   'queryhistorytrack':`${queryhistorytrack_request}`,
   'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
   'searchbatteryalarm':`${searchbatteryalarm_request}`,
   'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`,
-  'ui_searchalarm':`${ui_searchalarm_request}`,
   'uireport_searchalarm':`${uireport_searchalarm_request}`,
   'uireport_searchalarmdetail':`${uireport_searchalarmdetail_request}`,
   'uireport_searchposition':`${uireport_searchposition_request}`,

@@ -9,14 +9,13 @@ import get from 'lodash.get';
 
 import AntdTable from "../controls/antdtable.js";
 
-import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import moment from 'moment';
 
 
 import TreeSearchreport from '../search/search_message';
 
 import {
-  callthen,ui_searchalarm_request,ui_searchalarm_result
+  callthen,uireport_searchalarm_request,uireport_searchalarm_result
 } from '../../sagas/pagination';
 
 
@@ -66,7 +65,7 @@ class MessageAllDevice extends React.Component {
     }
 
     onItemConvert(item){
-      return bridge_alarminfo(item);
+      return item;
     }
     render(){
         let warninglevel = this.props.match.params.warninglevel;
@@ -117,7 +116,7 @@ class MessageAllDevice extends React.Component {
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
                 <div className="appbar">
-                    
+
                     <div className="title">报警信息</div>
                 </div>
                 <div className="TreeSearchBattery">
@@ -134,11 +133,11 @@ class MessageAllDevice extends React.Component {
                       query={this.state.query}
                       sort={{DataTime: -1}}
                       queryfun={(payload)=>{
-                        return callthen(ui_searchalarm_request,ui_searchalarm_result,payload);
+                        return callthen(uireport_searchalarm_request,uireport_searchalarm_result,payload);
                       }}
                     />
                 </div>
-                
+
                 <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
             </div>
 

@@ -15,8 +15,6 @@ import {
   searchbatteryalarm_request,
   searchbatteryalarm_result,
 
-  searchbatteryalarmsingle_request,
-  searchbatteryalarmsingle_result,
 
   logout_request,
   logout_result,

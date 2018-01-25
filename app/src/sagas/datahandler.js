@@ -29,8 +29,6 @@ import {
     querydeviceinfo_list_request,
     querydeviceinfo_list_result,
 
-    queryrealtimealarm_request,
-    queryrealtimealarm_result,
 
     queryhistorytrack_request,
     queryhistorytrack_result,
@@ -45,9 +43,6 @@ import {
 
     searchbatteryalarm_request,
     searchbatteryalarm_result,
-
-    searchbatteryalarmsingle_request,
-    searchbatteryalarmsingle_result,
 
     changepwd_request,
     changepwd_result,
@@ -64,8 +59,6 @@ import {
     serverpush_alarm
   } from '../actions';
 import {
-  ui_searchalarm_request,
-  ui_searchalarm_result,
   uireport_searchalarm_request,
   uireport_searchalarm_result,
   uireport_searchalarmdetail_request,
@@ -80,17 +73,15 @@ import {
 let recvmessagetoresultpair = {
   'savealarmsettings_result':savealarmsettings_result,
   'serverpush_alarm':serverpush_alarm,
-  'serverpush_alarm_sz_result':serverpush_alarm_sz_result,
+  'serverpush_alarm_sz_result':serverpush_alarm_sz_result,//不用
   'gettipcount_result':gettipcount_result,
-  'ui_searchalarm_result':ui_searchalarm_result,
   'uireport_searchalarm_result':uireport_searchalarm_result,
   'uireport_searchalarmdetail_result':uireport_searchalarmdetail_result,
   'uireport_searchposition_result':uireport_searchposition_result,
   'uireport_searchhistorydevice_result':uireport_searchhistorydevice_result,
-  'searchbatteryalarmsingle_result':searchbatteryalarmsingle_result,
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
-  'getnotifymessage_result':getnotifymessage_result,
-  'getnotifymessageone_result':getnotifymessageone_result,
+  'getnotifymessage_result':getnotifymessage_result,//不用
+  'getnotifymessageone_result':getnotifymessageone_result,//不用
 
   'getsystemconfig_result':getsystemconfig_result,
 
@@ -102,10 +93,9 @@ let recvmessagetoresultpair = {
   'querydevice_result':querydevice_result,
   'querydeviceinfo_result':querydeviceinfo_result,
   'querydeviceinfo_list_result':querydeviceinfo_list_result,
-  'queryrealtimealarm_result':queryrealtimealarm_result,
   'queryhistorytrack_result':queryhistorytrack_result,
 
-  'searchbatteryalarm_result':searchbatteryalarm_result,
+  'searchbatteryalarm_result':searchbatteryalarm_result,//不用
   'collectdevice_result':collectdevice_result,
   'changepwd_result':changepwd_result
 };
@@ -117,15 +107,15 @@ let sendmessagefnsz = {
   'login':`${login_request}`,
 
   'getsystemconfig':`${getsystemconfig_request}`,
-  'getnotifymessage':`${getnotifymessage_request}`,
-  'getnotifymessageone':`${getnotifymessageone_request}`,
+  'getnotifymessage':`${getnotifymessage_request}`,//不用
+  'getnotifymessageone':`${getnotifymessageone_request}`,//不用
 
 };
 
 //验证发送接口
 let sendmessageauthfnsz = {
   'savealarmsettings':`${savealarmsettings_request}`,
-  'serverpush_alarm_sz':`${serverpush_alarm_sz_request}`,
+  'serverpush_alarm_sz':`${serverpush_alarm_sz_request}`,//不用
   'gettipcount':`${gettipcount_request}`,
   'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,
@@ -134,12 +124,9 @@ let sendmessageauthfnsz = {
   'querydevice':`${querydevice_request}`,
   'querydeviceinfo':`${querydeviceinfo_request}`,
   'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
-  'queryrealtimealarm':`${queryrealtimealarm_request}`,
   'queryhistorytrack':`${queryhistorytrack_request}`,
   'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
-  'searchbatteryalarm':`${searchbatteryalarm_request}`,
-  'searchbatteryalarmsingle':`${searchbatteryalarmsingle_request}`,
-  'ui_searchalarm':`${ui_searchalarm_request}`,
+  'searchbatteryalarm':`${searchbatteryalarm_request}`,//不用
   'uireport_searchalarm':`${uireport_searchalarm_request}`,
   'uireport_searchalarmdetail':`${uireport_searchalarmdetail_request}`,
   'uireport_searchposition':`${uireport_searchposition_request}`,

@@ -86,99 +86,74 @@ exports.bridge_alarmrawinfo = bridge_alarmrawinfo;
 // config.mapdict = _.merge(config.mapdict,{'BL':1});
 // //console.log(`mapdict==>${JSON.stringify(config.mapdict)}`);
 
-exports.exportalarm = (actiondata,ctx,callback)=>{
-  //console.log(`exportalarm==>${JSON.stringify(actiondata)}`);
+// exports.exportalarm = (actiondata,ctx,callback)=>{
+//   //console.log(`exportalarm==>${JSON.stringify(actiondata)}`);
+//
+//   const realtimealarmModel = DBModels.RealtimeAlarmModel;
+//   let query = actiondata.query || {};
+//   getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
+//     if(!query.DeviceId){
+//       query.DeviceId = {'$in':deviceIds};
+//     }
+//     realtimealarmModel.find(query,(err,list)=>{
+//       if(!err){
+//         list = JSON.parse(JSON.stringify(list));
+//         let docs = [];
+//         _.map(list,(record)=>{
+//           let recordnew = bridge_alarminfo(record);
+//           recordnew = _.omit(recordnew,['key']);
+//           docs.push(recordnew);
+//         });
+//         list = docs;
+//
+//         if(list.length > 0){
+//           callback({
+//             cmd:'exportalarm_result',
+//             payload:{list}
+//           });
+//         }
+//         else{
+//           callback({
+//             cmd:'common_err',
+//             payload:{errmsg:`找不到数据`,type:'exportalarm'}
+//           });
+//         }
+//       }
+//       else{
+//         callback({
+//           cmd:'common_err',
+//           payload:{errmsg:err.message,type:'exportalarm'}
+//         });
+//       }
+//     });
+//   });
+// }
 
-  const realtimealarmModel = DBModels.RealtimeAlarmModel;
-  let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
-      query.DeviceId = {'$in':deviceIds};
-    }
-    realtimealarmModel.find(query,(err,list)=>{
-      if(!err){
-        list = JSON.parse(JSON.stringify(list));
-        let docs = [];
-        _.map(list,(record)=>{
-          let recordnew = bridge_alarminfo(record);
-          recordnew = _.omit(recordnew,['key']);
-          docs.push(recordnew);
-        });
-        list = docs;
+//
+// exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
+//   const realtimealarmModel = DBModels.RealtimeAlarmModel;
+//   let query = actiondata.query || {};
+//   getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
+//     if(!query.DeviceId){
+//       query.DeviceId = {'$in':deviceIds};
+//     }
+//     realtimealarmModel.find(query,(err,list)=>{
+//       if(!err){
+//         callback({
+//           cmd:'queryrealtimealarm_result',
+//           payload:{list}
+//         });
+//       }
+//       else{
+//         callback({
+//           cmd:'common_err',
+//           payload:{errmsg:err.message,type:'queryrealtimealarm'}
+//         });
+//       }
+//     });
+//   });
+// }
 
-        if(list.length > 0){
-          callback({
-            cmd:'exportalarm_result',
-            payload:{list}
-          });
-        }
-        else{
-          callback({
-            cmd:'common_err',
-            payload:{errmsg:`找不到数据`,type:'exportalarm'}
-          });
-        }
-      }
-      else{
-        callback({
-          cmd:'common_err',
-          payload:{errmsg:err.message,type:'exportalarm'}
-        });
-      }
-    });
-  });
-}
-
-
-exports.queryrealtimealarm = (actiondata,ctx,callback)=>{
-  const realtimealarmModel = DBModels.RealtimeAlarmModel;
-  let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
-      query.DeviceId = {'$in':deviceIds};
-    }
-    realtimealarmModel.find(query,(err,list)=>{
-      if(!err){
-        callback({
-          cmd:'queryrealtimealarm_result',
-          payload:{list}
-        });
-      }
-      else{
-        callback({
-          cmd:'common_err',
-          payload:{errmsg:err.message,type:'queryrealtimealarm'}
-        });
-      }
-    });
-  });
-}
-
-//app中的报警分页
-exports.ui_searchalarm =  (actiondata,ctx,callback)=>{
-  // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
-  const realtimealarmModel = DBModels.RealtimeAlarmModel;
-  let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
-      query.DeviceId = {'$in':deviceIds};
-    }
-    realtimealarmModel.paginate(query,actiondata.options,(err,result)=>{
-      if(!err){
-        callback({
-          cmd:'ui_searchalarm_result',
-          payload:{result}
-        });
-      }
-      else{
-        callback({
-          cmd:'common_err',
-          payload:{errmsg:err.message,type:'ui_searchalarm'}
-        });
-      }
-    });
-  });
-}
 
 exports.uireport_searchalarm =  (actiondata,ctx,callback)=>{
   // "key" : "",
@@ -295,48 +270,48 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
     });
   });
 }
-
-exports.exportalarmdetail = (actiondata,ctx,callback)=>{
-  //console.log(`exportalarmdetail==>${JSON.stringify(actiondata)}`);
-
-  const realtimealarmrawModel = DBModels.RealtimeAlarmRawModel;
-  let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
-      query.DeviceId = {'$in':deviceIds};
-    }
-    realtimealarmrawModel.find(query,(err,list)=>{
-      if(!err){
-        list = JSON.parse(JSON.stringify(list));
-        let docs = [];
-        _.map(list,(record)=>{
-          let recordnew = bridge_alarmrawinfo(record);
-          recordnew = _.omit(recordnew,['key']);
-          docs.push(recordnew);
-        });
-        list = docs;
-        if(list.length > 0){
-          callback({
-            cmd:'exportalarmdetail_result',
-            payload:{list}
-          });
-        }
-        else{
-          callback({
-            cmd:'common_err',
-            payload:{errmsg:`找不到数据`,type:'exportalarmdetail'}
-          });
-        }
-      }
-      else{
-        callback({
-          cmd:'common_err',
-          payload:{errmsg:err.message,type:'exportalarmdetail'}
-        });
-      }
-    });
-  });
-}
+//
+// exports.exportalarmdetail = (actiondata,ctx,callback)=>{
+//   //console.log(`exportalarmdetail==>${JSON.stringify(actiondata)}`);
+//
+//   const realtimealarmrawModel = DBModels.RealtimeAlarmRawModel;
+//   let query = actiondata.query || {};
+//   getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
+//     if(!query.DeviceId){
+//       query.DeviceId = {'$in':deviceIds};
+//     }
+//     realtimealarmrawModel.find(query,(err,list)=>{
+//       if(!err){
+//         list = JSON.parse(JSON.stringify(list));
+//         let docs = [];
+//         _.map(list,(record)=>{
+//           let recordnew = bridge_alarmrawinfo(record);
+//           recordnew = _.omit(recordnew,['key']);
+//           docs.push(recordnew);
+//         });
+//         list = docs;
+//         if(list.length > 0){
+//           callback({
+//             cmd:'exportalarmdetail_result',
+//             payload:{list}
+//           });
+//         }
+//         else{
+//           callback({
+//             cmd:'common_err',
+//             payload:{errmsg:`找不到数据`,type:'exportalarmdetail'}
+//           });
+//         }
+//       }
+//       else{
+//         callback({
+//           cmd:'common_err',
+//           payload:{errmsg:err.message,type:'exportalarmdetail'}
+//         });
+//       }
+//     });
+//   });
+// }
 
 //<<=============报警推送===============================
 exports.serverpush_alarm_sz = (actiondata,ctx,callback)=>{
