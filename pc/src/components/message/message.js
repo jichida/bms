@@ -118,6 +118,7 @@ class MessageAllDevice extends React.Component {
                 <div className="appbar">
 
                     <div className="title">报警信息</div>
+                    <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} query={this.state.query}/>
@@ -138,7 +139,7 @@ class MessageAllDevice extends React.Component {
                     />
                 </div>
 
-                <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
+                
             </div>
 
         );
