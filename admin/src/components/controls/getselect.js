@@ -2,7 +2,7 @@ import { fetchJson } from '../../util/fetch.js';
 import config from '../../env/config';
 import _ from 'lodash';
 
-const getOptions = (resourcename,label,value)=>{
+const getOptions = (resourcename,label,value,query={})=>{
   const url = `${config.admincustomapi}/${resourcename}`;
   const token = localStorage.getItem('admintoken');
   let fields = {};
@@ -16,7 +16,7 @@ const getOptions = (resourcename,label,value)=>{
      'Authorization': `Bearer ${token}`
     }),
     body: JSON.stringify({
-      query:{},
+      query,
       fields
     })
   };
