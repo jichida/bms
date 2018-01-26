@@ -93,6 +93,7 @@ class Page extends React.Component {
     this.props.dispatch(this.props.queryfun({
         query: query,
         options: {
+            select:this.props.select || {},
             sort: sort,
             offset: offset,
             limit: pagenumber,

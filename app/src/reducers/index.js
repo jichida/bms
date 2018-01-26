@@ -13,6 +13,7 @@ import workorder from './workorder';
 import pic from './pic';
 import tip from './tip';
 import alarmpop from './alarmpop';
+import deviceinfoquerychart from './deviceinfoquerychart';
 
 export default combineReducers({
   alarmpop,
@@ -26,6 +27,7 @@ export default combineReducers({
   userlogin,
   workorder,
   weui,
+  deviceinfoquerychart,
   form: formReducer,
   router: routerReducer,
   polyglot: polyglotReducer,

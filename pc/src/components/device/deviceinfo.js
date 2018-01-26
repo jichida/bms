@@ -9,37 +9,32 @@ import map from 'lodash.map';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 
-import {
-  ui_showhistoryplay,
-  ui_showmenu,
-  searchbatteryalarm_request,
-  ui_clickplayback
-} from '../../actions';
-// import TableComponents from "../controls/table.js";
-
-import { Button } from 'antd';
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-
+import {
+    deviceinfoquerychart_request,
+} from '../../actions';
 
 class Page extends React.Component {
-    onClickMenu(menuitemstring){
-        this.props.dispatch(ui_showmenu(menuitemstring));
-    }
-    showhistoryplay(){
-      this.props.dispatch(ui_showhistoryplay(true));
-    }
-    onClickQuery(query){
-      this.props.dispatch(searchbatteryalarm_request(query));
+
+    componentWillMount() {
+      this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
     }
     render(){
-      const {carcollections,g_devicesdb,mapdetailfields,mapdict} = this.props;
+      const {g_devicesdb,mapdetailfields,mapdict,alarmchart} = this.props;
         let deviceid = this.props.match.params.deviceid;
-        let isincollections = false;
-        map(carcollections,(id)=>{
-            if(id === deviceid){
-                isincollections = true;
-            }
-        });
+
+        const alarmchartdata = alarmchart[deviceid];
+        if(!!alarmchartdata){
+          console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
+        }
+        //如果alarmchartdata 为空，则正在加载图表中，否则是图表数据
+
+        // let isincollections = false;
+        // map(carcollections,(id)=>{
+        //     if(id === deviceid){
+        //         isincollections = true;
+        //     }
+        // });
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
         map(mapdetailfields,(v)=>{
@@ -66,7 +61,7 @@ class Page extends React.Component {
             <div className="warningPage devicePage deviceinfoPage">
 
                 <div className="appbar">
-                    
+
                     <div className="title">车辆详情</div>
                     <div className="devicebtnlist">
                       {/*   <Button type="primary" icon="play-circle-o" onClick={
@@ -134,10 +129,11 @@ class Page extends React.Component {
 }
 
 
-const mapStateToProps = ({device,app}) => {
-    const { carcollections, g_devicesdb, mapseldeviceid } = device;
+const mapStateToProps = ({device,app,deviceinfoquerychart}) => {
+    const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
-    return { carcollections, g_devicesdb, mapdetailfields, mapdict, mapseldeviceid };
+    const {alarmchart} = deviceinfoquerychart;
+    return { g_devicesdb, mapdetailfields, mapdict,alarmchart };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

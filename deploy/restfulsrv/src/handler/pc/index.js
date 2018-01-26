@@ -30,7 +30,7 @@ const authhandler = {
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
   // 'searchbatteryalarm':realtimealarm.searchbatteryalarm,
   // 'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
-  'ui_searchalarm':realtimealarm.ui_searchalarm,
+
   'uireport_searchalarm':realtimealarm.uireport_searchalarm,
   'uireport_searchalarmdetail':realtimealarm.uireport_searchalarmdetail,
   'uireport_searchposition':historytrack.uireport_searchposition,

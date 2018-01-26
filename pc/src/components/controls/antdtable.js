@@ -45,6 +45,7 @@ class AntdTable extends React.Component {
       this.props.dispatch(this.props.queryfun({
           query: query,
           options: {
+              select:this.props.select || {},
               sort: sort,
               page: page,
               limit: pagenumber,
