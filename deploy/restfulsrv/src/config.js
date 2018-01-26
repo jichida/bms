@@ -1,7 +1,7 @@
 const config =  {
   secretkey:'bmskey',
   listenport:process.env.listenport ||5011,
-  rooturl:process.env.rooturl || 'http://bms.com28.cn',
+  rooturl:process.env.rooturl || 'http://bmscatl.com28.cn',
   issmsdebug:process.env.issmsdebug || false,
   mongos:process.env.mongos==='true'?true:false,
   publishdirtest:'../../../bms/test/build',
