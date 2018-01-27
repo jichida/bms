@@ -34,8 +34,8 @@ import moment from 'moment';
 import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
 
-const HistoryTrackTitle = ({record}) => {
-  return <span>历史轨迹管理</span>
+const HistoryDeviceTitle = ({record}) => {
+  return <span>设备历史数据管理</span>
 };
 
 const choices = [
@@ -43,8 +43,8 @@ const choices = [
   {_id:'V',status:'不定位'},
 ];
 
-const HistoryTrackShow = (props)=> {
-  return (<Show title={<HistoryTrackTitle />} {...props} actions={<ShowActions />}>
+const HistoryDeviceShow = (props)=> {
+  return (<Show title={<HistoryDeviceTitle />} {...props} actions={<ShowActions />}>
    <SimpleShowLayout>
     <TextField label="设备ID" source="DeviceId" />
     <TextField label="设备状态" source="DeviceStatus" />
@@ -74,8 +74,8 @@ const DeviceFilter = (props) => (
   </Filter>
 )
 
-const HistoryTrackList = (props)=> (
-  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}>
+const HistoryDeviceList = (props)=> (
+  <List title={<HistoryDeviceTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="CellId" source="CellId" />
@@ -91,4 +91,4 @@ const HistoryTrackList = (props)=> (
   </List>
 );
 
-export {HistoryTrackList,HistoryTrackShow};
+export {HistoryDeviceList,HistoryDeviceShow};
