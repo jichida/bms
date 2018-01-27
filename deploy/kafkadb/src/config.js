@@ -9,6 +9,7 @@ let config =  {
     fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
   },
   mapdict:{},
+  NodeID:process.env.NodeID || 1,
   consumertopics:['BMS.Data']
 };
 

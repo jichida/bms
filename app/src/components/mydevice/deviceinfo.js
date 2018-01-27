@@ -17,6 +17,9 @@ import {
 } from '../../actions';
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
 
+import {
+    deviceinfoquerychart_request,
+} from '../../actions';
 
 class Page extends React.Component {
     constructor(props) {
@@ -26,6 +29,10 @@ class Page extends React.Component {
         };
     }
 
+    componentWillMount() {
+      this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
+    }
+    
     render() {
         const {carcollections,g_devicesdb,mapdetailfields,mapdict} = this.props;
         let deviceid = this.props.match.params.deviceid;

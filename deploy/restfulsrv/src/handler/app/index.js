@@ -1,6 +1,7 @@
 const systemconfig = require('../common/systemconfig');
 const userlogin = require('../common/userlogin');
 const device = require('../common/device.js');
+const historydevice = require('../common/historydevice.js');
 const realtimealarm = require('../common/realtimealarm.js');
 const moment = require('moment');
 const historytrack = require('../common/historytrack');
@@ -32,12 +33,13 @@ const authhandler = {
   'uireport_searchalarm':realtimealarm.uireport_searchalarm,
   'uireport_searchalarmdetail':realtimealarm.uireport_searchalarmdetail,
   'uireport_searchposition':historytrack.uireport_searchposition,
+  'uireport_searchhistorydevice':historydevice.uireport_searchhistorydevice,
   'serverpush_alarm_sz':realtimealarm.serverpush_alarm_sz,
 };
 
 module.exports = (socket,actiondata,ctx)=>{
-  //console.log("app端获取数据--->" + JSON.stringify(actiondata));
-  //console.log("app端获取上下文--->" + JSON.stringify(ctx));
+  console.log("app端获取数据--->" + JSON.stringify(actiondata));
+  console.log("app端获取上下文--->" + JSON.stringify(ctx));
   try{
       if(ctx.usertype !== 'app'){
         //console.log("不是正确的客户端--->" + actiondata.cmd);

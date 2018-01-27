@@ -4,13 +4,14 @@ import { Field } from 'redux-form';
 import renderGroupEdit from './devicegroupedit';
 import renderAlaramRuleEdit from './alarmrule';
 
-const CfSelectArrayInputDetail = ({source,label}) => {
+const CfSelectArrayInputDetail = ({source,label,loadOptions}) => {
   return(
       <span>
       <Field
           name={source}
           component={renderGroupEdit}
           label={label}
+          loadOptions={loadOptions}
       />
     </span>
   )

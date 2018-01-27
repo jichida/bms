@@ -255,7 +255,7 @@ const DeviceList = (props) => (
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="设备类型" source="DeviceType"/>
       <TextField label="SN64" source="SN64"/>
-
+      <TextField label="NodeID" source="NodeID"/>
       <TextField label="更新时间" source="UpdateTime"  />
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>

@@ -31,7 +31,7 @@ import {PermissionCreate,PermissionList,PermissionEdit} from './components/permi
 import {UserAdminCreate,UserAdminList,UserAdminEdit} from './components/useradmins/index.js';
 import {RoleCreate,RoleList,RoleEdit} from './components/roles/index.js';
 import {OrganizationCreate,OrganizationEdit,OrganizationList} from './components/organization/index.js';
-
+import {HistoryDeviceList,HistoryDeviceShow} from './components/historydevices/index.js';
 import systemconfigreducer from './components/systemconfig/reducer';
 
 class App extends Component {
@@ -70,6 +70,7 @@ class App extends Component {
                     <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate}  remove={Delete} />,
                     <Resource name="datadict" list={DataDictList} edit={DataDictEdit} create={DataDictCreate}  remove={Delete} />,
                     <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />,
+                    <Resource name="historydevice" list={HistoryDeviceList} show={HistoryDeviceShow} />,
                     <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />,
                     <Resource name="realtimealarmraw" list={RealtimeAlarmRawList} show={RealtimeAlarmRawShow} />,
                     <Resource name="userlog" list={UserlogList} />,
@@ -84,6 +85,7 @@ class App extends Component {
                   // <Resource name="role" list={RoleList} edit={null} create={null}  remove={null} />,
                   // <Resource name="permission" list={PermissionList} edit={null} create={null}  remove={null} />,
                   // <Resource name="datadict" list={DataDictList} edit={null} create={null}  remove={null} />,
+                  <Resource name="historydevice" list={HistoryDeviceList} show={HistoryDeviceShow} />,
                   <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />,
                   <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />,
                   <Resource name="realtimealarmraw" list={RealtimeAlarmRawList} show={RealtimeAlarmRawShow} />,

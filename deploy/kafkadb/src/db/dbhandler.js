@@ -5,10 +5,12 @@ const _ = require('lodash');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const moment = require('moment');
 const getalarmtxt = require('./getalarmtxt');
+const config = require('../config.js');
 
 const save_device = (devicedata,callbackfn)=>{
   console.log(`start save device...${!!DBModels.DeviceModel}`);
   const dbModel = DBModels.DeviceModel;
+  devicedata.NodeID = config.NodeID;
   devicedata.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
@@ -33,6 +35,8 @@ const save_alarm = (devicedata,callbackfn)=>{
           DeviceId:result_alarm.DeviceId,
           DataTime:LastRealtimeAlarm.DataTime,
           warninglevel:result_alarm.warninglevel,
+          NodeID:config.NodeID,
+          UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
           organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6")
         };
         if(!!LastHistoryTrack){
@@ -68,6 +72,8 @@ const save_alarmraw = (devicedata,callbackfn)=>{
       result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
     }
     result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    result_alarm_raw.NodeID = config.NodeID;
+    result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
     entity.save((err,result)=>{
       callbackfn(err,result);
@@ -87,6 +93,8 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
       result_device.alarmtxt = alarmtxt;
     }
     result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    result_device.NodeID = config.NodeID;
+    result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity2 = new DBModels.HistoryDeviceModel(result_device);
     entity2.save((err,result)=>{
       callbackfn(err,result);
@@ -102,6 +110,8 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
   if(!!LastHistoryTrack){
     LastHistoryTrack.DeviceId = devicedata.DeviceId;
     LastHistoryTrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    LastHistoryTrack.NodeID = config.NodeID;
+    LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
       callbackfn(err,result);
@@ -141,8 +151,10 @@ exports.insertdatatodb= (data,callback)=>{
   async.parallel(asyncfnsz,(err,result)=>{
     let alarmtxt;
     if(!err && !!result){
-      const alarm = result[1].toJSON();
-      alarmtxt = getalarmtxt(alarm);
+      if(!!result[1]){
+        const alarm = result[1].toJSON();
+        alarmtxt = getalarmtxt(alarm);
+      }
     }
     save_historydevice(devicedata,alarmtxt,(err,result)=>{
 
