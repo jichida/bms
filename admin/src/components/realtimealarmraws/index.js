@@ -117,8 +117,8 @@ const DeviceFilter = (props) => (
 )
 
 const RealtimeAlarmRawList = (props) => (
-  <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
-    <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
+  <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}} perPage={config.listperpage}>
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备" source="DeviceId" />
       <TextField label="报警等级" source="warninglevel" />
       <TextField label="报警时间" source="DataTime"  />
