@@ -41,9 +41,6 @@ import {
     collectdevice_request,
     collectdevice_result,
 
-    searchbatteryalarm_request,
-    searchbatteryalarm_result,
-
     changepwd_request,
     changepwd_result,
 
@@ -79,6 +76,7 @@ let recvmessagetoresultpair = {
   'uireport_searchalarmdetail_result':uireport_searchalarmdetail_result,
   'uireport_searchposition_result':uireport_searchposition_result,
   'uireport_searchhistorydevice_result':uireport_searchhistorydevice_result,
+
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
   'getnotifymessage_result':getnotifymessage_result,//不用
   'getnotifymessageone_result':getnotifymessageone_result,//不用
@@ -93,9 +91,9 @@ let recvmessagetoresultpair = {
   'querydevice_result':querydevice_result,
   'querydeviceinfo_result':querydeviceinfo_result,
   'querydeviceinfo_list_result':querydeviceinfo_list_result,
+
   'queryhistorytrack_result':queryhistorytrack_result,
 
-  'searchbatteryalarm_result':searchbatteryalarm_result,//不用
   'collectdevice_result':collectdevice_result,
   'changepwd_result':changepwd_result
 };
@@ -126,7 +124,6 @@ let sendmessageauthfnsz = {
   'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
   'queryhistorytrack':`${queryhistorytrack_request}`,
   'serverpush_devicegeo_sz':`${serverpush_devicegeo_sz_request}`,
-  'searchbatteryalarm':`${searchbatteryalarm_request}`,//不用
   'uireport_searchalarm':`${uireport_searchalarm_request}`,
   'uireport_searchalarmdetail':`${uireport_searchalarmdetail_request}`,
   'uireport_searchposition':`${uireport_searchposition_request}`,

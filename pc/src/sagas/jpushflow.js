@@ -12,6 +12,7 @@ import {
 } from '../env/jpush';
 import get from 'lodash.get';
 import { push } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
+import {delay} from 'redux-saga';
 
 let async_setJPushAlias =(userid)=> {
   return new Promise(resolve => {
@@ -49,15 +50,17 @@ export function* jpushflow(){//仅执行一次
           if(!!msgobj){
             let message = '接收到一条消息';
             message = get(msgobj,'aps.alert',message);
-            yield put(set_weui({
-              toast:{
-              text:message,
-              show: true,
-              type:'success'
-            }}));
+            // yield put(set_weui({
+            //   toast:{
+            //   text:message,
+            //   show: true,
+            //   type:'success'
+            // }}));
+            // alert(`jpushlistenInMessage->${JSON.stringify(msgobj)}`);
             if(!!msgobj._id){
-              if(msgobj.subtype==='msg'){
-                yield put(push(`/alarmrawinfo/${msgobj._id}`));
+              if(msgobj.messagetype==='msg'){
+                yield call(delay, 2000);
+                yield put(push(`/alarmrawinfos/${msgobj.DeviceId}`));
               }
               // else{
               //   yield put(push(`${msgobj.messagecontent}`));
@@ -80,11 +83,15 @@ export function* jpushflow(){//仅执行一次
         try{
           //alert(`jpushpostNotification ===>${JSON.stringify(msgobj)}`);
           //yield call(alertmessage,`jpushpostNotification ===>${JSON.stringify(msgobj)}`);
+
+
           const msgobj = get(payload,'data');
           if(!!msgobj){
+            // alert(`jpushpostNotification->${JSON.stringify(msgobj)}`);
             if(!!msgobj._id){
-              if(msgobj.subtype==='msg'){
-                yield put(push(`/alarmrawinfo/${msgobj._id}`));
+              if(msgobj.messagetype==='msg'){
+                yield call(delay, 2000);
+                yield put(push(`/alarmrawinfos/${msgobj.DeviceId}`));
               }
               // else{
               //   yield put(push(`${msgobj.messagecontent}`));

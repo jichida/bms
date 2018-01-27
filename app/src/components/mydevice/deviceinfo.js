@@ -15,6 +15,10 @@ import { ui_index_addcollection, ui_index_unaddcollection } from '../../actions'
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
 import Swiperchart from "./swiperchart";
 
+import {
+    deviceinfoquerychart_request,
+} from '../../actions';
+
 class Page extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +26,10 @@ class Page extends React.Component {
             showtype : 0
         };
     }
+    componentWillMount() {
+      this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
+    }
+    
     render() {
         const {carcollections,g_devicesdb,mapdetailfields,mapdict} = this.props;
         let deviceid = this.props.match.params.deviceid;

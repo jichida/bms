@@ -25,9 +25,6 @@ export const searchbattery_result = createAction('searchbattery_result');
 
 export const searchbatterylocal_request = createAction('searchbatterylocal_request');
 export const searchbatterylocal_result = createAction('searchbatterylocal_result');
-//查询电池包报警
-export const searchbatteryalarm_request = createAction('searchbatteryalarm_request');
-export const searchbatteryalarm_result = createAction('searchbatteryalarm_result');
 
 //主动更新某个电池包的数据
 //经纬度信息发生变化
@@ -63,3 +60,6 @@ export const collectdevice_request = createAction('collectdevice_request');
 export const collectdevice_result = createAction('collectdevice_result');
 
 export const set_treesearchlist = createAction('set_treesearchlist');
+
+export const deviceinfoquerychart_request = createAction('deviceinfoquerychart_request');
+export const deviceinfoquerychart_result = createAction('deviceinfoquerychart_result');

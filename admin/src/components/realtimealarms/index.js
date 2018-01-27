@@ -34,6 +34,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
+import config from '../../env/config';
 
 const RealtimeAlamTitle = ({record}) => {
    return <span>每日报警统计</span>
@@ -97,15 +98,19 @@ const RealtimeAlarmShow = (props) => {
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId_q" />
+    <TextInput label="NodeID" source="NodeID" />
   </Filter>
 )
 
 const RealtimeAlarmList = (props) => (
   <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
-    <Datagrid  bodyOptions={{ showRowHover: true }}>
+    <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
       <TextField label="设备" source="DeviceId" />
       <TextField label="日期" source="CurDay" />
       <TextField label="采集时间" source="DataTime"  />
+      <TextField label="NodeID" source="NodeID"/>
+      <TextField label="SN64" source="SN64" />
+      <TextField label="更新时间" source="UpdateTime"  />
       <AlarmField label="报警信息" />
       <ShowButton />
     </Datagrid>

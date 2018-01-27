@@ -39,14 +39,18 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
     let newv = _.clone(vsz);
     let index = _.get(values,'id',-1);
     if(index != -1 && index < vsz.length ){
-      let fieldname = values["columns"][0].value;
-      let fieldvalue = values["columns"][1].value;
-      newv[index] = {fieldname,fieldvalue};
+      let name = values["columns"][0].value;
+      let op = values["columns"][1].value;
+      let value = values["columns"][2].value;
+      let content = values["columns"][3].value;
+      newv[index] = {name,op,value,content};
     }
     else if(index >= vsz.length){
-      let fieldname = values["columns"][0].value;
-      let fieldvalue = values["columns"][1].value;
-      newv.push({fieldname,fieldvalue});
+      let name = values["columns"][0].value;
+      let op = values["columns"][1].value;
+      let value = values["columns"][2].value;
+      let content = values["columns"][3].value;
+      newv.push( {name,op,value,content});
     }
     else{
       return;
@@ -58,19 +62,28 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
   let rows = [];
   let headers = [
      {value: '字段名', type: 'TextField', width: 200},
-     {value: '值', type: 'TextField', width: 'auto'},
+     {value: '操作符', type: 'Select', width: 200,multi:false,options:[
+       { value: '>', label: '大于' },
+       { value: '=', label: '等于' },
+       { value: '<', label: '小于' },
+     ]},
+     {value: '值', type: 'TextField', width: 200},
+     {value: '报警信息', type: 'TextField', width: 'auto'},
   ];
 
   _.map(vsz,(v)=>{
     rows.push(
       {columns: [
-      {value: v.fieldname},
-      {value: v.fieldvalue},
+        {value: v.name},
+        {value: v.op},
+        {value: v.value},
+        {value: v.content},
       ]}
     );
   });
 
   return (<EditTable
+    enableNew={true}
     onDelete={onDelete}
     onChange={onChange}
     rows={rows}

@@ -72,6 +72,18 @@ let startmodule = (app)=>{
     }
     export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
   });
+  app.post('/api/report_cararchives',(req,res)=>{
+    // req,res,dbModel,fields,csvfields,fn_convert
+//     const dbModel = DBModels.HistoryDeviceModel;
+//     const csvfields = '采集时间,保存时间,箱体测量电压(V),箱体累加电压(V),箱体电流(A),\
+// 真实SOC(%),最高单体电压(V),最低单体电压(V),最高单体电压CSC号,最高单体电芯位置,最低单体电压CSC号,\
+// 最低单体电压电芯位置,最高单体温度,最低单体温度,平均单体温度,最高温度CSC号,最低温度CSC号,显示用SOC,平均单体电压,报警状态';
+//     const fn_convert = (doc,callbackfn)=>{
+//       const newdoc = historydevice.bridge_historydeviceinfo(doc);
+//       callbackfn(newdoc);
+//     }
+//     export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
+  });
 
   app.post('/m2mgw/setdata',(req,res)=>{
     //console.log(`setdata m2m data:${JSON.stringify(req.body)}`);

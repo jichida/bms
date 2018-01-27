@@ -26,7 +26,7 @@ const config =  {
   mapdict:{},
   kafka_pushalaramtopic:'push.alarm',
   kafka_consumersettings:{
-    host: process.env.KAFKA_HOST ||'bmscatl.com28.cn:2181',
+    host: process.env.KAFKA_HOST ||'101.89.141.109:2181',
     groupId:  process.env.KAFKA_PUSHDEVICEGROUP ||'PUSHDEVICEGROUP',
     sessionTimeout: 15000,
     protocol: ['roundrobin'],

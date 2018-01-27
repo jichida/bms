@@ -26,5 +26,6 @@ export default [
         { name: 'realtimealarm', icon: <RealtimeAlarmIcon /> ,adminonly:false},
         { name: 'realtimealarmraw', icon: <RealtimeAlarmRawIcon /> ,adminonly:false},
         { name: 'historytrack', icon: <HistoryTrackIcon /> ,adminonly:false},
+        { name: 'historydevice', icon: <HistoryTrackIcon /> ,adminonly:false},
         { name: 'datadict', icon: <DeviceIcon /> ,adminonly:true},
 ];

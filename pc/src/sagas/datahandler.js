@@ -64,22 +64,25 @@ import {
   uireport_searchposition_result,
   uireport_searchhistorydevice_request,
   uireport_searchhistorydevice_result,
+  uireport_searchcararchives_request,
+  uireport_searchcararchives_result
 } from './pagination';
 
 //接收的对应关系
 let recvmessagetoresultpair = {
   'savealarmsettings_result':savealarmsettings_result,
   'serverpush_alarm':serverpush_alarm,
-  'serverpush_alarm_sz_result':serverpush_alarm_sz_result,
+  'serverpush_alarm_sz_result':serverpush_alarm_sz_result,//不用
   'gettipcount_result':gettipcount_result,
   'uireport_searchalarm_result':uireport_searchalarm_result,
   'uireport_searchalarmdetail_result':uireport_searchalarmdetail_result,
   'uireport_searchposition_result':uireport_searchposition_result,
   'uireport_searchhistorydevice_result':uireport_searchhistorydevice_result,
+  'uireport_searchcararchives_result':uireport_searchcararchives_result,
 
   'serverpush_devicegeo_sz_result':serverpush_devicegeo_sz_result,
-  'getnotifymessage_result':getnotifymessage_result,
-  'getnotifymessageone_result':getnotifymessageone_result,
+  'getnotifymessage_result':getnotifymessage_result,//不用
+  'getnotifymessageone_result':getnotifymessageone_result,//不用
 
   'getsystemconfig_result':getsystemconfig_result,
 
@@ -105,15 +108,15 @@ let sendmessagefnsz = {
   'login':`${login_request}`,
 
   'getsystemconfig':`${getsystemconfig_request}`,
-  'getnotifymessage':`${getnotifymessage_request}`,
-  'getnotifymessageone':`${getnotifymessageone_request}`,
+  'getnotifymessage':`${getnotifymessage_request}`,//不用
+  'getnotifymessageone':`${getnotifymessageone_request}`,//不用
 
 };
 
 //验证发送接口
 let sendmessageauthfnsz = {
   'savealarmsettings':`${savealarmsettings_request}`,
-  'serverpush_alarm_sz':`${serverpush_alarm_sz_request}`,
+  'serverpush_alarm_sz':`${serverpush_alarm_sz_request}`,//不用
   'gettipcount':`${gettipcount_request}`,
   'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,
@@ -128,6 +131,7 @@ let sendmessageauthfnsz = {
   'uireport_searchalarmdetail':`${uireport_searchalarmdetail_request}`,
   'uireport_searchposition':`${uireport_searchposition_request}`,
   'uireport_searchhistorydevice':`${uireport_searchhistorydevice_request}`,
+  'uireport_searchcararchives':`${uireport_searchcararchives_request}`
 };
 
 export default {recvmessagetoresultpair,sendmessagefnsz,sendmessageauthfnsz};

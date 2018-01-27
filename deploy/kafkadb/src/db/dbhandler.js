@@ -5,14 +5,22 @@ const _ = require('lodash');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const moment = require('moment');
 const getalarmtxt = require('./getalarmtxt');
+const config = require('../config.js');
 
 const save_device = (devicedata,callbackfn)=>{
-  console.log(`start save device...${!!DBModels.DeviceModel}`);
+  // console.log(`start save device...${!!DBModels.DeviceModel}`);
   const dbModel = DBModels.DeviceModel;
+  devicedata.NodeID = config.NodeID;
+  devicedata.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
   },(err,result)=>{
-    // console.log(`device error:${JSON.stringify(err)}`);
+    // if(!err && !!result){
+    //   console.log(`保存成功${result.NodeID}:${result.DeviceId}`);
+    // }
+    // else{
+    //   console.log(`device error:${JSON.stringify(err)}`);
+    // }
     callbackfn(err,result);
   });
 };
@@ -23,7 +31,7 @@ const save_alarm = (devicedata,callbackfn)=>{
   if(!!LastRealtimeAlarm){//含有历史设备数据
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
-      console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+      // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err && !!result_alarm){
         //含有报警信息
         let updated_data = {
@@ -31,7 +39,11 @@ const save_alarm = (devicedata,callbackfn)=>{
           CurDay:result_alarm.CurDay,
           DeviceId:result_alarm.DeviceId,
           DataTime:LastRealtimeAlarm.DataTime,
-          warninglevel:result_alarm.warninglevel
+          warninglevel:result_alarm.warninglevel,
+          NodeID:config.NodeID,
+          SN64:devicedata.SN64,
+          UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
+          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6")
         };
         if(!!LastHistoryTrack){
           updated_data.Longitude = LastHistoryTrack.Longitude;
@@ -65,7 +77,10 @@ const save_alarmraw = (devicedata,callbackfn)=>{
       result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
       result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
     }
-
+    result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    result_alarm_raw.NodeID = config.NodeID;
+    result_alarm_raw.SN64 = devicedata.SN64;
+    result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
     entity.save((err,result)=>{
       callbackfn(err,result);
@@ -84,6 +99,10 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
     if(!!alarmtxt && alarmtxt!==''){
       result_device.alarmtxt = alarmtxt;
     }
+    result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    result_device.NodeID = config.NodeID;
+    result_device.SN64 = devicedata.SN64;
+    result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity2 = new DBModels.HistoryDeviceModel(result_device);
     entity2.save((err,result)=>{
       callbackfn(err,result);
@@ -98,6 +117,10 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
   const LastHistoryTrack = devicedata.LastHistoryTrack;
   if(!!LastHistoryTrack){
     LastHistoryTrack.DeviceId = devicedata.DeviceId;
+    LastHistoryTrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    LastHistoryTrack.NodeID = config.NodeID;
+    LastHistoryTrack.SN64 = devicedata.SN64;
+    LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
       callbackfn(err,result);
@@ -109,10 +132,14 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
 
 exports.insertdatatodb= (data,callback)=>{
 
+
   const LastRealtimeAlarm = _.clone(data.BMSData);
   const LastHistoryTrack = _.clone(data.Position);
 
   const devicedata = _.omit(data,['BMSData','Position']);
+
+  console.log(`接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+
   if(!!LastRealtimeAlarm){
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
   }
@@ -137,8 +164,10 @@ exports.insertdatatodb= (data,callback)=>{
   async.parallel(asyncfnsz,(err,result)=>{
     let alarmtxt;
     if(!err && !!result){
-      const alarm = result[1].toJSON();
-      alarmtxt = getalarmtxt(alarm);
+      if(!!result[1]){
+        const alarm = result[1].toJSON();
+        alarmtxt = getalarmtxt(alarm);
+      }
     }
     save_historydevice(devicedata,alarmtxt,(err,result)=>{
 

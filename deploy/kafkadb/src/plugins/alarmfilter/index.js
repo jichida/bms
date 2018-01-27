@@ -21,8 +21,8 @@ exports.dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   // "AL_Trouble_Code" : 181
   //1级：黄色；2级：橙色；3级：红色
   let alarmdata = LastRealtimeAlarm.Alarm;
-  console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
-  console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
+  // console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
+  // console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
 
   if(!!alarmdata){
     let inc_data = {};
@@ -47,7 +47,7 @@ exports.dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
         }
       }
     });
-    console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
+    // console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
     const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
     callback(null,{
       DeviceId,

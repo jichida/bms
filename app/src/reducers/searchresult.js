@@ -1,10 +1,10 @@
 import { createReducer } from 'redux-act';
 import {
   searchbattery_request,
-  searchbatteryalarm_request,
+
 
   searchbattery_result,
-  searchbatteryalarm_result,
+
 
   ui_selcurdevice_result,
   getcurallalarm_result,
@@ -75,10 +75,6 @@ const searchresult = createReducer({
     const searchresult_battery = [];
     return { ...state, searchresult_battery};
   },
-  [searchbatteryalarm_request]: (state, payload) => {
-    let searchresult_alaram = [];
-    return { ...state, searchresult_alaram};
-  },
 
   [searchbattery_result]: (state, payload) => {
     let searchresult_battery = [];
@@ -88,16 +84,7 @@ const searchresult = createReducer({
     });
     return { ...state, searchresult_battery};
   },
-  [searchbatteryalarm_result]: (state, payload) => {
-    const {list} = payload;
-    let alarms = {...state.alarms};
-    let searchresult_alaram = [];
-    map(list,(alaram)=>{
-      alarms[alaram._id] = alaram;
-      searchresult_alaram.push(alaram._id);
-    });
-    return { ...state,alarms,searchresult_alaram};
-  },
+
   [logout_result]:(state,payload)=>{
     return {...initial.searchresult};
   }

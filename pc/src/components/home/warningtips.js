@@ -10,6 +10,12 @@ import MenuItem from 'material-ui/MenuItem';
 import Car from "material-ui/svg-icons/maps/directions-car";
 import Exit from "material-ui/svg-icons/action/exit-to-app";
 import Setting from "material-ui/svg-icons/action/settings";
+import SearchPosition from "material-ui/svg-icons/device/location-searching";
+import SearchDevice from "material-ui/svg-icons/hardware/device-hub";
+import StatAlarm from "material-ui/svg-icons/alert/add-alert";
+import AlarmRaw from "material-ui/svg-icons/alert/error";
+import SearchCarArchives from "material-ui/svg-icons/action/search";
+
 import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 import withRouter from 'react-router-dom/withRouter';
 
@@ -182,19 +188,23 @@ class UserMenu extends React.Component {
                 this.props.dispatch(ui_changemodeview('device'));
                 this.props.history.push("/workorder");
             }}/> */}
-          {<MenuItem primaryText="查询位置报表" leftIcon={<Car />} onClick={()=>{
+          {<MenuItem primaryText="查询位置报表" leftIcon={<SearchPosition />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.history.push("/reports/position/0");
             }}/>}
-            {<MenuItem primaryText="查询设备" leftIcon={<Car />} onClick={()=>{
+            {<MenuItem primaryText="查询车辆档案" leftIcon={<SearchCarArchives />} onClick={()=>{
+                  this.handleRequestClose();
+                  this.props.history.push("/reports/cararchives/0");
+              }}/>}
+            {<MenuItem primaryText="查询设备" leftIcon={<SearchDevice />} onClick={()=>{
                   this.handleRequestClose();
                   this.props.history.push("/reports/historydevice/0");
               }}/>}
-          {<MenuItem primaryText="报警信息统计" leftIcon={<Car />} onClick={()=>{
+          {<MenuItem primaryText="报警信息统计" leftIcon={<StatAlarm />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.history.push("/reports/alarm/0");
             }}/>}
-          {<MenuItem primaryText="报警信息明细" leftIcon={<Car />} onClick={()=>{
+          {<MenuItem primaryText="报警信息明细" leftIcon={<AlarmRaw />} onClick={()=>{
                 this.handleRequestClose();
                 this.props.history.push("/reports/alarmdetail/0");
             }}/>}
