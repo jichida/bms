@@ -6,5 +6,6 @@ export default {
     adminauthserverurl:`${serverurl}/adminauth/v1/${organizationid}`,
     admincustomapi:`${serverurl}/admincustomapi/v1/${organizationid}`,
     serverurl:`${serverurl}`,
-    appversion:'1.2.5'
+    appversion:'1.2.5',
+    listperpage:100
 };

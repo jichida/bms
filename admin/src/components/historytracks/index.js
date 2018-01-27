@@ -33,6 +33,7 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
+import config from '../../env/config';
 
 const HistoryTrackTitle = ({record}) => {
   return <span>历史轨迹管理</span>
@@ -71,12 +72,13 @@ const HistoryTrackShow = (props)=> {
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId_q" />
+    <TextInput label="NodeID" source="NodeID" />
   </Filter>
 )
 
 const HistoryTrackList = (props)=> (
   <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}>
-    <Datagrid  bodyOptions={{ showRowHover: true }}>
+    <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="CellId" source="CellId" />
       <TextField label="定位时间" source="GPSTime"  />

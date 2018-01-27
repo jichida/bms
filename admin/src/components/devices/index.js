@@ -38,7 +38,7 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {CreateActions,EditActions} from '../controls/createeditactions';
 import ImportExcelButton from './importexcelbtn';
-
+import config from '../../env/config';
 
 const deviceDefaultValue = {created_at:moment().format('YYYY-MM-DD HH:mm:ss'),updated_at:moment().format('YYYY-MM-DD HH:mm:ss')};
 
@@ -229,6 +229,7 @@ const DeviceShowActions = ({basePath,data,refresh}) => (
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId_q" />
+    <TextInput label="NodeID" source="NodeID" />
   </Filter>
 )
 
@@ -249,7 +250,7 @@ const DeviceActions = ({ resource, filters, displayedFilters, filterValues, base
 
 const DeviceList = (props) => (
   <List title="设备管理" filters={<DeviceFilter />} sort={{field:'UpdateTime',order:'DESC'}} {...props}
-  actions={<DeviceActions />}>
+  actions={<DeviceActions />} perPage={config.listperpage}>
   {permissions =>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />

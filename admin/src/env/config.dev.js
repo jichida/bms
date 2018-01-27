@@ -1,4 +1,4 @@
-let islocalhost = true;
+let islocalhost = false;
 let serverurl = islocalhost?'http://localhost:5011':'http://101.89.141.109:81/apisrv';
 const organizationid = '599af5dc5f943819f10509e6';
 export default {
@@ -6,5 +6,6 @@ export default {
     adminauthserverurl:`${serverurl}/adminauth/v1/${organizationid}`,
     admincustomapi:`${serverurl}/admincustomapi/v1/${organizationid}`,
     serverurl:`${serverurl}`,
-    appversion:'1.2.5'
+    appversion:'1.2.5',
+    listperpage:100
 };
