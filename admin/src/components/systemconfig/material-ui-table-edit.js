@@ -202,11 +202,11 @@ class MaterialUITableEdit extends React.Component {
         }
       return (<Async
             disabled
-              multi={multi}
+            multi={multi}
             onChange={onSelectedChange}
             value={value}
             simpleValue
-              loadOptions={options}
+            loadOptions={options}
         />);
     }
 

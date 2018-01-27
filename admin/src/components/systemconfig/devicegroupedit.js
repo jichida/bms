@@ -57,7 +57,7 @@ const renderGroupEdit = ({ meta: { touched, error } = {}, input: { ...inputProps
   let rows = [];
   let headers = [
      {value: '分组名', type: 'TextField', width: 200},
-     {value: '字段列表', type: 'ReactSelect', width: 'auto'},
+     {value: '字段列表', type: 'ReactSelect', width: 'auto',options:props.loadOptions,multi:true},
   ];
 
   _.map(vsz,(v)=>{
@@ -70,6 +70,7 @@ const renderGroupEdit = ({ meta: { touched, error } = {}, input: { ...inputProps
   });
 
   return (<EditTable
+    enableNew={true}
     onDelete={onDelete}
     onChange={onChange}
     rows={rows}
