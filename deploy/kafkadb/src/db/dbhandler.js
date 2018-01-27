@@ -15,12 +15,12 @@ const save_device = (devicedata,callbackfn)=>{
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
   },(err,result)=>{
-    if(!err && !!result){
-      console.log(`保存成功${result.NodeID}:${result.DeviceId}`);
-    }
-    else{
-      console.log(`device error:${JSON.stringify(err)}`);
-    }
+    // if(!err && !!result){
+    //   console.log(`保存成功${result.NodeID}:${result.DeviceId}`);
+    // }
+    // else{
+    //   console.log(`device error:${JSON.stringify(err)}`);
+    // }
     callbackfn(err,result);
   });
 };
@@ -128,10 +128,14 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
 
 exports.insertdatatodb= (data,callback)=>{
 
+
   const LastRealtimeAlarm = _.clone(data.BMSData);
   const LastHistoryTrack = _.clone(data.Position);
 
   const devicedata = _.omit(data,['BMSData','Position']);
+
+  console.log(`接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+
   if(!!LastRealtimeAlarm){
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
   }
