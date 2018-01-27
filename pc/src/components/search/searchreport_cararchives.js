@@ -4,7 +4,8 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import Seltime from './seltimerange.js';
+
+import { Input } from 'antd';
 import { Button } from 'antd';
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
@@ -59,7 +60,10 @@ class TreeSearchBattery extends React.Component {
       });
         return (
             <div className="searchreport" style={{textAlign: "center"}}>
-                <div className="i">
+              <Input placeholder="项目" />
+              <Input placeholder="地区" />
+              <Input placeholder="车工号" />
+              <div className="i">
                      <div className="selcar">
                        <span className="t">车辆ID：</span>
                        <SelectDevice

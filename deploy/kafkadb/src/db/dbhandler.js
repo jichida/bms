@@ -141,8 +141,10 @@ exports.insertdatatodb= (data,callback)=>{
   async.parallel(asyncfnsz,(err,result)=>{
     let alarmtxt;
     if(!err && !!result){
-      const alarm = result[1].toJSON();
-      alarmtxt = getalarmtxt(alarm);
+      if(!!result[1]){
+        const alarm = result[1].toJSON();
+        alarmtxt = getalarmtxt(alarm);
+      }
     }
     save_historydevice(devicedata,alarmtxt,(err,result)=>{
 
