@@ -8,14 +8,19 @@ const getalarmtxt = require('./getalarmtxt');
 const config = require('../config.js');
 
 const save_device = (devicedata,callbackfn)=>{
-  console.log(`start save device...${!!DBModels.DeviceModel}`);
+  // console.log(`start save device...${!!DBModels.DeviceModel}`);
   const dbModel = DBModels.DeviceModel;
   devicedata.NodeID = config.NodeID;
   devicedata.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
   },(err,result)=>{
-    // console.log(`device error:${JSON.stringify(err)}`);
+    if(!err && !!result){
+      console.log(`保存成功${result.NodeID}:${result.DeviceId}`);
+    }
+    else{
+      console.log(`device error:${JSON.stringify(err)}`);
+    }
     callbackfn(err,result);
   });
 };
@@ -26,7 +31,7 @@ const save_alarm = (devicedata,callbackfn)=>{
   if(!!LastRealtimeAlarm){//含有历史设备数据
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
-      console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+      // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err && !!result_alarm){
         //含有报警信息
         let updated_data = {
