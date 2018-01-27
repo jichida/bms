@@ -11,12 +11,9 @@ import Searchimg from '../../img/13.png';
 import Footer from "../index/footer.js";
 import {ui_sel_tabindex} from '../../actions';
 import Button  from 'antd/lib/button';
-import {
-    ui_index_addcollection,
-    ui_index_unaddcollection
-} from '../../actions';
+import { ui_index_addcollection, ui_index_unaddcollection } from '../../actions';
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-
+import Swiperchart from "./swiperchart";
 
 class Page extends React.Component {
     constructor(props) {
@@ -25,7 +22,6 @@ class Page extends React.Component {
             showtype : 0
         };
     }
-
     render() {
         const {carcollections,g_devicesdb,mapdetailfields,mapdict} = this.props;
         let deviceid = this.props.match.params.deviceid;
@@ -38,25 +34,23 @@ class Page extends React.Component {
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
         map(mapdetailfields,(v)=>{
-          let record = {};
-          let kv = [];
-          map(v.fieldslist,(fieldname)=>{
-            if(!!mapdict[fieldname]){
-              kv.push({
-                name:mapdict[fieldname].showname,
-                value:get(deviceitem,mapdict[fieldname].name,'')
-              });
-            }
-          });
-          record = {
-            groupname:v.groupname,
-            kv:kv
-          };
-
-          datadevice.push(record);
+            let record = {};
+            let kv = [];
+            map(v.fieldslist,(fieldname)=>{
+                if(!!mapdict[fieldname]){
+                    kv.push({
+                        name:mapdict[fieldname].showname,
+                        value:get(deviceitem,mapdict[fieldname].name,'')
+                    });
+                }
+            });
+            record = {
+                groupname:v.groupname,
+                kv:kv
+            };
+            datadevice.push(record);
         });
         console.log(datadevice);
-
         return (
             <div className="mydevicePage AppPage"
                 style={{
@@ -68,9 +62,10 @@ class Page extends React.Component {
                     <span className="title" style={{paddingRight : "30px"}}>车辆详情</span>
                     <a className="moresetting"></a>
                 </div>
+                <Swiperchart />
                 <div className="deviceinfocontent">
-                    {
-                      map(datadevice,(item,index)=>{
+                {
+                    map(datadevice,(item,index)=>{
                         return (
                             <div key={index}>
                                 <div className="tit">{item.groupname}</div>
@@ -81,31 +76,45 @@ class Page extends React.Component {
                                 }
                             </div>
                         );
-                      })
-                    }
-
-
+                    })
+                }
                 </div>
                 <div className="mydevicebtn">
-                        {!isincollections &&
-                        <Button type="primary" icon="star" onClick={()=>{
-                            this.props.dispatch(ui_index_addcollection(deviceid));
-                          }
-                        }>收藏车辆</Button>}
-                        {isincollections &&
-                        <Button type="primary" icon="star" onClick={()=>{
-                            this.props.dispatch(ui_index_unaddcollection(deviceid));
-                          }
-                        }>取消收藏</Button>}
-                        <Button icon="play-circle-o" style={{background : "#5cbeaa", color: "#FFF"}}
-                           onClick={
-                             ()=>{
-                               console.log("轨迹回放");
-                               this.props.dispatch(ui_sel_tabindex(4));
-                               this.props.history.replace(`/playback/${deviceid}`);
-                             }
-                         }>轨迹回放</Button>
+                    <div>
+                        {
+                            !isincollections &&
+                            <Button 
+                                type="primary" 
+                                icon="star" 
+                                onClick={()=>{this.props.dispatch(ui_index_addcollection(deviceid));}}
+                                >
+                                收藏车辆
+                            </Button>
+                        }
+                        {
+                            isincollections &&
+                            <Button 
+                                type="primary" 
+                                icon="star" 
+                                onClick={()=>{this.props.dispatch(ui_index_unaddcollection(deviceid));}}
+                                >
+                                取消收藏
+                            </Button>
+                        }
+                        <Button 
+                            icon="play-circle-o" style={{background : "#5cbeaa", color: "#FFF"}}
+                            onClick={
+                                ()=>{
+                                    console.log("轨迹回放");
+                                    this.props.dispatch(ui_sel_tabindex(4));
+                                    this.props.history.replace(`/playback/${deviceid}`);
+                                }
+                            }
+                            >
+                            轨迹回放
+                        </Button>
                     </div>
+                </div>
             </div>
         );
     }

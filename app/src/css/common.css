@@ -87,6 +87,9 @@ input,textarea {
     display: flex;
     align-items: center;
 }
+.mydevicePage{
+    
+}
 .mydevicePage .navhead .navlist{
     display: flex;
     width: 160px;
@@ -367,10 +370,11 @@ input,textarea {
     justify-content: space-between;
 }
 .deviceinfocontent .tit{
-    background: #EEE;
     line-height: 36px;
     text-align: center;
     font-size: 16px;
+    border-bottom: 1px solid #DDD;
+    font-weight: bold;
 }
 .indexPage .workorderlist{
     flex-grow: 1;
@@ -629,13 +633,32 @@ input,textarea {
 }
 .deviceinfocontent{
     flex-grow: 1;
-    overflow-y: scroll;
+    background: #EEE;
+    padding-top: 15px;
+}
+.deviceinfocontent >div{
+    margin-left: 15px;
+    margin-right: 15px;
+    background: #FFF;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #DDD;
 }
 div.mydevicebtn{
     display: flex;
     border-bottom: none;
     padding: 10px 15px;
+    padding-top: 0;
     flex-shrink: 0;
+    background: #EEE;
+}
+div.mydevicebtn >div{
+    margin:  15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    width: 100%;
 }
 .mydevicebtn button{
     flex-grow:1;
