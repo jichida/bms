@@ -103,8 +103,8 @@ const DeviceFilter = (props) => (
 )
 
 const RealtimeAlarmList = (props) => (
-  <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}}>
-    <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
+  <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'MessageTime',order:'DESC'}} perPage={config.listperpage}>
+    <Datagrid  bodyOptions={{ showRowHover: true }} >
       <TextField label="设备" source="DeviceId" />
       <TextField label="日期" source="CurDay" />
       <TextField label="采集时间" source="DataTime"  />

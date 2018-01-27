@@ -77,8 +77,8 @@ const DeviceFilter = (props) => (
 )
 
 const HistoryTrackList = (props)=> (
-  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}>
-    <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
+  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}  perPage={config.listperpage}>
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="定位时间" source="GPSTime"  />
       <NumberField label="经度" source="Longitude" />

@@ -56,8 +56,8 @@ const DataDictEdit = (props) => {
 };
 
 const DataDictList = (props) => (
-  <List title={<DataDictTitle />} {...props} filters={<DDFilter/>}>
-    <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
+  <List title={<DataDictTitle />} {...props} filters={<DDFilter/>} perPage={config.listperpage}>
+    <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="字段名" source="name" />
       <TextField label="字段显示名" source="showname" />
       <TextField label="字段类型" source="type" />
