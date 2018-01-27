@@ -133,6 +133,7 @@ const HistoryDeviceList = (props)=> (
     <Datagrid  bodyOptions={{ showRowHover: true }} perPage={config.listperpage}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="NodeID" source="NodeID"/>
+      <TextField label="SN64" source="SN64"/>
       <TextField label="更新时间" source="UpdateTime"  />
       <ShowButton />
     </Datagrid>

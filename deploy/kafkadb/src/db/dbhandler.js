@@ -41,6 +41,7 @@ const save_alarm = (devicedata,callbackfn)=>{
           DataTime:LastRealtimeAlarm.DataTime,
           warninglevel:result_alarm.warninglevel,
           NodeID:config.NodeID,
+          SN64:devicedata.SN64,
           UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
           organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6")
         };
@@ -78,6 +79,7 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     }
     result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_alarm_raw.NodeID = config.NodeID;
+    result_alarm_raw.SN64 = devicedata.SN64;
     result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
     entity.save((err,result)=>{
@@ -99,6 +101,7 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
     }
     result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_device.NodeID = config.NodeID;
+    result_device.SN64 = devicedata.SN64;
     result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity2 = new DBModels.HistoryDeviceModel(result_device);
     entity2.save((err,result)=>{
@@ -116,6 +119,7 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
     LastHistoryTrack.DeviceId = devicedata.DeviceId;
     LastHistoryTrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     LastHistoryTrack.NodeID = config.NodeID;
+    LastHistoryTrack.SN64 = devicedata.SN64;
     LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{

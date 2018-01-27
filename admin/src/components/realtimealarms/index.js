@@ -109,6 +109,7 @@ const RealtimeAlarmList = (props) => (
       <TextField label="日期" source="CurDay" />
       <TextField label="采集时间" source="DataTime"  />
       <TextField label="NodeID" source="NodeID"/>
+      <TextField label="SN64" source="SN64" />
       <TextField label="更新时间" source="UpdateTime"  />
       <AlarmField label="报警信息" />
       <ShowButton />
