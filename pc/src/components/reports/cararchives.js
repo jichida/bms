@@ -68,7 +68,7 @@ class TablePosition extends React.Component {
       this.setState({query});
       window.setTimeout(()=>{
         //console.log(this.refs);
-        this.refs.antdtabledevice.getWrappedInstance().onRefresh();
+        this.refs.antdtablecarchives.getWrappedInstance().onRefresh();
       },0);
     }
 
@@ -76,7 +76,7 @@ class TablePosition extends React.Component {
     onItemConvert(item){
       let itemnew = {};
       itemnew[`key`] = get(item,'_id','');
-      itemnew[`RDB编号`] = get(item,'Ext.RDB编号','');
+      itemnew[`RDB编号`] = get(item,'DeviceId','');
       itemnew[`项目`] = get(item,'Ext.项目','');
       itemnew[`系统Barcode`] = get(item,'Ext.系统Barcode','');
       itemnew[`省份`] = get(item,'Ext.省份','');
@@ -143,7 +143,7 @@ class TablePosition extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
-                      ref='antdtabledevice'
+                      ref='antdtablecarchives'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
                       pagenumber={30}
