@@ -8,33 +8,24 @@ import {connect} from 'react-redux';
 import map from 'lodash.map';
 import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
-
-import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-import {
-    deviceinfoquerychart_request,
-} from '../../actions';
+import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
+import { deviceinfoquerychart_request } from '../../actions';
+import { Chart1, Chart2, Chart3, Chart4 } from "./swiperchart";
 
 class Page extends React.Component {
 
     componentWillMount() {
-      this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
+        this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
     }
+
     render(){
-      const {g_devicesdb,mapdetailfields,mapdict,alarmchart} = this.props;
+        const {g_devicesdb,mapdetailfields,mapdict,alarmchart} = this.props;
         let deviceid = this.props.match.params.deviceid;
 
         const alarmchartdata = alarmchart[deviceid];
         if(!!alarmchartdata){
           console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
         }
-        //如果alarmchartdata 为空，则正在加载图表中，否则是图表数据
-
-        // let isincollections = false;
-        // map(carcollections,(id)=>{
-        //     if(id === deviceid){
-        //         isincollections = true;
-        //     }
-        // });
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
         map(mapdetailfields,(v)=>{
@@ -88,7 +79,8 @@ class Page extends React.Component {
                       <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                     </div>
                 </div>
-
+                
+                <div className="deviceinfoPage">
                 <div className="lists deviceinfolist"
                     style={{
                         flexGrow: 0,
@@ -122,7 +114,12 @@ class Page extends React.Component {
                       // })
                   }
                 </div>
-
+                <div className="lists devicechartlists">
+                  <div className="l"><div className="bizcharts" style={{ height : "260px"}}><Chart1 /></div></div>
+                  <div className="l"><div className="bizcharts" style={{ height : "260px"}}><Chart2 /></div></div>
+                  <div className="l"><div className="bizcharts" style={{ height : "260px"}}><Chart3 /></div></div>
+                </div>
+                </div>
             </div>
         );
     }
