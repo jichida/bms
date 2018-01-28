@@ -12,7 +12,9 @@ let config = {
     appversion:'1.2.4',
     sendlocationinterval:20000,
     softmode:'app',
-    sysinnerheight : window.innerHeight
+    sysinnerheight : window.innerHeight,
+    wendu_max: 80,
+	  wendu_min: 0
 };
 
 
