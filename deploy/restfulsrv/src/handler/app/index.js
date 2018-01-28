@@ -29,7 +29,7 @@ const authhandler = {
   'collectdevice':userrelate.collectdevice,
   // 'searchbatteryalarm':realtimealarm.searchbatteryalarm,
   // 'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
-
+  'uireport_searchcararchives':device.uireport_searchcararchives,
   'uireport_searchalarm':realtimealarm.uireport_searchalarm,
   'uireport_searchalarmdetail':realtimealarm.uireport_searchalarmdetail,
   'uireport_searchposition':historytrack.uireport_searchposition,
