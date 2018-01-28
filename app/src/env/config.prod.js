@@ -14,7 +14,7 @@ let config = {
     softmode:'app',
     sysinnerheight : window.innerHeight,
     wendu_max: 80,
-	wendu_min: 0
+	  wendu_min: 0
 };
 
 
