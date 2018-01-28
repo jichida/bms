@@ -51,6 +51,11 @@ const renderImageupload= (props) => {
   let imageUrl = input.value;
   const {label} = props;
   return (
+    <div style={{position: "relative"}}>
+      {
+         imageUrl ?
+           <img src={imageUrl} alt="" className="avatar" style={{position: "absolute",zIndex : "1"}} /> :null
+       }
     <Upload
        className="avatar-uploader"
        name="file"
@@ -61,13 +66,12 @@ const renderImageupload= (props) => {
        }}
        beforeUpload={beforeUpload}
        onChange={handleChange}
+         style={{position: "relative",zIndex : "100"}}
      >
-       {
-         imageUrl ?
-           <img src={imageUrl} alt="" className="avatar" /> :
+
            <Icon type="plus" className="avatar-uploader-trigger" />
-       }
      </Upload>
+     </div>
    );
 
 }

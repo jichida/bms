@@ -33,6 +33,7 @@ import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
+import config from '../../env/config';
 
 const HistoryTrackTitle = ({record}) => {
   return <span>历史轨迹管理</span>
@@ -71,19 +72,22 @@ const HistoryTrackShow = (props)=> {
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId_q" />
+    <TextInput label="NodeID" source="NodeID" />
   </Filter>
 )
 
 const HistoryTrackList = (props)=> (
-  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}>
+  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}  perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
-      <TextField label="CellId" source="CellId" />
       <TextField label="定位时间" source="GPSTime"  />
       <NumberField label="经度" source="Longitude" />
       <NumberField label="纬度" source="Latitude" />
       <NumberField label="速度" source="Speed" />
       <NumberField label="航向" source="Course" />
+      <TextField label="NodeID" source="NodeID"/>
+      <TextField label="SN64" source="SN64"/>
+      <TextField label="更新时间" source="UpdateTime"  />
       <ShowButton />
     </Datagrid>
   </List>

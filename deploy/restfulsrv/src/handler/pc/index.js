@@ -30,7 +30,7 @@ const authhandler = {
   'serverpush_devicegeo_sz':device.serverpush_devicegeo_sz,
   // 'searchbatteryalarm':realtimealarm.searchbatteryalarm,
   // 'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
-
+  'uireport_searchcararchives':device.uireport_searchcararchives,
   'uireport_searchalarm':realtimealarm.uireport_searchalarm,
   'uireport_searchalarmdetail':realtimealarm.uireport_searchalarmdetail,
   'uireport_searchposition':historytrack.uireport_searchposition,
@@ -39,7 +39,7 @@ const authhandler = {
 };
 
 module.exports = (socket,actiondata,ctx)=>{
-  //console.log("PC端获取数据--->" + JSON.stringify(actiondata));
+  console.log("PC端获取数据--->" + JSON.stringify(actiondata));
   //console.log("PC端获取上下文--->" + JSON.stringify(ctx));
   //console.log(`${actiondata.cmd}接受到时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
   try{
@@ -64,7 +64,7 @@ module.exports = (socket,actiondata,ctx)=>{
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
               if(JSON.stringify(result).length < 5000){
-                //console.log("服务端回复--->" + JSON.stringify(result));
+                console.log("服务端回复--->" + JSON.stringify(result));
               }
               //console.log(`${actiondata.cmd}回复时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
               socket.emit(result.cmd,result.payload);

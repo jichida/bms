@@ -1,5 +1,6 @@
 import { Async } from 'react-select';
 import {getOptions} from '../controls/getselect.js';
+import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import React from 'react';
 import {IconButton, Toggle, TextField, RaisedButton}  from 'material-ui';
@@ -75,6 +76,26 @@ class MaterialUITableEdit extends React.Component {
       self.setState({rows: rows})
     }
 
+    const onSelectedChangeList = (values)=>{
+      console.log(values);
+      let sz = [];
+      _.map(values,(v)=>{
+        sz.push(v.value);
+      });
+      var rows = self.state.rows
+      rows[rowId].columns[id].value = sz
+      self.setState({rows: rows})
+    }
+
+    const onSelectedChangeSingle = (values)=>{
+      console.log(values);
+      // {value: "temperature", label: "温度"}
+      var rows = self.state.rows
+      rows[rowId].columns[id].value = values.value;
+      self.setState({rows: rows})
+
+    }
+
     const onToggle = (e) => {
       var rows = self.state.rows
       rows[rowId].columns[id].value = !rows[rowId].columns[id].value
@@ -105,24 +126,90 @@ class MaterialUITableEdit extends React.Component {
       }
     }
 
-    if(type === 'ReactSelect'){
+    if(type === 'TextFieldOnly'){
+      const options = this.props.headerColumns.map((header) => {
+        return header.options
+      })[id];
+      return (<Select
+            disabled
+            style={{width:"150px"}}
+            clearable={false}
+            onChange={onSelectedChangeSingle}
+            value={value}
+            options={options}
+        />);
+    }
+
+    if(type === 'ReactSelect' || type === "Select"){
+      const options = this.props.headerColumns.map((header) => {
+        return header.options
+      })[id];
+      const multi = this.props.headerColumns.map((header) => {
+        return header.multi
+      })[id];
+      if(type === "Select"){
+        if (selected) {
+          if(multi){
+            return  (<Select
+                  multi={multi}
+                  clearable={true}
+                  onChange={onSelectedChangeList}
+                  value={value}
+                  options={options}
+              />);
+          }
+          return (<Select
+                multi={multi}
+                style={{width:"150px"}}
+                clearable={false}
+                onChange={onSelectedChangeSingle}
+                value={value}
+                options={options}
+            />);
+          }
+          if(multi){
+            return  (<Select
+                  multi={multi}
+                  disabled
+                  clearable={false}
+                  onChange={onSelectedChangeList}
+                  value={value}
+                  options={options}
+              />);
+          }
+          return (<Select
+                multi={multi}
+                style={{width:"150px"}}
+                disabled
+                clearable={false}
+                onChange={onSelectedChangeSingle}
+                value={value}
+                options={options}
+            />);
+      }
+      else{
+        const multi = this.props.headerColumns.map((header) => {
+          return header.multi
+        })[id];
       if (selected) {
         return (<Async
-              multi
+                multi={multi}
               onChange={onSelectedChange}
               value={value}
               simpleValue
-              loadOptions={getOptions('datadict','showname','name')}
+                loadOptions={options}
           />);
         }
       return (<Async
             disabled
-            multi
+            multi={multi}
             onChange={onSelectedChange}
             value={value}
             simpleValue
-            loadOptions={getOptions('datadict','showname','name')}
+            loadOptions={options}
         />);
+    }
+
     }
 
     return <TextField
@@ -189,7 +276,7 @@ class MaterialUITableEdit extends React.Component {
     const selected = (r && r.selected) || false
 
     const button = selected ? <Check /> : <ModeEdit />
-    const tooltip = selected ? 'Done' : 'Edit'
+    const tooltip = selected ? '完成' : '编辑'
     const onDeleteRow = function (e) {
           var rows = self.state.rows
           var deleteEvent = {}
@@ -214,7 +301,7 @@ class MaterialUITableEdit extends React.Component {
       onRowClick(e)
     }
     const deleteButton = (!this.props.enableDelete || selected || row.header) ? <div style={deleteButtonStyle} />
-       : <IconButton style={deleteButtonStyle} tooltip={'Delete this row'} onClick={onDeleteRow}>
+       : <IconButton style={deleteButtonStyle} tooltip={'删除该行'} onClick={onDeleteRow}>
          <Delete />
        </IconButton>
 
@@ -311,11 +398,12 @@ class MaterialUITableEdit extends React.Component {
         row.id = id
         return this.renderRow(row)
       })}
+      {this.props.enableNew &&
       <RaisedButton
          onClick={onButtonClick}
          style={buttonStyle}
          label='新建'
-       />
+       />}
       </div>
     )
   }

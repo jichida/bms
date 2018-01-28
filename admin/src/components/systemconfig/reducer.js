@@ -1,7 +1,7 @@
 export default (previousState = {
-  warningrulelevel0:'',
-  warningrulelevel1:'',
-  warningrulelevel2:'',
+  warningrulelevel0:[],
+  warningrulelevel1:[],
+  warningrulelevel2:[],
   mappopfields:[],
   mapdetailfields:[]
 }, { type, payload }) => {

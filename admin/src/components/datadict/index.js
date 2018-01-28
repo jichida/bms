@@ -14,6 +14,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {CreateActions,EditActions} from '../controls/createeditactions';
+import config from '../../env/config';
 
 const DataDictTitle = ({record}) => {
   return <span>数据字典维护</span>
@@ -55,7 +56,7 @@ const DataDictEdit = (props) => {
 };
 
 const DataDictList = (props) => (
-  <List title={<DataDictTitle />} {...props} filters={<DDFilter/>}>
+  <List title={<DataDictTitle />} {...props} filters={<DDFilter/>} perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="字段名" source="name" />
       <TextField label="字段显示名" source="showname" />
