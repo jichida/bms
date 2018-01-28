@@ -59,7 +59,8 @@ class TreeSearchBattery extends React.Component {
           deviceidlist.push(item.DeviceId);
       });
         return (
-            <div className="searchreport" style={{textAlign: "center"}}>
+            <div className="searchreport_cararchives" style={{textAlign: "center"}}>
+            <div className="f">
               <Input placeholder="项目" />
               <Input placeholder="地区" />
               <Input placeholder="车工号" />
@@ -74,10 +75,11 @@ class TreeSearchBattery extends React.Component {
                        />
                      </div>
                 </div>
-                <div className="b">
-                    <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
-                    <Button icon="download" onClick={this.onClickExport}>导出结果</Button>
-                </div>
+            </div>
+            <div className="b">
+                <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
+                <Button icon="download" onClick={this.onClickExport}>导出结果</Button>
+            </div>
             </div>
 
         );

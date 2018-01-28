@@ -1250,7 +1250,6 @@
     border: 1px solid #60beaa;
     padding: 20px;
     margin-top: 20px;
-    padding-bottom: 0;
 }
 .devicePage .lists.deviceinfolist .li >div >div.tit{
     position: absolute;
@@ -1678,8 +1677,75 @@
     font-size: 16px;
 }
 
+.searchreport_cararchives .f{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+.searchreport_cararchives .b{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+.searchreport_cararchives .b button{
+    margin-left: 15px;
+}
+.searchreport_cararchives .ant-input{
+    width: 160px;
+    margin-right: 20px;
+    height: 40px;
+}
+.searchreport_cararchives .selcar{
+    margin: 0;
+    height: 40px;
+    line-height: 40px;
+    display: -webkit-box;
+        display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
 
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
 
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.searchreport_cararchives .selcar .ant-select{
+    height: 40px;
+}
+.searchreport_cararchives .selcar .ant-select ul{
+    padding:  0;
+    margin:  0;
+    line-height: 40px;
+    font-size: 14px;
+}
+.searchreport_cararchives .selcar .ant-select .ant-select-selection--single{
+    height: 40px;
+}
+.searchreport_cararchives div.i{
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
 
 
 
