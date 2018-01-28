@@ -11,6 +11,7 @@ import { Swiper, Slide } from 'react-dynamic-swiper';
 import 'react-dynamic-swiper/lib/styles.css';
 import Sky from '../../img/1.jpg';
 import Wendu from '../../img/28.png';
+import Config from '../../env/config';
 
 const { Arc, Html, Line } = Guide;
 
@@ -19,11 +20,6 @@ let swiperOptions = {
     pagination: false,
     scrollBar: false
 };
-
-
-    
-
-      
 
 class Chart1 extends React.Component {
     componentWillMount () {
@@ -171,7 +167,7 @@ class Chart2 extends React.Component {
 
 class Chart3 extends React.Component {
     render() {
-        const data = 20;
+        const data = 40;
         return (
             <div className="wenduchart">
                 <img src={Wendu} />
@@ -192,6 +188,7 @@ class Page extends React.Component {
                 }}
                 {...swiperOptions}
                 style={{background: `url("${Sky}")`, backgroundSize: "150% 200%"}}
+                className="swiperchartlist"
                 >
                 <Slide className="Demo-swiper__slide ">
                     <div 
@@ -201,7 +198,7 @@ class Page extends React.Component {
                         }}
                     >
                         <Chart1 />
-                        <div>电流趋势图</div>
+                        <div className="text">电流趋势图</div>
                     </div>
                 </Slide>
                 <Slide className="Demo-swiper__slide">
@@ -213,7 +210,18 @@ class Page extends React.Component {
                         }}
                     >
                         <Chart2 />
-                        <div>电流趋势图</div>
+                        <div className="text">电流趋势图</div>
+                    </div>
+                </Slide>
+                <Slide className="Demo-swiper__slide">
+                    <div 
+                        className="bizcharts" 
+                        style={{
+                            height : "260px",
+                        }}
+                    >
+                        <Chart3 />
+                        <div className="text">电流趋势图</div>
                     </div>
                 </Slide>
             </Swiper>

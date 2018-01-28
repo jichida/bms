@@ -1252,7 +1252,54 @@ div.mydevicebtn >div{
 .datalist_rawinfos_tt span:first-child{
     width: 39px;
 }
-
+.bizcharts{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.bizcharts .wenduchart{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    position: relative;
+}
+.bizcharts .wenduchart >span{
+    display: block;
+    width: 8px;
+    background: #2090e7;
+    left: 27px;
+    position: absolute;
+    bottom: 50px;
+}
+.bizcharts .wenduchart img{
+    width: 82px;
+}
+.swiperchartlist{
+    position: relative;
+}
+.swiperchartlist div.text{
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    font-size: 16px;
+}
 
 
 
