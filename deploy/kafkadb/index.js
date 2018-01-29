@@ -4,11 +4,12 @@ const config = require('./src/config');
 const DBModels = require('./src/db/models.js');
 const _ = require('lodash');
 const mongoose     = require('mongoose');
+const alarmplugin = require('./src/plugins/alarmfilter/index');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodburl,{
     mongos:config.mongos,
-    
+
     useMongoClient: true,
     // This options is 1 second by default, its possible the ha
     // takes longer than 30 seconds to recover.
@@ -30,8 +31,8 @@ dbdictModel.find({
     name:{'$regex':alname, $options: "i"}
   },(err,dictlist)=>{
 
-  console.log(err)
-  console.log(`dictlist==>${JSON.stringify(dictlist)}`)
+  // console.log(err)
+  // console.log(`dictlist==>${JSON.stringify(dictlist)}`)
   let mapdict = {};
   if(!err && dictlist.length > 0){
     _.map(dictlist,(v)=>{
@@ -43,7 +44,13 @@ dbdictModel.find({
     });
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
-  console.log(config.mapdict);
+  // console.log(config.mapdict);
 });
 
+// console.log(`=========\n\n`);
+// alarmplugin.matchalarm({
+//             "AL_Trouble_Code" : 181
+//         },(result)=>{
+//
+//         });
 startsrv(config,srvdb.onMessage,onError);

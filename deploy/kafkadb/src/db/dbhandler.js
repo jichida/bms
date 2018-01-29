@@ -15,12 +15,6 @@ const save_device = (devicedata,callbackfn)=>{
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
   },(err,result)=>{
-    // if(!err && !!result){
-    //   console.log(`保存成功${result.NodeID}:${result.DeviceId}`);
-    // }
-    // else{
-    //   console.log(`device error:${JSON.stringify(err)}`);
-    // }
     callbackfn(err,result);
   });
 };
@@ -49,14 +43,19 @@ const save_alarm = (devicedata,callbackfn)=>{
           updated_data.Longitude = LastHistoryTrack.Longitude;
           updated_data.Latitude = LastHistoryTrack.Latitude;
         }
-        const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
-        dbRealtimeAlarmModel.findOneAndUpdate(
-          {DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
-          updated_data,
-          {upsert:true,new: true},
-          (err, result)=> {
-            callbackfn(err,result);
-          });
+        alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+          if(resultalarmmatch.length > 0){
+            updated_data.warninglevel = resultalarmmatch[0].warninglevel;
+          }
+          const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
+          dbRealtimeAlarmModel.findOneAndUpdate(
+            {DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
+            updated_data,
+            {upsert:true,new: true},
+            (err, result)=> {
+              callbackfn(err,result);
+            });
+        });
         return;
       }
       callbackfn();
@@ -81,9 +80,17 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     result_alarm_raw.NodeID = config.NodeID;
     result_alarm_raw.SN64 = devicedata.SN64;
     result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
-    entity.save((err,result)=>{
-      callbackfn(err,result);
+
+    alarmplugin.matchalarm(result_alarm_raw,(resultalarmmatch)=>{
+      result_alarm_raw.resultalarmmatch = resultalarmmatch;
+      if(resultalarmmatch.length > 0){
+        result_alarm_raw.warninglevel = resultalarmmatch[0].warninglevel;
+        result_alarm_raw.alarmtxt = resultalarmmatch[0].alarmtxt;
+      }
+      const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
+      entity.save((err,result)=>{
+        callbackfn(err,result);
+      });
     });
     return;
   }
@@ -103,11 +110,17 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;
     result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const entity2 = new DBModels.HistoryDeviceModel(result_device);
-    entity2.save((err,result)=>{
-      callbackfn(err,result);
+    alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+        result_device.resultalarmmatch = resultalarmmatch;
+        if(resultalarmmatch.length > 0){
+          result_device.warninglevel = resultalarmmatch[0].warninglevel;
+          result_device.alarmtxt = resultalarmmatch[0].alarmtxt;
+        }
+        const entity2 = new DBModels.HistoryDeviceModel(result_device);
+        entity2.save((err,result)=>{
+          callbackfn(err,result);
+        });
     });
-
     return;
   }
   callbackfn();
