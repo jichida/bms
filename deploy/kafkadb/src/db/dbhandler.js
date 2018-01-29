@@ -6,6 +6,10 @@ const alarmplugin = require('../plugins/alarmfilter/index');
 const moment = require('moment');
 const getalarmtxt = require('./getalarmtxt');
 const config = require('../config.js');
+const utilposition = require('./util_position');
+const getpoint = (v)=>{
+  return [v.Longitude,v.Latitude];
+}
 
 const save_device = (devicedata,callbackfn)=>{
   // console.log(`start save device...${!!DBModels.DeviceModel}`);
@@ -160,31 +164,47 @@ exports.insertdatatodb= (data,callback)=>{
     devicedata.LastHistoryTrack = LastHistoryTrack;
   }
   devicedata.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-  let asyncfnsz = [
-    (callbackfn)=>{
-      save_device(devicedata,callbackfn);
-    },
-    (callbackfn)=>{
-      save_alarm(devicedata,callbackfn);
-    },
-    (callbackfn)=>{
-      save_alarmraw(devicedata,callbackfn);
-    },
-    (callbackfn)=>{
-      save_lasthistorytrack(devicedata,callbackfn);
-    },
-  ];
-  async.parallel(asyncfnsz,(err,result)=>{
-    let alarmtxt;
-    if(!err && !!result){
-      if(!!result[1]){
-        const alarm = result[1].toJSON();
-        alarmtxt = getalarmtxt(alarm);
-      }
-    }
-    save_historydevice(devicedata,alarmtxt,(err,result)=>{
 
+
+  utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+    const newdevicedata = _.merge(devicedata,retobj);
+    const asyncfnsz = [
+      (callbackfn)=>{
+        save_device(newdevicedata,callbackfn);
+      },
+      (callbackfn)=>{
+        save_alarm(newdevicedata,callbackfn);
+      },
+      (callbackfn)=>{
+        save_alarmraw(newdevicedata,callbackfn);
+      },
+      (callbackfn)=>{
+        save_lasthistorytrack(newdevicedata,callbackfn);
+      },
+    ];
+    // const newdoc = _.merge(doc,retobj);
+    // callbackfn({
+    //   '设备编号':newdoc.DeviceId,
+    //   '定位时间':newdoc.GPSTime,
+    //   '省':newdoc.Provice,
+    //   '市':newdoc.City,
+    //   '区':newdoc.Area,
+    // });
+    async.parallel(asyncfnsz,(err,result)=>{
+      let alarmtxt;
+      if(!err && !!result){
+        if(!!result[1]){
+          const alarm = result[1].toJSON();
+          alarmtxt = getalarmtxt(alarm);
+        }
+      }
+      save_historydevice(devicedata,alarmtxt,(err,result)=>{
+
+      });
     });
+
   });
+
+
 
 };
