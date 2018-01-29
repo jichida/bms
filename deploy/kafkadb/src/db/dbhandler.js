@@ -8,6 +8,9 @@ const getalarmtxt = require('./getalarmtxt');
 const config = require('../config.js');
 const utilposition = require('./util_position');
 const getpoint = (v)=>{
+  if(!v){
+    return [0,0];
+  }
   return [v.Longitude,v.Latitude];
 }
 
@@ -41,7 +44,10 @@ const save_alarm = (devicedata,callbackfn)=>{
           NodeID:config.NodeID,
           SN64:devicedata.SN64,
           UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
-          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6")
+          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+          Provice:devicedata.Provice,
+          City:devicedata.City,
+          Area:devicedata.Area,
         };
         if(!!LastHistoryTrack){
           updated_data.Longitude = LastHistoryTrack.Longitude;
@@ -84,7 +90,9 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     result_alarm_raw.NodeID = config.NodeID;
     result_alarm_raw.SN64 = devicedata.SN64;
     result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-
+    result_alarm_raw.Provice = devicedata.Provice;
+    result_alarm_raw.City = devicedata.City;
+    result_alarm_raw.Area = devicedata.Area;
     alarmplugin.matchalarm(result_alarm_raw,(resultalarmmatch)=>{
       result_alarm_raw.resultalarmmatch = resultalarmmatch;
       if(resultalarmmatch.length > 0){
@@ -114,6 +122,9 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;
     result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    result_device.Provice = devicedata.Provice;
+    result_device.City = devicedata.City;
+    result_device.Area = devicedata.Area;
     alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
         result_device.resultalarmmatch = resultalarmmatch;
         if(resultalarmmatch.length > 0){
@@ -137,6 +148,9 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
     LastHistoryTrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     LastHistoryTrack.NodeID = config.NodeID;
     LastHistoryTrack.SN64 = devicedata.SN64;
+    LastHistoryTrack.Provice = devicedata.Provice;
+    LastHistoryTrack.City = devicedata.City;
+    LastHistoryTrack.Area = devicedata.Area;
     LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{

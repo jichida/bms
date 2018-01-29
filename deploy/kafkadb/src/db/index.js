@@ -18,7 +18,9 @@ module.exports = (msg,cb)=>{
       }
       topichandler[msg.topic](payload,(err,result)=>{
         // console.log("服务端回复--->" + JSON.stringify(result));
-        cb(err,result);
+        if(!!cb){
+          cb(err,result);
+        }
       });
     }
   }
