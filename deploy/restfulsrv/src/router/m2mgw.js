@@ -25,16 +25,28 @@ let startmodule = (app)=>{
     const csvfields = `设备编号,定位时间,省,市,区`;
     const dbfields = 'DeviceId Latitude Longitude GPSTime';
     const fn_convert = (doc,callbackfn)=>{
-      utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
-        const newdoc = _.merge(doc,retobj);
+      if(!!doc.Provice){
+        //如果已经存在省市区
         callbackfn({
-          '设备编号':newdoc.DeviceId,
-          '定位时间':newdoc.GPSTime,
-          '省':newdoc.Provice,
-          '市':newdoc.City,
-          '区':newdoc.Area,
+          '设备编号':doc.DeviceId,
+          '定位时间':doc.GPSTime,
+          '省':doc.Provice,
+          '市':doc.City,
+          '区':doc.Area,
         });
-      });
+      }
+      else{
+        utilposition.getpostion_frompos(getpoint(doc),(retobj)=>{
+          const newdoc = _.merge(doc,retobj);
+          callbackfn({
+            '设备编号':newdoc.DeviceId,
+            '定位时间':newdoc.GPSTime,
+            '省':newdoc.Provice,
+            '市':newdoc.City,
+            '区':newdoc.Area,
+          });
+        });
+      }
     };
     export_downloadexcel({req,res,dbModel,fields:dbfields,csvfields,fn_convert});
 
