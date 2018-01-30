@@ -196,7 +196,7 @@ class UserMenu extends React.Component {
                   this.handleRequestClose();
                   this.props.history.push("/reports/cararchives/0");
               }}/>}
-            {<MenuItem primaryText="查询设备" leftIcon={<SearchDevice />} onClick={()=>{
+            {<MenuItem primaryText="历史数据" leftIcon={<SearchDevice />} onClick={()=>{
                   this.handleRequestClose();
                   this.props.history.push("/reports/historydevice/0");
               }}/>}
