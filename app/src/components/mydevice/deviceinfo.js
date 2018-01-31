@@ -27,9 +27,14 @@ class Page extends React.Component {
         };
     }
     componentWillMount() {
-      this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
+      this.props.dispatch(deviceinfoquerychart_request({
+        query:
+          {
+            DeviceId:this.props.match.params.deviceid
+          }
+        }));
     }
-    
+
     render() {
         const {carcollections,g_devicesdb,mapdetailfields,mapdict} = this.props;
         let deviceid = this.props.match.params.deviceid;
@@ -91,9 +96,9 @@ class Page extends React.Component {
                     <div>
                         {
                             !isincollections &&
-                            <Button 
-                                type="primary" 
-                                icon="star" 
+                            <Button
+                                type="primary"
+                                icon="star"
                                 onClick={()=>{this.props.dispatch(ui_index_addcollection(deviceid));}}
                                 >
                                 收藏车辆
@@ -101,15 +106,15 @@ class Page extends React.Component {
                         }
                         {
                             isincollections &&
-                            <Button 
-                                type="primary" 
-                                icon="star" 
+                            <Button
+                                type="primary"
+                                icon="star"
                                 onClick={()=>{this.props.dispatch(ui_index_unaddcollection(deviceid));}}
                                 >
                                 取消收藏
                             </Button>
                         }
-                        <Button 
+                        <Button
                             icon="play-circle-o" style={{background : "#5cbeaa", color: "#FFF"}}
                             onClick={
                                 ()=>{
