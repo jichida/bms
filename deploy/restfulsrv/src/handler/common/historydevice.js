@@ -87,4 +87,111 @@ const bridge_historydeviceinfo = (item)=>{
   return itemnew;
 };
 
+
+const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
+  const getdeviceinfo = (actiondata,callbackfn)=>{
+    const deviceModel = DBModels.DeviceModel;
+    const query = actiondata.query || {};
+    const fields = actiondata.fields || {};
+    //console.log(`fields-->${JSON.stringify(fields)}`);
+    const queryexec = deviceModel.findOne(query).select(fields);
+    queryexec.exec((err,result)=>{
+      if(!err && !!result){
+        callbackfn(result.toJSON());
+      }
+      else{
+        callbackfn();
+      }
+    });
+  }
+
+  const getdeviceinfoquerychartresult = ({DeviceId,DataTime},callbackfn)=>{
+    const momentmin = moment(DataTime).subtract(10,'hours').format('YYYY-MM-DD HH:mm:ss');
+    const historydeviceModel = DBModels.HistoryDeviceModel;
+    historydeviceModel.aggregate([
+        {
+            $match:
+            {
+                DeviceId:DeviceId,
+                DataTime:{
+                  $gte: momentmin
+                }
+            }
+        },
+        {
+            $group:
+            {
+                _id:
+                {
+                    ticktime:
+                    {
+                        $substrBytes: [ "$DataTime", 0, 13 ]
+                    }
+                },
+                tickv:
+                {
+                    $avg: "$BAT_U_HVS"
+                },
+                ticka:
+                {
+                    $avg: "$BAT_I_HVS"
+                }
+
+            }
+        },
+        {
+            $sort: {
+                "_id.ticktime": 1
+            }
+        }
+    ],(err,result)=>{
+      let listret = {
+        ticktime:[],
+        tickv:[],
+        ticka:[]
+      };
+      if(!err && !!result){
+          _.map(result,(v)=>{
+            listret.ticktime.push(v._id.ticktime);
+            listret.tickv.push(v.tickv);
+            listret.ticka.push(v.ticka);
+          });
+      }
+      callbackfn(listret);
+    });
+  };
+
+
+  getdeviceinfo(actiondata,(deviceinfo)=>{
+    if(!!deviceinfo){
+      getdeviceinfoquerychartresult({
+        DeviceId:actiondata.query.DeviceId,
+        DataTime:_.get(deviceinfo,'LastRealtimeAlarm.DataTime',moment().format('YYYY-MM-DD HH:mm:ss'))
+      },(listret)=>{
+        const temperature = _.get(deviceinfo,'LastRealtimeAlarm.BAT_T_Avg',0);
+        const soc = _.get(deviceinfo,'LastRealtimeAlarm.BAT_User_SOC_HVS',0);
+        const resultnew = _.merge({
+          temperature,
+          soc,
+        },listret);
+        console.log(resultnew);
+        callback({
+          cmd:'deviceinfoquerychart_result',
+          payload:{
+            DeviceId:actiondata.query.DeviceId,
+            resultdata:resultnew
+          }
+        });
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'找不到指定的设备',type:'deviceinfoquerychart'}
+      });
+    }
+  });
+};
+
 exports.bridge_historydeviceinfo =  bridge_historydeviceinfo;
+exports.deviceinfoquerychart =  deviceinfoquerychart;
