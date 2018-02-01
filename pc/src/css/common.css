@@ -1750,7 +1750,7 @@
     border: 1px solid #EEE;
     margin-right: 20px;
     margin-bottom: 20px;
-    background: #F4F4F4;
+    background: #f8fafe;
 }
 .lists.devicechartlists .lli.Chart1li >div{
     margin-top: -10px;
@@ -1784,10 +1784,17 @@
 .lists.devicechartlists .lli.Chart3li .wenduchart{
     height: 223px;
     margin: 0;
+    padding-bottom: 25px;
+}
+.lists.devicechartlists .lli.Chart3li .wenduchart .data{
+    position: absolute;
+    bottom: 10px;
+    font-size: 30px;
+    padding-right: 10px;
 }
 .lists.devicechartlists .lli.Chart3li .wenduchart .dataline{
     position: absolute;
-    bottom: 92px;
+    bottom: 105px;
     z-index: 1000;
 }
 .lists.devicechartlists .lli.Chart3li .wenduchart .dataline >span{

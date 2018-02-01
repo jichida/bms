@@ -26,8 +26,24 @@ class Page extends React.Component {
     render(){
         const {g_devicesdb,mapdetailfields,mapdict,alarmchart} = this.props;
         let deviceid = this.props.match.params.deviceid;
-
         const alarmchartdata = alarmchart[deviceid];
+        const data_soc = get(alarmchartdata,'soc','');
+        const props_tickv = get(alarmchartdata,'tickv',[]);
+        const props_ticka = get(alarmchartdata,'ticka',[]);
+        const props_ticktime = get(alarmchartdata,'ticktime',[]);
+        
+        let data_tickv = [];
+        let data_ticka = [];
+        let data_temperature = 0;
+        map(props_ticktime,(v, i)=>{
+            let item = { time: v, value: props_tickv[i] };
+            let item2 = { time: v, value: props_ticka[i] };
+            data_tickv.push(item);
+            data_ticka.push(item);
+        })
+        data_temperature = get(alarmchartdata,'temperature',0);
+
+
         if(!!alarmchartdata){
             console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
         }
@@ -51,7 +67,7 @@ class Page extends React.Component {
 
             datadevice.push(record);
         });
-        //console.log(datadevice);
+            // console.log(datadevice);
         return (
 
             <div className="warningPage devicePage deviceinfoPage">
@@ -107,22 +123,22 @@ class Page extends React.Component {
                       })
                     }
                     {
-                      // map(datadevice,(item,i)=>{
-                      //     return (
-                      //         <div className="li" key={i}>
-                      //             <div>
-                      //             <div className="name">{item.name}</div><div className="text">{item.value}</div>
-                      //             </div>
-                      //         </div>
-                      //     )
-                      // })
-                  }
+                        // map(datadevice,(item,i)=>{
+                        //     return (
+                        //         <div className="li" key={i}>
+                        //             <div>
+                        //             <div className="name">{item.name}</div><div className="text">{item.value}</div>
+                        //             </div>
+                        //         </div>
+                        //     )
+                        // })
+                    }
                 </div>
                 <div className="lists devicechartlists">
-                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart1 /></div>
-                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 /></div>
-                    <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 /></div>
-                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart4 /></div>
+                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart1 data={data_soc} /></div>
+                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} /></div>
+                    <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
+                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart4 data={data_ticka}/></div>
                 </div>
                 </div>
             </div>
@@ -135,6 +151,7 @@ const mapStateToProps = ({device,app,deviceinfoquerychart}) => {
     const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
     const {alarmchart} = deviceinfoquerychart;
+    
     return { g_devicesdb, mapdetailfields, mapdict,alarmchart };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);

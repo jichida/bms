@@ -25,14 +25,14 @@ export class Chart1 extends React.Component {
         
     }
     render() {
-
+        const datav = this.props.data || 65;
         const { Html, Arc } = Guide;
-        const data = [{ value: 5.6 }];
+        const data = [{ value: datav }];
         const cols = {
             'value': {
                 min: 0,
-                max: 9,
-                tickInterval: 1,
+                max: 220,
+                tickInterval: 20,
                 nice: false
             }
         }
@@ -103,7 +103,7 @@ export class Chart1 extends React.Component {
                     <Arc 
                         zIndex={0} 
                         start={[ 0, 0.965 ]} 
-                        end={[ 9, 0.965 ]}
+                        end={[ 220, 0.965 ]}
                         style={{ // 底灰色
                             stroke: '#000',
                             lineWidth: 18,
@@ -123,7 +123,7 @@ export class Chart1 extends React.Component {
                         position={[ '50%', '95%' ]}
                         html={
                             () => {
-                                return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 1.75em; color: rgba(0,0,0,0.43);margin: 0;">合格率</p><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value * 10+'%</p></div>')
+                                return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'V</p></div>')
                             }
                         } 
                         />
@@ -143,28 +143,25 @@ export class Chart1 extends React.Component {
 
 export class Chart2 extends React.Component {
     render() {
-        const data = [
-            { year: "1991", value: 3 },
-            { year: "1992", value: 4 },
-            { year: "1993", value: 3.5 },
-            { year: "1994", value: 5 },
-            { year: "1995", value: 4.9 },
-            { year: "1996", value: 6 },
-            { year: "1997", value: 7 },
-            { year: "1998", value: 9 },
-            { year: "1999", value: 13 }
-        ];
+        const data = this.props.data;
         const cols = {
-            'value': { min: 0 },
-            'year': {range: [ 0 , 1] }
+            'value': { 
+                min: 500,
+                tickCount: 10, 
+            },
+            'time': { range: [ 0.1 , 0.9] }
         };
         return (
-            <Chart height={260} data={data} scale={cols} padding={[20, 40, 40, 40]} forceFit>
-                <Axis name="year" line={{stroke: '#EEEEEE'}} />
+            <Chart height={260} data={data} scale={cols} padding={[20, 40, 40, 60]} forceFit>
+                <Axis name="time" label={{
+                    formatter: val => {
+                    return val.substr(5, val.length);
+                    }
+                }} />
                 <Axis name="value" line={{stroke: '#EEEEEE'}} />
                 <Tooltip crosshairs={{type : "y"}}/>
-                <Geom type="line" position="year*value" size={2} />
-                <Geom type='point' position="year*value" size={4} shape={'circle'} style={{ stroke: '#fff', lineWidth: 1}} />
+                <Geom type="line" position="time*value" size={2} />
+                <Geom type='point' position="time*value" size={4} shape={'circle'} style={{ stroke: '#fff', lineWidth: 1}} />
             </Chart>
         )
     }
@@ -172,11 +169,15 @@ export class Chart2 extends React.Component {
 
 export class Chart3 extends React.Component {
     render() {
-        const data = 40;
+        const data = this.props.data;
+        let showdata = data;
+        if(parseInt(data)>80){showdata = 80}
+        if(parseInt(data)<0){showdata = 0}
         return (
             <div className="wenduchart">
                 <img src={Wendu} />
-                <div className="dataline"><span style={{height: `${data}px`}}></span></div>
+                <div className="dataline"><span style={{height: `${showdata}px`}}></span></div>
+                <div className="data"><span>{data}℃</span></div>
             </div>
         )
     }
@@ -185,36 +186,25 @@ export class Chart3 extends React.Component {
 export class Chart4 extends React.Component {
 
     render() {
-        const data = [
-            { year: '1991', value: 15468 },
-            { year: '1992', value: 16100 },
-            { year: '1993', value: 15900 },
-            { year: '1994', value: 17409 },
-            { year: '1995', value: 17000 },
-            { year: '1996', value: 31056 },
-            { year: '1997', value: 31982 },
-            { year: '1998', value: 32040 },
-            { year: '1999', value: 33233 }
-        ];
+        const data = this.props.data;
         const cols={
-            value: {
-                min: 10000
+            'value': { 
+                min: 500,
+                tickCount: 10, 
             },
-            year: {
-                range: [ 0 , 1 ]
-            }
+            'time': { range: [ 0 , 1 ] }
         };
         return (
             <Chart height={260} data={data} scale={cols} padding={[20, 40, 40, 60]} forceFit>
-                <Axis name="year" />
-                <Axis name="value" label={{
+                <Axis name="time" label={{
                     formatter: val => {
-                    return (val / 10000).toFixed(1) + 'k';
+                    return val.substr(5, val.length);
                     }
                 }} />
+                <Axis name="value" />
                 <Tooltip crosshairs={{type:'line'}}/>
-                <Geom type="area" position="year*value" />
-                <Geom type="line" position="year*value" size={2} />
+                <Geom type="area" position="time*value" />
+                <Geom type="line" position="time*value" size={2} />
             </Chart>
         )
     }
