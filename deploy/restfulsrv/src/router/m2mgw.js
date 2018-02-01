@@ -86,15 +86,29 @@ let startmodule = (app)=>{
   });
   app.post('/api/report_cararchives',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
-//     const dbModel = DBModels.HistoryDeviceModel;
-//     const csvfields = '采集时间,保存时间,箱体测量电压(V),箱体累加电压(V),箱体电流(A),\
-// 真实SOC(%),最高单体电压(V),最低单体电压(V),最高单体电压CSC号,最高单体电芯位置,最低单体电压CSC号,\
-// 最低单体电压电芯位置,最高单体温度,最低单体温度,平均单体温度,最高温度CSC号,最低温度CSC号,显示用SOC,平均单体电压,报警状态';
-//     const fn_convert = (doc,callbackfn)=>{
-//       const newdoc = historydevice.bridge_historydeviceinfo(doc);
-//       callbackfn(newdoc);
-//     }
-//     export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
+    const dbModel = DBModels.DeviceModel;
+    const csvfields = 'RDB编号,项目,系统Barcode,省份,地区,生产日期,出厂日期,标称容量,\
+串联数,并联数,客户名称,线路,电池剩余容量,历史报警次数';
+    const fn_convert = (doc,callbackfn)=>{
+      const newdoc = {
+        'RDB编号':_.get(doc,'DeviceId',''),
+        '项目':_.get(doc,'Ext.项目',''),
+        '系统Barcode':_.get(doc,'Ext.系统Barcode',''),
+        '省份':_.get(doc,'Ext.省份',''),
+        '地区':_.get(doc,'Ext.地区',''),
+        '生产日期':_.get(doc,'Ext.生产日期',''),
+        '出厂日期':_.get(doc,'Ext.出厂日期',''),
+        '标称容量':_.get(doc,'Ext.标称容量',''),
+        '串联数':_.get(doc,'Ext.串联数',''),
+        '并联数':_.get(doc,'Ext.并联数',''),
+        '客户名称':_.get(doc,'Ext.客户名称',''),
+        '线路':_.get(doc,'Ext.线路',''),
+        '电池剩余容量':_.get(doc,'Ext.电池剩余容量',''),
+        '历史报警次数':_.get(doc,'Ext.历史报警次数',''),
+      };
+      callbackfn(newdoc);
+    }
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
   });
 
   app.post('/m2mgw/setdata',(req,res)=>{

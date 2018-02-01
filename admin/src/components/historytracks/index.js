@@ -61,9 +61,9 @@ const HistoryTrackShow = (props)=> {
     <TextField label="蜂窝Location Area Code" source="LAC" />
     <TextField label="蜂窝Cell Id" source="CellId" />
     <TextField label="海拔,单位：米" source="Altitude" />
-    <TextField label="所在省" source="Province" />
+    <TextField label="所在省" source="Provice" />
     <TextField label="所在市" source="City" />
-    <TextField label="所在区县" source="County" />
+    <TextField label="所在区县" source="Area" />
    </SimpleShowLayout>
   </Show>
   );
@@ -76,15 +76,22 @@ const DeviceFilter = (props) => (
   </Filter>
 )
 
+const LocationString = (props)=>{
+  const { record } = props;
+  let showstring = '未知';
+  if(!!record.Provice){
+    if(record.Provice !== '未知'){
+      showstring = `${record.Provice}${record.City}${record.Area}`
+    }
+  }
+  return (<span>{showstring}</span>);
+}
 const HistoryTrackList = (props)=> (
   <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'created_at',order:'DESC'}} {...props}  perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="定位时间" source="GPSTime"  />
-      <NumberField label="经度" source="Longitude" />
-      <NumberField label="纬度" source="Latitude" />
-      <NumberField label="速度" source="Speed" />
-      <NumberField label="航向" source="Course" />
+      <LocationString label="省市区"/>
       <TextField label="NodeID" source="NodeID"/>
       <TextField label="SN64" source="SN64"/>
       <TextField label="更新时间" source="UpdateTime"  />

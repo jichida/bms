@@ -209,9 +209,9 @@ const DeviceEdit = (props) => {
           <TextField label="蜂窝Location Area Code" source="LastHistoryTrack.LAC" />
           <TextField label="蜂窝Cell Id" source="LastHistoryTrack.CellId" />
           <TextField label="海拔,单位：米" source="LastHistoryTrack.Altitude" />
-          <TextField label="所在省" source="LastHistoryTrack.Province" />
+          <TextField label="所在省" source="LastHistoryTrack.Provice" />
           <TextField label="所在市" source="LastHistoryTrack.City" />
-          <TextField label="所在区县" source="LastHistoryTrack.County" />
+          <TextField label="所在区县" source="LastHistoryTrack.Area" />
         </FormTab>
       </TabbedForm>
     </Edit>
