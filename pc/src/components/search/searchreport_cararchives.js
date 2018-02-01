@@ -21,7 +21,10 @@ class TreeSearchBattery extends React.Component {
 
         let DeviceId = get(props.query,'DeviceId','');
         this.state = {
-            DeviceId
+            DeviceId,
+            ExtProject:'',
+            ExtArea:'',
+            ExtNo:''
         };
     }
 
@@ -30,7 +33,21 @@ class TreeSearchBattery extends React.Component {
             DeviceId
         });
     }
-
+    onChange_ExtProject =(e)=>{
+      this.setState({
+          ExtProject:e.target.value
+      });
+    }
+    onChange_ExtArea =(e)=>{
+      this.setState({
+          ExtArea:e.target.value
+      });
+    }
+    onChange_ExtNo =(e)=>{
+      this.setState({
+          ExtNo:e.target.value
+      });
+    }
 
     onClickExport=()=>{
       if(!!this.props.onClickExport){
@@ -42,6 +59,25 @@ class TreeSearchBattery extends React.Component {
       if(this.state.DeviceId !== ''){
         query['DeviceId'] = this.state.DeviceId;
       }
+      if(this.state.ExtProject !== ''){
+        if(!query.Ext){
+          query.Ext = {};
+        }
+        query['Ext']['项目'] = this.state.ExtProject;
+      }
+      if(this.state.ExtArea !== ''){
+        if(!query.Ext){
+          query.Ext = {};
+        }
+        query['Ext']['地区'] = this.state.ExtArea;
+      }
+      if(this.state.ExtNo !== ''){
+        if(!query.Ext){
+          query.Ext = {};
+        }
+        query['Ext']['车工号'] = this.state.ExtNo;
+      }
+      console.log(query);
       return query;
     }
 
@@ -61,9 +97,9 @@ class TreeSearchBattery extends React.Component {
         return (
             <div className="searchreport_cararchives" style={{textAlign: "center"}}>
             <div className="f">
-              <Input placeholder="项目" />
-              <Input placeholder="地区" />
-              <Input placeholder="车工号" />
+              <Input placeholder="项目" onChange={this.onChange_ExtProject} value={this.state.ExtProject}/>
+              <Input placeholder="地区" onChange={this.onChange_ExtArea} value={this.state.ExtArea}/>
+              <Input placeholder="车工号" onChange={this.onChange_ExtNo} value={this.state.ExtNo}/>
               <div className="i">
                      <div className="selcar">
                        <span className="t">车辆ID：</span>
