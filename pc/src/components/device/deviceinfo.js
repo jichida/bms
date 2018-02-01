@@ -15,7 +15,12 @@ import { Chart1, Chart2, Chart3, Chart4 } from "./swiperchart";
 class Page extends React.Component {
 
     componentWillMount() {
-        this.props.dispatch(deviceinfoquerychart_request({DeviceId:this.props.match.params.deviceid}));
+        this.props.dispatch(deviceinfoquerychart_request({
+          query:
+            {
+              DeviceId:this.props.match.params.deviceid
+            }
+          }));
     }
 
     render(){
@@ -78,7 +83,7 @@ class Page extends React.Component {
                       <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                     </div>
                 </div>
-                
+
                 <div className="deviceinfoPage">
                 <div className="lists deviceinfolist"
                     style={{

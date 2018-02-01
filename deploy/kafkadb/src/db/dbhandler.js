@@ -6,6 +6,13 @@ const alarmplugin = require('../plugins/alarmfilter/index');
 const moment = require('moment');
 const getalarmtxt = require('./getalarmtxt');
 const config = require('../config.js');
+const utilposition = require('./util_position');
+const getpoint = (v)=>{
+  if(!v){
+    return [0,0];
+  }
+  return [v.Longitude,v.Latitude];
+}
 
 const save_device = (devicedata,callbackfn)=>{
   // console.log(`start save device...${!!DBModels.DeviceModel}`);
@@ -15,12 +22,6 @@ const save_device = (devicedata,callbackfn)=>{
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
   },(err,result)=>{
-    // if(!err && !!result){
-    //   console.log(`保存成功${result.NodeID}:${result.DeviceId}`);
-    // }
-    // else{
-    //   console.log(`device error:${JSON.stringify(err)}`);
-    // }
     callbackfn(err,result);
   });
 };
@@ -43,20 +44,28 @@ const save_alarm = (devicedata,callbackfn)=>{
           NodeID:config.NodeID,
           SN64:devicedata.SN64,
           UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
-          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6")
+          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+          Provice:devicedata.Provice,
+          City:devicedata.City,
+          Area:devicedata.Area,
         };
         if(!!LastHistoryTrack){
           updated_data.Longitude = LastHistoryTrack.Longitude;
           updated_data.Latitude = LastHistoryTrack.Latitude;
         }
-        const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
-        dbRealtimeAlarmModel.findOneAndUpdate(
-          {DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
-          updated_data,
-          {upsert:true,new: true},
-          (err, result)=> {
-            callbackfn(err,result);
-          });
+        alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+          if(resultalarmmatch.length > 0){
+            updated_data.warninglevel = resultalarmmatch[0].warninglevel;
+          }
+          const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
+          dbRealtimeAlarmModel.findOneAndUpdate(
+            {DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
+            updated_data,
+            {upsert:true,new: true},
+            (err, result)=> {
+              callbackfn(err,result);
+            });
+        });
         return;
       }
       callbackfn();
@@ -81,9 +90,19 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     result_alarm_raw.NodeID = config.NodeID;
     result_alarm_raw.SN64 = devicedata.SN64;
     result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
-    entity.save((err,result)=>{
-      callbackfn(err,result);
+    result_alarm_raw.Provice = devicedata.Provice;
+    result_alarm_raw.City = devicedata.City;
+    result_alarm_raw.Area = devicedata.Area;
+    alarmplugin.matchalarm(result_alarm_raw,(resultalarmmatch)=>{
+      result_alarm_raw.resultalarmmatch = resultalarmmatch;
+      if(resultalarmmatch.length > 0){
+        result_alarm_raw.warninglevel = resultalarmmatch[0].warninglevel;
+        result_alarm_raw.alarmtxt = resultalarmmatch[0].alarmtxt;
+      }
+      const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
+      entity.save((err,result)=>{
+        callbackfn(err,result);
+      });
     });
     return;
   }
@@ -103,11 +122,20 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;
     result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    const entity2 = new DBModels.HistoryDeviceModel(result_device);
-    entity2.save((err,result)=>{
-      callbackfn(err,result);
+    result_device.Provice = devicedata.Provice;
+    result_device.City = devicedata.City;
+    result_device.Area = devicedata.Area;
+    alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+        result_device.resultalarmmatch = resultalarmmatch;
+        if(resultalarmmatch.length > 0){
+          result_device.warninglevel = resultalarmmatch[0].warninglevel;
+          result_device.alarmtxt = resultalarmmatch[0].alarmtxt;
+        }
+        const entity2 = new DBModels.HistoryDeviceModel(result_device);
+        entity2.save((err,result)=>{
+          callbackfn(err,result);
+        });
     });
-
     return;
   }
   callbackfn();
@@ -120,6 +148,9 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
     LastHistoryTrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     LastHistoryTrack.NodeID = config.NodeID;
     LastHistoryTrack.SN64 = devicedata.SN64;
+    LastHistoryTrack.Provice = devicedata.Provice;
+    LastHistoryTrack.City = devicedata.City;
+    LastHistoryTrack.Area = devicedata.Area;
     LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
@@ -147,31 +178,47 @@ exports.insertdatatodb= (data,callback)=>{
     devicedata.LastHistoryTrack = LastHistoryTrack;
   }
   devicedata.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-  let asyncfnsz = [
-    (callbackfn)=>{
-      save_device(devicedata,callbackfn);
-    },
-    (callbackfn)=>{
-      save_alarm(devicedata,callbackfn);
-    },
-    (callbackfn)=>{
-      save_alarmraw(devicedata,callbackfn);
-    },
-    (callbackfn)=>{
-      save_lasthistorytrack(devicedata,callbackfn);
-    },
-  ];
-  async.parallel(asyncfnsz,(err,result)=>{
-    let alarmtxt;
-    if(!err && !!result){
-      if(!!result[1]){
-        const alarm = result[1].toJSON();
-        alarmtxt = getalarmtxt(alarm);
-      }
-    }
-    save_historydevice(devicedata,alarmtxt,(err,result)=>{
 
+
+  utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+    const newdevicedata = _.merge(devicedata,retobj);
+    const asyncfnsz = [
+      (callbackfn)=>{
+        save_device(newdevicedata,callbackfn);
+      },
+      (callbackfn)=>{
+        save_alarm(newdevicedata,callbackfn);
+      },
+      (callbackfn)=>{
+        save_alarmraw(newdevicedata,callbackfn);
+      },
+      (callbackfn)=>{
+        save_lasthistorytrack(newdevicedata,callbackfn);
+      },
+    ];
+    // const newdoc = _.merge(doc,retobj);
+    // callbackfn({
+    //   '设备编号':newdoc.DeviceId,
+    //   '定位时间':newdoc.GPSTime,
+    //   '省':newdoc.Provice,
+    //   '市':newdoc.City,
+    //   '区':newdoc.Area,
+    // });
+    async.parallel(asyncfnsz,(err,result)=>{
+      let alarmtxt;
+      if(!err && !!result){
+        if(!!result[1]){
+          const alarm = result[1].toJSON();
+          alarmtxt = getalarmtxt(alarm);
+        }
+      }
+      save_historydevice(devicedata,alarmtxt,(err,result)=>{
+
+      });
     });
+
   });
+
+
 
 };

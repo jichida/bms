@@ -1,5 +1,5 @@
 let islocalhost = false;
-const serverurl = islocalhost?'http://localhost:5011':'http://101.89.141.109:81';
+const serverurl = islocalhost?'http://localhost:5011':'http://bms.com28.cn';
 const serverurlrestful = islocalhost?`${serverurl}/api`:`${serverurl}/apisrv/api`;
 const wspath = islocalhost?'/socket.io':'/apisrv/socket.io';
 const organizationid = '599af5dc5f943819f10509e6';
@@ -11,7 +11,9 @@ let config = {
     requesttimeout:5000,
     appversion:'1.2.5',
     sendlocationinterval:20000,
-    softmode:'pc'
+    softmode:'pc',
+    wendu_max: 80,
+    wendu_min: 0
 };
 
 

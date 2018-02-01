@@ -144,7 +144,7 @@ class TablePosition extends React.Component {
 
                 <div className="appbar">
 
-                    <div className="title">设备报表</div>
+                    <div className="title">历史数据</div>
                     <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
 
                 </div>

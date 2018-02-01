@@ -40,6 +40,8 @@ services:
       - MONGO_URL=mongodb://172.17.0.1:27018/bms
       - KAFKA_HOST=172.17.0.1:2181
       - listenport=5012
+      - mongos=false
+      - rooturl=http://bms.com28.cn
     network_mode: "host"
     ports:
        - "5012:5012"
@@ -59,6 +61,8 @@ services:
     environment:
       - MONGO_URL=mongodb://172.17.0.1:27018/bms
       - KAFKA_HOST=172.17.0.1:2181
+      - mongos=false
+      - NodeID=9
     network_mode: "host"
     depends_on:
        - mongodb

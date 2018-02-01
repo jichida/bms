@@ -21,6 +21,7 @@ const authhandler = {
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,
+  'deviceinfoquerychart':historydevice.deviceinfoquerychart,
   'querydeviceinfo':device.querydeviceinfo,
   'querydeviceinfo_list':device.querydeviceinfo_list,
   // 'searchbattery':device.searchbattery,
@@ -29,7 +30,7 @@ const authhandler = {
   'collectdevice':userrelate.collectdevice,
   // 'searchbatteryalarm':realtimealarm.searchbatteryalarm,
   // 'searchbatteryalarmsingle':realtimealarm.searchbatteryalarmsingle,
-
+  'uireport_searchcararchives':device.uireport_searchcararchives,
   'uireport_searchalarm':realtimealarm.uireport_searchalarm,
   'uireport_searchalarmdetail':realtimealarm.uireport_searchalarmdetail,
   'uireport_searchposition':historytrack.uireport_searchposition,
