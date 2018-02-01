@@ -24,33 +24,32 @@ class Page extends React.Component {
 
         const alarmchartdata = alarmchart[deviceid];
         if(!!alarmchartdata){
-          console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
+            console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
         }
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
         map(mapdetailfields,(v)=>{
-          let record = {};
-          let kv = [];
-          map(v.fieldslist,(fieldname)=>{
-            if(!!mapdict[fieldname]){
-              kv.push({
-                name:mapdict[fieldname].showname,
-                value:get(deviceitem,mapdict[fieldname].name,'')
-              });
-            }
-          });
-          record = {
-            groupname:v.groupname,
-            kv:kv
-          };
+            let record = {};
+            let kv = [];
+            map(v.fieldslist,(fieldname)=>{
+                if(!!mapdict[fieldname]){
+                    kv.push({
+                        name:mapdict[fieldname].showname,
+                        value:get(deviceitem,mapdict[fieldname].name,'')
+                    });
+                }
+            });
+            record = {
+                groupname:v.groupname,
+                kv:kv
+            };
 
-          datadevice.push(record);
+            datadevice.push(record);
         });
         //console.log(datadevice);
-      return (
+        return (
 
             <div className="warningPage devicePage deviceinfoPage">
-
                 <div className="appbar">
 
                     <div className="title">车辆详情</div>
@@ -115,9 +114,10 @@ class Page extends React.Component {
                   }
                 </div>
                 <div className="lists devicechartlists">
-                  <div className="l"><div className="bizcharts" style={{ height : "260px"}}><Chart1 /></div></div>
-                  <div className="l"><div className="bizcharts" style={{ height : "260px"}}><Chart2 /></div></div>
-                  <div className="l"><div className="bizcharts" style={{ height : "260px"}}><Chart3 /></div></div>
+                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart1 /></div>
+                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 /></div>
+                    <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 /></div>
+                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart4 /></div>
                 </div>
                 </div>
             </div>
