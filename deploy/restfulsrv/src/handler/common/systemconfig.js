@@ -7,7 +7,7 @@ exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
     const dbModel = DBModels.SystemConfigModel;
     dbModel.findOne({},(err,systemconfig)=>{
         if(!err && !!systemconfig){
-            systemconfig = JSON.parse(JSON.stringify(systemconfig));
+            systemconfig = systemconfig.toJSON();
             let payload = {};
             let mappopfields = systemconfig.mappopfields || config.defaultmappopfields;
             let mapdetailfields = systemconfig.mapdetailfields || config.defaultmapdetailfields;
@@ -38,6 +38,7 @@ exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
                 });
               }
               payload = {
+                SettingOfflineMinutes:_.get(systemconfig,'SettingOfflineMinutes',20),
                 mappopfields,
                 mapdetailfields,
                 mappopclusterfields,

@@ -45,6 +45,7 @@ const HeaderCo = (props) => {
     let iconname = icon_online;
     let DeviceId = props.node.device.DeviceId;
     let deviceitem = props.g_devicesdb[DeviceId] || props.node.device;
+    let SettingOfflineMinutes = get(props,'SettingOfflineMinutes',20);
     //icon_car1   严重警报
     //icon_car2   紧急警报
     //icon_car3   一般警报
@@ -54,7 +55,7 @@ const HeaderCo = (props) => {
     // else if(parseInt(deviceitem.DeviceId)%3 === 2){ //报警数据判断
     //   iconname = icon_car3;
     // }
-    if(!getdevicestatus_isonline(deviceitem)){
+    if(!getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
       iconname = icon_offline;
     }
     //console.log(deviceitem);
@@ -75,8 +76,8 @@ const HeaderCo = (props) => {
     );
   };
 
-const mapStateToPropsHeaderCo = ({device:{gmap_acode_treename,gmap_acode_treecount,g_devicesdb}}) => {
-  return {gmap_acode_treename,gmap_acode_treecount,g_devicesdb};
+const mapStateToPropsHeaderCo = ({device:{gmap_acode_treename,gmap_acode_treecount,g_devicesdb},app:{SettingOfflineMinutes}}) => {
+  return {gmap_acode_treename,gmap_acode_treecount,g_devicesdb,SettingOfflineMinutes};
 }
 
 

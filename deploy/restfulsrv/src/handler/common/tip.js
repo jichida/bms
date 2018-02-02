@@ -16,16 +16,26 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
     //console.log(deviceIds);
     //console.log(devicegroupIds);
     //统计在线／离线个数
-    const curtimebefore = getmoment().subtract(20, 'minutes').format('YYYY-MM-DD HH:mm:ss');
-    //console.log(`curtimebefore:${curtimebefore}`);
+
+    console.log(`deviceIds:${JSON.stringify(deviceIds)}`);
     const fn_online = (callbackfn)=>{
-          const deviceModel = DBModels.DeviceModel;
-          deviceModel.count({
-                 DeviceId:{'$in':deviceIds},
-                 'LastHistoryTrack.GPSTime': {$gt: curtimebefore}
-           },(err, list)=> {
-              callbackfn(err,list);
-          });
+      const dbModel = DBModels.SystemConfigModel;
+      dbModel.findOne({},(err,systemconfig)=>{
+          let SettingOfflineMinutes = 20;
+          if(!err && !!systemconfig){
+              systemconfig = systemconfig.toJSON();
+              SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',SettingOfflineMinutes);
+           }
+           const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+           const deviceModel = DBModels.DeviceModel;
+           deviceModel.count({
+                  DeviceId:{'$in':deviceIds},
+                  'LastHistoryTrack.Latitude': {$ne:0},
+                  'LastHistoryTrack.GPSTime': {$gt: curtimebefore,$exists:true}
+            },(err, list)=> {
+               callbackfn(err,list);
+           });
+       });
     };
 
     const fn_total = (callbackfn)=>{

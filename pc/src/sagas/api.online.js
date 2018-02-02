@@ -7,7 +7,7 @@ import {
   ui_clickplayback,
   ui_changemodeview,
   collectdevice_request,
-  querydevice_result
+  // querydevice_result
 } from '../actions';
 import { push,goBack,go,replace } from 'react-router-redux';
 
@@ -21,10 +21,10 @@ export function* apiflow(){//
         const mode = yield select((state)=>{
           return state.app.modeview;
         });
-        if(mode !== 'device'){
-          yield put(ui_changemodeview('device'));
-          yield take(`${querydevice_result}`);
-        }
+        // if(mode !== 'device'){
+        //   yield put(ui_changemodeview('device'));
+        //   yield take(`${querydevice_result}`);
+        // }
         //轨迹回放时,判断是否为
         yield put(push(`/historyplay/${payload}`));
      }

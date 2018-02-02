@@ -22,6 +22,7 @@ import {
     Show as ShowPage,
     SimpleForm,
 } from 'admin-on-rest/lib/mui';
+import {required} from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 import ShowPageOne from '../singledocumentpage/index.js';
 import {CfSelectArrayInputDetail,CfAlaramRuleInput} from './cf.js';
@@ -38,7 +39,10 @@ const SystemconfigCreateTitle = ({ record }) => {
  const SystemconfigCreate = (props) => (
        <Create {...props} title={<SystemconfigCreateTitle />} >
        <TabbedForm>
-         <FormTab label="弹框信息">
+         <FormTab label="系统设置">
+           <NumberInput label="离线判断时间" source="SettingOfflineMinutes" validate={required} />
+        </FormTab>
+        <FormTab label="弹框信息">
           <CfSelectArrayInput label="选择弹框的字段列表" source="mappopfields" loadOptions={getOptions('datadict','showname','name')}/>
           <CfSelectArrayInput label="选择聚合点弹框的字段列表" source="mappopclusterfields" loadOptions={getOptions('datadict','showname','name')}/>
           <CfSelectArrayInputDetail label="编辑车辆详情显示字段列表" source="mapdetailfields" loadOptions={getOptions('datadict','showname','name')}/>
@@ -55,6 +59,9 @@ const SystemconfigCreateTitle = ({ record }) => {
  const SystemconfigEdit = (props) => (
     <EditPage {...props} title={<SystemconfigTitle />}>
         <TabbedForm>
+        <FormTab label="系统设置">
+            <NumberInput label="离线判断时间" source="SettingOfflineMinutes" validate={required} />
+        </FormTab>
         <FormTab label="弹框信息">
           <CfSelectArrayInput label="选择弹框的字段列表" source="mappopfields" loadOptions={getOptions('datadict','showname','name')}/>
           <CfSelectArrayInput label="选择聚合点弹框的字段列表" source="mappopclusterfields" loadOptions={getOptions('datadict','showname','name')}/>

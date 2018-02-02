@@ -73,6 +73,7 @@ import jsondatacities from '../util/cities.json';
 import config from '../config.js';
 import store from '../env/store';
 import {getdevicelist,getdeviceinfo} from './datapiple';
+import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 
 const divmapid_mapmain = 'mapmain';
 const maxzoom = config.softmode === 'pc'?18:19;
@@ -465,7 +466,7 @@ const showinfowindow_cluster = ({itemdevicelist,lnglat})=>{
 
 
 //获取根结点的数据
-const getclustertree_root =()=>{
+const getclustertree_root =(SettingOfflineMinutes)=>{
   const adcodetop=100000;
   return new Promise((resolve,reject) => {
     if(!distCluster){
@@ -484,6 +485,11 @@ const getclustertree_root =()=>{
         }
         let count_online = 0;
         let count_offline = dataItems.length;
+        lodashmap(dataItems,(deviceitem)=>{
+          if(getdevicestatus_isonline(deviceitem.dataItem,SettingOfflineMinutes)){
+            count_online++;
+          }
+        });
         gmap_acode_treecount[adcodetop]= {
           count_total:dataItems.length,
           count_online,
@@ -496,6 +502,11 @@ const getclustertree_root =()=>{
             childadcodelist.push(child.adcode);
             count_online = 0;
             count_offline = child.dataItems.length;
+            lodashmap(child.dataItems,(deviceitem)=>{
+              if(getdevicestatus_isonline(deviceitem.dataItem,SettingOfflineMinutes)){
+                count_online++;
+              }
+            });
             gmap_acode_treecount[child.adcode]= {
               count_total:child.dataItems.length,
               count_online,
@@ -519,7 +530,7 @@ const getclustertree_root =()=>{
   });
 }
 //获取某个行政区域的数据
-const getclustertree_one =(adcode)=>{
+const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
   return new Promise((resolve,reject) => {
     if(!distCluster){
       reject();
@@ -530,17 +541,22 @@ const getclustertree_one =(adcode)=>{
         const {adcode,dataItems,children} = result;
         if(!children || children.length === 0){
           //device
+          let count_online = 0;
           let deviceids = [];
           if(!!dataItems){
             lodashmap(dataItems,(deviceitem)=>{
+              if(getdevicestatus_isonline(deviceitem.dataItem,SettingOfflineMinutes)){
+                count_online++;
+              }
               if(!!deviceitem.dataItem){
                 deviceids.push(deviceitem.dataItem.DeviceId);
               }
             });
           }
+
           gmap_acode_treecount[adcode]={
             count_total:deviceids.length,
-            count_online:0,
+            count_online:count_online,
             count_offline:deviceids.length,
           };
           gmap_acode_devices[adcode]=deviceids;
@@ -571,9 +587,15 @@ const getclustertree_one =(adcode)=>{
           };
           lodashmap(children,(child)=>{
               if(child.dataItems.length > 0){
+                let count_online = 0;
+                lodashmap(child.dataItems,(deviceitem)=>{
+                  if(getdevicestatus_isonline(deviceitem.dataItem,SettingOfflineMinutes)){
+                    count_online++;
+                  }
+                });
                 gmap_acode_treecount[child.adcode]={
                   count_total:child.dataItems.length,
-                  count_online:0,
+                  count_online:count_online,
                   count_offline:child.dataItems.length,
                 }
                 childadcodelist.push(child.adcode);
@@ -755,8 +777,11 @@ export function* createmapmainflow(){
               //调用一次citycode，防止加载不到AreaNode
               if(!!result.adcode){
                 try{
+                  const SettingOfflineMinutes =yield select((state)=>{
+                    return get(state,'app.SettingOfflineMinutes',20);
+                  });
                   let adcodeinfo = getadcodeinfo(result.adcode);
-                  yield call(getclustertree_one,adcodeinfo.parent_code);
+                  yield call(getclustertree_one,adcodeinfo.parent_code,SettingOfflineMinutes);
                 }
                 catch(e){
                   console.log(e);
@@ -891,8 +916,10 @@ export function* createmapmainflow(){
           //初始化清空
           gmap_acode_devices={};
           gmap_acode_treecount={};
-
-          const childadcodelist = yield call(getclustertree_root);
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
+          const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
           if(window.amapmain.getZoom() > 12){
@@ -992,7 +1019,11 @@ export function* createmapmainflow(){
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
-            const result = yield call(getclustertree_one,adcodetop);
+            const SettingOfflineMinutes =yield select((state)=>{
+              return get(state,'app.SettingOfflineMinutes',20);
+            });
+
+            const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
             if(!!result){
               isarea = result.type === 'device';
               if(config.softmode === 'pc'){//仅pc端才需要刷新树
@@ -1127,8 +1158,9 @@ export function* createmapmainflow(){
             let locz = deviceinfo.locz;
             // //console.log(`开始移动==>${JSON.stringify(locz)}`)
             const infooptions = getpopinfowindowstyle(deviceinfo);
-            infoWindow.setInfoTitle(infooptions.infoTitle);
-            infoWindow.setInfoBody(infooptions.infoBody);
+            infoWindow.setContent(infooptions.content);
+            // infoWindow.setInfoTitle(infooptions.infoTitle);
+            // infoWindow.setInfoBody(infooptions.infoBody);
             infoWindow.setPosition(locz);
             window.amapmain.setCenter(locz);
           }
@@ -1181,7 +1213,10 @@ export function* createmapmainflow(){
       try{
         //获取当前树，当前选择展开的行政编码code，放数组中,循环设置
           //
-          const childadcodelist = yield call(getclustertree_root);
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
+          const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
           //
 
@@ -1220,7 +1255,10 @@ export function* createmapmainflow(){
           let forkhandles = [];
           for(let i=0;i<codelist.length ;i++){
             const handlefork = yield fork(function*(adcode){
-              const result = yield call(getclustertree_one,adcode);
+              const SettingOfflineMinutes =yield select((state)=>{
+                return get(state,'app.SettingOfflineMinutes',20);
+              });
+              const result = yield call(getclustertree_one,adcode,SettingOfflineMinutes);
             },codelist[i]);
             forkhandles.push(handlefork);
           };
