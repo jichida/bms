@@ -539,9 +539,9 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
     distCluster.getClusterRecord(adcode,(err,result)=>{
       if(!err){
         const {adcode,dataItems,children} = result;
+        let count_online = 0;
         if(!children || children.length === 0){
           //device
-          let count_online = 0;
           let deviceids = [];
           if(!!dataItems){
             lodashmap(dataItems,(deviceitem)=>{
@@ -580,9 +580,14 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             });
             return;
           }
+          lodashmap(dataItems,(deviceitem)=>{
+            if(getdevicestatus_isonline(deviceitem.dataItem,SettingOfflineMinutes)){
+              count_online++;
+            }
+          });
           gmap_acode_treecount[adcode]={
             count_total:dataItems.length,
-            count_online:0,
+            count_online:count_online,
             count_offline:dataItems.length,
           };
           lodashmap(children,(child)=>{
