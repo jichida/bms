@@ -17,7 +17,7 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
     //console.log(devicegroupIds);
     //统计在线／离线个数
 
-    console.log(`deviceIds:${JSON.stringify(deviceIds)}`);
+    // console.log(`deviceIds:${JSON.stringify(deviceIds)}`);
     const fn_online = (callbackfn)=>{
       const dbModel = DBModels.SystemConfigModel;
       dbModel.findOne({},(err,systemconfig)=>{
