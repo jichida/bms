@@ -27,6 +27,7 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
               SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',SettingOfflineMinutes);
            }
            const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+           console.log(`curtimebefore:${curtimebefore}`);
            const deviceModel = DBModels.DeviceModel;
            deviceModel.count({
                   DeviceId:{'$in':deviceIds},
