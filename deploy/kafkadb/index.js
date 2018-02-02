@@ -5,6 +5,11 @@ const DBModels = require('./src/db/models.js');
 const _ = require('lodash');
 const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
+const moment = require('moment');
+
+console.log(`+8+==>${moment().utcOffset(8).format('YYYY-MM-DD HH:mm:ss')}`);
+console.log(`cur==>${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodburl,{
@@ -22,7 +27,7 @@ const onError =(error)=> {
   console.error(error);
   console.error(error.stack);
 }
-console.log(`connected success!`);
+console.log(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
 const alname = 'AL_';
 //还应该包括所有AL开头字母的信息
