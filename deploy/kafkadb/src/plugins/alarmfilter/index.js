@@ -125,7 +125,7 @@ const matchalarm = (alarmdata,callback)=>{
             let systemconfig = result.toJSON();
             let alarmrules = getalarmrules(systemconfig);
             console.log(alarmrules);
-            let resultalarmmatch = getresultalarmmatch(alarmdata,alarmrules);
+            resultalarmmatch = getresultalarmmatch(alarmdata,alarmrules);
 
             console.log(resultalarmmatch);
             resultalarmmatch = _.sortBy(resultalarmmatch,(v)=>{

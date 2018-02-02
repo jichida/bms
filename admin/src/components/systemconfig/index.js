@@ -40,7 +40,7 @@ const SystemconfigCreateTitle = ({ record }) => {
        <Create {...props} title={<SystemconfigCreateTitle />} >
        <TabbedForm>
          <FormTab label="系统设置">
-           <NumberInput label="离线判断时间" source="SettingOfflineMinutes" validate={required} />
+           <NumberInput label="离线判断时间【单位：分钟】" source="SettingOfflineMinutes" validate={required} />
         </FormTab>
         <FormTab label="弹框信息">
           <CfSelectArrayInput label="选择弹框的字段列表" source="mappopfields" loadOptions={getOptions('datadict','showname','name')}/>

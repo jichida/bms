@@ -131,7 +131,7 @@ const DeviceEdit = (props) => {
           <TextField label="插入数据库时间" source="updated_at"  />
           <TextField label="更新时间" source="UpdateTime"  />
         </FormTab>
-        <FormTab label="最近实时报警-基本信息">
+        <FormTab label="基本信息">
           <TextField label="数据包序号" source="LastRealtimeAlarm.SN" />
           <TextField label="采集时间" source="LastRealtimeAlarm.DataTime" />
           <TextField label="Gateway接受到数据时间" source="LastRealtimeAlarm.MessageTime" />
@@ -141,8 +141,9 @@ const DeviceEdit = (props) => {
           <TextField label="报警信息" source="LastRealtimeAlarm.ALARM_Text" />
           <TextField label="辅助诊断代码" source="LastRealtimeAlarm.Diagnostic_Text" />
           <TextField label="生命信号" source="LastRealtimeAlarm.ALIV_ST_SW_HVS" />
+          <TextField label="报警等级" source="warninglevel" />
         </FormTab>
-        <FormTab label="最近实时报警-设备信息">
+        <FormTab label="设备信息">
           <TextField label="KeyOn信号电压" source="LastRealtimeAlarm.KeyOnVoltage" />
           <TextField label="BMU供电电压" source="LastRealtimeAlarm.PowerVoltage" />
           <TextField label="交流充电供电电压" source="LastRealtimeAlarm.ChargeACVoltage" />
@@ -162,7 +163,7 @@ const DeviceEdit = (props) => {
           <TextField label="正极绝缘阻抗" source="LastRealtimeAlarm.BAT_ISO_R_Pos" />
           <TextField label="负极绝缘阻抗" source="LastRealtimeAlarm.BAT_ISO_R_Neg" />
         </FormTab>
-        <FormTab label="最近实时报警-设备状态">
+        <FormTab label="设备状态">
           <TextField label="箱体测量电压（外侧）（正值为正向电压，负值为反向电压）" source="LastRealtimeAlarm.BAT_U_Out_HVS" />
           <TextField label="箱体累计电压" source="LastRealtimeAlarm.BAT_U_TOT_HVS" />
           <TextField label="箱体电流" source="LastRealtimeAlarm.BAT_I_HVS" />
@@ -195,7 +196,7 @@ const DeviceEdit = (props) => {
           <TextField label="双枪充电继电器2" source="LastRealtimeAlarm.ST_SpearChg_SW_2" />
           <TextField label="集电网充电继电器" source="LastRealtimeAlarm.ST_PowerGridChg_SW" />
         </FormTab>
-        <FormTab label="最近历史轨迹">
+        <FormTab label="历史轨迹">
           <TextField label="设备状态" source="LastHistoryTrack.DeviceStatus" />
           <TextField label="主板温度，单位：摄氏度" source="LastHistoryTrack.ADC1" />
           <TextField label="接受数据时间" source="LastHistoryTrack.MessageTime"  />
@@ -254,7 +255,7 @@ const DeviceList = (props) => (
   {permissions =>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
-      <TextField label="设备类型" source="DeviceType"/>
+      <TextField label="报警等级" source="warninglevel" />
       <TextField label="SN64" source="SN64"/>
       <TextField label="NodeID" source="NodeID"/>
       <TextField label="更新时间" source="UpdateTime"  />
