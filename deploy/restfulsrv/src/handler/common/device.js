@@ -6,50 +6,50 @@ const coordtransform = require('coordtransform');
 const _ = require('lodash');
 const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
-
-const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
-
-    var getRandomCoordinates =  (radius, uniform)=> {
-        // Generate two random numbers
-        var a = Math.random(),
-            b = Math.random();
-
-        // Flip for more uniformity.
-        if (uniform) {
-            if (b < a) {
-                var c = b;
-                b = a;
-                a = c;
-            }
-        }
-
-        // It's all triangles.
-        return [
-            b * radius * Math.cos(2 * Math.PI * a / b),
-            b * radius * Math.sin(2 * Math.PI * a / b)
-        ];
-    };
-
-    var randomCoordinates = getRandomCoordinates(radiusInMeters, true);
-
-    // Earths radius in meters via WGS 84 model.
-    var earth = 6378137;
-
-    // Offsets in meters.
-    var northOffset = randomCoordinates[0],
-        eastOffset = randomCoordinates[1];
-
-    // Offset coordinates in radians.
-    var offsetLatitude = northOffset / earth,
-        offsetLongitude = eastOffset / (earth * Math.cos(Math.PI * (latitude / 180)));
-
-    // Offset position in decimal degrees.
-    let result = {
-        latitude: latitude + (offsetLatitude * (180 / Math.PI)),
-        longitude: longitude + (offsetLongitude * (180 / Math.PI))
-    }
-    return [result.longitude,result.latitude];
-};
+//
+// const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
+//
+//     var getRandomCoordinates =  (radius, uniform)=> {
+//         // Generate two random numbers
+//         var a = Math.random(),
+//             b = Math.random();
+//
+//         // Flip for more uniformity.
+//         if (uniform) {
+//             if (b < a) {
+//                 var c = b;
+//                 b = a;
+//                 a = c;
+//             }
+//         }
+//
+//         // It's all triangles.
+//         return [
+//             b * radius * Math.cos(2 * Math.PI * a / b),
+//             b * radius * Math.sin(2 * Math.PI * a / b)
+//         ];
+//     };
+//
+//     var randomCoordinates = getRandomCoordinates(radiusInMeters, true);
+//
+//     // Earths radius in meters via WGS 84 model.
+//     var earth = 6378137;
+//
+//     // Offsets in meters.
+//     var northOffset = randomCoordinates[0],
+//         eastOffset = randomCoordinates[1];
+//
+//     // Offset coordinates in radians.
+//     var offsetLatitude = northOffset / earth,
+//         offsetLongitude = eastOffset / (earth * Math.cos(Math.PI * (latitude / 180)));
+//
+//     // Offset position in decimal degrees.
+//     let result = {
+//         latitude: latitude + (offsetLatitude * (180 / Math.PI)),
+//         longitude: longitude + (offsetLongitude * (180 / Math.PI))
+//     }
+//     return [result.longitude,result.latitude];
+// };
 
 
 exports.querydevicegroup= (actiondata,ctx,callback)=>{
@@ -94,6 +94,7 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     'LastHistoryTrack.Latitude':1,
     'LastHistoryTrack.Longitude':1,
     'LastHistoryTrack.GPSTime':1,
+    'warninglevel':1
   };
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
     if(!query.DeviceId){
@@ -228,6 +229,7 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
     'LastHistoryTrack.Latitude':1,
     'LastHistoryTrack.Longitude':1,
     'LastHistoryTrack.GPSTime':1,
+    'warninglevel':1
   };
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
       if(!query.DeviceId){
@@ -246,6 +248,7 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
             'LastHistoryTrack.Latitude':1,
             'LastHistoryTrack.Longitude':1,
             'LastHistoryTrack.GPSTime':1,
+            'warninglevel':1
           }
         },]
       ).exec((err,list)=>{
@@ -255,14 +258,15 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
             let item = list[i];
             if(!!item.LastHistoryTrack){
               if(item.LastHistoryTrack.Latitude !== 0){
-                let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,10*1000);
-                item.LastHistoryTrack.Latitude = locationsz[1];
-                item.LastHistoryTrack.Longitude  =  locationsz[0];
+                // let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,10*1000);
+                // item.LastHistoryTrack.Latitude = locationsz[1];
+                // item.LastHistoryTrack.Longitude  =  locationsz[0];
                 let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
                 const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
                 item.locz = wgs84togcj02;
                 items.push({
                   'DeviceId':item.DeviceId,
+                  'warninglevel':item.warninglevel || '',
                   'LastHistoryTrack':{
                     Latitude:item.LastHistoryTrack.Latitude,
                     Longitude:item.LastHistoryTrack.Longitude,

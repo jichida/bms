@@ -53,19 +53,18 @@ const save_alarm = (devicedata,callbackfn)=>{
           updated_data.Longitude = LastHistoryTrack.Longitude;
           updated_data.Latitude = LastHistoryTrack.Latitude;
         }
-        alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
-          if(resultalarmmatch.length > 0){
-            updated_data.warninglevel = resultalarmmatch[0].warninglevel;
-          }
-          const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
-          dbRealtimeAlarmModel.findOneAndUpdate(
-            {DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
-            updated_data,
-            {upsert:true,new: true},
-            (err, result)=> {
-              callbackfn(err,result);
-            });
-        });
+
+        updated_data.warninglevel = devicedata.warninglevel;
+
+        const dbRealtimeAlarmModel =  DBModels.RealtimeAlarmModel;
+        dbRealtimeAlarmModel.findOneAndUpdate(
+          {DeviceId:result_alarm.DeviceId,CurDay:result_alarm.CurDay},
+          updated_data,
+          {upsert:true,new: true},
+          (err, result)=> {
+            callbackfn(err,result);
+          });
+
         return;
       }
       callbackfn();
@@ -93,17 +92,18 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     result_alarm_raw.Provice = devicedata.Provice;
     result_alarm_raw.City = devicedata.City;
     result_alarm_raw.Area = devicedata.Area;
-    alarmplugin.matchalarm(result_alarm_raw,(resultalarmmatch)=>{
-      result_alarm_raw.resultalarmmatch = resultalarmmatch;
-      if(resultalarmmatch.length > 0){
-        result_alarm_raw.warninglevel = resultalarmmatch[0].warninglevel;
-        result_alarm_raw.alarmtxt = resultalarmmatch[0].alarmtxt;
-      }
+    result_alarm_raw.warninglevel = devicedata.warninglevel;
+    // alarmplugin.matchalarm(result_alarm_raw,(resultalarmmatch)=>{
+    //   result_alarm_raw.resultalarmmatch = resultalarmmatch;
+    //   if(resultalarmmatch.length > 0){
+    //     result_alarm_raw.warninglevel = resultalarmmatch[0].warninglevel;
+    //     result_alarm_raw.alarmtxt = resultalarmmatch[0].alarmtxt;
+    //   }
       const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
       entity.save((err,result)=>{
         callbackfn(err,result);
       });
-    });
+    // });
     return;
   }
   callbackfn();
@@ -125,17 +125,19 @@ const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
     result_device.Provice = devicedata.Provice;
     result_device.City = devicedata.City;
     result_device.Area = devicedata.Area;
-    alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
-        result_device.resultalarmmatch = resultalarmmatch;
-        if(resultalarmmatch.length > 0){
-          result_device.warninglevel = resultalarmmatch[0].warninglevel;
-          result_device.alarmtxt = resultalarmmatch[0].alarmtxt;
-        }
-        const entity2 = new DBModels.HistoryDeviceModel(result_device);
-        entity2.save((err,result)=>{
-          callbackfn(err,result);
-        });
+
+    result_device.warninglevel = devicedata.warninglevel;
+    // alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+    //     result_device.resultalarmmatch = resultalarmmatch;
+    //     if(resultalarmmatch.length > 0){
+    //       result_device.warninglevel = resultalarmmatch[0].warninglevel;
+    //       result_device.alarmtxt = resultalarmmatch[0].alarmtxt;
+    //     }
+    const entity2 = new DBModels.HistoryDeviceModel(result_device);
+    entity2.save((err,result)=>{
+      callbackfn(err,result);
     });
+    // });
     return;
   }
   callbackfn();
@@ -179,46 +181,50 @@ exports.insertdatatodb= (data,callback)=>{
   }
   devicedata.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
+  alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+    if(resultalarmmatch.length > 0){
+      devicedata.warninglevel = resultalarmmatch[0].warninglevel;
+    }
 
-  utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
-    const newdevicedata = _.merge(devicedata,retobj);
-    const asyncfnsz = [
-      (callbackfn)=>{
-        save_device(newdevicedata,callbackfn);
-      },
-      (callbackfn)=>{
-        save_alarm(newdevicedata,callbackfn);
-      },
-      (callbackfn)=>{
-        save_alarmraw(newdevicedata,callbackfn);
-      },
-      (callbackfn)=>{
-        save_lasthistorytrack(newdevicedata,callbackfn);
-      },
-    ];
-    // const newdoc = _.merge(doc,retobj);
-    // callbackfn({
-    //   '设备编号':newdoc.DeviceId,
-    //   '定位时间':newdoc.GPSTime,
-    //   '省':newdoc.Provice,
-    //   '市':newdoc.City,
-    //   '区':newdoc.Area,
-    // });
-    async.parallel(asyncfnsz,(err,result)=>{
-      let alarmtxt;
-      if(!err && !!result){
-        if(!!result[1]){
-          const alarm = result[1].toJSON();
-          alarmtxt = getalarmtxt(alarm);
+    utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+      const newdevicedata = _.merge(devicedata,retobj);
+      const asyncfnsz = [
+        (callbackfn)=>{
+          save_device(newdevicedata,callbackfn);
+        },
+        (callbackfn)=>{
+          save_alarm(newdevicedata,callbackfn);
+        },
+        (callbackfn)=>{
+          save_alarmraw(newdevicedata,callbackfn);
+        },
+        (callbackfn)=>{
+          save_lasthistorytrack(newdevicedata,callbackfn);
+        },
+      ];
+      // const newdoc = _.merge(doc,retobj);
+      // callbackfn({
+      //   '设备编号':newdoc.DeviceId,
+      //   '定位时间':newdoc.GPSTime,
+      //   '省':newdoc.Provice,
+      //   '市':newdoc.City,
+      //   '区':newdoc.Area,
+      // });
+      async.parallel(asyncfnsz,(err,result)=>{
+        let alarmtxt;
+        if(!err && !!result){
+          if(!!result[1]){
+            const alarm = result[1].toJSON();
+            alarmtxt = getalarmtxt(alarm);
+          }
         }
-      }
-      save_historydevice(devicedata,alarmtxt,(err,result)=>{
+        save_historydevice(devicedata,alarmtxt,(err,result)=>{
 
+        });
       });
+
     });
-
   });
-
 
 
 };

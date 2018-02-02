@@ -89,24 +89,24 @@ const getresultalarmmatch = (alarmdata,alarmrules)=>{
         if(rule.op === '='){
           if(valueint == v){
             resultalarmmatch.push({
-              warninglevel:valarmrules.warninglevel,
-              alarmtxt:rule.content
+              warninglevel:_.get(valarmrules,'warninglevel'),
+              alarmtxt:_.get(rule,'content','')
             });
           }
         }
         else if(rule.op === '>'){
           if(v > valueint){
             resultalarmmatch.push({
-              warninglevel:valarmrules.warninglevel,
-              alarmtxt:rule.content
+              warninglevel:_.get(valarmrules,'warninglevel'),
+              alarmtxt:_.get(rule,'content','')
             });
           }
         }
         else if(rule.op === '<'){
           if(v < valueint){
             resultalarmmatch.push({
-              warninglevel:valarmrules.warninglevel,
-              alarmtxt:rule.content
+              warninglevel:_.get(valarmrules,'warninglevel'),
+              alarmtxt:_.get(rule,'content','')
             });
           }
         }//else if

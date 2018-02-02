@@ -193,7 +193,7 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
     //console.log("invalied token===>" + JSON.stringify(e));
     callback({
       cmd:'common_err',
-      payload:{errmsg:`${e.message}`,type:'login'}
+      payload:{errmsg:`登录超时,请重新登录`,type:'login'}
     });
   }
 

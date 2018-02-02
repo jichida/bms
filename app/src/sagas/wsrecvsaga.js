@@ -59,9 +59,9 @@ export function* wsrecvsagaflow() {
   });
 
   //链接远程数据,暂时注释
-  // yield takeLatest(`${querydevice_result}`, function*(action) {
-  //   yield put(start_serverpush_devicegeo_sz({}));
-  // });
+  yield takeLatest(`${querydevice_result}`, function*(action) {
+    yield put(start_serverpush_devicegeo_sz({}));
+  });
 
   yield takeLatest(`${changepwd_result}`, function*(action) {
     yield put(set_weui({
