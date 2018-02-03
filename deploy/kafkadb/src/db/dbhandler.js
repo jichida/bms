@@ -7,6 +7,12 @@ const moment = require('moment');
 const getalarmtxt = require('./getalarmtxt');
 const config = require('../config.js');
 const utilposition = require('./util_position');
+const pushalarmproducer = require('../kafka/produceralarmpush');
+let sendtokafka;
+pushalarmproducer((fn)=>{
+  sendtokafka = fn;
+});
+
 const getpoint = (v)=>{
   if(!v){
     return [0,0];
@@ -63,6 +69,16 @@ const save_alarm = (devicedata,callbackfn)=>{
           {upsert:true,new: true},
           (err, result)=> {
             callbackfn(err,result);
+
+            if(!err && !!result && !!sendtokafka){
+              if(!!devicedata.warninglevel){
+                if(devicedata.warninglevel !== ''){
+                  sendtokafka(result.toJSON(),(err,data)=>{
+                    console.log(err);
+                  });
+                }
+              }
+            }
           });
 
         return;

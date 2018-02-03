@@ -1,7 +1,7 @@
 let config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   consumerOptions:{
-    host: process.env.KAFKA_HOST ||'101.89.141.109:2181',
+    host: process.env.KAFKA_HOST ||'118.31.41.232:2181',
     mongos:process.env.mongos==='true'?true:false,
     groupId: 'BMSRecvGroup',
     sessionTimeout: 15000,
@@ -10,6 +10,7 @@ let config =  {
   },
   mapdict:{},
   NodeID:process.env.NodeID || 1,
+  kafka_pushalaramtopic:'push.alarm',
   consumertopics:['BMS.Data']
 };
 
