@@ -129,7 +129,7 @@ const DeviceFilter = (props) => (
 )
 
 const HistoryDeviceList = (props)=> (
-  <List title={<HistoryDeviceTitle />}  filters={<DeviceFilter />} sort={{field:'UpdateTime',order:'DESC'}} {...props}  perPage={config.listperpage}>
+  <List title={<HistoryDeviceTitle />}  filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}  perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="NodeID" source="NodeID"/>

@@ -4,6 +4,7 @@ const adminaction = require('../../db/adminaction.js');
 const dbs = require('../../db/index.js');
 const getquery = require('./getquery.js');
 const _ = require('lodash');
+const moment = require('moment');
 //
 // const config = require('../config.js');
 // const _  = require('lodash');
@@ -72,7 +73,6 @@ const curd = (schmodel)=>{
       query['organizationid'] = organizationid;
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
         dbModel.paginate(querynew, options,(err,result)=>{
-          //console.log("GET_LIST result=>" + JSON.stringify(result));
           res.status(200).json(result);
         });
       });

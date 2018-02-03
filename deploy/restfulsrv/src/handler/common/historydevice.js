@@ -11,8 +11,8 @@ exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const historydeviceModel = DBModels.HistoryDeviceModel;
   const query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     // console.log(query);

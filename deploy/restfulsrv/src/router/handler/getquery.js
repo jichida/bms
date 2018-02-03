@@ -9,7 +9,7 @@ const getquery = (userid,collectionname,query,callbackfn)=>{
       collectionname === 'realtimealarmraw'||
       collectionname === 'historytrack'
     ){
-      getdevicesids(userid,({adminflag,devicegroupIds,deviceIds})=>{
+      getdevicesids(userid,({adminflag,devicegroupIds,deviceIds,isall})=>{
         if(adminflag === 0){
           if(collectionname === 'devicegroup'){
             if(!query._id){
@@ -17,7 +17,7 @@ const getquery = (userid,collectionname,query,callbackfn)=>{
             }
           }
           else{
-            if(!query.DeviceId){
+            if(!query.DeviceId && !isall){
               query.DeviceId = {'$in':deviceIds};
             }
           }

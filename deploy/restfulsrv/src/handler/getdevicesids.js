@@ -22,20 +22,32 @@ const getdevicesids = (userid,callbackfn)=>{
       let deviceIds = [];
       let devicegroupIds = [];
       let adminflag = 0;
+      let isall = false;
       if(!err && !!user){
         user = user.toJSON();
         adminflag = _.get(user,'adminflag',0);
-        const devicegrouplist = _.get(user,'devicegroups',[]);
-        _.map(devicegrouplist,(groupinfo)=>{
-          devicegroupIds.push(mongoose.Types.ObjectId(groupinfo._id));
-          let devicelist = _.get(groupinfo,'deviceids',[]);
-          // //console.log(`devicelist=>${JSON.stringify(devicelist)}`)
-          _.map(devicelist,(deviceinfo)=>{
-            // //console.log(`deviceinfo=>${JSON.stringify(deviceinfo)}`)
-            // //console.log(`DeviceId=>${deviceinfo.DeviceId}`)
-            deviceIds.push(deviceinfo.DeviceId);
-          });
-        });
+        if(adminflag === 1){
+          isall = true;
+        }
+        else{
+          const devicegrouplist = _.get(user,'devicegroups',[]);
+          isall = _.findIndex(devicegrouplist,(v)=>{
+            let match = v._id.toString() === '599b88f5f63f591defcf5f71';//全部设备
+            return match;
+          }) !== -1;
+          if(!isall){
+            _.map(devicegrouplist,(groupinfo)=>{
+              devicegroupIds.push(mongoose.Types.ObjectId(groupinfo._id));
+              let devicelist = _.get(groupinfo,'deviceids',[]);
+              // //console.log(`devicelist=>${JSON.stringify(devicelist)}`)
+              _.map(devicelist,(deviceinfo)=>{
+                // //console.log(`deviceinfo=>${JSON.stringify(deviceinfo)}`)
+                // //console.log(`DeviceId=>${deviceinfo.DeviceId}`)
+                deviceIds.push(deviceinfo.DeviceId);
+              });
+            });
+          }
+        }
       }
       //deviceIds去重
       // //console.log(`deviceIds==>${JSON.stringify(deviceIds)}`)
@@ -43,7 +55,8 @@ const getdevicesids = (userid,callbackfn)=>{
       callbackfn({
         adminflag,
         devicegroupIds,
-        deviceIds
+        deviceIds,
+        isall
       });
   });
 }

@@ -164,8 +164,8 @@ exports.uireport_searchalarm =  (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const realtimealarmModel = DBModels.RealtimeAlarmModel;
   let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     realtimealarmModel.paginate(query,actiondata.options,(err,result)=>{
@@ -244,8 +244,8 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
   //console.log(`ui_searchalarmdetail===>${JSON.stringify(actiondata)}`);
   const realtimealarmrawModel = DBModels.RealtimeAlarmRawModel;
   let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     realtimealarmrawModel.paginate(query,actiondata.options,(err,result)=>{
@@ -319,8 +319,8 @@ exports.serverpush_alarm_sz = (actiondata,ctx,callback)=>{
   let query = {
     CurDay:moment().format('YYYY-MM-DD')
   };
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     realtimealarmModel.find(query,null,{

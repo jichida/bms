@@ -15,8 +15,8 @@ exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const historytrackModel = DBModels.HistoryTrackModel;
   let query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     historytrackModel.paginate(query,actiondata.options,(err,result)=>{
@@ -52,8 +52,8 @@ exports.exportposition = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   const fields = actiondata.fields ||
     'DeviceId Latitude Longitude GPSTime';
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-      if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+      if(!query.DeviceId && !isall){
         query.DeviceId = {'$in':deviceIds};
       }
       historytrackModel.find(query,fields,(err,list)=>{
@@ -94,7 +94,7 @@ exports.queryhistorytrack = (actiondata,ctx,callback)=>{
     'Longitude':1,
     'GPSTime':1,
   };
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     let queryexec = historytrackModel.find(query).sort({ GPSTime: 1 }).select(fields);
     queryexec.exec((err,list)=>{
       if(!err){
