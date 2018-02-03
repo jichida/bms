@@ -44,42 +44,53 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
 
     const fn_total = (callbackfn)=>{
         const deviceModel = DBModels.DeviceModel;
-        deviceModel.count({
-            DeviceId:{'$in':deviceIds},
-          },(err, list)=> {
+        let query = {};
+        if(!query.DeviceId && !isall){
+          query.DeviceId = {'$in':deviceIds};
+        }
+        deviceModel.count(query,(err, list)=> {
             callbackfn(err,list);
         });
     };
 
     const fn_alarm0 = (callbackfn)=>{
         const realtimealarmModel = DBModels.RealtimeAlarmModel;
-        realtimealarmModel.count({
-            DeviceId:{'$in':deviceIds},
-            'warninglevel':'高',
-            CurDay:getmoment().format('YYYY-MM-DD')
-            },(err, list)=> {
+        let query = {
+           'warninglevel':'高',
+           CurDay:getmoment().format('YYYY-MM-DD')
+         };
+         if(!query.DeviceId && !isall){
+           query.DeviceId = {'$in':deviceIds};
+         }
+        realtimealarmModel.count(query,(err, list)=> {
             callbackfn(err,list);
         });
     };
 
     const fn_alarm1 = (callbackfn)=>{
         const realtimealarmModel = DBModels.RealtimeAlarmModel;
-        realtimealarmModel.count({
-            DeviceId:{'$in':deviceIds},
-            'warninglevel':'中',
-            CurDay:getmoment().format('YYYY-MM-DD')
-            },(err, list)=> {
+        let query = {
+           'warninglevel':'中',
+           CurDay:getmoment().format('YYYY-MM-DD')
+         };
+         if(!query.DeviceId && !isall){
+           query.DeviceId = {'$in':deviceIds};
+         }
+        realtimealarmModel.count(query,(err, list)=> {
             callbackfn(err,list);
         });
     };
 
     const fn_alarm2 = (callbackfn)=>{
         const realtimealarmModel = DBModels.RealtimeAlarmModel;
-        realtimealarmModel.count({
-            DeviceId:{'$in':deviceIds},
-            'warninglevel':'低',
-            CurDay:getmoment().format('YYYY-MM-DD')
-            },(err, list)=> {
+        let query = {
+           'warninglevel':'低',
+           CurDay:getmoment().format('YYYY-MM-DD')
+         };
+         if(!query.DeviceId && !isall){
+           query.DeviceId = {'$in':deviceIds};
+         }
+        realtimealarmModel.count(query,(err, list)=> {
             callbackfn(err,list);
         });
     };

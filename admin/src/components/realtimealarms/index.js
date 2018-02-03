@@ -35,6 +35,7 @@ import _ from 'lodash';
 import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
 import config from '../../env/config';
+import {DateInputFilter} from '../controls/FilterControls';
 
 const RealtimeAlamTitle = ({record}) => {
    return <span>每日报警统计</span>
@@ -97,8 +98,18 @@ const RealtimeAlarmShow = (props) => {
 
 const DeviceFilter = (props) => (
   <Filter {...props}>
-    <TextInput label="搜索设备" source="DeviceId_q" />
-    <TextInput label="NodeID" source="NodeID" />
+    <TextInput label="搜索设备" source="DeviceId" />
+    <TextInput label="SN64" source="SN64_int" />
+    <SelectInput  label="报警等级"  source="warninglevel" choices={[
+        { id: '高', name: '高' },
+        { id: '中', name: '中' },
+        { id: '低', name: '低' },
+    ]} />
+    <DateInputFilter source="CurDay" label="当前日期" options={{
+      okLabel: '确定',
+      cancelLabel: '取消',
+      locale: 'zh-cn'
+    }} />
   </Filter>
 )
 
@@ -108,10 +119,10 @@ const RealtimeAlarmList = (props) => (
       <TextField label="设备" source="DeviceId" />
       <TextField label="日期" source="CurDay" />
       <TextField label="采集时间" source="DataTime"  />
-      <TextField label="NodeID" source="NodeID"/>
+      <TextField label="NodeID" source="NodeID" sortable={false} />
       <TextField label="SN64" source="SN64" />
-      <TextField label="更新时间" source="UpdateTime"  />
-      <AlarmField label="报警信息" />
+      <TextField label="报警等级" source="warninglevel" />
+      <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <ShowButton />
     </Datagrid>
   </List>
