@@ -250,7 +250,7 @@ const DeviceActions = ({ resource, filters, displayedFilters, filterValues, base
 );
 
 const DeviceList = (props) => (
-  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'UpdateTime',order:'DESC'}} {...props}
+  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}
   actions={<DeviceActions />} perPage={config.listperpage}>
   {permissions =>
     <Datagrid  bodyOptions={{ showRowHover: true }}>

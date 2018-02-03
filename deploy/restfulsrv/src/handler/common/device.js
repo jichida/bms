@@ -57,8 +57,8 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   const devicesfields = actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude';
 
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query._id){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query._id && !isall){
       query._id = {'$in':devicegroupIds};
     }
 
@@ -96,8 +96,8 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     'LastHistoryTrack.GPSTime':1,
     'warninglevel':1
   };
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     let queryexec = deviceModel.find(query).select(fields);
@@ -231,8 +231,8 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
     'LastHistoryTrack.GPSTime':1,
     'warninglevel':1
   };
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-      if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+      if(!query.DeviceId && !isall){
         query.DeviceId = {'$in':deviceIds};
       }
       if(!query.LastHistoryTrack){
@@ -300,8 +300,8 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
   const deviceModel = DBModels.DeviceModel;
   const query = actiondata.query || {};
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
-    if(!query.DeviceId){
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     // console.log(query);

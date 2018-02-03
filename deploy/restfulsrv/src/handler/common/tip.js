@@ -12,7 +12,7 @@ const getmoment =()=>{
 }
 
 exports.gettipcount = (actiondata,ctx,callback)=>{
-  getdevicesids(ctx.userid,({devicegroupIds,deviceIds})=>{
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     //console.log(deviceIds);
     //console.log(devicegroupIds);
     //统计在线／离线个数
@@ -28,12 +28,15 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
            }
            const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
            console.log(`curtimebefore:${curtimebefore}`);
+           let query = {
+             'LastHistoryTrack.Latitude': {$ne:0},
+             'LastHistoryTrack.GPSTime': {$gt: curtimebefore,$exists:true}
+           };
+           if(!query.DeviceId && !isall){
+             query.DeviceId = {'$in':deviceIds};
+           }
            const deviceModel = DBModels.DeviceModel;
-           deviceModel.count({
-                  DeviceId:{'$in':deviceIds},
-                  'LastHistoryTrack.Latitude': {$ne:0},
-                  'LastHistoryTrack.GPSTime': {$gt: curtimebefore,$exists:true}
-            },(err, list)=> {
+           deviceModel.count(query,(err, list)=> {
                callbackfn(err,list);
            });
        });

@@ -87,7 +87,7 @@ const LocationString = (props)=>{
   return (<span>{showstring}</span>);
 }
 const HistoryTrackList = (props)=> (
-  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'UpdateTime',order:'DESC'}} {...props}  perPage={config.listperpage}>
+  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}  perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="定位时间" source="GPSTime"  />

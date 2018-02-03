@@ -69,8 +69,8 @@ const export_downloadexcel = ({req,res,dbModel,fields,csvfields,fn_convert})=>{
         console.log(e);
       }
 
-     getdevicesids(tokenobj.userid,({devicegroupIds,deviceIds})=>{
-         if(!query.DeviceId){
+     getdevicesids(tokenobj.userid,({devicegroupIds,deviceIds,isall})=>{
+         if(!query.DeviceId && !isall){
            query.DeviceId = {'$in':deviceIds};
          }
          startdownload({req,res,dbModel,fields,csvfields,fn_convert,query});
