@@ -229,8 +229,8 @@ const DeviceShowActions = ({basePath,data,refresh}) => (
 
 const DeviceFilter = (props) => (
   <Filter {...props}>
-    <TextInput label="搜索设备" source="DeviceId_q" />
-    <TextInput label="NodeID" source="NodeID" />
+    <TextInput label="搜索设备" source="DeviceId" />
+    <TextInput label="SN64" source="SN64" />
   </Filter>
 )
 
@@ -257,8 +257,8 @@ const DeviceList = (props) => (
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="报警等级" source="warninglevel" />
       <TextField label="SN64" source="SN64"/>
-      <TextField label="NodeID" source="NodeID"/>
-      <TextField label="更新时间" source="UpdateTime"  />
+      <TextField label="NodeID" source="NodeID" sortable={false} />
+      <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>
   }
