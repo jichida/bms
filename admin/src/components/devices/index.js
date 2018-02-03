@@ -230,7 +230,7 @@ const DeviceShowActions = ({basePath,data,refresh}) => (
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId" />
-    <TextInput label="SN64" source="SN64" />
+    <TextInput label="SN64" source="SN64_int" />
   </Filter>
 )
 

@@ -57,6 +57,9 @@ const curd = (schmodel)=>{
           if(keysz[1]=== 'q'){
             query[keysz[0]] = new RegExp(value,'ig');
           }
+          else if(keysz[1]=== 'int'){//需要当成int处理
+            query[keysz[0]] = parseInt(value);
+          }
         }
         else{
           query[key] = value;

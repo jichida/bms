@@ -107,7 +107,7 @@ const RealtimeAlarmRawShow = (props) => {
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId" />
-    <TextInput label="SN64" source="SN64" />
+    <TextInput label="SN64" source="SN64_int" />
     <SelectInput  label="报警等级"  source="warninglevel" choices={[
         { id: '高', name: '高' },
         { id: '中', name: '中' },
