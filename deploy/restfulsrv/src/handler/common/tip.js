@@ -44,9 +44,11 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
 
     const fn_total = (callbackfn)=>{
         const deviceModel = DBModels.DeviceModel;
-        deviceModel.count({
-            DeviceId:{'$in':deviceIds},
-          },(err, list)=> {
+        let query = {};
+        if(!query.DeviceId && !isall){
+          query.DeviceId = {'$in':deviceIds};
+        }
+        deviceModel.count(query,(err, list)=> {
             callbackfn(err,list);
         });
     };
