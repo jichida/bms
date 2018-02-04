@@ -1,14 +1,18 @@
 import get from 'lodash.get';
 import moment from 'moment';
-const getdevicestatus_isonline = (deviceitem)=>{
+const getdevicestatus_isonline = (deviceitem,SettingOfflineMinutes=20)=>{
   let isonline = false;
   let gpstime = get(deviceitem,'LastHistoryTrack.GPSTime');
   if(!!gpstime){
     // a.diff(b, 'days')
     const diffmin = moment().diff(moment(gpstime),'minutes');
-    console.log(`diffmin==>${diffmin}`);
-    isonline = diffmin < 20;
+    isonline = diffmin < SettingOfflineMinutes;
   }
+
+  // if(isonline){
+  //   console.log(`${deviceitem.DeviceId}==>${isonline},${gpstime}`);
+  // }
+
   return isonline;
 }
 
