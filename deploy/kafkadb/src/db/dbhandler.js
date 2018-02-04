@@ -74,7 +74,10 @@ const save_alarm = (devicedata,callbackfn)=>{
               if(!!devicedata.warninglevel){
                 if(devicedata.warninglevel !== ''){
                   sendtokafka(result.toJSON(),(err,data)=>{
-                    console.log(err);
+                    if(!!err){
+                      console.log(`sendtokafka:${JSON.stringify(data)}`);
+                      console.log(err);
+                    }
                   });
                 }
               }
@@ -235,8 +238,16 @@ exports.insertdatatodb= (data,callback)=>{
           }
         }
         save_historydevice(devicedata,alarmtxt,(err,result)=>{
-
+          if(!!err){
+            console.log(`save_historydevice:${JSON.stringify(devicedata)}`);
+            console.log(err);
+          }
         });
+
+        if(!!err){
+          console.log(`parallel:${JSON.stringify(result)}`);
+          console.log(err);
+        }
       });
 
     });

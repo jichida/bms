@@ -27,7 +27,8 @@ const startproducer = (callbackfn)=>{
   });
 
   producer.on('error',  (err)=> {
-    console.log('error', err);
+    console.log(`startproducer error`);
+    console.log(err);
   });
 
 }
