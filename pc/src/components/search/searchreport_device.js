@@ -19,9 +19,9 @@ class TreeSearchBattery extends React.Component {
         super(props);
         let startDate = moment(moment().format('YYYY-MM-DD 00:00:00'));
         let endDate = moment(moment().format('YYYY-MM-DD 23:59:59'));
-        if(!!props.query.UpdateTime){
-          startDate = moment(props.query.UpdateTime['$gte']);
-          endDate = moment(props.query.UpdateTime['$lte']);
+        if(!!props.query.DataTime){
+          startDate = moment(props.query.DataTime['$gte']);
+          endDate = moment(props.query.DataTime['$lte']);
         }
         let DeviceId = get(props.query,'DeviceId','');
         this.state = {
