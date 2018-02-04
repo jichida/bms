@@ -124,10 +124,10 @@ const matchalarm = (alarmdata,callback)=>{
           if(!err && !!result){
             let systemconfig = result.toJSON();
             let alarmrules = getalarmrules(systemconfig);
-            console.log(alarmrules);
+            // console.log(alarmrules);
             resultalarmmatch = getresultalarmmatch(alarmdata,alarmrules);
 
-            console.log(resultalarmmatch);
+            // console.log(resultalarmmatch);
             resultalarmmatch = _.sortBy(resultalarmmatch,(v)=>{
               if(v.warninglevel === '高'){
                 return 0;
@@ -141,7 +141,7 @@ const matchalarm = (alarmdata,callback)=>{
               return 3;
             });
 
-            console.log(resultalarmmatch);
+            // console.log(resultalarmmatch);
           }
           callback(resultalarmmatch);
       });

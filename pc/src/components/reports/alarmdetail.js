@@ -41,9 +41,15 @@ class TableAlarmDetail extends React.Component {
           queryalarm['warninglevel'] = '低';
         }
 
+        let query = g_querysaved || queryalarm;
+        const DeviceId =  this.props.match.params.deviceid;
+        if(DeviceId !== '0'){
+          query.DeviceId = DeviceId;
+        }
+
         this.state = {
-          query: g_querysaved || queryalarm,
-          innerHeight : window.innerHeight
+          query: query,
+          innerHeight: window.innerHeight
         };
     }
 
@@ -120,7 +126,7 @@ class TableAlarmDetail extends React.Component {
                 <div className="appbar">
 
                     <div className="title">报警信息明细</div>
-                    <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.replace("/")}}></i>
+                    <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
 
                 </div>
                 <div className="TreeSearchBattery">

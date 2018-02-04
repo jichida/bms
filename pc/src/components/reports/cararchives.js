@@ -25,11 +25,11 @@ class TablePosition extends React.Component {
     constructor(props) {
         super(props);
         let query = {};
-        query['UpdateTime'] = {
+        query['DataTime'] = {
           $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
           $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
         };
-        let DeviceId =  this.props.match.params.deviceid;
+        const DeviceId =  this.props.match.params.deviceid;
         if(DeviceId !== '0'){
           query.DeviceId = DeviceId;
         }

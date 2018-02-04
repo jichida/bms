@@ -40,8 +40,15 @@ class TableAlarm extends React.Component {
         else if(warninglevel === '2'){
           queryalarm['warninglevel'] = '低';
         }
+
+        let query = g_querysaved || queryalarm;
+        const DeviceId =  this.props.match.params.deviceid;
+        if(DeviceId !== '0'){
+          query.DeviceId = DeviceId;
+        }
+
         this.state = {
-          query: g_querysaved || queryalarm,
+          query: query,
           innerHeight: window.innerHeight
         };
     }
@@ -115,8 +122,9 @@ class TableAlarm extends React.Component {
 
         let viewrow = (row)=>{
             //console.log(row);
+            const DeviceId = row['车辆ID'];
             g_querysaved = this.state.query;
-            this.props.history.push(`/alarminfo/${row.key}`);
+            this.props.history.push(`/reports/alarmdetail/${DeviceId}`);
         }
 
         let columns_action ={
@@ -141,7 +149,6 @@ class TableAlarm extends React.Component {
                       onClickQuery={this.onClickQuery.bind(this)}
                       query={this.state.query}
                       onClickExport={this.onClickExport.bind(this)}
-                      DeviceId={this.props.match.params.deviceid}
                       />
                 </div>
                 <div className="tablelist">

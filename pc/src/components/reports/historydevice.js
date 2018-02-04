@@ -25,7 +25,7 @@ class TablePosition extends React.Component {
     constructor(props) {
         super(props);
         let query = {};
-        query['UpdateTime'] = {
+        query['DataTime'] = {
           $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
           $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
         };
