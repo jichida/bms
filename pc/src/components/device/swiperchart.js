@@ -146,7 +146,6 @@ export class Chart2 extends React.Component {
         const data = this.props.data;
         const cols = {
             'value': { 
-                min: 500,
                 tickCount: 10, 
             },
             'time': { range: [ 0.1 , 0.9] }
@@ -189,7 +188,6 @@ export class Chart4 extends React.Component {
         const data = this.props.data;
         const cols={
             'value': { 
-                min: 500,
                 tickCount: 10, 
             },
             'time': { range: [ 0 , 1 ] }

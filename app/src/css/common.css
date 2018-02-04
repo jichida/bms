@@ -1303,6 +1303,73 @@ div.mydevicebtn >div{
 }
 
 
+.lists.devicechartlists .lli{
+}
+.lists.devicechartlists .lli.Chart1li >div{
+    margin-top: -10px;
+    padding-bottom: 30px;
+}
+.lists.devicechartlists .lli.Chart1li .tt{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: -28px;
+    margin-top: 10px;
+    padding: 0;
+}
+.lists.devicechartlists .lli.Chart2li .tt{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.lists.devicechartlists .lli.Chart3li .tt,
+.lists.devicechartlists .lli.Chart4li .tt{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.lists.devicechartlists .lli.Chart3li {
+    height: 260px;
+    flex-shrink: 0;
+}
+.lists.devicechartlists .lli.Chart3li .wenduchart{
+    height: 223px;
+    margin: 0;
+    padding-bottom: 25px;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: relative;
+}
+.lists.devicechartlists .lli.Chart3li .wenduchart img{
+    width: 82px;
+}
+.lists.devicechartlists .lli.Chart3li .wenduchart .data{
+    position: absolute;
+    bottom: 0;
+    font-size: 30px;
+    padding-right: 10px;
+}
+.lists.devicechartlists .lli.Chart3li .wenduchart .dataline{
+    position: absolute;
+    bottom: 105px;
+    z-index: 1000;
+}
+.lists.devicechartlists .lli.Chart3li .wenduchart .dataline >span{
+    width: 8px;
+    display: block;
+    background: #2090e7;
+    margin-right: 20px;
+}
+
 
 
 

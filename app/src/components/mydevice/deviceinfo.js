@@ -75,7 +75,7 @@ class Page extends React.Component {
                     <span className="title" style={{paddingRight : "30px"}}>车辆详情</span>
                     <a className="moresetting"></a>
                 </div>
-                <Swiperchart />
+                <Swiperchart deviceid={this.props.match.params.deviceid} />
                 <div className="deviceinfocontent">
                 {
                     map(datadevice,(item,index)=>{
