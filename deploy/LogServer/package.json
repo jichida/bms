@@ -1,0 +1,20 @@
+{
+  "name": "serverkafkadb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "KAFKA_HOST=118.31.41.232:2181 MONGO_URL=mongodb://bms.com28.cn:27018/bms node index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.0",
+    "kafka-node": "^2.0.1",
+    "lodash": "^4.17.5",
+    "moment": "^2.19.2",
+    "uuid": "^3.1.0",
+    "winston": "^2.4.0"
+  }
+}
