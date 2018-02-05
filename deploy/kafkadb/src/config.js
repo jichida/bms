@@ -6,7 +6,7 @@ let config =  {
     groupId: 'BMSRecvGroup',
     sessionTimeout: 15000,
     protocol: ['roundrobin'],
-    fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
+    fromOffset: 'none' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
   },
   mapdict:{},
   NodeID:process.env.NodeID || 1,
