@@ -13,9 +13,9 @@ const startproducer = (callbackfn)=>{
   // let rate = 2000;
   producer.on('ready',  ()=> {
     console.log(`kafka producer get ready!!`);
-    const sendtokafka = (payload,callbackfn)=>{
+    const sendtokafka = (payload,topic,callbackfn)=>{
       const payloads = [
-          { topic: config.kafka_pushalaramtopic, messages: JSON.stringify(payload) },
+          { topic: topic, messages: JSON.stringify(payload) },
       ];
       producer.send(payloads, (err, data)=> {
         if(!!callbackfn){

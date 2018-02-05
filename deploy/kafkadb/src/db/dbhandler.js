@@ -73,7 +73,7 @@ const save_alarm = (devicedata,callbackfn)=>{
             if(!err && !!result && !!sendtokafka){
               if(!!devicedata.warninglevel){
                 if(devicedata.warninglevel !== ''){
-                  sendtokafka(result.toJSON(),(err,data)=>{
+                  sendtokafka(result.toJSON(),config.kafka_pushalaramtopic,(err,data)=>{
                     if(!!err){
                       console.log(`sendtokafka:${JSON.stringify(data)}`);
                       console.log(err);
@@ -190,7 +190,20 @@ exports.insertdatatodb= (data,callback)=>{
 
   const devicedata = _.omit(data,['BMSData','Position']);
 
+//==============
   console.log(`接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+  const logresult = {
+    SN64:devicedata.SN64,
+    NodeID:config.NodeID,
+    DeviceId:devicedata.DeviceId,
+  }
+  sendtokafka(logresult,config.kafka_bmslogtopic,(err,data)=>{
+    if(!!err){
+      console.log(`log sendtokafka:${JSON.stringify(data)}`);
+      console.log(err);
+    }
+  });
+//==============
 
   if(!!LastRealtimeAlarm){
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;

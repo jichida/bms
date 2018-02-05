@@ -11,6 +11,7 @@ let config =  {
   mapdict:{},
   NodeID:process.env.NodeID || 1,
   kafka_pushalaramtopic:'push.alarm',
+  kafka_bmslogtopic:'log.bms',
   consumertopics:['BMS.Data']
 };
 
