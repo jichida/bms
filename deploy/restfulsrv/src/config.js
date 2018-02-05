@@ -11,8 +11,8 @@ const config =  {
   publishlog:'../../log',
   uploaddir:'../uploader',
   uploadurl:'/uploader',
-  jpush_appkey:'630950d8101fe73d19d64aaf',
-  jpush_mastersecret:'dd52bf9de919a2a53441fce3',
+  jpush_appkey:process.env.jpush_appkey || '630950d8101fe73d19d64aaf',
+  jpush_mastersecret:process.env.jpush_mastersecret || 'dd52bf9de919a2a53441fce3',
 
   expRequestMinutes:200,//2分钟之内
   maxAge:86400000,
