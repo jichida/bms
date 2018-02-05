@@ -10,11 +10,13 @@ exports.logdata= (data,callback)=>{
   const LastHistoryTrack = _.clone(data.Position);
   const devicedata = _.omit(data,['BMSData','Position']);
 //==============
-  console.log(`接收kafka成功:${devicedata.SN64},${devicedata.DeviceId},当前:${ndata++}`);
-  logdata.getlog().info(`接收kafka成功:${devicedata.SN64},${devicedata.DeviceId},当前:${ndata++}`);
+  ndata = ndata+1;
+  console.log(`接收kafka成功:${devicedata.SN64},${devicedata.DeviceId},当前:${ndata}`);
+  logdata.getlog().info(`接收kafka成功:${devicedata.SN64},${devicedata.DeviceId},当前:${ndata}`);
 };
 
 exports.logbms= (data,callback)=>{
-  console.log(`接收bms成功:${devicedata.SN64},${config.NodeID},${devicedata.DeviceId},当前:${nbms++}`);
-  logbms.getlog().info(`接收bms成功:${devicedata.SN64},${config.NodeID},${devicedata.DeviceId},当前:${nbms++}`);
+  nbms = nbms+1;
+  console.log(`接收bms成功:${devicedata.SN64},${config.NodeID},${devicedata.DeviceId},当前:${nbms}`);
+  logbms.getlog().info(`接收bms成功:${devicedata.SN64},${config.NodeID},${devicedata.DeviceId},当前:${nbms}`);
 };
