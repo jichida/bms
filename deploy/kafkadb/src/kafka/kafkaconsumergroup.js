@@ -6,15 +6,21 @@ const config = require('../config');
 
 const startsrv = (config,onMessage,onError)=>{
   let consumerOptions = config.consumerOptions;
-  consumerOptions.id = `consumer${config.NodeID}`;
+  consumerOptions.id = `cid_${config.NodeID}`;
 
   const topics = [];
-  topics.push(config.kafka_dbtopic_index);
-  topics.push(config.kafka_dbtopic_devices);
-  topics.push(config.kafka_dbtopic_historydevices);
-  topics.push(config.kafka_dbtopic_historytracks);
-  topics.push(config.kafka_dbtopic_realtimealarms);
-  topics.push(config.kafka_dbtopic_realtimealarmraws);
+  if(config.ismater){
+    topics.push(config.kafka_dbtopic_index);
+    consumerOptions.groupId = 'bmsgroupmaster';
+  }
+  else{
+    topics.push(config.kafka_dbtopic_index);
+    topics.push(config.kafka_dbtopic_devices);
+    topics.push(config.kafka_dbtopic_historydevices);
+    topics.push(config.kafka_dbtopic_historytracks);
+    topics.push(config.kafka_dbtopic_realtimealarms);
+    topics.push(config.kafka_dbtopic_realtimealarmraws);
+  }
 
 
   const consumerGroup = new ConsumerGroup(consumerOptions, topics);

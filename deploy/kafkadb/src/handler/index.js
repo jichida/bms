@@ -5,6 +5,7 @@ const kafka_dbtopic_devices = require('./kafka_dbtopic_devices.js');
 const kafka_dbtopic_historytracks = require('./kafka_dbtopic_historytracks.js');
 const kafka_dbtopic_realtimealarms = require('./kafka_dbtopic_realtimealarms.js');
 const kafka_dbtopic_realtimealarmraws = require('./kafka_dbtopic_realtimealarmraws.js');
+const kafka_maintopic = require('./kafka_maintopic.js');
 
 const topichandler = {};
 topichandler[config.kafka_dbtopic_index] = kafka_dbtopic_index;
@@ -13,7 +14,7 @@ topichandler[config.kafka_dbtopic_historydevices] = kafka_dbtopic_historydevices
 topichandler[config.kafka_dbtopic_historytracks] = kafka_dbtopic_historytracks;
 topichandler[config.kafka_dbtopic_realtimealarms] = kafka_dbtopic_realtimealarms;
 topichandler[config.kafka_dbtopic_realtimealarmraws] = kafka_dbtopic_realtimealarmraws;
-
+topichandler[config.kafka_maintopic] = kafka_maintopic;
 
 
 module.exports = (msg,cb)=>{
