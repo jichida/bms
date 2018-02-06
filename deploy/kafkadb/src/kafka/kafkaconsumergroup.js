@@ -10,7 +10,7 @@ const startsrv = (config,onMessage,onError)=>{
 
   const topics = [];
   if(config.ismaster){
-    topics.push(config.kafka_dbtopic_index);
+    topics.push(config.kafka_maintopic);
     consumerOptions.groupId = 'bmsgroupmaster';
   }
   else{
