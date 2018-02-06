@@ -8,6 +8,19 @@ const client = new Client(config.consumerOptions.host);
 // const argv = require('optimist').argv;
 const producer = new Producer(client, { requireAcks: 1 });
 // const moment = require('moment');
+const getpartition = (key)=>{
+  let index = 0;
+  if(typeof key === 'string'){
+    try{
+      index = parseInt(key);
+      index = index%config.partitionnumber;
+    }
+    catch(e){
+      index = 0;
+    }
+  }
+  return index;
+}
 
 const startproducer = (callbackfn)=>{
   // let rate = 2000;
@@ -18,8 +31,8 @@ const startproducer = (callbackfn)=>{
           {
             topic: topic,
             messages: JSON.stringify(payload),
-            key:payload[`DeviceId`],
-            partitionerType:3,//// Partitioner type (default = 0, random = 1, cyclic = 2, keyed = 3, custom = 4), default 0
+            partition: getpartition(payload.DeviceId),
+  //          partitionerType:3,//// Partitioner type (default = 0, random = 1, cyclic = 2, keyed = 3, custom = 4), default 0
          },
       ];
       producer.send(payloads, (err, data)=> {

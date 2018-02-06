@@ -10,6 +10,7 @@ let config =  {
   },
   mapdict:{},
   NodeID:process.env.NodeID || 1,
+  partitionnumber:!!process.env.partitionnumber?parseInt(process.env.partitionnumber):48,
   kafka_pushalaramtopic:'push.alarm',
   kafka_bmslogtopic:'log.bms',
   kafka_dbtopic_historydevices:'db.historydevices',

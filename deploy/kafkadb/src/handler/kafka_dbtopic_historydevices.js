@@ -13,6 +13,7 @@ const save_historydevice = (devicedata,callbackfn)=>{
     // if(!!alarmtxt && alarmtxt!==''){
     //   result_device.alarmtxt = alarmtxt;
     // }
+    result_device.DeviceId = devicedata.DeviceId;
     result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;

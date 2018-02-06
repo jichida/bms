@@ -7,8 +7,7 @@ const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
 
-console.log(`+8+==>${moment().utcOffset(8).format('YYYY-MM-DD HH:mm:ss')}`);
-console.log(`cur==>${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+console.log(`partitionnumber:${config.partitionnumber}`);
 
 
 mongoose.Promise = global.Promise;
