@@ -4,11 +4,8 @@ const _ = require('lodash');
 const config = require('../config.js');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const moment = require('moment');
-const pushalarmproducer = require('../kafka/produceralarmpush');
-let sendtokafka;
-pushalarmproducer((fn)=>{
-  sendtokafka = fn;
-});
+const sendtokafka = require('../kafka/sendtokafka');
+
 
 const save_alarm = (devicedata,callbackfn)=>{
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
@@ -47,11 +44,11 @@ const save_alarm = (devicedata,callbackfn)=>{
           {upsert:true,new: true},
           (err, result)=> {
             callbackfn(err,result);
-
-            if(!err && !!result && !!sendtokafka){
+            const sendto = sendtokafka.getsendtokafka();
+            if(!err && !!result && !!sendto){
               if(!!devicedata.warninglevel){
                 if(devicedata.warninglevel !== ''){
-                  sendtokafka(result.toJSON(),config.kafka_pushalaramtopic,(err,data)=>{
+                  sendto(result.toJSON(),config.kafka_pushalaramtopic,(err,data)=>{
                     if(!!err){
                       console.log(`kafka_dbtopic_realtimealarms sendtokafka:${JSON.stringify(data)}`);
                       console.log(err);

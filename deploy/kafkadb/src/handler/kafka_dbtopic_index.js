@@ -7,11 +7,8 @@ const moment = require('moment');
 const getalarmtxt = require('./getalarmtxt');
 const config = require('../config.js');
 const utilposition = require('./util_position');
-const pushalarmproducer = require('../kafka/produceralarmpush');
-let sendtokafka;
-pushalarmproducer((fn)=>{
-  sendtokafka = fn;
-});
+const sendtokafka = require('../kafka/sendtokafka');
+
 
 const getpoint = (v)=>{
   if(!v){
@@ -59,37 +56,40 @@ const kafka_dbtopic_index = (data,callback)=>{
 
     utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
       const newdevicedata = _.merge(devicedata,retobj);
+      const sendto = sendtokafka.getsendtokafka();
+      if(!!sendto){
+        sendto(newdevicedata,config.kafka_dbtopic_devices,(err,data)=>{
+          if(!!err){
+            console.log(`kafka_dbtopic_devices sendtokafka:${JSON.stringify(newdevicedata)}`);
+            console.log(err);
+          }
+        });
+        sendto(newdevicedata,config.kafka_dbtopic_historydevices,(err,data)=>{
+          if(!!err){
+            console.log(`kafka_dbtopic_historydevices:${JSON.stringify(newdevicedata)}`);
+            console.log(err);
+          }
+        });
+        sendto(newdevicedata,config.kafka_dbtopic_historytracks,(err,data)=>{
+          if(!!err){
+            console.log(`kafka_dbtopic_historytracks:${JSON.stringify(newdevicedata)}`);
+            console.log(err);
+          }
+        });
+        sendto(newdevicedata,config.kafka_dbtopic_realtimealarms,(err,data)=>{
+          if(!!err){
+            console.log(`kafka_dbtopic_realtimealarms:${JSON.stringify(newdevicedata)}`);
+            console.log(err);
+          }
+        });
+        sendto(newdevicedata,config.kafka_dbtopic_devices,(err,data)=>{
+          if(!!err){
+            console.log(`kafka_dbtopic_realtimealarmraws:${JSON.stringify(newdevicedata)}`);
+            console.log(err);
+          }
+        });
+      }
 
-      sendtokafka(newdevicedata,config.kafka_dbtopic_devices,(err,data)=>{
-        if(!!err){
-          console.log(`kafka_dbtopic_devices sendtokafka:${JSON.stringify(newdevicedata)}`);
-          console.log(err);
-        }
-      });
-      sendtokafka(newdevicedata,config.kafka_dbtopic_historydevices,(err,data)=>{
-        if(!!err){
-          console.log(`kafka_dbtopic_historydevices:${JSON.stringify(newdevicedata)}`);
-          console.log(err);
-        }
-      });
-      sendtokafka(newdevicedata,config.kafka_dbtopic_historytracks,(err,data)=>{
-        if(!!err){
-          console.log(`kafka_dbtopic_historytracks:${JSON.stringify(newdevicedata)}`);
-          console.log(err);
-        }
-      });
-      sendtokafka(newdevicedata,config.kafka_dbtopic_realtimealarms,(err,data)=>{
-        if(!!err){
-          console.log(`kafka_dbtopic_realtimealarms:${JSON.stringify(newdevicedata)}`);
-          console.log(err);
-        }
-      });
-      sendtokafka(newdevicedata,config.kafka_dbtopic_devices,(err,data)=>{
-        if(!!err){
-          console.log(`kafka_dbtopic_realtimealarmraws:${JSON.stringify(newdevicedata)}`);
-          console.log(err);
-        }
-      });
       // const asyncfnsz = [
       //   (callbackfn)=>{
       //     save_device(newdevicedata,callbackfn);
