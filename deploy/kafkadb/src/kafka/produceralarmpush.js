@@ -27,14 +27,22 @@ const startproducer = (callbackfn)=>{
   producer.on('ready',  ()=> {
     console.log(`kafka producer get ready!!`);
     const sendtokafka = (payload,topic,callbackfn)=>{
-      const payloads = [
+      let payloads = [
           {
             topic: topic,
             messages: JSON.stringify(payload),
             partition: getpartition(payload.DeviceId),
-  //          partitionerType:3,//// Partitioner type (default = 0, random = 1, cyclic = 2, keyed = 3, custom = 4), default 0
          },
       ];
+      if(topic === config.kafka_pushalaramtopic){
+        //不指定partition
+        payloads = [
+            {
+              topic: topic,
+              messages: JSON.stringify(payload),
+           },
+        ];
+      }
       producer.send(payloads, (err, data)=> {
         if(!!callbackfn){
           callbackfn(err,data);
