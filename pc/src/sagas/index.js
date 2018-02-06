@@ -24,7 +24,7 @@ export default function* rootSaga() {
     yield fork(socketflow);
     yield fork(createmapmainflow);
     yield fork(createmaptrackhistoryplaybackflow);
-    yield fork(createloadingflow);
+    // yield fork(createloadingflow);
     yield fork(uiflow);
     yield fork(wsrecvsagaflow);
     yield fork(createsagacallbackflow);
