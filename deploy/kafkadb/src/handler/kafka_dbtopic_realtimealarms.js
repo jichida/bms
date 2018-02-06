@@ -53,7 +53,7 @@ const save_alarm = (devicedata,callbackfn)=>{
                 if(devicedata.warninglevel !== ''){
                   sendtokafka(result.toJSON(),config.kafka_pushalaramtopic,(err,data)=>{
                     if(!!err){
-                      console.log(`sendtokafka:${JSON.stringify(data)}`);
+                      console.log(`kafka_dbtopic_realtimealarms sendtokafka:${JSON.stringify(data)}`);
                       console.log(err);
                     }
                   });
