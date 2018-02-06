@@ -20,7 +20,7 @@ let config =  {
   kafka_dbtopic_realtimealarmraws:'db.realtimealarmraws',
   kafka_dbtopic_index:'bms.index',
   kafka_maintopic:'BMS.Data',
-  ismaster:process.env.ismater==='true'?true:false,
+  ismaster:process.env.ismaster==='true'?true:false,
   version:'1.0.1'
   // consumertopics:['BMS.Data']
 };
