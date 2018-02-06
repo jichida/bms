@@ -5,12 +5,24 @@ const ConsumerGroup = require('kafka-node').ConsumerGroup;
 const config = require('../config');
 
 const startsrv = (config,onMessage,onError)=>{
-  const consumerOptions = config.consumerOptions;
-  const topics = config.consumertopics;
-  const consumerGroup = new ConsumerGroup(Object.assign({id: `consumer${config.NodeID}`}, consumerOptions), topics);
+  let consumerOptions = config.consumerOptions;
+  consumerOptions.id = `consumer${config.NodeID}`;
+
+  const topics = [];
+  topics.push(config.kafka_dbtopic_index);
+  topics.push(config.kafka_dbtopic_devices);
+  topics.push(config.kafka_dbtopic_historydevices);
+  topics.push(config.kafka_dbtopic_historytracks);
+  topics.push(config.kafka_dbtopic_realtimealarms);
+  topics.push(config.kafka_dbtopic_realtimealarmraws);
+
+
+  const consumerGroup = new ConsumerGroup(consumerOptions, topics);
   consumerGroup.on('error', onError);
   consumerGroup.on('message', onMessage);
+
   console.log(`等待消息${config.NodeID}`);
+
   process.once('SIGINT', ()=> {
     async.each([consumerGroup],  (consumer, callback)=> {
       consumer.close(true, callback);

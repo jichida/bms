@@ -12,7 +12,13 @@ let config =  {
   NodeID:process.env.NodeID || 1,
   kafka_pushalaramtopic:'push.alarm',
   kafka_bmslogtopic:'log.bms',
-  consumertopics:['BMS.Data']
+  kafka_dbtopic_historydevices:'db.historydevices',
+  kafka_dbtopic_devices:'db.devices',
+  kafka_dbtopic_historytracks:'db.historytracks',
+  kafka_dbtopic_realtimealarms:'db.realtimealarms',
+  kafka_dbtopic_realtimealarmraws:'db.realtimealarmraws',
+  kafka_dbtopic_index:'BMS.Data',
+  // consumertopics:['BMS.Data']
 };
 
 
