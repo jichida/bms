@@ -9,7 +9,7 @@ const startsrv = (config,onMessage,onError)=>{
   consumerOptions.id = `cid_${config.NodeID}`;
 
   const topics = [];
-  if(config.ismater){
+  if(config.ismaster){
     topics.push(config.kafka_dbtopic_index);
     consumerOptions.groupId = 'bmsgroupmaster';
   }
