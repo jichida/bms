@@ -41,7 +41,7 @@ const save_alarmraw = (devicedata,callbackfn)=>{
 };
 
 const kafka_dbtopic_realtimealarmraws = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_realtimealarmraws】接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+  console.log(`【kafka_dbtopic_realtimealarmraws,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_alarmraw(devicedata,callbackfn);
 }
 

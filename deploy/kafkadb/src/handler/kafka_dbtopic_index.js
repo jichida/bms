@@ -30,7 +30,7 @@ const kafka_dbtopic_index = (data,callback)=>{
   const devicedata = _.omit(data,['BMSData','Position']);
 
 //==============
-  console.log(`【kafka_dbtopic_index】接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+  console.log(`【kafka_dbtopic_index,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   // const logresult = {
   //   SN64:devicedata.SN64,
   //   NodeID:config.NodeID,

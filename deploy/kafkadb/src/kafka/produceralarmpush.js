@@ -15,7 +15,12 @@ const startproducer = (callbackfn)=>{
     console.log(`kafka producer get ready!!`);
     const sendtokafka = (payload,topic,callbackfn)=>{
       const payloads = [
-          { topic: topic, messages: JSON.stringify(payload) },
+          {
+            topic: topic,
+            messages: JSON.stringify(payload),
+            key:payload[`DeviceId`],
+            partitionerType:3,//// Partitioner type (default = 0, random = 1, cyclic = 2, keyed = 3, custom = 4), default 0
+         },
       ];
       producer.send(payloads, (err, data)=> {
         if(!!callbackfn){

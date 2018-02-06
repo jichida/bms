@@ -15,7 +15,7 @@ const save_device = (devicedata,callbackfn)=>{
 };
 
 const kafka_dbtopic_devices = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_devices】接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+  console.log(`【kafka_dbtopic_devices,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_device(devicedata,callbackfn);
 }
 

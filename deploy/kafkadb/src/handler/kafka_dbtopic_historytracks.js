@@ -26,7 +26,7 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
 
 
 const kafka_dbtopic_historytracks = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_historytracks】接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+  console.log(`【kafka_dbtopic_historytracks,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_lasthistorytrack(devicedata,callbackfn);
 }
 

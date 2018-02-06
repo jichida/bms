@@ -39,7 +39,7 @@ const save_historydevice = (devicedata,callbackfn)=>{
 }
 
 const kafka_dbtopic_historydevices = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_historydevices】接收成功${devicedata.SN64},${config.NodeID},${devicedata.DeviceId}`);
+  console.log(`【kafka_dbtopic_historydevices,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_historydevice(devicedata,callbackfn);
 }
 
