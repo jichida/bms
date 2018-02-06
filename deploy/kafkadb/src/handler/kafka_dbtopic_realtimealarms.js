@@ -43,7 +43,6 @@ const save_alarm = (devicedata,callbackfn)=>{
           updated_data,
           {upsert:true,new: true},
           (err, result)=> {
-            callbackfn(err,result);
             const sendto = sendtokafka.getsendtokafka();
             if(!err && !!result && !!sendto){
               if(!!devicedata.warninglevel){
@@ -53,10 +52,13 @@ const save_alarm = (devicedata,callbackfn)=>{
                       console.log(`kafka_dbtopic_realtimealarms sendtokafka:${JSON.stringify(data)}`);
                       console.log(err);
                     }
+                    callbackfn(err,result);
                   });
+                  return;
                 }
               }
             }
+            callbackfn(err,result);
           });
 
         return;
