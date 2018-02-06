@@ -4,15 +4,15 @@ const _ = require('lodash');
 const config = require('../config.js');
 const moment = require('moment');
 
-const save_historydevice = (devicedata,alarmtxt,callbackfn)=>{
+const save_historydevice = (devicedata,callbackfn)=>{
   //保存到历史记录中
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   if(!!LastRealtimeAlarm){
     let result_device = _.clone(LastRealtimeAlarm);
     result_device = _.omit(result_device,['Alarm']);
-    if(!!alarmtxt && alarmtxt!==''){
-      result_device.alarmtxt = alarmtxt;
-    }
+    // if(!!alarmtxt && alarmtxt!==''){
+    //   result_device.alarmtxt = alarmtxt;
+    // }
     result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;

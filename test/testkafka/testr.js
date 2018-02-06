@@ -26,6 +26,7 @@ let jsondata =
     "DeviceType": 2,
     "DeviceStatus": 0,
     "TroubleStatus": 0,
+    "SN64":1,
     "Temperature_PCB": 0,
     "BMSData": {
         "CANType": 2,

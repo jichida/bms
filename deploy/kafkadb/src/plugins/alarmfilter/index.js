@@ -1,4 +1,4 @@
-const DBModels = require('../../db/models.js');
+const DBModels = require('../../handler/models.js');
 const _ = require('lodash');
 const moment = require('moment');
 const mongoose     = require('mongoose');
