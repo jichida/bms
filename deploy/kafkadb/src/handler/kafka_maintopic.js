@@ -4,7 +4,7 @@ const sendtokafka = require('../kafka/sendtokafka');
 //接受BMS.data=>原样广播成bms.index
 
 const kafka_maintopic = (data,callback)=>{
-  // console.log(`kafka_maintopic,${config.NodeID}】接收成功${data.SN64},${data.DeviceId}`);
+  console.log(`【kafka_maintopic,${config.NodeID}】接收成功${data.SN64},${data.DeviceId}`);
 
   const sendto = sendtokafka.getsendtokafka();
   if(!!sendto){
