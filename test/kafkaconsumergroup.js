@@ -10,6 +10,7 @@ const consumerOptions = {
   fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
 };
 
+
 const topics = ['BMS.bms', 'BMS.position'];
 
 const consumerGroup = new ConsumerGroup(Object.assign({id: cid}, consumerOptions), topics);

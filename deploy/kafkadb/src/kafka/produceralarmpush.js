@@ -9,16 +9,16 @@ const client = new Client(config.consumerOptions.host);
 const producer = new Producer(client, { requireAcks: 1 });
 // const moment = require('moment');
 const getpartition = (key)=>{
-  let index = 0;
+  let index = key;
   if(typeof key === 'string'){
     try{
       index = parseInt(key);
-      index = index%config.partitionnumber;
     }
     catch(e){
       index = 0;
     }
   }
+  index = index%config.partitionnumber;
   return index;
 }
 
@@ -31,7 +31,7 @@ const startproducer = (callbackfn)=>{
           {
             topic: topic,
             messages: JSON.stringify(payload),
-            partition: getpartition(payload.DeviceId),
+            partition: getpartition(payload.SN64),
          },
       ];
       if(topic === config.kafka_pushalaramtopic){
