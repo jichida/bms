@@ -6,7 +6,7 @@ let config =  {
     groupId: 'bmsdb',
     sessionTimeout: 15000,
     protocol: ['roundrobin'],
-    fromOffset: 'latest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
+    fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
   },
   mastergroupId:'bmsmaster',
   mapdict:{},
