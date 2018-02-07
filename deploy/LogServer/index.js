@@ -14,7 +14,7 @@ const onError =(error)=> {
 // logbms.initLog();
 
 const curtime = moment().format('YYYY-MM-DD-HHmmss')
-console.log(`开始启动:${curtime},host:${config.host},groupId:${groupId},topic:${JSON.stringify(config.consumertopics)},NodeID:${config.NodeID}`);
+console.log(`开始启动:${curtime},host:${config.consumerOptions.host},groupId:${config.consumerOptions.groupId},topic:${JSON.stringify(config.consumertopics)},NodeID:${config.NodeID}`);
 // logdata.getlog().info(`开始启动:${curtime}`);
 // logbms.getlog().info(`开始启动:${curtime}`);
 
