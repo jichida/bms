@@ -10,7 +10,7 @@ const producer = new Producer(client, { requireAcks: 1 });
 
 const sendtokafka = (payload,callbackfn)=>{
   const payloads = [
-      { topic: 'BMS.Data', messages: JSON.stringify(payload) },
+      { topic: 'bms.index', messages: JSON.stringify(payload) },
   ];
   producer.send(payloads, (err, data)=> {
     if(!!callbackfn){
