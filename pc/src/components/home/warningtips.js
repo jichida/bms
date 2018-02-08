@@ -290,7 +290,7 @@ class Page extends React.Component {
               <div className="BadgeStyle">
 
                   <Badge
-                      badgeContent={count_online}
+                      badgeContent={`(${count_online})`}
                       className="Badge"
                       secondary={true}
                       style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
@@ -311,7 +311,7 @@ class Page extends React.Component {
                       <img src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
                   </Badge>
                   <Badge
-                      badgeContent={count_offline}
+                      badgeContent={`(${count_offline})`}
                       className="Badge"
                       secondary={true}
                       style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
