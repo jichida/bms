@@ -1,5 +1,5 @@
 const JPush = require('jpush-sdk');
-const config = require('../config.js');
+const config = require('../../config.js');
 
 const client = JPush.buildClient(config.jpush_appkey, config.jpush_mastersecret);
 

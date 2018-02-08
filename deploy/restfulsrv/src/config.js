@@ -11,8 +11,6 @@ const config =  {
   publishlog:'../../log',
   uploaddir:'../uploader',
   uploadurl:'/uploader',
-  jpush_appkey:process.env.jpush_appkey || '630950d8101fe73d19d64aaf',
-  jpush_mastersecret:process.env.jpush_mastersecret || 'dd52bf9de919a2a53441fce3',
 
   expRequestMinutes:200,//2分钟之内
   maxAge:86400000,
@@ -24,7 +22,7 @@ const config =  {
   loginuserexptime_app:60*60*24*30,//用户登录有效期,30天
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mapdict:{},
-  kafka_pushalaramtopic:'push.alarm',
+  kafka_pushalaramtopic:'push.alarmpc',
   kafka_consumersettings:{
     host: process.env.KAFKA_HOST ||'118.31.41.232:2181',
     groupId:  process.env.KAFKA_PUSHDEVICEGROUP ||'PUSHDEVICEGROUP',

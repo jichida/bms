@@ -34,15 +34,6 @@ const startproducer = (callbackfn)=>{
             partition: getpartition(payload.SN64),
          },
       ];
-      if(topic === config.kafka_pushalaramtopic){
-        //不指定partition
-        payloads = [
-            {
-              topic: topic,
-              messages: JSON.stringify(payload),
-           },
-        ];
-      }
       producer.send(payloads, (err, data)=> {
         if(!!callbackfn){
           callbackfn(err,data);

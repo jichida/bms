@@ -9,18 +9,15 @@ const startsrv = (config,onMessage,onError)=>{
   consumerOptions.id = `cid_${config.NodeID}`;
 
   const topics = [];
-  if(config.ismaster){
-    topics.push(config.kafka_maintopic);
-    consumerOptions.groupId = config.mastergroupId;
-  }
-  else{
-    topics.push(config.kafka_dbtopic_index);
-    topics.push(config.kafka_dbtopic_devices);
-    topics.push(config.kafka_dbtopic_historydevices);
-    topics.push(config.kafka_dbtopic_historytracks);
-    topics.push(config.kafka_dbtopic_realtimealarms);
-    topics.push(config.kafka_dbtopic_realtimealarmraws);
-  }
+
+
+  topics.push(config.kafka_dbtopic_index);
+  topics.push(config.kafka_dbtopic_devices);
+  topics.push(config.kafka_dbtopic_historydevices);
+  topics.push(config.kafka_dbtopic_historytracks);
+  topics.push(config.kafka_dbtopic_realtimealarms);
+  topics.push(config.kafka_dbtopic_realtimealarmraws);
+  topics.push(config.kafka_pushalaramtopic_app);
 
 
   const consumerGroup = new ConsumerGroup(consumerOptions, topics);

@@ -4,7 +4,7 @@ const DBModels = require('./models.js');
 const _ = require('lodash');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const moment = require('moment');
-const getalarmtxt = require('./getalarmtxt');
+const alarm = require('./getalarmtxt');
 const config = require('../config.js');
 const utilposition = require('./util_position');
 const pushalarmproducer = require('../kafka/produceralarmpush');
@@ -247,7 +247,7 @@ exports.insertdatatodb= (data,callback)=>{
         if(!err && !!result){
           if(!!result[1]){
             const alarm = result[1].toJSON();
-            alarmtxt = getalarmtxt(alarm);
+            alarmtxt = alarm.getalarmtxt(alarm);
           }
         }
         save_historydevice(devicedata,alarmtxt,(err,result)=>{
