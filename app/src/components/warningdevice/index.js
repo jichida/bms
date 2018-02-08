@@ -226,7 +226,7 @@ class Page extends React.Component {
                             </div>
                             <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
                                 <img src={Searchimg3} width={26} />
-                                <span>起始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
+                                <span>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
                             <div className="seltimecontent" onClick={this.handleClick.bind(this, 1)} style={{marginBottom: "10px"}}>
                                 <img src={Searchimg3} width={26} />
