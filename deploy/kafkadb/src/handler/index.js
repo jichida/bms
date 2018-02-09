@@ -21,6 +21,7 @@ topichandler[config.kafka_dbtopic_realtimealarmraws] = kafka_dbtopic_realtimeala
 module.exports = (msg,cb)=>{
   try{
     if(!!topichandler[msg.topic]){
+      console.log(msg);
       let payload = msg.value;
       if(typeof payload === 'string'){
         try{
@@ -30,6 +31,8 @@ module.exports = (msg,cb)=>{
           console.log(`parse json eror ${JSON.stringify(e)}`);
         }
       }
+      payload.recvpartition = msg.partition;
+      payload.recvoffset = msg.offset;
       topichandler[msg.topic](payload,(err,result)=>{
         // console.log("服务端回复--->" + JSON.stringify(result));
         if(!!cb){

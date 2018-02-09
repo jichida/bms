@@ -22,6 +22,11 @@ const save_historydevice = (devicedata,callbackfn)=>{
     result_device.City = devicedata.City;
     result_device.Area = devicedata.Area;
 
+    //+以下语句便于调试
+    result_device.sendpartition = devicedata.sendpartition;
+    result_device.recvpartition = devicedata.recvpartition;
+    result_device.recvoffset = devicedata.recvoffset;
+
     result_device.warninglevel = devicedata.warninglevel;
     // alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
     //     result_device.resultalarmmatch = resultalarmmatch;

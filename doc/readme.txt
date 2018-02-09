@@ -12,6 +12,9 @@ db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f
 {SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1}).sort({'DataTime':-1}).limit(2)
 db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6")},
 {SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1}).sort({'DataTime':1}).limit(2)
+
+db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6"),SN64:5885001},
+{SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1}).sort({'SN64':-1}).limit(100)
 ===============
 db.historydevices.findOne({
   "organizationid" : ObjectId("599af5dc5f943819f10509e6"),

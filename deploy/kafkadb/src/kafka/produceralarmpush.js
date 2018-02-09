@@ -27,11 +27,12 @@ const startproducer = (callbackfn)=>{
   producer.on('ready',  ()=> {
     console.log(`kafka producer get ready!!`);
     const sendtokafka = (payload,topic,callbackfn)=>{
+      payload.partitionsend = getpartition(payload.SN64);
       let payloads = [
           {
             topic: topic,
             messages: JSON.stringify(payload),
-            partition: getpartition(payload.SN64),
+            partition: payload.partitionsend,
          },
       ];
       producer.send(payloads, (err, data)=> {
