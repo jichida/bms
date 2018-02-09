@@ -55,7 +55,11 @@ const kafka_dbtopic_index = (data,callback)=>{
     }
 
     utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
-      const newdevicedata = _.merge(devicedata,retobj);
+      let newdevicedata = _.merge(devicedata,retobj);
+
+      newdevicedata.indexrecvpartition = data.recvpartition;
+      newdevicedata.indexrecvoffset = data.recvoffset;
+
       const sendto = sendtokafka.getsendtokafka();
       if(!!sendto){
         sendto(newdevicedata,config.kafka_dbtopic_devices,(err,data)=>{

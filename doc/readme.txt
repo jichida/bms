@@ -4,8 +4,9 @@ sudo docker run -it -v /root:/root mongo:3.4 bash
 mongo --host 192.168.1.20 --port 27007
 use bms
 ===============
-db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6")},
-{SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1}).sort({'SN64':-1}).limit(1)
+db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6"),"SN64":5696408},
+{SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1,recvpartition:1,recvoffset:1,sendpartition:1}).sort({'DataTime':-1}).limit(100)
+
 db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6")},
 {SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1}).sort({'SN64':1}).limit(2)
 db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6")},
@@ -56,3 +57,8 @@ db.historydevices.aggregate([
         }
     }
 ]);
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+{ "_id" : ObjectId("5a7dd5b1daa07f000173e59c"), "DataTime" : "2018-02-09 23:59:39", "DeviceId" : "1501102801", "NodeID" : "412", "SN64" : 5696408, "UpdateTime" : "2018-02-10 01:09:05", "recvpartition" : 344, "recvoffset" : 71 }
+{ "_id" : ObjectId("5a7dd5753659a30001ca8104"), "DataTime" : "2018-02-09 23:59:39", "DeviceId" : "1501102801", "NodeID" : "124", "SN64" : 5696408, "UpdateTime" : "2018-02-10 01:08:05", "recvpartition" : 344, "recvoffset" : 56 }
+
+打印topic中：db.historydevices 中344 分区中 位于55～72的值
