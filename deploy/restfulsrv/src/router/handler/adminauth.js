@@ -27,6 +27,7 @@ const adminauth = (req,res)=>{
         ]
       }]).exec((err, user)=> {
     if (!!err) {
+      console.log(err);
       res.status(200).json({
         loginsuccess:false,
         err:'服务器内部错误'
