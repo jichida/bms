@@ -82,7 +82,7 @@ const kafka_dbtopic_index = (data,callback)=>{
             console.log(err);
           }
         });
-        sendto(newdevicedata,config.kafka_dbtopic_devices,(err,data)=>{
+        sendto(newdevicedata,config.kafka_dbtopic_realtimealarmraws,(err,data)=>{
           if(!!err){
             console.log(`kafka_dbtopic_realtimealarmraws:${JSON.stringify(newdevicedata)}`);
             console.log(err);

@@ -13,7 +13,14 @@ db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f
 db.getCollection('historydevices').find({"organizationid" : ObjectId("599af5dc5f943819f10509e6")},
 {SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1}).sort({'DataTime':1}).limit(2)
 ===============
-db.getCollection('historydevices').aggregate([
+db.historydevices.findOne({
+  "organizationid" : ObjectId("599af5dc5f943819f10509e6"),
+  "DataTime":{
+      "$gte":"2018-02-09 08:00:00",
+      "$lte":"2018-02-09 12:00:00"
+  }
+},{SN64:1,DataTime:1,DeviceId:1,NodeID:1,UpdateTime:1});
+db.historydevices.aggregate([
     {
         $match:
         {
