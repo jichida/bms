@@ -21,7 +21,6 @@ topichandler[config.kafka_dbtopic_realtimealarmraws] = kafka_dbtopic_realtimeala
 module.exports = (msg,cb)=>{
   try{
     if(!!topichandler[msg.topic]){
-      console.log(msg);
       let payload = msg.value;
       if(typeof payload === 'string'){
         try{
