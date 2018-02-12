@@ -25,7 +25,7 @@ const startsrv = (config)=>{
     globalconfig['client.id'] = `c_${config.NodeID}`;
 
     getConsumer(globalconfig,cconfig,topics,
-    (m)=> {
+    (msg)=> {
       // console.log(`get data====>${JSON.stringify(m)}`);
       dbh(msg,(err,result)=>{
         // consumerGroup.commit((error, data) => {
