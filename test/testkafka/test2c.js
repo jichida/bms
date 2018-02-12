@@ -8,7 +8,7 @@ const consumer = new Kafka.KafkaConsumer({
   'partition.assignment.strategy':'roundrobin',
   'enable.auto.commit': true
 }, {
-  'auto.offset.reset':'earliest'
+  'auto.offset.reset':'largest'
 });
 
 const topicName = 'bms.index';
