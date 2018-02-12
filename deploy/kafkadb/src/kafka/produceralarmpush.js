@@ -23,6 +23,25 @@ const getpartition = (key)=>{
 
 const startproducer = (callbackfn)=>{
   // let rate = 2000;
+  // client.loadMetadataForTopics([topic])
+  // client.updateMetadatas(metadata)
+  client.once('connect', ()=> {
+      console.log(`client connnected!!`);
+
+      const topics = [];
+
+      topics.push(config.kafka_dbtopic_index);
+      topics.push(config.kafka_dbtopic_devices);
+      topics.push(config.kafka_dbtopic_historydevices);
+      topics.push(config.kafka_dbtopic_historytracks);
+      topics.push(config.kafka_dbtopic_realtimealarms);
+      topics.push(config.kafka_dbtopic_realtimealarmraws);
+      topics.push(config.kafka_pushalaramtopic_app);
+
+      client.loadMetadataForTopics(topics, (error, results)=> {
+        console.log(`loadMetadataForTopics!! ${JSON.stringify(results)}`);
+      });
+  });
   producer.on('ready',  ()=> {
     console.log(`kafka producer get ready!!`);
     const sendtokafka = (payload,topic,callbackfn)=>{
