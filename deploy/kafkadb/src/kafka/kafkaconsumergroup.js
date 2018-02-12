@@ -20,15 +20,16 @@ const startsrv = (config,onMessage,onError)=>{
   topics.push(config.kafka_dbtopic_realtimealarmraws);
   topics.push(config.kafka_pushalaramtopic_app);
 
+  let consumerGroup;
   _.map(topics,(topicname,index)=>{
     consumerOptions.id = `c${index}_${config.NodeID}`;
-    let consumerGroup = new ConsumerGroup(consumerOptions, topicname);
+    consumerGroup = new ConsumerGroup(consumerOptions, topicname);
     consumerGroup.on('error', onError);
     consumerGroup.on('message', onMessage);
     consumerGroups.push(consumerGroup);
   });
 
-  console.log(`等待消息${config.NodeID}`);
+  console.log(`等待消息${config.NodeID},consumerGroups:${consumerGroups.length}`);
 
   process.once('SIGINT', ()=> {
     async.each(consumerGroups,  (consumer, callback)=> {
