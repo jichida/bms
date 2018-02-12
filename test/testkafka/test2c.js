@@ -30,7 +30,7 @@ getConsumer(globalconfig,cconfig,['bms.index'],'kafkagrouptest',
   console.error(`uncaughtException err---`);
 }).then((consumer)=>{
    process.on('SIGINT', () => {
-      consumer.disconnect()
+      consumer.disconnect();
     });
 });
 // const Kafka = require('node-rdkafka');

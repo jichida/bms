@@ -13,7 +13,9 @@ const initConsumer =(globalconfig,cconfig,onMsg,onErr)=> {
     consumer.on('data', (msg)=> {
       onMsg(msg);
     });
-    consumer.on('event.error', onErr);
+    consumer.on('event.error', (err)=>{
+        onErr(err);
+    });
     consumer.on('disconnected', () => {
       process.exit(0)
     });

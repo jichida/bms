@@ -199,7 +199,7 @@ let jsondata =
 
 
 
-getProducer(globalconfig,cconfig,(err)=> {
+getProducer(globalconfig,pconfig,(err)=> {
   console.error(`---uncaughtException err`);
   console.error(err);
   console.error(err.stack);
