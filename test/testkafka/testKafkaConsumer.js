@@ -2,7 +2,7 @@ const Kafka = require('node-rdkafka');
 
 const consumer = new Kafka.KafkaConsumer({
   // 'debug': 'all',
-  'group.id': 'kafkagrouptest',
+  'group.id': 'kafkagrouptest2',
   'metadata.broker.list': '192.168.1.20:9092',
   'client.id':'c1',
   'partition.assignment.strategy':'roundrobin',
@@ -39,8 +39,17 @@ consumer.on('ready', function(arg) {
 
 consumer.on('data', function(m) {
   console.log(`get data====>${JSON.stringify(m)}`);
-  console.log(m);
+  const value = m.value.toString();
+  console.log(`partition:${partition},offset:${offset},value:${value}`);
   // counter++;
+
+  // size: 4063,
+  // key: null,
+  // topic: 'bms.index',
+  // offset: 533551,
+  // partition: 0,
+  // timestamp: 0
+
   //
   // //committing offsets every numMessages
   // if (counter % numMessages === 0) {
