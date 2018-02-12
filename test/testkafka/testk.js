@@ -237,7 +237,7 @@ producer.on('ready',  ()=> {
   setInterval(()=>{
     jsondata.SN64 = i;
     i++;
-    json.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
     sendtokafka(jsondata,(err,result)=>{
       if(!!err){
         console.log(`==>err:${JSON.stringify(err)}`);
