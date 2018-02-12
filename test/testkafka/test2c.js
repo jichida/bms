@@ -3,7 +3,7 @@ const Kafka = require('node-rdkafka');
 const consumer = new Kafka.KafkaConsumer({
   // 'debug': 'all',
   'group.id': 'kafkagrouptest2',
-  'metadata.broker.list': '192.168.1.20:9092',
+  'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
   'client.id':'c1',
   'partition.assignment.strategy':'roundrobin',
   'enable.auto.commit': true
@@ -20,8 +20,10 @@ consumer.on('event.log', function(log) {
 
 //logging all errors
 consumer.on('event.error', function(err) {
-  console.error('Error from consumer');
-  console.error(err);
+  console.error(`---uncaughtException err`);
+  console.error(error);
+  console.error(error.stack);
+  console.error(`uncaughtException err---`);
 });
 
 //counter to commit offsets every numMessages are received
