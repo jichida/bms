@@ -1,12 +1,10 @@
 const kafka = require('kafka-node');
 const config = require('../config.js');
-
 const Producer = kafka.Producer;
-const KeyedMessage = kafka.KeyedMessage;
 const client = new kafka.KafkaClient({kafkaHost:config.consumerOptions.kafkaHost});
-// const argv = require('optimist').argv;
 const producer = new Producer(client, { requireAcks: 1 });
-// const moment = require('moment');
+const async = require('async');
+
 const getpartition = (key)=>{
   let index = key;
   if(typeof key === 'string'){
@@ -25,25 +23,44 @@ const startproducer = (callbackfn)=>{
   // let rate = 2000;
   // client.loadMetadataForTopics([topic])
   // client.updateMetadatas(metadata)
-  client.once('connect', ()=> {
-      console.log(`client connnected!!`);
+  const clienconnected = (callbackfn)=>{
+    client.once('connect', ()=> {
+        console.log(`client connnected!!`);
+        const topics = [];
+        topics.push(config.kafka_dbtopic_index);
+        topics.push(config.kafka_dbtopic_devices);
+        topics.push(config.kafka_dbtopic_historydevices);
+        topics.push(config.kafka_dbtopic_historytracks);
+        topics.push(config.kafka_dbtopic_realtimealarms);
+        topics.push(config.kafka_dbtopic_realtimealarmraws);
+        topics.push(config.kafka_pushalaramtopic_app);
 
-      const topics = [];
+        client.loadMetadataForTopics(topics, (error, results)=> {
+          console.log(`loadMetadataForTopics!! `);
+          callbackfn(null,true);
+        });
+    });
+  }
 
-      topics.push(config.kafka_dbtopic_index);
-      topics.push(config.kafka_dbtopic_devices);
-      topics.push(config.kafka_dbtopic_historydevices);
-      topics.push(config.kafka_dbtopic_historytracks);
-      topics.push(config.kafka_dbtopic_realtimealarms);
-      topics.push(config.kafka_dbtopic_realtimealarmraws);
-      topics.push(config.kafka_pushalaramtopic_app);
+  const producerready = (callbackfn)=>{
+    producer.on('ready',  ()=> {
+      console.log(`kafka producer get ready!!`);
+      callbackfn(null,true);
+    });
+  }
 
-      client.loadMetadataForTopics(topics, (error, results)=> {
-        console.log(`loadMetadataForTopics!! ${JSON.stringify(results)}`);
-      });
-  });
-  producer.on('ready',  ()=> {
-    console.log(`kafka producer get ready!!`);
+  let asyncfnsz = [];
+  asyncfnsz.push(clienconnected);
+  asyncfnsz.push(producerready);
+
+  async.parallel(asyncfnsz,(err,result)=>{
+    if(!!err){
+      console.error(`---parallel err`);
+      console.error(error);
+      console.error(error.stack);
+      console.error(`parallel err---`);
+    }
+    console.log(`allready--->result:${JSON(result)}`);
     const sendtokafka = (payload,topic,callbackfn)=>{
       payload.partitionsend = getpartition(payload.SN64);
       let payloads = [
@@ -61,6 +78,7 @@ const startproducer = (callbackfn)=>{
     }
     callbackfn(sendtokafka);
   });
+
 
   producer.on('error',  (err)=> {
     console.log(`startproducer error`);

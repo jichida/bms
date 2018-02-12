@@ -7,10 +7,27 @@ const client = new kafka.KafkaClient({kafkaHost:"192.168.1.20:9092,192.168.1.114
 const producer = new Producer(client, { requireAcks: 1 });
 // const moment = require('moment');
 
+const getpartition = (key)=>{
+  let index = key;
+  if(typeof key === 'string'){
+    try{
+      index = parseInt(key);
+    }
+    catch(e){
+      index = 0;
+    }
+  }
+  index = index%config.partitionnumber;
+  return index;
+}
 
 const sendtokafka = (payload,callbackfn)=>{
   const payloads = [
-      { topic: 'bms.index', messages: JSON.stringify(payload) },
+      {
+         topic: 'bms.index',
+         messages: JSON.stringify(payload),
+         partition: payload.partitionsend,
+     },
   ];
   producer.send(payloads, (err, data)=> {
     if(!!callbackfn){

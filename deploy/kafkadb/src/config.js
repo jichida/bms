@@ -23,7 +23,7 @@ let config =  {
   kafka_dbtopic_realtimealarms:'db.realtimealarms',
   kafka_dbtopic_realtimealarmraws:'db.realtimealarmraws',
   kafka_dbtopic_index:'bms.index',
-  version:'1.0.3'
+  version:'1.0.4'
   // consumertopics:['BMS.Data']
 };
 
