@@ -55,4 +55,13 @@ const onError =(error)=> {
   console.error(`msg err---`);
 }
 
+process.on('uncaughtException', (error) => {
+  console.error(`---uncaughtException err`);
+  console.error(error);
+  console.error(error.stack);
+  console.error(`uncaughtException err---`);
+  throw error;
+});
+
+
 startsrv(config,srvdb.onMessage,onError);
