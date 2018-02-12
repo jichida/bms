@@ -1,7 +1,7 @@
 const kafka = require('kafka-node');
 const Producer = kafka.Producer;
-const KeyedMessage = kafka.KeyedMessage;
 const Client = kafka.Client;
+const async = require('async');
 const moment = require('moment');
 const client = new kafka.KafkaClient({kafkaHost:"192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092"});
 // const argv = require('optimist').argv;
@@ -229,11 +229,35 @@ let jsondata =
 };
 
 
+const clienconnected = (callbackfn)=>{
+  client.once('connect', ()=> {
+      console.log(`client connnected!!`);
+      const topics = ['bms.index'];
+      client.loadMetadataForTopics(topics, (error, results)=> {
+        console.log(`loadMetadataForTopics!! `);
+        callbackfn(null,true);
+      });
+  });
+}
 
-// let rate = 2000;
+const producerready = (callbackfn)=>{
+  producer.on('ready',  ()=> {
+    console.log(`kafka producer get ready!!`);
+    callbackfn(null,true);
+  });
+}
+
+let asyncfnsz = [];
+asyncfnsz.push(clienconnected);
+asyncfnsz.push(producerready);
 let i = 0;
-producer.on('ready',  ()=> {
-  console.log(`kafka producer get ready!!`);
+async.parallel(asyncfnsz,(err,result)=>{
+  if(!!err){
+    console.error(`---parallel err`);
+    console.error(error);
+    console.error(error.stack);
+    console.error(`parallel err---`);
+  }
   setInterval(()=>{
     jsondata.SN64 = i;
     i++;
@@ -247,14 +271,10 @@ producer.on('ready',  ()=> {
       }
     });
   },0);
-
-    // sendtokafka(jsondata,(err,result)=>{
-      // console.log(`==>err:${JSON.stringify(err)}`);
-      // console.log(`==>result:${JSON.stringify(result)}`);
-    // });
-  // });
-
 });
+
+
+
 
 producer.on('error',  (err)=> {
   console.log('error', err);
