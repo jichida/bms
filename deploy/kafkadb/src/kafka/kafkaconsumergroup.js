@@ -21,19 +21,26 @@ const startsrv = (config,onMessage,onError)=>{
   topics.push(config.kafka_pushalaramtopic_app);
 
   let consumerGroup;
-  const consumerconnected = (id,topicname)=>{
+  const consumerconnected = (id)=>{
     return ()=>{
-      console.log(`ConsumerGroup connnected:${id},${topicname}`);
+      console.log(`ConsumerGroup connnected:${id}`);
     }
   }
-  _.map(topics,(topicname,index)=>{
-    consumerOptions.id = `c${index}_${config.NodeID}`;
-    consumerGroup = new ConsumerGroup(consumerOptions, [topicname]);
-    consumerGroup.once('connect', consumerconnected(consumerOptions.id,topicname));
-    consumerGroup.on('error', onError);
-    consumerGroup.on('message', onMessage);
-    consumerGroups.push(consumerGroup);
-  });
+
+  consumerOptions.id = `c_${config.NodeID}`;
+  consumerGroup = new ConsumerGroup(consumerOptions,topics);
+  consumerGroup.once('connect', consumerconnected(consumerOptions.id));
+  consumerGroup.on('error', onError);
+  consumerGroup.on('message', onMessage);
+  consumerGroups.push(consumerGroup);
+  // _.map(topics,(topicname,index)=>{
+  //   consumerOptions.id = `c${index}_${config.NodeID}`;
+  //   consumerGroup = new ConsumerGroup(consumerOptions, [topicname]);
+  //   consumerGroup.once('connect', consumerconnected(consumerOptions.id,topicname));
+  //   consumerGroup.on('error', onError);
+  //   consumerGroup.on('message', onMessage);
+  //   consumerGroups.push(consumerGroup);
+  // });
 
   console.log(`等待消息${config.NodeID},consumerGroups:${consumerGroups.length}`);
 
