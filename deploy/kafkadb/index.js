@@ -9,6 +9,7 @@ const moment = require('moment');
 
 console.log(`start=====>version:${config.version},kafkaHost:${config.consumerOptions.kafkaHost},partitionnumber:${config.partitionnumber}`);
 
+process.setMaxListeners(0);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodburl,{
