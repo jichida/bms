@@ -28,7 +28,7 @@ const startsrv = (config,onMessage,onError)=>{
   }
   _.map(topics,(topicname,index)=>{
     consumerOptions.id = `c${index}_${config.NodeID}`;
-    consumerGroup = new ConsumerGroup(consumerOptions, topicname);
+    consumerGroup = new ConsumerGroup(consumerOptions, [topicname]);
     consumerGroup.once('connect', consumerconnected(consumerOptions.id,topicname));
     consumerGroup.on('error', onError);
     consumerGroup.on('message', onMessage);
