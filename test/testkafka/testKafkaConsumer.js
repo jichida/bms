@@ -1,6 +1,7 @@
 const Kafka = require('node-rdkafka');
 
 const consumer = new Kafka.KafkaConsumer({
+  'debug': 'all',
   'group.id': 'kafka',
   'metadata.broker.list': '192.168.1.20:9092',
   'enable.auto.commit': true
