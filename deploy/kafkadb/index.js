@@ -7,7 +7,7 @@ const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
 
-console.log(`start=====>version:${config.version},host:${config.consumerOptions.host},partitionnumber:${config.partitionnumber}`);
+console.log(`start=====>version:${config.version},kafkaHost:${config.consumerOptions.kafkaHost},partitionnumber:${config.partitionnumber}`);
 
 
 mongoose.Promise = global.Promise;

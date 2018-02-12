@@ -2,7 +2,7 @@ let config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mongos:process.env.mongos==='true'?true:false,
   consumerOptions:{
-    host: process.env.ZK_HOST ||'118.31.41.232:2181',
+    // host: process.env.ZK_HOST ||'118.31.41.232:2181',
     kafkaHost:process.env.KAFKA_HOST ||'118.31.41.232:9092',
     groupId: 'bmsgroup',
     sessionTimeout: 15000,
