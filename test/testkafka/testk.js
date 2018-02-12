@@ -222,7 +222,7 @@ producer.on('ready',  ()=> {
       console.log(`==>err:${JSON.stringify(err)}`);
       console.log(`==>result:${JSON.stringify(result)}`);
     });
-  },2);
+  },2000);
 
     // sendtokafka(jsondata,(err,result)=>{
       // console.log(`==>err:${JSON.stringify(err)}`);
