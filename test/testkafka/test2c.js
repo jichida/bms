@@ -1,7 +1,7 @@
 const Kafka = require('node-rdkafka');
 
 const consumer = new Kafka.KafkaConsumer({
-  // 'debug': 'all',
+  'debug': 'all',
   'group.id': 'kafkagrouptest2',
   'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
   'client.id':'c1',
