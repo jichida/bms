@@ -217,10 +217,17 @@ producer.on('ready',  ()=> {
   producer.createTopics(['BMS.Data'],true,(err)=>{
     console.log(`==>createTopics err:${JSON.stringify(err)}`);
 
-    sendtokafka(jsondata,(err,result)=>{
-      console.log(`==>err:${JSON.stringify(err)}`);
-      console.log(`==>result:${JSON.stringify(result)}`);
-    });
+    for(let i = 0 ; ;i++){
+      jsondata.SN64 = i;
+      sendtokafka(jsondata,(err,result)=>{
+        console.log(`==>err:${JSON.stringify(err)}`);
+        console.log(`==>result:${JSON.stringify(result)}`);
+      });
+    }
+    // sendtokafka(jsondata,(err,result)=>{
+      // console.log(`==>err:${JSON.stringify(err)}`);
+      // console.log(`==>result:${JSON.stringify(result)}`);
+    // });
   });
 
 });
