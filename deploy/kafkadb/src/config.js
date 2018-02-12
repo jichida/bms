@@ -4,12 +4,11 @@ let config =  {
   consumerOptions:{
     host: process.env.ZK_HOST ||'118.31.41.232:2181',
     kafkaHost:process.env.KAFKA_HOST ||'118.31.41.232:9092',
-    groupId: 'bmsdb',
+    groupId: 'bmsgroup',
     sessionTimeout: 15000,
     protocol: ['roundrobin'],
     fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
   },
-  mastergroupId:'bmsmaster',
   mapdict:{},
   NodeID:process.env.NodeID || 1,
   partitionnumber:!!process.env.partitionnumber?parseInt(process.env.partitionnumber):48,
@@ -24,7 +23,7 @@ let config =  {
   kafka_dbtopic_realtimealarms:'db.realtimealarms',
   kafka_dbtopic_realtimealarmraws:'db.realtimealarmraws',
   kafka_dbtopic_index:'bms.index',
-  version:'1.0.2'
+  version:'1.0.3'
   // consumertopics:['BMS.Data']
 };
 
