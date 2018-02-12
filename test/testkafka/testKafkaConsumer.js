@@ -40,7 +40,14 @@ consumer.on('ready', function(arg) {
 consumer.on('data', function(m) {
   // console.log(`get data====>${JSON.stringify(m)}`);
   const value = m.value.toString();
-  console.log(`partition:${m.partition},offset:${m.offset},value:${value.SN64}`);
+  let jsondata;
+  try{
+    jsondata = JSON.parse(value);
+  }
+  catch(e){
+
+  }
+  console.log(`partition:${m.partition},offset:${m.offset},value:${jsondata.SN64}`);
   // counter++;
 
   // size: 4063,
