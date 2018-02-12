@@ -1,4 +1,4 @@
-const getConsumer = require('rdkafka/c.js');
+const getConsumer = require('./rdkafka/c.js');
 const globalconfig = {
     'group.id': 'kafkagrouptest',
     'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
