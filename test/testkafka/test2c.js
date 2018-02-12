@@ -2,13 +2,13 @@ const Kafka = require('node-rdkafka');
 
 const consumer = new Kafka.KafkaConsumer({
   'debug': 'all',
-  'group.id': 'kafkagrouptest2',
+  'group.id': 'kafkagrouptest',
   'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
   'client.id':'c1',
   // 'partition.assignment.strategy':'roundrobin',
   // 'enable.auto.commit': true
 }, {
-  'auto.offset.reset':'largest'
+  // 'auto.offset.reset':'largest'
 });
 
 const topicName = 'bms.index';
@@ -36,10 +36,7 @@ consumer.on('ready', function(arg) {
   consumer.subscribe([topicName]);
   //start consuming messages
   consumer.consume();
-});
-
-
-consumer.on('data', function(m) {
+}).on('data', function(m) {
   // console.log(`get data====>${JSON.stringify(m)}`);
   const value = m.value.toString();
   let jsondata;
@@ -81,7 +78,4 @@ consumer.connect();
 
 process.once('SIGINT', ()=> {
   consumer.disconnect();
-  // async.each([consumerGroup],  (consumer, callback)=> {
-  //   consumer.close(true, callback);
-  // });
 });
