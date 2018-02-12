@@ -3,7 +3,6 @@ const config = require('../config.js');
 
 const Producer = kafka.Producer;
 const KeyedMessage = kafka.KeyedMessage;
-const Client = kafka.Client;
 const client = new kafka.KafkaClient({kafkaHost:config.consumerOptions.kafkaHost});
 // const argv = require('optimist').argv;
 const producer = new Producer(client, { requireAcks: 1 });

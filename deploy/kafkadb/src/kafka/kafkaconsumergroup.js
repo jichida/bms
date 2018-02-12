@@ -29,7 +29,7 @@ const startsrv = (config,onMessage,onError)=>{
 
   consumerOptions.id = `c_${config.NodeID}`;
   consumerGroup = new ConsumerGroup(consumerOptions,topics);
-  consumerGroup.once('connect', consumerconnected(consumerOptions.id));
+  consumerGroup.on('connect', consumerconnected(consumerOptions.id));
   consumerGroup.on('error', onError);
   consumerGroup.on('message', onMessage);
   consumerGroups.push(consumerGroup);

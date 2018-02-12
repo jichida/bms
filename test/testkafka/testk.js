@@ -219,10 +219,14 @@ producer.on('ready',  ()=> {
     jsondata.SN64 = i;
     i++;
     sendtokafka(jsondata,(err,result)=>{
-      console.log(`==>err:${JSON.stringify(err)}`);
-      console.log(`==>result:${JSON.stringify(result)}`);
+      if(!!err){
+        console.log(`==>err:${JSON.stringify(err)}`);
+      }
+      else{
+        console.log(`==>result:${JSON.stringify(result)}`);
+      }
     });
-  },2000);
+  },0);
 
     // sendtokafka(jsondata,(err,result)=>{
       // console.log(`==>err:${JSON.stringify(err)}`);
