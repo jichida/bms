@@ -35,14 +35,17 @@ module.exports = (msg,cb)=>{
       payload.recvpartition = msg.partition;
       payload.recvoffset = msg.offset;
       topichandler[msg.topic](payload,(err,result)=>{
-        // console.log("服务端回复--->" + JSON.stringify(result));
         if(!!cb){
           cb(err,result);
         }
       });
+      return;
     }
   }
   catch(e){
     console.log("服务端内部错误--->" + e);
+  }
+  if(!!cb){
+    cb();
   }
 }

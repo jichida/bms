@@ -1,5 +1,4 @@
 const startsrv = require('./src/kafka/kafkaconsumergroup.js');
-const srvdb = require('./src/kafka/srvdbinsert.js');
 const config = require('./src/config');
 const DBModels = require('./src/handler/models.js');
 const _ = require('lodash');
@@ -49,13 +48,6 @@ dbdictModel.find({
 
 console.log(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
-const onError =(error)=> {
-  console.error(`---msg err`);
-  console.error(error);
-  console.error(error.stack);
-  console.error(`msg err---`);
-}
-
 process.on('uncaughtException', (error) => {
   console.error(`---uncaughtException err`);
   console.error(error);
@@ -65,4 +57,4 @@ process.on('uncaughtException', (error) => {
 });
 
 
-startsrv(config,srvdb.onMessage,onError);
+startsrv(config);
