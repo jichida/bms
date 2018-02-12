@@ -28,7 +28,7 @@ const startsrv = (config,onMessage,onError)=>{
     console.error(error.stack);
     console.error(`msg err---`);
   });
-  consumerGroup.on('message', (message)=>{
+  consumerGroup.on('message', (msg)=>{
     dbh(msg,(err,result)=>{
       consumerGroup.commit((error, data) => {
           if(!!error){
