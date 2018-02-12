@@ -1,4 +1,4 @@
-const pushalarmproducer = require('../kafka/produceralarmpush');
+const pushalarmproducer = require('../kafka/kp');
 let sendtokafka;
 
 pushalarmproducer((fn)=>{

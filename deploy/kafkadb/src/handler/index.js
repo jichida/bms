@@ -23,7 +23,7 @@ module.exports = (msg,cb)=>{
     console.log(`recvtopiname:${msg.topic},offset:${msg.offset},partition:${msg.partition}`);
 
     if(!!topichandler[msg.topic]){
-      let payload = msg.value;
+      let payload = msg.value.toString();
       if(typeof payload === 'string'){
         try{
           payload = JSON.parse(payload);

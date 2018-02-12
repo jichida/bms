@@ -208,13 +208,14 @@ getProducer(globalconfig,pconfig,(err)=> {
   console.error(`uncaughtException err---`);
 }).then((producer)=>{
   let i = 0;
+  console.error('start send message...');
   setInterval(()=>{
     try {
         jsondata.SN64 = i;
         i++;
         jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const stringdata = JSON.stringify(jsondata);
-        producer.produce('bms.index', -1, new Buffer(stringdata), i)
+        producer.produce('bms.index', -1, new Buffer(stringdata), i);
       } catch (err) {
         console.error('A problem occurred when sending our message')
         console.error(err)

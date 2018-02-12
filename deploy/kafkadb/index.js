@@ -1,4 +1,4 @@
-const startsrv = require('./src/kafka/kafkaconsumergroup.js');
+const startsrv = require('./src/kafka/kc.js');
 const config = require('./src/config');
 const DBModels = require('./src/handler/models.js');
 const _ = require('lodash');

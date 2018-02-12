@@ -12,7 +12,7 @@
   "dependencies": {
     "async": "^2.5.0",
     "jpush-sdk": "^3.4.3",
-    "kafka-node": "^2.0.1",
+    "node-rdkafka":"^2.2.2",
     "moment": "^2.19.2",
     "mongoose": "^4.11.4",
     "mongoose-paginate": "^5.0.3",

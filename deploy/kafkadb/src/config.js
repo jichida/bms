@@ -1,14 +1,20 @@
 let config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mongos:process.env.mongos==='true'?true:false,
-  consumerOptions:{
-    // host: process.env.ZK_HOST ||'118.31.41.232:2181',
-    autoCommit:false,
-    kafkaHost:process.env.KAFKA_HOST ||'118.31.41.232:9092',
-    groupId: 'bmsgroup',
-    sessionTimeout: 15000,
-    protocol: ['roundrobin'],
-    fromOffset: 'earliest' // equivalent of auto.offset.reset valid values are 'none', 'latest', 'earliest'
+  kafka_cconfig1:{
+      'group.id': 'bmsgroup',
+      'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
+      'client.id':'c1',
+      'partition.assignment.strategy':'roundrobin',
+      'enable.auto.commit': true
+  },
+  kafka_cconfig2:{
+    'auto.offset.reset':'largest'
+  },
+  kafka_pconfig1:{
+    'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
+  },
+  kafka_pconfig2:{
   },
   mapdict:{},
   NodeID:process.env.NodeID || 1,
@@ -24,7 +30,7 @@ let config =  {
   kafka_dbtopic_realtimealarms:'db.realtimealarms',
   kafka_dbtopic_realtimealarmraws:'db.realtimealarmraws',
   kafka_dbtopic_index:'bms.index',
-  version:'1.0.4'
+  version:'1.1.0'
   // consumertopics:['BMS.Data']
 };
 
