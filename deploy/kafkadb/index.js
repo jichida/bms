@@ -49,8 +49,10 @@ dbdictModel.find({
 console.log(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
 const onError =(error)=> {
+  console.error(`---log err`);
   console.error(error);
   console.error(error.stack);
+  console.error(`log err---`);
 }
 
 startsrv(config,srvdb.onMessage,onError);
