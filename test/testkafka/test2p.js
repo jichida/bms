@@ -1,4 +1,4 @@
-const getProducer  = require('./rdkafka/p.js');
+const getProducer  = require('./rkafka/p.js');
 const globalconfig = {
     'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
 };
