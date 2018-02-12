@@ -41,7 +41,7 @@ const startsrv = (config,onMessage,onError)=>{
     });
   });
 
-  console.log(`等待消息${config.NodeID},consumerGroups:${consumerGroups.length}`);
+  console.log(`等待消息${config.NodeID},id:${consumerOptions.id}`);
 
   process.once('SIGINT', ()=> {
     async.each([consumerGroup],  (consumer, callback)=> {
