@@ -215,7 +215,7 @@ let jsondata =
 let i = 0;
 producer.on('ready',  ()=> {
   console.log(`kafka producer get ready!!`);
-  setTimeout(()=>{
+  setInterval(()=>{
     jsondata.SN64 = i;
     i++;
     sendtokafka(jsondata,(err,result)=>{
