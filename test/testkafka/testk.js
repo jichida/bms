@@ -2,11 +2,13 @@ const kafka = require('kafka-node');
 const Producer = kafka.Producer;
 const KeyedMessage = kafka.KeyedMessage;
 const Client = kafka.Client;
+const moment = require('moment');
 const client = new kafka.KafkaClient({kafkaHost:"192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092"});
 // const argv = require('optimist').argv;
 const producer = new Producer(client, { requireAcks: 1 });
-// const moment = require('moment');
 
+// const moment = require('moment');
+const partitionnumber=384;
 const getpartition = (key)=>{
   let index = key;
   if(typeof key === 'string'){
@@ -17,7 +19,7 @@ const getpartition = (key)=>{
       index = 0;
     }
   }
-  index = index%config.partitionnumber;
+  index = index%partitionnumber;
   return index;
 }
 
@@ -235,6 +237,7 @@ producer.on('ready',  ()=> {
   setInterval(()=>{
     jsondata.SN64 = i;
     i++;
+    json.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
     sendtokafka(jsondata,(err,result)=>{
       if(!!err){
         console.log(`==>err:${JSON.stringify(err)}`);

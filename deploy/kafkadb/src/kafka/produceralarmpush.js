@@ -60,7 +60,7 @@ const startproducer = (callbackfn)=>{
       console.error(error.stack);
       console.error(`parallel err---`);
     }
-    console.log(`allready--->result:${JSON(result)}`);
+    console.log(`allready--->result:${JSON.stringify(result)}`);
     const sendtokafka = (payload,topic,callbackfn)=>{
       payload.partitionsend = getpartition(payload.SN64);
       let payloads = [
