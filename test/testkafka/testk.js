@@ -258,6 +258,7 @@ async.parallel(asyncfnsz,(err,result)=>{
     console.error(error.stack);
     console.error(`parallel err---`);
   }
+  client.refreshBrokerMetadata();
   setInterval(()=>{
     jsondata.SN64 = i;
     i++;
