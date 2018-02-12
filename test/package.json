@@ -13,6 +13,7 @@
     "convert-excel-to-json": "^1.2.1",
     "csvtojson": "^1.1.9",
     "expr-eval": "^1.2.0",
+    "node-rdkafka":"^2.2.2",
     "kafka-node": "^2.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
