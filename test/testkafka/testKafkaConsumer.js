@@ -4,7 +4,8 @@ const consumer = new Kafka.KafkaConsumer({
   'debug': 'all',
   'group.id': 'kafka',
   'metadata.broker.list': '192.168.1.20:9092',
-  'enable.auto.commit': true
+  'client.id':'c1',
+  'enable.auto.commit': false
 }, {});
 
 const topicName = 'bms.index';
@@ -34,13 +35,14 @@ consumer.on('ready', function(arg) {
 
 
 consumer.on('data', function(m) {
+  console.log(`get data====>${JSON.stringify(m)}`);
   console.log(m);
   // counter++;
   //
   // //committing offsets every numMessages
   // if (counter % numMessages === 0) {
   //   console.log('calling commit');
-  //   consumer.commit(m);
+  consumer.commit(m);
   // }
   //
   // // Output the actual message contents
