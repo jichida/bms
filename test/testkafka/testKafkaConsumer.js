@@ -1,12 +1,15 @@
 const Kafka = require('node-rdkafka');
 
 const consumer = new Kafka.KafkaConsumer({
-  'debug': 'all',
-  'group.id': 'kafka',
+  // 'debug': 'all',
+  'group.id': 'kafkagrouptest',
   'metadata.broker.list': '192.168.1.20:9092',
   'client.id':'c1',
-  'enable.auto.commit': false
-}, {});
+  'partition.assignment.strategy':'roundrobin',
+  'enable.auto.commit': true
+}, {
+  'auto.offset.reset':'earliest'
+});
 
 const topicName = 'bms.index';
 
@@ -42,7 +45,7 @@ consumer.on('data', function(m) {
   // //committing offsets every numMessages
   // if (counter % numMessages === 0) {
   //   console.log('calling commit');
-  consumer.commit(m);
+  // consumer.commit(m);
   // }
   //
   // // Output the actual message contents
