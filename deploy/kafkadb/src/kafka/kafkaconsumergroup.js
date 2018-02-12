@@ -23,13 +23,13 @@ const startsrv = (config,onMessage,onError)=>{
   let consumerGroup;
   const consumerconnected = (id)=>{
     return ()=>{
-      console.log(`ConsumerGroup connnected:${id}`);
+      console.log(`ConsumerGroup connnected:${id},${topicname}`);
     }
   }
   _.map(topics,(topicname,index)=>{
     consumerOptions.id = `c${index}_${config.NodeID}`;
     consumerGroup = new ConsumerGroup(consumerOptions, topicname);
-    consumerGroup.once('connect', consumerconnected(consumerOptions.id));
+    consumerGroup.once('connect', consumerconnected(consumerOptions.id,topicname));
     consumerGroup.on('error', onError);
     consumerGroup.on('message', onMessage);
     consumerGroups.push(consumerGroup);

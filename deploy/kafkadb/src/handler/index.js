@@ -20,6 +20,8 @@ topichandler[config.kafka_dbtopic_realtimealarmraws] = kafka_dbtopic_realtimeala
 
 module.exports = (msg,cb)=>{
   try{
+    console.log(`recvtopiname:${msg.topic},offset:${msg.offset},partition:${partition}`);
+
     if(!!topichandler[msg.topic]){
       let payload = msg.value;
       if(typeof payload === 'string'){
