@@ -228,7 +228,7 @@ producer.on('ready',  ()=> {
       // console.log(`==>err:${JSON.stringify(err)}`);
       // console.log(`==>result:${JSON.stringify(result)}`);
     // });
-  });
+  // });
 
 });
 
