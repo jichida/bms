@@ -24,6 +24,7 @@ const getpartition = (key)=>{
 }
 
 const sendtokafka = (payload,callbackfn)=>{
+  payload.partitionsend = getpartition(payload.SN64);
   const payloads = [
       {
          topic: 'bms.index',
@@ -265,10 +266,10 @@ async.parallel(asyncfnsz,(err,result)=>{
     jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
     sendtokafka(jsondata,(err,result)=>{
       if(!!err){
-        console.log(`==>err:${JSON.stringify(err)}`);
+        console.log(`sendtokafka==>err:${JSON.stringify(err)}`);
       }
       else{
-        console.log(`==>result:${JSON.stringify(result)}`);
+        console.log(`sendtokafka==>result:${JSON.stringify(result)}`);
       }
     });
   },0);
