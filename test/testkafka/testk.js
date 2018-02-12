@@ -212,18 +212,18 @@ let jsondata =
 
 
 // let rate = 2000;
+let i = 0;
 producer.on('ready',  ()=> {
   console.log(`kafka producer get ready!!`);
-  producer.createTopics(['BMS.Data'],true,(err)=>{
-    console.log(`==>createTopics err:${JSON.stringify(err)}`);
+  setTimeout(()=>{
+    jsondata.SN64 = i;
+    i++;
+    sendtokafka(jsondata,(err,result)=>{
+      console.log(`==>err:${JSON.stringify(err)}`);
+      console.log(`==>result:${JSON.stringify(result)}`);
+    });
+  },2);
 
-    for(let i = 0 ; ;i++){
-      jsondata.SN64 = i;
-      sendtokafka(jsondata,(err,result)=>{
-        console.log(`==>err:${JSON.stringify(err)}`);
-        console.log(`==>result:${JSON.stringify(result)}`);
-      });
-    }
     // sendtokafka(jsondata,(err,result)=>{
       // console.log(`==>err:${JSON.stringify(err)}`);
       // console.log(`==>result:${JSON.stringify(result)}`);
