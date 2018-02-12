@@ -21,7 +21,7 @@ const startsrv = (config,onMessage,onError)=>{
   topics.push(config.kafka_pushalaramtopic_app);
 
   let consumerGroup;
-  const consumerconnected = (id)=>{
+  const consumerconnected = (id,topicname)=>{
     return ()=>{
       console.log(`ConsumerGroup connnected:${id},${topicname}`);
     }
