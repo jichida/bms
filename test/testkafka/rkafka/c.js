@@ -1,6 +1,6 @@
 const kafka = require('node-rdkafka');
 
-const initConsumer =(globalconfig,cconfig,onMsg,onErr)=> {
+const initConsumer =(globalconfig,cconfig,topics,onMsg,onErr)=> {
   return new Promise((resolve, reject) => {
     const consumer = new kafka.KafkaConsumer(globalconfig,cconfig);
 

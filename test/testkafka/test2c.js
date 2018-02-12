@@ -10,7 +10,7 @@ const cconfig = {
   'auto.offset.reset':'largest'
 };
 
-getConsumer(globalconfig,cconfig,['bms.index'],'kafkagrouptest',
+getConsumer(globalconfig,cconfig,['bms.index'],
 (m)=> {
   // console.log(`get data====>${JSON.stringify(m)}`);
   const value = m.value.toString();
