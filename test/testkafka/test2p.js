@@ -1,13 +1,11 @@
 const moment = require('moment');
 const getProducer  = require('./rkafka/p.js');
 
-const globalconfig = {
-    'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
+const kafka_pconfig1 = {
+  'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
 };
-const pconfig = {
-
+const kafka_pconfig2 = {
 };
-
 
 let jsondata =
 {
@@ -201,7 +199,7 @@ let jsondata =
 
 
 
-getProducer(globalconfig,pconfig,(err)=> {
+getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
   console.error(`---uncaughtException err`);
   console.error(err);
   console.error(err.stack);
@@ -215,7 +213,7 @@ getProducer(globalconfig,pconfig,(err)=> {
         i++;
         jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const stringdata = JSON.stringify(jsondata);
-        producer.produce('bms.index2', -1, new Buffer(stringdata), i);
+        producer.produce(process.env.IndexTopic ||'bmsdb.index', -1, new Buffer(stringdata), i);
       } catch (err) {
         console.error('A problem occurred when sending our message')
         console.error(err)

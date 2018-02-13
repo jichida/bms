@@ -4,16 +4,8 @@ const _ = require('lodash');
 let counter = 0;
 const numMessages = 10;
 const startsrv = (config)=>{
-    const globalconfig = config.kafka_cconfig1 || {
-        'group.id': 'kafkagrouptest',
-        'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
-        'client.id':'c1',
-        'partition.assignment.strategy':'roundrobin',
-        'enable.auto.commit': true
-    };
-    const cconfig =  config.kafka_cconfig2 || {
-      'auto.offset.reset':'largest'
-    };
+    const globalconfig = config.kafka_cconfig1;
+    const cconfig =  config.kafka_cconfig2;
 
     const topics = [];
     topics.push(config.kafka_dbtopic_index);
@@ -23,8 +15,6 @@ const startsrv = (config)=>{
     topics.push(config.kafka_dbtopic_realtimealarms);
     topics.push(config.kafka_dbtopic_realtimealarmraws);
     topics.push(config.kafka_pushalaramtopic_app);
-
-    globalconfig['client.id'] = `c${process.pid}_${config.NodeID}`;
 
     getConsumer(globalconfig,cconfig,topics,
     (msg,consumer)=> {
