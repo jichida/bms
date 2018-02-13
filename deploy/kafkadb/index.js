@@ -53,7 +53,8 @@ process.on('uncaughtException', (error) => {
   console.error(error);
   console.error(error.stack);
   console.error(`uncaughtException err---`);
-  throw error;
+  // throw error;
+  process.exit(1);
 });
 
 
