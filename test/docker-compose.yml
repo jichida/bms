@@ -6,6 +6,7 @@ services:
       command: node ./testkafka/test2p.js
       working_dir: /app
       volumes:
+        - /etc/localtime:/etc/localtime:ro
         - ./:/app
         - /root/bms/deploy/kafkadb/node_docker:/app/node_modules/node-rdkafka/build/Release
       environment:
