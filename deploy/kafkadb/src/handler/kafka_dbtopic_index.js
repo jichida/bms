@@ -27,7 +27,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
   const devicedata = _.omit(data,['BMSData','Position']);
 
 //==============
-  console.log(`【kafka_dbtopic_index,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  // console.log(`【kafka_dbtopic_index,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
 
 
   if(!!LastRealtimeAlarm){

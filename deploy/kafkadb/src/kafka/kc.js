@@ -1,6 +1,7 @@
 const dbh = require('../handler/index.js');
 const getConsumer = require('./rkafka/c.js');
-
+let counter = 0;
+const numMessages = 10;
 const startsrv = (config)=>{
     const globalconfig = config.kafka_cconfig1 || {
         'group.id': 'kafkagrouptest',
@@ -25,20 +26,18 @@ const startsrv = (config)=>{
     globalconfig['client.id'] = `c_${config.NodeID}`;
 
     getConsumer(globalconfig,cconfig,topics,
-    (msg)=> {
+    (msg,consumer)=> {
+      counter++;
       // console.log(`get data====>${JSON.stringify(m)}`);
       dbh(msg,(err,result)=>{
-        // consumerGroup.commit((error, data) => {
-        //     if(!!error){
-        //       console.error(`---commit err`);
-        //       console.error(error);
-        //       console.error(error.stack);
-        //       console.error(`commit err---`);
-        //     }
-        //  });
+        //committing offsets every numMessages
+         if (counter % numMessages === 0) {
+           console.log('calling commit>>>>>>>>>>>>');
+           consumer.commit(msg);
+         }
       });
     },
-    (err)=> {
+    (err,consumer)=> {
       console.error(`Consumer ---uncaughtException err`);
       console.error(err);
       console.error(err.stack);
