@@ -215,7 +215,7 @@ getProducer(globalconfig,pconfig,(err)=> {
         i++;
         jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const stringdata = JSON.stringify(jsondata);
-        producer.produce('bms.index', -1, new Buffer(stringdata), i);
+        producer.produce('bms.index2', -1, new Buffer(stringdata), i);
       } catch (err) {
         console.error('A problem occurred when sending our message')
         console.error(err)
