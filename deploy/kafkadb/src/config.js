@@ -4,7 +4,7 @@ let config =  {
   kafka_cconfig1:{
       'group.id': process.env.GroupId ||'bmsgroup',
       'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
-      'client.id':`c${process.pid}_${config.NodeID}`,
+      'client.id':`c${process.pid}_${process.env.NodeID || 1}`,
       'partition.assignment.strategy':'roundrobin',
       'enable.auto.commit': false
   },

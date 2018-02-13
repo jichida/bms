@@ -6,7 +6,9 @@ const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
 
-console.log(`start=====>version:${config.version},kafkaHost:${config.kafka_cconfig1['metadata.broker.list']},partitionnumber:${config.partitionnumber}`);
+console.log(`start=====>version:${config.version},\
+  clientid:${config.kafka_cconfig1['client.id']} \
+  kafkaHost:${config.kafka_cconfig1['metadata.broker.list']},partitionnumber:${config.partitionnumber}`);
 
 process.setMaxListeners(0);
 
