@@ -46,7 +46,7 @@ const startsrv = (config)=>{
     }).then((consumer)=>{
        process.on('SIGINT', () => {
           consumer.disconnect();
-        });
+      });
     });
 };
 

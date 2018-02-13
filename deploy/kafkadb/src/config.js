@@ -9,7 +9,7 @@ let config =  {
       'enable.auto.commit': true
   },
   kafka_cconfig2:{
-    'auto.offset.reset':'largest'
+    'auto.offset.reset':'smallest'
   },
   kafka_pconfig1:{
     'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
