@@ -7,7 +7,7 @@ services:
       working_dir: /app
       volumes:
         - ./:/app
-        - ./node_modules.docker/:/app/node_modules/
+        - /root/bms/deploy/kafkadb/node_docker:/app/node_modules/node-rdkafka/build/Release
       environment:
         - KAFKA_HOST=192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092
         - IndexTopic=bmsindex
