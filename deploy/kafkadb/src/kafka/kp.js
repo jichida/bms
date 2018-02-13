@@ -11,6 +11,7 @@ const pconfig = config.kafka_pconfig2 || {
 
 
 const startproducer = (callbackfn)=>{
+  console.log(`startproducer>>>>>>>>`);
   getProducer(globalconfig,pconfig,(err)=> {
     console.error(`Product---uncaughtException err`);
     console.error(err);
@@ -19,7 +20,7 @@ const startproducer = (callbackfn)=>{
   }).then((producer)=>{
     const sendtokafka = (payload,topic,callbackfn)=>{
       const stringdata = JSON.stringify(payload);
-      producer.produce(topic, -1, new Buffer(stringdata),payload.SN64);
+      // producer.produce(topic, -1, new Buffer(stringdata),payload.SN64);
       callbackfn(null,true);
     }
     callbackfn(sendtokafka);
