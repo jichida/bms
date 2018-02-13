@@ -25,7 +25,7 @@ getConsumer(globalconfig,cconfig,['bms.index'],
   console.log(`partition:${m.partition},offset:${m.offset},value:${jsondata.SN64}`);
   if (counter % numMessages === 0) {
     console.log(`${counter}calling commit>>>>>>>>>>>>`);
-    consumer.commit(msg);
+    consumer.commit(m);
   }
 },
 (err,consumer)=> {
