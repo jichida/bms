@@ -39,7 +39,7 @@ const startsrv = (config)=>{
       });
     },
     (err)=> {
-      console.error(`---uncaughtException err`);
+      console.error(`Consumer ---uncaughtException err`);
       console.error(err);
       console.error(err.stack);
       console.error(`uncaughtException err---`);
