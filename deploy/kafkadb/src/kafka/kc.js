@@ -1,5 +1,6 @@
 const dbh = require('../handler/index.js');
 const getConsumer = require('./rkafka/c.js');
+const _ = require('lodash');
 let counter = 0;
 const numMessages = 10;
 const startsrv = (config)=>{
@@ -29,10 +30,11 @@ const startsrv = (config)=>{
     (msg,consumer)=> {
       counter++;
       // console.log(`get data====>${JSON.stringify(m)}`);
-      dbh(msg,(err,result)=>{
+      let msgnew = _.clone(msg);
+      dbh(msgnew,(err,result)=>{
         //committing offsets every numMessages
          if (counter % numMessages === 0) {
-           console.log('calling commit>>>>>>>>>>>>');
+           console.log(`${counter}calling commit>>>>>>>>>>>>`);
            consumer.commit(msg);
          }
       });
