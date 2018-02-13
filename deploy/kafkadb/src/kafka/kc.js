@@ -40,12 +40,12 @@ const startsrv = (config)=>{
       });
     },
     (err,consumer)=> {
-      console.error(`Consumer ---uncaughtException err`);
+      console.error(`Consumer${process.pid} ---uncaughtException err`);
       console.error(err);
       console.error(err.stack);
       console.error(`uncaughtException err---`);
       consumer.disconnect();
-      process.exit(1);
+      throw error;
     }).then((consumer)=>{
        process.on('SIGINT', () => {
           consumer.disconnect();
