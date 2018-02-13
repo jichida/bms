@@ -12,7 +12,7 @@ const cconfig = {
 let counter = 0;
 const numMessages = 10;
 getConsumer(globalconfig,cconfig,['bms.index'],
-(m,consumer))=> {
+(m,consumer)=> {
   // console.log(`get data====>${JSON.stringify(m)}`);
   const value = m.value.toString();
   let jsondata;
