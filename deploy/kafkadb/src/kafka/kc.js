@@ -24,7 +24,7 @@ const startsrv = (config)=>{
     topics.push(config.kafka_dbtopic_realtimealarmraws);
     topics.push(config.kafka_pushalaramtopic_app);
 
-    globalconfig['client.id'] = `c_${config.NodeID}`;
+    globalconfig['client.id'] = `c${process.pid}_${config.NodeID}`;
 
     getConsumer(globalconfig,cconfig,topics,
     (msg,consumer)=> {
@@ -44,6 +44,8 @@ const startsrv = (config)=>{
       console.error(err);
       console.error(err.stack);
       console.error(`uncaughtException err---`);
+      consumer.disconnect();
+      process.exit(1);
     }).then((consumer)=>{
        process.on('SIGINT', () => {
           consumer.disconnect();
