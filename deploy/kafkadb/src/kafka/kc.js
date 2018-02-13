@@ -45,7 +45,7 @@ const startsrv = (config)=>{
       console.error(err.stack);
       console.error(`uncaughtException err---`);
       consumer.disconnect();
-      throw error;
+      throw err;
     }).then((consumer)=>{
        process.on('SIGINT', () => {
           consumer.disconnect();
