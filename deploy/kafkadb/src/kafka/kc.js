@@ -5,7 +5,7 @@ const async = require('async');
 const moment = require('moment');
 const uuid = require('uuid');
 const parseKafkaMsgs = require('../handler/kafkadb_data.js');
-const onHandleToDB = require('../handler/kafkadb_handler.js');
+const onHandleToDB = require('../handler/kafkadb_dbh.js');
 
 const numMessages = 500;
 
