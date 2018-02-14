@@ -49,24 +49,27 @@ const save_alarm = (devicedata,callbackfn)=>{
                 if(devicedata.warninglevel !== ''){
                   handlerfn(result.toJSON(),(err,data)=>{
                     if(!!err){
-                      console.log(`kafka_dbtopic_realtimealarms handlerfn:${JSON.stringify(data)}`);
+                      console.log(`【kafka_dbtopic_realtimealarms handlerfn:${JSON.stringify(data)}`);
                       console.log(err);
                     }
+                    console.log(`【kafka_dbtopic_realtimealarms saved`);
                     callbackfn(err,result);
                   });
                   return;
                 }
               }
             }
+            console.log(`【kafka_dbtopic_realtimealarms returned1`);
             callbackfn(err,result);
           });
-
         return;
-      }
+      }//if(!err && !!result_alarm){
+      console.log(`【kafka_dbtopic_realtimealarms returned2`);
       callbackfn();
-    });
+    });//alarmplugin.dofilter
     return;
   }
+  console.log(`【kafka_dbtopic_realtimealarms returned3`);
   callbackfn();
 }
 

@@ -99,6 +99,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
       ];
 
       async.parallel(asyncfnsz,(err,result)=>{
+        console.log(`kafka_dbtopic_index saved`);
         callbackfn(err,result);
       });
       return;

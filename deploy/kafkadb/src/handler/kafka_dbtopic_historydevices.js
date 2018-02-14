@@ -35,11 +35,13 @@ const save_historydevice = (devicedata,callbackfn)=>{
     //     }
     const entity2 = new DBModels.HistoryDeviceModel(result_device);
     entity2.save((err,result)=>{
+      console.log(`【kafka_dbtopic_historydevices saved`);
       callbackfn(err,result);
     });
     // });
     return;
   }
+  console.log(`【kafka_dbtopic_historydevices returned`);
   callbackfn();
 }
 

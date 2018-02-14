@@ -17,10 +17,12 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
     LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
+      console.log(`【kafka_dbtopic_historytracks saved`);
       callbackfn(err,result);
     });
     return;
   }
+  console.log(`【kafka_dbtopic_historytracks returned`);
   callbackfn();
 }
 

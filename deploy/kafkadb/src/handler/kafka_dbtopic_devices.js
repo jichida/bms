@@ -10,6 +10,7 @@ const save_device = (devicedata,callbackfn)=>{
   dbModel.findOneAndUpdate({DeviceId:devicedata.DeviceId},{$set:devicedata},{
     upsert:true,new:true
   },(err,result)=>{
+    console.log(`save_device saved`);
     callbackfn(err,result);
   });
 };

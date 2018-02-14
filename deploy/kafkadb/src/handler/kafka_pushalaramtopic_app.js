@@ -50,17 +50,17 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
       if(!!sendto){
         sendto(data,config.kafka_pushalaramtopic_pc,(err,data)=>{
           if(!!err){
-            console.log(`kafka_dbtopic_index:${JSON.stringify(data)}`);
             console.log(err);
-            callbackfn(err,data);
           }
+          console.log(`kafka_pushalaramtopic_app sended`);
+          callbackfn(err,data);
         });
         return;
       }
     }
+    console.log(`kafka_pushalaramtopic_app returned`);
     callbackfn();
   });
-
 }
 
 

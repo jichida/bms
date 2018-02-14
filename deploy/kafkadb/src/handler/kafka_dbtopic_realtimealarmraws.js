@@ -32,11 +32,13 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     //   }
       const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
       entity.save((err,result)=>{
+        console.log(`kafka_dbtopic_realtimealarmraws saved`);
         callbackfn(err,result);
       });
     // });
     return;
   }
+  console.log(`kafka_dbtopic_realtimealarmraws return`);
   callbackfn();
 };
 
