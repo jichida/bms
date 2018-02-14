@@ -102,12 +102,8 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
         callbackfn(err,result);
       });
       return;
-
-
     });//utilposition.getpostion_frompos
   });//alarmplugin.matchalarm
-  console.log('cannot processed!!');
-  callbackfn();
 };
 
 
