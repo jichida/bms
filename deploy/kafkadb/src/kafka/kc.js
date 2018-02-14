@@ -23,6 +23,7 @@ const startsrv = (config)=>{
       let msgnew = _.clone(msg);
       dbh.handletopic(msgnew,(err,result)=>{
         //committing offsets every numMessages
+         console.log(`handletopic====>${counter}`);
          if (counter % numMessages === 0) {
            console.log(`${counter}calling commit>>>>>>>>>>>>`);
            consumer.commit(msg);
