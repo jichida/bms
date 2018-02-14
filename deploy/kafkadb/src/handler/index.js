@@ -16,13 +16,18 @@ topichandler[config.kafka_dbtopic_historytracks] = kafka_dbtopic_historytracks;
 topichandler[config.kafka_dbtopic_realtimealarms] = kafka_dbtopic_realtimealarms;
 topichandler[config.kafka_dbtopic_realtimealarmraws] = kafka_dbtopic_realtimealarmraws;
 
+const gettopichandler = (topic)=>{
+  if(!!topichandler[topic]){
+    return topichandler[topic];
+  }
+  return null;
+}
 
-
-module.exports = (msg,cb)=>{
+const handletopic = (msg,cb)=>{
   try{
     console.log(`recvtopiname:${msg.topic},offset:${msg.offset},partition:${msg.partition}`);
-
-    if(!!topichandler[msg.topic]){
+    const handlerfn = gettopichandler(msg.topic);
+    if(!!handlerfn){
       let payload = msg.value.toString();
       if(typeof payload === 'string'){
         try{
@@ -34,7 +39,7 @@ module.exports = (msg,cb)=>{
       }
       payload.recvpartition = msg.partition;
       payload.recvoffset = msg.offset;
-      topichandler[msg.topic](payload,(err,result)=>{
+      handlerfn(payload,(err,result)=>{
         if(!!cb){
           cb(err,result);
         }
@@ -48,4 +53,7 @@ module.exports = (msg,cb)=>{
   if(!!cb){
     cb();
   }
-}
+};
+
+exports.gettopichandler = gettopichandler;
+exports.handletopic = handletopic;

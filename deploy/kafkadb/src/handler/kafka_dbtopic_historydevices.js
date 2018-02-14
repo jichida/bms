@@ -23,9 +23,6 @@ const save_historydevice = (devicedata,callbackfn)=>{
     result_device.Area = devicedata.Area;
 
     //+以下语句便于调试
-    result_device.indexrecvpartition = devicedata.indexrecvpartition;
-    result_device.indexrecvoffset = devicedata.indexrecvoffset;
-    result_device.sendpartition = devicedata.sendpartition;
     result_device.recvpartition = devicedata.recvpartition;
     result_device.recvoffset = devicedata.recvoffset;
 

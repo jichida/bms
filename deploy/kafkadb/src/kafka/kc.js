@@ -21,7 +21,7 @@ const startsrv = (config)=>{
       counter++;
       // console.log(`get data====>${JSON.stringify(m)}`);
       let msgnew = _.clone(msg);
-      dbh(msgnew,(err,result)=>{
+      dbh.handletopic(msgnew,(err,result)=>{
         //committing offsets every numMessages
          if (counter % numMessages === 0) {
            console.log(`${counter}calling commit>>>>>>>>>>>>`);
