@@ -52,10 +52,13 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
           if(!!err){
             console.log(`kafka_dbtopic_index:${JSON.stringify(data)}`);
             console.log(err);
+            callbackfn(err,data);
           }
         });
+        return;
       }
     }
+    callbackfn();
   });
 
 }
