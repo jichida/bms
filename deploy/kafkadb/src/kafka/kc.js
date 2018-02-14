@@ -4,16 +4,20 @@ const _ = require('lodash');
 const async = require('async');
 const moment = require('moment');
 const uuid = require('uuid');
-const kafkadb = require('../handler/kafkadb.js');
+const parseKafkaMsgs = require('../handler/kafkadb_data.js');
+const onHandleToDB = require('../handler/kafkadb_handler.js');
 
 const numMessages = 500;
 
 const processbatchmsgs = (msgs,callbackfnmsg)=>{
   const msgid = uuid.v4();
   console.log(`消息开始${msgid}----->${moment().format('HH:mm:ss')}`);
-  kafkadb.parseKafkaMsgs(msgs,(allresult)=>{
+  parseKafkaMsgs(msgs,(allresult)=>{
     console.log(`消息结束${msgid}----->${moment().format('HH:mm:ss')}`);
-    callbackfnmsg();
+    onHandleToDB(allresult,()=>{
+      console.log(`数据库操作结束${msgid}----->${moment().format('HH:mm:ss')}`);
+      callbackfnmsg();
+    });
   });
 
   // let asyncfnsz = [];

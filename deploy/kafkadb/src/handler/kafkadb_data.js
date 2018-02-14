@@ -259,6 +259,4 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
 //     });
 // }
 //
-
-
-exports.parseKafkaMsgs = parseKafkaMsgs;
+module.exports = parseKafkaMsgs;
