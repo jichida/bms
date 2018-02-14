@@ -58,6 +58,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
               console.log(`kafka_dbtopic_devices sendtokafka:${JSON.stringify(newdevicedata)}`);
               console.log(err);
             }
+            callbackfn(err,data);
           });
         },
         (callbackfn)=>{
@@ -67,6 +68,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
               console.log(`kafka_dbtopic_historydevices:${JSON.stringify(newdevicedata)}`);
               console.log(err);
             }
+            callbackfn(err,data);
           });
         },
         (callbackfn)=>{
@@ -76,6 +78,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
               console.log(`kafka_dbtopic_historytracks:${JSON.stringify(newdevicedata)}`);
               console.log(err);
             }
+            callbackfn(err,data);
           });
         },
         (callbackfn)=>{
@@ -85,6 +88,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
               console.log(`kafka_dbtopic_realtimealarms:${JSON.stringify(newdevicedata)}`);
               console.log(err);
             }
+            callbackfn(err,data);
           });
         },
         (callbackfn)=>{
@@ -94,6 +98,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
               console.log(`kafka_dbtopic_realtimealarmraws:${JSON.stringify(newdevicedata)}`);
               console.log(err);
             }
+            callbackfn(err,data);
           });
         }
       ];
