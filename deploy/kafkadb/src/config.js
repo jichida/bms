@@ -7,7 +7,7 @@ let config =  {
       'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
       'client.id':`c${process.pid}_${nodeid}`,
       'partition.assignment.strategy':'roundrobin',
-      'enable.auto.commit': false
+      'enable.auto.commit': true
   },
   kafka_cconfig2:{
     'auto.offset.reset':'smallest'
