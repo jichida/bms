@@ -6,7 +6,7 @@ const moment = require('moment');
 const uuid = require('uuid');
 const kafkadb = require('../handler/kafkadb.js');
 
-const numMessages = 100;
+const numMessages = 500;
 
 const processbatchmsgs = (msgs,callbackfnmsg)=>{
   const msgid = uuid.v4();
