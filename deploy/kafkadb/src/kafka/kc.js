@@ -7,7 +7,7 @@ const uuid = require('uuid');
 const parseKafkaMsgs = require('../handler/kafkadb_data.js');
 const onHandleToDB = require('../handler/kafkadb_dbh.js');
 
-const numMessages = 500;
+const numMessages = 100;
 
 const processbatchmsgs = (msgs,callbackfnmsg)=>{
   const msgid = uuid.v4();
@@ -56,10 +56,10 @@ const startsrv = (config)=>{
       throw err;
     }).then((consumer)=>{
       const processRecords =(data, cb)=> {
+        console.log(`processRecords--->${data.length}`);
         if (data.length == 0) {
           return setImmediate(cb);
         }
-
         // do work
         processbatchmsgs(data,(err,result)=>{
           setImmediate(cb);
