@@ -46,6 +46,7 @@ const handletopic = (msg,cb)=>{
       });
       return;
     }
+    console.log('cannot find handler!!');
   }
   catch(e){
     console.log("服务端内部错误--->" + e);

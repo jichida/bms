@@ -48,6 +48,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
+      console.log(newdevicedata);
 
       const asyncfnsz = [
         (callbackfn)=>{
@@ -105,7 +106,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
 
     });//utilposition.getpostion_frompos
   });//alarmplugin.matchalarm
-
+  console.log('cannot processed!!');
   callbackfn();
 };
 
