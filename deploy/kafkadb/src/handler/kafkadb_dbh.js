@@ -59,7 +59,7 @@ const dbh_alarm =(datas,callbackfn)=>{
   });
 };
 
-const onHandleToDB = (allresult,(callbackfn)=>{
+const onHandleToDB = (allresult,callbackfn)=>{
   let fnsz = [];
   fnsz.push((callbackfn)=>{
     dbh_device(allresult['device'],callbackfn);
@@ -79,6 +79,6 @@ const onHandleToDB = (allresult,(callbackfn)=>{
   async.parallel(fnsz,(err,result)=>{
     callbackfn(err,result);
   });
-});
+};
 
 module.exports = onHandleToDB;
