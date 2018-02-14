@@ -5,7 +5,7 @@ const async = require('async');
 const moment = require('moment');
 const uuid = require('uuid');
 
-const numMessages = 10000;
+const numMessages = 100;
 
 const processbatchmsgs = (msgs,callbackfnmsg)=>{
   let asyncfnsz = [];
