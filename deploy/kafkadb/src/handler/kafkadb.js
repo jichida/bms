@@ -6,13 +6,14 @@ const moment = require('moment');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const utilposition = require('./util_position');
 
-const getdbdata_device = (devicedata,callbackfn)=>{
+const getdbdata_device = (devicedata)=>{
   devicedata.NodeID = config.NodeID;
   devicedata.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
-  callbackfn(devicedata);
+  // callbackfn(devicedata);
+  return devicedata;
 }
 
-const getdbdata_historydevice = (devicedata,callbackfn)=>{
+const getdbdata_historydevice = (devicedata)=>{
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   if(!!LastRealtimeAlarm){
     let result_device = _.clone(LastRealtimeAlarm);
@@ -34,14 +35,12 @@ const getdbdata_historydevice = (devicedata,callbackfn)=>{
     result_device.recvoffset = devicedata.recvoffset;
 
     result_device.warninglevel = devicedata.warninglevel;
-    callbackfn(result_device);
-    return;
+    return result_device;
   }
-  callbackfn();
 }
 
 
-const getdbdata_historytrack = (devicedata,callbackfn)=>{
+const getdbdata_historytrack = (devicedata)=>{
   const LastHistoryTrack = devicedata.LastHistoryTrack;
   if(!!LastHistoryTrack){
     let result_historytrack = _.clone(LastHistoryTrack);
@@ -53,13 +52,11 @@ const getdbdata_historytrack = (devicedata,callbackfn)=>{
     result_historytrack.City = devicedata.City;
     result_historytrack.Area = devicedata.Area;
     result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    callbackfn(result_historytrack);
-    return;
+    return result_historytrack;
   }
-  callbackfn();
 }
 
-const getdbdata_alarmraw = (devicedata,callbackfn)=>{
+const getdbdata_alarmraw = (devicedata)=>{
   let  LastRealtimeAlarmRaw = _.get(devicedata,'LastRealtimeAlarm.Alarm');
   if(!!LastRealtimeAlarmRaw){
     //含有报警信息
@@ -79,10 +76,8 @@ const getdbdata_alarmraw = (devicedata,callbackfn)=>{
     result_alarm_raw.City = devicedata.City;
     result_alarm_raw.Area = devicedata.Area;
     result_alarm_raw.warninglevel = devicedata.warninglevel;
-    callbackfn(result_alarm_raw);
-    return;
+    return result_alarm_raw;
   }
-  callbackfn();
 }
 
 const getdbdata_alarm = (devicedata,callbackfn)=>{
@@ -193,50 +188,28 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   _.map(msgs,(msg)=>{
     fnsz.push((callbackfn)=>{
       getindexmsgs(msg,(newdevicedata)=>{
-         const fnszmsg = [];
-         fnszmsg.push((callbackfnmsg)=>{
-           getdbdata_device(newdevicedata,(result)=>{
-             callbackfnmsg(null,result);
-           });
-         });
-         fnszmsg.push((callbackfnmsg)=>{
-           getdbdata_historydevice(newdevicedata,(result)=>{
-             callbackfnmsg(null,result);
-           });
-         });
-         fnszmsg.push((callbackfnmsg)=>{
-           getdbdata_historytrack(newdevicedata,(result)=>{
-             callbackfnmsg(null,result);
-           });
-         });
-         fnszmsg.push((callbackfnmsg)=>{
-           getdbdata_alarmraw(newdevicedata,(result)=>{
-             callbackfnmsg(null,result);
-           });
-         });
-         fnszmsg.push((callbackfnmsg)=>{
-           getdbdata_alarm(newdevicedata,(result)=>{
-             callbackfnmsg(null,result);
-           });
-         });
-         async.parallel(fnszmsg,(err,result)=>{
-           if(!!result[0]){
-             resultmsglist['device'].push(result[0]);
-           }
-           if(!!result[1]){
-             resultmsglist['historydevice'].push(result[1]);
-           }
-           if(!!result[2]){
-             resultmsglist['historytrack'].push(result[2]);
-           }
-           if(!!result[3]){
-             resultmsglist['alarmraw'].push(result[3]);
-           }
-           if(!!result[4]){
-             resultmsglist['alarm'].push(result[4]);
-           }
-           callbackfn();
-         });
+        const data_device = getdbdata_device(newdevicedata);
+        const data_historydevice = getdbdata_historydevice(newdevicedata);
+        const data_historytrack = getdbdata_historytrack(newdevicedata);
+        const data_alarmraw = getdbdata_alarmraw(newdevicedata);
+        getdbdata_alarm(newdevicedata,(data_alarm)=>{
+             if(!!data_device){
+               resultmsglist['device'].push(data_device);
+             }
+             if(!!data_historydevice){
+               resultmsglist['historydevice'].push(data_historydevice);
+             }
+             if(!!data_historytrack){
+               resultmsglist['historytrack'].push(data_historytrack);
+             }
+             if(!!data_alarmraw){
+               resultmsglist['alarmraw'].push(data_alarmraw);
+             }
+             if(!!data_alarm){
+               resultmsglist['alarm'].push(data_alarm);
+             }
+             callbackfn();
+        });
       });
     });
   });
