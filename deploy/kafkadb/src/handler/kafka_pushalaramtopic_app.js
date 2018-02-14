@@ -15,7 +15,7 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
   // PubSub.publish(`${config.kafka_pushalaramtopic}.${DeviceId}`, payload);
 
   getuserpushdeviceid(DeviceId,(userlist)=>{
-    console.log(`所有用户id:${JSON.stringify(userlist)}`);
+    // console.log(`所有用户id:${JSON.stringify(userlist)}`);
 
     let recordnew = alarm.bridge_alarminfo(payload);
     _.map(userlist,(userid)=>{
@@ -40,7 +40,7 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
       smspush.sendnotifymessage(messagenotify,(err,result)=>{
         // winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
         console.log(err);
-        console.log(result);
+        // console.log(result);
       });
     });
 

@@ -5,9 +5,9 @@ const async = require('async');
 const moment = require('moment');
 const uuid = require('uuid');
 
-const numMessages = 1000;
+const numMessages = 100;
 
-const processbatchmsgs = (msgs,callbackfn)=>{
+const processbatchmsgs = (msgs,callbackfnmsg)=>{
   let asyncfnsz = [];
   _.map(msgs,(msg)=>{
     asyncfnsz.push((callbackfn)=>{
@@ -17,12 +17,12 @@ const processbatchmsgs = (msgs,callbackfn)=>{
         });
     });
   });
-  
+
   const cid = uuid.v4();
-  console.log(`开始处理${cid}----->${moment().format('HH:mm:ss')}`);
+  console.log(`开始处理${cid}${asyncfnsz.length}----->${moment().format('HH:mm:ss')}`);
   async.parallel(asyncfnsz,(err,result)=>{
     console.log(`结束处理${cid}----->${moment().format('HH:mm:ss')}`);
-    callbackfn(err,result);
+    callbackfnmsg(err,result);
   });
 
 }
