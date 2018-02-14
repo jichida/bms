@@ -3,6 +3,7 @@ const getConsumer = require('./rkafka/c.js');
 const _ = require('lodash');
 const async = require('async');
 const moment = require('moment');
+const uuid = require('uuid');
 
 const numMessages = 1000;
 
@@ -16,8 +17,11 @@ const processbatchmsgs = (msgs,callbackfn)=>{
         });
     });
   });
-
+  
+  const cid = uuid.v4();
+  console.log(`开始处理${cid}----->${moment().format('HH:mm:ss')}`);
   async.parallel(asyncfnsz,(err,result)=>{
+    console.log(`结束处理${cid}----->${moment().format('HH:mm:ss')}`);
     callbackfn(err,result);
   });
 
@@ -65,19 +69,7 @@ const startsrv = (config)=>{
       };
 
       consumeNum(numMessages);
-      // (msg,consumer)=> {
-      //   counter++;
-      //   // console.log(`get data====>${JSON.stringify(m)}`);
-      //   let msgnew = _.clone(msg);
-      //   dbh.handletopic(msgnew,(err,result)=>{
-      //     //committing offsets every numMessages
-      //      console.log(`handletopic====>${counter}`);
-      //      if (counter % numMessages === 0) {
-      //        console.log(`${counter}calling commit>>>>>>>>>>>>`);
-      //        consumer.commit(msg);
-      //      }
-      //   });
-      // },
+
        process.on('SIGINT', () => {
           consumer.disconnect();
       });

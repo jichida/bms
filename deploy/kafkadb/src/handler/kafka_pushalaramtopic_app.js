@@ -5,6 +5,7 @@ const sendtokafka = require('../kafka/sendtokafka');
 const smspush = require('./smspush/push');
 const getuserpushdeviceid = require('./getuserpushdeviceid.js');
 const alarm = require('./getalarmtxt');
+const _ = require('lodash');
 
 const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
   const DeviceId = devicedata.DeviceId;

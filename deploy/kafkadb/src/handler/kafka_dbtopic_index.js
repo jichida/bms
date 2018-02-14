@@ -48,7 +48,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
-      console.log(newdevicedata);
+      // console.log(newdevicedata);
 
       const asyncfnsz = [
         (callbackfn)=>{
