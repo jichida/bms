@@ -17,18 +17,18 @@ const save_lasthistorytrack = (devicedata,callbackfn)=>{
     LastHistoryTrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     const entity = new DBModels.HistoryTrackModel(LastHistoryTrack);
     entity.save((err,result)=>{
-      console.log(`【kafka_dbtopic_historytracks saved`);
+      //console.log(`【kafka_dbtopic_historytracks saved`);
       callbackfn(err,result);
     });
     return;
   }
-  console.log(`【kafka_dbtopic_historytracks returned`);
+  //console.log(`【kafka_dbtopic_historytracks returned`);
   callbackfn();
 }
 
 
 const kafka_dbtopic_historytracks = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_historytracks,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  //console.log(`【kafka_dbtopic_historytracks,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_lasthistorytrack(devicedata,callbackfn);
 }
 

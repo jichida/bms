@@ -27,7 +27,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
   const devicedata = _.omit(data,['BMSData','Position']);
 
 //==============
-  // console.log(`【kafka_dbtopic_index,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  // //console.log(`【kafka_dbtopic_index,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
 
   if(!!LastRealtimeAlarm){
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
@@ -48,15 +48,15 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
-      // console.log(newdevicedata);
+      // //console.log(newdevicedata);
 
       const asyncfnsz = [
         (callbackfn)=>{
           const handlerfn = dbh.gettopichandler(config.kafka_dbtopic_devices);
           handlerfn(newdevicedata,(err,data)=>{
             if(!!err){
-              console.log(`kafka_dbtopic_devices sendtokafka:${JSON.stringify(newdevicedata)}`);
-              console.log(err);
+              //console.log(`kafka_dbtopic_devices sendtokafka:${JSON.stringify(newdevicedata)}`);
+              //console.log(err);
             }
             callbackfn(err,data);
           });
@@ -65,8 +65,8 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
           const handlerfn = dbh.gettopichandler(config.kafka_dbtopic_historydevices);
           handlerfn(newdevicedata,(err,data)=>{
             if(!!err){
-              console.log(`kafka_dbtopic_historydevices:${JSON.stringify(newdevicedata)}`);
-              console.log(err);
+              //console.log(`kafka_dbtopic_historydevices:${JSON.stringify(newdevicedata)}`);
+              //console.log(err);
             }
             callbackfn(err,data);
           });
@@ -75,8 +75,8 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
           const handlerfn = dbh.gettopichandler(config.kafka_dbtopic_historytracks);
           handlerfn(newdevicedata,(err,data)=>{
             if(!!err){
-              console.log(`kafka_dbtopic_historytracks:${JSON.stringify(newdevicedata)}`);
-              console.log(err);
+              //console.log(`kafka_dbtopic_historytracks:${JSON.stringify(newdevicedata)}`);
+              //console.log(err);
             }
             callbackfn(err,data);
           });
@@ -85,8 +85,8 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
           const handlerfn = dbh.gettopichandler(config.kafka_dbtopic_realtimealarms);
           handlerfn(newdevicedata,(err,data)=>{
             if(!!err){
-              console.log(`kafka_dbtopic_realtimealarms:${JSON.stringify(newdevicedata)}`);
-              console.log(err);
+              //console.log(`kafka_dbtopic_realtimealarms:${JSON.stringify(newdevicedata)}`);
+              //console.log(err);
             }
             callbackfn(err,data);
           });
@@ -95,8 +95,8 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
           const handlerfn = dbh.gettopichandler(config.kafka_dbtopic_realtimealarmraws);
           handlerfn(newdevicedata,(err,data)=>{
             if(!!err){
-              console.log(`kafka_dbtopic_realtimealarmraws:${JSON.stringify(newdevicedata)}`);
-              console.log(err);
+              //console.log(`kafka_dbtopic_realtimealarmraws:${JSON.stringify(newdevicedata)}`);
+              //console.log(err);
             }
             callbackfn(err,data);
           });
@@ -104,7 +104,7 @@ const kafka_dbtopic_index = (data,callbackfn)=>{
       ];
 
       async.parallel(asyncfnsz,(err,result)=>{
-        console.log(`kafka_dbtopic_index saved`);
+        //console.log(`kafka_dbtopic_index saved`);
         callbackfn(err,result);
       });
       return;

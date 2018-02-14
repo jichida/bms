@@ -32,18 +32,18 @@ const save_alarmraw = (devicedata,callbackfn)=>{
     //   }
       const entity = new DBModels.RealtimeAlarmRawModel(result_alarm_raw);
       entity.save((err,result)=>{
-        console.log(`kafka_dbtopic_realtimealarmraws saved`);
+        //console.log(`kafka_dbtopic_realtimealarmraws saved`);
         callbackfn(err,result);
       });
     // });
     return;
   }
-  console.log(`kafka_dbtopic_realtimealarmraws return`);
+  //console.log(`kafka_dbtopic_realtimealarmraws return`);
   callbackfn();
 };
 
 const kafka_dbtopic_realtimealarmraws = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_realtimealarmraws,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  //console.log(`【kafka_dbtopic_realtimealarmraws,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_alarmraw(devicedata,callbackfn);
 }
 

@@ -10,12 +10,12 @@ const _ = require('lodash');
 const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
   const DeviceId = devicedata.DeviceId;
   const payload = devicedata;
-  // console.log(`重新publish出去:${DeviceId},数据:${payload}`);
-  console.log(`kafka_pushalaramtopic_app,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  // //console.log(`重新publish出去:${DeviceId},数据:${payload}`);
+  //console.log(`kafka_pushalaramtopic_app,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   // PubSub.publish(`${config.kafka_pushalaramtopic}.${DeviceId}`, payload);
 
   getuserpushdeviceid(DeviceId,(userlist)=>{
-    // console.log(`所有用户id:${JSON.stringify(userlist)}`);
+    // //console.log(`所有用户id:${JSON.stringify(userlist)}`);
 
     let recordnew = alarm.bridge_alarminfo(payload);
     _.map(userlist,(userid)=>{
@@ -39,8 +39,8 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
       // winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
       smspush.sendnotifymessage(messagenotify,(err,result)=>{
         // winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
-        console.log(err);
-        // console.log(result);
+        //console.log(err);
+        // //console.log(result);
       });
     });
 
@@ -50,15 +50,15 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
       if(!!sendto){
         sendto(data,config.kafka_pushalaramtopic_pc,(err,data)=>{
           if(!!err){
-            console.log(err);
+            //console.log(err);
           }
-          console.log(`kafka_pushalaramtopic_app sended`);
+          //console.log(`kafka_pushalaramtopic_app sended`);
           callbackfn(err,data);
         });
         return;
       }
     }
-    console.log(`kafka_pushalaramtopic_app returned`);
+    //console.log(`kafka_pushalaramtopic_app returned`);
     callbackfn();
   });
 }

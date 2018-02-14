@@ -11,7 +11,7 @@ const getalarmfieldtotxt = (alarmfield)=>{
            }
         }
       }
-      // console.log(alarmfield);
+      // //console.log(alarmfield);
       return alarmfield;
     }
     return undefined;
@@ -21,7 +21,7 @@ const getalarmtxt = (alarminfo)=>{
   let alarmtxt = '';
   let alarminfotmp = _.clone(alarminfo);
   let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
-  // console.log(`rest===>${JSON.stringify(rest)}`);
+  // //console.log(`rest===>${JSON.stringify(rest)}`);
   _.map(rest,(v,key)=>{
     let keytxt = getalarmfieldtotxt(key);
     if(!!keytxt){
@@ -32,7 +32,7 @@ const getalarmtxt = (alarminfo)=>{
 }
 
 const bridge_alarminfo = (alarminfo)=>{
-  // //console.log(`alarminfo===>${JSON.stringify(alarminfo)}`);
+  // ////console.log(`alarminfo===>${JSON.stringify(alarminfo)}`);
   let alarmtxt = '';
   let alarminfonew = {};
   alarminfonew[`key`] = alarminfo._id;
@@ -42,7 +42,7 @@ const bridge_alarminfo = (alarminfo)=>{
 
   let alarminfotmp = _.clone(alarminfo);
   let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
-  // //console.log(`rest===>${JSON.stringify(rest)}`);
+  // ////console.log(`rest===>${JSON.stringify(rest)}`);
   _.map(rest,(v,key)=>{
     let keytxt = getalarmfieldtotxt(key);
     if(!!keytxt){
@@ -52,7 +52,7 @@ const bridge_alarminfo = (alarminfo)=>{
   });
 
   alarminfonew[`报警信息`] = alarmtxt;
-  // //console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
+  // ////console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
   return alarminfonew;
 }
 

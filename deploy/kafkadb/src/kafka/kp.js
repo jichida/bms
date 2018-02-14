@@ -11,7 +11,7 @@ const pconfig = config.kafka_pconfig2 || {
 
 
 const startproducer = (callbackfn)=>{
-  console.log(`startproducer>>>>>>>>`);
+  //console.log(`startproducer>>>>>>>>`);
   getProducer(globalconfig,pconfig,(err)=> {
     console.error(`Product---uncaughtException err`);
     console.error(err);

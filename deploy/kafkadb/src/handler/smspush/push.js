@@ -21,13 +21,13 @@ let sendallmsg = (notifymessage,fncallback)=>{
     .send( (err, res)=> {
       if (err) {
         if (err instanceof JPush.APIConnectionError) {
-          //console.log(err.message)
+          ////console.log(err.message)
         } else if (err instanceof JPush.APIRequestError) {
-          //console.log(err.message)
+          ////console.log(err.message)
         }
       } else {
-        //console.log('Sendno: ' + res.sendno)
-        //console.log('Msg_id: ' + res.msg_id)
+        ////console.log('Sendno: ' + res.sendno)
+        ////console.log('Msg_id: ' + res.msg_id)
       }
       fncallback(err,res);
     });
@@ -48,16 +48,16 @@ let sendusermsg = (notifymessage,fncallback)=>{
     .send((err, res)=> {
       if (err) {
         if (err instanceof JPush.APIConnectionError) {
-          //console.log(err.message)
+          ////console.log(err.message)
           // Response Timeout means your request to the server may have already received,
           // please check whether or not to push
-          //console.log(err.isResponseTimeout)
+          ////console.log(err.isResponseTimeout)
         } else if (err instanceof JPush.APIRequestError) {
-          //console.log(err.message)
+          ////console.log(err.message)
         }
       } else {
-        //console.log('Sendno: ' + res.sendno)
-        //console.log('Msg_id: ' + res.msg_id)
+        ////console.log('Sendno: ' + res.sendno)
+        ////console.log('Msg_id: ' + res.msg_id)
       }
       fncallback(err,res);
     })
@@ -83,6 +83,6 @@ exports.sendnotifymessage = sendnotifymessage;
 // };
 //
 // sendallmsg(notifymessage,(err,result)=>{
-//     //console.log(`err:${JSON.stringify(err)}`)
-//     //console.log(`result:${JSON.stringify(result)}`)
+//     ////console.log(`err:${JSON.stringify(err)}`)
+//     ////console.log(`result:${JSON.stringify(result)}`)
 // });

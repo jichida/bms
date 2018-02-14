@@ -35,18 +35,18 @@ const save_historydevice = (devicedata,callbackfn)=>{
     //     }
     const entity2 = new DBModels.HistoryDeviceModel(result_device);
     entity2.save((err,result)=>{
-      console.log(`【kafka_dbtopic_historydevices saved`);
+      //console.log(`【kafka_dbtopic_historydevices saved`);
       callbackfn(err,result);
     });
     // });
     return;
   }
-  console.log(`【kafka_dbtopic_historydevices returned`);
+  //console.log(`【kafka_dbtopic_historydevices returned`);
   callbackfn();
 }
 
 const kafka_dbtopic_historydevices = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_historydevices,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  //console.log(`【kafka_dbtopic_historydevices,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_historydevice(devicedata,callbackfn);
 }
 

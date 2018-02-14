@@ -13,7 +13,7 @@ const save_alarm = (devicedata,callbackfn)=>{
   if(!!LastRealtimeAlarm){//含有历史设备数据
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
-      // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+      // //console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err && !!result_alarm){
         //含有报警信息
         let updated_data = {
@@ -49,32 +49,32 @@ const save_alarm = (devicedata,callbackfn)=>{
                 if(devicedata.warninglevel !== ''){
                   handlerfn(result.toJSON(),(err,data)=>{
                     if(!!err){
-                      console.log(`【kafka_dbtopic_realtimealarms handlerfn:${JSON.stringify(data)}`);
-                      console.log(err);
+                      //console.log(`【kafka_dbtopic_realtimealarms handlerfn:${JSON.stringify(data)}`);
+                      //console.log(err);
                     }
-                    console.log(`【kafka_dbtopic_realtimealarms saved`);
+                    //console.log(`【kafka_dbtopic_realtimealarms saved`);
                     callbackfn(err,result);
                   });
                   return;
                 }
               }
             }
-            console.log(`【kafka_dbtopic_realtimealarms returned1`);
+            //console.log(`【kafka_dbtopic_realtimealarms returned1`);
             callbackfn(err,result);
           });
         return;
       }//if(!err && !!result_alarm){
-      console.log(`【kafka_dbtopic_realtimealarms returned2`);
+      //console.log(`【kafka_dbtopic_realtimealarms returned2`);
       callbackfn();
     });//alarmplugin.dofilter
     return;
   }
-  console.log(`【kafka_dbtopic_realtimealarms returned3`);
+  //console.log(`【kafka_dbtopic_realtimealarms returned3`);
   callbackfn();
 }
 
 const kafka_dbtopic_realtimealarms = (devicedata,callbackfn)=>{
-  console.log(`【kafka_dbtopic_realtimealarms,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
+  //console.log(`【kafka_dbtopic_realtimealarms,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   save_alarm(devicedata,callbackfn);
 }
 

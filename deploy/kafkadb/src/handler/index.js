@@ -25,7 +25,7 @@ const gettopichandler = (topic)=>{
 
 const handletopic = (msg,cb)=>{
   try{
-    console.log(`recvtopiname:${msg.topic},offset:${msg.offset},partition:${msg.partition}`);
+    //console.log(`recvtopiname:${msg.topic},offset:${msg.offset},partition:${msg.partition}`);
     const handlerfn = gettopichandler(msg.topic);
     if(!!handlerfn){
       let payload = msg.value.toString();
@@ -34,7 +34,7 @@ const handletopic = (msg,cb)=>{
           payload = JSON.parse(payload);
         }
         catch(e){
-          console.log(`parse json eror ${JSON.stringify(e)}`);
+          //console.log(`parse json eror ${JSON.stringify(e)}`);
         }
       }
       payload.recvpartition = msg.partition;
@@ -46,10 +46,10 @@ const handletopic = (msg,cb)=>{
       });
       return;
     }
-    console.log('cannot find handler!!');
+    //console.log('cannot find handler!!');
   }
   catch(e){
-    console.log("服务端内部错误--->" + e);
+    //console.log("服务端内部错误--->" + e);
   }
   if(!!cb){
     cb();

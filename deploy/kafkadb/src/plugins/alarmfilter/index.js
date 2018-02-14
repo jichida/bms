@@ -124,10 +124,10 @@ const matchalarm = (alarmdata,callback)=>{
           if(!err && !!result){
             let systemconfig = result.toJSON();
             let alarmrules = getalarmrules(systemconfig);
-            // console.log(alarmrules);
+            // //console.log(alarmrules);
             resultalarmmatch = getresultalarmmatch(alarmdata,alarmrules);
 
-            // console.log(resultalarmmatch);
+            // //console.log(resultalarmmatch);
             resultalarmmatch = _.sortBy(resultalarmmatch,(v)=>{
               if(v.warninglevel === '高'){
                 return 0;
@@ -141,7 +141,7 @@ const matchalarm = (alarmdata,callback)=>{
               return 3;
             });
 
-            // console.log(resultalarmmatch);
+            // //console.log(resultalarmmatch);
           }
           callback(resultalarmmatch);
       });
@@ -156,8 +156,8 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   // "AL_Trouble_Code" : 181
   //1级：黄色；2级：橙色；3级：红色
   let alarmdata = LastRealtimeAlarm.Alarm;
-  // console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
-  // console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
+  // //console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
+  // //console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
 
   if(!!alarmdata){
     let inc_data = {};
@@ -182,7 +182,7 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
         }
       }
     });
-    // console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
+    // //console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
     const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
     callback(null,{
       DeviceId,

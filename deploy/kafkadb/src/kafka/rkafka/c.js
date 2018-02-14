@@ -5,7 +5,7 @@ const initConsumer =(globalconfig,cconfig,topics,onErr)=> {
     const consumer = new kafka.KafkaConsumer(globalconfig,cconfig);
 
     consumer.on('ready', () => {
-      console.log('consumer ready.');
+      //console.log('consumer ready.');
       consumer.subscribe(topics || ['bms.index'])
       // consumer.consume();
       resolve(consumer);
@@ -20,7 +20,7 @@ const initConsumer =(globalconfig,cconfig,topics,onErr)=> {
       process.exit(0)
     });
     consumer.on('event.log', (event)=> {
-      console.log(event)
+      //console.log(event)
     })
     consumer.connect();
   });
