@@ -12,7 +12,7 @@ const dbh_device =(datas,callbackfn)=>{
     	})
       .upsert()
       .updateOne({
-    		{$set:devicedata}
+    		$set:devicedata
     	});
   });
   bulk.execute((err,result)=>{
@@ -51,7 +51,7 @@ const dbh_alarm =(datas,callbackfn)=>{
     	})
       .upsert()
       .updateOne({
-    		{$set:devicedata}
+    		$set:devicedata
     	});
   });
   bulk.execute((err,result)=>{
