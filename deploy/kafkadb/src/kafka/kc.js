@@ -13,6 +13,7 @@ const processbatchmsgs = (msgs,callbackfnmsg)=>{
   console.log(`消息开始${msgid}----->${moment().format('HH:mm:ss')}`);
   kafkadb.parseKafkaMsgs(msgs,(allresult)=>{
     console.log(`消息结束${msgid}----->${moment().format('HH:mm:ss')}`);
+    callbackfnmsg();
   });
 
   // let asyncfnsz = [];
