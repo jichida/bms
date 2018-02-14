@@ -48,12 +48,12 @@ const startsrv = (config)=>{
 
     getConsumer(globalconfig,cconfig,topics,
     (err,consumer)=> {
-      console.error(`Consumer${process.pid} ---uncaughtException err`);
+      console.error(`Consumer--${process.pid} ---uncaughtException err`);
       console.error(err);
       console.error(err.stack);
       console.error(`uncaughtException err---`);
-      consumer.disconnect();
-      throw err;
+      // consumer.disconnect();
+      // throw err;
     }).then((consumer)=>{
       const processRecords =(data, cb)=> {
         console.log(`processRecords--->${data.length}`);
