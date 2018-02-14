@@ -214,6 +214,7 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
         jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const stringdata = JSON.stringify(jsondata);
         producer.produce(process.env.IndexTopic ||'bmsdb.index', -1, new Buffer(stringdata), i);
+        console.log(`send message:${i}`);
       } catch (err) {
         console.error('A problem occurred when sending our message')
         console.error(err)
