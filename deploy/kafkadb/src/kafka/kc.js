@@ -9,12 +9,12 @@ const startsrv = (config)=>{
 
     const topics = [];
     topics.push(config.kafka_dbtopic_index);
-    topics.push(config.kafka_dbtopic_devices);
-    topics.push(config.kafka_dbtopic_historydevices);
-    topics.push(config.kafka_dbtopic_historytracks);
-    topics.push(config.kafka_dbtopic_realtimealarms);
-    topics.push(config.kafka_dbtopic_realtimealarmraws);
-    topics.push(config.kafka_pushalaramtopic_app);
+    // topics.push(config.kafka_dbtopic_devices);
+    // topics.push(config.kafka_dbtopic_historydevices);
+    // topics.push(config.kafka_dbtopic_historytracks);
+    // topics.push(config.kafka_dbtopic_realtimealarms);
+    // topics.push(config.kafka_dbtopic_realtimealarmraws);
+    // topics.push(config.kafka_pushalaramtopic_app);
 
     getConsumer(globalconfig,cconfig,topics,
     (msg,consumer)=> {
