@@ -4,26 +4,33 @@ const _ = require('lodash');
 const async = require('async');
 const moment = require('moment');
 const uuid = require('uuid');
+const kafkadb = require('../handler/kafkadb.js');
 
-const numMessages = 100;
+const numMessages = 1000;
 
 const processbatchmsgs = (msgs,callbackfnmsg)=>{
-  let asyncfnsz = [];
-  _.map(msgs,(msg)=>{
-    asyncfnsz.push((callbackfn)=>{
-        let msgnew = _.clone(msg);
-        dbh.handletopic(msgnew,(err,result)=>{
-          callbackfn(err,result);
-        });
-    });
+  const msgid = uuid.v4();
+  console.log(`消息开始{msgid}----->${moment().format('HH:mm:ss')}`);
+  kafkadb.parseKafkaMsgs(msgs,(allresult)=>{
+    console.log(`消息结束{msgid}----->${moment().format('HH:mm:ss')}`);
   });
 
-  const cid = uuid.v4();
-  console.log(`开始处理${cid}${asyncfnsz.length}----->${moment().format('HH:mm:ss')}`);
-  async.parallel(asyncfnsz,(err,result)=>{
-    console.log(`结束处理${cid}----->${moment().format('HH:mm:ss')}`);
-    callbackfnmsg(err,result);
-  });
+  // let asyncfnsz = [];
+  // _.map(msgs,(msg)=>{
+  //   asyncfnsz.push((callbackfn)=>{
+  //       let msgnew = _.clone(msg);
+  //       dbh.handletopic(msgnew,(err,result)=>{
+  //         callbackfn(err,result);
+  //       });
+  //   });
+  // });
+  //
+  // const cid = uuid.v4();
+  // console.log(`开始处理${cid}----->${moment().format('HH:mm:ss')}`);
+  // async.parallel(asyncfnsz,(err,result)=>{
+  //   console.log(`结束处理${cid}----->${moment().format('HH:mm:ss')}`);
+  //   callbackfnmsg(err,result);
+  // });
 
 }
 

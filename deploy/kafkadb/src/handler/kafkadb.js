@@ -85,7 +85,7 @@ const getdbdata_alarmraw = (devicedata,callbackfn)=>{
   callbackfn();
 }
 
-const getdata_alarm = (devicedata,callbackfn)=>{
+const getdbdata_alarm = (devicedata,callbackfn)=>{
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   const LastHistoryTrack = _.get(devicedata,'LastHistoryTrack');
   if(!!LastRealtimeAlarm){//含有历史设备数据
@@ -161,7 +161,27 @@ const getindexmsgs = (data,callbackfn)=>{
 
 }
 
-const parseMsgs = (msgs,callbackfn)=>{
+const getkafkamsg = (msg)=>{
+  let payload = msg.value.toString();
+  if(typeof payload === 'string'){
+    try{
+      payload = JSON.parse(payload);
+    }
+    catch(e){
+      //console.log(`parse json eror ${JSON.stringify(e)}`);
+    }
+  }
+  payload.recvpartition = msg.partition;
+  payload.recvoffset = msg.offset;
+  return payload;
+}
+
+
+const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
+  const msgs = [];
+  _.map(kafkamsgs,(msg)=>{
+    msgs.push(getkafkamsg(msg));
+  });
   const resultmsglist = {
     'device':[],
     'historydevice':[],
@@ -215,6 +235,7 @@ const parseMsgs = (msgs,callbackfn)=>{
            if(!!result[4]){
              resultmsglist['alarm'].push(result[4]);
            }
+           callbackfn();
          });
       });
     });
@@ -224,46 +245,47 @@ const parseMsgs = (msgs,callbackfn)=>{
     callbackfn(resultmsglist);
   });
 }
+//
+//
+// const test = ()=>{
+//
+//   let jsondata =
+//   {
+//       "Version": "1.0",
+//       "DeviceId": "1713100888",
+//       "DeviceType": 2,
+//       "DeviceStatus": 0,
+//       "TroubleStatus": 0,
+//       "SN64":1,
+//       "Temperature_PCB": 0,
+//       "BMSData": {
+//           "CANType": 2,
+//           "SN16": 591,
+//           "DataTime": "2017-11-16 22:39:03",
+//           "RecvTime": "2017-11-16 22:39:03",
+//           "Alarm": {
+//               "AL_Trouble_Code": 225,
+//               "AL_Over_Ucell":2,
+//               "AL_Under_Tcell":0,
+//               "AL_Over_I_Dchg":1
+//           },
+//           "BAT_U_Out_HVS": 89.5,
+//         }
+//     };
+//
+//     const msgs = [];
+//     let j= 0;
+//     for(let i = 0;i < 5; i++){
+//       jsondata.SN64 = j;
+//       j++;
+//       jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+//       msgs.push(_.clone(jsondata));
+//     }
+//     parseMsgs(msgs,(resultmsglist)=>{
+//       console.log(resultmsglist);
+//     });
+// }
+//
 
 
-const test = ()=>{
-
-  let jsondata =
-  {
-      "Version": "1.0",
-      "DeviceId": "1713100888",
-      "DeviceType": 2,
-      "DeviceStatus": 0,
-      "TroubleStatus": 0,
-      "SN64":1,
-      "Temperature_PCB": 0,
-      "BMSData": {
-          "CANType": 2,
-          "SN16": 591,
-          "DataTime": "2017-11-16 22:39:03",
-          "RecvTime": "2017-11-16 22:39:03",
-          "Alarm": {
-              "AL_Trouble_Code": 225,
-              "AL_Over_Ucell":2,
-              "AL_Under_Tcell":0,
-              "AL_Over_I_Dchg":1
-          },
-          "BAT_U_Out_HVS": 89.5,
-        }
-    };
-
-    const msgs = [];
-    let j= 0;
-    for(let i = 0;i < 5; i++){
-      jsondata.SN64 = j;
-      j++;
-      jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
-      msgs.push(jsondata);
-    }
-    parseMsgs(msgs,(resultmsglist)=>{
-      console.log(resultmsglist);
-    });
-}
-
-exports.test = test;
-exports.parseMsgs = parseMsgs;
+exports.parseKafkaMsgs = parseKafkaMsgs;
