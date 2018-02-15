@@ -9,16 +9,16 @@ const initProducer = (globalconfig,pconfig,onErr)=> {
       producer.setPollInterval(500)
       resolve(producer);
     })
-    producer.on('event.error', (err)=>{
-        onErr(err);
-    });
-    producer.on('disconnected', () => {
-      //console.log('producer disconnected.');
-      process.exit(0)
-    });
-    producer.on('event.log', function(event) {
-      //console.log(event)
-    })
+    // producer.on('event.error', (err)=>{
+    //     onErr(err);
+    // });
+    // producer.on('disconnected', () => {
+    //   //console.log('producer disconnected.');
+    //   process.exit(0)
+    // });
+    // producer.on('event.log', function(event) {
+    //   //console.log(event)
+    // })
     producer.connect();
   });
 }
