@@ -1,5 +1,5 @@
 let islocalhost = false;
-let serverurl = islocalhost?'http://localhost:5011':'http://101.89.141.109:81/apisrv';
+let serverurl = islocalhost?'http://localhost:5011':'http://bmscatl.com28.cn/apisrv';
 const organizationid = '599af5dc5f943819f10509e6';
 export default {
     restserverurl:`${serverurl}/adminapi/v1/${organizationid}`,
