@@ -15,15 +15,15 @@ const initConsumer =(globalconfig,cconfig,topics,onErr)=> {
     // consumer.on('data', (msg)=> {
     //   onMsg(msg,consumer);
     // });
-    consumer.on('event.error', (err)=>{
-        onErr(err,consumer);
-    });
-    consumer.on('disconnected', () => {
-      process.exit(0)
-    });
-    consumer.on('event.log', (event)=> {
-      //console.log(event)
-    })
+    // consumer.on('event.error', (err)=>{
+    //     onErr(err,consumer);
+    // });
+    // consumer.on('disconnected', () => {
+    //   process.exit(0)
+    // });
+    // consumer.on('event.log', (event)=> {
+    //   //console.log(event)
+    // })
     consumer.connect();
   });
 }
