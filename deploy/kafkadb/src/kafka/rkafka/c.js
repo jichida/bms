@@ -1,4 +1,6 @@
 const kafka = require('node-rdkafka');
+console.log(kafka.features);
+console.log(kafka.librdkafkaVersion);
 
 const initConsumer =(globalconfig,cconfig,topics,onErr)=> {
   return new Promise((resolve, reject) => {

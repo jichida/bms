@@ -7,7 +7,7 @@ const uuid = require('uuid');
 const parseKafkaMsgs = require('../handler/kafkadb_data.js');
 const onHandleToDB = require('../handler/kafkadb_dbh.js');
 
-const numMessages = 100;
+const numMessages = 500;
 
 const processbatchmsgs = (msgs,callbackfnmsg)=>{
   const msgid = uuid.v4();
@@ -46,6 +46,15 @@ const startsrv = (config)=>{
     const topics = [];
     topics.push(config.kafka_dbtopic_index);
 
+    globalconfig['offset_commit_cb'] = (err, topicPartitions)=> {
+      if (!!err) {
+        console.error(err);
+      } else {
+        // Commit went through. Let's log the topic partitions
+        console.log(topicPartitions);
+      }
+    };
+
     getConsumer(globalconfig,cconfig,topics,
     (err,consumer)=> {
       console.error(`Consumer--${process.pid} ---uncaughtException err`);
@@ -62,6 +71,7 @@ const startsrv = (config)=>{
         }
         // do work
         processbatchmsgs(data,(err,result)=>{
+          consumer.commit();
           setImmediate(cb);
         });
       }

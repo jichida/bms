@@ -20,7 +20,7 @@ const startproducer = (callbackfn)=>{
   }).then((producer)=>{
     const sendtokafka = (payload,topic,callbackfn)=>{
       const stringdata = JSON.stringify(payload);
-      producer.produce(topic, -1, new Buffer(stringdata),payload.SN64);
+      producer.produce(topic, -1, new Buffer(stringdata));
       callbackfn(null,true);
     }
     callbackfn(sendtokafka);
