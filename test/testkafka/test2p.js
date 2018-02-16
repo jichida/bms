@@ -219,7 +219,7 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
           let senddata = _.clone(jsondata);
           senddata.SN64 = pdataindex[j];
           pdataindex[j] = pdataindex[j]+1;
-          jsondata.senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+          senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
           const stringdata = JSON.stringify(senddata);
           producer.produce(process.env.IndexTopic ||'bmsdb.index', j, new Buffer(stringdata));
           console.log(`send message:p:${j},sn:${i}`);
