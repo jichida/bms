@@ -2,6 +2,9 @@ const moment = require('moment');
 const getProducer  = require('./rkafka/p.js');
 const count_partitionnumber = process.env.partitionnumber || 384;
 const _ = require('lodash');
+const topicname = process.env.IndexTopic ||'bmsdb.index';
+
+console.log(`topicname:${topicname},count_partitionnumber:${count_partitionnumber}`);
 
 const kafka_pconfig1 = {
   'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
@@ -221,8 +224,9 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
           pdataindex[j] = pdataindex[j]+1;
           senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
           const stringdata = JSON.stringify(senddata);
-          producer.produce(process.env.IndexTopic ||'bmsdb.index', j, new Buffer(stringdata));
-          console.log(`send message:p:${j},sn:${i}`);
+
+          producer.produce(topicname, j, new Buffer(stringdata));
+          console.log(`send message:p:${j},sn:${senddata.SN64}`);
         } catch (err) {
           console.error('A problem occurred when sending our message')
           console.error(err)
