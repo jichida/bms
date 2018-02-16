@@ -9,9 +9,9 @@ const initProducer = (globalconfig,pconfig,onErr)=> {
       producer.setPollInterval(500)
       resolve(producer);
     })
-    // producer.on('event.error', (err)=>{
-    //     onErr(err);
-    // });
+    producer.on('event.error', (err)=>{
+        onErr(err);
+    });
     // producer.on('disconnected', () => {
     //   //console.log('producer disconnected.');
     //   process.exit(0)
