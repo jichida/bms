@@ -22,23 +22,62 @@ const dbh_device =(datas,callbackfn)=>{
 
 const dbh_historydevice =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryDeviceModel;
-  dbModel.insertMany(datas, (err, result)=>{
+  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  _.map(datas,(devicedata)=>{
+    bulk.find({
+        SN64:devicedata.SN64,
+      })
+      .upsert()
+      .updateOne({
+        $set:devicedata
+      });
+  });
+  bulk.execute((err,result)=>{
     callbackfn(err,result);
   });
+  // dbModel.insertMany(datas, (err, result)=>{
+  //   callbackfn(err,result);
+  // });
 };
 
 const dbh_historytrack =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryTrackModel;
-  dbModel.insertMany(datas, (err, result)=>{
+  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  _.map(datas,(devicedata)=>{
+    bulk.find({
+        SN64:devicedata.SN64,
+      })
+      .upsert()
+      .updateOne({
+        $set:devicedata
+      });
+  });
+  bulk.execute((err,result)=>{
     callbackfn(err,result);
   });
+  // dbModel.insertMany(datas, (err, result)=>{
+  //   callbackfn(err,result);
+  // });
 };
 
 const dbh_alarmraw =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmRawModel;
-  dbModel.insertMany(datas, (err, result)=>{
+  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  _.map(datas,(devicedata)=>{
+    bulk.find({
+        SN64:devicedata.SN64,
+      })
+      .upsert()
+      .updateOne({
+        $set:devicedata
+      });
+  });
+  bulk.execute((err,result)=>{
     callbackfn(err,result);
   });
+  // dbModel.insertMany(datas, (err, result)=>{
+  //   callbackfn(err,result);
+  // });
 };
 
 const dbh_alarm =(datas,callbackfn)=>{

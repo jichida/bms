@@ -210,6 +210,7 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
   console.error(err.stack);
   console.error(`uncaughtException err---`);
 }).then((producer)=>{
+  let icount = 0;
   const pdataindex = [];
   for(let i = 0 ;i <count_partitionnumber ;i++ ){
     pdataindex.push(0);
@@ -220,7 +221,8 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
     setInterval(()=>{
       try {
           let senddata = _.clone(jsondata);
-          senddata.SN64 = pdataindex[j];
+          senddata.SN64 = icount;
+          icount++;
           pdataindex[j] = pdataindex[j]+1;
           senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
           const stringdata = JSON.stringify(senddata);
