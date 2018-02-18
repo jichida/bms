@@ -211,30 +211,47 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
   console.error(`uncaughtException err---`);
 }).then((producer)=>{
   let icount = 0;
-  const pdataindex = [];
-  for(let i = 0 ;i <count_partitionnumber ;i++ ){
-    pdataindex.push(0);
-  }
 
-  console.error('start send message...');
-  for(let j=0 ;j < count_partitionnumber; j++){
-    setInterval(()=>{
-      try {
-          let senddata = _.clone(jsondata);
-          senddata.SN64 = icount;
-          icount++;
-          pdataindex[j] = pdataindex[j]+1;
-          senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
-          const stringdata = JSON.stringify(senddata);
+  setInterval(()=>{
+    try {
+        let senddata = _.clone(jsondata);
+        senddata.SN64 = icount;
+        icount++;
 
-          producer.produce(topicname, j, new Buffer(stringdata));
-          console.log(`send message:p:${j},sn:${senddata.SN64}`);
-        } catch (err) {
-          console.error('A problem occurred when sending our message')
-          console.error(err)
-        }
-    },0);
-  }
+        senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        const stringdata = JSON.stringify(senddata);
+
+        producer.produce(topicname, -1, new Buffer(stringdata));
+        console.log(`send message:p:${j},sn:${senddata.SN64}`);
+      } catch (err) {
+        console.error('A problem occurred when sending our message')
+        console.error(err)
+      }
+  },0);
+  // const pdataindex = [];
+  // for(let i = 0 ;i <count_partitionnumber ;i++ ){
+  //   pdataindex.push(0);
+  // }
+  //
+  // console.error('start send message...');
+  // for(let j=0 ;j < count_partitionnumber; j++){
+  //   setInterval(()=>{
+  //     try {
+  //         let senddata = _.clone(jsondata);
+  //         senddata.SN64 = icount;
+  //         icount++;
+  //         pdataindex[j] = pdataindex[j]+1;
+  //         senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+  //         const stringdata = JSON.stringify(senddata);
+  //
+  //         producer.produce(topicname, j, new Buffer(stringdata));
+  //         console.log(`send message:p:${j},sn:${senddata.SN64}`);
+  //       } catch (err) {
+  //         console.error('A problem occurred when sending our message')
+  //         console.error(err)
+  //       }
+  //   },0);
+  // }
 
 
 });
