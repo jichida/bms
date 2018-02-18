@@ -221,7 +221,7 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
         senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const stringdata = JSON.stringify(senddata);
 
-        producer.produce(topicname, -1, new Buffer(stringdata));
+        producer.produce(topicname, -1, new Buffer(stringdata),icount);
         console.log(`send message,sn:${senddata.SN64}`);
       } catch (err) {
         console.error('A problem occurred when sending our message')
