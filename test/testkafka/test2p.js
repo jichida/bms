@@ -222,7 +222,7 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
         const stringdata = JSON.stringify(senddata);
 
         producer.produce(topicname, -1, new Buffer(stringdata));
-        console.log(`send message:p:${j},sn:${senddata.SN64}`);
+        console.log(`send message,sn:${senddata.SN64}`);
       } catch (err) {
         console.error('A problem occurred when sending our message')
         console.error(err)
