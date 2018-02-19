@@ -46,14 +46,14 @@ const startsrv = (config)=>{
     const topics = [];
     topics.push(config.kafka_dbtopic_index);
 
-    globalconfig['offset_commit_cb'] = (err, topicPartitions)=> {
-      if (!!err) {
-        console.error(err);
-      } else {
-        // Commit went through. Let's log the topic partitions
-        console.log(topicPartitions);
-      }
-    };
+    // globalconfig['offset_commit_cb'] = (err, topicPartitions)=> {
+    //   if (!!err) {
+    //     console.error(err);
+    //   } else {
+    //     // Commit went through. Let's log the topic partitions
+    //     console.log(topicPartitions);
+    //   }
+    // };
 
     getConsumer(globalconfig,cconfig,topics,
     (err,consumer)=> {

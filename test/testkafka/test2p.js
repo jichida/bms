@@ -1,5 +1,10 @@
 const moment = require('moment');
 const getProducer  = require('./rkafka/p.js');
+const count_partitionnumber = process.env.partitionnumber || 384;
+const _ = require('lodash');
+const topicname = process.env.IndexTopic ||'bmsdb.index';
+
+console.log(`topicname:${topicname},count_partitionnumber:${count_partitionnumber}`);
 
 const kafka_pconfig1 = {
   'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
@@ -205,20 +210,48 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
   console.error(err.stack);
   console.error(`uncaughtException err---`);
 }).then((producer)=>{
-  let i = 0;
-  console.error('start send message...');
+  let icount = 0;
+
   setInterval(()=>{
     try {
-        jsondata.SN64 = i;
-        i++;
-        jsondata.BMSData.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
-        const stringdata = JSON.stringify(jsondata);
-        producer.produce(process.env.IndexTopic ||'bmsdb.index', -1, new Buffer(stringdata));
-        console.log(`send message:${i}`);
+        let senddata = _.clone(jsondata);
+        senddata.SN64 = icount;
+        icount++;
+
+        senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        const stringdata = JSON.stringify(senddata);
+
+        producer.produce(topicname, -1, new Buffer(stringdata),icount);
+        console.log(`send message,sn:${senddata.SN64}`);
       } catch (err) {
         console.error('A problem occurred when sending our message')
         console.error(err)
       }
   },0);
+  // const pdataindex = [];
+  // for(let i = 0 ;i <count_partitionnumber ;i++ ){
+  //   pdataindex.push(0);
+  // }
+  //
+  // console.error('start send message...');
+  // for(let j=0 ;j < count_partitionnumber; j++){
+  //   setInterval(()=>{
+  //     try {
+  //         let senddata = _.clone(jsondata);
+  //         senddata.SN64 = icount;
+  //         icount++;
+  //         pdataindex[j] = pdataindex[j]+1;
+  //         senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+  //         const stringdata = JSON.stringify(senddata);
+  //
+  //         producer.produce(topicname, j, new Buffer(stringdata));
+  //         console.log(`send message:p:${j},sn:${senddata.SN64}`);
+  //       } catch (err) {
+  //         console.error('A problem occurred when sending our message')
+  //         console.error(err)
+  //       }
+  //   },0);
+  // }
+
 
 });
