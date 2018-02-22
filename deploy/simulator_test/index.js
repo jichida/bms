@@ -1,5 +1,6 @@
-const update_device = require('./src/update_device');
+// const update_device = require('./src/update_device');
 const config = require('./src/config');
+const testquery = require('./src/testquery');
 const mongoose     = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -13,4 +14,4 @@ mongoose.connect(config.mongodburl,{
   });
 
 
-update_device.startjob();
+testquery.do_test_query_paginate();
