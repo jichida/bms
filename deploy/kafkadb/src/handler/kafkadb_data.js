@@ -29,7 +29,7 @@ const getdbdata_historydevice = (devicedata)=>{
     result_device.Provice = devicedata.Provice;
     result_device.City = devicedata.City;
     result_device.Area = devicedata.Area;
-
+    result_device.GUID = devicedata.GUID;
     //+以下语句便于调试
     result_device.recvpartition = devicedata.recvpartition;
     result_device.recvoffset = devicedata.recvoffset;
@@ -48,6 +48,7 @@ const getdbdata_historytrack = (devicedata)=>{
     result_historytrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_historytrack.NodeID = config.NodeID;
     result_historytrack.SN64 = devicedata.SN64;
+    result_historytrack.GUID = devicedata.GUID;
     result_historytrack.Provice = devicedata.Provice;
     result_historytrack.City = devicedata.City;
     result_historytrack.Area = devicedata.Area;
@@ -63,7 +64,7 @@ const getdbdata_alarmraw = (devicedata)=>{
     let result_alarm_raw = _.clone(LastRealtimeAlarmRaw);
     result_alarm_raw.DeviceId = devicedata.DeviceId;
     result_alarm_raw.DataTime = devicedata.LastRealtimeAlarm.DataTime;
-
+    result_alarm_raw.GUID = devicedata.GUID;
     if(!!devicedata.LastHistoryTrack){
       result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
       result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
@@ -130,7 +131,7 @@ const getindexmsgs = (data,callbackfn)=>{
   const LastHistoryTrack = _.clone(data.Position);
 
   const devicedata = _.omit(data,['BMSData','Position']);
-
+  devicedata.GUID = data.GUID;
   if(!!LastRealtimeAlarm){
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
   }

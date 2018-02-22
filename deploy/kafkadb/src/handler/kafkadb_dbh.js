@@ -25,7 +25,7 @@ const dbh_historydevice =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   _.map(datas,(devicedata)=>{
     bulk.find({
-        SN64:devicedata.SN64,
+        GUID:devicedata.GUID,
       })
       .upsert()
       .updateOne({
@@ -45,7 +45,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   _.map(datas,(devicedata)=>{
     bulk.find({
-        SN64:devicedata.SN64,
+        GUID:devicedata.GUID,
       })
       .upsert()
       .updateOne({
@@ -65,7 +65,7 @@ const dbh_alarmraw =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   _.map(datas,(devicedata)=>{
     bulk.find({
-        SN64:devicedata.SN64,
+        GUID:devicedata.GUID,
       })
       .upsert()
       .updateOne({
