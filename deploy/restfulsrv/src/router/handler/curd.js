@@ -75,10 +75,10 @@ const curd = (schmodel)=>{
       const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       query['organizationid'] = organizationid;
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
-        console.log(`query start==>${JSON.stringify(querynew)}--->\n \
+        console.log(`[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
 optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
         dbModel.paginate(querynew, options,(err,result)=>{
-          console.log(`query end--->${moment().format('HH:mm:ss')}`);
+          console.log(`[${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
           res.status(200).json(result);
         });
       });
