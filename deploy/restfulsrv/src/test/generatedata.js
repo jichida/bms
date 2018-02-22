@@ -12,7 +12,10 @@ mongoose.connect(config.mongodburl,{
     // takes longer than 30 seconds to recover.
     reconnectInterval: 5000,
     // This options is 30 by default, why not make it 60
-    reconnectTries: Number.MAX_VALUE
+    reconnectTries: Number.MAX_VALUE,
+    db: {
+		    readPreference: 'secondaryPreferred'
+	  },
   },(err)=>{
     if(!!err){
       //console.log(`mongodb connect${JSON.stringify(err)}`);
