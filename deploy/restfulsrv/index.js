@@ -18,9 +18,8 @@ mongoose.connect(config.mongodburl,{
     // This options is 30 by default, why not make it 60
     reconnectTries: Number.MAX_VALUE,
 
-    db: {
-        readPreference: 'secondaryPreferred'
-    },
+    readPreference: 'secondaryPreferred'
+
   });
 
 console.log(`rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
