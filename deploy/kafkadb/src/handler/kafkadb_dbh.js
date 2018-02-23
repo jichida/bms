@@ -6,35 +6,59 @@ const config = require('../config.js');
 const dbh_device =(datas,callbackfn)=>{
   const dbModel = DBModels.DeviceModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
-  _.map(datas,(devicedata)=>{
-    bulk.find({
-    		DeviceId:devicedata.DeviceId
-    	})
-      .upsert()
-      .updateOne({
-    		$set:devicedata
-    	});
-  });
-  bulk.execute((err,result)=>{
-    callbackfn(err,result);
-  });
+  if(!!bulk){
+    _.map(datas,(devicedata)=>{
+      bulk.find({
+          DeviceId:devicedata.DeviceId
+        })
+        .upsert()
+        .updateOne({
+          $set:devicedata
+        });
+    });
+    bulk.execute((err,result)=>{
+      if(!!err){
+        console.error(`dbh_device err`);
+        console.error(err);
+        console.error(err.stack);
+      }
+      callbackfn(err,result);
+    });
+  }
+  else{
+    console.error(`dbh_device err,bulk is null`);
+    callbackfn();
+  }
 };
 
 const dbh_historydevice =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryDeviceModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
-  _.map(datas,(devicedata)=>{
-    bulk.find({
-        GUID:devicedata.GUID,
-      })
-      .upsert()
-      .updateOne({
-        $set:devicedata
-      });
-  });
-  bulk.execute((err,result)=>{
-    callbackfn(err,result);
-  });
+  if(!!bulk){
+    _.map(datas,(devicedata)=>{
+      bulk.find({
+          GUID:devicedata.GUID,
+          DeviceId:devicedata.DeviceId,
+          DataTime:devicedata.DataTime
+        })
+        .upsert()
+        .updateOne({
+          $set:devicedata
+        });
+    });
+    bulk.execute((err,result)=>{
+      if(!!err){
+        console.error(`dbh_historydevice err`);
+        console.error(err);
+        console.error(err.stack);
+      }
+      callbackfn(err,result);
+    });
+  }
+  else{
+    console.error(`dbh_device err,bulk is null`);
+    callbackfn();
+  }
   // dbModel.insertMany(datas, (err, result)=>{
   //   callbackfn(err,result);
   // });
@@ -43,18 +67,31 @@ const dbh_historydevice =(datas,callbackfn)=>{
 const dbh_historytrack =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryTrackModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
-  _.map(datas,(devicedata)=>{
-    bulk.find({
-        GUID:devicedata.GUID,
-      })
-      .upsert()
-      .updateOne({
-        $set:devicedata
-      });
-  });
-  bulk.execute((err,result)=>{
-    callbackfn(err,result);
-  });
+  if(!!bulk){
+    _.map(datas,(devicedata)=>{
+      bulk.find({
+          GUID:devicedata.GUID,
+          DeviceId:devicedata.DeviceId,
+          GPSTime:devicedata.GPSTime,
+        })
+        .upsert()
+        .updateOne({
+          $set:devicedata
+        });
+    });
+    bulk.execute((err,result)=>{
+      if(!!err){
+        console.error(`dbh_historytrack err`);
+        console.error(err);
+        console.error(err.stack);
+      }
+      callbackfn(err,result);
+    });
+  }
+  else{
+    console.error(`dbh_device err,bulk is null`);
+    callbackfn();
+  }
   // dbModel.insertMany(datas, (err, result)=>{
   //   callbackfn(err,result);
   // });
@@ -63,18 +100,31 @@ const dbh_historytrack =(datas,callbackfn)=>{
 const dbh_alarmraw =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmRawModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
-  _.map(datas,(devicedata)=>{
-    bulk.find({
-        GUID:devicedata.GUID,
-      })
-      .upsert()
-      .updateOne({
-        $set:devicedata
-      });
-  });
-  bulk.execute((err,result)=>{
-    callbackfn(err,result);
-  });
+  if(!!bulk){
+    _.map(datas,(devicedata)=>{
+      bulk.find({
+          GUID:devicedata.GUID,
+          DeviceId:devicedata.DeviceId,
+          DataTime:devicedata.DataTime
+        })
+        .upsert()
+        .updateOne({
+          $set:devicedata
+        });
+    });
+    bulk.execute((err,result)=>{
+      if(!!err){
+        console.error(`dbh_alarmraw err`);
+        console.error(err);
+        console.error(err.stack);
+      }
+      callbackfn(err,result);
+    });
+  }
+  else{
+    console.error(`dbh_device err,bulk is null`);
+    callbackfn();
+  }
   // dbModel.insertMany(datas, (err, result)=>{
   //   callbackfn(err,result);
   // });
@@ -83,19 +133,28 @@ const dbh_alarmraw =(datas,callbackfn)=>{
 const dbh_alarm =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
-  _.map(datas,(devicedata)=>{
-    bulk.find({
-    		DeviceId:devicedata.DeviceId,
-        CurDay:devicedata.CurDay,
-    	})
-      .upsert()
-      .updateOne({
-    		$set:devicedata
-    	});
-  });
-  bulk.execute((err,result)=>{
-    callbackfn(err,result);
-  });
+  if(!!bulk){
+      _.map(datas,(devicedata)=>{
+        bulk.find({
+        		DeviceId:devicedata["$set"].DeviceId,
+            CurDay:devicedata["$set"].CurDay,
+        	})
+          .upsert()
+          .updateOne(devicedata);
+      });
+      bulk.execute((err,result)=>{
+        if(!!err){
+          console.error(`dbh_alarm err`);
+          console.error(err);
+          console.error(err.stack);
+        }
+        callbackfn(err,result);
+      });
+    }
+    else{
+      console.error(`dbh_device err,bulk is null`);
+      callbackfn();
+    }
 };
 
 const onHandleToDB = (allresult,callbackfn)=>{

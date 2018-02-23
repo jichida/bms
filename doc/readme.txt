@@ -65,3 +65,7 @@ db.historydevices.aggregate([
 
 { "_id" : ObjectId("5a7de4924848dd0001a7eb1f"), "DataTime" : "2018-02-10 00:05:46", "DeviceId" : "1501104870", "NodeID" : "427", "SN64" : 5979419, "UpdateTime" : "2018-02-10 02:12:34", "indexrecvpartition" : 47, "indexrecvoffset" : 172374, "recvpartition" : 155, "recvoffset" : 667 }
 { "_id" : ObjectId("5a7de404ab98860001086a40"), "DataTime" : "2018-02-10 00:05:46", "DeviceId" : "1501104870", "NodeID" : "318", "SN64" : 5979419, "UpdateTime" : "2018-02-10 02:10:12", "indexrecvpartition" : 47, "indexrecvoffset" : 172374, "recvpartition" : 155, "recvoffset" : 667 }
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+docker run -it confluentinc/cp-kafka:4.0.0 bash
+kafka-console-consumer --bootstrap-server 192.168.1.114:9092 --topic bmsindex --offset 10000 --partition 1 --max-messages 100
