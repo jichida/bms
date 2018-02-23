@@ -90,9 +90,7 @@ const dbh_alarm =(datas,callbackfn)=>{
         CurDay:devicedata.CurDay,
     	})
       .upsert()
-      .updateOne({
-    		$set:devicedata
-    	});
+      .updateOne(devicedata);
   });
   bulk.execute((err,result)=>{
     callbackfn(err,result);
