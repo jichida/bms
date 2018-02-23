@@ -75,7 +75,9 @@ const curd = (schmodel)=>{
       const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       if(schmodel.collectionname !== 'historydevice'
       && schmodel.collectionname !== 'historytrack'
-      && schmodel.collectionname !== 'realtimealarmraw'){
+      && schmodel.collectionname !== 'realtimealarmraw'
+      && schmodel.collectionname !== 'device'
+      && schmodel.collectionname !== 'realtimealarm'){
         //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
           query['organizationid'] = organizationid;
       }
@@ -120,7 +122,9 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
       query[queryparam.params.target] = queryparam.params.id;
       if(schmodel.collectionname !== 'historydevice'
       && schmodel.collectionname !== 'historytrack'
-      && schmodel.collectionname !== 'realtimealarmraw'){
+      && schmodel.collectionname !== 'realtimealarmraw'
+      && schmodel.collectionname !== 'device'
+      && schmodel.collectionname !== 'realtimealarm'){
         //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
           query['organizationid'] = organizationid;
       }
