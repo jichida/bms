@@ -1,5 +1,6 @@
-const update_device = require('./src/update_device');
+// const update_device = require('./src/update_device');
 const config = require('./src/config');
+const testquery = require('./src/testquery');
 const mongoose     = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -13,4 +14,15 @@ mongoose.connect(config.mongodburl,{
   });
 
 
-update_device.startjob();
+console.log(`mongodburl:${config.mongodburl}`);
+
+mongoose.connection.on("connected",function(){
+  console.log("mongoose connect sucess");
+  setTimeout(()=>{
+    testquery.do_test_insert_alarm();
+  },2000);
+
+})
+
+
+// testquery.do_test_query_skip();
