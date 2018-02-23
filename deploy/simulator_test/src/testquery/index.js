@@ -99,8 +99,12 @@ const do_test_insert_alarm = ()=>{
     }];
 
     dbh_alarm(datas,(err,result)=>{
-      console.log(err);
-      console.log(result);
+      if(!!err){
+        console.error(`dbh_alarmraw err`);
+        console.error(err);
+        console.error(err.stack);
+      }
+
     });
 };
 // dbh_alarm==>{"$inc":{"AL_Over_SOC":1,"AL_Err_Mea_Isolation":1,"F[107]":1},"CurDay":"2018-02-23","DeviceId":"1501101156","DataTime":"2018-02-23 01:25:39","warninglevel":"低","NodeID":"999","SN64":137754001,"UpdateTime":"2018-02-23 18:09:55","organizationid":"599af5dc5f943819f10509e6","Provice":"江苏省","City":"南通市","Area":"海门市","Longitude":121.123456,"Latitude":31.987654}

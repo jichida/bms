@@ -35,6 +35,7 @@ const getdbdata_historydevice = (devicedata)=>{
     result_device.recvoffset = devicedata.recvoffset;
 
     result_device.warninglevel = devicedata.warninglevel;
+
     return result_device;
   }
 }
@@ -53,7 +54,9 @@ const getdbdata_historytrack = (devicedata)=>{
     result_historytrack.City = devicedata.City;
     result_historytrack.Area = devicedata.Area;
     result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    return result_historytrack;
+    if(!!result_historytrack.GPSTime){
+      return result_historytrack;
+    }
   }
 }
 
