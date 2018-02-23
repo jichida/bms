@@ -75,7 +75,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
           $set:devicedata
         });
     });
-    bulk.execute((err,result
+    bulk.execute((err,result)=>{
       if(!!err){
         console.error(`dbh_historytrack err`);
         console.error(err);
