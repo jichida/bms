@@ -15,3 +15,4 @@ mongoose.connect(config.mongodburl,{
 
 
 testquery.do_test_query_paginate();
+testquery.do_test_query_skip();
