@@ -87,7 +87,7 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
   if(!!LastRealtimeAlarm){//含有历史设备数据
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
-      console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+      // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err && !!result_alarm){
         //含有报警信息
         let updated_data = {

@@ -84,6 +84,7 @@ const dbh_alarm =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   _.map(datas,(devicedata)=>{
+    console.log(`dbh_alarm==>${JSON.stringify(devicedata)}`);
     bulk.find({
     		DeviceId:devicedata.DeviceId,
         CurDay:devicedata.CurDay,
