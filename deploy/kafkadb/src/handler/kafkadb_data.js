@@ -93,27 +93,28 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
       // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err && !!result_alarm){
         //含有报警信息
-        let updated_data = {
-          "$inc": result_alarm.inc_data,
-          "$set":{
-            CurDay:result_alarm.CurDay,
-            DeviceId:result_alarm.DeviceId,
-            DataTime:LastRealtimeAlarm.DataTime,
-            warninglevel:result_alarm.warninglevel,
-            NodeID:config.NodeID,
-            SN64:devicedata.SN64,
-            UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
-            organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
-            Provice:devicedata.Provice,
-            City:devicedata.City,
-            Area:devicedata.Area
-          }
+        let updatedset = {
+          CurDay:result_alarm.CurDay,
+          DeviceId:result_alarm.DeviceId,
+          DataTime:LastRealtimeAlarm.DataTime,
+          warninglevel:result_alarm.warninglevel,
+          NodeID:config.NodeID,
+          SN64:devicedata.SN64,
+          UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
+          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+          Provice:devicedata.Provice,
+          City:devicedata.City,
+          Area:devicedata.Area
         };
         if(!!LastHistoryTrack){
-          updated_data.Longitude = LastHistoryTrack.Longitude;
-          updated_data.Latitude = LastHistoryTrack.Latitude;
+          updatedset.Longitude = LastHistoryTrack.Longitude;
+          updatedset.Latitude = LastHistoryTrack.Latitude;
         }
-        updated_data.warninglevel = devicedata.warninglevel;
+        let updated_data = {
+          "$inc": result_alarm.inc_data,
+          "$set":updatedset
+        };
+
         callbackfn(updated_data);
         return;
       }
