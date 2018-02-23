@@ -73,7 +73,13 @@ const curd = (schmodel)=>{
 
     if(queryparam.type === GET_LIST){
       const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-      query['organizationid'] = organizationid;
+      if(schmodel.collectionname !== 'historydevice'
+      && schmodel.collectionname !== 'historytrack'
+      && schmodel.collectionname !== 'realtimealarmraw'){
+        //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
+          query['organizationid'] = organizationid;
+      }
+
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
         console.log(`[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
 optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
@@ -112,7 +118,12 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
     else if(queryparam.type === GET_MANY_REFERENCE){
       let query = {};
       query[queryparam.params.target] = queryparam.params.id;
-      query['organizationid'] = organizationid;
+      if(schmodel.collectionname !== 'historydevice'
+      && schmodel.collectionname !== 'historytrack'
+      && schmodel.collectionname !== 'realtimealarmraw'){
+        //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
+          query['organizationid'] = organizationid;
+      }
       //console.log("GET_MANY_REFERENCE 查询条件=>" + JSON.stringify(query));
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
