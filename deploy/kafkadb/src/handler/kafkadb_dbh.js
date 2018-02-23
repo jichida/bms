@@ -6,6 +6,7 @@ const config = require('../config.js');
 const dbh_device =(datas,callbackfn)=>{
   const dbModel = DBModels.DeviceModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
+  console.log(`dbh_device bulk===>${!!bulk}`);
   _.map(datas,(devicedata)=>{
     bulk.find({
     		DeviceId:devicedata.DeviceId
@@ -23,6 +24,7 @@ const dbh_device =(datas,callbackfn)=>{
 const dbh_historydevice =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryDeviceModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
+  console.log(`dbh_historydevice bulk===>${!!bulk}`);
   _.map(datas,(devicedata)=>{
     bulk.find({
         GUID:devicedata.GUID,
@@ -43,6 +45,7 @@ const dbh_historydevice =(datas,callbackfn)=>{
 const dbh_historytrack =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryTrackModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
+  console.log(`dbh_historytrack bulk===>${!!bulk}`);
   _.map(datas,(devicedata)=>{
     bulk.find({
         GUID:devicedata.GUID,
@@ -63,6 +66,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
 const dbh_alarmraw =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmRawModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
+  console.log(`dbh_alarmraw bulk===>${!!bulk}`);
   _.map(datas,(devicedata)=>{
     bulk.find({
         GUID:devicedata.GUID,
@@ -83,6 +87,7 @@ const dbh_alarmraw =(datas,callbackfn)=>{
 const dbh_alarm =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
+  console.log(`dbh_alarm bulk===>${!!bulk}`);
   _.map(datas,(devicedata)=>{
     console.log(`dbh_alarm==>${JSON.stringify(devicedata)}`);
     bulk.find({
