@@ -51,7 +51,7 @@ const createInfoWindow_popinfo =(data)=> {
     info.className = "Window_pop_info";
 
     //可以通过下面的方式修改自定义窗体的宽高
-    info.style.width = "800px";
+    info.style.width = "760px";
     // 定义顶部标题
     let top = document.createElement("div");
     let titleD = document.createElement("div");

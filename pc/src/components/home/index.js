@@ -84,11 +84,13 @@ class Page extends React.Component {
                 marginLeft: 0,
                 order: -1,
                 transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+                zIndex: 100
             },
             drawclosestyle : {
                 marginLeft: `-${width}`,
                 order: -1,
                 transition: 'margin 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+                zIndex: 100
             },
         })
     }
@@ -139,25 +141,30 @@ class Page extends React.Component {
                             containerStyle={{
                                 top: "64px",
                                 zIndex: 1000,
-                                position: "inherit"
+                                position: "inherit",
+                                overflow: "visible"
                             }}
                             width={400}
                             style={showmenu==="addressbox"?treestyle.drawopenstyle:treestyle.drawclosestyle}
                             >
                             <Tree />
-
-                            <span className="myclose white" onClick={this.menuevent}></span>
+                            { 
+                                showmenu==="addressbox" && 
+                                <span className="myclose left" onClick={this.menuevent}></span>
+                            }
+                            { 
+                                showmenu!=="addressbox" && 
+                                <span className="myclose right" onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}}></span>
+                            }
                         </Drawer>
 
                         <div className="admincontainer">
                             <AdminContent />
                         </div>
 
-
                         <div className="warningtips">
                             <Warningtips/>
                         </div>
-
 
                         <Menu lesswidth={showmenu==="addressbox"?400:100} />
 
