@@ -101,7 +101,7 @@ class TreeSearchBattery extends React.Component {
               <Input placeholder="地区" onChange={this.onChange_ExtArea} value={this.state.ExtArea}/>
               <Input placeholder="车工号" onChange={this.onChange_ExtNo} value={this.state.ExtNo}/>
               <div className="i">
-                     <div className="selcar">
+                     <div className="selcar setsearchid">
                        <span className="t">车辆ID：</span>
                        <SelectDevice
                          placeholder={"请输入设备ID"}

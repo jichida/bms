@@ -81,7 +81,7 @@ class TreeSearchBattery extends React.Component {
                     <Seltime  startDate = {this.state.startDate}
                       endDate = {this.state.endDate}
                      onChangeSelDate={this.onChangeSelDate.bind(this)}/>
-                     <div className="selcar">
+                     <div className="selcar setsearchid">
                        <span className="t">车辆ID：</span>
                        <SelectDevice
                          placeholder={"请输入设备ID"}

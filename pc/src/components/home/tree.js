@@ -75,19 +75,13 @@ class TreeExample extends React.Component {
                         tabBarStyle={{width : "400px"}}
                         className="treetabs"
                         >
-                        <TabPane
-                            tab="地址位置"
-                            key="1">
-                            <TreeByloc/>
+                        <TabPane tab="地址位置" key="1">
+                            <TreeByloc />
                         </TabPane>
-                        <TabPane
-                            tab="分组"
-                            key="2" >
-                            <TreeBygroup/>
+                        <TabPane tab="分组" key="2">
+                            <TreeBygroup />
                         </TabPane>
-                        <TabPane
-                            tab="搜索"
-                            key="3">
+                        <TabPane tab="搜索" key="3">
                             <Search onClickQuery={this.onClickQuery}/>
                             <TreeBysearchresult/>
                         </TabPane>
