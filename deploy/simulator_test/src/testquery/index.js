@@ -33,9 +33,13 @@ const do_test_query_skip = ()=>{
   const querynew = query;
   console.log(`[do_test_query_skip==>${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
   optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
-  const queryexec = dbModel.find(querynew).select({}).limit(100).skip(0);
+  const queryexec = dbModel.find(querynew).select().limit(100).skip(0);
   queryexec.exec((err,list)=>{
      console.log(`[do_test_query_skip==>${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
+  });
+
+  dbModel.count(querynew,(err, list)=> {
+      console.log(`[do_test_query_skip==>${schmodel.collectionname}],COUNT:${list},query end--->${moment().format('HH:mm:ss')}`);
   });
 
 };
