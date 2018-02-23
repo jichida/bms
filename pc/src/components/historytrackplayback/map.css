@@ -182,8 +182,10 @@
     
 }
 #historytrackplayback .ant-select-selection--single{
-    width: 140px;
+    width: 160px;
 }
-
+#historytrackplayback .ant-select-selection__placeholder{
+    top:  6px;
+}
 
 

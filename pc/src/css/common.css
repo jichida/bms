@@ -1885,3 +1885,14 @@
 .settingPage .Select--multi .Select-input input{
     width: 100%;
 } */
+
+.setsearchid .ant-select-selection__placeholder{
+    margin-top: -16px;
+}
+.TreeSearchBattery .Select-placeholder{
+    text-align: left;
+}
+.TreeSearchBattery .Select.Select--multi{
+    margin-left: 5px;
+    padding-left: 0;
+}

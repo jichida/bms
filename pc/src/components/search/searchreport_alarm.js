@@ -116,7 +116,7 @@ class TreeSearchBattery extends React.Component {
                         <Option value={"1"} >中</Option>
                         <Option value={"2"} >低</Option>
                     </Select>
-                    <div className="selcar">
+                    <div className="selcar setsearchid">
                       <span className="t">车辆ID：</span>
                       <SelectDevice
                         placeholder={"请输入设备ID"}
