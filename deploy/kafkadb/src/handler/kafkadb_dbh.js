@@ -38,6 +38,7 @@ const dbh_historydevice =(datas,callbackfn)=>{
     _.map(datas,(devicedata)=>{
       bulk.find({
           GUID:devicedata.GUID,
+          DeviceId:devicedata.DeviceId
         })
         .upsert()
         .updateOne({
@@ -69,6 +70,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
     _.map(datas,(devicedata)=>{
       bulk.find({
           GUID:devicedata.GUID,
+          DeviceId:devicedata.DeviceId
         })
         .upsert()
         .updateOne({
@@ -100,6 +102,7 @@ const dbh_alarmraw =(datas,callbackfn)=>{
     _.map(datas,(devicedata)=>{
       bulk.find({
           GUID:devicedata.GUID,
+          DeviceId:devicedata.DeviceId
         })
         .upsert()
         .updateOne({
