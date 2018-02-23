@@ -56,10 +56,10 @@ const dbh_alarm =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   _.map(datas,(devicedata)=>{
-    console.log(`dbh_alarm==>${JSON.stringify(devicedata)}`);
+    console.log(`5dbh_alarm==>${JSON.stringify(devicedata)}`);
+    const AlarmKey = `${devicedata.DeviceId}_${devicedata.CurDay}`;
     bulk.find({
-    		DeviceId:devicedata.DeviceId,
-        CurDay:devicedata.CurDay,
+    		AlarmKey,
     	})
       .upsert()
       .updateOne(devicedata);
@@ -70,6 +70,10 @@ const dbh_alarm =(datas,callbackfn)=>{
 };
 
 const do_test_insert_alarm = ()=>{
+  const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
+  const bulk = dbModel.collection.initializeOrderedBulkOp();
+
+  console.log(`bulk===>${!!bulk}`);
   const  datas = [
   {
     	"$inc": {
@@ -77,19 +81,21 @@ const do_test_insert_alarm = ()=>{
     		"AL_Err_Mea_Isolation": 1,
     		"F[107]": 1
     	},
-    	"CurDay": "2018-02-23",
-    	"DeviceId": "1501101156",
-    	"DataTime": "2018-02-23 01:25:39",
-    	"warninglevel": "低",
-    	"NodeID": "999",
-    	"SN64": 137754001,
-    	"UpdateTime": "2018-02-23 18:09:55",
-    	"organizationid": "599af5dc5f943819f10509e6",
-    	"Provice": "江苏省",
-    	"City": "南通市",
-    	"Area": "海门市",
-    	"Longitude": 121.123456,
-    	"Latitude": 31.987654
+      "$set":{
+        "CurDay": "2018-02-23",
+      	"DeviceId": "1501101156",
+      	"DataTime": "2018-02-23 01:25:39",
+      	"warninglevel": "低",
+      	"NodeID": "999",
+      	"SN64": 137754001,
+      	"UpdateTime": "2018-02-23 18:09:55",
+      	"organizationid": "599af5dc5f943819f10509e6",
+      	"Provice": "江苏省",
+      	"City": "南通市",
+      	"Area": "海门市",
+      	"Longitude": 121.123456,
+      	"Latitude": 31.987654
+      }
     }];
 
     dbh_alarm(datas,(err,result)=>{

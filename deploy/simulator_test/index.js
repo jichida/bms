@@ -14,5 +14,15 @@ mongoose.connect(config.mongodburl,{
   });
 
 
-testquery.do_test_insert_alarm();
+console.log(`mongodburl:${config.mongodburl}`);
+
+mongoose.connection.on("connected",function(){
+  console.log("mongoose connect sucess");
+  setTimeout(()=>{
+    testquery.do_test_insert_alarm();
+  },2000);
+
+})
+
+
 // testquery.do_test_query_skip();
