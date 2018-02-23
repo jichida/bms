@@ -15,12 +15,16 @@ const do_test_query_paginate = ()=>{
 
   const options = {"sort":{"SN64":-1},"page":1,"limit":100};
   const querynew = query;
-  console.log(`do_test_query_paginate==>[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
+  console.log(`do_test_query_paginate1==>[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
   optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
   dbModel.paginate(querynew, options,(err,result)=>{
-    console.log(`do_test_query_paginate==>[${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
+    console.log(`do_test_query_paginate1==>[${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
   });
-
+  console.log(`do_test_query_paginate2==>[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
+  optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
+  dbModel.paginate({}, options,(err,result)=>{
+    console.log(`do_test_query_paginate2==>[${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
+  });
 };
 
 const do_test_query_skip = ()=>{
@@ -37,11 +41,14 @@ const do_test_query_skip = ()=>{
   queryexec.exec((err,list)=>{
      console.log(`[do_test_query_skip==>${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
   });
-
+  console.log(`[do_test_query_skip1] start getcount==>`);
   dbModel.count(querynew,(err, list)=> {
-      console.log(`[do_test_query_skip==>${schmodel.collectionname}],COUNT:${list},query end--->${moment().format('HH:mm:ss')}`);
+      console.log(`[do_test_query_skip1==>${schmodel.collectionname}],COUNT:${list},query end--->${moment().format('HH:mm:ss')}`);
   });
-
+  console.log(`[do_test_query_skip2] start getcount==>`);
+  dbModel.count({},(err, list)=> {
+      console.log(`[do_test_query_skip2==>${schmodel.collectionname}],COUNT:${list},query end--->${moment().format('HH:mm:ss')}`);
+  });
 };
 
 
