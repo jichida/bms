@@ -170,7 +170,7 @@ const getMarkCluster_showMarks = (isshow)=>{
             const marker = new window.AMap.Marker({
                position:pos,
                icon: new window.AMap.Icon({
-                   size: new window.AMap.Size(24, 48),  //图标大小
+                   size: new window.AMap.Size(30, 48),  //图标大小
                    image: getimageicon(item),
                    imageOffset: new window.AMap.Pixel(0, 0)
                }),

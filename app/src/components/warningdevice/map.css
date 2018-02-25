@@ -70,6 +70,7 @@
 }
 .mydevicePage .ant-table-tbody>tr>td{
     word-break: normal;
+    font-size: 16px;
 }
 .playbackPage.warningmessagePage .ant-table-tbody>tr>td{
     white-space: wrap;

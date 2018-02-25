@@ -131,6 +131,11 @@ class Page extends React.Component {
         const formstyle={width:"100%",flexGrow:"1"};
         const textFieldStyle={width:"100%",flexGrow:"1"};
         const height = innerHeight-(66+58);
+        const seltimestyle={
+            flexGrow: "1",
+            marginRight: "22px",
+            textAlign: "right"
+        };
         return (
             <div className="playbackPage AppPage"
                 style={{height : `${innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
@@ -151,11 +156,11 @@ class Page extends React.Component {
                             </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
                             <img src={Searchimg2} width={26} />
-                            <span>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
+                            <span style={seltimestyle}>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                         </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 1)}>
                             <img src={Searchimg2} width={26} />
-                            <span>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
+                            <span style={seltimestyle}>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
                         </div>
                         <div className="seltimecontent setsudu" style={{marginBottom: "10px"}}>
                             <img src={Searchimg5} width={26} />

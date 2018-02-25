@@ -215,8 +215,11 @@ class Page extends React.Component {
                                 <SelectField
                                     value={this.state.warninglevel}
                                     onChange={this.onChangeWarninglevel.bind(this)}
-                                    fullWidth={true} style={{flexGrow: "1",marginLeft: "10px"}}
+                                    fullWidth={true}
+                                    style={{flexGrow: "1",marginLeft: "10px"}}
                                     underlineStyle={{border: "none"}}
+                                    labelStyle={{textAlign: "right", paddingRight: "36px", color: "#666"}}
+                                    listStyle={{textAlign:"center"}}
                                     >
                                     <MenuItem value={-1} primaryText="报警等级" />
                                     <MenuItem value={0} primaryText="高" />
@@ -224,11 +227,21 @@ class Page extends React.Component {
                                     <MenuItem value={2} primaryText="低" />
                                 </SelectField>
                             </div>
-                            <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
+                            <div 
+                                className="seltimecontent" 
+                                onClick={this.handleClick.bind(this, 0)}
+                                style={{paddingRight: "39px"}}
+                                >
                                 <img src={Searchimg3} width={26} />
                                 <span>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
-                            <div className="seltimecontent" onClick={this.handleClick.bind(this, 1)} style={{marginBottom: "10px"}}>
+                            <div 
+                                className="seltimecontent" 
+                                onClick={this.handleClick.bind(this, 1)} 
+                                style={{
+                                  marginBottom: "10px",
+                                  paddingRight: "39px"
+                                }}>
                                 <img src={Searchimg3} width={26} />
                                 <span>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
@@ -238,7 +251,7 @@ class Page extends React.Component {
                                 label="搜索"
                                 backgroundColor={"#5cbeaa"}
                                 labelStyle={{fontSize: "16px",color : "#FFF"}}
-                                style={{ margin: "0 15px 20px 15px", width: "auto"}}
+                                style={{ margin: "0 15px 20px 15px", width: "auto", height: "50px", lineHeight: "50px"}}
                                 />
                         </div>
                         <div style={{flexGrow: 1}} onClick={()=>{this.setState({showdata: !this.state.showdata})}}></div>

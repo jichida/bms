@@ -185,30 +185,39 @@
     -webkit-transform: rotate(-45deg);
     z-index: 1000;
 }
-
 .selcartfiller .fillerform .submitbtn span.btn:first-child{
 	border:1px solid #EEE;
 	color:#333;
 	background:none;
 	margin-right: 15px;
 }
-
-
-
 .onseldevice{
-    height: 50px;
     border-bottom:1px solid #DDD;
-    padding: 0 15px
+}
+.onseldevice .titleinput{
+	border-bottom: 1px solid #EEE;
+	background: #EEE;
+	height: 58px;
 }
 .onseldevice .titleinput input{
     height: 48px;
     text-align: center;
     width: 100%;
     outline: none;
+    font-size: 16px;
 }
 .onseldevice .list >div{
 	text-align: center;
 	line-height: 40px;
 	border-bottom: 1px solid #EEE
+}
+.onseldevice .list >div .list-view-section-body{
+	font-size: 14px;
+}
+.onseldevice .list >div .list-view-section-body >div{
+	border-bottom: 1px solid #EEE;
+}
+.onseldevice .list >div .list-view-section-body >div:active{
+	background: #EEE;
 }
 
