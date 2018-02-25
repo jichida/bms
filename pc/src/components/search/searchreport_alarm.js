@@ -5,8 +5,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Seltime from './seltimerange.js';
-import { Select,Button } from 'antd';
+// import Seltime from './seltimerange.js';
+import { Select,Button,DatePicker } from 'antd';
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
@@ -33,17 +33,14 @@ class TreeSearchBattery extends React.Component {
             warninglevel = '2';
           }
         }
-        let startDate = moment(moment().format('YYYY-MM-DD 00:00:00'));
-        let endDate = moment(moment().format('YYYY-MM-DD 23:59:59'));
-        if(!!props.query.DataTime){
-          startDate = moment(props.query.DataTime['$gte']);
-          endDate = moment(props.query.DataTime['$lte']);
+        let CurDay = moment(moment().format('YYYY-MM-DD'));
+        if(!!props.query.CurDay){
+          CurDay = moment(props.query.CurDay);
         }
         let DeviceId = get(props.query,'DeviceId','');
         this.state = {
             alarmlevel: warninglevel,
-            startDate,
-            endDate,
+            CurDay,
             DeviceId
         };
     }
@@ -52,10 +49,9 @@ class TreeSearchBattery extends React.Component {
             DeviceId
         });
     }
-    onChangeSelDate(startDate,endDate){
+    onChangeSelDate(CurDay){
       this.setState({
-        startDate,
-        endDate
+        CurDay
       });
     }
 
@@ -70,10 +66,7 @@ class TreeSearchBattery extends React.Component {
     }
     getQueryObj = ()=>{
       let query = {};
-      query['DataTime'] = {
-        $gte: this.state.startDate.format('YYYY-MM-DD HH:mm:ss'),
-        $lte: this.state.endDate.format('YYYY-MM-DD HH:mm:ss'),
-      };
+      query['CurDay'] = this.state.CurDay.format('YYYY-MM-DD');
       if(this.state.alarmlevel === '0'){
         query['warninglevel'] = '高';
       }
@@ -105,11 +98,7 @@ class TreeSearchBattery extends React.Component {
         return (
             <div className="searchreport" style={{textAlign: "center"}}>
                 <div className="i">
-
-                    <Seltime  startDate = {this.state.startDate}
-                      endDate = {this.state.endDate}
-                     onChangeSelDate={this.onChangeSelDate.bind(this)}/>
-
+                    <DatePicker value={this.state.CurDay} onChange={this.onChangeSelDate.bind(this)}/>
                     <Select className="Selectalarmlevel" defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
                         <Option value={"-1"}>选择报警等级</Option>
                         <Option value={"0"} >高</Option>

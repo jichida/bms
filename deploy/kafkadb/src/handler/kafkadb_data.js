@@ -35,6 +35,7 @@ const getdbdata_historydevice = (devicedata)=>{
     result_device.recvoffset = devicedata.recvoffset;
 
     result_device.warninglevel = devicedata.warninglevel;
+
     return result_device;
   }
 }
@@ -53,7 +54,9 @@ const getdbdata_historytrack = (devicedata)=>{
     result_historytrack.City = devicedata.City;
     result_historytrack.Area = devicedata.Area;
     result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    return result_historytrack;
+    if(!!result_historytrack.GPSTime){
+      return result_historytrack;
+    }
   }
 }
 
@@ -87,11 +90,10 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
   if(!!LastRealtimeAlarm){//含有历史设备数据
     LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
     alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
-      // //console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+      // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
       if(!err && !!result_alarm){
         //含有报警信息
-        let updated_data = {
-          $inc: result_alarm.inc_data,
+        let updatedset = {
           CurDay:result_alarm.CurDay,
           DeviceId:result_alarm.DeviceId,
           DataTime:LastRealtimeAlarm.DataTime,
@@ -102,13 +104,17 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
           organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
           Provice:devicedata.Provice,
           City:devicedata.City,
-          Area:devicedata.Area,
+          Area:devicedata.Area
         };
         if(!!LastHistoryTrack){
-          updated_data.Longitude = LastHistoryTrack.Longitude;
-          updated_data.Latitude = LastHistoryTrack.Latitude;
+          updatedset.Longitude = LastHistoryTrack.Longitude;
+          updatedset.Latitude = LastHistoryTrack.Latitude;
         }
-        updated_data.warninglevel = devicedata.warninglevel;
+        let updated_data = {
+          "$inc": result_alarm.inc_data,
+          "$set":updatedset
+        };
+
         callbackfn(updated_data);
         return;
       }
