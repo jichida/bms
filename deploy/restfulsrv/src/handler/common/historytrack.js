@@ -3,6 +3,7 @@ const DBModels = require('../../db/models.js');
 const mongoose  = require('mongoose');
 const winston = require('../../log/log.js');
 const _ = require('lodash');
+const moment = require('moment');
 const utilposition = require('../common/util_position');
 const getdevicesids = require('../getdevicesids');
 
@@ -19,13 +20,16 @@ exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
+    console.log(`uireport_searchposition start--->${moment().format('HH:mm:ss')}`);
     historytrackModel.paginate(query,actiondata.options,(err,result)=>{
+      console.log(`uireport_searchposition end--->${moment().format('HH:mm:ss')}`);
       if(!err){
         result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(record);
         });
+        console.log(`----->utilposition.getlist_pos`);
         utilposition.getlist_pos(docs,getpoint,(err,newdocs)=>{
           result.docs = newdocs;
           callback({
@@ -56,7 +60,9 @@ exports.exportposition = (actiondata,ctx,callback)=>{
       if(!query.DeviceId && !isall){
         query.DeviceId = {'$in':deviceIds};
       }
+      console.log(`----->historytrackModel query-->${JSON.stringify(query)}`);
       historytrackModel.find(query,fields,(err,list)=>{
+        console.log(`----->historytrackModel find`);
         if(!err){
           list = JSON.parse(JSON.stringify(list));
           if(list.length > 0){
@@ -95,6 +101,9 @@ exports.queryhistorytrack = (actiondata,ctx,callback)=>{
     'GPSTime':1,
   };
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
+      query.DeviceId = {'$in':deviceIds};
+    }
     let queryexec = historytrackModel.find(query).sort({ GPSTime: 1 }).select(fields);
     queryexec.exec((err,list)=>{
       if(!err){

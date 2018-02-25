@@ -21,11 +21,9 @@ class SelectDevice extends React.Component {
         query: {}
       }
   }
-
   componentWillMount(){
     // this.getdata('');
   }
-
   onChange = (e) => {
       // this.getdata(e.target.value);
       this.setState({
@@ -34,9 +32,7 @@ class SelectDevice extends React.Component {
       window.setTimeout(()=>{
           this.refs.listviewpage.getWrappedInstance().onRefresh();
       },0);
-
   }
-
   onClick = (id)=>{
       console.log(`选择车辆:${id}`);
       this.props.onClickSel(id);
@@ -71,7 +67,7 @@ class SelectDevice extends React.Component {
             <input name="" placeholder="请输入车辆ID" type="number" onChange={this.onChange.bind(this)} />
         </div>
         <div className="list">
-          <div key={'0'} onClick={this.onClick.bind(this,'0')}>不选择</div>
+          
           <InfinitePage
               usecache={usecachedevice}
               listtypeid='listdevice'

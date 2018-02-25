@@ -35,7 +35,7 @@ export class Chart1 extends React.Component {
         const cols = {
             'value': {
                 min: 0,
-                max: 220,
+                max: 100,
                 tickInterval: 20,
                 nice: false
             }
@@ -107,7 +107,7 @@ export class Chart1 extends React.Component {
                     <Arc 
                         zIndex={0} 
                         start={[ 0, 0.965 ]} 
-                        end={[ 220, 0.965 ]}
+                        end={[ 100, 0.965 ]}
                         style={{ // 底灰色
                             stroke: '#000',
                             lineWidth: 18,
@@ -127,7 +127,7 @@ export class Chart1 extends React.Component {
                         position={[ '50%', '95%' ]}
                         html={
                             () => {
-                                return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'V</p></div>')
+                                return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'%</p></div>')
                             }
                         } 
                         />
@@ -244,7 +244,6 @@ class Page extends React.Component {
                 style={{background: `url("${Sky}")`, backgroundSize: "150% 200%"}}
                 className="lists devicechartlists"
                 >
-
                 <Slide className="Demo-swiper__slide ">
                     <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart1 data={data_soc} /></div>
                 </Slide>
