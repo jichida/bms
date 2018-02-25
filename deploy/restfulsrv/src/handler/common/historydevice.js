@@ -16,7 +16,9 @@ exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
       query.DeviceId = {'$in':deviceIds};
     }
     // console.log(query);
+    console.log(`uireport_searchhistorydevice start--->${moment().format('HH:mm:ss')}`);
     historydeviceModel.paginate(query,actiondata.options,(err,result)=>{
+      console.log(`uireport_searchhistorydevice end--->${moment().format('HH:mm:ss')}`);
       if(!err){
         result = JSON.parse(JSON.stringify(result));
         let docs = [];

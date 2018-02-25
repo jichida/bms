@@ -248,7 +248,9 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
+    console.log(`uireport_searchalarmdetail start--->${moment().format('HH:mm:ss')}`);
     realtimealarmrawModel.paginate(query,actiondata.options,(err,result)=>{
+      console.log(`uireport_searchalarmdetail end--->${moment().format('HH:mm:ss')}`);
       if(!err){
         console.log(`----->realtimealarmrawModel`);
         result = JSON.parse(JSON.stringify(result));

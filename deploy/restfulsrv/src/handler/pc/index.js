@@ -64,7 +64,7 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              console.log(`${moment().format('HH:mm:ss')},服务端回复--->${JSON.stringify(result)}`);
+              console.log(`${moment().format('HH:mm:ss')},服务端回复`);
               //console.log(`${actiondata.cmd}回复时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
               socket.emit(result.cmd,result.payload);
             });

@@ -19,7 +19,9 @@ exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
+    console.log(`uireport_searchposition start--->${moment().format('HH:mm:ss')}`);
     historytrackModel.paginate(query,actiondata.options,(err,result)=>{
+      console.log(`uireport_searchposition end--->${moment().format('HH:mm:ss')}`);
       if(!err){
         result = JSON.parse(JSON.stringify(result));
         let docs = [];
