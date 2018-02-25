@@ -250,6 +250,7 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
     }
     realtimealarmrawModel.paginate(query,actiondata.options,(err,result)=>{
       if(!err){
+        console.log(`----->realtimealarmrawModel`);
         result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
