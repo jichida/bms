@@ -26,6 +26,7 @@ exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
         _.map(result.docs,(record)=>{
           docs.push(record);
         });
+        console.log(`----->utilposition.getlist_pos`);
         utilposition.getlist_pos(docs,getpoint,(err,newdocs)=>{
           result.docs = newdocs;
           callback({
@@ -56,7 +57,9 @@ exports.exportposition = (actiondata,ctx,callback)=>{
       if(!query.DeviceId && !isall){
         query.DeviceId = {'$in':deviceIds};
       }
+      console.log(`----->historytrackModel query-->${JSON.stringify(query)}`);
       historytrackModel.find(query,fields,(err,list)=>{
+        console.log(`----->historytrackModel find`);
         if(!err){
           list = JSON.parse(JSON.stringify(list));
           if(list.length > 0){
@@ -95,6 +98,9 @@ exports.queryhistorytrack = (actiondata,ctx,callback)=>{
     'GPSTime':1,
   };
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
+      query.DeviceId = {'$in':deviceIds};
+    }
     let queryexec = historytrackModel.find(query).sort({ GPSTime: 1 }).select(fields);
     queryexec.exec((err,list)=>{
       if(!err){
