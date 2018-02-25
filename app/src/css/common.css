@@ -986,7 +986,7 @@ div.mydevicebtn >div{
     border-left: 14px solid transparent;
     border-right: 14px solid transparent;
     border-top: 16px solid #5cbdaa;
-    left: 145px;
+    left: 150px;
 }
 .juhe_pop_info:after{
     left: 185px;
@@ -1369,7 +1369,24 @@ div.mydevicebtn >div{
     background: #2090e7;
     margin-right: 20px;
 }
+.commonmap .amap-ui-district-cluster-marker span{
+    vertical-align: middle;
+    padding: 0 7px;
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    font-size: 14px;
 
+}
+.commonmap .amap-ui-district-cluster-marker{
+    height: auto;
+}
+.commonmap .amap-ui-district-cluster-marker-body{
+    border-radius: 0 4px 4px 0;
+    font-weight: bold;
+    min-width: 26px;
+    text-align: center;
+}
 
 
 

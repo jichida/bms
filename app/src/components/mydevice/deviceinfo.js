@@ -98,9 +98,9 @@ class Page extends React.Component {
                             !isincollections &&
                             <Button
                                 type="primary"
-                                icon="star"
                                 onClick={()=>{this.props.dispatch(ui_index_addcollection(deviceid));}}
                                 >
+                                <i className="anticon anticon-star-o"></i>
                                 收藏车辆
                             </Button>
                         }
