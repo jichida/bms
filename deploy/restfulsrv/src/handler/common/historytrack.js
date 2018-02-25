@@ -3,6 +3,7 @@ const DBModels = require('../../db/models.js');
 const mongoose  = require('mongoose');
 const winston = require('../../log/log.js');
 const _ = require('lodash');
+const moment = require('moment');
 const utilposition = require('../common/util_position');
 const getdevicesids = require('../getdevicesids');
 
