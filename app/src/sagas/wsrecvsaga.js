@@ -14,6 +14,8 @@ import {
   querydevice_request,
   querydevice_result,
 
+  savealarmsettings_result,
+
   md_querydeviceinfo_result,
   querydeviceinfo_result,
 
@@ -53,6 +55,15 @@ import config from '../env/config.js';
 // } from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
+  yield takeLatest(`${savealarmsettings_result}`, function*(action) {
+    yield put(set_weui({
+      toast:{
+      text:'保存成功',
+      show: true,
+      type:'success'
+    }}));
+  });
+
   yield takeLatest(`${setworkorderdone_request}`, function*(action) {
       yield take(`${setworkorderdone_result}`);
       yield put(goBack());

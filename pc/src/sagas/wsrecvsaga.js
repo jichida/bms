@@ -41,6 +41,7 @@ import {
   serverpush_alarm_sz_request,
   serverpush_alarm_sz_result,
 
+  savealarmsettings_result
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
@@ -53,6 +54,15 @@ import config from '../env/config.js';
 // } from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
+  yield takeLatest(`${savealarmsettings_result}`, function*(action) {  
+    yield put(set_weui({
+      toast:{
+      text:'保存成功',
+      show: true,
+      type:'success'
+    }}));
+  });
+
   yield takeLatest(`${setworkorderdone_request}`, function*(action) {
       yield take(`${setworkorderdone_result}`);
       yield put(goBack());
