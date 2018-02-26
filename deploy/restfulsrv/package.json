@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "KAFKA_HOST=118.31.41.232:2181 MONGO_URL=mongodb://bms.com28.cn:27018/bms node index"
+    "start": "KAFKA_HOST=118.31.41.232:2181 MONGO_URL=mongodb://bmscluster.com55.cn:27007/bms node index"
   },
   "author": "",
   "license": "ISC",
