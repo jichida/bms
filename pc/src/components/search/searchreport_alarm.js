@@ -95,10 +95,11 @@ class TreeSearchBattery extends React.Component {
       map(g_devicesdb,(item)=>{
           deviceidlist.push(item.DeviceId);
       });
+      
         return (
             <div className="searchreport" style={{textAlign: "center"}}>
                 <div className="i">
-                    <DatePicker value={this.state.CurDay} onChange={this.onChangeSelDate.bind(this)}/>
+                    <DatePicker className="mydatapicker" value={this.state.CurDay} onChange={this.onChangeSelDate.bind(this)} style={{height: "40px", marginBottom: "0", paddingBottom: "0"}}/>
                     <Select className="Selectalarmlevel" defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
                         <Option value={"-1"}>选择报警等级</Option>
                         <Option value={"0"} >高</Option>

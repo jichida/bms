@@ -26,7 +26,7 @@ class TableAlarm extends React.Component {
     constructor(props) {
         super(props);
         let queryalarm = {};
-        queryalarm['CurDay'] = moment(moment().format('YYYY-MM-DD'));
+        queryalarm['CurDay'] = moment().format('YYYY-MM-DD');
         let warninglevel = "-1";
         if(warninglevel === '0'){
           queryalarm['warninglevel'] = '高';
