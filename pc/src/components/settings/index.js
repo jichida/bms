@@ -72,7 +72,7 @@ class Setting extends React.Component {
 
                 <div className="appbar">
 
-                    <div className="title" style={{color: "#FFF", flexGrow:"1"}}>报警信息统计</div>
+                    <div className="title" style={{color: "#FFF", flexGrow:"1"}}>系统设置</div>
                     <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
 
                 </div>
