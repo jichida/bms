@@ -245,7 +245,7 @@ const DeviceActions = ({ resource, filters, displayedFilters, filterValues, base
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
         <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
-        <ImportExcelButton />
+        <ImportExcelButton resource={resource}/>
     </CardActions>
 );
 

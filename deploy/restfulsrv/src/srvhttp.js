@@ -33,7 +33,7 @@ let startsrv = ()=>{
   app.use('/admin', express.static(admindir));
 
   let uploaddir = path.join(__dirname,'./router',config.uploaddir);
-  //console.log("static upload:" + uploaddir);
+  console.log("static upload:" + uploaddir);
   app.use(config.uploadurl, express.static(uploaddir));
 
 

@@ -6,11 +6,27 @@ const moment  = require('moment');
 const middlewareauth = require('./middlewareauth.js');
 const formidable = require('formidable');
 const util = require('util');
-const importexcel = require('./handler/importexcel.js');
+const importexcel_device = require('./handler/importexcel_device.js');
+const importexcel_user = require('./handler/importexcel_user.js');
 
 const startuploader = (app)=>{
-  app.post('/uploadexcel',middlewareauth,(req,res)=>{
+  app.post('/uploadexcel/:resourcename',middlewareauth,(req,res)=>{
     console.log("userid:" + req.userid);
+    const resourcename = req.params.resourcename;
+    let importexcel;
+    if(resourcename === 'device'){
+      importexcel = importexcel_device;
+    }
+    else if(resourcename === 'user'){
+      importexcel = importexcel_user;
+    }
+    else{
+      res.status(200)
+          .json({
+            result:'Error',
+          });
+      return;
+    }
     // let data = req.body;
     // data.userid = req.userid;
     // let userModel = mongoose.model('UserRider', DBModels.UserRiderSchema);
@@ -34,7 +50,7 @@ const startuploader = (app)=>{
                });
          }
          else{
-           importexcel(targetfile,(resultjson)=>{
+           importexcel(targetfile,req.userid,(resultjson)=>{
               res.status(200)
                   .json({
                     result:'OK',

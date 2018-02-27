@@ -3,8 +3,10 @@ const _ = require('lodash');
 const DBModels = require('../../db/models.js');
 const xlsx = require('node-xlsx');
 const async = require('async');
+const PubSub = require('pubsub-js');
+const moment = require('moment');
 
-const importexcel = (excelfilepath,callbackfn)=>{
+const importexcel = (excelfilepath,userid,callbackfn)=>{
   console.log(`开始导入excel:${excelfilepath}`);
   const obj = xlsx.parse(excelfilepath);
   console.log(JSON.stringify(obj));
@@ -53,9 +55,17 @@ const importexcel = (excelfilepath,callbackfn)=>{
 
   async.parallel(asyncfnsz,(err,resultlist)=>{
     if(!err){
+      const resultstring = `成功导入${deviceids_success.length}条,${deviceids_notfound.length}条记录未找到设备ID`;
+      const userlog = {
+        creator:userid,
+        created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
+        logtxt:`导入设备,结果${resultstring}`
+      };
+      PubSub.publish('userlog_data',userlog);
+
       callbackfn({
         result:'OK',
-        resultstring:`成功导入${deviceids_success.length}条,${deviceids_notfound.length}条记录未找到id`,
+        resultstring,
         list:[
           {
             name:'success',

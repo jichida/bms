@@ -9,7 +9,7 @@ const config =  {
   publishdirpc:'../../../dist/pc/build',
   publishdiradmin:'../../dist/admin',
   publishlog:'../../log',
-  uploaddir:'../uploader',
+  uploaddir:process.env.uploaddir ||'../../../uploader',
   uploadurl:'/uploader',
 
   expRequestMinutes:200,//2分钟之内

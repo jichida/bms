@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
 import { required,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput,  Show,SimpleShowLayout,ShowButton,
    DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton,BooleanInput,ReferenceField,
+   CreateButton,
  Filter,Filters, ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
 
@@ -14,9 +15,12 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import ResestPassword from './resetpassword';
-import {CreateActions,EditActions} from '../controls/createeditactions';
 import {getOptions} from '../controls/getselect.js';
 import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
+import ImportExcelButton from '../devices/importexcelbtn';
+import {CreateActions,EditActions} from '../controls/createeditactions';
+import config from '../../env/config';
+
 
 const UserListTitle = ({ record }) => {
   return <span>显示 用户</span>;
@@ -74,8 +78,25 @@ const EditButtonWrap = (props)=>{
   return <EditButton {...props}/>;
 }
 
+const cardActionStyle = {
+    zIndex: 2,
+    display: 'inline-block',
+    float: 'right',
+};
+
+const UserActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+    <CardActions style={cardActionStyle}>
+        {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
+        <CreateButton basePath={basePath} />
+        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+        <ImportExcelButton resource={resource}/>
+    </CardActions>
+);
+
+
 const UserList = (props) => (
-  <List title="用户管理" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}} >
+  <List title="用户管理" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}}
+  actions={<UserActions />} perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }} rowStyle={rowStyle}>
         <TextField label="用户名" source="username" />
         <TextField label="真实姓名" source="truename" />
