@@ -11,15 +11,12 @@ const PubSub = require('pubsub-js');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
-
-  //   //写入登录日志
-  //   const loginlogModel = DBModels.UserLogModel;
-  //   const loginlogentity = new loginlogModel({
-  //                       creator:user._id,
-  //                       username:user.username
-  //                     });
-  //  loginlogentity.save((err,loginlog)=>{
-  //  });
+  const userlog = {
+    creator:user._id,
+    created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
+    logtxt:`用户登录`
+  };
+  PubSub.publish('userlog_data',userlog);
 };
 
 const subscriberuser = (user,ctx)=>{

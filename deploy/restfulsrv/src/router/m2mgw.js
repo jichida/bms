@@ -48,7 +48,7 @@ let startmodule = (app)=>{
         });
       }
     };
-    export_downloadexcel({req,res,dbModel,fields:dbfields,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:dbfields,csvfields,fn_convert,name:'位置数据'});
 
   });
   app.post('/api/report_alarm',(req,res)=>{
@@ -60,7 +60,7 @@ let startmodule = (app)=>{
       callbackfn(newdoc);
 
     }
-    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert,name:'报警统计数据'});
   });
   app.post('/api/report_alarmdetail',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
@@ -70,7 +70,7 @@ let startmodule = (app)=>{
       const newdoc = realtimealarm.bridge_alarmrawinfo(doc);
       callbackfn(newdoc);
     }
-    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert,name:'报警明细数据'});
   });
   app.post('/api/report_historydevice',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
@@ -82,7 +82,7 @@ let startmodule = (app)=>{
       const newdoc = historydevice.bridge_historydeviceinfo(doc);
       callbackfn(newdoc);
     }
-    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert,name:'历史设备数据'});
   });
   app.post('/api/report_cararchives',(req,res)=>{
     // req,res,dbModel,fields,csvfields,fn_convert
@@ -108,7 +108,7 @@ let startmodule = (app)=>{
       };
       callbackfn(newdoc);
     }
-    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert});
+    export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert,name:'客户存档数据'});
   });
 
   app.post('/m2mgw/setdata',(req,res)=>{
