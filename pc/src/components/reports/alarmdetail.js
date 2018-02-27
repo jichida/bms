@@ -27,8 +27,8 @@ class TableAlarmDetail extends React.Component {
         super(props);
         let queryalarm = {};
         queryalarm['DataTime'] = {
-          $gte:  moment().format('YYYY-MM-DD 00:00:00'),
-          $lte:  moment().format('YYYY-MM-DD 23:59:59'),
+          $gte:  moment().format('YYYY-MM-DD HH:mm:00'),
+          $lte:  moment().format('YYYY-MM-DD HH:mm:ss'),
         };
         let warninglevel = "-1";
         if(warninglevel === '0'){

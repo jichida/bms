@@ -17,8 +17,8 @@ moment.locale('zh-cn');
 class TreeSearchBattery extends React.Component {
     constructor(props) {
         super(props);
-        let startDate = moment(moment().format('YYYY-MM-DD 00:00:00'));
-        let endDate = moment(moment().format('YYYY-MM-DD 23:59:59'));
+        let startDate = moment(moment().format('YYYY-MM-DD HH:mm:00'));
+        let endDate = moment();
         if(!!props.query.DataTime){
           startDate = moment(props.query.DataTime['$gte']);
           endDate = moment(props.query.DataTime['$lte']);
