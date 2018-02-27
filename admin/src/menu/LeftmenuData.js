@@ -15,7 +15,6 @@ import HistoryTrackIcon from 'material-ui/svg-icons/action/history';//历史轨�
 import CanrowDataIcon from 'material-ui/svg-icons/action/timeline';//原始数据
 
 
-
 export default [
         { name: 'systemconfig', icon: <SystemconfigIcon /> ,adminonly:true},
         { name: 'device', icon: <DeviceIcon />,adminonly:false },
@@ -28,4 +27,5 @@ export default [
         { name: 'historytrack', icon: <HistoryTrackIcon /> ,adminonly:false},
         { name: 'historydevice', icon: <HistoryTrackIcon /> ,adminonly:false},
         { name: 'datadict', icon: <DeviceIcon /> ,adminonly:true},
+        { name: 'userlog', icon: <UserLogIcon /> ,adminonly:true},
 ];

@@ -4,9 +4,26 @@
 const dbinit = require('./db/dbinit');
 const startsrv_devpush = require('./kafka/devpush.js');
 const config = require('./config');
+const DBModels = require('./db/models.js');
+const PubSub = require('pubsub-js');
+const mongoose = require('mongoose');
+
+const getSystemLog = ()=>{
+  PubSub.subscribe('userlog_data', ( msg, data )=>{
+    console.log(`userlog_data===>${msg},${JSON.stringify(data)}`);
+
+    data.creator = mongoose.Types.ObjectId(data.creator);
+    data.organizationid = mongoose.Types.ObjectId('599af5dc5f943819f10509e6');
+    const dbModel = DBModels.UserLogModel;
+    const userlog = new dbModel(data);
+    userlog.save(data,(err,result)=>{
+
+    });
+  });
+}
 // const mongoose = require('mongoose');
 // const winston = require('./log/log.js');
-// const DBModels = require('./db/models.js');
+
 // const _ = require('lodash');
 // const schedule = require('node-schedule');
 // const pwd = require('./util/pwd.js');
@@ -50,7 +67,7 @@ const job=()=>{
     // createadmin();
     dbinit();
     startsrv_devpush(config);
-
+    getSystemLog();
     // schedule.scheduleJob('0 0 * * *', ()=>{
       //每天0点更新优惠券过期信息
     //   setmycouponsexpired();

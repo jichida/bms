@@ -159,7 +159,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
             if(!err){
               res.status(200)
                   .json(result);
-              adminaction.postaction('save',schmodel.collectionname,result);
+              adminaction.postaction('save',schmodel.collectionname,result,req.userid);
             }
             else{
               res.status(500)
@@ -192,7 +192,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
                     if(!err){
                       res.status(200)
                           .json(result);
-                      adminaction.postaction('findByIdAndUpdate',schmodel.collectionname,result);
+                      adminaction.postaction('findByIdAndUpdate',schmodel.collectionname,result,req.userid);
                     }
                     else{
                       res.status(500)
@@ -214,6 +214,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
           //console.log("DELETE err=>" + JSON.stringify(err));
           //console.log("DELETE result=>" + JSON.stringify(result));
           if(!err){
+            adminaction.postaction('delete',schmodel.collectionname,result,req.userid);
             res.status(200)
                 .json(result);
           }

@@ -6,6 +6,7 @@ const moment  = require('moment');
 const config = require('../../config.js');
 const pwd = require('../../util/pwd.js');
 const DBModels = require('../../db/models.js');
+const PubSub = require('pubsub-js');
 
 const adminauth = (req,res)=>{
   const actiondata =   req.body;
@@ -75,6 +76,14 @@ const adminauth = (req,res)=>{
               groupid:user.groupid,
               organizationid:user.organizationid,
             },config.secretkey, {});
+
+        const userlog = {
+          creator:user._id,
+          created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
+          logtxt:`用户登录`
+        };
+        PubSub.publish('userlog_data',userlog);
+
         res.status(200).json({
           loginsuccess:true,
           token:token

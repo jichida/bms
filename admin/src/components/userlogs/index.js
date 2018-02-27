@@ -48,12 +48,11 @@ const UserFilter = (props) => (
 const UserlogList = (props) => (
      <List title="用户登录信息列表" filters={<UserFilter />}  {...props} >
         <Datagrid  bodyOptions={{ showRowHover: true }}>
-          <TextField label="用户名" source="username" />
-          <TextField label="登录时间" source="created_at"  />
           <ReferenceField label="用户" source="creator" reference="user" allowEmpty>
             <TextField source="username" />
           </ReferenceField>
-          <TextField label="类型" source="type" />
+          <TextField label="时间" source="created_at"  />
+          <TextField label="信息" source="logtxt" />
         </Datagrid>
     </List>
 );

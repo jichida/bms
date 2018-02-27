@@ -131,11 +131,10 @@ const HistoryDeviceModel =mongoose.model('historydevice',  HistoryDeviceSchema);
 
 //登录日志
 const UserLogSchema = new Schema({
-    username:String,
+    creator:{ type: Schema.Types.ObjectId, ref: 'user' },
     organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
     created_at:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
-    creator:{ type: Schema.Types.ObjectId, ref: 'user' },
-    type:{type:String,default:'login'}
+    logtxt:{type:String,default:'login'}
 });
 UserLogSchema.plugin(mongoosePaginate);
 const UserLogModel =mongoose.model('userlog',  UserLogSchema);
