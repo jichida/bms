@@ -153,14 +153,14 @@ const getindexmsgs = (data,callbackfn)=>{
       devicedata.warninglevel = resultalarmmatch[0].warninglevel;
     }
 
-    utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
-      let newdevicedata = _.merge(devicedata,retobj);
-
+    // utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+      // let newdevicedata = _.merge(devicedata,retobj);
+      let newdevicedata = _.clone(devicedata);
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
       callbackfn(newdevicedata);
-    });
+    // });
   });
 
 }
