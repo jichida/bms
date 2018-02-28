@@ -2,11 +2,17 @@ const DBModels = require('./models.js');
 const async = require('async');
 const _ = require('lodash');
 const config = require('../config.js');
+
 const debug = require('debug')('dbh');
+const debug_device = require('debug')('dbh:device');
+const debug_historydevice = require('debug')('dbh:historydevice');
+const debug_historytrack = require('debug')('dbh:historytrack');
+const debug_alarmraw = require('debug')('dbh:alarmraw');
+const debug_alarm = require('debug')('dbh:alarm');
 
 const dbh_device =(datas,callbackfn)=>{
   const dbModel = DBModels.DeviceModel;
-  debug(`start dbh_device`);
+  debug_device(`start dbh_device`);
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
@@ -24,7 +30,7 @@ const dbh_device =(datas,callbackfn)=>{
         console.error(err);
         console.error(err.stack);
       }
-      debug(`stop dbh_device`);
+      debug_device(`stop dbh_device`);
       callbackfn(err,result);
     });
   }
@@ -36,7 +42,7 @@ const dbh_device =(datas,callbackfn)=>{
 
 const dbh_historydevice =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryDeviceModel;
-  debug(`start dbh_historydevice`);
+  debug_historydevice(`start dbh_historydevice`);
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
@@ -56,7 +62,7 @@ const dbh_historydevice =(datas,callbackfn)=>{
         console.error(err);
         console.error(err.stack);
       }
-      debug(`stop dbh_historydevice`);
+      debug_historydevice(`stop dbh_historydevice`);
       callbackfn(err,result);
     });
   }
@@ -71,7 +77,7 @@ const dbh_historydevice =(datas,callbackfn)=>{
 
 const dbh_historytrack =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryTrackModel;
-  debug(`start dbh_historytrack`);
+  debug_historytrack(`start dbh_historytrack`);
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
@@ -91,7 +97,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
         console.error(err);
         console.error(err.stack);
       }
-      debug(`stop dbh_historytrack`);
+      debug_historytrack(`stop dbh_historytrack`);
       callbackfn(err,result);
     });
   }
@@ -106,7 +112,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
 
 const dbh_alarmraw =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmRawModel;
-  debug(`start dbh_alarmraw`);
+  debug_alarmraw(`start dbh_alarmraw`);
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
@@ -126,7 +132,7 @@ const dbh_alarmraw =(datas,callbackfn)=>{
         console.error(err);
         console.error(err.stack);
       }
-      debug(`stop dbh_alarmraw`);
+      debug_alarmraw(`stop dbh_alarmraw`);
       callbackfn(err,result);
     });
   }
@@ -141,7 +147,7 @@ const dbh_alarmraw =(datas,callbackfn)=>{
 
 const dbh_alarm =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
-  debug(`start dbh_alarm`);
+  debug_alarm(`start dbh_alarm`);
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   if(!!bulk){
       _.map(datas,(devicedata)=>{
@@ -158,7 +164,7 @@ const dbh_alarm =(datas,callbackfn)=>{
           console.error(err);
           console.error(err.stack);
         }
-        debug(`stop dbh_alarm`);
+        debug_alarm(`stop dbh_alarm`);
         callbackfn(err,result);
       });
     }
