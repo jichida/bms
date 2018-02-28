@@ -68,14 +68,16 @@ const startsrv = (config)=>{
     }).then((consumer)=>{
       const processRecords =(data, cb)=> {
         debug(`processRecords--->${data.length}`);
-        if (data.length == 0) {
-          return setImmediate(cb);
+        if (data.length === 0) {
+           setImmediate(cb);
         }
-        // do work
-        processbatchmsgs(data,(err,result)=>{
-          consumer.commit();
-          setImmediate(cb);
-        });
+        else{
+          // do work
+          processbatchmsgs(data,(err,result)=>{
+            consumer.commit();
+            setImmediate(cb);
+          });
+        }
       }
 
       const consumeNum =(numMsg)=>{
