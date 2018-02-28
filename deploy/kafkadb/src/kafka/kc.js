@@ -14,10 +14,10 @@ const processbatchmsgs = (msgs,callbackfnmsg)=>{
   debug(`消息开始${msgid}----->`);
   parseKafkaMsgs(msgs,(allresult)=>{
     debug(`消息结束${msgid}----->`);
-    onHandleToDB(allresult,()=>{
-      debug(`数据库操作结束${msgid}----->`);
+    // onHandleToDB(allresult,()=>{
+      // debug(`数据库操作结束${msgid}----->`);
       callbackfnmsg();
-    });
+    // });
   });
 
   // let asyncfnsz = [];
