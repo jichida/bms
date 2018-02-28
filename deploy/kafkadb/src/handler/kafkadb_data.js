@@ -5,6 +5,8 @@ const config = require('../config.js');
 const moment = require('moment');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const utilposition = require('./util_position');
+const debug = require('debug')('dbdata');
+
 
 const getdbdata_device = (devicedata)=>{
   devicedata.NodeID = config.NodeID;
@@ -220,8 +222,9 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
       });
     });
   });
-
+  debug(`start parseKafkaMsgs`);
   async.parallel(fnsz,(err,result)=>{
+    debug(`stop parseKafkaMsgs`);
     callbackfn(resultmsglist);
   });
 }

@@ -1,13 +1,15 @@
 const kafka = require('node-rdkafka');
-console.log(kafka.features);
-console.log(kafka.librdkafkaVersion);
+const debug = require('debug')('kafka');
+
+debug(kafka.features);
+debug(kafka.librdkafkaVersion);
 
 const initConsumer =(globalconfig,cconfig,topics,onErr)=> {
   return new Promise((resolve, reject) => {
     const consumer = new kafka.KafkaConsumer(globalconfig,cconfig);
 
     consumer.on('ready', () => {
-      console.log('consumer ready.');
+      debug('consumer ready.');
       consumer.subscribe(topics || ['bms.index'])
       // consumer.consume();
       resolve(consumer);

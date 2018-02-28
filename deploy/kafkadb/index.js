@@ -5,8 +5,9 @@ const _ = require('lodash');
 const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
+const debug = require('debug')('start');
 
-console.log(`start=====>version:${config.version},\
+debug(`start=====>version:${config.version},\
   clientid:${config.kafka_cconfig1['client.id']} \
   kafkaHost:${config.kafka_cconfig1['metadata.broker.list']},partitionnumber:${config.partitionnumber}`);
 
@@ -48,16 +49,16 @@ dbdictModel.find({
   // console.log(config.mapdict);
 });
 
-console.log(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
-process.on('uncaughtException', (error) => {
-  console.error(`---uncaughtException err`);
-  console.error(error);
-  console.error(error.stack);
-  console.error(`uncaughtException err---`);
-  // throw error;
-  process.exit(1);
-});
+// process.on('uncaughtException', (error) => {
+//   debug(`---uncaughtException err`);
+//   console.error(error);
+//   console.error(error.stack);
+//   console.error(`uncaughtException err---`);
+//   // throw error;
+//   process.exit(1);
+// });
 
 
 startsrv(config);
