@@ -861,8 +861,13 @@ export function* createmapmainflow(){
           //1
           g_devicesdb[listitem[0].DeviceId] = listitem[0];
           //地图缩放到最大
-          window.amapmain.setZoom(maxzoom);
-          yield put(md_mapmain_setzoomlevel(maxzoom));
+          if(window.amapmain.getZoom() !== maxzoom){
+            //不是最大时候才放大，否则会陷入一个循环两次的问题
+            console.log(`地图当前层级${window.amapmain.getZoom()},最大:${maxzoom}`);
+            window.amapmain.setZoom(maxzoom);
+            yield put(md_mapmain_setzoomlevel(maxzoom));
+          }
+
 
           //弹框
           yield call(showinfowindow,listitem[0]);
@@ -978,26 +983,27 @@ export function* createmapmainflow(){
         let oldzoomlevel = yield select((state)=>{
           return state.carmap.zoomlevel;
         });
-        if(zoomlevel !== oldzoomlevel){
-          zoomlevel = getmapzoollevel(zoomlevel,oldzoomlevel);
-          // if(!!window.amapmain){
-          //   window.amapmain.setZoom(zoomlevel);
-          // }
-          //console.log(`---》结果:${zoomlevel}`)
-          if(zoomlevel > 12){
-            yield put(ui_showhugepoints(true));
-            yield put(ui_showdistcluster(false));
+
+        console.log(`md_mapmain_setzoomlevel===>zoomlevel:${zoomlevel},oldzoomlevel:${oldzoomlevel},curzoom:${window.amapmain.getZoom()}`);
+        if(!!window.amapmain){
+          if(zoomlevel === window.amapmain.getZoom()){
+            //相同，但和oldzoom不同
+            if(zoomlevel !== oldzoomlevel){
+              yield put(mapmain_setzoomlevel(zoomlevel));
+            }
           }
-          else{
-            yield put(ui_showhugepoints(false));
-            yield put(ui_showdistcluster(true));
+          else {//if(zoomlevel !== window.amapmain.getZoom())
+            window.amapmain.setZoom(zoomlevel);
           }
-          yield put(mapmain_setzoomlevel(zoomlevel));
+        }
+        if(zoomlevel > 12){
+          yield put(ui_showhugepoints(true));
+          yield put(ui_showdistcluster(false));
         }
         else{
-          //console.log(`两次zoom相同,都是:${zoomlevel}`)
+          yield put(ui_showhugepoints(false));
+          yield put(ui_showdistcluster(true));
         }
-
       }
       catch(e){
         console.log(e);
@@ -1074,7 +1080,8 @@ export function* createmapmainflow(){
             if(!!distCluster){//放大到该区域
               if(isarea){
                 if(!!result.center){
-                  window.amapmain.setZoomAndCenter(13,result.center);//fixed window.amapmain.getZoom()+1
+                  const targetzoom = window.amapmain.getZoom() > 13?window.amapmain.getZoom():13;
+                  window.amapmain.setZoomAndCenter(targetzoom,result.center);//fixed window.amapmain.getZoom()+1
                 }
               }
               else{
