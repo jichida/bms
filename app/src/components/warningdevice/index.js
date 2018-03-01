@@ -24,7 +24,7 @@ import Datalist from "./datalist_infos";
 import DatePicker from 'react-mobile-datepicker';
 import moment from 'moment';
 
-let g_showdata = false;
+let g_showdata = true;
 let g_startDate,g_endDate,g_warninglevel;
 let g_usecachealarm = false;
 
@@ -56,7 +56,7 @@ class Page extends React.Component {
       });
     }
     componentDidMount () {
-      g_showdata = false;
+      g_showdata = true;
       g_usecachealarm = false;
       g_startDate = null;
       g_endDate = null;
@@ -227,17 +227,17 @@ class Page extends React.Component {
                                     <MenuItem value={2} primaryText="低" />
                                 </SelectField>
                             </div>
-                            <div 
-                                className="seltimecontent" 
+                            <div
+                                className="seltimecontent"
                                 onClick={this.handleClick.bind(this, 0)}
                                 style={{paddingRight: "39px"}}
                                 >
                                 <img src={Searchimg3} width={26} />
                                 <span>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
-                            <div 
-                                className="seltimecontent" 
-                                onClick={this.handleClick.bind(this, 1)} 
+                            <div
+                                className="seltimecontent"
+                                onClick={this.handleClick.bind(this, 1)}
                                 style={{
                                   marginBottom: "10px",
                                   paddingRight: "39px"
