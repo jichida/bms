@@ -23,7 +23,7 @@ const domessages =(kafkamsgs,callbackfn)=>{
     msgs = _.concat(msgs,submsgs);
   });
 
-  debug(`msg->${JSON.stringify(msg)}`);
+  debug(`msgs->${msgs.length}`);
 
   dbh_alarmraw(msgs,callbackfn);
 };
