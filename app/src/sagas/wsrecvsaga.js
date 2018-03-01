@@ -14,8 +14,6 @@ import {
   querydevice_request,
   querydevice_result,
 
-  savealarmsettings_result,
-
   md_querydeviceinfo_result,
   querydeviceinfo_result,
 
@@ -43,6 +41,7 @@ import {
   serverpush_alarm_sz_request,
   serverpush_alarm_sz_result,
 
+  savealarmsettings_result
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
