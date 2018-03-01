@@ -1,7 +1,8 @@
 const dbh_alarmraw = require('../dbh/dbh_alarmraw');
 const debug = require('debug')('dbh:msg');
-const domessages =(msg,callbackfn)=>{
-  debug(`msg->${JSON.stringify(msg)}`);
+const _ = require('lodash');
+
+const getkafkamsg = (msg)=>{
   let payload = msg.value.toString();
   if(typeof payload === 'string'){
     try{
@@ -11,6 +12,19 @@ const domessages =(msg,callbackfn)=>{
       //console.log(`parse json eror ${JSON.stringify(e)}`);
     }
   }
-  dbh_alarmraw(payload,callbackfn);
+  return payload;
+}
+
+
+const domessages =(msg,callbackfn)=>{
+  let msgs = [];
+  _.map(kafkamsgs,(msg)=>{
+    const submsgs = getkafkamsg(msg);
+    msgs = _.concat(msgs,submsgs);
+  });
+
+  debug(`msg->${JSON.stringify(msg)}`);
+
+  dbh_alarmraw(msgs,callbackfn);
 };
 module.exports = domessages;
