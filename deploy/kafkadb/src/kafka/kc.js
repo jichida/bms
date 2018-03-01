@@ -1,41 +1,29 @@
-const dbh = require('../handler/index.js');
 const getConsumer = require('./rkafka/c.js');
-const _ = require('lodash');
-const async = require('async');
-const moment = require('moment');
-const uuid = require('uuid');
-const parseKafkaMsgs = require('../handler/kafkadb_data.js');
-const onHandleToDB = require('../handler/kafkadb_dbh.js');
-const debug = require('debug')('kc');
+const config = require('../config');
+const debug = require('debug')('dbh:kc');
+const topicindex = require('../handler/pkafkamsg/topicindex');
+const tophistorydevices = require('../handler/pkafkamsg/tophistorydevices');
+const topichistorytracks = require('../handler/pkafkamsg/topichistorytracks');
+const topicrealtimealarmraws = require('../handler/pkafkamsg/topicrealtimealarmraws');
+
 const numMessages = 100;
 
-const processbatchmsgs = (msgs,callbackfnmsg)=>{
-  const msgid = uuid.v4();
-  debug(`消息开始${msgid}----->`);
-  parseKafkaMsgs(msgs,(allresult)=>{
-    debug(`消息结束${msgid}----->`);
-    onHandleToDB(allresult,()=>{
-      debug(`数据库操作结束${msgid}----->`);
-      callbackfnmsg();
-    });
-  });
+const handlermap = {};
+handlermap[config.kafka_dbtopic_index] = topicindex;
+handlermap[config.kafka_dbtopic_realtimealarmraws] = topicrealtimealarmraws;
+handlermap[config.kafka_dbtopic_historydevices] = tophistorydevices;
+handlermap[config.kafka_dbtopic_historytracks] = topichistorytracks;
 
-  // let asyncfnsz = [];
-  // _.map(msgs,(msg)=>{
-  //   asyncfnsz.push((callbackfn)=>{
-  //       let msgnew = _.clone(msg);
-  //       dbh.handletopic(msgnew,(err,result)=>{
-  //         callbackfn(err,result);
-  //       });
-  //   });
-  // });
-  //
-  // const cid = uuid.v4();
-  // console.log(`开始处理${cid}----->${moment().format('HH:mm:ss')}`);
-  // async.parallel(asyncfnsz,(err,result)=>{
-  //   console.log(`结束处理${cid}----->${moment().format('HH:mm:ss')}`);
-  //   callbackfnmsg(err,result);
-  // });
+const processbatchmsgs = (data,callbackfn)=>{
+  const handlemsg = handlermap[config.kafka_dbtopic_current];
+  if(!!handlemsg){
+    handlemsg(data,callbackfn);
+  }
+  else{
+    debug(`未找到当前订阅消息处理函数-->${config.kafka_dbtopic_current}`)
+    callbackfn();
+  }
+
 }
 
 const startsrv = (config)=>{
@@ -43,7 +31,7 @@ const startsrv = (config)=>{
     const cconfig =  config.kafka_cconfig2;
 
     const topics = [];
-    topics.push(config.kafka_dbtopic_index);
+    topics.push(config.kafka_dbtopic_current);
 
     // globalconfig['offset_commit_cb'] = (err, topicPartitions)=> {
     //   if (!!err) {
