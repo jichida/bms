@@ -179,18 +179,21 @@ const onHandleToDB = (allresult,callbackfn)=>{
   fnsz.push((callbackfn)=>{
     dbh_device(allresult['device'],callbackfn);
   });
-  fnsz.push((callbackfn)=>{
-    dbh_historydevice(allresult['historydevice'],callbackfn);
-  });
-  fnsz.push((callbackfn)=>{
-    dbh_historytrack(allresult['historytrack'],callbackfn);
-  });
+
+  // fnsz.push((callbackfn)=>{
+  //   dbh_historydevice(allresult['historydevice'],callbackfn);
+  // });
+  // fnsz.push((callbackfn)=>{
+  //   dbh_historytrack(allresult['historytrack'],callbackfn);
+  // });
+  // fnsz.push((callbackfn)=>{
+  //   dbh_alarmraw(allresult['alarmraw'],callbackfn);
+  // });
+  //
   fnsz.push((callbackfn)=>{
     dbh_alarm(allresult['alarm'],callbackfn);
   });
-  fnsz.push((callbackfn)=>{
-    dbh_alarmraw(allresult['alarmraw'],callbackfn);
-  });
+
   debug(`start onHandleToDB`);
   async.parallel(fnsz,(err,result)=>{
     debug(`stop onHandleToDB`);
