@@ -16,7 +16,7 @@ const getkafkamsg = (msg)=>{
 }
 
 
-const domessages =(msg,callbackfn)=>{
+const domessages =(kafkamsgs,callbackfn)=>{
   let msgs = [];
   _.map(kafkamsgs,(msg)=>{
     const submsgs = getkafkamsg(msg);
