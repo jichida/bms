@@ -9,9 +9,17 @@
     font-weight: 200;
     border:none;
     pointer-events: auto;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
 }
 input,textarea {
     pointer-events: auto;
+    -webkit-user-select: auto; /* webkit (safari, chrome) browsers */
+    -moz-user-select: auto; /* mozilla browsers */
+    -khtml-user-select: auto; /* webkit (konqueror) browsers */
+    -ms-user-select: auto; /* IE10+ */
 }
 .submitBtn{
     display: flex;
