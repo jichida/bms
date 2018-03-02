@@ -5,7 +5,7 @@ const debug_alarm = require('debug')('dbh:alarm');
 const dbh_alarm =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
   debug_alarm(`start dbh_alarm`);
-  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
       _.map(datas,(devicedata)=>{
         bulk.find({

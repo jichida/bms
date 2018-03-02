@@ -5,18 +5,19 @@ const debug_historydevice = require('debug')('dbh:historydevice');
 const dbh_historydevice =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryDeviceModel;
   debug_historydevice(`start dbh_historydevice`);
-  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
-      bulk.find({
-          GUID:devicedata.GUID,
-          DeviceId:devicedata.DeviceId,
-          DataTime:devicedata.DataTime
-        })
-        .upsert()
-        .updateOne({
-          $set:devicedata
-        });
+      bulk.insert(devicedata);
+      // bulk.find({
+      //     GUID:devicedata.GUID,
+      //     DeviceId:devicedata.DeviceId,
+      //     DataTime:devicedata.DataTime
+      //   })
+      //   .upsert()
+      //   .updateOne({
+      //     $set:devicedata
+      //   });
     });
     bulk.execute((err,result)=>{
       if(!!err){

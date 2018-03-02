@@ -6,7 +6,7 @@ const debug_device = require('debug')('dbh:device');
 const dbh_device =(datas,callbackfn)=>{
   const dbModel = DBModels.DeviceModel;
   debug_device(`start dbh_device`);
-  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
       bulk.find({
