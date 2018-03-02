@@ -2,6 +2,7 @@ const moment = require('moment');
 const getProducer  = require('./rkafka/p.js');
 const config = require('../config');
 const _ = require('lodash');
+const debug = require('debug')('dbh:kp');
 
 const globalconfig = config.kafka_pconfig1 || {
     'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
@@ -21,11 +22,12 @@ const startproducer = (callbackfn)=>{
   }).then((producer)=>{
     const sendtokafka = (payload,topic,callbackfn)=>{
       const stringdata = JSON.stringify(payload);
-      let partitionindex = -1;
+      let partitionindex = 0;
       if(payload.length > 0){
-        partitionindex = _.get(payload[0],'recvpartition',-1);
+        partitionindex = _.get(payload[0],'recvpartition',0);
       }
-      producer.produce(topic, partitionindex , new Buffer(stringdata));
+      debug(`startproducer:${payload.length},key:${partitionindex}`);
+      producer.produce(topic, -1 , new Buffer(stringdata),partitionindex);
       callbackfn(null,true);
     }
     callbackfn(sendtokafka);
