@@ -5,7 +5,7 @@ const debug_historytrack = require('debug')('dbh:historytrack');
 const dbh_historytrack =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryTrackModel;
   debug_historytrack(`start dbh_historytrack`);
-  const bulk = dbModel.collection.initializeOrderedBulkOp();
+  const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
       bulk.find({
