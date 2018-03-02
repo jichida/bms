@@ -6,7 +6,7 @@ const tophistorydevices = require('../handler/pkafkamsg/tophistorydevices');
 const topichistorytracks = require('../handler/pkafkamsg/topichistorytracks');
 const topicrealtimealarmraws = require('../handler/pkafkamsg/topicrealtimealarmraws');
 
-const numMessages = 100;
+const numMessages = config.kcmsg;
 
 const handlermap = {};
 handlermap[config.kafka_dbtopic_index] = topicindex;

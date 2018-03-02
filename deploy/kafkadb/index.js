@@ -13,7 +13,7 @@ debug(`start=====>version:${config.version},\
 
 debug(`==========`);
 
-debug(`indextopic:${config.kafka_dbtopic_index},currenttopic:${config.kafka_dbtopic_current}`);
+debug(`indextopic:${config.kafka_dbtopic_index},currenttopic:${config.kafka_dbtopic_current},kcmsg:${config.kcmsg}`);
 
 
 process.setMaxListeners(0);
