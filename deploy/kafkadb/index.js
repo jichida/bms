@@ -11,6 +11,11 @@ debug(`start=====>version:${config.version},\
   clientid:${config.kafka_cconfig1['client.id']} \
   kafkaHost:${config.kafka_cconfig1['metadata.broker.list']},partitionnumber:${config.partitionnumber}`);
 
+debug(`==========`);
+
+debug(`indextopic:${config.kafka_dbtopic_index},currenttopic:${config.kafka_dbtopic_current}`);
+
+
 process.setMaxListeners(0);
 
 mongoose.Promise = global.Promise;
