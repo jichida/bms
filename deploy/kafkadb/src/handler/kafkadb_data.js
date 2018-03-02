@@ -55,6 +55,10 @@ const getdbdata_historytrack = (devicedata)=>{
     result_historytrack.Provice = devicedata.Provice;
     result_historytrack.City = devicedata.City;
     result_historytrack.Area = devicedata.Area;
+    //+以下语句便于调试
+    result_historytrack.recvpartition = devicedata.recvpartition;
+    result_historytrack.recvoffset = devicedata.recvoffset;
+
     result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     if(!!result_historytrack.GPSTime){
       return result_historytrack;
@@ -82,6 +86,10 @@ const getdbdata_alarmraw = (devicedata)=>{
     result_alarm_raw.City = devicedata.City;
     result_alarm_raw.Area = devicedata.Area;
     result_alarm_raw.warninglevel = devicedata.warninglevel;
+    //+以下语句便于调试
+    result_alarm_raw.recvpartition = devicedata.recvpartition;
+    result_alarm_raw.recvoffset = devicedata.recvoffset;
+
     return result_alarm_raw;
   }
 }
