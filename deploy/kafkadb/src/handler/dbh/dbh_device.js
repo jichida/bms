@@ -17,7 +17,7 @@ const dbh_device =(datas,callbackfn)=>{
     );
   });
   async.parallel(asyncfnsz,(err,result)=>{
-      debug_historydevice(`stop dbh_device`);
+      debug_device(`stop dbh_device`);
       callbackfn(err,result);
   });
   // const bulk = dbModel.collection.initializeUnorderedBulkOp();
