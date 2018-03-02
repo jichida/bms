@@ -5,7 +5,7 @@ const async = require('async');
 
 const dbh_alarmraw =(datas,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmRawModel;
-  debug_alarmraw(`start dbh_alarmraw`);
+  debug_alarmraw(`start dbh_alarmraw,datas:${datas.length}`);
   const asyncfnsz = [];
    _.map(datas,(devicedata)=>{
     asyncfnsz.push(

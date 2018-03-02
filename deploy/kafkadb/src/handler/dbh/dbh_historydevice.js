@@ -5,7 +5,7 @@ const async = require('async');
 
 const dbh_historydevice =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryDeviceModel;
-  debug_historydevice(`start dbh_historydevice`);
+  debug_historydevice(`start dbh_historydevice,datas:${datas.length}`);
   const asyncfnsz = [];
   _.map(datas,(devicedata)=>{
     asyncfnsz.push(

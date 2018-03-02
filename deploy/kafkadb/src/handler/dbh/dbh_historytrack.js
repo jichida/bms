@@ -5,7 +5,7 @@ const async = require('async');
 
 const dbh_historytrack =(datas,callbackfn)=>{
   const dbModel = DBModels.HistoryTrackModel;
-  debug_historytrack(`start dbh_historytrack`);
+  debug_historytrack(`start dbh_historytrack,datas:${datas.length}`);
   const asyncfnsz = [];
   _.map(datas,(devicedata)=>{
     asyncfnsz.push(
@@ -19,7 +19,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
     );
   });
   async.parallel(asyncfnsz,(err,result)=>{
-      debug_historytrack(`stop dbh_historydevice`);
+      debug_historytrack(`stop dbh_historytrack`);
       callbackfn(err,result);
   });
   // const bulk = dbModel.collection.initializeUnorderedBulkOp();
