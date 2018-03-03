@@ -4,11 +4,11 @@ const debug = require('debug')('dbh');
 const dbh_alarm = require('./dbh/dbh_alarm');
 const dbh_device = require('./dbh/dbh_device');
 const config = require('../config');
-const sendtokafka = require('../kafka/sendtokafka');
+// const sendtokafka = require('../kafka/sendtokafka');
 //
-// const dbh_alarmraw = require('./dbh/dbh_alarmraw');
-// const dbh_historydevice = require('./dbh/dbh_historydevice');
-// const dbh_historytrack  = require('./dbh/dbh_historytrack');
+const dbh_alarmraw = require('./dbh/dbh_alarmraw');
+const dbh_historydevice = require('./dbh/dbh_historydevice');
+const dbh_historytrack  = require('./dbh/dbh_historytrack');
 
 const onHandleToDB = (allresult,callbackfn)=>{
   let fnsz = [];
