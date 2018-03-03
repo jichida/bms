@@ -6,6 +6,7 @@ const async = require('async');
 const dbh_alarm =(datas,callbackfn)=>{
   if(datas.length === 0){
     debug_alarm(`dbh_alarm data is empty`);
+    callbackfn();
     return;
   }
   const dbModel = DBModels.RealtimeAlarmModel;

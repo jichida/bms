@@ -220,7 +220,8 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
         icount++;
 
         senddata.GUID = uuid.v4();
-        senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        const curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+        senddata.DataTime = curtime;
         const stringdata = JSON.stringify(senddata);
 
         producer.produce(topicname, -1, new Buffer(stringdata),icount);

@@ -5,7 +5,8 @@ const async = require('async');
 
 const dbh_historydevice =(datas,callbackfn)=>{
   if(datas.length === 0){
-    debug_historydevice(`dbh_alarm data is empty`);
+    debug_historydevice(`dbh_historydevice data is empty`);
+    callbackfn();
     return;
   }
   const dbModel = DBModels.HistoryDeviceModel;

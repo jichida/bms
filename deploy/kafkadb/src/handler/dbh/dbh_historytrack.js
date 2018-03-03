@@ -5,7 +5,8 @@ const async = require('async');
 
 const dbh_historytrack =(datas,callbackfn)=>{
   if(datas.length === 0){
-    debug_historytrack(`dbh_alarm data is empty`);
+    debug_historytrack(`debug_historytrack data is empty`);
+    callbackfn();
     return;
   }
   const dbModel = DBModels.HistoryTrackModel;
