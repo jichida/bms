@@ -26,7 +26,6 @@ const dbh_alarm =(datas,callbackfn)=>{
       _.map(datas,(devicedata)=>{
         bulk.find({
         		DeviceId:devicedata["$set"].DeviceId,
-            CurDay:devicedata["$set"].CurDay,
         	})
           .upsert()
           .updateOne(devicedata);
