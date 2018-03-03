@@ -28,16 +28,16 @@ const dbh_historydevice =(datas,callbackfn)=>{
   //     callbackfn(err,result);
   // });
 
-  bulkInsertOps = [];
-  _.map(datas,(devicedata)=>{
-    bulkInsertOps.push({
-        insertOne :
-        {
-           "document" :devicedata
-        }
-    })
-  });
-  dbModel.bulkWrite(bulkInsertOps, {ordered: false},callbackfn);
+  // bulkInsertOps = [];
+  // _.map(datas,(devicedata)=>{
+  //   bulkInsertOps.push({
+  //       insertOne :
+  //       {
+  //          "document" :devicedata
+  //       }
+  //   })
+  // });
+  // dbModel.bulkWrite(bulkInsertOps, {ordered: false},callbackfn);
   const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
