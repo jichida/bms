@@ -233,7 +233,7 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
       });
     });
   });
-  debug(`start parseKafkaMsgs`);
+  debug(`start parseKafkaMsgs->${fnsz.length}`);
   async.parallel(fnsz,(err,result)=>{
     debug(`stop parseKafkaMsgs`);
     callbackfn(resultmsglist);

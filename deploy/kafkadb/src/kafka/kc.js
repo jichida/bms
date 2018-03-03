@@ -61,6 +61,7 @@ const startsrv = (config)=>{
         else{
           // do work
           processbatchmsgs(data,(err,result)=>{
+            debug(`processRecords--->${data.length}-->finished!`);
             consumer.commit();
             setImmediate(cb);
           });
