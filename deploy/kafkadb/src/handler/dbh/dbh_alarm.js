@@ -6,7 +6,7 @@ const async = require('async');
 const dbh_alarm =(datas,callbackfn)=>{
   if(datas.length === 0){
     debug_alarm(`dbh_alarm data is empty`);
-    callbackfn();
+    callbackfn(null,true);
     return;
   }
   const dbModel = DBModels.RealtimeAlarmModel;
@@ -42,12 +42,12 @@ const dbh_alarm =(datas,callbackfn)=>{
           console.error(err.stack);
         }
         debug_alarm(`stop dbh_alarm`);
-        callbackfn(err,result);
+        callbackfn(null,true);
       });
     }
     else{
       debug_alarm(`dbh_device err,bulk is null`);
-      callbackfn();
+      callbackfn(null,true);
     }
 };
 

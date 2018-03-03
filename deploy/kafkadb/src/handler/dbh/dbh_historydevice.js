@@ -6,7 +6,7 @@ const async = require('async');
 const dbh_historydevice =(datas,callbackfn)=>{
   if(datas.length === 0){
     debug_historydevice(`dbh_historydevice data is empty`);
-    callbackfn();
+    callbackfn(null,true);
     return;
   }
   const dbModel = DBModels.HistoryDeviceModel;
@@ -59,12 +59,12 @@ const dbh_historydevice =(datas,callbackfn)=>{
         console.error(err.stack);
       }
       debug_historydevice(`stop dbh_historydevice`);
-      callbackfn(err,result);
+      callbackfn(null,true);
     });
   }
   else{
     console.error(`dbh_device err,bulk is null`);
-    callbackfn();
+    callbackfn(null,true);
   }
   // dbModel.insertMany(datas, (err, result)=>{
   //   callbackfn(err,result);

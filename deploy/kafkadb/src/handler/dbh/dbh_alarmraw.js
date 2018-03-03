@@ -6,7 +6,7 @@ const async = require('async');
 const dbh_alarmraw =(datas,callbackfn)=>{
   if(datas.length === 0){
     debug_alarmraw(`dbh_alarmraw data is empty`);
-    callbackfn();
+    callbackfn(null,true);
     return;
   }
   const dbModel = DBModels.RealtimeAlarmRawModel;
@@ -49,12 +49,12 @@ const dbh_alarmraw =(datas,callbackfn)=>{
         console.error(err.stack);
       }
       debug_alarmraw(`stop dbh_alarmraw`);
-      callbackfn(err,result);
+      callbackfn(null,true);
     });
   }
   else{
     console.error(`dbh_device err,bulk is null`);
-    callbackfn();
+    callbackfn(null,true);
   }
   // dbModel.insertMany(datas, (err, result)=>{
   //   callbackfn(err,result);
