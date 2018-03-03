@@ -4,6 +4,10 @@ const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
 
 const dbh_historydevice =(datas,callbackfn)=>{
+  if(datas.length === 0){
+    debug_historydevice(`dbh_alarm data is empty`);
+    return;
+  }
   const dbModel = DBModels.HistoryDeviceModel;
   debug_historydevice(`start dbh_historydevice,datas:${datas.length}`);
   // const asyncfnsz = [];

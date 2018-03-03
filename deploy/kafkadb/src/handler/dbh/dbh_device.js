@@ -4,6 +4,10 @@ const debug_device = require('debug')('dbh:device');
 const async = require('async');
 
 const dbh_device =(datas,callbackfn)=>{
+  if(datas.length === 0){
+    debug_device(`dbh_alarm data is empty`);
+    return;
+  }
   const dbModel = DBModels.DeviceModel;
   debug_device(`start dbh_device,datas:${datas.length}`);
   // const asyncfnsz = [];
