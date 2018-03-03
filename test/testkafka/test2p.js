@@ -3,6 +3,7 @@ const getProducer  = require('./rkafka/p.js');
 const count_partitionnumber = process.env.partitionnumber || 384;
 const _ = require('lodash');
 const topicname = process.env.IndexTopic ||'bmsdb.index';
+const uuid = require('uuid');
 
 console.log(`topicname:${topicname},count_partitionnumber:${count_partitionnumber}`);
 
@@ -218,6 +219,7 @@ getProducer(kafka_pconfig1,kafka_pconfig2,(err)=> {
         senddata.SN64 = icount;
         icount++;
 
+        senddata.GUID = uuid.v4();
         senddata.DataTime = moment().format('YYYY-MM-DD HH:mm:ss');
         const stringdata = JSON.stringify(senddata);
 

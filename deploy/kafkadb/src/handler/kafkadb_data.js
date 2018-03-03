@@ -24,7 +24,7 @@ const getdbdata_historydevice = (devicedata)=>{
     //   result_device.alarmtxt = alarmtxt;
     // }
     result_device.DeviceId = devicedata.DeviceId;
-    result_device.TimeKey = moment(devicedata.DataTime).format('YYMMDD');
+    result_device.TimeKey = moment(result_device.DataTime).format('YYMMDD');
     // result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;
@@ -80,7 +80,7 @@ const getdbdata_alarmraw = (devicedata)=>{
       result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
       result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
     }
-    result_alarm_raw.TimeKey = moment(devicedata.DataTime).format('YYMMDD');
+    result_alarm_raw.TimeKey = moment(result_alarm_raw.DataTime).format('YYMMDD');
     // result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_alarm_raw.NodeID = config.NodeID;
     result_alarm_raw.SN64 = devicedata.SN64;
