@@ -15,34 +15,34 @@ const onHandleToDB = (allresult,callbackfn)=>{
   fnsz.push((callbackfn)=>{
     dbh_device(allresult['device'],callbackfn);
   });
-  // fnsz.push((callbackfn)=>{
-  //     // sendto(allresult['historydevice'],config.kafka_dbtopic_historydevices,callbackfn);
-  //   dbh_historydevice(allresult['historydevice'],callbackfn);
-  // });
-  // fnsz.push((callbackfn)=>{
-  //   // sendto(allresult['historytrack'],config.kafka_dbtopic_historytracks,callbackfn);
-  //   dbh_historytrack(allresult['historytrack'],callbackfn);
-  // });
-  // fnsz.push((callbackfn)=>{
-  //   // sendto(allresult['alarmraw'],config.kafka_dbtopic_realtimealarmraws,callbackfn);
-  //   dbh_alarmraw(allresult['alarmraw'],callbackfn);
-  // });
-  const sendto = sendtokafka.getsendtokafka();
-  if(!!sendto){
-      fnsz.push((callbackfn)=>{
-          sendto(allresult['historydevice'],config.kafka_dbtopic_historydevices,callbackfn);
-        // dbh_historydevice(allresult['historydevice'],callbackfn);
-      });
-      fnsz.push((callbackfn)=>{
-        sendto(allresult['historytrack'],config.kafka_dbtopic_historytracks,callbackfn);
-        // dbh_historytrack(allresult['historytrack'],callbackfn);
-      });
-      fnsz.push((callbackfn)=>{
-        sendto(allresult['alarmraw'],config.kafka_dbtopic_realtimealarmraws,callbackfn);
-        // dbh_alarmraw(allresult['alarmraw'],callbackfn);
-      });
-    //
-  }
+  fnsz.push((callbackfn)=>{
+      // sendto(allresult['historydevice'],config.kafka_dbtopic_historydevices,callbackfn);
+    dbh_historydevice(allresult['historydevice'],callbackfn);
+  });
+  fnsz.push((callbackfn)=>{
+    // sendto(allresult['historytrack'],config.kafka_dbtopic_historytracks,callbackfn);
+    dbh_historytrack(allresult['historytrack'],callbackfn);
+  });
+  fnsz.push((callbackfn)=>{
+    // sendto(allresult['alarmraw'],config.kafka_dbtopic_realtimealarmraws,callbackfn);
+    dbh_alarmraw(allresult['alarmraw'],callbackfn);
+  });
+  // const sendto = sendtokafka.getsendtokafka();
+  // if(!!sendto){
+  //     fnsz.push((callbackfn)=>{
+  //         sendto(allresult['historydevice'],config.kafka_dbtopic_historydevices,callbackfn);
+  //       // dbh_historydevice(allresult['historydevice'],callbackfn);
+  //     });
+  //     fnsz.push((callbackfn)=>{
+  //       sendto(allresult['historytrack'],config.kafka_dbtopic_historytracks,callbackfn);
+  //       // dbh_historytrack(allresult['historytrack'],callbackfn);
+  //     });
+  //     fnsz.push((callbackfn)=>{
+  //       sendto(allresult['alarmraw'],config.kafka_dbtopic_realtimealarmraws,callbackfn);
+  //       // dbh_alarmraw(allresult['alarmraw'],callbackfn);
+  //     });
+  //   //
+  // }
   fnsz.push((callbackfn)=>{
     dbh_alarm(allresult['alarm'],callbackfn);
   });
