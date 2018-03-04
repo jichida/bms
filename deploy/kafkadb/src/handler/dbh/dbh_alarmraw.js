@@ -35,7 +35,7 @@ const dbh_alarmraw =(datas,callbackfn)=>{
       bulk.find({
           GUID:devicedata.GUID,
           DeviceId:devicedata.DeviceId,
-          TimeKey:devicedata.DataTime
+          TimeKey:devicedata.TimeKey
         })
         .upsert()
         .updateOne({

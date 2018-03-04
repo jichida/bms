@@ -7,7 +7,7 @@ const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
 const debug = require('debug')('start');
 
-debug(`start=====>version:${config.version},\
+debug(`start=====>version:${config.version},groupid:${config.kafka_cconfig1['group.id']}\
   clientid:${config.kafka_cconfig1['client.id']} \
   kafkaHost:${config.kafka_cconfig1['metadata.broker.list']},partitionnumber:${config.partitionnumber}`);
 
