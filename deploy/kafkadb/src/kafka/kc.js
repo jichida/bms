@@ -1,41 +1,28 @@
-const dbh = require('../handler/index.js');
 const getConsumer = require('./rkafka/c.js');
-const _ = require('lodash');
-const async = require('async');
-const moment = require('moment');
-const uuid = require('uuid');
-const parseKafkaMsgs = require('../handler/kafkadb_data.js');
-const onHandleToDB = require('../handler/kafkadb_dbh.js');
+const config = require('../config');
+const debug = require('debug')('dbh:kc');
+const topicindex = require('../handler/pkafkamsg/topicindex');
+const tophistorydevices = require('../handler/pkafkamsg/tophistorydevices');
+const topichistorytracks = require('../handler/pkafkamsg/topichistorytracks');
+const topicrealtimealarmraws = require('../handler/pkafkamsg/topicrealtimealarmraws');
 
-const numMessages = 500;
+const numMessages = config.kcmsg;
 
-const processbatchmsgs = (msgs,callbackfnmsg)=>{
-  const msgid = uuid.v4();
-  console.log(`消息开始${msgid}----->${moment().format('HH:mm:ss')}`);
-  parseKafkaMsgs(msgs,(allresult)=>{
-    console.log(`消息结束${msgid}----->${moment().format('HH:mm:ss')}`);
-    onHandleToDB(allresult,()=>{
-      console.log(`数据库操作结束${msgid}----->${moment().format('HH:mm:ss')}`);
-      callbackfnmsg();
-    });
-  });
+const handlermap = {};
+handlermap[config.kafka_dbtopic_index] = topicindex;
+handlermap[config.kafka_dbtopic_realtimealarmraws] = topicrealtimealarmraws;
+handlermap[config.kafka_dbtopic_historydevices] = tophistorydevices;
+handlermap[config.kafka_dbtopic_historytracks] = topichistorytracks;
 
-  // let asyncfnsz = [];
-  // _.map(msgs,(msg)=>{
-  //   asyncfnsz.push((callbackfn)=>{
-  //       let msgnew = _.clone(msg);
-  //       dbh.handletopic(msgnew,(err,result)=>{
-  //         callbackfn(err,result);
-  //       });
-  //   });
-  // });
-  //
-  // const cid = uuid.v4();
-  // console.log(`开始处理${cid}----->${moment().format('HH:mm:ss')}`);
-  // async.parallel(asyncfnsz,(err,result)=>{
-  //   console.log(`结束处理${cid}----->${moment().format('HH:mm:ss')}`);
-  //   callbackfnmsg(err,result);
-  // });
+const processbatchmsgs = (data,callbackfn)=>{
+  const handlemsg = handlermap[config.kafka_dbtopic_current];
+  if(!!handlemsg){
+    handlemsg(data,callbackfn);
+  }
+  else{
+    debug(`未找到当前订阅消息处理函数-->${config.kafka_dbtopic_current}`)
+    callbackfn();
+  }
 
 }
 
@@ -44,7 +31,7 @@ const startsrv = (config)=>{
     const cconfig =  config.kafka_cconfig2;
 
     const topics = [];
-    topics.push(config.kafka_dbtopic_index);
+    topics.push(config.kafka_dbtopic_current);
 
     // globalconfig['offset_commit_cb'] = (err, topicPartitions)=> {
     //   if (!!err) {
@@ -57,30 +44,37 @@ const startsrv = (config)=>{
 
     getConsumer(globalconfig,cconfig,topics,
     (err,consumer)=> {
-      console.error(`Consumer--${process.pid} ---uncaughtException err`);
-      console.error(err);
-      console.error(err.stack);
-      console.error(`uncaughtException err---`);
+      if(debug.enabled){
+        console.error(`Consumer--${process.pid} ---uncaughtException err`);
+        console.error(err);
+        console.error(err.stack);
+        console.error(`uncaughtException err---`);
+      }
       // consumer.disconnect();
       // throw err;
     }).then((consumer)=>{
       const processRecords =(data, cb)=> {
-        console.log(`processRecords--->${data.length}`);
-        if (data.length == 0) {
-          return setImmediate(cb);
+        debug(`processRecords--->${data.length}`);
+        if (data.length === 0) {
+           setImmediate(cb);
         }
-        // do work
-        processbatchmsgs(data,(err,result)=>{
-          consumer.commit();
-          setImmediate(cb);
-        });
+        else{
+          // do work
+          processbatchmsgs(data,(err,result)=>{
+            debug(`processRecords--->${data.length}-->finished!`);
+            consumer.commit();
+            setImmediate(cb);
+          });
+        }
       }
 
       const consumeNum =(numMsg)=>{
-        console.log(`consumeNum--->${numMsg}----->${moment().format('HH:mm:ss')}`);
+        debug(`consumeNum--->${numMsg}----->`);
         consumer.consume(numMsg, (err, data) => {
           if (!!err) {
-            console.error(err);
+            if(debug.enabled){
+              console.error(err);
+            }
             return;
           }
 

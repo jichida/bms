@@ -19,6 +19,7 @@ let config =  {
   },
   mapdict:{},
   NodeID:nodeid,
+  kcmsg:!!process.env.kcmsg?parseInt(process.env.kcmsg):10,
   partitionnumber:!!process.env.partitionnumber?parseInt(process.env.partitionnumber):48,
   jpush_appkey:process.env.jpush_appkey || '630950d8101fe73d19d64aaf',
   jpush_mastersecret:process.env.jpush_mastersecret || 'dd52bf9de919a2a53441fce3',
@@ -29,8 +30,9 @@ let config =  {
   kafka_dbtopic_historytracks:'bmsdb.historytracks',
   kafka_dbtopic_realtimealarms:'bmsdb.realtimealarms',
   kafka_dbtopic_realtimealarmraws:'bmsdb.realtimealarmraws',
-  kafka_dbtopic_index:process.env.IndexTopic ||'bmsdb.index',
-  version:'1.2.3'
+  kafka_dbtopic_index:process.env.IndexTopic ||'bmsindex',
+  kafka_dbtopic_current:process.env.CurrentTopic ||'bmsindex',
+  version:'4.0.1'
   // consumertopics:['BMS.Data']
 };
 

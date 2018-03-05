@@ -74,7 +74,7 @@ const adminauth = (req,res)=>{
               _id:user._id,
               usertype:adminflag === 1?'admin':'user',
               groupid:user.groupid,
-              organizationid:user.organizationid,
+              // organizationid:user.organizationid,
             },config.secretkey, {});
 
         const userlog = {

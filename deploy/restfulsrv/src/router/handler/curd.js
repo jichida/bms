@@ -73,14 +73,14 @@ const curd = (schmodel)=>{
 
     if(queryparam.type === GET_LIST){
       const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-      if(schmodel.collectionname !== 'historydevice'
-      && schmodel.collectionname !== 'historytrack'
-      && schmodel.collectionname !== 'realtimealarmraw'
-      && schmodel.collectionname !== 'device'
-      && schmodel.collectionname !== 'realtimealarm'){
-        //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
-          query['organizationid'] = organizationid;
-      }
+      // if(schmodel.collectionname !== 'historydevice'
+      // && schmodel.collectionname !== 'historytrack'
+      // && schmodel.collectionname !== 'realtimealarmraw'
+      // && schmodel.collectionname !== 'device'
+      // && schmodel.collectionname !== 'realtimealarm'){
+      //   //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
+      //     query['organizationid'] = organizationid;
+      // }
 
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
         console.log(`[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
@@ -120,14 +120,14 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
     else if(queryparam.type === GET_MANY_REFERENCE){
       let query = {};
       query[queryparam.params.target] = queryparam.params.id;
-      if(schmodel.collectionname !== 'historydevice'
-      && schmodel.collectionname !== 'historytrack'
-      && schmodel.collectionname !== 'realtimealarmraw'
-      && schmodel.collectionname !== 'device'
-      && schmodel.collectionname !== 'realtimealarm'){
-        //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
-          query['organizationid'] = organizationid;
-      }
+      // if(schmodel.collectionname !== 'historydevice'
+      // && schmodel.collectionname !== 'historytrack'
+      // && schmodel.collectionname !== 'realtimealarmraw'
+      // && schmodel.collectionname !== 'device'
+      // && schmodel.collectionname !== 'realtimealarm'){
+      //   //因数据量过大,查询条件加入此选项导致COUNT时间太长，无法返回
+      //     query['organizationid'] = organizationid;
+      // }
       //console.log("GET_MANY_REFERENCE 查询条件=>" + JSON.stringify(query));
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
@@ -141,15 +141,15 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
     else if(queryparam.type === CREATE){
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       let createddata = queryparam.params.data;
-      if(schmodel.collectionname === 'systemconfig' ||
-          schmodel.collectionname === 'device' ||
-          schmodel.collectionname === 'devicegroup' ||
-          schmodel.collectionname === 'user' ||
-          schmodel.collectionname === 'role' ||
-          schmodel.collectionname === 'permission' ||
-          schmodel.collectionname === 'datadict'){
-          createddata.organizationid = organizationid;
-      }
+      // if(schmodel.collectionname === 'systemconfig' ||
+      //     schmodel.collectionname === 'device' ||
+      //     schmodel.collectionname === 'devicegroup' ||
+      //     schmodel.collectionname === 'user' ||
+      //     schmodel.collectionname === 'role' ||
+      //     schmodel.collectionname === 'permission' ||
+      //     schmodel.collectionname === 'datadict'){
+      //     createddata.organizationid = organizationid;
+      // }
       adminaction.preaction('save',schmodel.collectionname,createddata,(err,result)=>{
         if(!err && result){
           let entity = new dbModel(createddata);
@@ -174,15 +174,15 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
     else if(queryparam.type === UPDATE){
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       let updateddata = queryparam.params.data;
-      if(schmodel.collectionname === 'systemconfig' ||
-          schmodel.collectionname === 'device' ||
-          schmodel.collectionname === 'devicegroup' ||
-          schmodel.collectionname === 'user' ||
-          schmodel.collectionname === 'role' ||
-          schmodel.collectionname === 'permission' ||
-          schmodel.collectionname === 'datadict'){
-          updateddata.organizationid = organizationid;//主要是device
-      }
+      // if(schmodel.collectionname === 'systemconfig' ||
+      //     schmodel.collectionname === 'device' ||
+      //     schmodel.collectionname === 'devicegroup' ||
+      //     schmodel.collectionname === 'user' ||
+      //     schmodel.collectionname === 'role' ||
+      //     schmodel.collectionname === 'permission' ||
+      //     schmodel.collectionname === 'datadict'){
+      //     updateddata.organizationid = organizationid;//主要是device
+      // }
 
       adminaction.preaction('findByIdAndUpdate',schmodel.collectionname,updateddata,(err,result)=>{
         if(!err && result){

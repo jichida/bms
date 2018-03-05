@@ -8,7 +8,7 @@ const systemloadsave = (req,res)=>{
   if(actionname === 'systemload' || actionname === 'systemsave'){
     const systemconfigModel = DBModels.SystemConfigModel;
     if(actionname === 'systemload'){
-      systemconfigModel.findOne({ organizationid: organizationid }, (err, systemconfig)=> {
+      systemconfigModel.findOne({}, (err, systemconfig)=> {
         if(!err && !!systemconfig){
           res.status(200).json(systemconfig);
         }
@@ -20,7 +20,7 @@ const systemloadsave = (req,res)=>{
     else{//actionname === 'systemsave'
       const updateddata = req.body;
       //console.log(`开始保存:${JSON.stringify(updateddata)}`);
-      systemconfigModel.findOneAndUpdate({ organizationid: organizationid },{$set:updateddata}, {upsert:true,new: true},(err, systemconfig)=> {
+      systemconfigModel.findOneAndUpdate({},{$set:updateddata}, {upsert:true,new: true},(err, systemconfig)=> {
         if(!err && !!systemconfig){
           res.status(200).json(systemconfig);
         }

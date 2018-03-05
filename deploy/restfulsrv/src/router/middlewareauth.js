@@ -19,7 +19,7 @@ let middlewareauth = (req,res,next)=>{
             req.usertype = decodeduser.usertype;
             if(req.usertype === 'user'){
               groupid = decodeduser.groupid;
-              organizationid = decodeduser.organizationid;
+              // organizationid = decodeduser.organizationid;
             }
             next();
         } catch (e) {
