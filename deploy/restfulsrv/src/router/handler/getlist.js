@@ -8,7 +8,7 @@ const getlist = (schmodel)=>{
     const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
     let query = _.get(req,'body.query',{});
     let fields = _.get(req,'body.fields',{});
-    query['organizationid'] = organizationid;
+    // query['organizationid'] = organizationid;
     getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
         const queryexec = dbModel.find(querynew).select(fields);
         queryexec.exec((err,result)=>{

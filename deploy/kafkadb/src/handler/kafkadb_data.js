@@ -10,7 +10,7 @@ const debug = require('debug')('dbdata');
 
 const getdbdata_device = (devicedata)=>{
   devicedata.NodeID = config.NodeID;
-  devicedata.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+  // devicedata.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
   // callbackfn(devicedata);
   return devicedata;
 }
@@ -24,7 +24,8 @@ const getdbdata_historydevice = (devicedata)=>{
     //   result_device.alarmtxt = alarmtxt;
     // }
     result_device.DeviceId = devicedata.DeviceId;
-    result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    result_device.TimeKey = moment(result_device.DataTime).format('YYMMDD');
+    // result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;
     result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -55,8 +56,13 @@ const getdbdata_historytrack = (devicedata)=>{
     result_historytrack.Provice = devicedata.Provice;
     result_historytrack.City = devicedata.City;
     result_historytrack.Area = devicedata.Area;
+    //+以下语句便于调试
+    result_historytrack.recvpartition = devicedata.recvpartition;
+    result_historytrack.recvoffset = devicedata.recvoffset;
+
     result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
     if(!!result_historytrack.GPSTime){
+      result_historytrack.TimeKey = moment(result_historytrack.GPSTime).format('YYMMDD');
       return result_historytrack;
     }
   }
@@ -74,7 +80,8 @@ const getdbdata_alarmraw = (devicedata)=>{
       result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
       result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
     }
-    result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+    result_alarm_raw.TimeKey = moment(result_alarm_raw.DataTime).format('YYMMDD');
+    // result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
     result_alarm_raw.NodeID = config.NodeID;
     result_alarm_raw.SN64 = devicedata.SN64;
     result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -82,6 +89,10 @@ const getdbdata_alarmraw = (devicedata)=>{
     result_alarm_raw.City = devicedata.City;
     result_alarm_raw.Area = devicedata.Area;
     result_alarm_raw.warninglevel = devicedata.warninglevel;
+    //+以下语句便于调试
+    result_alarm_raw.recvpartition = devicedata.recvpartition;
+    result_alarm_raw.recvoffset = devicedata.recvoffset;
+
     return result_alarm_raw;
   }
 }
@@ -153,14 +164,14 @@ const getindexmsgs = (data,callbackfn)=>{
       devicedata.warninglevel = resultalarmmatch[0].warninglevel;
     }
 
-    utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
-      let newdevicedata = _.merge(devicedata,retobj);
-
+    // utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+    //   let newdevicedata = _.merge(devicedata,retobj);
+      let newdevicedata = _.clone(devicedata);
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
       callbackfn(newdevicedata);
-    });
+    // });
   });
 
 }
@@ -222,7 +233,7 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
       });
     });
   });
-  debug(`start parseKafkaMsgs`);
+  debug(`start parseKafkaMsgs->${fnsz.length}`);
   async.parallel(fnsz,(err,result)=>{
     debug(`stop parseKafkaMsgs`);
     callbackfn(resultmsglist);

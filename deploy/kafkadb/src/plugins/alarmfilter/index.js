@@ -119,7 +119,7 @@ const getresultalarmmatch = (alarmdata,alarmrules)=>{
 const matchalarm = (alarmdata,callback)=>{
     if(!!alarmdata){
       const systemconfigModel = DBModels.SystemConfigModel;
-      systemconfigModel.findOne({ organizationid: mongoose.Types.ObjectId("599af5dc5f943819f10509e6") }, (err, result)=> {
+      systemconfigModel.findOne({}, (err, result)=> {
           let resultalarmmatch = [];
           if(!err && !!result){
             let systemconfig = result.toJSON();
