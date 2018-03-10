@@ -19,6 +19,7 @@ const initConsumer =(globalconfig,cconfig,topics,onErr)=> {
     // });
     consumer.on('event.error', (err)=>{
         onErr(err,consumer);
+        reject(err);
     });
     // consumer.on('disconnected', () => {
     //   process.exit(0)

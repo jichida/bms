@@ -86,9 +86,9 @@ const startsrv = (config)=>{
 
       consumeNum(numMessages);
 
-       process.on('SIGINT', () => {
-          consumer.disconnect();
-      });
+      //  process.on('SIGINT', () => {
+      //     consumer.disconnect();
+      // });
     });
 };
 

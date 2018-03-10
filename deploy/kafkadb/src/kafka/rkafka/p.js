@@ -11,6 +11,7 @@ const initProducer = (globalconfig,pconfig,onErr)=> {
     })
     producer.on('event.error', (err)=>{
         onErr(err);
+        reject(err);
     });
     // producer.on('disconnected', () => {
     //   //console.log('producer disconnected.');
