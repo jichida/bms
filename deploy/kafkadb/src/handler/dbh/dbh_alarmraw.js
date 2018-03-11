@@ -31,16 +31,16 @@ const dbh_alarmraw =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
-      // bulk.insert(devicedata);
-      bulk.find({
-          GUID:devicedata.GUID,
-          DeviceId:devicedata.DeviceId,
-          TimeKey:devicedata.TimeKey
-        })
-        .upsert()
-        .updateOne({
-          $set:devicedata
-        });
+      bulk.insert(devicedata);
+      // bulk.find({
+      //     GUID:devicedata.GUID,
+      //     DeviceId:devicedata.DeviceId,
+      //     TimeKey:devicedata.TimeKey
+      //   })
+      //   .upsert()
+      //   .updateOne({
+      //     $set:devicedata
+      //   });
     });
     bulk.execute((err,result)=>{
       if(!!err){
