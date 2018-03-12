@@ -31,7 +31,7 @@ export class Chart1 extends React.Component {
         const cols = {
             'value': {
                 min: 0,
-                max: 220,
+                max: 100,
                 tickInterval: 20,
                 nice: false
             }
@@ -100,38 +100,38 @@ export class Chart1 extends React.Component {
                 />
                 <Axis name="1" visible ={false} />
                 <Guide>
-                    <Arc 
-                        zIndex={0} 
-                        start={[ 0, 0.965 ]} 
-                        end={[ 220, 0.965 ]}
+                    <Arc
+                        zIndex={0}
+                        start={[ 0, 0.965 ]}
+                        end={[ 100, 0.965 ]}
                         style={{ // 底灰色
                             stroke: '#000',
                             lineWidth: 18,
                             opacity: 0.09
                         }}
                         />
-                    <Arc 
-                        zIndex={1} 
-                        start={[ 0, 0.965 ]} 
+                    <Arc
+                        zIndex={1}
+                        start={[ 0, 0.965 ]}
                         end={[ data[0].value, 0.965 ]}
                         style={{ // 底灰色
                             stroke: '#1890FF',
                             lineWidth: 18,
                         }}
                         />
-                    <Html 
+                    <Html
                         position={[ '50%', '95%' ]}
                         html={
                             () => {
-                                return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'V</p></div>')
+                                return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'%</p></div>')
                             }
-                        } 
+                        }
                         />
                 </Guide>
-                <Geom 
-                    type="point" 
-                    position="value*1" 
-                    shape='pointer' 
+                <Geom
+                    type="point"
+                    position="value*1"
+                    shape='pointer'
                     color='#1890FF'
                     active={false}
                     style={{stroke: '#fff',lineWidth: 1}}
