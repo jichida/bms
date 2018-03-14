@@ -106,7 +106,7 @@ class Page extends React.Component {
 
     render() {
         const {showmenu,p,modeview} = this.props;
-        const treestyle = this.getdrawstyle("400px");
+        const treestyle = this.getdrawstyle("350px");
 
         return (
             <div className="AppPage" id="AppPage" style={{height : `${this.state.innerHeight}px`}}>
@@ -144,16 +144,16 @@ class Page extends React.Component {
                                 position: "inherit",
                                 overflow: "visible"
                             }}
-                            width={400}
+                            width={350}
                             style={showmenu==="addressbox"?treestyle.drawopenstyle:treestyle.drawclosestyle}
                             >
                             <Tree />
-                            { 
-                                showmenu==="addressbox" && 
+                            {
+                                showmenu==="addressbox" &&
                                 <span className="myclose left" onClick={this.menuevent}></span>
                             }
-                            { 
-                                showmenu!=="addressbox" && 
+                            {
+                                showmenu!=="addressbox" &&
                                 <span className="myclose right" onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}}></span>
                             }
                         </Drawer>
@@ -166,7 +166,7 @@ class Page extends React.Component {
                             <Warningtips/>
                         </div>
 
-                        <Menu lesswidth={showmenu==="addressbox"?400:100} />
+                        <Menu lesswidth={showmenu==="addressbox"?350:100} />
 
                     </div>
                 </div>

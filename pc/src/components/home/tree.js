@@ -72,7 +72,7 @@ class TreeExample extends React.Component {
                     <Tabs
                         defaultActiveKey="1"
                         style={{ height: `${this.state.height}px`}}
-                        tabBarStyle={{width : "400px"}}
+                        tabBarStyle={{width : "350px"}}
                         className="treetabs"
                         >
                         <TabPane tab="地址位置" key="1">

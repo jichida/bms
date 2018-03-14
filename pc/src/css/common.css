@@ -602,7 +602,7 @@
 .treePage .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane{
     display: flex;
     overflow-y: scroll;
-    width: 400px;
+    width: 350px;
     overflow-x: hidden;
     -moz-box-orient:vertical;
     -moz-box-direction:normal;
@@ -1294,7 +1294,7 @@
     justify-content: space-between;
     border-bottom:1px solid #EEE;
     line-height: 30px;
-}   
+}
 .Select.Select--multi{
     min-width : 180px;
     max-width: 100%;
@@ -1523,7 +1523,7 @@
 .juhe_pop_info .info-middle li>.r >.t{
     font-size: 18px;
     font-weight: bold;
-} 
+}
 .juhe_pop_info .info-middle li>.r >.t >span{
     font-weight: bold;
 }
@@ -1664,7 +1664,7 @@
     color: #5cbdaa;
 }
 .Window_pop_info .pop_info_btn .lnk span:after{
-    
+
 }
 .Window_pop_info .pop_info_btn .lnk span:last-child:after{
     content: none;
