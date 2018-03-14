@@ -50,6 +50,6 @@ console.log(`issmsdebug:${config.issmsdebug}`);
 srvsystem.job();
 srvwebsocket.startsrv(srvhttp.startsrv());
 
-process.on('uncaughtException', (err)=> {
-    console.log(err);
-});
+// process.on('uncaughtException', (err)=> {
+//     console.log(err);
+// });
