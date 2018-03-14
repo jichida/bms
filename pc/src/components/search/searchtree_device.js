@@ -167,7 +167,7 @@ class TreeSearchBattery extends React.Component {
             <div className="searchtree" style={{textAlign: "center"}}>
                     <br/>
                     <Input
-                        name="searchkey" id="searchkey" placeholder="请输入车辆ID" style={{width: "360px"}}
+                        name="searchkey" id="searchkey" placeholder="请输入车辆ID" style={{width: "320px"}}
                         onChange={this.onChange}
                     />
 
