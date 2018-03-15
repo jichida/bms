@@ -87,9 +87,9 @@ class Setting extends React.Component {
                                     onChange={this.handleChange_warninglev}
                                     >
                                     <Option value={""}>请选择</Option>
-                                    <Option value={"高"}>高</Option>
-                                    <Option value={"中"}>中</Option>
-                                    <Option value={"低"}>低</Option>
+                                    <Option value={"高"}>三级</Option>
+                                    <Option value={"中"}>二级</Option>
+                                    <Option value={"低"}>一级</Option>
                                 </Select>
                             </div>
                         </div>

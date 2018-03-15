@@ -225,9 +225,9 @@ class TreeSearchBattery extends React.Component {
 
                       <Select className="Selectalarmlevel" defaultValue={'-1'}  style={{ width: 370 }} onChange={this.onChange_alarmlevel.bind(this)}>
                           <Option value={"-1"}>选择报警等级</Option>
-                          <Option value={"0"} >高</Option>
-                          <Option value={"1"} >中</Option>
-                          <Option value={"2"} >低</Option>
+                          <Option value={"0"} >三级</Option>
+                          <Option value={"1"} >二级</Option>
+                          <Option value={"2"} >一级</Option>
                       </Select>
 
                       <Select defaultValue={"是否在线"} style={{ width: 370 }}  onChange={this.onChange_onlinestatus.bind(this)}>
