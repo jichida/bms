@@ -30,6 +30,10 @@ const dbh_historytrack =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
+      if(!!devicedata.GPSTime){
+        devicedata.GPSTime = moment(devicedata.GPSTime).add(8,'hours').format('YYYY-MM-DD HH:mm:ss');
+      }
+
       bulk.insert(devicedata);
       // bulk.find({
       //     GUID:devicedata.GUID,
