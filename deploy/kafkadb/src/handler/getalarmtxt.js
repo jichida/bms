@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const config = require('../config.js');
+const debug = require("debug")("alarmpush");
 
 const getalarmfieldtotxt = (alarmfield)=>{
     const mapdict = config.mapdict;
@@ -32,7 +33,7 @@ const getalarmtxt = (alarminfo)=>{
 }
 
 const bridge_alarminfo = (alarminfo)=>{
-  // ////console.log(`alarminfo===>${JSON.stringify(alarminfo)}`);
+  debug(`alarminfo===>${JSON.stringify(alarminfo)}`);
   let alarmtxt = '';
   let alarminfonew = {};
   alarminfonew[`key`] = alarminfo._id;
@@ -52,7 +53,7 @@ const bridge_alarminfo = (alarminfo)=>{
   });
 
   alarminfonew[`报警信息`] = alarmtxt;
-  // ////console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
+  debug(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
   return alarminfonew;
 }
 
