@@ -2,6 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historytrack = require('debug')('dbh:historytrack');
 const async = require('async');
+const moment = require('moment');
 
 const dbh_historytrack =(datas,callbackfn)=>{
   if(datas.length === 0){
