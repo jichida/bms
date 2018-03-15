@@ -1,5 +1,6 @@
- const startsrv = require('./src/kafka/kc.js');
+const startsrv = require('./src/kafka/kc.js');
 const config = require('./src/config');
+const winston = require('./log/log.js');
 const DBModels = require('./src/handler/models.js');
 const _ = require('lodash');
 const mongoose     = require('mongoose');
@@ -15,7 +16,7 @@ debug(`==========`);
 
 debug(`indextopic:${config.kafka_dbtopic_index},currenttopic:${config.kafka_dbtopic_current},kcmsg:${config.kcmsg}`);
 
-
+winston.initLog();
 process.setMaxListeners(0);
 
 mongoose.Promise = global.Promise;
@@ -55,15 +56,7 @@ dbdictModel.find({
 });
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-
-// process.on('uncaughtException', (error) => {
-//   debug(`---uncaughtException err`);
-//   console.error(error);
-//   console.error(error.stack);
-//   console.error(`uncaughtException err---`);
-//   // throw error;
-//   process.exit(1);
-// });
+winston.getlog().info(`start kafkadb ok`);
 
 
 startsrv(config);

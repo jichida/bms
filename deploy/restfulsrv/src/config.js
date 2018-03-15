@@ -8,7 +8,7 @@ const config =  {
   publishdirapp:'../../../bms/app/build',
   publishdirpc:'../../../dist/pc/build',
   publishdiradmin:'../../dist/admin',
-  publishlog:'../../log',
+  logdir:process.env.logdir ||'../../dist/log',
   uploaddir:process.env.uploaddir ||'../../../uploader',
   uploadurl:'/uploader',
 

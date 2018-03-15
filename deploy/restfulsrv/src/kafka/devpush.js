@@ -24,8 +24,8 @@ function onMessage (message) {
 }
 
 const onError =(error)=> {
-  console.error(error);
-  console.error(error.stack);
+  winston.getlog().error(`consumerGroup error`);
+  winston.getlog().error(error);
 }
 
 const start_kafkaconsumergroup = (config)=>{

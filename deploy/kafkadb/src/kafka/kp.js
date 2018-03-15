@@ -1,4 +1,5 @@
 const moment = require('moment');
+const winston = require('../log/log.js');
 const getProducer  = require('./rkafka/p.js');
 const config = require('../config');
 const _ = require('lodash');
@@ -15,10 +16,8 @@ const pconfig = config.kafka_pconfig2 || {
 const startproducer = (callbackfn)=>{
   //console.log(`startproducer>>>>>>>>`);
   getProducer(globalconfig,pconfig,(err)=> {
-    console.error(`Product---uncaughtException err`);
-    console.error(err);
-    console.error(err.stack);
-    console.error(`uncaughtException err---`);
+    winston.getlog().error(`getProducer err`);
+    winston.getlog().error(err);
   }).then((producer)=>{
     const sendtokafka = (payload,topic,callbackfn)=>{
       const stringdata = JSON.stringify(payload);

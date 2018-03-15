@@ -1,5 +1,6 @@
 const getConsumer = require('./rkafka/c.js');
 const config = require('../config');
+const winston = require('../log/log.js');
 const debug = require('debug')('dbh:kc');
 const topicindex = require('../handler/pkafkamsg/topicindex');
 const tophistorydevices = require('../handler/pkafkamsg/tophistorydevices');
@@ -45,10 +46,8 @@ const startsrv = (config)=>{
     getConsumer(globalconfig,cconfig,topics,
     (err,consumer)=> {
       if(debug.enabled){
-        console.error(`Consumer--${process.pid} ---uncaughtException err`);
-        console.error(err);
-        console.error(err.stack);
-        console.error(`uncaughtException err---`);
+        winston.getlog().error(`getConsumer err`);
+        winston.getlog().error(err);
       }
       // consumer.disconnect();
       // throw err;
@@ -75,6 +74,8 @@ const startsrv = (config)=>{
             if(debug.enabled){
               console.error(err);
             }
+            winston.getlog().error(`consume err`);
+            winston.getlog().error(err);
             return;
           }
 
