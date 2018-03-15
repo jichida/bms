@@ -123,10 +123,10 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
           updatedset.Longitude = LastHistoryTrack.Longitude;
           updatedset.Latitude = LastHistoryTrack.Latitude;
         }
-        let updated_data = {
-          "$inc": result_alarm.inc_data,
-          "$set":updatedset
-        };
+        let updated_data = {"$set":updatedset};
+        if(!!result_alarm.inc_data){
+          updated_data["$inc"] = result_alarm.inc_data;
+        }
 
         callbackfn(updated_data);
         return;

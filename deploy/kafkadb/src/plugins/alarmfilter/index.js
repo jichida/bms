@@ -158,7 +158,7 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   let alarmdata = LastRealtimeAlarm.Alarm;
   // //console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
   // //console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
-
+  const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
   if(!!alarmdata){
     let inc_data = {};
     let warninglevel = '';
@@ -183,7 +183,7 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
       }
     });
     // //console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
-    const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
+
     callback(null,{
       DeviceId,
       CurDay,
@@ -192,7 +192,11 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
     });
     return;
   }
-  callback('无报警数据',null);
+  callback(null,{
+    DeviceId,
+    CurDay,
+    warninglevel:''
+  });
 
 }
 
