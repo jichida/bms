@@ -11,10 +11,11 @@ const debug = require("debug")("alarmpush");
 
 const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
   const DeviceId = devicedata.DeviceId;
-  const payload = devicedata;
+  const payload = _.clone(devicedata);
   // //console.log(`重新publish出去:${DeviceId},数据:${payload}`);
   //console.log(`kafka_pushalaramtopic_app,${config.NodeID}】接收成功${devicedata.SN64},${devicedata.DeviceId}`);
   // PubSub.publish(`${config.kafka_pushalaramtopic}.${DeviceId}`, payload);
+  debug(`payload:${JSON.stringify(payload)}`);
 
   getuserpushdeviceid(DeviceId,(userlist)=>{
     debug(`所有用户id:${JSON.stringify(userlist)}`);
