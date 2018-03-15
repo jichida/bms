@@ -2,11 +2,14 @@ const DBModels = require('../db/models.js');
 const mongoose     = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
+const debug = require("debug")('test:query');
+const debugcountall = require("debug")('test:countall');
+const debugcount = require("debug")('test:debugcount');
 const schmodel = {
-  urlname:'/historydevice',
-  schema:DBModels.HistoryDeviceSchema,
-  collectionname:'historydevice',
-};
+    urlname:'/historytrack',
+    schema:DBModels.HistoryTrackSchema,
+    collectionname:'historytrack',
+  };
 
 const do_test_query_paginate = ()=>{
   const organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
@@ -31,24 +34,34 @@ const do_test_query_paginate = ()=>{
 const do_test_query_skip = ()=>{
   const organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
   const dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-  let query = {};
-  query['organizationid'] = organizationid;
+  let query = {
+      "GPSTime": {
+       "$gte": "2018-02-25 12:40:01",
+       "$lte": "2018-02-25 12:45:02"
+     }
+  };
+  // query['organizationid'] = organizationid;
 
   const options = {"sort":{"SN64":-1},"page":1,"limit":100};
   const querynew = query;
-  console.log(`[do_test_query_skip==>${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
+  debug(`[do_test_query_skip==>${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
   optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
+
+  dbModel.find(querynew).count().exec((err,countresult)=>{
+    debug(`countresult---->${countresult}`);
+  });
   const queryexec = dbModel.find(querynew).select().limit(100).skip(0);
   queryexec.exec((err,list)=>{
-     console.log(`[do_test_query_skip==>${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
+     debug(`[do_test_query_skip==>${schmodel.collectionname}]query end--->${list.length}`);
   });
-  console.log(`[do_test_query_skip1] start getcount==>`);
+  debugcount(`[do_test_query_skip1] start getcount==>`);
   dbModel.count(querynew,(err, list)=> {
-      console.log(`[do_test_query_skip1==>${schmodel.collectionname}],COUNT:${list},query end--->${moment().format('HH:mm:ss')}`);
+      console.log(err);
+      debugcount(`[do_test_query_skip1==>${schmodel.collectionname}],COUNT:${list}`);
   });
-  console.log(`[do_test_query_skip2] start getcount==>`);
+  debugcountall(`[do_test_query_skip2] start getcount==>`);
   dbModel.count({},(err, list)=> {
-      console.log(`[do_test_query_skip2==>${schmodel.collectionname}],COUNT:${list},query end--->${moment().format('HH:mm:ss')}`);
+      debugcountall(`[do_test_query_skip2==>${schmodel.collectionname}],COUNT:${list}`);
   });
 };
 
