@@ -168,11 +168,12 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
 
 export const getimageicon = (item)=>{
   //这里根据不同item显示不同图标
+  const icon_car0 = `${process.env.PUBLIC_URL}/images/icon_car0.png`;
   const icon_car1 = `${process.env.PUBLIC_URL}/images/icon_car1.png`;
   const icon_car2 = `${process.env.PUBLIC_URL}/images/icon_car2.png`;
   const icon_car3 = `${process.env.PUBLIC_URL}/images/icon_car3.png`;
   const warninglevel = getdevicestatus_alaramlevel(item);
-  let curpng = icon_car1;
+  let curpng = icon_car0;
   if(warninglevel === '高'){
     curpng = icon_car1;
   }
