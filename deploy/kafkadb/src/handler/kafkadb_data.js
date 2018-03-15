@@ -110,7 +110,7 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
           CurDay:result_alarm.CurDay,
           DeviceId:result_alarm.DeviceId,
           DataTime:LastRealtimeAlarm.DataTime,
-          warninglevel:result_alarm.warninglevel,
+          warninglevel:devicedata.warninglevel,//<---------注意！！！
           NodeID:config.NodeID,
           SN64:devicedata.SN64,
           UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
@@ -160,6 +160,7 @@ const getindexmsgs = (data,callbackfn)=>{
   devicedata.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   alarmplugin.matchalarm(_.get(devicedata,'LastRealtimeAlarm.Alarm'),(resultalarmmatch)=>{
+    devicedata.warninglevel = '';//empty
     if(resultalarmmatch.length > 0){
       devicedata.warninglevel = resultalarmmatch[0].warninglevel;
     }

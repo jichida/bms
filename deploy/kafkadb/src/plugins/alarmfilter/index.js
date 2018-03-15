@@ -161,7 +161,6 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
   if(!!alarmdata){
     let inc_data = {};
-    let warninglevel = '';
     _.map(alarmdata,(v,key)=>{
       if(key === 'AL_Trouble_Code'){
         inc_data[`F[${v}]`] = 1;
@@ -169,16 +168,6 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
       else{
         if(v !== 0){
           inc_data[key] = 1;
-
-          if(v===3){
-            warninglevel = '高';
-          }
-          else if(v===2 && warninglevel!== '高'){
-            warninglevel = '中';
-          }
-          else if(warninglevel!== ''){
-            warninglevel = '低';
-          }
         }
       }
     });
@@ -187,7 +176,6 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
     callback(null,{
       DeviceId,
       CurDay,
-      warninglevel,
       inc_data,
     });
     return;
@@ -195,7 +183,6 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   callback(null,{
     DeviceId,
     CurDay,
-    warninglevel:''
   });
 
 }
