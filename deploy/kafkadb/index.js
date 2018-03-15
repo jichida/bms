@@ -1,6 +1,6 @@
 const startsrv = require('./src/kafka/kc.js');
 const config = require('./src/config');
-const winston = require('./log/log.js');
+const winston = require('./src/log/log.js');
 const DBModels = require('./src/handler/models.js');
 const _ = require('lodash');
 const mongoose     = require('mongoose');
