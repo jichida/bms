@@ -27,7 +27,7 @@ class TableAlarmDetail extends React.Component {
         super(props);
         let queryalarm = {};
         queryalarm['DataTime'] = {
-          $gte:  moment().format('YYYY-MM-DD HH:mm:00'),
+          $gte:  moment().format('YYYY-MM-DD 00:00:00'),
           $lte:  moment().format('YYYY-MM-DD HH:mm:ss'),
         };
         let warninglevel = "-1";
@@ -40,7 +40,9 @@ class TableAlarmDetail extends React.Component {
         else if(warninglevel === '2'){
           queryalarm['warninglevel'] = '低';
         }
-
+        else{
+          queryalarm['warninglevel'] = {$in:['高','中','低']};
+        }
         let query = g_querysaved || queryalarm;
         const DeviceId =  this.props.match.params.deviceid;
         if(DeviceId !== '0'){
@@ -71,8 +73,16 @@ class TableAlarmDetail extends React.Component {
       },0);
     }
     onItemConvert(item){
-      //console.log(`item--->${JSON.stringify(item)}`)
-      // return bridge_alarminfo(item);
+      const warninglevel = item['报警等级'];
+      if(warninglevel === '高'){
+        item['报警等级'] = '三级';
+      }
+      else if(warninglevel === '中'){
+        item['报警等级'] = '二级';
+      }
+      else if(warninglevel === '低'){
+        item['报警等级'] = '一级';
+      }
       return item;
     }
 

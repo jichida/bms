@@ -37,6 +37,9 @@ class TableAlarm extends React.Component {
         else if(warninglevel === '2'){
           queryalarm['warninglevel'] = '低';
         }
+        else{
+          queryalarm['warninglevel'] = {$in:['高','中','低']};
+        }
 
         let query = g_querysaved || queryalarm;
         const DeviceId =  this.props.match.params.deviceid;
@@ -86,7 +89,16 @@ class TableAlarm extends React.Component {
       },0);
     }
     onItemConvert(item){
-      // return bridge_alarminfo(item);
+      const warninglevel = item['报警等级'];
+      if(warninglevel === '高'){
+        item['报警等级'] = '三级';
+      }
+      else if(warninglevel === '中'){
+        item['报警等级'] = '二级';
+      }
+      else if(warninglevel === '低'){
+        item['报警等级'] = '一级';
+      }
       return item;
     }
     render(){

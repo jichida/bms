@@ -101,6 +101,9 @@ class TreeSearchBattery extends React.Component {
          else if(this.state.alarmlevel === '2'){
            query1['warninglevel'] = '低';
          }
+         else{
+           query1['warninglevel'] = {$in:['高','中','低']};
+         }
          if(this.state.DeviceId !== ''){
            query1['DeviceId'] = this.state.DeviceId;
          }

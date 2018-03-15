@@ -42,6 +42,9 @@ class MessageAllDevice extends React.Component {
         else if(warninglevel === '2'){
           queryalarm['warninglevel'] = '低';
         }
+        else{
+          queryalarm['warninglevel'] = {$in:['高','中','低']};
+        }
         let DeviceId =  this.props.match.params.deviceid;
         if(DeviceId !== '0' && !!DeviceId){
           queryalarm['DeviceId'] = DeviceId;
@@ -65,6 +68,16 @@ class MessageAllDevice extends React.Component {
     }
 
     onItemConvert(item){
+      const warninglevel = item['报警等级'];
+      if(warninglevel === '高'){
+        item['报警等级'] = '三级';
+      }
+      else if(warninglevel === '中'){
+        item['报警等级'] = '二级';
+      }
+      else if(warninglevel === '低'){
+        item['报警等级'] = '一级';
+      }
       return item;
     }
     render(){
@@ -97,21 +110,21 @@ class MessageAllDevice extends React.Component {
         });
 
 
-        let viewrow = (row)=>{
-            //console.log(row);
-            g_querysaved = this.state.query;
-            this.props.history.push(`/alarminfo/${row.key}`);
-        }
+        // let viewrow = (row)=>{
+        //     //console.log(row);
+        //     g_querysaved = this.state.query;
+        //     this.props.history.push(`/alarminfo/${row.key}`);
+        // }
 
-        let columns_action ={
-            title: "操作",
-            dataIndex: '',
-            key: 'x',
-            render: (text, row, index) => {
-                return (<a onClick={()=>{viewrow(row)}}>查看</a>);
-            }
-        }
-        columns.push(columns_action);
+        // let columns_action ={
+        //     title: "操作",
+        //     dataIndex: '',
+        //     key: 'x',
+        //     render: (text, row, index) => {
+        //         return (<a onClick={()=>{viewrow(row)}}>查看</a>);
+        //     }
+        // }
+        // columns.push(columns_action);
         return (
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
@@ -139,7 +152,7 @@ class MessageAllDevice extends React.Component {
                     />
                 </div>
 
-                
+
             </div>
 
         );

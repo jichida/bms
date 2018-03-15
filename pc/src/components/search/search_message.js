@@ -88,6 +88,9 @@ class SearchMessage extends React.Component {
       else if(this.state.alarmlevel === '2'){
         query['warninglevel'] = '低';
       }
+      else{
+        query['warninglevel'] = {$in:['高','中','低']};
+      }
       return query;
     }
 
