@@ -29,7 +29,7 @@ const dbh_alarm =(datas,callbackfn)=>{
 
         });
       }
-      debug_alarm(`stop dbh_alarm`);
+      debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
       callbackfn(err,result);
   });
   // const bulk = dbModel.collection.initializeUnorderedBulkOp();
