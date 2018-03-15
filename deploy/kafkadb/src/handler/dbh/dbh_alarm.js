@@ -19,7 +19,7 @@ const dbh_alarm =(datas,callbackfn)=>{
         dbModel.findOneAndUpdate({
         		DeviceId:devicedata["$set"].DeviceId,
             CurDay:devicedata["$set"].CurDay,
-         },{$set:devicedata},{upsert:true},callbackfn);
+         },devicedata,{upsert:true},callbackfn);
       }
     );
   });
