@@ -919,9 +919,13 @@
     border-radius: 4px;
     border: 1px solid #DDD;
 }
-.searchreport >div >div.settimepicker >.settimeinput >span{
+
+.searchreport >div.i >span >span{
+    height: 40px;
+    margin-top: 10px;
     margin-right: 10px;
 }
+
 .searchreport >div >div.selcar .ant-select{
     height: 40px;
 }

@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Seltime from './seltimerange.js';
+import Seltime from './seltimerange_antd.js';
 import { Select,Button } from 'antd';
 import {getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
 import MultiSelect from 'react-select';
