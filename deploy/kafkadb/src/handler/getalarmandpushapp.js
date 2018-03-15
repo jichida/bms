@@ -3,7 +3,8 @@ const kafka_pushalaramtopic_app = require('./kafka_pushalaramtopic_app');
 const debug = require("debug")("alarmpush")
 const getalarmandpushapp = (alarmlist,callbackfn)=>{
     alarmlist = _.filter(alarmlist, (o)=> {
-       return o.warninglevel === '高' || o.warninglevel === '中' || o.warninglevel === '低';
+       const warninglevel = _.get(o,'warninglevel','');
+       return warninglevel === '高' || warninglevel === '中' || warninglevel === '低';
      });
     //先对alarmlist排序[按updatetime]
     debug(`alarmlist->${JSON.stringify(alarmlist)}`);
