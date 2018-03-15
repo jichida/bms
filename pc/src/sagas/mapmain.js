@@ -182,7 +182,9 @@ const getMarkCluster_showMarks = ({isshow,SettingOfflineMinutes})=>{
             marker.on('click',()=>{
               //console.log(`click marker ${key}`);
               window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-                  store.dispatch(mapmain_showpopinfo({DeviceId:item.DeviceId}));
+
+                    store.dispatch(ui_mycar_selcurdevice(item.DeviceId));
+                  // store.dispatch(mapmain_showpopinfo({DeviceId:item.DeviceId}));
               });
             });
             markers.push(marker);
@@ -1318,14 +1320,16 @@ export function* createmapmainflow(){
     yield takeLatest(`${ui_mycar_selcurdevice}`, function*(action) {
       //地图模式选择车辆
       try{
-        let {payload:DeviceId} = action;
+        const {payload:DeviceId} = action;
         // if(typeof DeviceId === 'string'){
         //   DeviceId = parseInt(DeviceId);
         // }
         //先定位到地图模式,然后选择车辆
-        let deviceitem = g_devicesdb[DeviceId];
-        //console.log(`${deviceitem}`)
-        yield put(ui_mycar_showtype(0));
+        const deviceitem = g_devicesdb[DeviceId];
+        // console.log(`${DeviceId}`)
+        // console.log(`${deviceitem}`)
+        // console.log(`${JSON.stringify(g_devicesdb)}`)
+        // yield put(ui_mycar_showtype(0));
         if(!!deviceitem){
           yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
         }

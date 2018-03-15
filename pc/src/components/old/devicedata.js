@@ -27,7 +27,6 @@ import {
 } from 'material-ui/Table';
 import TreeSearchreport from './search/searchdevicedata';
 import {
-  ui_selcurdevice_request,
   searchbatteryalarmsingle_request
 } from '../actions';
 
