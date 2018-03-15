@@ -24,8 +24,8 @@ let startsrv = ()=>{
   // //console.log("static test:" + testdir);
   // app.use('/test', express.static(testdir));
 
-  let logdir = path.join(__dirname,config.publishlog);
-  //console.log("static test:" + logdir);
+  let logdir = config.logdir;
+  console.log("static logdir:" + logdir);
   app.use('/log', express.static(logdir));
 
   let admindir = path.join(__dirname,config.publishdiradmin);
