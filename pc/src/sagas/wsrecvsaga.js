@@ -54,7 +54,7 @@ import config from '../env/config.js';
 // } from '../test/bmsdata.js';
 
 export function* wsrecvsagaflow() {
-  yield takeLatest(`${savealarmsettings_result}`, function*(action) {  
+  yield takeLatest(`${savealarmsettings_result}`, function*(action) {
     yield put(set_weui({
       toast:{
       text:'保存成功',
@@ -69,9 +69,9 @@ export function* wsrecvsagaflow() {
   });
 
   // 链接远程数据,暂时注释
-  // yield takeLatest(`${querydevice_result}`, function*(action) {
-  //   yield put(start_serverpush_devicegeo_sz({}));
-  // });
+  yield takeLatest(`${querydevice_result}`, function*(action) {
+    yield put(start_serverpush_devicegeo_sz({}));
+  });
 
   yield takeLatest(`${changepwd_result}`, function*(action) {
     yield put(set_weui({
@@ -87,7 +87,7 @@ export function* wsrecvsagaflow() {
       yield fork(function*(){
         try{
           while(true){
-            const { resstop, timeout } = yield race({
+            const { resstop } = yield race({
                resstop: take(`${stop_serverpush_devicegeo_sz}`),
                timeout: call(delay,5000)
             });

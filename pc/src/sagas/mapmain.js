@@ -159,7 +159,7 @@ const CreateMapUI_MarkCluster = (map)=>{
   });
 }
 
-const getMarkCluster_showMarks = (isshow)=>{
+const getMarkCluster_showMarks = ({isshow,SettingOfflineMinutes})=>{
   return new Promise((resolve,reject) => {
     if(isshow){
       let markers = [];
@@ -171,7 +171,7 @@ const getMarkCluster_showMarks = (isshow)=>{
                position:pos,
                icon: new window.AMap.Icon({
                    size: new window.AMap.Size(34, 34),  //图标大小
-                   image: getimageicon(item),
+                   image: getimageicon(item,SettingOfflineMinutes),
                    imageOffset: new window.AMap.Pixel(0, 0)
                }),
                angle:get(item,'angle',0),
@@ -1043,7 +1043,10 @@ export function* createmapmainflow(){
           // pointSimplifierIns.hide();
           //   pointSimplifierIns.render();
           // }
-          yield call(getMarkCluster_showMarks,isshow);
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
+          yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
         }
         catch(e){
           console.log(e);

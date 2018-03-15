@@ -8,6 +8,7 @@ import {bridge_deviceinfo_pop,bridge_deviceinfo_popcluster} from './datapiple/br
 import {ui_btnclick_devicemessage} from '../actions';
 import {getdevicestatus_alaramlevel} from '../util/getdeviceitemstatus';
 import {createInfoWindow_popinfo,createInfoWindow_poplistinfo} from './mapmain_infowindow';
+import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 //地图上点图标的样式【图标类型】
 
 
@@ -166,8 +167,11 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
     // };
 }
 
-export const getimageicon = (item)=>{
+export const getimageicon = (item,SettingOfflineMinutes)=>{
   //这里根据不同item显示不同图标
+  if(!getdevicestatus_isonline(item,SettingOfflineMinutes)){
+    return `${process.env.PUBLIC_URL}/images/icon_caroffline.png`;
+  }
   const icon_car0 = `${process.env.PUBLIC_URL}/images/icon_car0.png`;
   const icon_car1 = `${process.env.PUBLIC_URL}/images/icon_car1.png`;
   const icon_car2 = `${process.env.PUBLIC_URL}/images/icon_car2.png`;
