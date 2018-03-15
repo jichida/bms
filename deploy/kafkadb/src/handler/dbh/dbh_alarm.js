@@ -41,6 +41,8 @@ const dbh_alarm =(datas,callbackfn)=>{
           console.error(err);
           console.error(err.stack);
         }
+        console.log(result);
+        debug_alarm(`${JSON.stringify(result)}`);
         debug_alarm(`stop dbh_alarm`);
         callbackfn(null,true);
       });

@@ -3,6 +3,7 @@ const DBModels = require('./models.js');
 const config = require('../config.js');
 const sendtokafka = require('../kafka/sendtokafka');
 const smspush = require('./smspush/push');
+const winston = require('../log/log.js');
 const getuserpushdeviceid = require('./getuserpushdeviceid.js');
 const alarm = require('./getalarmtxt');
 const _ = require('lodash');
@@ -36,7 +37,7 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
         messagetitle:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`,
         messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`
       };
-      // winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
+      winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
       smspush.sendnotifymessage(messagenotify,(err,result)=>{
         // winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
         //console.log(err);
@@ -44,20 +45,20 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
       });
     });
 
-    if(userlist.length > 0){
-      //有用户订阅,重新广播出去
-      const sendto = sendtokafka.getsendtokafka();
-      if(!!sendto){
-        sendto(data,config.kafka_pushalaramtopic_pc,(err,data)=>{
-          if(!!err){
-            //console.log(err);
-          }
-          //console.log(`kafka_pushalaramtopic_app sended`);
-          callbackfn(err,data);
-        });
-        return;
-      }
-    }
+    // if(userlist.length > 0){
+    //   //有用户订阅,重新广播出去
+    //   const sendto = sendtokafka.getsendtokafka();
+    //   if(!!sendto){
+    //     sendto(data,config.kafka_pushalaramtopic_pc,(err,data)=>{
+    //       if(!!err){
+    //         //console.log(err);
+    //       }
+    //       //console.log(`kafka_pushalaramtopic_app sended`);
+    //       callbackfn(err,data);
+    //     });
+    //     return;
+    //   }
+    // }
     //console.log(`kafka_pushalaramtopic_app returned`);
     callbackfn();
   });

@@ -45,7 +45,6 @@ export const bridge_alarminfo = (alarminfo)=>{
     if(!!keytxt){
       alarmtxt += `${keytxt} ${v}次|`
     }
-
   });
   alarminfonew[`key`] = alarminfo._id;
   alarminfonew[`车辆ID`] = alarminfo[`DeviceId`];
