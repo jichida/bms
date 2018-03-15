@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historytrack = require('debug')('dbh:historytrack');
 const async = require('async');
-const moment = require('moment');
+
 
 const dbh_historytrack =(datas,callbackfn)=>{
   if(datas.length === 0){
@@ -31,9 +31,7 @@ const dbh_historytrack =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
-      if(!!devicedata.GPSTime){
-        devicedata.GPSTime = moment(devicedata.GPSTime).add(8,'hours').format('YYYY-MM-DD HH:mm:ss');
-      }
+
 
       bulk.insert(devicedata);
       // bulk.find({

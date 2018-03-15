@@ -155,7 +155,11 @@ const getindexmsgs = (data,callbackfn)=>{
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
   }
   if(!!LastHistoryTrack){
+    if(!!LastHistoryTrack.GPSTime){
+      LastHistoryTrack.GPSTime = moment(LastHistoryTrack.GPSTime).add(8,'hours').format('YYYY-MM-DD HH:mm:ss');
+    }
     devicedata.LastHistoryTrack = LastHistoryTrack;
+
   }
   devicedata.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
