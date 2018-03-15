@@ -57,18 +57,18 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   let alarminforawtmp = _.clone(alarmrawinfo);
   let rest = _.omit(alarminforawtmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
   // //console.log(`rest===>${JSON.stringify(rest)}`);
-  let warninglevelmap = [
-    '无','低','中','高'
-  ];
+  // let warninglevelmap = [
+  //   '无','低','中','高'
+  // ];
   _.map(rest,(v,alarmfield)=>{
     if(alarmfield === 'AL_Trouble_Code'){
       alarmtxt += `F[${v}]`;
     }
     if(_.startsWith(alarmfield, 'AL_')){
       if(!!mapdict[alarmfield]){
-         if(v>= 0 && v<= 3){
-           alarmtxt += `${mapdict[alarmfield].showname}[${warninglevelmap[v]}]`;
-         }
+        //  if(v>= 0 && v<= 3){
+          alarmtxt += `${mapdict[alarmfield].showname}`;
+        //  }
       }
     }
   });
