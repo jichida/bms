@@ -7,6 +7,7 @@ const winston = require('../log/log.js');
 const getuserpushdeviceid = require('./getuserpushdeviceid.js');
 const alarm = require('./getalarmtxt');
 const _ = require('lodash');
+const debug = require("debug")("alarmpush");
 
 const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
   const DeviceId = devicedata.DeviceId;
@@ -16,8 +17,11 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
   // PubSub.publish(`${config.kafka_pushalaramtopic}.${DeviceId}`, payload);
 
   getuserpushdeviceid(DeviceId,(userlist)=>{
-    // //console.log(`所有用户id:${JSON.stringify(userlist)}`);
-
+    debug(`所有用户id:${JSON.stringify(userlist)}`);
+    if(userlist.length === 0){
+      callbackfn();
+      return;
+    }
     let recordnew = alarm.bridge_alarminfo(payload);
     _.map(userlist,(userid)=>{
       // _id
@@ -38,10 +42,15 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
         messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`
       };
       winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
+      debug(`发送给用户${userid}=>${JSON.stringify(messagenotify)}`);
       smspush.sendnotifymessage(messagenotify,(err,result)=>{
         // winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
-        //console.log(err);
-        // //console.log(result);
+        if(!err){
+          debug(`发送消息结果:${JSON.stringify(result)}`);
+        }
+        else{
+          debug(`发送消息结果 err:${JSON.stringify(err)}`);
+        }
       });
     });
 
