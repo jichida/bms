@@ -3,7 +3,7 @@ const kafka_pushalaramtopic_app = require('./kafka_pushalaramtopic_app');
 const debug = require("debug")("alarmpush")
 const getalarmandpushapp = (alarmlist,callbackfn)=>{
     //先对alarmlist排序[按updatetime]
-    debug(`alarmlist->${JSON.stringify(alarmlist)}`);
+    // debug(`alarmlist->${JSON.stringify(alarmlist)}`);
     alarmlist = _.sortBy(alarmlist,(o)=>{
       return o.UpdateTime;
     })
