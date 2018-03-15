@@ -37,9 +37,9 @@ const bridge_alarminfo = (alarminfo)=>{
   let alarmtxt = '';
   let alarminfonew = {};
   alarminfonew[`key`] = alarminfo._id;
-  alarminfonew[`车辆ID`] = alarminfo[`DeviceId`];
-  alarminfonew[`报警时间`] = alarminfo[`DataTime`];
-  alarminfonew[`报警等级`] = alarminfo[`warninglevel`];
+  alarminfonew[`车辆ID`] = alarminfo.DeviceId;
+  alarminfonew[`报警时间`] = alarminfo.DataTime;
+  alarminfonew[`报警等级`] = alarminfo.warninglevel;
 
   let alarminfotmp = _.clone(alarminfo);
   let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
