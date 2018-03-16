@@ -31,7 +31,7 @@ class Page extends React.Component {
         const props_tickv = get(alarmchartdata,'tickv',[]);
         const props_ticka = get(alarmchartdata,'ticka',[]);
         const props_ticktime = get(alarmchartdata,'ticktime',[]);
-        
+
         let data_tickv = [];
         let data_ticka = [];
         let data_temperature = 0;
@@ -56,7 +56,8 @@ class Page extends React.Component {
                 if(!!mapdict[fieldname]){
                     kv.push({
                         name:mapdict[fieldname].showname,
-                        value:get(deviceitem,mapdict[fieldname].name,'')
+                        value:get(deviceitem,mapdict[fieldname].name,''),
+                        unit:get(mapdict[fieldname],'unit','')
                     });
                 }
             });
@@ -114,7 +115,11 @@ class Page extends React.Component {
                                 <div className="tit">{item.groupname}</div>
                                 {
                                     map(item.kv,(i,k)=>{
-                                        return (<div key={k} ><span>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
+                                        let value = i.value;
+                                        if(i.unit !== ''){
+                                          value = `${value}${i.unit}`;
+                                        }
+                                        return (<div key={k} ><span>{`${i.name}`}</span><span>{`${value}`}</span></div>);
                                     })
                                 }
                                 </div>
@@ -151,7 +156,7 @@ const mapStateToProps = ({device,app,deviceinfoquerychart}) => {
     const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
     const {alarmchart} = deviceinfoquerychart;
-    
+
     return { g_devicesdb, mapdetailfields, mapdict,alarmchart };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
