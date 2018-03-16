@@ -4,11 +4,18 @@ const debug_historytrack = require('debug')('dbh:historytrack');
 const async = require('async');
 
 
-const dbh_historytrack =(datas,callbackfn)=>{
-  if(datas.length === 0){
+const dbh_historytrack =(datasin,callbackfn)=>{
+  if(datasin.length === 0){
     debug_historytrack(`debug_historytrack data is empty`);
     callbackfn(null,true);
     return;
+  }
+  const datas = _.uniqBy(datasin, (o)=>{
+    return `${o.DeviceId}_${o.GPSTime}`;
+  });
+
+  if(datas.length < datasin.length){
+    debug_historytrack(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
   }
   const dbModel = DBModels.HistoryTrackModel;
   debug_historytrack(`start dbh_historytrack,datas:${datas.length}`);
@@ -31,8 +38,6 @@ const dbh_historytrack =(datas,callbackfn)=>{
   const bulk = dbModel.collection.initializeUnorderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
-
-
       bulk.insert(devicedata);
       // bulk.find({
       //     GUID:devicedata.GUID,

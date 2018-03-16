@@ -3,12 +3,20 @@ const _ = require('lodash');
 const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
 
-const dbh_historydevice =(datas,callbackfn)=>{
-  if(datas.length === 0){
+const dbh_historydevice =(datasin,callbackfn)=>{
+  if(datasin.length === 0){
     debug_historydevice(`dbh_historydevice data is empty`);
     callbackfn(null,true);
     return;
   }
+  const datas = _.uniqBy(datasin, (o)=>{
+    return `${o.DeviceId}_${o.DataTime}`;
+  });
+
+  if(datas.length < datasin.length){
+    debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
+
   const dbModel = DBModels.HistoryDeviceModel;
   debug_historydevice(`start dbh_historydevice,datas:${datas.length}`);
   // const asyncfnsz = [];
