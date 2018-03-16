@@ -3,7 +3,6 @@ const _ = require('lodash');
 const device = require('../handler/common/device.js');
 const historytrack = require('../handler/common/historytrack');
 const historydevice = require('../handler/common/historydevice.js');
-const kafakautil = require('../kafka/producer');
 const realtimealarm = require('../handler/common/realtimealarm.js');
 const DBModels = require('../db/models.js');
 const utilposition = require('../handler/common/util_position');
@@ -111,33 +110,7 @@ let startmodule = (app)=>{
     export_downloadexcel({req,res,dbModel,fields:null,csvfields,fn_convert,name:'客户存档数据'});
   });
 
-  app.post('/m2mgw/setdata',(req,res)=>{
-    //console.log(`setdata m2m data:${JSON.stringify(req.body)}`);
-    const data = req.body;
-    kafakautil.sendtokafka(data,(err,result)=>{
-      res.status(200).json({result:result,err:err});
-    });
-  });
-  //获取所有地理位置
-  app.get('/api/getdevicegeo',(req,res)=>{
-    device.querydevice({
-      query:{},
-      fields:{
-        'DeviceId':1,
-        'LastHistoryTrack':1,
-        'imagetype':1,
-        'TPData':1,
-        'updated_at':1,
-      }
-    },{},(result)=>{
-      if(result.cmd === 'querydevice_result'){
-        res.status(200).json({list:result.payload.list});
-      }
-      else{
-        res.status(200).json({list:[]});
-      }
-    });
-  });
+
 
   //设置设备数据(地理位置\胎压）
   // app.post('/api/setdevicegeo',(req,res)=>{

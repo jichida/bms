@@ -2,7 +2,6 @@
  * Created by wangxiaoqing on 2017/3/25.
  */
 const dbinit = require('./db/dbinit');
-const startsrv_devpush = require('./kafka/devpush.js');
 const config = require('./config');
 const DBModels = require('./db/models.js');
 const PubSub = require('pubsub-js');
@@ -66,7 +65,7 @@ const job=()=>{
 
     // createadmin();
     dbinit();
-    startsrv_devpush(config);
+
     getSystemLog();
     // schedule.scheduleJob('0 0 * * *', ()=>{
       //每天0点更新优惠券过期信息

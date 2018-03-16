@@ -26,7 +26,7 @@ const adminauth = (req,res)=>{
             path:'permissions', select:'_id name', model: 'permission'
           },
         ]
-      }]).exec((err, user)=> {
+      }]).lean().exec((err, user)=> {
     if (!!err) {
       console.log(err);
       res.status(200).json({

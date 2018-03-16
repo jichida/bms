@@ -95,7 +95,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
     }
     else if(queryparam.type === GET_ONE){
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-      dbModel.findById(queryparam.params.id,(err,result)=>{
+      dbModel.findById(queryparam.params.id).lean().exec((err,result)=>{
         //console.log("GET_ONE result=>" + JSON.stringify(result));
         res.status(200)
             .json(result);
@@ -112,7 +112,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
         }
       });
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-      dbModel.find({ _id: { "$in" : ids} },(err,result)=>{
+      dbModel.find({ _id: { "$in" : ids} }).lean().exec((err,result)=>{
         //console.log("GET_MANY result=>" + JSON.stringify(result));
         res.status(200)
             .json(result);
@@ -188,7 +188,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
 
       adminaction.preaction('findByIdAndUpdate',schmodel.collectionname,updateddata,(err,result)=>{
         if(!err && result){
-          dbModel.findByIdAndUpdate(queryparam.params.id,updateddata, {new: true},(err, result)=> {
+          dbModel.findByIdAndUpdate(queryparam.params.id,updateddata, {new: true}).lean().exec((err, result)=> {
                   console.log("UPDATE err=>" + JSON.stringify(err));
                   console.log("UPDATE result=>" + JSON.stringify(result));
                     if(!err){
