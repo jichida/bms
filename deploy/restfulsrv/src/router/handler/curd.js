@@ -85,6 +85,7 @@ const curd = (schmodel)=>{
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
         console.log(`[${schmodel.collectionname}]query start==>${JSON.stringify(querynew)}--->\n \
 optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
+        options.lean = true;
         dbModel.paginate(querynew, options,(err,result)=>{
           console.log(`[${schmodel.collectionname}]query end--->${moment().format('HH:mm:ss')}`);
           res.status(200).json(result);
@@ -131,6 +132,7 @@ optionst==>${JSON.stringify(options)}\n-->${moment().format('HH:mm:ss')}`);
       //console.log("GET_MANY_REFERENCE 查询条件=>" + JSON.stringify(query));
       let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
       getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
+        options.lean = true;
         dbModel.paginate(querynew,options,(err,result)=>{
             //console.log("GET_MANY_REFERENCE result=>" + JSON.stringify(result));
             res.status(200)

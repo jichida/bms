@@ -20,10 +20,10 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
     // console.log(`deviceIds:${JSON.stringify(deviceIds)}`);
     const fn_online = (callbackfn)=>{
       const dbModel = DBModels.SystemConfigModel;
-      dbModel.findOne({},(err,systemconfig)=>{
+      dbModel.findOne({}).lean().exec((err,systemconfig)=>{
           let SettingOfflineMinutes = 20;
           if(!err && !!systemconfig){
-              systemconfig = systemconfig.toJSON();
+              // systemconfig = systemconfig.toJSON();
               SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',SettingOfflineMinutes);
            }
            const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');

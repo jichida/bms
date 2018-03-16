@@ -21,10 +21,12 @@ exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
       query.DeviceId = {'$in':deviceIds};
     }
     console.log(`uireport_searchposition start--->${moment().format('HH:mm:ss')}`);
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
     historytrackModel.paginate(query,actiondata.options,(err,result)=>{
       console.log(`uireport_searchposition end--->${moment().format('HH:mm:ss')}`);
       if(!err){
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(record);
@@ -61,10 +63,10 @@ exports.exportposition = (actiondata,ctx,callback)=>{
         query.DeviceId = {'$in':deviceIds};
       }
       console.log(`----->historytrackModel query-->${JSON.stringify(query)}`);
-      historytrackModel.find(query,fields,(err,list)=>{
+      const queryexec = historytrackModel.find(query).select(fields).lean();
+      queryexec.exec((err,list)=>{
         console.log(`----->historytrackModel find`);
         if(!err){
-          list = JSON.parse(JSON.stringify(list));
           if(list.length > 0){
             callback({
               cmd:'exportposition_result',
@@ -104,7 +106,7 @@ exports.queryhistorytrack = (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    let queryexec = historytrackModel.find(query).sort({ GPSTime: 1 }).select(fields);
+    let queryexec = historytrackModel.find(query).sort({ GPSTime: 1 }).select(fields).lean();
     queryexec.exec((err,list)=>{
       if(!err){
         if(list.length > 0){

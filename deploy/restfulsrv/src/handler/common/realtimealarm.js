@@ -168,9 +168,11 @@ exports.uireport_searchalarm =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
     realtimealarmModel.paginate(query,actiondata.options,(err,result)=>{
       if(!err){
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(bridge_alarminfo(record));
@@ -249,11 +251,13 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
       query.DeviceId = {'$in':deviceIds};
     }
     console.log(`uireport_searchalarmdetail start--->${moment().format('HH:mm:ss')}`);
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
     realtimealarmrawModel.paginate(query,actiondata.options,(err,result)=>{
       console.log(`uireport_searchalarmdetail end--->${moment().format('HH:mm:ss')}`);
       if(!err){
         console.log(`----->realtimealarmrawModel`);
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(bridge_alarmrawinfo(record));
@@ -330,7 +334,7 @@ exports.serverpush_alarm_sz = (actiondata,ctx,callback)=>{
       skip: 0,
       limit: 10,
       sort:{ "DataTime":-1}
-    },(err,list)=>{
+    }).lean().exec((err,list)=>{
       if(!err){
         list = JSON.parse(JSON.stringify(list));
         let docs = [];

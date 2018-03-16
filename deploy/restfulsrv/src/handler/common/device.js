@@ -308,9 +308,11 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
       query.DeviceId = {'$in':deviceIds};
     }
     // console.log(query);
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
     deviceModel.paginate(query,actiondata.options,(err,result)=>{
       if(!err){
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(record);

@@ -17,10 +17,12 @@ exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
     }
     // console.log(query);
     console.log(`uireport_searchhistorydevice start--->${moment().format('HH:mm:ss')}`);
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
     historydeviceModel.paginate(query,actiondata.options,(err,result)=>{
       console.log(`uireport_searchhistorydevice end--->${moment().format('HH:mm:ss')}`);
       if(!err){
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(record);
@@ -96,10 +98,10 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
     const query = actiondata.query || {};
     const fields = actiondata.fields || {};
     //console.log(`fields-->${JSON.stringify(fields)}`);
-    const queryexec = deviceModel.findOne(query).select(fields);
+    const queryexec = deviceModel.findOne(query).select(fields).lean();
     queryexec.exec((err,result)=>{
       if(!err && !!result){
-        callbackfn(result.toJSON());
+        callbackfn(result);
       }
       else{
         callbackfn();
