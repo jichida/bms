@@ -7,6 +7,7 @@ import map from 'lodash.map';
 import {
     ui_selcurdevice_request,
 } from '../../actions';
+import {getimageicon} from '../../sagas/getmapstyle';
 
 const treeviewstyle = 'bysearchresult';
 decorators.Header = HeaderCo;
@@ -36,19 +37,27 @@ class Tree extends React.Component {
         this.props.dispatch(ui_selcurdevice_request({DeviceId:id}));
     }
     render(){
-        const {treesearchlist} = this.props;
+        const {treesearchlist,g_devicesdb,SettingOfflineMinutes} = this.props;
+
         return (
           <div className="treesearchlist">
-            {map(treesearchlist, (id, key)=>{
-              return <div key={key} onClick={this.onclick.bind(this, id)}>{id}</div>
-            })}
+            {
+              map(treesearchlist, (id, key)=>{
+                const deviceitem = g_devicesdb[id];
+                const iconname = getimageicon(deviceitem,SettingOfflineMinutes);
+                return <div key={key} onClick={this.onclick.bind(this, id)}>
+                  <img src={iconname} style={{width: "20px",marginRight: "5px", marginTop : "5px"}} />
+                  <span>{id}</span>
+                </div>
+              })
+            }
           </div>
       );
   }
 }
 
-const mapStateToProps = ({device:{treesearchlist}}) => {
-  return {treesearchlist};
+const mapStateToProps = ({device:{treesearchlist,g_devicesdb},app:{SettingOfflineMinutes}}) => {
+  return {treesearchlist,g_devicesdb,SettingOfflineMinutes};
 }
 
 export default connect(mapStateToProps)(Tree);
