@@ -89,7 +89,7 @@ export function* wsrecvsagaflow() {
           while(true){
             const { resstop } = yield race({
                resstop: take(`${stop_serverpush_devicegeo_sz}`),
-               timeout: call(delay,5000)
+               timeout: call(delay,30000)
             });
             if(!!resstop){
               break;
