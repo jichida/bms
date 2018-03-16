@@ -24,7 +24,7 @@ const HeaderCo = (props) => {
       }
     }
     else{
-      icon = props.treeviewstyle === 'byloc';
+      icon = props.treeviewstyle === 'byloc' ||  props.treeviewstyle === 'bygroup';
     }
 
     const active = props.node.active;
