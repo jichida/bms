@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard,decorators} from '../controls/react-treebeard-ex/src/index.js';
-import {getdevicestatus_isonline} from '../../util/getdeviceitemstatus';
+// import {getdevicestatus_isonline} from '../../util/getdeviceitemstatus';
+import {getimageicon} from '../../sagas/getmapstyle';
 import icon_online from '../../img/1.png';
 import icon_offline from '../../img/3.png';
 // import icon_car3 from './icon_car3.png';
@@ -55,9 +56,11 @@ const HeaderCo = (props) => {
     // else if(parseInt(deviceitem.DeviceId)%3 === 2){ //报警数据判断
     //   iconname = icon_car3;
     // }
-    if(!getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
-      iconname = icon_offline;
-    }
+    // if(!getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+    //   iconname = icon_offline;
+    // }
+
+    iconname = getimageicon(deviceitem,SettingOfflineMinutes);
     //console.log(deviceitem);
     return (
         <div style={props.style.base}  className={treeseled}>
