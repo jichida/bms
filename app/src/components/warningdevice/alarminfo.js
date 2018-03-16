@@ -93,7 +93,7 @@ class Page extends React.Component {
                                               this.onClickAlarmtxt(deviceid);
                                             }
                                           }
-                                        }><span>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
+                                        }><span style={{flexShrink:0,marginRight:"10px"}}>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
                                     })
                                 }
                             </div>
