@@ -90,7 +90,7 @@ const getpop_device =({deviceitem,kvlist})=>{
   let fields = [];
   lodashmap(kvlist,(v)=>{
     const fieldvalue = get(deviceitem,v.name,'');
-    const unit = get(deviceitem,v.unit,'');
+    const unit = get(v,'unit','');
     let systemflag = 0;
     if(v.name === 'formattedAddress'){
       systemflag = 1;
