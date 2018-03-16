@@ -7,7 +7,8 @@ import {connect} from 'react-redux';
 import Badge from 'material-ui/Badge';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Car from "material-ui/svg-icons/maps/directions-car";
+import { Tooltip } from 'antd';
+// import Car from "material-ui/svg-icons/maps/directions-car";
 import Exit from "material-ui/svg-icons/action/exit-to-app";
 import Setting from "material-ui/svg-icons/action/settings";
 import SearchPosition from "material-ui/svg-icons/device/location-searching";
@@ -288,134 +289,143 @@ class Page extends React.Component {
         // if(modeview === 'device'){
             return (
               <div className="BadgeStyle">
-
-                  <Badge
-                      badgeContent={`(${count_online})`}
-                      className="Badge"
-                      secondary={true}
-                      style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                      badgeStyle={{
-                          top : "auto",
-                          bottom: "-4px",
-                          right: "-4px",
-                          backgroundColor: "none",
-                          color : "#111",
-                          position: "relative",
-                          bottom: "-8px",
-                          fontSize: "18px",
-                          width : "auto",
-                          color : "#5cbeaa"
-                      }}
-                      onClick={this.onClickMenu.bind(this,'online')}
-                      >
-                      <img src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
-                  </Badge>
-                  <Badge
-                      badgeContent={`(${count_offline})`}
-                      className="Badge"
-                      secondary={true}
-                      style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                      badgeStyle={{
-                          top : "auto",
-                          bottom: "-4px",
-                          right: "-4px",
-                          backgroundColor: "none",
-                          color : "#111",
-                          position: "relative",
-                          bottom: "-8px",
-                          fontSize: "18px",
-                          width : "auto",
-                          color : "#999"
-                      }}
-                      onClick={this.onClickMenu.bind(this,'offline')}
-                      >
-                      <img src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
-                  </Badge>
-                  <Badge
-                      badgeContent={`(${count_red})`}
-                      className="Badge"
-                      secondary={true}
-                      style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                      badgeStyle={{
-                          top : "auto",
-                          bottom: "-4px",
-                          right: "-4px",
-                          backgroundColor: "none",
-                          color : "#111",
-                          position: "relative",
-                          bottom: "-8px",
-                          fontSize: "18px",
-                          width : "auto",
-                          color : "#d21d24"
-                      }}
-                      onClick={this.onClickMenu.bind(this,'red')}
-                      >
-                      <img style={{ width: "40px", height: "40px"}} src={D1} />
-                  </Badge>
-                  <Badge
-                      badgeContent={`(${count_orange})`}
-                      className="Badge"
-                      secondary={true}
-                      style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                      badgeStyle={{
-                          top : "auto",
-                          bottom: "-4px",
-                          right: "-4px",
-                          backgroundColor: "none",
-                          color : "#111",
-                          position: "relative",
-                          bottom: "-8px",
-                          fontSize: "18px",
-                          width : "auto",
-                          color : "#ed942f"
-                      }}
-                      onClick={this.onClickMenu.bind(this,'orange')}
-                      >
-                      <img style={{ width: "40px", height: "40px"}} src={D2} />
-                  </Badge>
-                  <Badge
-                      badgeContent={`(${count_yellow})`}
-                      className="Badge"
-                      secondary={true}
-                      style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                      badgeStyle={{
-                          top : "auto",
-                          bottom: "-4px",
-                          right: "-4px",
-                          backgroundColor: "none",
-                          color : "#111",
-                          position: "relative",
-                          bottom: "-8px",
-                          fontSize: "18px",
-                          width : "auto",
-                          color : "#f6d06b"
-                      }}
-                      onClick={this.onClickMenu.bind(this,'yellow')}
-                      >
-                      <img style={{ width: "40px", height: "40px"}} src={D3} />
-                  </Badge>
-
-                  <Badge
-                      badgeContent={`${count_all}`}
-                      className="Badge"
-                      secondary={true}
-                      style={{
-                          padding:"0",width:"36px",height:"36px",display: "flex",marginRight: "10px"}}
-                      badgeStyle={{
-                          top: "-4px", right: "-4px",
-                          backgroundColor : "#FFF",
-                          color : "#C00",
-                          border : "2px solid #C00",
-                          width : "28px",
-                          height : "28px",
-                          lineHeight : "28px",
-                          fontSize : "11px"
-                      }}
-                      onClick={this.onClickMenu.bind(this,'all')}
-                      >
-                      <i className="fa fa-envelope-o" aria-hidden="true" style={iconstyle1} />
+                  <Tooltip title="在线车辆">
+                    <Badge
+                        badgeContent={`(${count_online})`}
+                        className="Badge"
+                        secondary={true}
+                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                        badgeStyle={{
+                            top : "auto",
+                            bottom: "-4px",
+                            right: "-4px",
+                            backgroundColor: "none",
+                            color : "#111",
+                            position: "relative",
+                            bottom: "-8px",
+                            fontSize: "18px",
+                            width : "auto",
+                            color : "#5cbeaa"
+                        }}
+                        onClick={this.onClickMenu.bind(this,'online')}
+                        >
+                        <img src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
                     </Badge>
-
+                </Tooltip>
+                <Tooltip title="离线车辆">
+                    <Badge
+                        badgeContent={`(${count_offline})`}
+                        className="Badge"
+                        secondary={true}
+                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                        badgeStyle={{
+                            top : "auto",
+                            bottom: "-4px",
+                            right: "-4px",
+                            backgroundColor: "none",
+                            color : "#111",
+                            position: "relative",
+                            bottom: "-8px",
+                            fontSize: "18px",
+                            width : "auto",
+                            color : "#999"
+                        }}
+                        onClick={this.onClickMenu.bind(this,'offline')}
+                        >
+                        <img src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
+                    </Badge>
+                  </Tooltip>
+                  <Tooltip title="当日三级报警总数">
+                    <Badge
+                        badgeContent={`(${count_red})`}
+                        className="Badge"
+                        secondary={true}
+                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                        badgeStyle={{
+                            top : "auto",
+                            bottom: "-4px",
+                            right: "-4px",
+                            backgroundColor: "none",
+                            color : "#111",
+                            position: "relative",
+                            bottom: "-8px",
+                            fontSize: "18px",
+                            width : "auto",
+                            color : "#d21d24"
+                        }}
+                        onClick={this.onClickMenu.bind(this,'red')}
+                        >
+                        <img style={{ width: "40px", height: "40px"}} src={D1} />
+                    </Badge>
+                  </Tooltip>
+                  <Tooltip title="当日二级报警总数">
+                    <Badge
+                        badgeContent={`(${count_orange})`}
+                        className="Badge"
+                        secondary={true}
+                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                        badgeStyle={{
+                            top : "auto",
+                            bottom: "-4px",
+                            right: "-4px",
+                            backgroundColor: "none",
+                            color : "#111",
+                            position: "relative",
+                            bottom: "-8px",
+                            fontSize: "18px",
+                            width : "auto",
+                            color : "#ed942f"
+                        }}
+                        onClick={this.onClickMenu.bind(this,'orange')}
+                        >
+                        <img style={{ width: "40px", height: "40px"}} src={D2} />
+                    </Badge>
+                  </Tooltip>
+                  <Tooltip title="当日一级报警总数">
+                    <Badge
+                        badgeContent={`(${count_yellow})`}
+                        className="Badge"
+                        secondary={true}
+                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                        badgeStyle={{
+                            top : "auto",
+                            bottom: "-4px",
+                            right: "-4px",
+                            backgroundColor: "none",
+                            color : "#111",
+                            position: "relative",
+                            bottom: "-8px",
+                            fontSize: "18px",
+                            width : "auto",
+                            color : "#f6d06b"
+                        }}
+                        onClick={this.onClickMenu.bind(this,'yellow')}
+                        >
+                        <img style={{ width: "40px", height: "40px"}} src={D3} />
+                    </Badge>
+                  </Tooltip>
+                  <Tooltip title="当日所有报警总数">
+                    <Badge
+                        badgeContent={`${count_all}`}
+                        className="Badge"
+                        secondary={true}
+                        style={{
+                            padding:"0",width:"36px",height:"36px",display: "flex",marginRight: "10px"}}
+                        badgeStyle={{
+                            top: "-4px", right: "-4px",
+                            backgroundColor : "#FFF",
+                            color : "#C00",
+                            border : "2px solid #C00",
+                            width : "28px",
+                            height : "28px",
+                            lineHeight : "28px",
+                            fontSize : "11px"
+                        }}
+                        onClick={this.onClickMenu.bind(this,'all')}
+                        >
+                        <i className="fa fa-envelope-o" aria-hidden="true" style={iconstyle1} />
+                      </Badge>
+                    </Tooltip>
 
                     <UserMenu />
 
