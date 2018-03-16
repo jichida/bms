@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Async } from 'react-select';
 import { Field } from 'redux-form';
-import 'react-select/dist/react-select.css';
+import './react-select.css';
 
 
 const renderSelect = ({ meta: { touched, error } = {}, input: { ...inputProps }, ...props }) =>{
