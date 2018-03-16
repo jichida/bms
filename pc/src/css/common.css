@@ -1322,7 +1322,7 @@
 }
 .prompt{
     position: fixed;
-    z-index: 2000;
+    z-index: 50000;
     width: 260px;
     border-radius: 10px;
     background: #FFF;
