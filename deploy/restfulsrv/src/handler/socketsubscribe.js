@@ -45,7 +45,7 @@ const usersubfn  = (socket,ctx)=>{
 
       const topicsz = msg.split('.');
 
-      if(_.startsWith(msg,config.kafka_pushalaramtopic) && topicsz.length === 3){
+      if(_.startsWith(msg,config.pushalaramtopic) && topicsz.length === 3){
           const DeviceId = topicsz[2];
           pushusermessage(socket,ctx,DeviceId,data);
       }

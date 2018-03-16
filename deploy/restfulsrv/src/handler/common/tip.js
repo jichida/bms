@@ -27,7 +27,7 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
               SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',SettingOfflineMinutes);
            }
            const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
-           console.log(`curtimebefore:${curtimebefore}`);
+          //  console.log(`curtimebefore:${curtimebefore}`);
            let query = {
              'LastHistoryTrack.Latitude': {$ne:0},
              'LastHistoryTrack.GPSTime': {$gt: curtimebefore,$exists:true}

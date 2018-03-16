@@ -5,6 +5,7 @@ const winston = require('../../log/log.js');
 const _ = require('lodash');
 const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
+const debug = require('debug')('srvapp:alarm');
 
 const getalarmfieldtotxt = (alarmfield)=>{
     const mapdict = config.mapdict;
@@ -250,14 +251,12 @@ exports.uireport_searchalarmdetail =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    console.log(`uireport_searchalarmdetail start--->${moment().format('HH:mm:ss')}`);
+    debug(`uireport_searchalarmdetail start--->`);
     actiondata.options = actiondata.options || {};
     actiondata.options.lean = true;
     realtimealarmrawModel.paginate(query,actiondata.options,(err,result)=>{
-      console.log(`uireport_searchalarmdetail end--->${moment().format('HH:mm:ss')}`);
+      debug(`uireport_searchalarmdetail end--->`);
       if(!err){
-        console.log(`----->realtimealarmrawModel`);
-        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(bridge_alarmrawinfo(record));

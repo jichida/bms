@@ -6,7 +6,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const utilposition = require('../common/util_position');
 const getdevicesids = require('../getdevicesids');
-
+const debug = require('debug')('srvapp:position');
 
 const getpoint = (v)=>{
   return [v.Longitude,v.Latitude];
@@ -20,18 +20,18 @@ exports.uireport_searchposition =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    console.log(`uireport_searchposition start--->${moment().format('HH:mm:ss')}`);
+    debug(`uireport_searchposition start--->${moment().format('HH:mm:ss')}`);
     actiondata.options = actiondata.options || {};
     actiondata.options.lean = true;
     historytrackModel.paginate(query,actiondata.options,(err,result)=>{
-      console.log(`uireport_searchposition end--->${moment().format('HH:mm:ss')}`);
+      debug(`uireport_searchposition end--->${moment().format('HH:mm:ss')}`);
       if(!err){
         // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(record);
         });
-        console.log(`----->utilposition.getlist_pos`);
+
         utilposition.getlist_pos(docs,getpoint,(err,newdocs)=>{
           result.docs = newdocs;
           callback({
@@ -62,10 +62,10 @@ exports.exportposition = (actiondata,ctx,callback)=>{
       if(!query.DeviceId && !isall){
         query.DeviceId = {'$in':deviceIds};
       }
-      console.log(`----->historytrackModel query-->${JSON.stringify(query)}`);
+      debug(`----->historytrackModel query-->${JSON.stringify(query)}`);
       const queryexec = historytrackModel.find(query).select(fields).lean();
       queryexec.exec((err,list)=>{
-        console.log(`----->historytrackModel find`);
+        debug(`----->historytrackModel find`);
         if(!err){
           if(list.length > 0){
             callback({

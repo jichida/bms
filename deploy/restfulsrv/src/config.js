@@ -22,6 +22,7 @@ const config =  {
   loginuserexptime_app:60*60*24*30,//用户登录有效期,30天
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mapdict:{},
+  pushalaramtopic:'pushalarm',
   defaultmappopclusterfields:[
     'TotalWorkCycle','ChargeACVoltage','BAT_I_HVS',
   ],

@@ -5,6 +5,8 @@ const winston = require('../../log/log.js');
 const _ = require('lodash');
 const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
+const debug = require('debug')('srvapp:historydevice');
+
 const get = _.get;
 
 exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
@@ -16,11 +18,11 @@ exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
       query.DeviceId = {'$in':deviceIds};
     }
     // console.log(query);
-    console.log(`uireport_searchhistorydevice start--->${moment().format('HH:mm:ss')}`);
+    debug(`uireport_searchhistorydevice start--->`);
     actiondata.options = actiondata.options || {};
     actiondata.options.lean = true;
     historydeviceModel.paginate(query,actiondata.options,(err,result)=>{
-      console.log(`uireport_searchhistorydevice end--->${moment().format('HH:mm:ss')}`);
+      debug(`uireport_searchhistorydevice end--->`);
       if(!err){
         // result = JSON.parse(JSON.stringify(result));
         let docs = [];
@@ -178,7 +180,7 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
           temperature,
           soc,
         },listret);
-        console.log(resultnew);
+
         callback({
           cmd:'deviceinfoquerychart_result',
           payload:{

@@ -8,6 +8,7 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
+const debug = require('debug')('srvapp:userlogin');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -25,10 +26,10 @@ const subscriberuser = (user,ctx)=>{
 
   const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
   _.map(subscriberdeviceids,(DeviceId)=>{
-    PubSub.subscribe(`${config.kafka_pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
+    PubSub.subscribe(`${config.pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
   });
 
-  console.log(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
+  debug(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
 }
 
 let getdatafromuser =(user)=>{
@@ -86,8 +87,6 @@ exports.savealarmsettings = (actiondata,ctx,callback)=>{
   const alarmsettings = actiondata;
   const userModel = DBModels.UserModel;
   userModel.findByIdAndUpdate(ctx.userid,{$set:{alarmsettings}},{new: true}).lean().exec((err,usernew)=>{
-    console.log(err);
-    console.log(usernew);
     if(!err && !!usernew){
         callback({
           cmd:'savealarmsettings_result',
