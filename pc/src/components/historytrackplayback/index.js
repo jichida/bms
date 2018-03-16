@@ -3,15 +3,15 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
+// import AppBar from 'material-ui/AppBar';
+// import RaisedButton from 'material-ui/RaisedButton';
+// import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Day from 'material-ui/svg-icons/action/date-range';
-import Time from 'material-ui/svg-icons/device/access-time';
-import IconButton from 'material-ui/IconButton';
-import {grey900} from 'material-ui/styles/colors';
-import DatePicker from 'material-ui/DatePicker';
-import TimePicker from 'material-ui/TimePicker';
+// import Time from 'material-ui/svg-icons/device/access-time';
+// import IconButton from 'material-ui/IconButton';
+// import {grey900} from 'material-ui/styles/colors';
+// import DatePicker from 'material-ui/DatePicker';
+// import TimePicker from 'material-ui/TimePicker';
 import Map from './map';
 import "./map.css";
 import Seltime from '../search/seltime.js';
@@ -28,41 +28,26 @@ const Option = Select.Option;
 moment.locale('zh-cn');
 
 let resizetimecontent = null;
-
-class Setspeed extends React.Component {
-    handleChange=(value)=>{
-      //console.log(value);
-    }
-    render() {
-      return (
-        <div className="Setspeed">
-          <span>播放速度: </span>
-          <Select labelInValue defaultValue={{ key: '50' }} style={{ width: 40 }} onChange={this.handleChange}>
-            <Option value="5">5</Option>
-            <Option value="10">10</Option>
-            <Option value="15">15</Option>
-            <Option value="20">20</Option>
-            <Option value="25">25</Option>
-            <Option value="30">30</Option>
-            <Option value="35">35</Option>
-            <Option value="40">40</Option>
-            <Option value="45">45</Option>
-            <Option value="50">50</Option>
-            <Option value="55">55</Option>
-            <Option value="60">60</Option>
-            <Option value="65">65</Option>
-            <Option value="70">70</Option>
-            <Option value="75">75</Option>
-            <Option value="80">80</Option>
-            <Option value="85">85</Option>
-            <Option value="90">90</Option>
-            <Option value="95">95</Option>
-            <Option value="100">100</Option>
-          </Select>
-        </div>
-      )
-    }
-}
+//
+// class Setspeed extends React.Component {
+//     handleChange=(value)=>{
+//       //console.log(value);
+//     }
+//     render() {
+//       let speedoptions = [];
+//       for(let i = 10 ;i <= 200 ; i+=10){
+//         speedoptions.push(<Option key={i} value={i+''}>{i}公里／小时</Option>);
+//       }
+//       return (
+//         <div className="Setspeed">
+//           <span>播放速度: </span>
+//           <Select labelInValue defaultValue={{ key: '50' }} style={{ width: 40 }} onChange={this.handleChange}>
+//             {speedoptions}
+//           </Select>
+//         </div>
+//       )
+//     }
+// }
 
 const fGetCurrentWeek=function(m){
         let sWeek=m.format('dddd');
@@ -173,10 +158,14 @@ class Page extends React.Component {
         const startdate_moment = this.state.startDate;
         const enddate_moment = this.state.endDate;
 
+        let speedoptions = [];
+        for(let i = 10 ;i <= 200 ; i+=10){
+          speedoptions.push(<Option key={i+''} value={i+''}>{i}公里／小时</Option>);
+        }
         return (
             <div className="historytrackplayback" id="historytrackplayback" style={{height: this.state.innerHeight+"px"}} >
                 <div className="appbar" style={{height: "72px"}}>
-                    
+
                     <div className="deviceinfo">
 
                         <span>车辆信息</span>
@@ -214,27 +203,8 @@ class Page extends React.Component {
 
                         <div className="Setspeed">
                           <span>播放速度: </span>
-                          <Select className="bfsd" labelInValue defaultValue={{ key: '60' }} style={{ width: 70 }} onChange={this.handleChange}>
-                            <Option value="5">5</Option>
-                            <Option value="10">10</Option>
-                            <Option value="15">15</Option>
-                            <Option value="20">20</Option>
-                            <Option value="25">25</Option>
-                            <Option value="30">30</Option>
-                            <Option value="35">35</Option>
-                            <Option value="40">40</Option>
-                            <Option value="45">45</Option>
-                            <Option value="50">50</Option>
-                            <Option value="55">55</Option>
-                            <Option value="60">60</Option>
-                            <Option value="65">65</Option>
-                            <Option value="70">70</Option>
-                            <Option value="75">75</Option>
-                            <Option value="80">80</Option>
-                            <Option value="85">85</Option>
-                            <Option value="90">90</Option>
-                            <Option value="95">95</Option>
-                            <Option value="100">100</Option>
+                          <Select className="bfsd" labelInValue defaultValue={{ key: '60' }} style={{ width: 270 }} onChange={this.handleChange}>
+                            {speedoptions}
                           </Select>
                         </div>
                     </div>
