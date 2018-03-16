@@ -26,7 +26,7 @@ class TablePosition extends React.Component {
         super(props);
         let query = {};
         query['GPSTime'] = {
-          $gte:  moment().format('YYYY-MM-DD HH:mm:00'),
+          $gte:  moment().format('YYYY-MM-DD HH:00:00'),
           $lte:  moment().format('YYYY-MM-DD HH:mm:ss'),
         };
         let DeviceId =  this.props.match.params.deviceid;
