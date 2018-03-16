@@ -3,14 +3,14 @@ import {delay} from 'redux-saga';
 import {
   common_err,
   searchbatterylocal_request,
-  searchbatterylocal_result,
+  // searchbatterylocal_result,
   md_mapmain_setzoomlevel,
   mapmain_setzoomlevel,
   mapmain_setmapcenter,
   map_setmapinited,
   carmapshow_createmap,
   carmapshow_destorymap,
-  mapmain_setenableddrawmapflag,
+  // mapmain_setenableddrawmapflag,
   querydevice_result,
   ui_selcurdevice_request,
   ui_selcurdevice_result,
@@ -18,11 +18,11 @@ import {
   querydeviceinfo_result,
   querydeviceinfo_list_request,
   querydeviceinfo_list_result,
-  ui_showmenu,
+  // ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
   mapmain_seldistrict,
-  mapmain_seldistrict_init,
+  // mapmain_seldistrict_init,
   mapmain_getdistrictresult,
   mapmain_init_device,
   ui_settreefilter,
@@ -30,15 +30,15 @@ import {
   serverpush_devicegeo,
   serverpush_devicegeo_sz,
   devicelistgeochange_distcluster,
-  devicelistgeochange_pointsimplifierins,
+  // devicelistgeochange_pointsimplifierins,
   devicelistgeochange_geotreemenu,
   devicelistgeochange_geotreemenu_refreshtree,
-  mapmain_areamountdevices_request,
+  // mapmain_areamountdevices_request,
   mapmain_areamountdevices_result,
 
   searchbattery_result,
   ui_searchbattery_result,
-  ui_mycar_showtype,
+  // ui_mycar_showtype,
   ui_alarm_selcurdevice,
   ui_mycar_selcurdevice,
   ui_index_selstatus,
@@ -52,24 +52,24 @@ import {
 
   ui_viewdevicedetail
 } from '../actions';
-import async from 'async';
+// import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
 import {getcurrentpos} from './getcurrentpos';
 import { push,replace } from 'react-router-redux';
 import L from 'leaflet';
 import lodashmap from 'lodash.map';
-import find from 'lodash.find';
-import sampleSize from 'lodash.samplesize';
+// import find from 'lodash.find';
+// import sampleSize from 'lodash.samplesize';
 import get from 'lodash.get';
 import includes from 'lodash.includes';
 import filter from 'lodash.filter';
-import moment from 'moment';
-import coordtransform from 'coordtransform';
+// import moment from 'moment';
+// import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
 import {getpopinfowindowstyle,getlistpopinfowindowstyle,getimageicon} from './getmapstyle';
-import jsondataareas from '../util/areas.json';
-import jsondataprovinces from '../util/provinces.json';
-import jsondatacities from '../util/cities.json';
+// import jsondataareas from '../util/areas.json';
+// import jsondataprovinces from '../util/provinces.json';
+// import jsondatacities from '../util/cities.json';
 import config from '../config.js';
 import store from '../env/store';
 import {getdevicelist,getdeviceinfo} from './datapiple';
@@ -80,46 +80,13 @@ const maxzoom = config.softmode === 'pc'?18:19;
 let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,markCluster;
-let groupStyleMap = {};
+// let groupStyleMap = {};
 
 //=====数据部分=====
 let g_devicesdb = {};
 let gmap_acode_treecount = {};
 let gmap_acode_devices = {};
-let getmapzoollevel = (nowzoomlevel,oldzoomlevel)=>{
-  //console.log(`当前:${nowzoomlevel},上次:${oldzoomlevel}`);
-  return nowzoomlevel;
-  // if(nowzoomlevel >= oldzoomlevel){
-  //   //放大
-  //   if(nowzoomlevel <= 3){
-  //     return 3;
-  //   }
-  //   if(nowzoomlevel <= 7){
-  //     return 7;
-  //   }
-  //   if(nowzoomlevel <= 11){
-  //     return 11;
-  //   }
-  //   if(nowzoomlevel <= 17){
-  //     return nowzoomlevel;
-  //   }
-  // }
-  // //缩小
-  // if(nowzoomlevel >= 17){
-  //   return 17;
-  // }
-  // if(nowzoomlevel >= 11){
-  //   return nowzoomlevel;
-  // }
-  // if(nowzoomlevel >= 7){
-  //   return 7;
-  // }
-  // if(nowzoomlevel >= 3){
-  //   return 3;
-  // }
-  //
-  // return 3;
-}
+
 
 //新建聚合点
 const CreateMapUI_MarkCluster = (map)=>{
@@ -347,7 +314,7 @@ let CreateMap =({mapcenterlocation,zoomlevel})=> {
             dragEnable:true,
             zoomEnable:true,
             touchZoom:true,
-            mapStyle: 'amap://styles/macaron'//样式URL
+            // mapStyle: 'amap://styles/macaron'//样式URL
         });
         // http://lbs.amap.com/api/javascript-api/example/personalized-map/set-theme-style
         // http://lbs.amap.com/api/javascript-api/guide/create-map/mapstye/
