@@ -41,12 +41,11 @@ const usersubfn  = (socket,ctx)=>{
   ctx.userDeviceSubscriber = ( msg, data )=>{
       debug('->用户订阅请求,用户信息:'+JSON.stringify(ctx));
       debug('->用户订阅消息:'+msg);
-      debug('->用户订阅数据:'+data);
 
       const topicsz = msg.split('.');
 
-      if(_.startsWith(msg,config.pushalaramtopic) && topicsz.length === 3){
-          const DeviceId = topicsz[2];
+      if(_.startsWith(msg,config.pushalaramtopic) && topicsz.length === 2){
+          const DeviceId = topicsz[1];
           pushusermessage(socket,ctx,DeviceId,data);
       }
 
