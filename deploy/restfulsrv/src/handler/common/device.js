@@ -61,10 +61,13 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
     if(!query._id && !isall){
       query._id = {'$in':devicegroupIds};
     }
+    if(!query.systemflag){
+      query.systemflag = 0;
+    }
 
     let queryexec = devicegroupModel.find(query).populate([
         {path:'deviceids', select:devicesfields, model: 'device'},
-    ]).exec((err,list)=>{
+    ]).lean().exec((err,list)=>{
       if(!err){
         if(list.length > 0){
           //console.log(`-->${JSON.stringify(list[0])}`);
@@ -100,7 +103,7 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    let queryexec = deviceModel.find(query).select(fields);
+    let queryexec = deviceModel.find(query).select(fields).lean();
     queryexec.exec((err,list)=>{
       if(!err){
         if(list.length > 0){
@@ -126,7 +129,7 @@ exports.querydeviceinfo =  (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   let fields = actiondata.fields || {};
   //console.log(`fields-->${JSON.stringify(fields)}`);
-  let queryexec = deviceModel.findOne(query).select(fields);
+  let queryexec = deviceModel.findOne(query).select(fields).lean();
   queryexec.exec((err,result)=>{
     if(!err && !!result){
       callback({
@@ -146,7 +149,7 @@ exports.querydeviceinfo =  (actiondata,ctx,callback)=>{
 exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
   let deviceModel = DBModels.DeviceModel;
   let query = actiondata.query || {};
-  let queryexec = deviceModel.find(query);
+  let queryexec = deviceModel.find(query).lean();
   queryexec.exec((err,list)=>{
     if(!err){
       if(list.length > 0){
