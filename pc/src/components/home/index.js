@@ -134,7 +134,7 @@ class Page extends React.Component {
                         />
                     </div>
 
-                    <div className="bodycontainer" style={{height: `${this.state.innerHeight-64}px`, overflow: "hidden"}}>
+                    <div className="bodycontainer" style={{height: `${this.state.innerHeight-64}px`}}>
 
                         <Drawer
                             open={showmenu==="addressbox" || true}
