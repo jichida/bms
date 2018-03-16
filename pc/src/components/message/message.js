@@ -30,8 +30,8 @@ class MessageAllDevice extends React.Component {
         let warninglevel = props.match.params.warninglevel || "-1";
         let queryalarm = {};
         queryalarm['DataTime'] = {
-          $gte: moment(moment().format('YYYY-MM-DD 00:00:00')),
-          $lte: moment(moment().format('YYYY-MM-DD 23:59:59')),
+          $gte: moment().format('YYYY-MM-DD 00:00:00'),
+          $lte:moment().format('YYYY-MM-DD 23:59:59'),
         };
         if(warninglevel === '0'){
           queryalarm['warninglevel'] = '高';

@@ -2,14 +2,14 @@ const winston = require('../log/log.js');
 const _ =  require('lodash');
 const config = require('../config.js');
 const realtimealarm = require('./common/realtimealarm');
-// const smspush = require('../smspush/push');
+const debug = require('debug')('srvapp:pcpush');
 
 
 const pushusermessage = (socket,ctx,DeviceId,data)=>{
-  console.log(`开始推送了,注意啊----->${JSON.stringify(data)}`);
+  debug(`开始推送了,注意啊----->${JSON.stringify(data)}`);
 
   let recordnew = realtimealarm.bridge_alarminfo(data);
-  console.log(`recordnew===>${JSON.stringify(recordnew)}`);
+  debug(`recordnew===>${JSON.stringify(recordnew)}`);
   // {"key":"5a1bfa0f46a68b00019fd34b","车辆ID":"1639101505","报警时间":"2017-11-17 22:20:42","报警信息":"故障代码 179次|"}
   socket.emit('serverpush_alarm',recordnew);
 
@@ -39,9 +39,9 @@ const pushusermessage = (socket,ctx,DeviceId,data)=>{
 
 const usersubfn  = (socket,ctx)=>{
   ctx.userDeviceSubscriber = ( msg, data )=>{
-      winston.getlog().info('r-->用户订阅请求,用户信息:'+JSON.stringify(ctx));
-      winston.getlog().info('r-->用户订阅消息:'+msg);
-      winston.getlog().info('r-->用户订阅数据:'+data);
+      debug('->用户订阅请求,用户信息:'+JSON.stringify(ctx));
+      debug('->用户订阅消息:'+msg);
+      debug('->用户订阅数据:'+data);
 
       const topicsz = msg.split('.');
 

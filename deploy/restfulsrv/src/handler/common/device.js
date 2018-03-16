@@ -6,6 +6,7 @@ const coordtransform = require('coordtransform');
 const _ = require('lodash');
 const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
+const debug = require('debug')('srvapp:device');
 //
 // const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
 //
@@ -106,9 +107,7 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     let queryexec = deviceModel.find(query).select(fields).lean();
     queryexec.exec((err,list)=>{
       if(!err){
-        if(list.length > 0){
-          //console.log(`-->${JSON.stringify(list[0])}`);
-        }
+        debug(`device count:${list.length}`);
         callback({
           cmd:'querydevice_result',
           payload:{list}
@@ -152,9 +151,7 @@ exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
   let queryexec = deviceModel.find(query).lean();
   queryexec.exec((err,list)=>{
     if(!err){
-      if(list.length > 0){
-        //console.log(`-->${JSON.stringify(list[0])}`);
-      }
+
       callback({
         cmd:'querydeviceinfo_list_result',
         payload:{list}

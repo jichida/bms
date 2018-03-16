@@ -908,15 +908,16 @@ export function* createmapmainflow(){
           }
           //批量转换一次
           g_devicesdb = {};//清空，重新初始化
+          // console.log(`clear g_devicesdb...restart g_devicesdb...`)
           let devicelistresult = yield call(getgeodatabatch,devicelist);
           const data = [];
           lodashmap(devicelistresult,(deviceitem)=>{
             if(!!deviceitem.locz){
               data.push(deviceitem);
-              g_devicesdb[deviceitem.DeviceId] = deviceitem;
             }
+            g_devicesdb[deviceitem.DeviceId] = deviceitem;
           });
-
+          // console.log(`clear g_devicesdb...restart g_devicesdb...${data.length}`)
           distCluster.setData(data);
           // pointSimplifierIns.setData(data);
 

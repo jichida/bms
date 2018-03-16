@@ -21,15 +21,17 @@ let userloginsuccess =(user,callback)=>{
 };
 
 const subscriberuser = (user,ctx)=>{
-  //设置订阅设备消息
-  PubSub.unsubscribe( ctx.userDeviceSubscriber );
+    if(ctx.usertype === 'pc'){
+      //设置订阅设备消息
+      PubSub.unsubscribe( ctx.userDeviceSubscriber );
 
-  const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
-  _.map(subscriberdeviceids,(DeviceId)=>{
-    PubSub.subscribe(`${config.pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
-  });
+      const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
+      _.map(subscriberdeviceids,(DeviceId)=>{
+        PubSub.subscribe(`${config.pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
+      });
 
-  debug(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
+      debug(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
+    }
 }
 
 let getdatafromuser =(user)=>{
