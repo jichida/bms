@@ -267,6 +267,10 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                  map: map, //所属的地图实例
                  autoSetFitView:false,
                  getPosition: (deviceitem)=> {
+                     if(!!deviceitem.locz){
+                       return deviceitem.locz;
+                     }
+                     console.log(`err----->=====>======>${JSON.stringify(deviceitem)}`);
                      return deviceitem.locz;
                  },
                  renderOptions:{
@@ -1176,8 +1180,10 @@ export function* createmapmainflow(){
       try{
         if(!!distCluster){
           let data = [];
-          lodashmap(g_devicesdb,(item)=>{
-            data.push(item);
+          lodashmap(g_devicesdb,(deviceitem)=>{
+            if(!!deviceitem.locz){
+              data.push(deviceitem);
+            }
           });
           distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
         }

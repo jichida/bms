@@ -29,8 +29,10 @@ const checkAlarm = (lasttime,callbackfn)=>{
   const CurDay =
   realtimealarmModel.find({
     UpdateTime:{
-      $gte:lasttime,
-      warninglevel:{$in:['高','中','低']}
+      $gte:lasttime
+    },
+    warninglevel:{
+      $in:['高','中','低']
     }
   }).sort({UpdateTime:1}).lean().exec(callbackfn);
 }
@@ -40,7 +42,7 @@ const intervalCheckAlarm =()=>{
 
   setInterval(()=>{
     checkAlarm(lasttime,(err,result)=>{
-      if(!err && result){
+      if(!err && !!result){
         _.map(result,(alarm)=>{
           lasttime = alarm.UpdateTime;
           PubSub.publish(`${config.pushalaramtopic}.${alarm.DeviceId}`,alarm);
