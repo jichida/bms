@@ -101,6 +101,40 @@ export function get_initgeotree(){
     datatree.children.push(provicenode);
   });
 
-
-  return {datatree,gmap_acode_treename,gmap_acode_treecount};
+  let datatreeall =  {
+      id:1,
+      adcode:1,
+      loading: false,
+      active : false,
+      toggled:true,
+      usefixedname:true,
+      name:'所有',
+      children:[
+        datatree,
+        {
+          id:2,
+          adcode:2,
+          loading: false,
+          active : false,
+          toggled:false,
+          name:'未定位',
+          type:'group_area',
+          usefixedname:true,
+          children:[]
+        }
+      ]
+  };
+  gmap_acode_treename[1] = '所有';
+  gmap_acode_treename[2] = '未定位';
+  gmap_acode_treecount[1] = {
+    count_total:0,
+    count_online:0,
+    count_offline:0,
+  };
+  gmap_acode_treecount[2] = {
+    count_total:0,
+    count_online:0,
+    count_offline:0,
+  };
+  return {datatree:datatreeall,gmap_acode_treename,gmap_acode_treecount};
 };

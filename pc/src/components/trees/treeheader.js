@@ -19,7 +19,12 @@ const HeaderCo = (props) => {
         if(count_total > 0){
           const count_online = get(props.gmap_acode_treecount[props.node.adcode],'count_online',0);
           const count_offline = get(props.gmap_acode_treecount[props.node.adcode],'count_offline',0);
-          title = `${name}(${count_online}/${count_total})`;
+          if(props.node.adcode === 1 || props.node.adcode === 2){
+            title = `${name}(${count_total})`;
+          }
+          else{
+            title = `${name}(${count_online}/${count_total})`;
+          }
         }
       }
     }

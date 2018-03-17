@@ -928,10 +928,26 @@ export function* createmapmainflow(){
           //初始化清空
           gmap_acode_devices={};
           gmap_acode_treecount={};
+
+
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
           });
           const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
+          gmap_acode_treecount[1] = {//所有
+            count_total:devicelistresult.length,
+          };
+          const datanolocate = [];
+          lodashmap(g_devicesdb,(deviceitem)=>{
+            if(!deviceitem.locz){
+              datanolocate.push(deviceitem.DeviceId);
+            }
+          });
+          gmap_acode_devices[2] = datanolocate;
+          gmap_acode_treecount[2] = {
+            count_total:datanolocate.length
+          }
+
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
           if(window.amapmain.getZoom() > 12){
@@ -1031,7 +1047,7 @@ export function* createmapmainflow(){
     yield takeLatest(`${mapmain_seldistrict}`, function*(action_district) {
         let {payload:{adcodetop,forcetoggled}} = action_district;
         try{
-          if(!!adcodetop){
+          if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
@@ -1066,8 +1082,20 @@ export function* createmapmainflow(){
                 distCluster.zoomToShowSubFeatures(adcodetop,result.center);
               }
             }
-
-
+          }
+          else if(adcodetop===2){
+            // 未定位车辆特殊处理
+            const data = [];
+            lodashmap(g_devicesdb,(deviceitem)=>{
+              if(!deviceitem.locz){
+                data.push(deviceitem);
+              }
+            });
+            gmap_acode_devices[2] = data;
+            gmap_acode_treecount[2] = {
+              count_total:data.length
+            }
+            yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
           }
         }
         catch(e){
@@ -1274,6 +1302,8 @@ export function* createmapmainflow(){
             yield put(mapmain_areamountdevices_result({adcode:curareaid,gmap_acode_devices,g_devicesdb}));
           }
           //刷新树中数据
+          //《----未定位的数据个数也要刷
+
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
           //
