@@ -46,7 +46,7 @@ class Tree extends React.Component {
                 const deviceitem = g_devicesdb[id];
                 const iconname = getimageicon(deviceitem,SettingOfflineMinutes);
                 return <div key={key} onClick={this.onclick.bind(this, id)}>
-                  <img src={iconname} style={{width: "20px",marginRight: "5px", marginTop : "5px"}} />
+                  <img src={iconname} style={{width: "20px",marginRight: "5px",marginLeft: "20px"}} />
                   <span>{id}</span>
                 </div>
               })

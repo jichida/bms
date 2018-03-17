@@ -7,36 +7,36 @@ import { Select } from 'antd';
 const Option = Select.Option;
 
 class SelectDevice extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-        options: []
-      }
-  }
-
-  componentWillMount(){
-  }
-
-  onChange = (value) => {
-    this.getdata(value);
-  }
-
-  getdata =(value)=>{
-
-    let options=[];
-    let optionsarr=[];
-    let {deviceidlist} = this.props;
-
-    if (!!deviceidlist) {
-      optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!=-1; })
-      if(optionsarr.length>100){optionsarr.length=100}
-      options = map(optionsarr,(deviceid,index)=>{
-        return <Option key={deviceid}>{deviceid}</Option>;
-      });
+    constructor(props) {
+        super(props);
+        this.state = {
+            options: []
+        }
     }
-    this.setState({ options });
-    this.props.onSelDeviceid(value);
-  }
+
+    componentWillMount(){
+        
+    }
+
+    onChange = (value) => {
+        this.getdata(value);
+    }
+
+    getdata =(value)=>{
+        let options=[];
+        let optionsarr=[];
+        let {deviceidlist} = this.props;
+
+        if (!!deviceidlist) {
+            optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!=-1; })
+            if(optionsarr.length>100){optionsarr.length=100}
+            options = map(optionsarr,(deviceid,index)=>{
+                return <Option key={deviceid}>{deviceid}</Option>;
+            });
+        }
+        this.setState({ options });
+        this.props.onSelDeviceid(value);
+    }
 
   render() {
     
