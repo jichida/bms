@@ -8,6 +8,7 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
+const debug = require('debug')('srvapp:userlogin');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -20,15 +21,17 @@ let userloginsuccess =(user,callback)=>{
 };
 
 const subscriberuser = (user,ctx)=>{
-  //设置订阅设备消息
-  PubSub.unsubscribe( ctx.userDeviceSubscriber );
+    if(ctx.usertype === 'pc'){
+      //设置订阅设备消息
+      PubSub.unsubscribe( ctx.userDeviceSubscriber );
 
-  const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
-  _.map(subscriberdeviceids,(DeviceId)=>{
-    PubSub.subscribe(`${config.kafka_pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
-  });
+      const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
+      _.map(subscriberdeviceids,(DeviceId)=>{
+        PubSub.subscribe(`${config.pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
+      });
 
-  console.log(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
+      debug(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
+    }
 }
 
 let getdatafromuser =(user)=>{
@@ -85,9 +88,7 @@ let setloginsuccess = (ctx,user,callback)=>{
 exports.savealarmsettings = (actiondata,ctx,callback)=>{
   const alarmsettings = actiondata;
   const userModel = DBModels.UserModel;
-  userModel.findByIdAndUpdate(ctx.userid,{$set:{alarmsettings}},{new: true},(err,usernew)=>{
-    console.log(err);
-    console.log(usernew);
+  userModel.findByIdAndUpdate(ctx.userid,{$set:{alarmsettings}},{new: true}).lean().exec((err,usernew)=>{
     if(!err && !!usernew){
         callback({
           cmd:'savealarmsettings_result',
@@ -118,7 +119,7 @@ exports.loginuser = (actiondata,ctx,callback)=>{
           path:'permissions', select:'_id name', model: 'permission'
         },
       ]
-    }]).exec((err, user)=> {
+    }]).lean().exec((err, user)=> {
     if (!!err) {
       callback({
         cmd:'common_err',
@@ -172,7 +173,7 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
       //console.log("decode user===>" + JSON.stringify(decodeduser));
       let userid = decodeduser._id;
       let userModel = DBModels.UserModel;
-      userModel.findByIdAndUpdate(userid,{updated_at:moment().format('YYYY-MM-DD HH:mm:ss')},{new: true},(err,result)=>{
+      userModel.findByIdAndUpdate(userid,{updated_at:moment().format('YYYY-MM-DD HH:mm:ss')},{new: true}).lean().exec((err,result)=>{
         if(!err && !!result){
           setloginsuccess(ctx,result,callback);
         }
@@ -210,7 +211,7 @@ exports.logout = (actiondata,ctx,callback)=>{
 exports.changepwd = (actiondata,ctx,callback)=>{
 
   const dbModel = DBModels.UserModel;
-  dbModel.findOne({ username: ctx.username }, (err, user)=> {
+  dbModel.findOne({ username: ctx.username }).lean().exec((err, user)=> {
     if (!!err) {
       callback({
         cmd:'common_err',
@@ -235,7 +236,7 @@ exports.changepwd = (actiondata,ctx,callback)=>{
                 passwordsalt:salt
               };
               //<------开始更新密码
-              dbModel.findByIdAndUpdate(user._id,{$set:newUser},{new: true},(err,result)=>{
+              dbModel.findByIdAndUpdate(user._id,{$set:newUser},{new: true}).lean().exec((err,result)=>{
                 if(!err && !!result){
                   callback({
                     cmd:'changepwd_result',

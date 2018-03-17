@@ -17,14 +17,14 @@ const getdevicesids = (userid,callbackfn)=>{
           path:'deviceids', select:'_id DeviceId', model: 'device'
         },
       ]
-    }]).exec((err, user)=> {
+    }]).lean().exec((err, user)=> {
       // //console.log(JSON.stringify(user));
       let deviceIds = [];
       let devicegroupIds = [];
       let adminflag = 0;
       let isall = false;
       if(!err && !!user){
-        user = user.toJSON();
+        // user = user.toJSON();
         adminflag = _.get(user,'adminflag',0);
         if(adminflag === 1){
           isall = true;

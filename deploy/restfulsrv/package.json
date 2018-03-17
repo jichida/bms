@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "KAFKA_HOST=118.31.41.232:2181 MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmsp node index"
+    "start": "
+    DEBUG=srvapp:*  logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmsp node index
+    "
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +25,6 @@
     "jquery-file-upload-middleware": "^0.1.8",
     "json2xls": "^0.1.2",
     "jsonwebtoken": "^7.4.1",
-    "kafka-node": "^2.3.1",
     "lodash": "^4.17.4",
     "lodash.map": "^4.6.0",
     "moment": "^2.18.1",

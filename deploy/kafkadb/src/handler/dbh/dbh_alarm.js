@@ -4,12 +4,21 @@ const debug_alarm = require('debug')('dbh:alarm');
 const async = require('async');
 const getalarmandpushapp = require('../getalarmandpushapp');
 
-const dbh_alarm =(datas,callbackfn)=>{
-  if(datas.length === 0){
+const dbh_alarm =(datasin,callbackfn)=>{
+  if(datasin.length === 0){
     debug_alarm(`dbh_alarm data is empty`);
     callbackfn(null,true);
     return;
   }
+  //去重
+  const datas = _.uniqBy(datasin, (o)=>{
+    return `${o.DeviceId}_${o.DataTime}`;
+  });
+
+  if(datas.length < datasin.length){
+    debug_alarm(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
+  //
   const dbModel = DBModels.RealtimeAlarmModel;
   debug_alarm(`start dbh_alarm,datas:${datas.length}`);
   const asyncfnsz = [];

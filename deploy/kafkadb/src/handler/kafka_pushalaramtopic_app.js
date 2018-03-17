@@ -43,7 +43,7 @@ const kafka_pushalaramtopic_app = (devicedata,callbackfn)=>{
         messagecontent:`车辆:${recordnew['车辆ID']}于${recordnew['报警时间']}报警,报警信息:${recordnew['报警信息']}`
       };
       winston.getlog().info(`开始推送消息:${JSON.stringify(messagenotify)}`);
-      debug(`发送给用户${userid}=>${JSON.stringify(messagenotify)}`);
+      // debug(`发送给用户${userid}=>${JSON.stringify(messagenotify)}`);
       smspush.sendnotifymessage(messagenotify,(err,result)=>{
         // winston.getlog().info(`推送消息结束:${JSON.stringify(err)},result:${JSON.stringify(result)}`);
         if(!err){

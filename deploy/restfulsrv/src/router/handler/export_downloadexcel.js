@@ -62,7 +62,7 @@ const export_downloadexcel = ({req,res,dbModel,fields,csvfields,fn_convert,name}
   const dbExportModel = DBModels.ExportTokenModel;
   dbExportModel.findOneAndUpdate({tokenid}, {$set:{
     tokenid:uuid.v4()
-  }},{new: true},(err,tokenobj)=>{
+  }},{new: true}).lean().exec((err,tokenobj)=>{
     if(!err && !!tokenobj){
       try{
         query = JSON.parse(tokenobj.queryobjstring);

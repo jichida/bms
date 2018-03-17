@@ -3,12 +3,22 @@ const _ = require('lodash');
 const debug_device = require('debug')('dbh:device');
 const async = require('async');
 
-const dbh_device =(datas,callbackfn)=>{
-  if(datas.length === 0){
+const dbh_device =(datasin,callbackfn)=>{
+  if(datasin.length === 0){
     debug_device(`dbh_device data is empty`);
     callbackfn(null,true);
     return;
   }
+  const datas = _.uniqBy(datasin, (o)=>{
+    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+    return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  });
+
+  if(datas.length < datasin.length){
+    debug_device(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
+
   const dbModel = DBModels.DeviceModel;
   // debug_device(`start dbh_device,datas:${datas.length}`);
   // const asyncfnsz = [];

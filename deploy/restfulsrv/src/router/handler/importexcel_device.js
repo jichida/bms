@@ -39,7 +39,7 @@ const importexcel = (excelfilepath,userid,callbackfn)=>{
     }
     const fn = (callbackfn)=>{
       const dbDevice = DBModels.DeviceModel;
-      dbDevice.findOneAndUpdate({DeviceId},{$set:{Ext:devicedata}},{new:true},(err,result)=>{
+      dbDevice.findOneAndUpdate({DeviceId},{$set:{Ext:devicedata}},{new:true}).lean().exec((err,result)=>{
         if(!!result){
           deviceids_success.push(DeviceId);
         }

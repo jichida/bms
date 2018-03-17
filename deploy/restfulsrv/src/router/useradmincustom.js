@@ -14,9 +14,9 @@ let startmodule = (app)=>{
     //console.log("findone:" + req.params.resourcename);
     let schmodel = dbs[req.params.resourcename];
     let dbModel = mongoose.model(schmodel.collectionname, schmodel.schema);
-    dbModel.findOne({},(err,result)=>{
+    dbModel.findOne({}).lean().exec((err,result)=>{
       if(!err && !!result){
-        result = result.toJSON();
+        // result = result.toJSON();
         res.status(200).json(result);
       }
       else{
@@ -33,7 +33,7 @@ let startmodule = (app)=>{
        actiondata.userid = mongoose.Types.ObjectId(actiondata.userid);
     }
     let userModel = DBModels.UserModel;
-    userModel.findOne({ _id: actiondata.userid }, (err, user)=> {
+    userModel.findOne({ _id: actiondata.userid }).lean().exec((err, user)=> {
       if (!!err) {
         res.status(200).json({
           result:false,
@@ -55,7 +55,7 @@ let startmodule = (app)=>{
           passwordhash:passwordhash
         };
 
-        userModel.findByIdAndUpdate(user._id,{$set:retdoc},(err,result)=>{
+        userModel.findByIdAndUpdate(user._id,{$set:retdoc}).lean().exec((err,result)=>{
           res.status(200).json({
             result:true,
             msg:'修改密码成功'

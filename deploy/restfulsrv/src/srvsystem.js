@@ -2,11 +2,13 @@
  * Created by wangxiaoqing on 2017/3/25.
  */
 const dbinit = require('./db/dbinit');
-const startsrv_devpush = require('./kafka/devpush.js');
 const config = require('./config');
 const DBModels = require('./db/models.js');
 const PubSub = require('pubsub-js');
 const mongoose = require('mongoose');
+const moment = require('moment');
+const _ = require('lodash');
+const debug = require('debug')('srvapp:pcpush');
 
 const getSystemLog = ()=>{
   PubSub.subscribe('userlog_data', ( msg, data )=>{
@@ -21,6 +23,35 @@ const getSystemLog = ()=>{
     });
   });
 }
+
+const checkAlarm = (lasttime,callbackfn)=>{
+  const realtimealarmModel = DBModels.RealtimeAlarmModel;
+  const CurDay =
+  realtimealarmModel.find({
+    UpdateTime:{
+      $gte:lasttime
+    },
+    warninglevel:{
+      $in:['高','中','低']
+    }
+  }).sort({UpdateTime:1}).lean().exec(callbackfn);
+}
+
+const intervalCheckAlarm =()=>{
+  let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+  setInterval(()=>{
+    checkAlarm(lasttime,(err,result)=>{
+      if(!err && !!result){
+        _.map(result,(alarm)=>{
+          lasttime = alarm.UpdateTime;
+          PubSub.publish(`${config.pushalaramtopic}.${alarm.DeviceId}`,alarm);
+          debug(`push device:${alarm.DeviceId} alamdata`);
+        });
+      }
+    });
+  }, 5000);
+};
 // const mongoose = require('mongoose');
 // const winston = require('./log/log.js');
 
@@ -66,8 +97,11 @@ const job=()=>{
 
     // createadmin();
     dbinit();
-    startsrv_devpush(config);
+
     getSystemLog();
+
+    intervalCheckAlarm();
+
     // schedule.scheduleJob('0 0 * * *', ()=>{
       //每天0点更新优惠券过期信息
     //   setmycouponsexpired();

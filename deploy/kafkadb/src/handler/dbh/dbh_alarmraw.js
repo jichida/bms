@@ -3,12 +3,22 @@ const _ = require('lodash');
 const debug_alarmraw = require('debug')('dbh:alarmraw');
 const async = require('async');
 
-const dbh_alarmraw =(datas,callbackfn)=>{
-  if(datas.length === 0){
+const dbh_alarmraw =(datasin,callbackfn)=>{
+  if(datasin.length === 0){
     debug_alarmraw(`dbh_alarmraw data is empty`);
     callbackfn(null,true);
     return;
   }
+  //过滤掉重复的数据
+  //去重
+  const datas = _.uniqBy(datasin, (o)=>{
+    return `${o.DeviceId}_${o.DataTime}`;
+  });
+
+  if(datas.length < datasin.length){
+    debug_alarmraw(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
+  //
   const dbModel = DBModels.RealtimeAlarmRawModel;
   debug_alarmraw(`start dbh_alarmraw,datas:${datas.length}`);
   // const asyncfnsz = [];

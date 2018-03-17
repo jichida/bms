@@ -7,6 +7,7 @@ const moment = require('moment');
 const historytrack = require('../common/historytrack');
 const tip = require('../common/tip');
 const userrelate = require('../common/userrelate');
+const debug = require('debug')('srvapp:handler');
 //司机端
 const actiondatahandler = {
   'getsystemconfig':systemconfig.getsystemconfig,
@@ -40,7 +41,7 @@ const authhandler = {
 };
 
 module.exports = (socket,actiondata,ctx)=>{
-  console.log(`${moment().format('HH:mm:ss')},PC端获取数据--->${JSON.stringify(actiondata)}`);
+  debug(`PC端获取数据--->${JSON.stringify(actiondata)}`);
   //console.log("PC端获取上下文--->" + JSON.stringify(ctx));
   //console.log(`${actiondata.cmd}接受到时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
   try{
@@ -64,7 +65,7 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              console.log(`${moment().format('HH:mm:ss')},服务端回复`);
+              debug(`服务端回复${actiondata.cmd}`);
               //console.log(`${actiondata.cmd}回复时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
               socket.emit(result.cmd,result.payload);
             });

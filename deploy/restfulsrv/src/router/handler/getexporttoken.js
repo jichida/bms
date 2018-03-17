@@ -25,7 +25,7 @@ const getexporttoken = (req,res)=>{
     userid,
     queryobjstring:JSON.stringify(query),
     tokenid:uuid.v4()
-  }},{new: true,upsert:true},(err,tokenobj)=>{
+  }},{new: true,upsert:true}).lean().exec((err,tokenobj)=>{
     if(!err && !!tokenobj){
       res.status(200).json({
         tokenid:tokenobj.tokenid

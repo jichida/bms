@@ -64,7 +64,7 @@ const importexcel = (excelfilepath,userid,callbackfn)=>{
         });
         userinfo = _.omit(['password']);
         const dbModel = DBModels.UserModel;
-        dbModel.findOneAndUpdate({username},{$set:userinfo},{new:true,upsert:true},(err,newuserinfo)=>{
+        dbModel.findOneAndUpdate({username},{$set:userinfo},{new:true,upsert:true}).lean().exec((err,newuserinfo)=>{
           callbackfn(err,newuserinfo);
         });
       });

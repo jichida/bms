@@ -267,6 +267,10 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                  map: map, //所属的地图实例
                  autoSetFitView:false,
                  getPosition: (deviceitem)=> {
+                     if(!!deviceitem.locz){
+                       return deviceitem.locz;
+                     }
+                     console.log(`err----->=====>======>${JSON.stringify(deviceitem)}`);
                      return deviceitem.locz;
                  },
                  renderOptions:{
@@ -908,15 +912,16 @@ export function* createmapmainflow(){
           }
           //批量转换一次
           g_devicesdb = {};//清空，重新初始化
+          // console.log(`clear g_devicesdb...restart g_devicesdb...`)
           let devicelistresult = yield call(getgeodatabatch,devicelist);
           const data = [];
           lodashmap(devicelistresult,(deviceitem)=>{
             if(!!deviceitem.locz){
               data.push(deviceitem);
-              g_devicesdb[deviceitem.DeviceId] = deviceitem;
             }
+            g_devicesdb[deviceitem.DeviceId] = deviceitem;
           });
-
+          // console.log(`clear g_devicesdb...restart g_devicesdb...${data.length}`)
           distCluster.setData(data);
           // pointSimplifierIns.setData(data);
 
@@ -1175,8 +1180,10 @@ export function* createmapmainflow(){
       try{
         if(!!distCluster){
           let data = [];
-          lodashmap(g_devicesdb,(item)=>{
-            data.push(item);
+          lodashmap(g_devicesdb,(deviceitem)=>{
+            if(!!deviceitem.locz){
+              data.push(deviceitem);
+            }
           });
           distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
         }

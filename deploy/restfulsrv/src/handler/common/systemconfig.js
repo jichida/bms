@@ -5,9 +5,9 @@ const config = require('../../config.js');
 
 exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
     const dbModel = DBModels.SystemConfigModel;
-    dbModel.findOne({},(err,systemconfig)=>{
+    dbModel.findOne({}).lean().exec((err,systemconfig)=>{
         if(!err && !!systemconfig){
-            systemconfig = systemconfig.toJSON();
+            // systemconfig = systemconfig.toJSON();
             let payload = {};
             let mappopfields = systemconfig.mappopfields || config.defaultmappopfields;
             let mapdetailfields = systemconfig.mapdetailfields || config.defaultmapdetailfields;

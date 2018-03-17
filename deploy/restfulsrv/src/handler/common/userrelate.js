@@ -10,7 +10,7 @@ exports.collectdevice = (actiondata,ctx,callbackfn)=>{
   const userid = ctx.userid;
   const cmdUpdate = collected?{ "$push": { "devicecollections": deviceid } }:{ "$pull": { "devicecollections": deviceid } };
 
-  dbModel.findByIdAndUpdate(userid,cmdUpdate, {new: true},(err,usernew)=>{
+  dbModel.findByIdAndUpdate(userid,cmdUpdate, {new: true}).lean().exec((err,usernew)=>{
     if(!err && !!usernew){
       callbackfn({
         cmd:'collectdevice_result',

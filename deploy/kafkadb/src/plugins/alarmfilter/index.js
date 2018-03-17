@@ -119,10 +119,10 @@ const getresultalarmmatch = (alarmdata,alarmrules)=>{
 const matchalarm = (alarmdata,callback)=>{
     if(!!alarmdata){
       const systemconfigModel = DBModels.SystemConfigModel;
-      systemconfigModel.findOne({}, (err, result)=> {
+      systemconfigModel.findOne({}).lean().exec((err, systemconfig)=> {
           let resultalarmmatch = [];
-          if(!err && !!result){
-            let systemconfig = result.toJSON();
+          if(!err && !!systemconfig){
+            // let systemconfig = result.toJSON();
             let alarmrules = getalarmrules(systemconfig);
             // //console.log(alarmrules);
             resultalarmmatch = getresultalarmmatch(alarmdata,alarmrules);

@@ -6,6 +6,7 @@ const coordtransform = require('coordtransform');
 const _ = require('lodash');
 const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
+const debug = require('debug')('srvapp:device');
 //
 // const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
 //
@@ -106,9 +107,7 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     let queryexec = deviceModel.find(query).select(fields).lean();
     queryexec.exec((err,list)=>{
       if(!err){
-        if(list.length > 0){
-          //console.log(`-->${JSON.stringify(list[0])}`);
-        }
+        debug(`device count:${list.length}`);
         callback({
           cmd:'querydevice_result',
           payload:{list}
@@ -152,9 +151,7 @@ exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
   let queryexec = deviceModel.find(query).lean();
   queryexec.exec((err,list)=>{
     if(!err){
-      if(list.length > 0){
-        //console.log(`-->${JSON.stringify(list[0])}`);
-      }
+
       callback({
         cmd:'querydeviceinfo_list_result',
         payload:{list}
@@ -308,9 +305,11 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
       query.DeviceId = {'$in':deviceIds};
     }
     // console.log(query);
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
     deviceModel.paginate(query,actiondata.options,(err,result)=>{
       if(!err){
-        result = JSON.parse(JSON.stringify(result));
+        // result = JSON.parse(JSON.stringify(result));
         let docs = [];
         _.map(result.docs,(record)=>{
           docs.push(record);

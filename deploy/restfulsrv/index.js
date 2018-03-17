@@ -4,7 +4,7 @@ const srvsystem = require('./src/srvsystem.js');
 
 const config = require('./src/config');
 const mongoose     = require('mongoose');
-
+const debug = require('debug')('srvapp:index');
 // const utilposition = require('./src/handler/common/util_position');
 
 mongoose.Promise = global.Promise;
@@ -22,8 +22,8 @@ mongoose.connect(config.mongodburl,{
 
   });
 
-console.log(`rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
-console.log(`issmsdebug:${config.issmsdebug}`);
+debug(`rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
+debug(`issmsdebug:${config.issmsdebug}`);
 // const getpoint = (v)=>{
 //   return [v.Longitude,v.Latitude];
 // }

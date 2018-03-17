@@ -10,7 +10,7 @@ const getlist = (schmodel)=>{
     let fields = _.get(req,'body.fields',{});
     // query['organizationid'] = organizationid;
     getquery(req.userid,schmodel.collectionname,query,(querynew)=>{
-        const queryexec = dbModel.find(querynew).select(fields);
+        const queryexec = dbModel.find(querynew).select(fields).lean();
         queryexec.exec((err,result)=>{
           res.status(200)
               .json(result);

@@ -66,8 +66,8 @@ const startuploader = (app)=>{
     //    //console.log("file file:" + JSON.stringify(file));
     //  });
      form.on('progress', (bytesReceived, bytesExpected)=> {
-       console.log('已接受:' + bytesReceived);
-       console.log('一共:' + bytesExpected);
+      //  console.log('已接受:' + bytesReceived);
+      //  console.log('一共:' + bytesExpected);
      });
 
   });

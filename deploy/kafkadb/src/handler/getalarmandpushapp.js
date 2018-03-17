@@ -7,7 +7,7 @@ const getalarmandpushapp = (alarmlist,callbackfn)=>{
        return warninglevel === '高' || warninglevel === '中' || warninglevel === '低';
      });
     //先对alarmlist排序[按updatetime]
-    debug(`alarmlist->${JSON.stringify(alarmlist)}`);
+    // debug(`alarmlist->${JSON.stringify(alarmlist)}`);
     alarmlist = _.sortBy(alarmlist,(o)=>{
       return o.UpdateTime;
     })
@@ -18,7 +18,7 @@ const getalarmandpushapp = (alarmlist,callbackfn)=>{
       return o.DeviceId;
     })
     //循环发送
-    debug(`结果 alarmlist->${JSON.stringify(alarmlist)}`);
+    // debug(`结果 alarmlist->${JSON.stringify(alarmlist)}`);
     _.map(alarmlist,(devicedata)=>{
       kafka_pushalaramtopic_app(devicedata,(err,result)=>{
 
