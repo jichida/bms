@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Treebeard,decorators} from '../controls/react-treebeard-ex/src/index.js';
 // import {getdevicestatus_isonline} from '../../util/getdeviceitemstatus';
-import {getimageicon} from '../../sagas/getmapstyle';
+import {getimageicon_isonline} from '../../sagas/getmapstyle';
 import icon_online from '../../img/1.png';
 import icon_offline from '../../img/3.png';
 // import icon_car3 from './icon_car3.png';
@@ -48,7 +48,7 @@ const HeaderCo = (props) => {
           </div>
       );
     }
-    let iconname = icon_online;
+    // let iconname = icon_online;
     let DeviceId = props.node.device.DeviceId;
     let deviceitem = props.g_devicesdb[DeviceId] || props.node.device;
     let SettingOfflineMinutes = get(props,'SettingOfflineMinutes',20);
@@ -65,7 +65,7 @@ const HeaderCo = (props) => {
     //   iconname = icon_offline;
     // }
 
-    iconname = getimageicon(deviceitem,SettingOfflineMinutes);
+    const {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
     //console.log(deviceitem);
     return (
         <div style={props.style.base}  className={treeseled}>
@@ -77,7 +77,8 @@ const HeaderCo = (props) => {
                     display: "-webkit-flex",
                     alignItems: "center",
                 }}>
-                    <img src={iconname} style={{width: "20px",marginRight: "5px", marginLeft : "5px"}} />{title}
+                    <img src={iconname} style={{width: "20px",marginRight: "5px", marginLeft : "5px"}} />
+                    {isonline?<span><b>{title}</b></span>:<span>{title}</span>}
                 </div>
             </div>
         </div>

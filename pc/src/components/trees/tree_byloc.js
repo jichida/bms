@@ -40,7 +40,7 @@ class Tree extends React.Component {
             let deviceid = node.name;
             const {g_devicesdb} = this.props;
             const deviceitem = g_devicesdb[deviceid];
-            if(!!deviceitem && toggled){
+             if(!!deviceitem ){//&& toggled
               this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
             }
         }

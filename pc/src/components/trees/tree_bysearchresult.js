@@ -7,7 +7,7 @@ import map from 'lodash.map';
 import {
     ui_selcurdevice_request,
 } from '../../actions';
-import {getimageicon} from '../../sagas/getmapstyle';
+import {getimageicon_isonline} from '../../sagas/getmapstyle';
 
 const treeviewstyle = 'bysearchresult';
 decorators.Header = HeaderCo;
@@ -44,10 +44,10 @@ class Tree extends React.Component {
             {
               map(treesearchlist, (id, key)=>{
                 const deviceitem = g_devicesdb[id];
-                const iconname = getimageicon(deviceitem,SettingOfflineMinutes);
+                const {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
                 return <div key={key} onClick={this.onclick.bind(this, id)}>
                   <img src={iconname} style={{width: "20px",marginRight: "5px",marginLeft: "20px"}} />
-                  <span>{id}</span>
+                  {isonline?(<span><strong>{id}</strong></span>):(<span>{id}</span>)}
                 </div>
               })
             }
