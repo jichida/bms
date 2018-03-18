@@ -114,7 +114,7 @@ const createInfoWindow_poplistinfo =(data)=> {
             <span>${v.fields[1].showname}:</span><span>${v.fields[1].fieldvalue}</span>`;
 
         return contenthtml = `${contenthtml}
-            <li key=${i} onclick="clickfn_device(${v.DeviceId})">
+            <li key=${i} onclick="clickfn_device_fromlist(${v.DeviceId})">
                 <div class='l'><img src=${Car_img} /></div>
                 <div class='r'>
                     <p class="t"><span>车辆ID:</span><span>${v.DeviceId}</span></p>

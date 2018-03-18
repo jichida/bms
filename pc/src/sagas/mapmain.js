@@ -1335,6 +1335,11 @@ export function* createmapmainflow(){
       //地图模式选择车辆
       try{
         const {payload:DeviceId} = action;
+
+        if(!!infoWindow){
+            infoWindow.close();
+            infoWindow = null;
+        }
         // if(typeof DeviceId === 'string'){
         //   DeviceId = parseInt(DeviceId);
         // }

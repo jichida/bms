@@ -4,7 +4,7 @@
 import config from '../env/config';
 import store from '../env/store';
 import { push } from 'react-router-redux';
-
+import {ui_mycar_selcurdevice} from '../actions';
 import {createInfoWindow_popinfo as createInfoWindow_popinfo_app ,createInfoWindow_poplistinfo as createInfoWindow_poplistinfo_app} from './mapmain_infowindow.app.js';
 import {createInfoWindow_popinfo as createInfoWindow_popinfo_pc ,createInfoWindow_poplistinfo as createInfoWindow_poplistinfo_pc} from './mapmain_infowindow.pc.js';
 
@@ -17,7 +17,9 @@ if (config.softmode === 'pc') {
   createInfoWindow_popinfo = createInfoWindow_popinfo_app;
   createInfoWindow_poplistinfo = createInfoWindow_poplistinfo_app;
 }
-
+window.clickfn_device_fromlist = (DeviceId)=>{//int->string
+  store.dispatch(ui_mycar_selcurdevice(`${DeviceId}`));
+}
 window.clickfn_device =(DeviceId)=>{
     store.dispatch(push(`/deviceinfo/${DeviceId}`));
 }

@@ -151,7 +151,6 @@ exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
   let queryexec = deviceModel.find(query).lean();
   queryexec.exec((err,list)=>{
     if(!err){
-
       callback({
         cmd:'querydeviceinfo_list_result',
         payload:{list}
