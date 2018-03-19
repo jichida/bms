@@ -19,6 +19,7 @@ let config =  {
   },
   mapdict:{},
   NodeID:nodeid,
+  logdir:process.env.logdir ||'../../dist/log',
   kcmsg:!!process.env.kcmsg?parseInt(process.env.kcmsg):10,
   partitionnumber:!!process.env.partitionnumber?parseInt(process.env.partitionnumber):48,
   jpush_appkey:process.env.jpush_appkey || '630950d8101fe73d19d64aaf',
