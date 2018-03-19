@@ -39,6 +39,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
         });
       }
       debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
+      debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);
   });
   // const bulk = dbModel.collection.initializeUnorderedBulkOp();
