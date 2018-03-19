@@ -14,7 +14,7 @@ const dbh_historytrack  = require('./dbh/dbh_historytrack');
 const onHandleToDB_alarm = (allresult,callbackfn)=>{
   dbh_alarm(allresult['alarm'],(err,result)=>{
     let devicealarmstat = {};
-    let listalarm = _.sortBy(result,(alarm)=>{
+    let listalarm = _.sortBy(result,(o)=>{
       return -`${o.DeviceId}_${o.UpdateTime}`;
     });
     //按alarm的倒序排
