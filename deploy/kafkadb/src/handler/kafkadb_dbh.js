@@ -12,43 +12,49 @@ const dbh_historydevice = require('./dbh/dbh_historydevice');
 const dbh_historytrack  = require('./dbh/dbh_historytrack');
 
 const onHandleToDB_alarm = (allresult,callbackfn)=>{
-  debug(`获取allresult个数:${allresult.length}`);
-  
+  debug(`获取allresult个数:${allresult['alarm'].length}`);
+
   dbh_alarm(allresult['alarm'],(err,result)=>{
     debug(`获取result个数:${result.length}`);
-
-    let devicealarmstat = {};
-    let listalarm = _.sortBy(result,(o)=>{
-      return -`${o.DeviceId}_${o.UpdateTime}`;
-    });
-    //按alarm的倒序排
-    debug(`按alarm的倒序排:${JSON.stringify(listalarm)}`);
-    //再对alarmlist去重【deivceid]
-    listalarm = _.sortedUniqBy(listalarm,(o)=>{
-      return o.DeviceId;
-    });
-    debug(`再对alarmlist去重deivceid:${JSON.stringify(listalarm)}`);
-    _.map(listalarm,(alarm)=>{
-      devicealarmstat[alarm.DeviceId] = alarmutil.getalarmtxt(alarm);
-    });
-    debug(`所有设备统计信息:${JSON.stringify(devicealarmstat)}`);
-    //<-------处理所有的allresult
-    _.map(allresult['device'],(o)=>{
-      if(!!devicealarmstat[o.DeviceId]){
-        o.alarmtxtstat = devicealarmstat[o.DeviceId];
-      }
-    });
-    _.map(allresult['historydevice'],(o)=>{
-      if(!!devicealarmstat[o.DeviceId]){
-        o.alarmtxtstat = devicealarmstat[o.DeviceId];
-      }
-    });
-    _.map(allresult['alarmraw'],(o)=>{
-      if(!!devicealarmstat[o.DeviceId]){
-        o.alarmtxtstat = devicealarmstat[o.DeviceId];
-      }
-    });
-    debug(`所有设备最终结果:${JSON.stringify(allresult['device'])}`);
+    if(!err && !!result){
+      let devicealarmstat = {};
+      let listalarm = _.sortBy(result,(o)=>{
+        return -`${o.DeviceId}_${o.UpdateTime}`;
+      });
+      //按alarm的倒序排
+      debug(`按alarm的倒序排:${listalarm.length}`);
+      //再对alarmlist去重【deivceid]
+      listalarm = _.sortedUniqBy(listalarm,(o)=>{
+        return o.DeviceId;
+      });
+      debug(`再对alarmlist去重deivceid:${listalarm.length}`);
+      _.map(listalarm,(alarm)=>{
+        if(alarm.warninglevel !== ''){
+          devicealarmstat[alarm.DeviceId] = alarmutil.getalarmtxt(alarm);
+        }
+      });
+      debug(`所有设备统计信息:${JSON.stringify(devicealarmstat)}`);
+      //<-------处理所有的allresult
+      _.map(allresult['device'],(o)=>{
+        if(!!devicealarmstat[o.DeviceId]){
+          o.alarmtxtstat = devicealarmstat[o.DeviceId];
+        }
+      });
+      _.map(allresult['historydevice'],(o)=>{
+        if(!!devicealarmstat[o.DeviceId]){
+          o.alarmtxtstat = devicealarmstat[o.DeviceId];
+        }
+      });
+      _.map(allresult['alarmraw'],(o)=>{
+        if(!!devicealarmstat[o.DeviceId]){
+          o.alarmtxtstat = devicealarmstat[o.DeviceId];
+        }
+      });
+    }
+    else{
+      debug(err);
+    }
+    // debug(`所有设备最终结果:${JSON.stringify(allresult['device'])}`);
     callbackfn(null,allresult);
   });
 };
