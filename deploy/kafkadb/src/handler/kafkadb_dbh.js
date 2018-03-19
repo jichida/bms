@@ -12,7 +12,11 @@ const dbh_historydevice = require('./dbh/dbh_historydevice');
 const dbh_historytrack  = require('./dbh/dbh_historytrack');
 
 const onHandleToDB_alarm = (allresult,callbackfn)=>{
+  debug(`获取allresult个数:${allresult.length}`);
+  
   dbh_alarm(allresult['alarm'],(err,result)=>{
+    debug(`获取result个数:${result.length}`);
+
     let devicealarmstat = {};
     let listalarm = _.sortBy(result,(o)=>{
       return -`${o.DeviceId}_${o.UpdateTime}`;
@@ -25,7 +29,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
     });
     debug(`再对alarmlist去重deivceid:${JSON.stringify(listalarm)}`);
     _.map(listalarm,(alarm)=>{
-      devicealarmstat[alarm.DeviceId] = alarmutil(getalarmtxt);
+      devicealarmstat[alarm.DeviceId] = alarmutil.getalarmtxt(alarm);
     });
     debug(`所有设备统计信息:${JSON.stringify(devicealarmstat)}`);
     //<-------处理所有的allresult
