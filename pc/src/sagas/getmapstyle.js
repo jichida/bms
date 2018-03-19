@@ -92,7 +92,7 @@ const getpop_device =({deviceitem,kvlist})=>{
     const fieldvalue = get(deviceitem,v.name,'');
     const unit = get(v,'unit','');
     let systemflag = 0;
-    if(v.name === 'formattedAddress'){
+    if(v.name === 'formattedAddress' || v.name === 'alarmtxtstat'){
       systemflag = 1;
     }
     fields.push({

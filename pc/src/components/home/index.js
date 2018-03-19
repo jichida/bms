@@ -10,7 +10,7 @@ import AdminContent from "./admincontent";
 import Menu from "./menu";
 import Tree from "./tree";
 import Warningtips from "./warningtips";
-import Prompt from "./prompt";
+// import Prompt from "./prompt";
 
 import Logo from "../../img/logo.png";
 import {
@@ -170,7 +170,6 @@ class Page extends React.Component {
 
                     </div>
                 </div>
-                <Prompt />
             </div>
         );
     }

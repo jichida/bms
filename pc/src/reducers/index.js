@@ -11,13 +11,9 @@ import carmap from './carmap';
 import searchresult from './searchresult';
 import workorder from './workorder';
 import pic from './pic';
-import tip from './tip';
-import alarmpop from './alarmpop';
 import deviceinfoquerychart from './deviceinfoquerychart';
 
 export default combineReducers({
-  alarmpop,
-  tip,
   pic,
   app,
   carmap,

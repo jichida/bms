@@ -1,4 +1,4 @@
-let islocalhost = false;
+let islocalhost = true;
 const serverurl = islocalhost?'http://localhost:5011':'http://101.89.141.109:81';
 const serverurlrestful = islocalhost?`${serverurl}/api`:`${serverurl}/apisrv/api`;
 const wspath = islocalhost?'/socket.io':'/apisrv/socket.io';

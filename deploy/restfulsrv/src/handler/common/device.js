@@ -91,9 +91,9 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
 }
 
 exports.querydevice = (actiondata,ctx,callback)=>{
-  let deviceModel = DBModels.DeviceModel;
+  const deviceModel = DBModels.DeviceModel;
   let query = actiondata.query || {};
-  let fields = actiondata.fields || {
+  const fields = actiondata.fields || {
     'DeviceId':1,
     'LastHistoryTrack.Latitude':1,
     'LastHistoryTrack.Longitude':1,

@@ -21,13 +21,6 @@ import {
   querydeviceinfo_result,
   md_querydeviceinfo_result,
 
-  serverpush_devicegeo,
-  serverpush_devicegeo_sz,
-  serverpush_devicealarm,
-
-  serverpush_devicegeo_sz_request,
-  serverpush_devicegeo_sz_result,
-  start_serverpush_devicegeo_sz,
 
   ui_changemodeview,
 
@@ -397,40 +390,4 @@ export function* apiflow(){//
    });
 
   //  模拟服务端推送消息
-  yield takeLatest(`${serverpush_devicegeo_sz_request}`, function*(action) {
-     try{
-        let {modeview,carcollections,g_devicesdb} = yield select((state)=>{
-          let carcollections = state.device.carcollections;
-          let modeview = state.app.modeview;
-          let g_devicesdb = state.device.g_devicesdb;
-          return {modeview,carcollections,g_devicesdb};
-        });
-        if('device' === modeview){
-            const {list} = yield call(restfulapi.getdevicegeo);
-
-            // //console.log(`serverpush_devicegeo_sz_request===>${JSON.stringify(list)}`)
-            // const list = sampleSize(jsondata_bms_mydevice, jsondata_bms_mydevice.length);
-            let items = [];
-            //本地坐标转换
-            for(let i = 0;i < list.length; i++){
-              let item = {...list[i]};
-              // const wgs84togcj02=coordtransform.wgs84togcj02(item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude);
-              // const locationsz = yield call(getRandomLocation_track,item.DeviceId,wgs84togcj02[1],wgs84togcj02[0]);
-              // //坐标转换
-              // const gcj02towgs84=coordtransform.gcj02towgs84(locationsz[0],locationsz[1]);
-              // item.LastHistoryTrack.Longitude = gcj02towgs84[0];
-              // item.LastHistoryTrack.Latitude = gcj02towgs84[1];
-              // item.locz = locationsz;
-
-              // item.groupid = jsondata_bms_groups[getrandom(0,jsondata_bms_groups.length-1)]._id;
-              item = {...g_devicesdb[item.DeviceId],...item};
-              items.push(item);
-            };
-            yield put(serverpush_devicegeo_sz_result({list:items}));
-        }
-      }
-      catch(e){
-        console.log(e);
-      }
-   });
 }

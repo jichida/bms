@@ -24,28 +24,31 @@ const getSystemLog = ()=>{
   });
 }
 
-const checkAlarm = (lasttime,callbackfn)=>{
-  const realtimealarmModel = DBModels.RealtimeAlarmModel;
-  const CurDay =
-  realtimealarmModel.find({
+const checkDevice = (lasttime,callbackfn)=>{
+  const deviceModel = DBModels.DeviceModel;
+  const fields = {
+    'DeviceId':1,
+    'LastHistoryTrack.Latitude':1,
+    'LastHistoryTrack.Longitude':1,
+    'LastHistoryTrack.GPSTime':1,
+    'warninglevel':1
+  };
+  deviceModel.find({
     UpdateTime:{
       $gte:lasttime
-    },
-    warninglevel:{
-      $in:['高','中','低']
     }
-  }).sort({UpdateTime:1}).lean().exec(callbackfn);
+  }).select(fields).sort({UpdateTime:1}).lean().exec(callbackfn);
 }
 
-const intervalCheckAlarm =()=>{
+const intervalCheckDevice =()=>{
   let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   setInterval(()=>{
-    checkAlarm(lasttime,(err,result)=>{
+    checkDevice(lasttime,(err,result)=>{
       if(!err && !!result){
         _.map(result,(alarm)=>{
           lasttime = alarm.UpdateTime;
-          PubSub.publish(`${config.pushalaramtopic}.${alarm.DeviceId}`,alarm);
+          PubSub.publish(`${config.pushdevicetopic}.${alarm.DeviceId}`,alarm);
           debug(`push device:${alarm.DeviceId} alamdata`);
         });
       }
@@ -100,7 +103,7 @@ const job=()=>{
 
     getSystemLog();
 
-    intervalCheckAlarm();
+    intervalCheckDevice();
 
     // schedule.scheduleJob('0 0 * * *', ()=>{
       //每天0点更新优惠券过期信息

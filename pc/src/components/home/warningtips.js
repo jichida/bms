@@ -16,7 +16,7 @@ import SearchDevice from "material-ui/svg-icons/hardware/device-hub";
 import StatAlarm from "material-ui/svg-icons/alert/add-alert";
 import AlarmRaw from "material-ui/svg-icons/alert/error";
 import SearchCarArchives from "material-ui/svg-icons/action/search";
-
+import {getdevicestatus_isonline,getdevicestatus_alaramlevel} from '../../util/getdeviceitemstatus';
 import Popover, {PopoverAnimationVertical} from 'material-ui/Popover';
 import withRouter from 'react-router-dom/withRouter';
 
@@ -34,6 +34,7 @@ import Userlist_7 from "../../img/7.png";
 // import Pow1 from "../img/pow1.png";
 // import Pow2 from "../img/pow2.png";
 // import Pow3 from "../img/pow3.png";
+import lodashmap from 'lodash.map';
 
 import {
   ui_btnclick_deviceonline,
@@ -335,7 +336,7 @@ class Page extends React.Component {
                         <img src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
                     </Badge>
                   </Tooltip>
-                  <Tooltip title="当日三级报警总数">
+                  <Tooltip title="三级报警车辆总数">
                     <Badge
                         badgeContent={`(${count_red})`}
                         className="Badge"
@@ -358,7 +359,7 @@ class Page extends React.Component {
                         <img style={{ width: "40px", height: "40px"}} src={D1} />
                     </Badge>
                   </Tooltip>
-                  <Tooltip title="当日二级报警总数">
+                  <Tooltip title="二级报警车辆总数">
                     <Badge
                         badgeContent={`(${count_orange})`}
                         className="Badge"
@@ -381,7 +382,7 @@ class Page extends React.Component {
                         <img style={{ width: "40px", height: "40px"}} src={D2} />
                     </Badge>
                   </Tooltip>
-                  <Tooltip title="当日一级报警总数">
+                  <Tooltip title="一级报警车辆总数">
                     <Badge
                         badgeContent={`(${count_yellow})`}
                         className="Badge"
@@ -404,7 +405,7 @@ class Page extends React.Component {
                         <img style={{ width: "40px", height: "40px"}} src={D3} />
                     </Badge>
                   </Tooltip>
-                  <Tooltip title="当日所有报警总数">
+                  <Tooltip title="报警车辆总数">
                     <Badge
                         badgeContent={`${count_all}`}
                         className="Badge"
@@ -519,16 +520,36 @@ class Page extends React.Component {
 
 //this.onClickMenu.bind(this,'low')
 Page = withRouter(Page);
-const mapStateToPropsTip = ({app,searchresult:{curallalarm,alarms},tip}) => {
+const mapStateToPropsTip = ({app,searchresult:{curallalarm,alarms},device:{g_devicesdb}}) => {
   const {modeview} = app;
 
-   let count_online = tip.count_online;
-   let count_offline = tip.count_offline;
+   let count_online = 0;
+   let count_offline = 0;
 
    let count_all = 0;
-   let count_yellow = tip.count_alarm2;
-   let count_red = tip.count_alarm0;
-   let count_orange = tip.count_alarm1;
+   let count_yellow = 0;
+   let count_red = 0;
+   let count_orange = 0;
+
+   lodashmap(g_devicesdb,(deviceitem)=>{
+     const isonline = getdevicestatus_isonline(deviceitem);
+     const warninglevel = getdevicestatus_alaramlevel(deviceitem);
+     if(isonline){
+       count_online++;
+     }
+     else{
+       count_offline++;
+     }
+     if(warninglevel === '高'){
+       count_red++;
+     }
+     else if(warninglevel === '中'){
+       count_orange++;
+     }
+     else if(warninglevel === '低'){
+       count_yellow++;
+     }
+   });
 
    count_all = count_red + count_orange + count_yellow;
 

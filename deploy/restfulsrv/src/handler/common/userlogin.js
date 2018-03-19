@@ -9,6 +9,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
 const debug = require('debug')('srvapp:userlogin');
+const getdevicesids = require('../getdevicesids');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -21,17 +22,20 @@ let userloginsuccess =(user,callback)=>{
 };
 
 const subscriberuser = (user,ctx)=>{
-    if(ctx.usertype === 'pc'){
+    getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
       //设置订阅设备消息
       PubSub.unsubscribe( ctx.userDeviceSubscriber );
 
-      const subscriberdeviceids = _.get(user,'alarmsettings.subscriberdeviceids',[]);
-      _.map(subscriberdeviceids,(DeviceId)=>{
-        PubSub.subscribe(`${config.pushalaramtopic}.${DeviceId}`,ctx.userDeviceSubscriber);
-      });
-
-      debug(`用户开始订阅设备:${JSON.stringify(subscriberdeviceids)}`);
-    }
+      if(isall){
+        PubSub.subscribe(`${config.pushdevicetopic}.*`,ctx.userDeviceSubscriber);
+      }
+      else{
+        _.map(deviceIds,(DeviceId)=>{
+          PubSub.subscribe(`${config.pushdevicetopic}.${DeviceId}`,ctx.userDeviceSubscriber);
+        });
+      }
+      debug(`用户开始订阅设备`);
+    });
 }
 
 let getdatafromuser =(user)=>{
@@ -94,7 +98,6 @@ exports.savealarmsettings = (actiondata,ctx,callback)=>{
           cmd:'savealarmsettings_result',
           payload:{alarmsettings:usernew.alarmsettings}
         });
-        subscriberuser(usernew,ctx);
     }
     else{
       callback({

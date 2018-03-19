@@ -27,8 +27,7 @@ import {
   mapmain_init_device,
   ui_settreefilter,
   md_ui_settreefilter,
-  serverpush_devicegeo,
-  serverpush_devicegeo_sz,
+  serverpush_device,
   devicelistgeochange_distcluster,
   // devicelistgeochange_pointsimplifierins,
   devicelistgeochange_geotreemenu,
@@ -1129,63 +1128,12 @@ export function* createmapmainflow(){
     //serverpush_devicegeo
 
     //某个车辆地理位置发送变化
-    yield takeLatest(`${serverpush_devicegeo}`,function*(action){
+    yield takeLatest(`${serverpush_device}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
       let deviceitem = payload;
       try{
         g_devicesdb[deviceitem.DeviceId] = deviceitem;
-        yield put(devicelistgeochange_distcluster({}));
-        // yield put(devicelistgeochange_pointsimplifierins({}));
-        yield put(devicelistgeochange_geotreemenu({}));
-      }
-      catch(e){
-        console.log(e);
-      }
-    });
-
-    //多个车辆地理位置变化【刷新界面】
-    yield takeLatest(`${serverpush_devicegeo_sz}`,function*(action){
-      //https://redux-saga.js.org/docs/recipes/
-      const {payload} = action;
-      let {list} = payload;
-      try{
-        lodashmap(list,(deviceitem)=>{
-          g_devicesdb[deviceitem.DeviceId] = deviceitem;
-        });
-
-        // if(!!infoWindow){//正在弹窗
-        //   //判断当前车辆是否发生偏移
-        //   const {mapseldeviceid} = yield select((state)=>{
-        //     return {mapseldeviceid:state.device.mapseldeviceid};
-        //   });
-        //
-        //   console.log(`正在弹窗:${mapseldeviceid}`)
-        //   const deviceitem = find(list,((o)=>{
-        //     return o.DeviceId === mapseldeviceid;
-        //   }));
-        //   if(!!deviceitem){
-        //     // //console.log(`当前车辆发生了变化:${JSON.stringify(deviceitem)}`)
-        //     //请求
-        //     yield put(querydeviceinfo_request({query:{DeviceId:mapseldeviceid}}));
-        //     const {payload} = yield take(`${querydeviceinfo_result}`);
-        //     //地理位置
-        //     let deviceinfo = {...deviceitem,...payload};
-        //     // const addr = yield call(getgeodata,deviceinfo);
-        //     // deviceinfo = {...deviceinfo,...addr};
-        //     // g_devicesdb[mapseldeviceid] = deviceinfo;
-        //
-        //     let locz = deviceinfo.locz;
-        //     // //console.log(`开始移动==>${JSON.stringify(locz)}`)
-        //     const infooptions = getpopinfowindowstyle(deviceinfo);
-        //     infoWindow.setContent(infooptions.content);
-        //     // infoWindow.setInfoTitle(infooptions.infoTitle);
-        //     // infoWindow.setInfoBody(infooptions.infoBody);
-        //     infoWindow.setPosition(locz);
-        //     window.amapmain.setCenter(locz);
-        //   }
-        // }
-        //
         yield put(devicelistgeochange_distcluster({}));
         // yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));
@@ -1202,6 +1150,7 @@ export function* createmapmainflow(){
         console.log(e);
       }
     });
+
     //devicelistgeochange
     // yield throttle(1300,`${devicelistgeochange_distcluster}`,function*(action){
     yield takeLatest(`${devicelistgeochange_distcluster}`,function*(action){
