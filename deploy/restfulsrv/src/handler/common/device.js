@@ -56,7 +56,16 @@ const debug = require('debug')('srvapp:device');
 exports.querydevicegroup= (actiondata,ctx,callback)=>{
   let devicegroupModel = DBModels.DeviceGroupModel;
   let query = actiondata.query || {};
-  const devicesfields = actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude';
+
+  const devicesfields =   actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude LastHistoryTrack.GPSTime warninglevel LastRealtimeAlarm.DataTime alarmtxtstat';
+  //   'DeviceId':1,
+  //   'LastHistoryTrack.Latitude':1,
+  //   'LastHistoryTrack.Longitude':1,
+  //   'LastHistoryTrack.GPSTime':1,
+  //   'warninglevel':1,
+  //   'LastRealtimeAlarm.DataTime':1,
+  //   'alarmtxtstat':1
+  // };
 
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query._id && !isall){
@@ -98,7 +107,9 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     'LastHistoryTrack.Latitude':1,
     'LastHistoryTrack.Longitude':1,
     'LastHistoryTrack.GPSTime':1,
-    'warninglevel':1
+    'warninglevel':1,
+    'LastRealtimeAlarm.DataTime':1,
+    'alarmtxtstat':1
   };
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query.DeviceId && !isall){

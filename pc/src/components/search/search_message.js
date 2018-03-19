@@ -111,11 +111,6 @@ class SearchMessage extends React.Component {
       return (
             <div className="searchreport" style={{textAlign: "center"}}>
                 <div className="i">
-
-                    <Seltime  startDate = {this.state.startDate}
-                      endDate = {this.state.endDate}
-                     onChangeSelDate={this.onChangeSelDate.bind(this)}/>
-
                     <Select className="Selectalarmlevel" defaultValue={this.state.alarmlevel} onChange={this.onChange_alarmlevel.bind(this)}>
                         <Option value={"-1"}>选择报警等级</Option>
                         <Option value={"0"} >三级</Option>

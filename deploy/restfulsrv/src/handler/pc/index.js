@@ -5,7 +5,6 @@ const historydevice = require('../common/historydevice.js');
 const realtimealarm = require('../common/realtimealarm.js');
 const moment = require('moment');
 const historytrack = require('../common/historytrack');
-const tip = require('../common/tip');
 const userrelate = require('../common/userrelate');
 const debug = require('debug')('srvapp:handler');
 //司机端
@@ -18,8 +17,6 @@ const actiondatahandler = {
 };
 
 const authhandler = {
-  'savealarmsettings':userlogin.savealarmsettings,
-  'gettipcount':tip.gettipcount,
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,

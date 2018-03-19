@@ -31,7 +31,9 @@ const checkDevice = (lasttime,callbackfn)=>{
     'LastHistoryTrack.Latitude':1,
     'LastHistoryTrack.Longitude':1,
     'LastHistoryTrack.GPSTime':1,
-    'warninglevel':1
+    'warninglevel':1,
+    'LastRealtimeAlarm.DataTime':1,
+    'alarmtxtstat':1
   };
   deviceModel.find({
     UpdateTime:{

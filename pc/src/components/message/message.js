@@ -6,17 +6,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import map from 'lodash.map';
 import get from 'lodash.get';
-
-import AntdTable from "../controls/antdtable.js";
-
+import AntdTable from "../controls/table.js";
 import moment from 'moment';
-
-
 import TreeSearchreport from '../search/search_message';
 
-import {
-  callthen,uireport_searchalarm_request,uireport_searchalarm_result
-} from '../../sagas/pagination';
+// import {
+//   callthen,uireport_searchalarm_request,uireport_searchalarm_result
+// } from '../../sagas/pagination';
 
 
 import "../../css/message.css";
@@ -59,12 +55,7 @@ class MessageAllDevice extends React.Component {
     }
     onClickQuery(query){
       //console.log(query);
-
       this.setState({query});
-      window.setTimeout(()=>{
-        //console.log(this.refs);
-        this.refs.antdtablealarm.getWrappedInstance().onRefresh();
-      },0);
     }
 
     onItemConvert(item){
@@ -81,14 +72,7 @@ class MessageAllDevice extends React.Component {
       return item;
     }
     render(){
-        let warninglevel = this.props.match.params.warninglevel;
-        if(warninglevel === 'all'){
-          warninglevel = "-1";
-        }
-        // else{
-        //   // warninglevel = parseInt(warninglevel);
-        // }
-        let column_data = {
+        const column_data = {
           "车辆ID" : "",
           "报警时间" : "",
           "报警等级" : "",
@@ -109,7 +93,44 @@ class MessageAllDevice extends React.Component {
           return column_item;
         });
 
+        const {g_devicesdb} = this.props;
+        const {warninglevel,DeviceId} = this.state.query;
+        let data = [];
+        map(g_devicesdb,(deviceitem)=>{
+          let matcheddevice = false;
+          let matchedwarninglevel = false;
+          if(!!DeviceId){
+            if(deviceitem.DeviceId === DeviceId){
+              matcheddevice = true;
+            }
+          }
+          else{
+            matcheddevice = true;
+          }
 
+          if(!!warninglevel){
+            if(typeof warninglevel === 'string'){
+              if(warninglevel !== ''){
+                if(warninglevel === get(deviceitem,'warninglevel')){
+                  matchedwarninglevel = true;
+                }
+              }
+            }
+            else{
+              matchedwarninglevel = get(deviceitem,'warninglevel','') !== '';//all
+            }
+          }
+
+          if(matcheddevice && matchedwarninglevel){
+            data.push({
+              key:get(deviceitem,'DeviceId',''),
+              "车辆ID" : get(deviceitem,'DeviceId',''),
+              "报警时间" : get(deviceitem,'LastRealtimeAlarm.DataTime',''),
+              "报警等级" : get(deviceitem,'warninglevel',''),
+              "报警信息" : get(deviceitem,'alarmtxtstat',''),
+            });
+          }
+        });
         // let viewrow = (row)=>{
         //     //console.log(row);
         //     g_querysaved = this.state.query;
@@ -129,8 +150,7 @@ class MessageAllDevice extends React.Component {
             <div className="warningPage" style={{height : window.innerHeight+"px"}}>
 
                 <div className="appbar">
-
-                    <div className="title">报警信息</div>
+                    <div className="title">报警车辆</div>
                     <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
                 </div>
                 <div className="TreeSearchBattery">
@@ -138,26 +158,17 @@ class MessageAllDevice extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
-                      listtypeiddata = 'message'
-                      usecache = {!!g_querysaved}
-                      ref='antdtablealarm'
-                      onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
-                      pagenumber={30}
-                      query={this.state.query}
-                      sort={{DataTime: -1}}
-                      queryfun={(payload)=>{
-                        return callthen(uireport_searchalarm_request,uireport_searchalarm_result,payload);
-                      }}
+                      data={data}
                     />
                 </div>
-
-
             </div>
 
         );
     }
 }
 
-
-export default connect()(MessageAllDevice);
+const mapStateToProps = ({device:{g_devicesdb}}) => {
+  return {g_devicesdb};
+}
+export default connect(mapStateToProps)(MessageAllDevice);
