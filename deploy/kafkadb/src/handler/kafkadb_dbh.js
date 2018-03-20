@@ -18,7 +18,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
     debug(`获取result个数:${result.length}`);
     if(!err && !!result){
       let devicealarmstat = {};
-
+      const listalarm = result;
       _.map(listalarm,(alarm)=>{
         if(alarm.warninglevel !== ''){
           devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmutil.getalarmtxt(alarm);
