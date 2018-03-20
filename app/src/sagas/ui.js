@@ -18,7 +18,6 @@ import {
 
   ui_sel_tabindex,
 
-  gettipcount_request
 }from '../actions';
 import { push,replace } from 'react-router-redux';
 import moment from 'moment';
@@ -37,21 +36,21 @@ export function* uiflow(){//仅执行一次
   //     }));
   //   }
   // });
-  if(config.softmode === 'pc'){
-    yield fork(function*(action) {
-      while (true) {
-            yield call(delay, 10000);//10秒刷新一次
-            const {loginsuccess} = yield select((state)=>{
-              return {loginsuccess:state.userlogin.loginsuccess};
-            });
-
-            if(loginsuccess){
-              yield put(gettipcount_request({}));
-            }
-
-        }//while
-    });
-  }
+  // if(config.softmode === 'pc'){
+  //   yield fork(function*(action) {
+  //     while (true) {
+  //           yield call(delay, 10000);//10秒刷新一次
+  //           const {loginsuccess} = yield select((state)=>{
+  //             return {loginsuccess:state.userlogin.loginsuccess};
+  //           });
+  //
+  //           if(loginsuccess){
+  //             yield put(gettipcount_request({}));
+  //           }
+  //
+  //       }//while
+  //   });
+  // }
   //ui_btnclick_devicemessage
 
   yield takeLatest(`${ui_btnclick_devicemessage}`, function*(action) {

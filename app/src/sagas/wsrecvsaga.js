@@ -17,29 +17,10 @@ import {
   md_querydeviceinfo_result,
   querydeviceinfo_result,
 
-  serverpush_devicegeo_sz_request,
-  serverpush_devicegeo_sz_result,
-  serverpush_devicegeo_sz,
-
-  start_serverpush_devicegeo_sz,
-  stop_serverpush_devicegeo_sz,
-
-  getcurallalarm_request,
-  getallworkorder_request,
-
   setworkorderdone_request,
   setworkorderdone_result,
 
-  getworkusers_request,
-
   changepwd_result,
-
-  gettipcount_request,
-
-  start_serverpush_alarm_sz,
-  stop_serverpush_alarm_sz,
-  serverpush_alarm_sz_request,
-  serverpush_alarm_sz_result,
 
   savealarmsettings_result
 } from '../actions';
@@ -68,7 +49,7 @@ export function* wsrecvsagaflow() {
       yield put(goBack());
   });
 
-  //链接远程数据,暂时注释
+  // 链接远程数据,暂时注释
   // yield takeLatest(`${querydevice_result}`, function*(action) {
   //   yield put(start_serverpush_devicegeo_sz({}));
   // });
@@ -83,64 +64,7 @@ export function* wsrecvsagaflow() {
     yield put(goBack());
   });
 
-  yield takeLatest(`${start_serverpush_devicegeo_sz}`, function*(action) {
-      yield fork(function*(){
-        try{
-          while(true){
-            const { resstop, timeout } = yield race({
-               resstop: take(`${stop_serverpush_devicegeo_sz}`),
-               timeout: call(delay,5000)
-            });
-            if(!!resstop){
-              break;
-            }
-            //
-            // //console.log(`开始获取变化数据...`)
-            yield put(serverpush_devicegeo_sz_request({}));
-            yield race({
-              resstop: take(`${serverpush_devicegeo_sz_result}`),
-              timeout: call(delay, 10000)
-           });
-          }
-        }
-        catch(e){
-          console.log(e);
-        }
-      });
 
-  });
-
-  yield takeLatest(`${start_serverpush_alarm_sz}`, function*(action) {
-      yield fork(function*(){
-        try{
-          while(true){
-            const { resstop, timeout } = yield race({
-               resstop: take(`${stop_serverpush_alarm_sz}`),
-               timeout: call(delay,5000)
-            });
-            if(!!resstop){
-              break;
-            }
-            //
-            // //console.log(`开始获取变化数据...`)
-            yield put(serverpush_alarm_sz_request({}));
-            yield race({
-              resstop: take(`${serverpush_alarm_sz_result}`),
-              timeout: call(delay, 60000)
-           });
-          }
-        }
-        catch(e){
-          console.log(e);
-        }
-      });
-
-  });
-
-  yield takeLatest(`${serverpush_devicegeo_sz_result}`, function*(action) {
-      let {payload:result} = action;
-      yield put(serverpush_devicegeo_sz(result));
-  });
 
   yield takeLatest(`${md_login_result}`, function*(action) {
       try{
@@ -150,21 +74,7 @@ export function* wsrecvsagaflow() {
             yield put(login_result(result));
             if(result.loginsuccess){
               localStorage.setItem(`bms_${config.softmode}_token`,result.token);
-              if(config.softmode === 'pc'){
-                yield put(gettipcount_request({}));//获取个数
-              }
               yield put(querydevicegroup_request({}));
-
-              // if(config.ispopalarm){
-              //   yield put(start_serverpush_alarm_sz({}));
-              // }
-              //
-              // yield put(getworkusers_request({}));
-              // //登录成功,获取今天所有报警信息列表
-              // yield put(getcurallalarm_request({}));
-              // //获取所有工单
-              // yield put(getallworkorder_request({}));
-
             }
         }
 

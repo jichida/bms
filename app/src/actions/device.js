@@ -26,30 +26,14 @@ export const searchbattery_result = createAction('searchbattery_result');
 export const searchbatterylocal_request = createAction('searchbatterylocal_request');
 export const searchbatterylocal_result = createAction('searchbatterylocal_result');
 
-//主动更新某个电池包的数据
-//经纬度信息发生变化
-export const serverpush_devicegeo = createAction('serverpush_devicegeo');
-export const serverpush_devicegeo_sz = createAction('serverpush_devicegeo_sz');
-export const serverpush_devicealarm = createAction('serverpush_devicealarm');
 //批量车辆地理位置变化
 export const devicelistgeochange_distcluster = createAction('devicelistgeochange_distcluster');
 export const devicelistgeochange_pointsimplifierins = createAction('devicelistgeochange_pointsimplifierins');
 export const devicelistgeochange_geotreemenu = createAction('devicelistgeochange_geotreemenu');
 export const devicelistgeochange_geotreemenu_refreshtree = createAction('devicelistgeochange_geotreemenu_refreshtree');
 
-//每秒发送一次请求
-export const serverpush_devicegeo_sz_request = createAction('serverpush_devicegeo_sz_request');
-export const serverpush_devicegeo_sz_result = createAction('serverpush_devicegeo_sz_result');
-export const serverpush_alarm_sz_request =  createAction('serverpush_alarm_sz_request');
-export const serverpush_alarm_sz_result =  createAction('serverpush_alarm_sz_result');
 
-export const start_serverpush_devicegeo_sz= createAction('start_serverpush_devicegeo_sz');
-export const stop_serverpush_devicegeo_sz= createAction('stop_serverpush_devicegeo_sz');
-
-export const start_serverpush_alarm_sz = createAction('start_serverpush_alarm_sz');
-export const stop_serverpush_alarm_sz= createAction('stop_serverpush_alarm_sz');
-
-export const serverpush_alarm =  createAction('serverpush_alarm');
+export const serverpush_device =  createAction('serverpush_device');
 
 //设置报警信息已读
 export const setalarmreaded_request= createAction('setalarmreaded_request');

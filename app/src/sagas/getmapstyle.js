@@ -8,6 +8,7 @@ import {bridge_deviceinfo_pop,bridge_deviceinfo_popcluster} from './datapiple/br
 import {ui_btnclick_devicemessage} from '../actions';
 import {getdevicestatus_alaramlevel} from '../util/getdeviceitemstatus';
 import {createInfoWindow_popinfo,createInfoWindow_poplistinfo} from './mapmain_infowindow';
+import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 //地图上点图标的样式【图标类型】
 
 
@@ -89,9 +90,9 @@ const getpop_device =({deviceitem,kvlist})=>{
   let fields = [];
   lodashmap(kvlist,(v)=>{
     const fieldvalue = get(deviceitem,v.name,'');
-    const unit = get(deviceitem,v.unit,'');
+    const unit = get(v,'unit','');
     let systemflag = 0;
-    if(v.name === 'formattedAddress'){
+    if(v.name === 'formattedAddress' || v.name === 'alarmtxtstat'){
       systemflag = 1;
     }
     fields.push({
@@ -166,8 +167,34 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
     // };
 }
 
-export const getimageicon = (item)=>{
+
+export const getimageicon_isonline = (item,SettingOfflineMinutes)=>{
   //这里根据不同item显示不同图标
+  const isonline = getdevicestatus_isonline(item,SettingOfflineMinutes);
+  const icon_car0 = `${process.env.PUBLIC_URL}/images/icon_car0.png`;
+  const icon_car1 = `${process.env.PUBLIC_URL}/images/icon_car1.png`;
+  const icon_car2 = `${process.env.PUBLIC_URL}/images/icon_car2.png`;
+  const icon_car3 = `${process.env.PUBLIC_URL}/images/icon_car3.png`;
+  const warninglevel = getdevicestatus_alaramlevel(item);
+  let curpng = icon_car0;
+  if(warninglevel === '高'){
+    curpng = icon_car1;
+  }
+  else if(warninglevel === '中'){
+    curpng = icon_car2;
+  }
+  else if(warninglevel === '低'){
+    curpng = icon_car3;
+  }
+  return {iconname:curpng,isonline};
+}
+
+
+export const getimageicon = (item,SettingOfflineMinutes)=>{
+  //这里根据不同item显示不同图标
+  if(!getdevicestatus_isonline(item,SettingOfflineMinutes)){
+    return `${process.env.PUBLIC_URL}/images/icon_caroffline.png`;
+  }
   const icon_car0 = `${process.env.PUBLIC_URL}/images/icon_car0.png`;
   const icon_car1 = `${process.env.PUBLIC_URL}/images/icon_car1.png`;
   const icon_car2 = `${process.env.PUBLIC_URL}/images/icon_car2.png`;

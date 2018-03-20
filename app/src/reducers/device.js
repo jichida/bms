@@ -181,6 +181,16 @@ const device = createReducer({
   },
   [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
     const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+    const deviceids = [];
+    map(g_devicesdb,(deviceitem)=>{
+      if(!deviceitem.locz){
+        deviceids.push(deviceitem.DeviceId);
+      }
+    });
+    gmap_acode_devices[2] = deviceids;
+    gmap_acode_treecount[2] = {
+      count_total:deviceids.length
+    }
     return {...state,
       g_devicesdb:{...g_devicesdb},
       gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
@@ -188,40 +198,69 @@ const device = createReducer({
   [mapmain_areamountdevices_result]:(state,payload)=>{
     const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
     let datatreeloc = state.datatreeloc;
-    let findandsettreenodedevice = (node)=>{
-       let retnode = node;
-       if(node.adcode === adcode){
-         return retnode;
-       }
-       if(!!node.children){
-         for(let i = 0; i<node.children.length ;i++){
-           const subnode = node.children[i];
-           let tmpnode = findandsettreenodedevice(subnode);
-           if(!!tmpnode){
-             //<---
-             let children = [];
-             map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
-               children.push({
-                 type:'device',
-                 loading:false,
-                 name:deviceid,
-                 device:g_devicesdb[deviceid]
+    if(adcode !== 2){
+      const findandsettreenodedevice = (node)=>{
+         let retnode = node;
+         if(node.adcode === adcode){
+           return retnode;
+         }
+         if(!!node.children){
+           for(let i = 0; i<node.children.length ;i++){
+             const subnode = node.children[i];
+             let tmpnode = findandsettreenodedevice(subnode);
+             if(!!tmpnode){
+               //<---
+               let children = [];
+               map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
+                 children.push({
+                   type:'device',
+                   loading:false,
+                   name:deviceid,
+                   device:g_devicesdb[deviceid]
+                 });
                });
-             });
-             tmpnode.children = [...children];
+               tmpnode.children = [...children];
 
+             }
            }
          }
+         return null;
        }
-       return null;
-     }
-     findandsettreenodedevice(datatreeloc);
-     return {...state,g_devicesdb,datatreeloc,gmap_acode_devices,gmap_acode_treecount};
+       findandsettreenodedevice(datatreeloc);
+    }
+    else{
+      let children1 = datatreeloc.children[1];
+      let children = [];
+      map(g_devicesdb,(deviceitem)=>{
+        if(!deviceitem.locz){
+          children.push({
+            type:'device',
+            loading:false,
+            name:deviceitem.DeviceId,
+            device:deviceitem
+          });
+        }
+      });
+      children1.children = children;
+      datatreeloc.children[1] = {...children1};
+    }
+    return {...state,g_devicesdb,datatreeloc,gmap_acode_devices,gmap_acode_treecount};
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
      const {datatree} = get_initgeotree();
      let datatreeloc = {...datatree};
+    //  datatreeloc.children[1].children = [];
+    //  map(g_devicesdb,(deviceitem)=>{
+    //    if(!deviceitem.locz){
+    //      datatreeloc.children[1].children.push({
+    //        type:'device',
+    //        loading:false,
+    //        name:deviceitem.DeviceId,
+    //        device:deviceitem
+    //      });
+    //    }
+    //  });
      return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
@@ -272,6 +311,13 @@ const device = createReducer({
      datatreeloc.toggled = true;
      datatreeloc.active = false;
      datatreeloc.loading = false;
+     datatreeloc.children[0].toggled = true;
+     datatreeloc.children[0].active = false;
+     datatreeloc.children[0].loading = false;
+     console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
+    //  datatreeloc.children[1].toggled = true;
+    //  datatreeloc.children[1].active = false;
+    //  datatreeloc.children[1].loading = false;
      return {...state,datatreeloc};
   },
   [querydevicegroup_result]:(state,payload)=>{
