@@ -11,11 +11,12 @@ const dbh_alarm =(datasin,callbackfn)=>{
     return;
   }
   //去重
-  const datas = _.uniqBy(datasin, (o)=>{
-    return `${o.DeviceId}_${o.DataTime}`;
+  const datas = _.uniqWith(datasin, (a,b)=>{
+    return `${a.DeviceId}_${a.DataTime}` === `${b.DeviceId}_${b.DataTime}`;
   });
 
   if(datas.length < datasin.length){
+    debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin.length)}`);
     debug_alarm(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
   }
   //
