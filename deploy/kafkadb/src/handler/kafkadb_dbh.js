@@ -33,12 +33,12 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         }
       });
       _.map(allresult['historydevice'],(o)=>{
-        if(!!devicealarmstat[`${o.DeviceId}_${DataTime}`]){
+        if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
           o.alarmtxtstat = devicealarmstat[o.DeviceId];
         }
       });
       _.map(allresult['alarmraw'],(o)=>{
-        if(!!devicealarmstat[`${o.DeviceId}_${DataTime}`]){
+        if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
           o.alarmtxtstat = devicealarmstat[o.DeviceId];
         }
       });
