@@ -96,7 +96,7 @@ class TablePosition extends React.Component {
       itemnew[`最低温度CSC号`] = get(item,'BAT_T_Min_CSC','');
       itemnew[`显示用SOC`] = get(item,'BAT_User_SOC_HVS','');
       itemnew[`平均单体电压`] = get(item,'BAT_Ucell_Avg','');
-      itemnew[`报警状态`] = get(item,'alarmtxt','');
+      itemnew[`报警信息`] = get(item,'alarmtxtstat','');
 
       return itemnew;
     }
@@ -122,7 +122,7 @@ class TablePosition extends React.Component {
           '最低温度CSC号': "",
           '显示用SOC': "",
           '平均单体电压': "",
-          '报警状态': "",
+          '报警信息': "",
         };
         let columns = map(column_data, (data, index)=>{
           let column_item = {
