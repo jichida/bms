@@ -30,20 +30,20 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
         const devicekey = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}`;
         debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
-        
+
         if(!!devicealarmstat[devicekey]){
-          o.alarmtxtstat = devicealarmstat[o.DeviceId];
+          o.alarmtxtstat = devicealarmstat[devicekey];
         }
 
       });
       _.map(allresult['historydevice'],(o)=>{
         if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
-          o.alarmtxtstat = devicealarmstat[o.DeviceId];
+          o.alarmtxtstat = devicealarmstat[`${o.DeviceId}_${o.DataTime}`];
         }
       });
       _.map(allresult['alarmraw'],(o)=>{
         if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
-          o.alarmtxtstat = devicealarmstat[o.DeviceId];
+          o.alarmtxtstat = devicealarmstat[`${o.DeviceId}_${o.DataTime}`];
         }
       });
     }
