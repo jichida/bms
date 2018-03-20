@@ -27,7 +27,7 @@ window.clickfn_historyplay =(DeviceId)=>{
     store.dispatch(push(`/historyplay/${DeviceId}`));
 }
 window.clickfn_showhistory =(DeviceId)=>{
-    store.dispatch(push(`/reports/alarm/${DeviceId}`));
+    store.dispatch(push(`/reports/alarmdetail/${DeviceId}`));
 }
 window.clickfn_historydevice =(DeviceId)=>{
     store.dispatch(push(`/reports/historydevice/${DeviceId}`));

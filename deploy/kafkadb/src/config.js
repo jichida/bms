@@ -18,6 +18,7 @@ let config =  {
   kafka_pconfig2:{
   },
   mapdict:{},
+  SpecialCurDayTime:process.env.SpecialCurDayTime || '18:00:00',//默认是23:59:59
   NodeID:nodeid,
   logdir:process.env.logdir ||'../../dist/log',
   kcmsg:!!process.env.kcmsg?parseInt(process.env.kcmsg):10,

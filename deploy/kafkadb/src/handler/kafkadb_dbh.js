@@ -18,35 +18,27 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
     debug(`获取result个数:${result.length}`);
     if(!err && !!result){
       let devicealarmstat = {};
-      let listalarm = _.sortBy(result,(o)=>{
-        return -`${o.DeviceId}_${o.UpdateTime}`;
-      });
-      //按alarm的倒序排
-      debug(`按alarm的倒序排:${listalarm.length}`);
-      //再对alarmlist去重【deivceid]
-      listalarm = _.sortedUniqBy(listalarm,(o)=>{
-        return o.DeviceId;
-      });
-      debug(`再对alarmlist去重deivceid:${listalarm.length}`);
+
       _.map(listalarm,(alarm)=>{
         if(alarm.warninglevel !== ''){
-          devicealarmstat[alarm.DeviceId] = alarmutil.getalarmtxt(alarm);
+          devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmutil.getalarmtxt(alarm);
         }
       });
       debug(`所有设备统计信息:${JSON.stringify(devicealarmstat)}`);
       //<-------处理所有的allresult
       _.map(allresult['device'],(o)=>{
-        if(!!devicealarmstat[o.DeviceId]){
+        const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+        if(!!devicealarmstat[`${o.DeviceId}_${LastRealtimeAlarm_DataTime}`]){
           o.alarmtxtstat = devicealarmstat[o.DeviceId];
         }
       });
       _.map(allresult['historydevice'],(o)=>{
-        if(!!devicealarmstat[o.DeviceId]){
+        if(!!devicealarmstat[`${o.DeviceId}_${DataTime}`]){
           o.alarmtxtstat = devicealarmstat[o.DeviceId];
         }
       });
       _.map(allresult['alarmraw'],(o)=>{
-        if(!!devicealarmstat[o.DeviceId]){
+        if(!!devicealarmstat[`${o.DeviceId}_${DataTime}`]){
           o.alarmtxtstat = devicealarmstat[o.DeviceId];
         }
       });

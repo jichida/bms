@@ -2,6 +2,7 @@ const DBModels = require('../../handler/models.js');
 const _ = require('lodash');
 const moment = require('moment');
 const mongoose     = require('mongoose');
+const config = require('../../config');
 // let alarmrule_systemconfig = {
 //
 // }
@@ -151,6 +152,22 @@ const matchalarm = (alarmdata,callback)=>{
     }
 }
 
+const getCurDay = (DataTime)=>{
+  // const SpecialCurDayTime = moment(DataTime).format('YYYY-MM-DD') + config.SpecialCurDayTime;
+  // return moment(DataTime).format('YYYY-MM-DD');//SpecialCurDayTime;
+  const momentDatetime = moment(DataTime);
+  let CurDay = momentDatetime.format('YYYY-MM-DD');
+
+  const DataTimeCur = momentDatetime.format('HH:mm:ss');
+  if(DataTimeCur > config.SpecialCurDayTime){
+    //算明天
+    CurDay = momentDatetime.add(1,'days').format('YYYY-MM-DD');
+  }
+  //算今天
+  debug(`DataTime:${DataTime},统计入:${CurDay}中`);
+  return CurDay;
+}
+
 const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   //输入alarmdata,输出：经过处理的alarmdata
   // "AL_Trouble_Code" : 181
@@ -158,7 +175,7 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   let alarmdata = LastRealtimeAlarm.Alarm;
   // //console.log(`DeviceId==>${JSON.stringify(DeviceId)}`);
   // //console.log(`alarmdata==>${JSON.stringify(alarmdata)}`);
-  const CurDay = moment(LastRealtimeAlarm.DataTime).format('YYYY-MM-DD');
+  const CurDay = getCurDay(LastRealtimeAlarm.DataTime);
   if(!!alarmdata){
     let inc_data = {};
     _.map(alarmdata,(v,key)=>{
