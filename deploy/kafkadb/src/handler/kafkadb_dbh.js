@@ -28,9 +28,13 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
       //<-------处理所有的allresult
       _.map(allresult['device'],(o)=>{
         const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-        if(!!devicealarmstat[`${o.DeviceId}_${LastRealtimeAlarm_DataTime}`]){
+        const devicekey = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}`;
+        debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
+        
+        if(!!devicealarmstat[devicekey]){
           o.alarmtxtstat = devicealarmstat[o.DeviceId];
         }
+
       });
       _.map(allresult['historydevice'],(o)=>{
         if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
