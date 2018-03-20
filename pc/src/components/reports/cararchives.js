@@ -143,6 +143,7 @@ class TablePosition extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
+                      listtypeid = 'antdtablecarchives'
                       ref='antdtablecarchives'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}

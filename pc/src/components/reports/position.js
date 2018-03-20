@@ -68,7 +68,7 @@ class TablePosition extends React.Component {
       this.setState({query});
       window.setTimeout(()=>{
         //console.log(this.refs);
-        this.refs.antdtablealarm.getWrappedInstance().onRefresh();
+        this.refs.antdtableposition.getWrappedInstance().onRefresh();
       },0);
     }
 
@@ -124,7 +124,8 @@ class TablePosition extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
-                      ref='antdtablealarm'
+                      listtypeid = 'antdtableposition'
+                      ref='antdtableposition'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
                       pagenumber={30}

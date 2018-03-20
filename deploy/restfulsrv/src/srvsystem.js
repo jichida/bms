@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
 const debug = require('debug')('srvapp:pcpush');
+let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const getSystemLog = ()=>{
   PubSub.subscribe('userlog_data', ( msg, data )=>{
@@ -25,6 +26,8 @@ const getSystemLog = ()=>{
 }
 
 const checkDevice = (lasttime,callbackfn)=>{
+  debug(`start check device:${lasttime}`);
+
   const deviceModel = DBModels.DeviceModel;
   const fields = {
     'DeviceId':1,
@@ -33,7 +36,8 @@ const checkDevice = (lasttime,callbackfn)=>{
     'LastHistoryTrack.GPSTime':1,
     'warninglevel':1,
     'LastRealtimeAlarm.DataTime':1,
-    'alarmtxtstat':1
+    'alarmtxtstat':1,
+    'UpdateTime':1
   };
   deviceModel.find({
     UpdateTime:{
@@ -43,15 +47,15 @@ const checkDevice = (lasttime,callbackfn)=>{
 }
 
 const intervalCheckDevice =()=>{
-  let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
+
 
   setInterval(()=>{
     checkDevice(lasttime,(err,result)=>{
       if(!err && !!result){
-        _.map(result,(alarm)=>{
-          lasttime = alarm.UpdateTime;
-          PubSub.publish(`${config.pushdevicetopic}.${alarm.DeviceId}`,alarm);
-          debug(`push device:${alarm.DeviceId} alamdata`);
+        _.map(result,(device)=>{
+          lasttime = device.UpdateTime;
+          PubSub.publish(`${config.pushdevicetopic}.${device.DeviceId}`,device);
+          debug(`push device:${device.DeviceId} device`);
         });
       }
     });

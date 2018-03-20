@@ -162,7 +162,7 @@ class TableAlarm extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
-                      listtypeiddata = 'alarm'
+                      listtypeid = 'antdtablealarm'
                       usecache = {!!g_querysaved}
                       ref='antdtablealarm'
                       onItemConvert={this.onItemConvert.bind(this)}

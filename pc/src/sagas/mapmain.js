@@ -63,7 +63,7 @@ import get from 'lodash.get';
 import includes from 'lodash.includes';
 import filter from 'lodash.filter';
 // import moment from 'moment';
-// import coordtransform from 'coordtransform';
+import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
 import {getpopinfowindowstyle,getlistpopinfowindowstyle,getimageicon} from './getmapstyle';
 // import jsondataareas from '../util/areas.json';
@@ -1131,9 +1131,31 @@ export function* createmapmainflow(){
     yield takeLatest(`${serverpush_device}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
-      let deviceitem = payload;
+      let deviceinfo = payload;
       try{
-        g_devicesdb[deviceitem.DeviceId] = deviceitem;
+        if(!!deviceinfo){
+          let isget = true;
+          const LastHistoryTrack = deviceinfo.LastHistoryTrack;
+          if (!LastHistoryTrack) {
+              isget = false;
+          }
+          else{
+            if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+              isget = false;
+            }
+          }
+          if(isget){
+            let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+            const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+            deviceinfo.locz = wgs84togcj02;
+          }
+
+          if(!!deviceinfo.locz){
+            const addr = yield call(getgeodata,deviceinfo);
+            deviceinfo = {...deviceinfo,...addr};
+          }
+        }
+        g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
         yield put(devicelistgeochange_distcluster({}));
         // yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));

@@ -69,7 +69,7 @@ class TableAlarmDetail extends React.Component {
       this.setState({query});
       window.setTimeout(()=>{
         //console.log(this.refs);
-        this.refs.antdtablealarm.getWrappedInstance().onRefresh();
+        this.refs.antdtablealarmdetail.getWrappedInstance().onRefresh();
       },0);
     }
     onItemConvert(item){
@@ -149,9 +149,9 @@ class TableAlarmDetail extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
-                      listtypeiddata = 'alarmdetail'
+                      listtypeid = 'antdtablealarmdetail'
                       usecache = {!!g_querysaved}
-                      ref='antdtablealarm'
+                      ref='antdtablealarmdetail'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
                       pagenumber={30}
