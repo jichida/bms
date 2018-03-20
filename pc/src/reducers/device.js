@@ -181,15 +181,15 @@ const device = createReducer({
   },
   [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
     const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-    const data = [];
+    const deviceids = [];
     map(g_devicesdb,(deviceitem)=>{
       if(!deviceitem.locz){
-        data.push(deviceitem);
+        deviceids.push(deviceitem.DeviceId);
       }
     });
-    gmap_acode_devices[2] = data;
+    gmap_acode_devices[2] = deviceids;
     gmap_acode_treecount[2] = {
-      count_total:data.length
+      count_total:deviceids.length
     }
     return {...state,
       g_devicesdb:{...g_devicesdb},
