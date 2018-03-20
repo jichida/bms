@@ -831,7 +831,7 @@ export function* createmapmainflow(){
         const listitem = yield call(getdevicelist,list);
         if(listitem.length === 1){
           //1
-          g_devicesdb[listitem[0].DeviceId] = listitem[0];
+          // g_devicesdb[listitem[0].DeviceId] = listitem[0];
           //地图缩放到最大
           if(window.amapmain.getZoom() !== maxzoom){
             //不是最大时候才放大，否则会陷入一个循环两次的问题
@@ -874,10 +874,10 @@ export function* createmapmainflow(){
         const {payload:{list}} = yield take(`${querydeviceinfo_list_result}`);
         //
         const listitem = yield call(getdevicelist,list);
-
-        lodashmap(listitem,(item)=>{
-          g_devicesdb[item.DeviceId] = item;
-        });
+        //
+        // lodashmap(listitem,(item)=>{
+        //   g_devicesdb[item.DeviceId] = item;
+        // });
 
         //地图缩放到最大
         //yield put(md_mapmain_setzoomlevel(maxzoom));

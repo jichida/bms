@@ -81,7 +81,7 @@ class Page extends React.Component {
             deviceid = '';
           }
           this.state = {
-            startDate:moment().subtract(5, 'hours'),
+            startDate:moment(moment().format('YYYY-MM-DD 00:00:00')),//moment().subtract(5, 'hours'),
             endDate:moment(),
             deviceid,
             speed: 60,

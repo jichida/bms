@@ -55,26 +55,26 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   alarminfonew[`报警时间`] = alarmrawinfo[`DataTime`];
   alarminfonew[`报警等级`] = alarmrawinfo[`warninglevel`];
 
-  let alarminforawtmp = _.clone(alarmrawinfo);
-  let rest = _.omit(alarminforawtmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
+  // let alarminforawtmp = _.clone(alarmrawinfo);
+  // let rest = _.omit(alarminforawtmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
   // //console.log(`rest===>${JSON.stringify(rest)}`);
   // let warninglevelmap = [
   //   '无','低','中','高'
   // ];
-  _.map(rest,(v,alarmfield)=>{
-    if(alarmfield === 'AL_Trouble_Code'){
-      alarmtxt += `F[${v}]`;
-    }
-    if(_.startsWith(alarmfield, 'AL_')){
-      if(!!mapdict[alarmfield]){
-        //  if(v>= 0 && v<= 3){
-          alarmtxt += `${mapdict[alarmfield].showname}`;
-        //  }
-      }
-    }
-  });
+  // _.map(rest,(v,alarmfield)=>{
+  //   if(alarmfield === 'AL_Trouble_Code'){
+  //     alarmtxt += `F[${v}]`;
+  //   }
+  //   if(_.startsWith(alarmfield, 'AL_')){
+  //     if(!!mapdict[alarmfield]){
+  //       //  if(v>= 0 && v<= 3){
+  //         alarmtxt += `${mapdict[alarmfield].showname}`;
+  //       //  }
+  //     }
+  //   }
+  // });
 
-  alarminfonew[`报警信息`] = alarmtxt;
+  alarminfonew[`报警信息`] = alarmrawinfo[`alarmtxtstat`];
   //console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
   return alarminfonew;
 }
