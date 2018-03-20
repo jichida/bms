@@ -3,6 +3,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const mongoose     = require('mongoose');
 const config = require('../../config');
+const debug = require('debug')('kafka');
 // let alarmrule_systemconfig = {
 //
 // }
