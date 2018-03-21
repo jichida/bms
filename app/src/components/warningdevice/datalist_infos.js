@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 // import { withRouter } from 'react-router-dom';
 import "../../css/antd.min.css";
 import {
-  callthen,uireport_searchalarm_request,uireport_searchalarm_result
+  callthen,uireport_searchdevice_request,uireport_searchdevice_result
 } from '../../sagas/pagination';
 import InfinitePage from '../controls/listview';
 
@@ -62,7 +62,7 @@ class Page extends React.Component {
             pagenumber={20}
             updateContent={this.updateContent}
             queryfun={(payload)=>{
-              return callthen(uireport_searchalarm_request,uireport_searchalarm_result,payload);
+              return callthen(uireport_searchdevice_request,uireport_searchdevice_result,payload);
             }}
             listheight={window.innerHeight-58-66}
             query={this.props.query}

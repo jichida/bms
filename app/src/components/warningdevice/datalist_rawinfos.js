@@ -3,14 +3,14 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import Table from 'antd/lib/table';
-import Icon  from 'antd/lib/icon';
-import filter from 'lodash.filter';
-import sortBy from 'lodash.sortby';
-import map from 'lodash.map';
-import Searchimg from '../../img/13.png';
-import Footer from "../index/footer.js";
-import { withRouter } from 'react-router-dom';
+// import Table from 'antd/lib/table';
+// import Icon  from 'antd/lib/icon';
+// import filter from 'lodash.filter';
+// import sortBy from 'lodash.sortby';
+// import map from 'lodash.map';
+// import Searchimg from '../../img/13.png';
+// import Footer from "../index/footer.js";
+// import { withRouter } from 'react-router-dom';
 import "../../css/antd.min.css";
 import {ui_resetsearch} from '../../actions';
 import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
@@ -64,8 +64,8 @@ class Page extends React.Component {
                 >
                 {/* { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> } */}
                 {LevelDiv}
-                <span className="warningtext">{item["报警信息"]}</span>
-                <span className="time">{moment(item["报警时间"]).format("YYYY-MM-DD H:mm")}</span>
+                <span className="warningtext">{moment(item["报警时间"]).format("YYYY-MM-DD H:mm")}</span>
+                <span className="time">{item["报警信息"]}</span>
             </div>
         );
     }
@@ -75,8 +75,8 @@ class Page extends React.Component {
         <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
         <div className="datalist_rawinfos_tt">
             <span>等级</span>
-            <span className="c">信息</span>
-            <span>时间</span>
+            <span className="c">时间</span>
+            <span>信息</span>
         </div>
         <InfinitePage
             usecache={this.props.usecachealarm}

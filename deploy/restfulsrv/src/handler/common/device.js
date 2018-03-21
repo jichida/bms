@@ -52,6 +52,53 @@ const debug = require('debug')('srvapp:device');
 //     return [result.longitude,result.latitude];
 // };
 
+const getalarmfromdevice = (device)=>{
+  let alarminfo = {
+    "key" : _.get(device,'DeviceId',''),
+    "车辆ID" : _.get(device,'DeviceId',''),
+    "报警时间" : _.get(device,'LastRealtimeAlarm.DataTime',''),
+    "报警等级" : _.get(device,'warninglevel',''),
+    "报警信息" : _.get(device,'alarmtxtstat',''),
+  };
+  return alarminfo;
+}
+exports.uireport_searchdevice =  (actiondata,ctx,callback)=>{
+  // "key" : "",
+  // "车辆ID" : "",
+  // "报警时间" : "",
+  // "报警等级" : "",
+  // "报警信息" : "绝缘故障",
+  // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
+  const deviceModel = DBModels.DeviceModel;
+  let query = actiondata.query || {};
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
+      query.DeviceId = {'$in':deviceIds};
+    }
+    actiondata.options = actiondata.options || {};
+    actiondata.options.lean = true;
+    deviceModel.paginate(query,actiondata.options,(err,result)=>{
+      if(!err){
+        // result = JSON.parse(JSON.stringify(result));
+        let docs = [];
+        _.map(result.docs,(record)=>{
+          docs.push(getalarmfromdevice(record));
+        });
+        result.docs = docs;
+        callback({
+          cmd:'uireport_searchdevice_result',
+          payload:{result}
+        });
+      }
+      else{
+        callback({
+          cmd:'common_err',
+          payload:{errmsg:err.message,type:'uireport_searchdevice'}
+        });
+      }
+    });
+  });
+}
 
 exports.querydevicegroup= (actiondata,ctx,callback)=>{
   let devicegroupModel = DBModels.DeviceGroupModel;

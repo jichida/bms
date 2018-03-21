@@ -61,6 +61,7 @@ class Page extends React.Component {
         query.DeviceId = deviceid;
       }
 
+      query.warninglevel = {$in:['高','中','低']}
       if(warninglevel !== -1){
         if(warninglevel === 0){
           query.warninglevel = '高';

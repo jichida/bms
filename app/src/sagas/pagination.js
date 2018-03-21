@@ -9,6 +9,8 @@ const synccallreq = createAction('synccallreq');
 export const ui_searchdevice_request = createAction('ui_searchdevice_request');
 export const ui_searchdevice_result = createAction('ui_searchdevice_result');
 
+export const uireport_searchdevice_request = createAction('uireport_searchdevice_request');
+export const uireport_searchdevice_result = createAction('uireport_searchdevice_result');
 export const uireport_searchalarm_request = createAction('uireport_searchalarm_request');
 export const uireport_searchalarm_result = createAction('uireport_searchalarm_result');
 export const uireport_searchalarmdetail_request = createAction('uireport_searchalarmdetail_request');
