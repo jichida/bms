@@ -23,8 +23,8 @@ import Selcart from './selcart';
 
 import Systems from './system';
 import Deviceinfo from './mydevice/deviceinfo';
-import Workorder from './workorder';
-import Workorderinfo from './workorder/info';
+// import Workorder from './workorder';
+// import Workorderinfo from './workorder/info';
 import Usercenter from './user';
 import Setting from './index/setting';
 import Settings from './settings';
@@ -104,7 +104,7 @@ class AppRoot extends React.Component {
                     <Route path="/setting" component={requireAuthentication(Setting)} />
                     <Route path="/settinguser" component={requireAuthentication(Settinguser)} />
                     <Route path="/settingmessage" component={requireAuthentication(Settingmessage)} />
-                    <Route path="/alarminfo/:alarmid" component={requireAuthentication(Alaraminfo)} />
+                    <Route path="/alarminfo/:deviceid" component={requireAuthentication(Alaraminfo)} />
                     <Route path="/alarmrawinfos/:deviceid" component={requireAuthentication(Alaramrawinfos)} />
                     <Route path="/selcart/:prevuri/:deviceid" component={requireAuthentication(Selcart)} />
                     <Route path="/settings" component={requireAuthentication(Settings)} />

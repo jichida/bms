@@ -3,14 +3,14 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import Table from 'antd/lib/table';
-import Icon  from 'antd/lib/icon';
-import filter from 'lodash.filter';
-import sortBy from 'lodash.sortby';
-import map from 'lodash.map';
-import Searchimg from '../../img/13.png';
-import Footer from "../index/footer.js";
-import { withRouter } from 'react-router-dom';
+// import Table from 'antd/lib/table';
+// import Icon  from 'antd/lib/icon';
+// import filter from 'lodash.filter';
+// import sortBy from 'lodash.sortby';
+// import map from 'lodash.map';
+// import Searchimg from '../../img/13.png';
+// import Footer from "../index/footer.js";
+// import { withRouter } from 'react-router-dom';
 import "../../css/antd.min.css";
 import {
   callthen,uireport_searchalarm_request,uireport_searchalarm_result
@@ -43,7 +43,7 @@ class Page extends React.Component {
             <div
                 key={item._id}
                 className={`warningtypelist warningtype_${warningtext[item.warninglevel]}`}
-                onClick={this.rowClick.bind(this,item._id)}
+                onClick={this.rowClick.bind(this,item["车辆ID"])}
                 >
                 { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> }
                 <span>车辆: <br/>{item["车辆ID"]}</span>

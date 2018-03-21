@@ -17,10 +17,10 @@ let g_showdata = false;
 let g_usecachealarm = false;
 
 class Page extends React.Component {
-    constructor(props) {
-        super(props);
-        //1727202266
-    }
+    // constructor(props) {
+    //     super(props);
+    //     //1727202266
+    // }
 
     componentWillMount () {
       let deviceid =  this.props.match.params.deviceid;
@@ -87,4 +87,4 @@ const mapStateToProps = ({device,alarmpop}) => {
     return {carcollections,alaramraws};
 }
 
-export default connect(mapStateToProps)(Page);
+export default connect()(Page);

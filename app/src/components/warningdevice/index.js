@@ -4,28 +4,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import IconButton from 'material-ui/IconButton';
-import {grey900} from 'material-ui/styles/colors';
-import NavBar from "../tools/nav.js";
-import Map from './map';
+// import NavigationClose from 'material-ui/svg-icons/navigation/close';
+// import IconButton from 'material-ui/IconButton';
+// import {grey900} from 'material-ui/styles/colors';
+// import NavBar from "../tools/nav.js";
+// import Map from './map';
 import "./map.css";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Searchimg from '../../img/13.png';
 import Searchimg2 from '../../img/14.png';
-import Searchimg3 from '../../img/15.png';
-import Searchimg4 from '../../img/23.png';
+// import Searchimg3 from '../../img/15.png';
+// import Searchimg4 from '../../img/23.png';
 import Car from '../../img/5.png';
 
 import Footer from "../index/footer.js";
 import Datalist from "./datalist_infos";
 
-import DatePicker from 'react-mobile-datepicker';
-import moment from 'moment';
+// import DatePicker from 'react-mobile-datepicker';
+// import moment from 'moment';
 
-let g_showdata = true;
-let g_startDate,g_endDate,g_warninglevel;
+let g_showdata = false;
+let g_warninglevel;
 let g_usecachealarm = false;
 
 class Page extends React.Component {
@@ -38,19 +38,13 @@ class Page extends React.Component {
         this.state = {
             warninglevel:g_warninglevel || -1,
             showdata : g_showdata,
-            time: new Date(),
-            isOpen: false,
-            seltype : 0,
-            startDate:g_startDate || moment(moment().format('YYYY-MM-DD 00:00:00')),
-            endDate:g_endDate || moment(),
-            mindata : new Date(1970, 0, 1),
             deviceid,
         };
     }
 
     componentWillMount () {
-      const {startDate,endDate,warninglevel,deviceid} = this.state;
-      let query = this.getquery({startDate,endDate,warninglevel,deviceid});
+      const {warninglevel,deviceid} = this.state;
+      let query = this.getquery({warninglevel,deviceid});
       this.setState({
         query
       });
@@ -58,25 +52,16 @@ class Page extends React.Component {
     componentDidMount () {
       g_showdata = true;
       g_usecachealarm = false;
-      g_startDate = null;
-      g_endDate = null;
       g_warninglevel = null;
     }
 
-    getquery({startDate,endDate,warninglevel,deviceid}){
+    getquery({warninglevel,deviceid}){
       let query = {};
-      if(deviceid != ''){
+      if(deviceid !== ''){
         query.DeviceId = deviceid;
       }
-      query.DataTime = {
-        $gte: startDate.format('YYYY-MM-DD HH:mm:ss'),
-        $lte: endDate.format('YYYY-MM-DD HH:mm:ss'),
-      }
-      // query.queryalarm = {
-      //   startDate:startDate.format('YYYY-MM-DD HH:mm:ss'),
-      //   endDate:endDate.format('YYYY-MM-DD HH:mm:ss'),
-      // };
-      if(warninglevel != -1){
+
+      if(warninglevel !== -1){
         if(warninglevel === 0){
           query.warninglevel = '高';
         }
@@ -91,8 +76,8 @@ class Page extends React.Component {
     }
     onSearch(v){
 
-      const {startDate,endDate,warninglevel,deviceid} = this.state;
-      let query = this.getquery({startDate,endDate,warninglevel,deviceid});
+      const {warninglevel,deviceid} = this.state;
+      let query = this.getquery({warninglevel,deviceid});
 
       this.setState({
         query
@@ -114,71 +99,18 @@ class Page extends React.Component {
         warninglevel:value
       });
     }
-    seltype=(v)=>{
-
-        this.setState({seltype : v});
-        this.onSearch(v);
-
-    }
-    handleClick = (v) => {
-        this.setState({
-            isOpen: true,
-            seltype : v
-        });
-
-        //选中当前时间
-        if(v === 0){
-          this.setState({
-              time: new Date(this.state.startDate)
-          });
-        }
-        else{
-          this.setState({
-              time: new Date(this.state.endDate)
-          });
-        }
-        //限制时间
-        if(v===1){
-            this.setState({
-                mindata: new Date(this.state.startDate)
-            });
-        }else{
-            this.setState({
-                mindata: new Date(1970, 0, 1)
-            });
-        }
-    }
-    handleCancel = () => {
-        this.setState({ isOpen: false });
-
-    }
-    showset =()=>{
-        // console.log("sssss")
-        this.setState({ showset: !this.state.showset });
-    }
-    handleSelect = (time) => {
-        const t = moment(time);
-        if(this.state.seltype===0){
-            this.setState({ startDate: t, isOpen: false});
-        }
-        if(this.state.seltype===1){
-            this.setState({ endDate: t, isOpen: false });
-        }
-    }
 
     onClickRow = (id)=>{
       g_showdata = this.state.showdata;
       g_usecachealarm = true;
-      g_startDate = this.state.startDate;
-      g_endDate = this.state.endDate;
       g_warninglevel = this.state.warninglevel;
       this.props.history.push(`/alarminfo/${id}`);
     }
     render() {
 
-        const formstyle={width:"100%",flexGrow:"1"};
-        const textFieldStyle={width:"100%",flexGrow:"1"};
-        const height =  window.innerHeight - 65 - 209;
+        // const formstyle={width:"100%",flexGrow:"1"};
+        // const textFieldStyle={width:"100%",flexGrow:"1"};
+        // const height =  window.innerHeight - 65 - 209;
         return (
             <div className="playbackPage AppPage warningmessagePage"
                 style={{
@@ -190,7 +122,7 @@ class Page extends React.Component {
                 >
                 <div className="navhead">
                     <span className="title" style={{paddingLeft : "30px"}}>报警信息</span>
-                    <a className="searchlnk" onClick={()=>{this.setState({showdata: !this.state.showdata})}} ><img src={Searchimg} /></a>
+                    <a className="searchlnk" onClick={()=>{this.setState({showdata: !this.state.showdata})}} ><img src={Searchimg} alt=""/></a>
                 </div>
                 {
                     this.state.showdata &&
@@ -199,19 +131,17 @@ class Page extends React.Component {
                         <div className="formlist ">
                             <div className="seltimecontent selcarts" onClick={()=>{
                               g_showdata = this.state.showdata;
-                              g_startDate = this.state.startDate;
-                              g_endDate = this.state.endDate;
                               g_warninglevel = this.state.warninglevel;
                               g_usecachealarm = true;
                               this.props.history.replace(`/selcart/warningdevice/${this.props.match.params.deviceid}`)
                             }}>
-                                <img src={Car} width={30} />
+                                <img src={Car} width={30} alt=""/>
                                 {this.state.deviceid !== ''?
                                 <span className="txt2">车辆信息:{`${this.state.deviceid}`}</span>:
                                 <span className="txt2">选择车辆</span>}
                             </div>
                             <div className="li" style={{borderBottom: "1px solid #EEE"}}>
-                                <img src={Searchimg2} width={26} />
+                                <img src={Searchimg2} width={26} alt=""/>
                                 <SelectField
                                     value={this.state.warninglevel}
                                     onChange={this.onChangeWarninglevel.bind(this)}
@@ -226,24 +156,6 @@ class Page extends React.Component {
                                     <MenuItem value={1} primaryText="中" />
                                     <MenuItem value={2} primaryText="低" />
                                 </SelectField>
-                            </div>
-                            <div
-                                className="seltimecontent"
-                                onClick={this.handleClick.bind(this, 0)}
-                                style={{paddingRight: "39px"}}
-                                >
-                                <img src={Searchimg3} width={26} />
-                                <span>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
-                            </div>
-                            <div
-                                className="seltimecontent"
-                                onClick={this.handleClick.bind(this, 1)}
-                                style={{
-                                  marginBottom: "10px",
-                                  paddingRight: "39px"
-                                }}>
-                                <img src={Searchimg3} width={26} />
-                                <span>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
                             </div>
 
                             <RaisedButton
@@ -267,16 +179,6 @@ class Page extends React.Component {
                   onClickRow={this.onClickRow}
                 />
                 <Footer sel={1} />
-                <DatePicker
-                    value={this.state.time}
-                    isOpen={this.state.isOpen}
-                    onSelect={this.handleSelect}
-                    onCancel={this.handleCancel}
-                    min={this.state.mindata}
-                    max={new Date()}
-                    showFormat='YYYY/MM/DD hh:mm'
-                    dateFormat={['YY年', 'MM月', 'DD日', 'hh时', 'mm分']}
-                    theme="ios" />
             </div>
         );
     }
