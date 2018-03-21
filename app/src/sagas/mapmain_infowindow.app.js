@@ -4,7 +4,7 @@ import Car_online from "../img/1.png";
 import Car_outline from "../img/3.png";
 import Point_list_img from "../img/13.png";
 
-
+import lodashget from 'lodash.get';
 
 const createInfoWindow_popinfo =(data)=> {
 
@@ -12,7 +12,12 @@ const createInfoWindow_popinfo =(data)=> {
 
     let contenthtml = "<ul>";
     map(data.fields, (v,i)=>{
-        return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${v.fieldvalue}</span></li>`;
+      let showvalue = v.fieldvalue;
+      let unit = lodashget(v,'unit','');
+      if(unit !== ''){
+        showvalue = `${showvalue}${unit}`;
+      }
+      return contenthtml = `${contenthtml}<li key=${i} class='show_${v.systemflag}'><span class='t'>${v.showname}</span><span>${showvalue}</span></li>`;
     })
     contenthtml = `${contenthtml}</ul>`;
 
@@ -82,6 +87,7 @@ const createInfoWindow_poplistinfo =(data)=> {
 
     let contenthtml = "<ul>";
     map(data, (v,i)=>{
+
         let dinfo = `
             <span>${v.fields[0].showname}:</span><span>${v.fields[0].fieldvalue}</span>
             <span>${v.fields[1].showname}:</span><span>${v.fields[1].fieldvalue}</span>`;

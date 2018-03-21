@@ -5,15 +5,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import map from 'lodash.map';
 import get from 'lodash.get';
-import Devicestar from "../../img/16.png";
-import Moresetting from "../../img/17.png";
-import Searchimg from '../../img/13.png';
-import Footer from "../index/footer.js";
+// import Devicestar from "../../img/16.png";
+// import Moresetting from "../../img/17.png";
+// import Searchimg from '../../img/13.png';
+// import Footer from "../index/footer.js";
 import {ui_sel_tabindex} from '../../actions';
 import Button  from 'antd/lib/button';
 import { ui_index_addcollection, ui_index_unaddcollection } from '../../actions';
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
 import Swiperchart from "./swiperchart";
+
 
 import {
     deviceinfoquerychart_request,
@@ -52,8 +53,9 @@ class Page extends React.Component {
             map(v.fieldslist,(fieldname)=>{
                 if(!!mapdict[fieldname]){
                     kv.push({
-                        name:mapdict[fieldname].showname,
-                        value:get(deviceitem,mapdict[fieldname].name,'')
+                        name:get(mapdict[fieldname],'showname',''),
+                        value:get(deviceitem,mapdict[fieldname].name,''),
+                        unit:get(mapdict[fieldname],'unit',''),
                     });
                 }
             });
@@ -84,7 +86,12 @@ class Page extends React.Component {
                                 <div className="tit">{item.groupname}</div>
                                 {
                                     map(item.kv,(i,k)=>{
-                                        return (<div key={k} className="li"><span>{`${i.name}`}</span><span>{`${i.value}`}</span></div>);
+                                        let showvalue = i.value;
+                                        let unit = get(i,'unit','');
+                                        if(unit !== ''){
+                                          showvalue = `${showvalue}${unit}`;
+                                        }
+                                        return (<div key={k} className="li"><span>{`${i.name}`}</span><span>{`${showvalue}`}</span></div>);
                                     })
                                 }
                             </div>
