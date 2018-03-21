@@ -42,10 +42,12 @@ class Page extends React.Component {
         return  (
             <div
                 key={item._id}
-                className={`warningtypelist warningtype_${warningtext[item.warninglevel]}`}
+                className={`warningtypelist warningtype_${warningtext[item["报警等级"]]}`}
                 onClick={this.rowClick.bind(this,item["车辆ID"])}
                 >
-                { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> }
+                <span className="warningtdtitle">
+                  <b className={`warningtype_${warningtext[item["报警等级"]]}`}>{item["报警等级"]}</b>
+                </span>
                 <span>车辆: <br/>{item["车辆ID"]}</span>
                 <span className="time">{item["报警时间"]}</span>
             </div>
@@ -66,7 +68,7 @@ class Page extends React.Component {
             }}
             listheight={window.innerHeight-58-66}
             query={this.props.query}
-            sort={{warninglevel: -1}}
+            sort={{'LastRealtimeAlarm.DataTime':-1,warninglevel: -1}}
         />
       </div>);
     }
