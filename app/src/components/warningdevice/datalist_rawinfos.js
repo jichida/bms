@@ -92,7 +92,7 @@ class Page extends React.Component {
             }}
             listheight={window.innerHeight-58-66}
             query={this.props.query}
-            sort={{warninglevel: -1}}
+            sort={{DataTime:-1}}
         />
       </div>);
         // return (

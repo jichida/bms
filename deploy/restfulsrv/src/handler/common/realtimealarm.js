@@ -46,7 +46,7 @@ const bridge_alarminfo = (alarminfo)=>{
 }
 
 const bridge_alarmrawinfo = (alarmrawinfo)=>{
-  const mapdict = config.mapdict;
+  // const mapdict = config.mapdict;
   //console.log(`alarminfo===>${JSON.stringify(alarmrawinfo)}`);
   let alarmtxt = '';
   let alarminfonew = {};
@@ -73,9 +73,9 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   //     }
   //   }
   // });
-
+  debug(`alarmtxtstat===>${alarmrawinfo[`alarmtxtstat`]}`)
   alarminfonew[`报警信息`] = alarmrawinfo[`alarmtxtstat`];
-  //console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
+  
   return alarminfonew;
 }
 exports.bridge_alarminfo = bridge_alarminfo;
