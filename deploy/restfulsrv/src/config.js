@@ -11,7 +11,7 @@ const config =  {
   logdir:process.env.logdir ||'../../dist/log',
   uploaddir:process.env.uploaddir ||'../../../uploader',
   uploadurl:'/uploader',
-
+  version:'1.0.0',
   expRequestMinutes:200,//2分钟之内
   maxAge:86400000,
   maxDistance:3,

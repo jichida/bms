@@ -22,7 +22,7 @@ mongoose.connect(config.mongodburl,{
 
   });
 
-debug(`rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
+debug(`version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
 debug(`issmsdebug:${config.issmsdebug}`);
 // const getpoint = (v)=>{
 //   return [v.Longitude,v.Latitude];
