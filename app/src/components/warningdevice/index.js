@@ -50,7 +50,7 @@ class Page extends React.Component {
       });
     }
     componentDidMount () {
-      g_showdata = true;
+      g_showdata = false;
       g_usecachealarm = false;
       g_warninglevel = null;
     }
