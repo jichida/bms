@@ -78,7 +78,7 @@ class Page extends React.Component {
         <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
         <div className="datalist_rawinfos_tt">
             <span>等级</span>
-            <span className="c">时间</span>
+            <span className="c">采集时间</span>
             <span>信息</span>
         </div>
         <InfinitePage

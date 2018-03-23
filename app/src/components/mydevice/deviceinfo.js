@@ -45,6 +45,7 @@ class Page extends React.Component {
                 isincollections = true;
             }
         });
+        console.log(g_devicesdb[deviceid]);
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
         map(mapdetailfields,(v)=>{
