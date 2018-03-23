@@ -1,0 +1,21 @@
+{
+  "name": "svrpushapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmsp node index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "jpush-sdk": "^3.4.5",
+    "lodash": "^4.17.5",
+    "moment": "^2.21.0",
+    "mongoose": "^4.13.8",
+    "mongoose-paginate": "^5.0.3",
+    "winston": "^2.4.1"
+  }
+}
