@@ -71,7 +71,7 @@ class Page extends React.Component {
                 <Datalist
                   usecachealarm={g_usecachealarm}
                   seltype={this.state.seltype}
-                  tableheight={window.innerHeight-58-65-50}
+                  tableheight={window.innerHeight-76-40}
                   query={this.state.query}
                   ref='alarmrawdataslist'
                   onClickRow={this.onClickRow}

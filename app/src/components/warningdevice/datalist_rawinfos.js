@@ -75,7 +75,7 @@ class Page extends React.Component {
     render() {
         console.log(`search alarm:${JSON.stringify(this.props.query)}`);
         return (
-        <div style={{height : `${window.innerHeight-58-66}px`, overflow:"hidden"}}>
+        <div style={{height : `${window.innerHeight-76}px`, overflow:"hidden"}}>
         <div className="datalist_rawinfos_tt">
             <span>等级</span>
             <span className="c">采集时间</span>
@@ -90,7 +90,7 @@ class Page extends React.Component {
             queryfun={(payload)=>{
               return callthen(uireport_searchalarmdetail_request,uireport_searchalarmdetail_result,payload);
             }}
-            listheight={window.innerHeight-58-66}
+            listheight={this.props.tableheight}
             query={this.props.query}
             sort={{DataTime:-1}}
         />

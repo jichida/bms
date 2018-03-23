@@ -95,6 +95,7 @@
 
 .AdminContent{
     flex-grow: 1;
+    height: 100px;
 }
 .datepicker .datepicker-scroll>li{
     font-size: 12px;

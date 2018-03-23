@@ -84,7 +84,7 @@ input,textarea {
 .navhead{
     display: flex;
     background: #5cbeaa;
-    padding: 20px 15px 8px 15px;
+    padding: 40px 15px 8px 15px;
     justify-content: flex-end;
     align-items: center;
     pointer-events: auto;
@@ -219,6 +219,8 @@ input,textarea {
 }
 .footerPage{
      pointer-events: auto;
+     z-index: 1000;
+     background: #FFF;
 }
 .footerPage ul{
     list-style: none;
@@ -427,7 +429,7 @@ input,textarea {
 }
 .playbackPage .set{
     position: fixed;
-    top: 58px;
+    top: 78px;
     width: 100%;
     bottom: 0;
     background: rgba(0,0,0,.1);
@@ -438,7 +440,7 @@ input,textarea {
     top:0;
     position: fixed;
     height: 208px;
-    top:58px;
+    top:78px;
     z-index: 1000;
 }
 .playbackPage .formlist{
