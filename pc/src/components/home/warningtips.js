@@ -520,7 +520,7 @@ class Page extends React.Component {
 
 //this.onClickMenu.bind(this,'low')
 Page = withRouter(Page);
-const mapStateToPropsTip = ({app,searchresult:{curallalarm,alarms},device:{g_devicesdb}}) => {
+const mapStateToPropsTip = ({app,searchresult:{curallalarm,alarms},device:{g_devicesdb},app:{SettingOfflineMinutes}}) => {
   const {modeview} = app;
 
    let count_online = 0;
@@ -532,7 +532,7 @@ const mapStateToPropsTip = ({app,searchresult:{curallalarm,alarms},device:{g_dev
    let count_orange = 0;
 
    lodashmap(g_devicesdb,(deviceitem)=>{
-     const isonline = getdevicestatus_isonline(deviceitem);
+     const isonline = getdevicestatus_isonline(deviceitem,SettingOfflineMinutes);
      const warninglevel = getdevicestatus_alaramlevel(deviceitem);
      if(isonline){
        count_online++;
