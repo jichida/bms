@@ -909,14 +909,21 @@ export function* createmapmainflow(){
           while( !distCluster){
             yield call(delay,2500);
           }
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
           //批量转换一次
           g_devicesdb = {};//清空，重新初始化
           // console.log(`clear g_devicesdb...restart g_devicesdb...`)
           let devicelistresult = yield call(getgeodatabatch,devicelist);
           const data = [];
+          let deviceidonlines = [];
           lodashmap(devicelistresult,(deviceitem)=>{
             if(!!deviceitem.locz){
               data.push(deviceitem);
+              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                deviceidonlines.push(deviceitem.DeviceId);
+              }
             }
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
           });
@@ -929,22 +936,26 @@ export function* createmapmainflow(){
           gmap_acode_treecount={};
 
 
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
-          });
+
           const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
           gmap_acode_treecount[1] = {//所有
             count_total:devicelistresult.length,
+            count_online:deviceidonlines.length,
           };
           const datanolocate = [];
+          deviceidonlines = [];
           lodashmap(g_devicesdb,(deviceitem)=>{
             if(!deviceitem.locz){
               datanolocate.push(deviceitem.DeviceId);
+              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                deviceidonlines.push(deviceitem.DeviceId);
+              }
             }
           });
           gmap_acode_devices[2] = datanolocate;
           gmap_acode_treecount[2] = {
-            count_total:datanolocate.length
+            count_total:datanolocate.length,
+            count_online:deviceidonlines.length,
           }
 
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
@@ -1046,13 +1057,13 @@ export function* createmapmainflow(){
     yield takeLatest(`${mapmain_seldistrict}`, function*(action_district) {
         let {payload:{adcodetop,forcetoggled}} = action_district;
         try{
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
-            const SettingOfflineMinutes =yield select((state)=>{
-              return get(state,'app.SettingOfflineMinutes',20);
-            });
 
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
             if(!!result){
@@ -1064,7 +1075,7 @@ export function* createmapmainflow(){
                 }
                 else{
                   //刷新树中的数据
-                  yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+                  yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
                 }
               }
             }
@@ -1085,14 +1096,19 @@ export function* createmapmainflow(){
           else if(adcodetop===2){
             // 未定位车辆特殊处理
             const data = [];
+            const deviceidonlines = [];
             lodashmap(g_devicesdb,(deviceitem)=>{
               if(!deviceitem.locz){
                 data.push(deviceitem);
+                if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                  deviceidonlines.push(deviceitem.DeviceId);
+                }
               }
             });
             gmap_acode_devices[2] = data;
             gmap_acode_treecount[2] = {
-              count_total:data.length
+              count_total:data.length,
+              count_online:deviceidonlines.length,
             }
             yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
           }
@@ -1218,7 +1234,7 @@ export function* createmapmainflow(){
             return get(state,'app.SettingOfflineMinutes',20);
           });
           const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
-          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
           //
 
           const getdevicestate = (state)=>{
@@ -1275,7 +1291,7 @@ export function* createmapmainflow(){
           //刷新树中数据
           //《----未定位的数据个数也要刷
 
-          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
 
           //
       }

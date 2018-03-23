@@ -8,7 +8,7 @@ import{
   mapmain_init_device,
   devicelistgeochange_geotreemenu_refreshtree,
   mapmain_areamountdevices_result,
-  mapmain_seldistrict,
+  // mapmain_seldistrict,
   mapmain_selgroup,
   mapmain_selgroup_deviceid,
   ui_changetreestyle,
@@ -19,13 +19,13 @@ import{
   set_treesearchlist,
   logout_result
 } from '../actions';
-import filter from 'lodash.filter';
+// import filter from 'lodash.filter';
 import map from 'lodash.map';
 import get from 'lodash.get';
-import groupBy from 'lodash.groupby';
-import {getadcodeinfo} from '../util/addressutil';
+// import groupBy from 'lodash.groupby';
+// import {getadcodeinfo} from '../util/addressutil';
 import {get_initgeotree} from '../util/treedata';
-
+import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 
 const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
 const initial = {
@@ -180,16 +180,34 @@ const device = createReducer({
     return {...state,g_devicesdb};
   },
   [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
-    const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+    const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes} = payload;
     const deviceids = [];
+    const deviceidonlines = [];
+
+    const alldeviceids = [];
+    const alldeviceidonlines = [];
+
     map(g_devicesdb,(deviceitem)=>{
+      const isonline = getdevicestatus_isonline(deviceitem,SettingOfflineMinutes);
       if(!deviceitem.locz){
         deviceids.push(deviceitem.DeviceId);
+        if(isonline){
+          deviceidonlines.push(deviceitem.DeviceId);
+        }
+      }
+      alldeviceids.push(deviceitem.DeviceId);
+      if(isonline){
+        alldeviceidonlines.push(deviceitem.DeviceId);
       }
     });
     gmap_acode_devices[2] = deviceids;
+    gmap_acode_treecount[1] = {
+      count_total:alldeviceids.length,
+      count_online:alldeviceidonlines.length,
+    }
     gmap_acode_treecount[2] = {
-      count_total:deviceids.length
+      count_total:deviceids.length,
+      count_online:deviceidonlines.length,
     }
     return {...state,
       g_devicesdb:{...g_devicesdb},
