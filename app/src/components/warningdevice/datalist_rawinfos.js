@@ -67,7 +67,7 @@ class Page extends React.Component {
                 >
                 {/* { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> } */}
                 {LevelDiv}
-                <span className="warningtext">{moment(item["报警时间"]).format("YYYY-MM-DD H:mm")}</span>
+                <span className="warningtext">{moment(item["报警时间"]).format("YYYY-MM-DD HH:mm:ss")}</span>
                 <span className="time">{item["报警信息"]}</span>
             </div>
         );
