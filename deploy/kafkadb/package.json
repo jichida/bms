@@ -12,7 +12,6 @@
   "dependencies": {
     "async": "^2.5.0",
     "debug": "^3.1.0",
-    "jpush-sdk": "^3.4.3",
     "moment": "^2.19.2",
     "mongoose": "^4.11.4",
     "mongoose-paginate": "^5.0.3",

@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_alarm = require('debug')('dbh:alarm');
 const async = require('async');
-const getalarmandpushapp = require('../getalarmandpushapp');
+
 
 const dbh_alarm =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -34,11 +34,6 @@ const dbh_alarm =(datasin,callbackfn)=>{
     );
   });
   async.parallel(asyncfnsz,(err,result)=>{
-      if(!err && !!result){
-        getalarmandpushapp(result,(err,r)=>{
-
-        });
-      }
       debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
       // debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);

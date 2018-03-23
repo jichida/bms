@@ -23,8 +23,6 @@ let config =  {
   logdir:process.env.logdir ||'../../dist/log',
   kcmsg:!!process.env.kcmsg?parseInt(process.env.kcmsg):10,
   partitionnumber:!!process.env.partitionnumber?parseInt(process.env.partitionnumber):48,
-  jpush_appkey:process.env.jpush_appkey || '630950d8101fe73d19d64aaf',
-  jpush_mastersecret:process.env.jpush_mastersecret || 'dd52bf9de919a2a53441fce3',
   kafka_pushalaramtopic_app:'bmspush.alarmapp',
   kafka_pushalaramtopic_pc:'bmspush.alarmpc',
   kafka_dbtopic_historydevices:'bmsdb.historydevices',
