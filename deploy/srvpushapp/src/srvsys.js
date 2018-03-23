@@ -26,6 +26,9 @@ const checkDevice = (lasttime,callbackfn)=>{
   deviceModel.find({
     UpdateTime:{
       $gte:lasttime
+    },
+    warninglevel:{
+      $in:['高','中','低']
     }
   }).select(fields).sort({UpdateTime:1}).lean().exec(callbackfn);
 }
