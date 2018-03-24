@@ -332,7 +332,7 @@ const device = createReducer({
      datatreeloc.children[0].toggled = true;
      datatreeloc.children[0].active = false;
      datatreeloc.children[0].loading = false;
-     console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
+    //  console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
     //  datatreeloc.children[1].toggled = true;
     //  datatreeloc.children[1].active = false;
     //  datatreeloc.children[1].loading = false;

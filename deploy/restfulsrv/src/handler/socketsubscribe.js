@@ -5,7 +5,7 @@ const realtimealarm = require('./common/realtimealarm');
 const debug = require('debug')('srvapp:pcpush');
 
 
-const pushusermessage = (socket,ctx,DeviceId,data)=>{
+const pushusermessage = (socket,ctx,data)=>{
   debug(`开始推送了,注意啊----->${JSON.stringify(data)}`);
 
   socket.emit('serverpush_device',data);
@@ -19,9 +19,9 @@ const usersubfn  = (socket,ctx)=>{
 
       const topicsz = msg.split('.');
 
-      if(_.startsWith(msg,config.pushdevicetopic) && topicsz.length === 2){
-          const DeviceId = topicsz[1];
-          pushusermessage(socket,ctx,DeviceId,data);
+      if(_.startsWith(msg,config.pushdevicetopic) && topicsz[1] === `${ctx.userid}`){
+          // const DeviceId = topicsz[1];
+          pushusermessage(socket,ctx,data);
       }
 
   };//for eachuser

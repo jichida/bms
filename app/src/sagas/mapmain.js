@@ -999,7 +999,7 @@ export function* createmapmainflow(){
           return state.carmap.zoomlevel;
         });
 
-        console.log(`md_mapmain_setzoomlevel===>zoomlevel:${zoomlevel},oldzoomlevel:${oldzoomlevel},curzoom:${window.amapmain.getZoom()}`);
+        // console.log(`md_mapmain_setzoomlevel===>zoomlevel:${zoomlevel},oldzoomlevel:${oldzoomlevel},curzoom:${window.amapmain.getZoom()}`);
         if(!!window.amapmain){
           if(zoomlevel === window.amapmain.getZoom()){
             //相同，但和oldzoom不同
@@ -1169,31 +1169,35 @@ export function* createmapmainflow(){
     yield takeLatest(`${serverpush_device}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
-      let deviceinfo = payload;
+      let deviceinfolist = payload;
       try{
-        if(!!deviceinfo){
-          let isget = true;
-          const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-          if (!LastHistoryTrack) {
-              isget = false;
-          }
-          else{
-            if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-              isget = false;
+        lodashmap(deviceinfolist,(deviceinfo)=>{
+          if(!!deviceinfo){
+            let isget = true;
+            const LastHistoryTrack = deviceinfo.LastHistoryTrack;
+            if (!LastHistoryTrack) {
+                isget = false;
             }
-          }
-          if(isget){
-            let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-            const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-            deviceinfo.locz = wgs84togcj02;
-          }
+            else{
+              if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+                isget = false;
+              }
+            }
+            if(isget){
+              let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+              const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+              deviceinfo.locz = wgs84togcj02;
+            }
 
-          if(!!deviceinfo.locz){
-            const addr = yield call(getgeodata,deviceinfo);
-            deviceinfo = {...deviceinfo,...addr};
+            // if(!!deviceinfo.locz){
+            //   const addr = yield call(getgeodata,deviceinfo);
+            //   deviceinfo = {...deviceinfo,...addr};
+            // }
           }
-        }
-        g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
+        });
+
         yield put(devicelistgeochange_distcluster({}));
         // yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));

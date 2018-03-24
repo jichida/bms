@@ -9,7 +9,19 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const _ = require('lodash');
 const debug = require('debug')('srvapp:pcpush');
+const getdevicesids = require('./handler/getdevicesids');
+
+const FastSet = require("collections/fast-set");
+const userset = new FastSet();
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+const loginuser_add = (userid)=>{
+  userset.add(userid);
+}
+
+const loginuser_remove = (userid)=>{
+  userset.delete(userid);
+}
 
 const getSystemLog = ()=>{
   PubSub.subscribe('userlog_data', ( msg, data )=>{
@@ -46,19 +58,46 @@ const checkDevice = (lasttime,callbackfn)=>{
   }).select(fields).sort({UpdateTime:1}).lean().exec(callbackfn);
 }
 
-const intervalCheckDevice =()=>{
-
-
-  setInterval(()=>{
-    checkDevice(lasttime,(err,result)=>{
-      if(!err && !!result){
-        _.map(result,(device)=>{
-          lasttime = device.UpdateTime;
-          PubSub.publish(`${config.pushdevicetopic}.${device.DeviceId}`,device);
-          debug(`push device:${device.DeviceId} device`);
+const do_updatealldevices = (alldevicelist)=>{
+  debug(`获取所有设备:${alldevicelist.length}`)
+  userset.map((userid)=>{
+    getdevicesids(userid,({deviceIds,isall})=>{
+      //设置订阅设备消息
+      if(isall){
+        debug(`推送给用户:${userid}==>${alldevicelist.length}`);
+        PubSub.publish(`${config.pushdevicetopic}.${userid}`,alldevicelist);
+      }
+      else{
+        let devicelist = [];
+        _.map(deviceIds,(DeviceId)=>{
+          const item = _.find(alldevicelist, (deviceitem)=>{
+             return deviceitem.DeviceId === DeviceId;
+           }
+         );
+         if(!!item){
+           devicelist.push(item);
+         }
         });
+        debug(`推送给用户:${userid}==>${alldevicelist.length}`);
+        PubSub.publish(`${config.pushdevicetopic}.${userid}`,devicelist);
       }
     });
+  });
+}
+
+const intervalCheckDevice =()=>{
+
+  setInterval(()=>{
+      checkDevice(lasttime,(err,result)=>{
+        if(!err && !!result){
+          _.map(result,(device)=>{
+            lasttime = device.UpdateTime;
+            // PubSub.publish(`${config.pushdevicetopic}.${device.DeviceId}`,device);
+            // debug(`push device:${device.DeviceId} device`);
+          });
+          do_updatealldevices(result);//处理所有的DeviceId
+        }
+      });
   }, 5000);
 };
 // const mongoose = require('mongoose');
@@ -123,3 +162,5 @@ const job=()=>{
 };
 
 exports.job = job;
+exports.loginuser_add = loginuser_add;
+exports.loginuser_remove  = loginuser_add;

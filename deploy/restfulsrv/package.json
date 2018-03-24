@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "
-    DEBUG=srvapp:*  logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmsp node index
-    "
+    "start": "DEBUG=srvapp:*  logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmsp node index"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +13,7 @@
     "ajv": "^5.2.2",
     "body-parser": "^1.17.2",
     "chance": "^1.0.10",
+    "collections": "^5.1.2",
     "coordtransform": "^2.1.2",
     "crypto-js": "^3.1.9-1",
     "csvwriter": "^1.3.0",

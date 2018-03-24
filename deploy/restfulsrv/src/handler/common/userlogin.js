@@ -8,8 +8,9 @@ const uuid = require('uuid');
 const _ = require('lodash');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
+const srvsystem = require('../../srvsystem.js');
+
 const debug = require('debug')('srvapp:userlogin');
-const getdevicesids = require('../getdevicesids');
 
 let userloginsuccess =(user,callback)=>{
     //主动推送一些数据什么的
@@ -22,20 +23,9 @@ let userloginsuccess =(user,callback)=>{
 };
 
 const subscriberuser = (user,ctx)=>{
-    getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
-      //设置订阅设备消息
-      PubSub.unsubscribe( ctx.userDeviceSubscriber );
-
-      if(isall){
-        PubSub.subscribe(`${config.pushdevicetopic}.*`,ctx.userDeviceSubscriber);
-      }
-      else{
-        _.map(deviceIds,(DeviceId)=>{
-          PubSub.subscribe(`${config.pushdevicetopic}.${DeviceId}`,ctx.userDeviceSubscriber);
-        });
-      }
-      debug(`用户开始订阅设备`);
-    });
+  srvsystem.loginuser_add(ctx.userid);
+  PubSub.unsubscribe( ctx.userDeviceSubscriber );
+  PubSub.subscribe(`${config.pushdevicetopic}.${ctx.userid}`,ctx.userDeviceSubscriber);
 }
 
 let getdatafromuser =(user)=>{
@@ -203,7 +193,7 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
 
 //==============================
 exports.logout = (actiondata,ctx,callback)=>{
-
+  srvsystem.loginuser_remove(ctx.userid);
   delete ctx.userid;
   callback({
     cmd:'logout_result',
