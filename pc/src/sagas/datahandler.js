@@ -48,6 +48,8 @@ import {
     serverpush_device
   } from '../actions';
 import {
+  uireport_searchdevice_request,
+  uireport_searchdevice_result,
   uireport_searchalarm_request,
   uireport_searchalarm_result,
   uireport_searchalarmdetail_request,
@@ -66,6 +68,7 @@ let recvmessagetoresultpair = {
   'savealarmsettings_result':savealarmsettings_result,
   'serverpush_device':serverpush_device,
 
+  'uireport_searchdevice_result':uireport_searchdevice_result,
   'uireport_searchalarm_result':uireport_searchalarm_result,
   'uireport_searchalarmdetail_result':uireport_searchalarmdetail_result,
   'uireport_searchposition_result':uireport_searchposition_result,
@@ -116,6 +119,7 @@ let sendmessageauthfnsz = {
   'querydeviceinfo':`${querydeviceinfo_request}`,
   'querydeviceinfo_list':`${querydeviceinfo_list_request}`,
   'queryhistorytrack':`${queryhistorytrack_request}`,
+  'uireport_searchdevice':`${uireport_searchdevice_request}`,
   'uireport_searchalarm':`${uireport_searchalarm_request}`,
   'uireport_searchalarmdetail':`${uireport_searchalarmdetail_request}`,
   'uireport_searchposition':`${uireport_searchposition_request}`,
