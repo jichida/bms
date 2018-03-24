@@ -10,7 +10,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { Tooltip } from 'antd';
 // import Car from "material-ui/svg-icons/maps/directions-car";
 import Exit from "material-ui/svg-icons/action/exit-to-app";
-import Setting from "material-ui/svg-icons/action/settings";
+// import Setting from "material-ui/svg-icons/action/settings";
 import SearchPosition from "material-ui/svg-icons/device/location-searching";
 import SearchDevice from "material-ui/svg-icons/hardware/device-hub";
 import StatAlarm from "material-ui/svg-icons/alert/add-alert";

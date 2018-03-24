@@ -2,27 +2,27 @@
  * Created by jiaowenhui on 2017/3/15.
  */
 import React from 'react';
-import { connect } from 'react-redux';
-import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape } from "bizcharts";
-import DataSet from '@antv/data-set';
-import { Swiper, Slide } from 'react-dynamic-swiper';
+// import { connect } from 'react-redux';
+// import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
+import { Chart, Geom, Axis, Tooltip, Coord,Guide, Shape } from "bizcharts";
+// import DataSet from '@antv/data-set';
+// import { Swiper, Slide } from 'react-dynamic-swiper';
 import 'react-dynamic-swiper/lib/styles.css';
 import Wendu from '../../img/28.png';
-import Config from '../../env/config';
+// import Config from '../../env/config';
 
-const { Arc, Html, Line } = Guide;
-
-let swiperOptions = {
-    navigation: true,
-    pagination: false,
-    scrollBar: false
-};
+// const { Arc, Html, Line } = Guide;
+//
+// let swiperOptions = {
+//     navigation: true,
+//     pagination: false,
+//     scrollBar: false
+// };
 
 
 export class Chart1 extends React.Component {
     componentWillMount () {
-        
+
     }
     render() {
         const datav = this.props.data || 65;
@@ -73,7 +73,7 @@ export class Chart1 extends React.Component {
         return (
             <Chart height={300} width={200} data={data} scale={cols} padding={[ -20, 0, 0, 0 ]} forceFit>
                 <Coord type='polar' startAngle={-9 / 8 * Math.PI} endAngle={1 / 8 * Math.PI} radius={0.75} />
-                <Axis 
+                <Axis
                     name='value'
                     zIndex={2}
                     line={null}
@@ -145,8 +145,8 @@ export class Chart2 extends React.Component {
     render() {
         const data = this.props.data;
         const cols = {
-            'value': { 
-                tickCount: 10, 
+            'value': {
+                tickCount: 10,
             },
             'time': { range: [ 0.1 , 0.9] }
         };
@@ -187,8 +187,8 @@ export class Chart4 extends React.Component {
     render() {
         const data = this.props.data;
         const cols={
-            'value': { 
-                tickCount: 10, 
+            'value': {
+                tickCount: 10,
             },
             'time': { range: [ 0 , 1 ] }
         };
@@ -207,4 +207,3 @@ export class Chart4 extends React.Component {
         )
     }
 }
-

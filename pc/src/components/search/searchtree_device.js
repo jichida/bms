@@ -4,16 +4,16 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import {Treebeard} from 'react-treebeard';
+// import {Treebeard} from 'react-treebeard';
 import map from 'lodash.map';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader, Button } from 'antd';
+// import TextField from 'material-ui/TextField';
+// import SelectField from 'material-ui/SelectField';
+// import MenuItem from 'material-ui/MenuItem';
+// import RaisedButton from 'material-ui/RaisedButton';
+import { Input, Select, AutoComplete, Button } from 'antd';
 import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
 import TreeselectByloc from "../trees/treeselect_byloc.js";
-import moment from 'moment';
+// import moment from 'moment';
 import filter from 'lodash.filter';
 
 import {
@@ -21,7 +21,7 @@ import {
 } from '../../actions';
 
 
-moment.locale('zh-cn');
+
 
 const InputGroup = Input.Group;
 const Option = Select.Option;

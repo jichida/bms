@@ -6,7 +6,7 @@ import {wsrecvsagaflow} from './wsrecvsaga';
 import {jpushflow} from './jpushflow';
 
 import {deviceinfoquerychartflow} from './deviceinfoquerychart';
-import {createloadingflow} from './loading';
+// import {createloadingflow} from './loading';
 import {createmapmainflow} from './mapmain';
 import {createmaptrackhistoryplaybackflow} from './mapplayback';
 import {socketflow} from './socketflow';

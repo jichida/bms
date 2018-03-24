@@ -39,7 +39,7 @@ class Page extends React.Component {
             let item = { time: v, value: props_tickv[i] };
             let item2 = { time: v, value: props_ticka[i] };
             data_tickv.push(item);
-            data_ticka.push(item);
+            data_ticka.push(item2);
         })
         data_temperature = get(alarmchartdata,'temperature',0);
 

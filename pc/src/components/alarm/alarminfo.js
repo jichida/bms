@@ -4,9 +4,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import map from 'lodash.map';
-import { Button, Modal, Icon, message } from 'antd';
-import { ui_alarm_selcurdevice,createworkorder_request } from '../../actions';
-import moment from 'moment';
+import { Button, } from 'antd';
+import { ui_alarm_selcurdevice } from '../../actions';
+// import moment from 'moment';
 import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import get from 'lodash.get';
 

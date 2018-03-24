@@ -1,7 +1,7 @@
 import map from "lodash.map";
 
-import Car_online from "../img/1.png";
-import Car_outline from "../img/3.png";
+// import Car_online from "../img/1.png";
+// import Car_outline from "../img/3.png";
 import Point_list_img from "../img/13.png";
 // import store from '../env/store';
 import lodashget from 'lodash.get';

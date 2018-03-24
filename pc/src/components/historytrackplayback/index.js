@@ -25,7 +25,7 @@ import {
 } from '../../actions';
 
 const Option = Select.Option;
-moment.locale('zh-cn');
+
 
 let resizetimecontent = null;
 //

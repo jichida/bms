@@ -20,7 +20,7 @@ import {
 } from '../../actions';
 import translate from 'redux-polyglot/translate';
 
-let resizetime = null;
+// let resizetime = null;
 let resizetimecontent = null;
 // this.props.dispatch(ui_showmenu(menuitemstring));
 
@@ -105,7 +105,7 @@ class Page extends React.Component {
     }
 
     render() {
-        const {showmenu,p,modeview} = this.props;
+        const {showmenu,modeview} = this.props;
         const treestyle = this.getdrawstyle("350px");
 
         return (
@@ -129,7 +129,8 @@ class Page extends React.Component {
                                 marginTop: "0",
                                 marginLeft: "0"
                             }}
-                            iconElementLeft={<div className="logo" onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}}><img src={Logo} /></div>}
+                            iconElementLeft={<div className="logo" onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}}>
+                              <img src={Logo} alt=""/></div>}
                             className="appbar"
                         />
                     </div>

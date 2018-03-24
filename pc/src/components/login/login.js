@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
+import { Field, reduxForm, Form,   } from 'redux-form';
 import { connect } from 'react-redux';
 import { login_request } from '../../actions';
-import { withRouter } from 'react-router-dom';
+// import { withRouter } from 'react-router-dom';
 import { set_weui } from '../../actions';
 import '../../css/login.css';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -12,9 +12,9 @@ import Config from "../../env/config";
 
 import {
     required,
-    phone,
+    // phone,
     InputValidation,
-    length4
+    // length4
     } from "../tools/formvalidation"
 
  class PageForm extends Component {

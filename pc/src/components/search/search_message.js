@@ -5,14 +5,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Seltime from './seltimerange_antd.js';
-import { Input,Select,  Button } from 'antd';
+// import Seltime from './seltimerange_antd.js';
+import { Select,  Button } from 'antd';
+
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
 
 import moment from 'moment';
-moment.locale('zh-cn');
+
 
 const Option = Select.Option;
 

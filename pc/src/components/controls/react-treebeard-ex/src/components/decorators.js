@@ -1,9 +1,9 @@
-'use strict';
+// 'use strict';
 
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Radium from 'radium';
+// import Radium from 'radium';
 import {VelocityComponent} from 'velocity-react';
 import get from 'lodash.get';
 

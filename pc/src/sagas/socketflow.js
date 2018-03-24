@@ -4,7 +4,7 @@ import {
   getsystemconfig_request,
   loginwithtoken_request,
 
-  querydevicegroup_request
+  // querydevicegroup_request
 } from '../actions';
 import config from '../env/config';
 

@@ -1,6 +1,6 @@
 import config from '../env/config';
 // import streamSaver from 'streamsaver';
-import map from 'lodash.map';
+// import map from 'lodash.map';
 const fetchurl =`${config.serverurlrestful}`;
 
 const getForm =(url, target, value, method)=> {

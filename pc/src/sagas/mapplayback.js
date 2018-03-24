@@ -1,15 +1,15 @@
 import { select,put,call,take,takeLatest,takeEvery } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
-  mapmain_setzoomlevel,
-  mapmain_setmapcenter,
-  map_setmapinited,
+  // mapmain_setzoomlevel,
+  // mapmain_setmapcenter,
+  // map_setmapinited,
   carmapshow_createmap,
   carmapshow_destorymap,
-  mapmain_setenableddrawmapflag,
-  querydevice_result,
+  // mapmain_setenableddrawmapflag,
+  // querydevice_result,
   ui_selcurdevice_request,
-  querydeviceinfo_request,
+  // querydeviceinfo_request,
 
   mapplayback_start,
   mapplayback_end,
@@ -18,7 +18,7 @@ import {
 } from '../actions';
 import coordtransform from 'coordtransform';
 import {getcurrentpos} from './getcurrentpos';
-import { push } from 'react-router-redux';
+// import { push } from 'react-router-redux';
 import L from 'leaflet';
 
 

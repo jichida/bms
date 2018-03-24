@@ -11,7 +11,7 @@ import get from 'lodash.get';
 import map from 'lodash.map';
 
 import moment from 'moment';
-moment.locale('zh-cn');
+
 
 
 class TreeSearchBattery extends React.Component {

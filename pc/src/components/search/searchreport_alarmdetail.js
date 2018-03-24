@@ -16,7 +16,7 @@ import map from 'lodash.map';
 
 import 'react-select/dist/react-select.css';
 
-moment.locale('zh-cn');
+
 
 
 const Option = Select.Option;
