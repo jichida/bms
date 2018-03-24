@@ -98,7 +98,7 @@ const intervalCheckDevice =()=>{
           do_updatealldevices(result);//处理所有的DeviceId
         }
       });
-  }, 5000);
+  }, 30000);
 };
 // const mongoose = require('mongoose');
 // const winston = require('./log/log.js');

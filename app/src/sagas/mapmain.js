@@ -1195,7 +1195,7 @@ export function* createmapmainflow(){
             // }
           }
           g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
-          console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
+          // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
         });
 
         yield put(devicelistgeochange_distcluster({}));
