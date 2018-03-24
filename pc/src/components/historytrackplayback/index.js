@@ -101,7 +101,7 @@ class Page extends React.Component {
     }
 
     handleChange=(value)=>{
-      this.setState({speed: parseInt(value.key)});
+      this.setState({speed: parseInt(value.key,10)});
     }
 
     componentDidMount() {
@@ -146,6 +146,7 @@ class Page extends React.Component {
         const {deviceid} = this.state;
         const {g_devicesdb} = this.props;
         let DeviceId;
+
         let deviceitem = g_devicesdb[deviceid];
         if(!!deviceitem){
           DeviceId = deviceitem.DeviceId;
@@ -154,7 +155,7 @@ class Page extends React.Component {
         map(g_devicesdb,(item)=>{
             deviceidlist.push(item.DeviceId);
         });
-        const formstyle={width:"10px",flexGrow:"1"};
+        // const formstyle={width:"10px",flexGrow:"1"};
         const startdate_moment = this.state.startDate;
         const enddate_moment = this.state.endDate;
 

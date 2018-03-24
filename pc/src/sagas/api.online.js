@@ -1,5 +1,5 @@
 import {wsflow} from './api.ws.js';
-import {takeLatest,put,fork,select} from 'redux-saga/effects';
+import {takeLatest,put,fork,} from 'redux-saga/effects';
 // import {delay} from 'redux-saga';
 import {
   ui_index_addcollection,
@@ -9,7 +9,7 @@ import {
   collectdevice_request,
   // querydevice_result
 } from '../actions';
-import { push,goBack,go,replace } from 'react-router-redux';
+import { push,} from 'react-router-redux';
 
 export function* apiflow(){//
   try{

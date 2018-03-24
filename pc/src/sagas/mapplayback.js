@@ -213,7 +213,7 @@ export function* createmaptrackhistoryplaybackflow(){
     yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       try{
         if(!!window.amaptrackhistoryplayback){
-          const {payload:{DeviceId,deviceitem}} = actioncurdevice;
+          const {payload:{deviceitem}} = actioncurdevice;
           if(!!deviceitem){
             const LastHistoryTrack = deviceitem.LastHistoryTrack;
             if(!!LastHistoryTrack){

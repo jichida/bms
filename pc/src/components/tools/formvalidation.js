@@ -5,8 +5,8 @@ import React from 'react'
 import "./formvalidation.css"
 import { connect } from 'react-redux';
 import { set_weui } from '../../actions';
-import DatePicker from 'react-mobile-datepicker';
-import moment from 'moment';
+// import DatePicker from 'react-mobile-datepicker';
+// import moment from 'moment';
 import idCard from "idcard";
 import TextField from 'material-ui/TextField';
 

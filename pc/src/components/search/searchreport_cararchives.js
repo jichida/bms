@@ -11,7 +11,7 @@ import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
 
-import moment from 'moment';
+// import moment from 'moment';
 
 
 

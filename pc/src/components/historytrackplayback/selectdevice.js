@@ -15,7 +15,7 @@ class SelectDevice extends React.Component {
     }
 
     componentWillMount(){
-        
+
     }
 
     onChange = (value) => {
@@ -28,7 +28,7 @@ class SelectDevice extends React.Component {
         let {deviceidlist} = this.props;
 
         if (!!deviceidlist) {
-            optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!=-1; })
+            optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!==-1; })
             if(optionsarr.length>100){optionsarr.length=100}
             options = map(optionsarr,(deviceid,index)=>{
                 return <Option key={deviceid}>{deviceid}</Option>;
@@ -39,7 +39,7 @@ class SelectDevice extends React.Component {
     }
 
   render() {
-    
+
     return (
       <Select
         mode="combobox"

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Treebeard,decorators} from '../controls/react-treebeard-ex/src/index.js';
-import treestyle from './treestyle.js';
+import {decorators} from '../controls/react-treebeard-ex/src/index.js';
+// import treestyle from './treestyle.js';
 import HeaderCo from './treeheader';
 import map from 'lodash.map';
 import {
@@ -9,7 +9,7 @@ import {
 } from '../../actions';
 import {getimageicon_isonline} from '../../sagas/getmapstyle';
 
-const treeviewstyle = 'bysearchresult';
+// const treeviewstyle = 'bysearchresult';
 decorators.Header = HeaderCo;
 
 class Tree extends React.Component {
@@ -46,7 +46,7 @@ class Tree extends React.Component {
                 const deviceitem = g_devicesdb[id];
                 const {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
                 return <div key={key} onClick={this.onclick.bind(this, id)}>
-                  <img src={iconname} style={{width: "20px",marginRight: "5px",marginLeft: "20px"}} />
+                  <img alt="" src={iconname} style={{width: "20px",marginRight: "5px",marginLeft: "20px"}} />
                   {isonline?(<span><strong>{id}</strong></span>):(<span>{id}</span>)}
                 </div>
               })

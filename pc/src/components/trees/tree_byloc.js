@@ -20,7 +20,14 @@ class Tree extends React.Component {
     }
 
     onToggle(node, toggled){
-        if(this.state.cursor){this.state.cursor.active = false;}
+        if(!!this.state.cursor){
+          this.setState({
+            cursor:{
+              active:false
+            }
+          })
+          // this.state.cursor.active = false;
+        }
         node.active = true;
         if(!!node.children){
             node.toggled = toggled;
@@ -31,7 +38,7 @@ class Tree extends React.Component {
 
             let id = node.adcode;
             if(typeof id === 'string'){
-              id = parseInt(id);
+              id = parseInt(id,10);
             }
             this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false}));
 

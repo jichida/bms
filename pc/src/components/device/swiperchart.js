@@ -170,11 +170,11 @@ export class Chart3 extends React.Component {
     render() {
         const data = this.props.data;
         let showdata = data;
-        if(parseInt(data)>80){showdata = 80}
-        if(parseInt(data)<0){showdata = 0}
+        if(parseInt(data,10)>80){showdata = 80}
+        if(parseInt(data,10)<0){showdata = 0}
         return (
             <div className="wenduchart">
-                <img src={Wendu} />
+                <img src={Wendu} alt=""/>
                 <div className="dataline"><span style={{height: `${showdata}px`}}></span></div>
                 <div className="data"><span>{data}℃</span></div>
             </div>

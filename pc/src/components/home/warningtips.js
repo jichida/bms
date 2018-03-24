@@ -103,7 +103,7 @@ class UserMenu extends React.Component {
   };
 // this.props.history.push("/device")
   render() {
-    const {username,role,avatar} = this.props;
+    const {username,role,} = this.props;
     const defaultavatar = Avatar;
     let mapcontent = {
       '0':{
@@ -133,17 +133,17 @@ class UserMenu extends React.Component {
     };
     let menuitems = [];
     if(role === 'admin'){
-      menuitems.push(<MenuItem key={'3'} primaryText={`${mapcontent[3].title}`} leftIcon={<img src={Userlist_7} />} onClick={()=>{
+      menuitems.push(<MenuItem key={'3'} primaryText={`${mapcontent[3].title}`} leftIcon={<img src={Userlist_7} alt=""/>} onClick={()=>{
             this.handleRequestClose();
             // this.props.history.push("/chartlist/1");
             window.open(`${mapcontent[3].link}`,'_blank');
         }}/>);
-      menuitems.push(<MenuItem key={'4'} primaryText={`${mapcontent[4].title}`} leftIcon={<img src={Userlist_7} />} onClick={()=>{
+      menuitems.push(<MenuItem key={'4'} primaryText={`${mapcontent[4].title}`} leftIcon={<img src={Userlist_7} alt=""/>} onClick={()=>{
             this.handleRequestClose();
             // this.props.history.push("/chartlist/1");
             window.open(`${mapcontent[4].link}`,'_blank');
         }}/>);
-      menuitems.push(<MenuItem key={'5'} primaryText={`${mapcontent[5].title}`} leftIcon={<img src={Userlist_7} />} onClick={()=>{
+      menuitems.push(<MenuItem key={'5'} primaryText={`${mapcontent[5].title}`} leftIcon={<img src={Userlist_7} alt=""/>} onClick={()=>{
             this.handleRequestClose();
             // this.props.history.push("/chartlist/1");
             window.open(`${mapcontent[3].link}`,'_blank');
@@ -153,7 +153,7 @@ class UserMenu extends React.Component {
       <div>
         <div className="topuser" onClick={this.handleTouchTap}>
             <span>{username}</span>
-            <img src={defaultavatar}  />
+            <img alt="" src={defaultavatar}  />
         </div>
         <Popover
           open={this.state.open}
@@ -179,7 +179,7 @@ class UserMenu extends React.Component {
                     this.handleRequestClose();
                     window.open(`${mapcontent[2].link}`,'_blank');
             }}/> */}
-            <MenuItem primaryText="车辆轨迹监控" leftIcon={<img src={Userlist_4} />} onClick={()=>{
+            <MenuItem primaryText="车辆轨迹监控" leftIcon={<img src={Userlist_4} alt=""/>} onClick={()=>{
                 this.handleRequestClose();
                 this.props.dispatch(ui_changemodeview('device'));
                 this.props.history.push(`/historyplay/0`);
@@ -286,7 +286,7 @@ class Page extends React.Component {
         iconstyle4.color = "#5cbeaa";
         iconstyle4.fontSize = "30px";
 
-        const {count_online,count_offline,count_all,count_yellow,count_red,count_orange,modeview} = this.props;
+        const {count_online,count_offline,count_all,count_yellow,count_red,count_orange,} = this.props;
         // if(modeview === 'device'){
             return (
               <div className="BadgeStyle">
@@ -301,16 +301,16 @@ class Page extends React.Component {
                             bottom: "-4px",
                             right: "-4px",
                             backgroundColor: "none",
-                            color : "#111",
+                          //  color : "#111",
                             position: "relative",
-                            bottom: "-8px",
+                            // bottom: "-8px",
                             fontSize: "18px",
                             width : "auto",
                             color : "#5cbeaa"
                         }}
                         onClick={this.onClickMenu.bind(this,'online')}
                         >
-                        <img src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
+                        <img alt="" src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
                     </Badge>
                 </Tooltip>
                 <Tooltip title="离线车辆">
@@ -324,16 +324,16 @@ class Page extends React.Component {
                             bottom: "-4px",
                             right: "-4px",
                             backgroundColor: "none",
-                            color : "#111",
+                          //  color : "#111",
                             position: "relative",
-                            bottom: "-8px",
+                            // bottom: "-8px",
                             fontSize: "18px",
                             width : "auto",
                             color : "#999"
                         }}
                         onClick={this.onClickMenu.bind(this,'offline')}
                         >
-                        <img src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
+                        <img alt=""  src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
                     </Badge>
                   </Tooltip>
                   <Tooltip title="三级报警车辆总数">
@@ -347,16 +347,16 @@ class Page extends React.Component {
                             bottom: "-4px",
                             right: "-4px",
                             backgroundColor: "none",
-                            color : "#111",
+                          //  color : "#111",
                             position: "relative",
-                            bottom: "-8px",
+                            // bottom: "-8px",
                             fontSize: "18px",
                             width : "auto",
                             color : "#d21d24"
                         }}
                         onClick={this.onClickMenu.bind(this,'red')}
                         >
-                        <img style={{ width: "40px", height: "40px"}} src={D1} />
+                        <img alt="" style={{ width: "40px", height: "40px"}} src={D1} />
                     </Badge>
                   </Tooltip>
                   <Tooltip title="二级报警车辆总数">
@@ -370,16 +370,16 @@ class Page extends React.Component {
                             bottom: "-4px",
                             right: "-4px",
                             backgroundColor: "none",
-                            color : "#111",
+                            // color : "#111",
                             position: "relative",
-                            bottom: "-8px",
+                            // bottom: "-8px",
                             fontSize: "18px",
                             width : "auto",
                             color : "#ed942f"
                         }}
                         onClick={this.onClickMenu.bind(this,'orange')}
                         >
-                        <img style={{ width: "40px", height: "40px"}} src={D2} />
+                        <img alt="" style={{ width: "40px", height: "40px"}} src={D2} />
                     </Badge>
                   </Tooltip>
                   <Tooltip title="一级报警车辆总数">
@@ -393,16 +393,16 @@ class Page extends React.Component {
                             bottom: "-4px",
                             right: "-4px",
                             backgroundColor: "none",
-                            color : "#111",
+                            // color : "#111",
                             position: "relative",
-                            bottom: "-8px",
+                            // bottom: "-8px",
                             fontSize: "18px",
                             width : "auto",
                             color : "#f6d06b"
                         }}
                         onClick={this.onClickMenu.bind(this,'yellow')}
                         >
-                        <img style={{ width: "40px", height: "40px"}} src={D3} />
+                        <img alt="" style={{ width: "40px", height: "40px"}} src={D3} />
                     </Badge>
                   </Tooltip>
                   <Tooltip title="报警车辆总数">

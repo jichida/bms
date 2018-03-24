@@ -21,7 +21,14 @@ class Tree extends React.Component {
     }
 
     onToggle(node, toggled){
-        if(this.state.cursor){this.state.cursor.active = false;}
+      if(!!this.state.cursor){
+        this.setState({
+          cursor:{
+            active:false
+          }
+        })
+        // this.state.cursor.active = false;
+      }
         node.active = true;
         if(!!node.children){
             node.toggled = toggled;
@@ -31,7 +38,7 @@ class Tree extends React.Component {
 
         }else{
             // node.toggled = toggled;
-            let deviceid = node.name;
+            // let deviceid = node.name;
             const deviceitem = node.device;
             //console.log(`deviceitem==>${JSON.stringify(deviceitem)},deviceid:${(deviceid)}`)
             this.props.dispatch(mapmain_selgroup_deviceid({DeviceId:deviceitem.DeviceId,devicenodeid:node.id}));

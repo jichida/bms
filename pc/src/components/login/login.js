@@ -118,10 +118,10 @@ export class Page extends Component {
     render(){
         return (
             <div className="loginPage AppPage">
-                <img src={Loginbg} className="bg" />
+                <img src={Loginbg} className="bg" alt=""/>
                 <div className="content">
                     <div className="head">
-                        <img src={Loginlogo} className="logo" />
+                        <img src={Loginlogo} className="logo" alt=""/>
                     </div>
                     <PageForm onClickLogin={this.onClickLogin}/>
                 </div>

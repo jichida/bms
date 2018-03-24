@@ -5,12 +5,12 @@ import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import './myweui.css';
 
-const icon = {
-    "none" : "",
-    "warning" : "warn",
-    "success" : "success-no-circle",
-    "loading" : "loading"
-}
+// const icon = {
+//     "none" : "",
+//     "warning" : "warn",
+//     "success" : "success-no-circle",
+//     "loading" : "loading"
+// }
 
 // const tosatDefault = {
 //     show : false,
@@ -89,10 +89,6 @@ export class Page extends Component {
     render(){
         const {
             toast,
-            alert,
-            confirm,
-            loading,
-            toastLetter,
         } = this.props;
 
         return (

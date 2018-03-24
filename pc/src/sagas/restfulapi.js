@@ -28,13 +28,13 @@ const statusHelper = (response)=> {
   }
 }
 
-const toHex =(str)=> {
-    var result = '';
-    for (var i=0; i<str.length; i++) {
-      result += str.charCodeAt(i).toString(16);
-    }
-    return result;
-  };
+// const toHex =(str)=> {
+//     var result = '';
+//     for (var i=0; i<str.length; i++) {
+//       result += str.charCodeAt(i).toString(16);
+//     }
+//     return result;
+//   };
 
 const restfulapi = {
   getexcelfile({type,tokenid}){

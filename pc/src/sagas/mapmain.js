@@ -384,7 +384,7 @@ const listenclusterevent = (eventname)=>{
     distCluster.on(eventname, (e,record)=> {
         distCluster.getClusterRecord(record.adcode,(err,result)=>{
           if(!err){
-            const {adcode,name,dataItems,hangingDataItems,children} = result;
+            const {dataItems} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
                   resolve({adcodetop:record.adcode,forcetoggled:true});
@@ -791,7 +791,7 @@ export function* createmapmainflow(){
                 catch(e){
                   console.log(e);
                 }
-                const adcodetop = parseInt(result.adcode);
+                const adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
                 yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
                 if(config.softmode === 'pc'){//pc端才有树啊
@@ -939,7 +939,7 @@ export function* createmapmainflow(){
 
 
 
-          const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
+          yield call(getclustertree_root,SettingOfflineMinutes);
           gmap_acode_treecount[1] = {//所有
             count_total:devicelistresult.length,
             count_online:deviceidonlines.length,
@@ -1235,7 +1235,7 @@ export function* createmapmainflow(){
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
           });
-          const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
+          yield call(getclustertree_root,SettingOfflineMinutes);
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
           //
 
@@ -1277,7 +1277,7 @@ export function* createmapmainflow(){
               const SettingOfflineMinutes =yield select((state)=>{
                 return get(state,'app.SettingOfflineMinutes',20);
               });
-              const result = yield call(getclustertree_one,adcode,SettingOfflineMinutes);
+              yield call(getclustertree_one,adcode,SettingOfflineMinutes);
             },codelist[i]);
             forkhandles.push(handlefork);
           };

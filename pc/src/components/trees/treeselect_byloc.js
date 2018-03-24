@@ -10,7 +10,7 @@ class Treeselect extends React.Component {
   }
   onChange = (value) => {
     this.setState({ value });
-    let adcode = parseInt(value);
+    let adcode = parseInt(value,10);
     this.props.onSelTreeNode(adcode);
   }
   render() {

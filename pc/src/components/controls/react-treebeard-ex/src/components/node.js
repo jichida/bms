@@ -103,7 +103,7 @@ class TreeNode extends React.Component {
     }
 
     renderChildren(decorators) {
-        const {animations, decorators: propDecorators, node, style,treeviewstyle} = this.props;
+        const {animations, node, style,treeviewstyle} = this.props;
 
         return <NodeRenderChildren decorators={decorators}
           animations={animations} node={node} style={style}
