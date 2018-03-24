@@ -1,5 +1,5 @@
-import {takeLatest,put,fork,call,select,take} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import {takeLatest,put,take} from 'redux-saga/effects';
+// import {delay} from 'redux-saga';
 import {
   ui_btnclick_deviceonline,
   ui_btnclick_deviceoffline,
@@ -16,12 +16,12 @@ import {
   logout_request,
   logout_result,
 
-  ui_sel_tabindex,
+  // ui_sel_tabindex,
 
 }from '../actions';
 import { push,replace } from 'react-router-redux';
-import moment from 'moment';
-import config from '../env/config.js';
+// import moment from 'moment';
+// import config from '../env/config.js';
 
 export function* uiflow(){//仅执行一次
   //app点击底部菜单

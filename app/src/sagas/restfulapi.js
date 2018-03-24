@@ -1,6 +1,6 @@
 import config from '../env/config';
 // import streamSaver from 'streamsaver';
-import map from 'lodash.map';
+// import map from 'lodash.map';
 const fetchurl =`${config.serverurlrestful}`;
 
 const getForm =(url, target, value, method)=> {
@@ -28,13 +28,13 @@ const statusHelper = (response)=> {
   }
 }
 
-const toHex =(str)=> {
-    var result = '';
-    for (var i=0; i<str.length; i++) {
-      result += str.charCodeAt(i).toString(16);
-    }
-    return result;
-  };
+// const toHex =(str)=> {
+//     var result = '';
+//     for (var i=0; i<str.length; i++) {
+//       result += str.charCodeAt(i).toString(16);
+//     }
+//     return result;
+//   };
 
 const restfulapi = {
   getexcelfile({type,tokenid}){

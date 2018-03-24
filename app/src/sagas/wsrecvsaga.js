@@ -1,5 +1,5 @@
-import { put,call,takeLatest,fork,take,race} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import { put,call,takeLatest,take,} from 'redux-saga/effects';
+// import {delay} from 'redux-saga';
 import {
   common_err,
 
@@ -12,7 +12,7 @@ import {
   querydevicegroup_result,
 
   querydevice_request,
-  querydevice_result,
+  // querydevice_result,
 
   md_querydeviceinfo_result,
   querydeviceinfo_result,

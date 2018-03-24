@@ -4,7 +4,7 @@ import {
     logout_result,
     jpushlistenInMessage,
     jpushpostNotification,
-    set_weui
+
 } from '../actions';
 import {
     setJPushAlias,
@@ -48,8 +48,8 @@ export function* jpushflow(){//仅执行一次
           //yield call(alertmessage,`jpushlistenInMessage ===>${JSON.stringify(msgobj)}`);
           const msgobj = get(payload,'data');
           if(!!msgobj){
-            let message = '接收到一条消息';
-            message = get(msgobj,'aps.alert',message);
+            // let message = '接收到一条消息';
+            // message = get(msgobj,'aps.alert',message);
             // yield put(set_weui({
             //   toast:{
             //   text:message,

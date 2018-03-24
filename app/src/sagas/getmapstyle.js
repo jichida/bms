@@ -1,11 +1,11 @@
 import get from 'lodash.get';
-import store from '../env/store';
-import {ui_showmenu} from '../actions';
-import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
-import moment from 'moment';
+// import store from '../env/store';
+// import {ui_showmenu} from '../actions';
+// import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
+// import moment from 'moment';
 import lodashmap from 'lodash.map';
 import {bridge_deviceinfo_pop,bridge_deviceinfo_popcluster} from './datapiple/bridgedb';
-import {ui_btnclick_devicemessage} from '../actions';
+// import {ui_btnclick_devicemessage} from '../actions';
 import {getdevicestatus_alaramlevel} from '../util/getdeviceitemstatus';
 import {createInfoWindow_popinfo,createInfoWindow_poplistinfo} from './mapmain_infowindow';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
@@ -25,51 +25,51 @@ import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 // formattedAddress
 // :
 //设备
-
-const getCoureName = (course)=> {
-
-    var name = "";
-    if(typeof course === 'string'){
-      course = parseFloat(course);
-    }
-
-    if ((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360)) // 0
-    {
-        name = "正北";
-    }
-    else if (course >= 22.5 && course < 67.5) // 45
-    {
-        name = "东北";
-    }
-    else if (course >= 67.5 && course < 112.5) // 90
-    {
-        name = "正东";
-    }
-    else if (course >= 112.5 && course < 157.5) //135
-    {
-        name = "东南";
-    }
-    else if (course >= 157.5 && course < 202.5) //180
-    {
-        name = "正南";
-    }
-    else if (course >= 202.5 && course < 247.5) //225
-    {
-        name = "西南";
-    }
-    else if (course >= 247.5 && course < 292.5) //270
-    {
-        name = "正西";
-    }
-    else if (course >= 292.5 && course < 337.5) //315
-    {
-        name = "西北";
-    }
-    else {
-        name = "未知.";
-    }
-    return name;
-}
+//
+// const getCoureName = (course)=> {
+//
+//     var name = "";
+//     if(typeof course === 'string'){
+//       course = parseFloat(course);
+//     }
+//
+//     if ((course >= 0 && course < 22.5) || (course >= 337.5 && course < 360)) // 0
+//     {
+//         name = "正北";
+//     }
+//     else if (course >= 22.5 && course < 67.5) // 45
+//     {
+//         name = "东北";
+//     }
+//     else if (course >= 67.5 && course < 112.5) // 90
+//     {
+//         name = "正东";
+//     }
+//     else if (course >= 112.5 && course < 157.5) //135
+//     {
+//         name = "东南";
+//     }
+//     else if (course >= 157.5 && course < 202.5) //180
+//     {
+//         name = "正南";
+//     }
+//     else if (course >= 202.5 && course < 247.5) //225
+//     {
+//         name = "西南";
+//     }
+//     else if (course >= 247.5 && course < 292.5) //270
+//     {
+//         name = "正西";
+//     }
+//     else if (course >= 292.5 && course < 337.5) //315
+//     {
+//         name = "西北";
+//     }
+//     else {
+//         name = "未知.";
+//     }
+//     return name;
+// }
 
 // window.clickfn_device =(DeviceId)=>{
 //   store.dispatch(push(`/deviceinfo/${DeviceId}`));
@@ -128,7 +128,7 @@ export const getpopinfowindowstyle = (deviceitem)=>{
 
 
 
-export const getlistpopinfowindowstyle = (deviceitemlist)=>{
+export const getlistpopinfowindowstyle = (deviceitemlist,SettingOfflineMinutes)=>{
     // let info = '<div class="getmapstylepage">';
     const result = bridge_deviceinfo_popcluster(deviceitemlist);
     const {kvlist} = result;
@@ -150,8 +150,12 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
             unit
           });
         });
+        // console.log(`deviceitem:${deviceitem.DeviceId},GPSTime:${}`)
+        const  {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
 
         data.push({
+          iconname,
+          isonline,
           DeviceId,
           fields
         });

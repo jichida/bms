@@ -1,4 +1,4 @@
-import {takeLatest,take,takeEvery,put,fork,call,select} from 'redux-saga/effects';
+import {takeLatest,take,put,fork,call,select} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   querydevicegroup_request,
@@ -18,7 +18,7 @@ import {
   searchbattery_result,
 
   querydeviceinfo_request,
-  querydeviceinfo_result,
+  // querydeviceinfo_result,
   md_querydeviceinfo_result,
 
 
@@ -60,23 +60,23 @@ import  {
   jsondata_bms_workusers,
   getrandom
 } from '../test/bmsdata.js';
-import { push,goBack,go,replace } from 'react-router-redux';
+import { push,} from 'react-router-redux';
 
-import {getRandomLocation} from '../env/geo';
-import {getRandomLocation_track} from './simulatetrack';
-import coordtransform from 'coordtransform';
+// import {getRandomLocation} from '../env/geo';
+// import {getRandomLocation_track} from './simulatetrack';
+// import coordtransform from 'coordtransform';
 import {g_devicesdb} from './mapmain';
 import map from 'lodash.map';
 import get from 'lodash.get';
 import filter from 'lodash.filter';
 import find from 'lodash.find';
 import sampleSize from 'lodash.samplesize';
-import {getgeodata} from '../sagas/mapmain_getgeodata';
+// import {getgeodata} from '../sagas/mapmain_getgeodata';
 import restfulapi from './restfulapi';
 
 //获取地理位置信息，封装为promise
 
-import moment from 'moment';
+// import moment from 'moment';
 
 const getresult_historytrack = (mstart,mend)=>{
   let list = [];
@@ -86,12 +86,12 @@ const getresult_historytrack = (mstart,mend)=>{
   return list;
 }
 
-let list_historyplayback_sz = [
-  getresult_historytrack('2017-07-31 09:30:00','2017-07-31 10:30:00'),
-  getresult_historytrack('2017-07-31 13:00:00','2017-07-31 14:00:00'),
-  getresult_historytrack('2017-07-31 14:00:00','2017-07-31 15:00:00'),
-  getresult_historytrack('2017-07-31 15:00:00','2017-07-31 16:00:00'),
-];
+// let list_historyplayback_sz = [
+//   getresult_historytrack('2017-07-31 09:30:00','2017-07-31 10:30:00'),
+//   getresult_historytrack('2017-07-31 13:00:00','2017-07-31 14:00:00'),
+//   getresult_historytrack('2017-07-31 14:00:00','2017-07-31 15:00:00'),
+//   getresult_historytrack('2017-07-31 15:00:00','2017-07-31 16:00:00'),
+// ];
 
 
 

@@ -13,13 +13,13 @@ export const getadcodeinfo = (adcodei)=>{
         //直辖市特殊处理！！兼容目前方式
         return {
           level:'city',
-          parent_code:parseInt(resultobjcity.parent_code)
+          parent_code:parseInt(resultobjcity.parent_code,10)
         }
       }
     }
     return {
       level:'district',
-      parent_code:parseInt(resultobj.parent_code)
+      parent_code:parseInt(resultobj.parent_code,10)
     };
   }
 
@@ -27,7 +27,7 @@ export const getadcodeinfo = (adcodei)=>{
   if(!!resultobj){
     return {
       level:'city',
-      parent_code:parseInt(resultobj.parent_code)
+      parent_code:parseInt(resultobj.parent_code,10)
     };
   }
 
@@ -35,7 +35,7 @@ export const getadcodeinfo = (adcodei)=>{
   if(!!resultobj){
     return {
       level:'provice',
-      parent_code:parseInt(resultobj.parent_code)
+      parent_code:parseInt(resultobj.parent_code,10)
     };
   }
 

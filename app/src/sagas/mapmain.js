@@ -1,4 +1,4 @@
-import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join,throttle } from 'redux-saga/effects';
+import { select,put,call,take,takeEvery,takeLatest,cancel,fork,join, } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   common_err,
@@ -63,7 +63,7 @@ import get from 'lodash.get';
 import includes from 'lodash.includes';
 import filter from 'lodash.filter';
 // import moment from 'moment';
-// import coordtransform from 'coordtransform';
+import coordtransform from 'coordtransform';
 import {getadcodeinfo} from '../util/addressutil';
 import {getpopinfowindowstyle,getlistpopinfowindowstyle,getimageicon} from './getmapstyle';
 // import jsondataareas from '../util/areas.json';
@@ -384,7 +384,7 @@ const listenclusterevent = (eventname)=>{
     distCluster.on(eventname, (e,record)=> {
         distCluster.getClusterRecord(record.adcode,(err,result)=>{
           if(!err){
-            const {adcode,name,dataItems,hangingDataItems,children} = result;
+            const {dataItems} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
                   resolve({adcodetop:record.adcode,forcetoggled:true});
@@ -422,14 +422,14 @@ const showinfowindow = (deviceitem)=>{
   });
 }
 
-const showinfowindow_cluster = ({itemdevicelist,lnglat})=>{
+const showinfowindow_cluster = ({itemdevicelist,lnglat,SettingOfflineMinutes})=>{
   return new Promise((resolve,reject) =>{
       if(!window.AMapUI){
         alert('未加载到AMapUI！');
         reject();
         return;
       }
-      infoWindow = new window.AMap.InfoWindow(getlistpopinfowindowstyle(itemdevicelist));
+      infoWindow = new window.AMap.InfoWindow(getlistpopinfowindowstyle(itemdevicelist,SettingOfflineMinutes));
       window.amapmain.setCenter(lnglat);
       infoWindow.open(window.amapmain, lnglat);
       resolve(infoWindow);
@@ -749,19 +749,32 @@ export function* createmapmainflow(){
     });
 
     yield takeLatest(`${ui_changemodeview}`, function*(action) {
-      if(!!infoWindow){
-        infoWindow.close();
+      const changemodeviewfn = ()=>{
+        return new Promise((resolve) => {
+          if(!!infoWindow){
+            infoWindow.close();
+          }
+          resolve();
+        });
       }
+      yield call(changemodeviewfn);
+
     });
     //销毁地图
     yield takeEvery(`${carmapshow_destorymap}`, function*(action_destorymap) {
       let {payload:{divmapid}} = action_destorymap;
-      if(divmapid === divmapid_mapmain){
-        window.amapmain = null;
-        infoWindow=null;
-        distCluster=null;
-        // pointSimplifierIns=null;
+      const destorymap = (divmapid)=>{
+        return new Promise((resolve) => {
+          if(divmapid === divmapid_mapmain){
+            window.amapmain = null;
+            infoWindow=null;
+            distCluster=null;
+          }
+          resolve();
+        });
       }
+      yield call(destorymap,divmapid);
+
     });
 
     //选择一个车辆请求
@@ -791,7 +804,7 @@ export function* createmapmainflow(){
                 catch(e){
                   console.log(e);
                 }
-                const adcodetop = parseInt(result.adcode);
+                const adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
                 yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
                 if(config.softmode === 'pc'){//pc端才有树啊
@@ -881,9 +894,11 @@ export function* createmapmainflow(){
 
         //地图缩放到最大
         //yield put(md_mapmain_setzoomlevel(maxzoom));
-
+        const SettingOfflineMinutes =yield select((state)=>{
+          return get(state,'app.SettingOfflineMinutes',20);
+        });
         //弹框
-        yield call(showinfowindow_cluster,{itemdevicelist:listitem,lnglat});
+        yield call(showinfowindow_cluster,{itemdevicelist:listitem,lnglat,SettingOfflineMinutes});
 
         yield fork(function*(eventname){
          //while(true){//关闭时触发的事件
@@ -909,14 +924,21 @@ export function* createmapmainflow(){
           while( !distCluster){
             yield call(delay,2500);
           }
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
           //批量转换一次
           g_devicesdb = {};//清空，重新初始化
           // console.log(`clear g_devicesdb...restart g_devicesdb...`)
           let devicelistresult = yield call(getgeodatabatch,devicelist);
           const data = [];
+          let deviceidonlines = [];
           lodashmap(devicelistresult,(deviceitem)=>{
             if(!!deviceitem.locz){
               data.push(deviceitem);
+              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                deviceidonlines.push(deviceitem.DeviceId);
+              }
             }
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
           });
@@ -929,22 +951,26 @@ export function* createmapmainflow(){
           gmap_acode_treecount={};
 
 
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
-          });
-          const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
+
+          yield call(getclustertree_root,SettingOfflineMinutes);
           gmap_acode_treecount[1] = {//所有
             count_total:devicelistresult.length,
+            count_online:deviceidonlines.length,
           };
           const datanolocate = [];
+          deviceidonlines = [];
           lodashmap(g_devicesdb,(deviceitem)=>{
             if(!deviceitem.locz){
               datanolocate.push(deviceitem.DeviceId);
+              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                deviceidonlines.push(deviceitem.DeviceId);
+              }
             }
           });
           gmap_acode_devices[2] = datanolocate;
           gmap_acode_treecount[2] = {
-            count_total:datanolocate.length
+            count_total:datanolocate.length,
+            count_online:deviceidonlines.length,
           }
 
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
@@ -1003,20 +1029,27 @@ export function* createmapmainflow(){
 
     yield takeLatest(`${ui_showdistcluster}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
-        try{
-          if(!!distCluster){
-            if(isshow){
-              distCluster.show();
+        const showdistclusterfn = (isshow)=>{
+          return new Promise((resolve) => {
+            try{
+              if(!!distCluster){
+                if(isshow){
+                  distCluster.show();
+                }
+                else{
+                  distCluster.hide();
+                }
+                distCluster.render();
+              }
             }
-            else{
-              distCluster.hide();
+            catch(e){
+              console.log(e);
             }
-            distCluster.render();
-          }
+            resolve();
+          });
         }
-        catch(e){
-          console.log(e);
-        }
+        yield call(showdistclusterfn,isshow);
+
     });
     //显示海量点
     yield takeLatest(`${ui_showhugepoints}`, function*(action_showflag) {
@@ -1046,13 +1079,13 @@ export function* createmapmainflow(){
     yield takeLatest(`${mapmain_seldistrict}`, function*(action_district) {
         let {payload:{adcodetop,forcetoggled}} = action_district;
         try{
+          const SettingOfflineMinutes =yield select((state)=>{
+            return get(state,'app.SettingOfflineMinutes',20);
+          });
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
-            const SettingOfflineMinutes =yield select((state)=>{
-              return get(state,'app.SettingOfflineMinutes',20);
-            });
 
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
             if(!!result){
@@ -1064,7 +1097,7 @@ export function* createmapmainflow(){
                 }
                 else{
                   //刷新树中的数据
-                  yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+                  yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
                 }
               }
             }
@@ -1085,14 +1118,19 @@ export function* createmapmainflow(){
           else if(adcodetop===2){
             // 未定位车辆特殊处理
             const data = [];
+            const deviceidonlines = [];
             lodashmap(g_devicesdb,(deviceitem)=>{
               if(!deviceitem.locz){
                 data.push(deviceitem);
+                if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                  deviceidonlines.push(deviceitem.DeviceId);
+                }
               }
             });
             gmap_acode_devices[2] = data;
             gmap_acode_treecount[2] = {
-              count_total:data.length
+              count_total:data.length,
+              count_online:deviceidonlines.length,
             }
             yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
           }
@@ -1131,9 +1169,31 @@ export function* createmapmainflow(){
     yield takeLatest(`${serverpush_device}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
-      let deviceitem = payload;
+      let deviceinfo = payload;
       try{
-        g_devicesdb[deviceitem.DeviceId] = deviceitem;
+        if(!!deviceinfo){
+          let isget = true;
+          const LastHistoryTrack = deviceinfo.LastHistoryTrack;
+          if (!LastHistoryTrack) {
+              isget = false;
+          }
+          else{
+            if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+              isget = false;
+            }
+          }
+          if(isget){
+            let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+            const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+            deviceinfo.locz = wgs84togcj02;
+          }
+
+          if(!!deviceinfo.locz){
+            const addr = yield call(getgeodata,deviceinfo);
+            deviceinfo = {...deviceinfo,...addr};
+          }
+        }
+        g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
         yield put(devicelistgeochange_distcluster({}));
         // yield put(devicelistgeochange_pointsimplifierins({}));
         yield put(devicelistgeochange_geotreemenu({}));
@@ -1154,20 +1214,26 @@ export function* createmapmainflow(){
     //devicelistgeochange
     // yield throttle(1300,`${devicelistgeochange_distcluster}`,function*(action){
     yield takeLatest(`${devicelistgeochange_distcluster}`,function*(action){
-      try{
-        if(!!distCluster){
-          let data = [];
-          lodashmap(g_devicesdb,(deviceitem)=>{
-            if(!!deviceitem.locz){
-              data.push(deviceitem);
+      const devicelistgeochange_distclusterfn = ()=>{
+        return new Promise((resolve) => {
+          try{
+            if(!!distCluster){
+              let data = [];
+              lodashmap(g_devicesdb,(deviceitem)=>{
+                if(!!deviceitem.locz){
+                  data.push(deviceitem);
+                }
+              });
+              distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
             }
-          });
-          distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
-        }
-      }
-      catch(e){
-        console.log(e);
-      }
+          }
+          catch(e){
+            console.log(e);
+          }
+          resolve();
+        });
+      };
+      yield call(devicelistgeochange_distclusterfn);
     });
 
     // yield throttle(1700,`${devicelistgeochange_pointsimplifierins}`,function*(action){
@@ -1195,8 +1261,8 @@ export function* createmapmainflow(){
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
           });
-          const childadcodelist = yield call(getclustertree_root,SettingOfflineMinutes);
-          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+          yield call(getclustertree_root,SettingOfflineMinutes);
+          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
           //
 
           const getdevicestate = (state)=>{
@@ -1237,7 +1303,7 @@ export function* createmapmainflow(){
               const SettingOfflineMinutes =yield select((state)=>{
                 return get(state,'app.SettingOfflineMinutes',20);
               });
-              const result = yield call(getclustertree_one,adcode,SettingOfflineMinutes);
+              yield call(getclustertree_one,adcode,SettingOfflineMinutes);
             },codelist[i]);
             forkhandles.push(handlefork);
           };
@@ -1253,7 +1319,7 @@ export function* createmapmainflow(){
           //刷新树中数据
           //《----未定位的数据个数也要刷
 
-          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+          yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
 
           //
       }
@@ -1313,16 +1379,23 @@ export function* createmapmainflow(){
       try{
         //切换到首页
         let {payload:DeviceId} = action;
-        // if(typeof DeviceId === 'string'){
-        //   DeviceId = parseInt(DeviceId);
-        // }
+
+        if(!!infoWindow){
+            infoWindow.close();
+            infoWindow = null;
+        }
         //先定位到地图模式,然后选择车辆
         let deviceitem = g_devicesdb[DeviceId];
         //console.log(`${deviceitem}`)
-        yield put(ui_sel_tabindex(0));
-        yield put(replace('/index'));
-        //选择第一个tab
-        yield put(ui_index_selstatus(0));
+        if(config.softmode === 'app'){
+          yield put(ui_sel_tabindex(0));
+          yield put(replace('/index'));
+          //选择第一个tab
+          yield put(ui_index_selstatus(0));
+        }
+        else if(config.softmode === 'pc'){
+          yield put(replace('/index'));
+        }
         //选择车辆
         if(!!deviceitem){
           yield put(ui_selcurdevice_request({DeviceId,deviceitem}));

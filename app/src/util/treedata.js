@@ -34,7 +34,7 @@ export function get_initgeotree(){
   };
 
   map(jsondataprovinces,(province)=>{
-    let provicecode = parseInt(province.code);
+    let provicecode = parseInt(province.code,10);
     let provicenode = {
       adcode:provicecode,
       name:province.name,
@@ -50,8 +50,8 @@ export function get_initgeotree(){
     };
 
     map(jsondatacities,(city)=>{
-      let citycode = parseInt(city.code);
-      let parent_code = parseInt(city.parent_code);
+      let citycode = parseInt(city.code,10);
+      let parent_code = parseInt(city.parent_code,10);
       if(parent_code === provicecode){
         let citynode = {
           adcode:citycode,
@@ -68,8 +68,8 @@ export function get_initgeotree(){
         };
 
         map(jsondataareas,(area)=>{
-          let areacode = parseInt(area.code);
-          parent_code = parseInt(area.parent_code);
+          let areacode = parseInt(area.code,10);
+          parent_code = parseInt(area.parent_code,10);
           if(parent_code === citycode){
             let areanode = {
               adcode:areacode,

@@ -14,7 +14,7 @@ import data from './datahandler.js';
 import {
     login_result,
     logout_result,
-    logout_request,
+    // logout_request,
     notify_socket_connected,
     common_err
 } from '../actions';

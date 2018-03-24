@@ -1,15 +1,15 @@
 import {wsflow} from './api.ws.js';
-import {takeLatest,take,takeEvery,put,fork,call,select} from 'redux-saga/effects';
-import {delay} from 'redux-saga';
+import {takeLatest,put,fork,} from 'redux-saga/effects';
+// import {delay} from 'redux-saga';
 import {
   ui_index_addcollection,
   ui_index_unaddcollection,
   ui_clickplayback,
-  ui_changemodeview,
+  // ui_changemodeview,
   collectdevice_request,
   // querydevice_result
 } from '../actions';
-import { push,goBack,go,replace } from 'react-router-redux';
+import { push,} from 'react-router-redux';
 
 export function* apiflow(){//
   try{
@@ -18,9 +18,9 @@ export function* apiflow(){//
     yield takeLatest(`${ui_clickplayback}`, function*(action) {
       try{
         const {payload} = action;
-        const mode = yield select((state)=>{
-          return state.app.modeview;
-        });
+        // const mode = yield select((state)=>{
+        //   return state.app.modeview;
+        // });
         // if(mode !== 'device'){
         //   yield put(ui_changemodeview('device'));
         //   yield take(`${querydevice_result}`);

@@ -1,15 +1,15 @@
 import { select,put,call,take,takeLatest,takeEvery } from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
-  mapmain_setzoomlevel,
-  mapmain_setmapcenter,
-  map_setmapinited,
+  // mapmain_setzoomlevel,
+  // mapmain_setmapcenter,
+  // map_setmapinited,
   carmapshow_createmap,
   carmapshow_destorymap,
-  mapmain_setenableddrawmapflag,
-  querydevice_result,
+  // mapmain_setenableddrawmapflag,
+  // querydevice_result,
   ui_selcurdevice_request,
-  querydeviceinfo_request,
+  // querydeviceinfo_request,
 
   mapplayback_start,
   mapplayback_end,
@@ -18,7 +18,7 @@ import {
 } from '../actions';
 import coordtransform from 'coordtransform';
 import {getcurrentpos} from './getcurrentpos';
-import { push } from 'react-router-redux';
+// import { push } from 'react-router-redux';
 import L from 'leaflet';
 
 
@@ -202,33 +202,51 @@ export function* createmaptrackhistoryplaybackflow(){
     //销毁地图
     yield takeEvery(`${carmapshow_destorymap}`, function*(action_destorymap) {
         let {payload:{divmapid}} = action_destorymap;
-        if(divmapid === divmapid_maptrackhistoryplayback){
-          window.amaptrackhistoryplayback = null;
-          navg0 = null;
-          gPathSimplifier = null;
-          pathSimplifierIns = null;
-        }
+        const destorymapfn = (divmapid)=>{
+          return new Promise((resolve) => {
+            try{
+              if(divmapid === divmapid_maptrackhistoryplayback){
+                window.amaptrackhistoryplayback = null;
+                navg0 = null;
+                gPathSimplifier = null;
+                pathSimplifierIns = null;
+              }
+            }
+            catch(e){
+              console.log(e);
+            }
+            resolve();
+          });
+        };
+        yield call(destorymapfn,divmapid);
+
     });
 
     yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
-      try{
-        if(!!window.amaptrackhistoryplayback){
-          const {payload:{DeviceId,deviceitem}} = actioncurdevice;
-          if(!!deviceitem){
-            const LastHistoryTrack = deviceitem.LastHistoryTrack;
-            if(!!LastHistoryTrack){
-              if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
-                let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-                let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-                window.amaptrackhistoryplayback.setCenter(wgs84togcj02);
+      const {payload:{deviceitem}} = actioncurdevice;
+      const selcurdevice_requestfn = (deviceitem)=>{
+        return new Promise((resolve) => {
+          try{
+            if(!!window.amaptrackhistoryplayback){
+              if(!!deviceitem){
+                const LastHistoryTrack = deviceitem.LastHistoryTrack;
+                if(!!LastHistoryTrack){
+                  if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
+                    let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+                    let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+                    window.amaptrackhistoryplayback.setCenter(wgs84togcj02);
+                  }
+                }
               }
             }
           }
-        }
-      }
-      catch(e){
-        console.log(e);
-      }
+          catch(e){
+            console.log(e);
+          }
+          resolve();
+        });
+      };
+      yield call(selcurdevice_requestfn,deviceitem);
     });
 
     //mapplayback_start
@@ -279,14 +297,20 @@ export function* createmaptrackhistoryplaybackflow(){
     });
     //mapplayback_end
     yield takeLatest(`${mapplayback_end}`,function*(action){
-      try{
-        if(!!navg0){
-          navg0.stop();
-          navg0.destroy();
-        }
+      const mapplayback_endfn = ()=>{
+        return new Promise((resolve) => {
+          try{
+            if(!!navg0){
+              navg0.stop();
+              navg0.destroy();
+            }
+          }
+          catch(e){
+            console.log(e);
+          }
+          resolve();
+        });
       }
-      catch(e){
-        console.log(e);
-      }
+      yield call(mapplayback_endfn);
     });
 }
