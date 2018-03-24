@@ -59,6 +59,11 @@ class MessageAllDevice extends React.Component {
     }
 
     onItemConvert(item){
+      item["key"] = get(item,'DeviceId','');
+      item["车辆ID"] = get(item,'DeviceId','');
+      item["报警时间"] =  get(item,'LastRealtimeAlarm.DataTime','');
+      item["报警等级"] =  get(item,'warninglevel','');
+      item["报警信息"] =  get(item,'alarmtxtstat','');
       const warninglevel = item['报警等级'];
       if(warninglevel === '高'){
         item['报警等级'] = '三级';
@@ -122,13 +127,7 @@ class MessageAllDevice extends React.Component {
           }
 
           if(matcheddevice && matchedwarninglevel){
-            data.push({
-              key:get(deviceitem,'DeviceId',''),
-              "车辆ID" : get(deviceitem,'DeviceId',''),
-              "报警时间" : get(deviceitem,'LastRealtimeAlarm.DataTime',''),
-              "报警等级" : get(deviceitem,'warninglevel',''),
-              "报警信息" : get(deviceitem,'alarmtxtstat',''),
-            });
+            data.push(this.onItemConvert(deviceitem));
           }
         });
         // let viewrow = (row)=>{
