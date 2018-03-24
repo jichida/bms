@@ -143,14 +143,14 @@ class Page extends React.Component {
       this.props.dispatch(mapplayback_end({}));
     }
     render() {
-        const {deviceid} = this.state;
+        // const {deviceid} = this.state;
         const {g_devicesdb} = this.props;
-        let DeviceId;
+        // let DeviceId;
 
-        let deviceitem = g_devicesdb[deviceid];
-        if(!!deviceitem){
-          DeviceId = deviceitem.DeviceId;
-        }
+        // let deviceitem = g_devicesdb[deviceid];
+        // if(!!deviceitem){
+        //   DeviceId = deviceitem.DeviceId;
+        // }
         let deviceidlist = [];
         map(g_devicesdb,(item)=>{
             deviceidlist.push(item.DeviceId);

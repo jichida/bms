@@ -749,19 +749,32 @@ export function* createmapmainflow(){
     });
 
     yield takeLatest(`${ui_changemodeview}`, function*(action) {
-      if(!!infoWindow){
-        infoWindow.close();
+      const changemodeviewfn = ()=>{
+        return new Promise((resolve) => {
+          if(!!infoWindow){
+            infoWindow.close();
+          }
+          resolve();
+        });
       }
+      yield call(changemodeviewfn);
+
     });
     //销毁地图
     yield takeEvery(`${carmapshow_destorymap}`, function*(action_destorymap) {
       let {payload:{divmapid}} = action_destorymap;
-      if(divmapid === divmapid_mapmain){
-        window.amapmain = null;
-        infoWindow=null;
-        distCluster=null;
-        // pointSimplifierIns=null;
+      const destorymap = (divmapid)=>{
+        return new Promise((resolve) => {
+          if(divmapid === divmapid_mapmain){
+            window.amapmain = null;
+            infoWindow=null;
+            distCluster=null;
+          }
+          resolve();
+        });
       }
+      yield call(destorymap,divmapid);
+
     });
 
     //选择一个车辆请求
@@ -1016,20 +1029,27 @@ export function* createmapmainflow(){
 
     yield takeLatest(`${ui_showdistcluster}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
-        try{
-          if(!!distCluster){
-            if(isshow){
-              distCluster.show();
+        const showdistclusterfn = (isshow)=>{
+          return new Promise((resolve) => {
+            try{
+              if(!!distCluster){
+                if(isshow){
+                  distCluster.show();
+                }
+                else{
+                  distCluster.hide();
+                }
+                distCluster.render();
+              }
             }
-            else{
-              distCluster.hide();
+            catch(e){
+              console.log(e);
             }
-            distCluster.render();
-          }
+            resolve();
+          });
         }
-        catch(e){
-          console.log(e);
-        }
+        yield call(showdistclusterfn,isshow);
+
     });
     //显示海量点
     yield takeLatest(`${ui_showhugepoints}`, function*(action_showflag) {
@@ -1194,20 +1214,26 @@ export function* createmapmainflow(){
     //devicelistgeochange
     // yield throttle(1300,`${devicelistgeochange_distcluster}`,function*(action){
     yield takeLatest(`${devicelistgeochange_distcluster}`,function*(action){
-      try{
-        if(!!distCluster){
-          let data = [];
-          lodashmap(g_devicesdb,(deviceitem)=>{
-            if(!!deviceitem.locz){
-              data.push(deviceitem);
+      const devicelistgeochange_distclusterfn = ()=>{
+        return new Promise((resolve) => {
+          try{
+            if(!!distCluster){
+              let data = [];
+              lodashmap(g_devicesdb,(deviceitem)=>{
+                if(!!deviceitem.locz){
+                  data.push(deviceitem);
+                }
+              });
+              distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
             }
-          });
-          distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
-        }
-      }
-      catch(e){
-        console.log(e);
-      }
+          }
+          catch(e){
+            console.log(e);
+          }
+          resolve();
+        });
+      };
+      yield call(devicelistgeochange_distclusterfn);
     });
 
     // yield throttle(1700,`${devicelistgeochange_pointsimplifierins}`,function*(action){

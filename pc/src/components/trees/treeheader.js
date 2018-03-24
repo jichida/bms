@@ -71,7 +71,7 @@ const HeaderCo = (props) => {
         <div style={props.style.base}  className={treeseled}>
             <div style={props.style.title}>
                 <div style={{
-                    display: "-webkit-box;-ms-flexbox;flex;-webkit-flex;",
+                    display: "-webkit-box;-ms-flexbox;flex;-webkit-flex",
                     alignItems: "center",
                 }}>
                     <img alt="" src={iconname} style={{width: "20px",marginRight: "5px", marginLeft : "5px"}} />
