@@ -105,19 +105,23 @@ const createInfoWindow_poplistinfo =(data)=> {
     console.log(data);
     //iscollection
     let title = "<span class='p'></span><span>聚合点车辆</span>";
-    let Car_img = Car_online || Car_outline;
+    // let Car_img = Car_online || Car_outline;
+
 
     let contenthtml = "<ul>";
+
     map(data, (v,i)=>{
+        const {iconname,isonline } = v;
+        const deviceIdHtml = isonline?`<b><span>${v.DeviceId}</span></b>`:`<span>${v.DeviceId}</span>`;
         let dinfo = `
             <span>${v.fields[0].showname}:</span><span>${v.fields[0].fieldvalue}</span>
             <span>${v.fields[1].showname}:</span><span>${v.fields[1].fieldvalue}</span>`;
 
         return contenthtml = `${contenthtml}
             <li key=${i} onclick="clickfn_device_fromlist(${v.DeviceId})">
-                <div class='l'><img src=${Car_img} /></div>
+                <div class='l'><img src=${iconname} /></div>
                 <div class='r'>
-                    <p class="t"><span>车辆ID:</span><span>${v.DeviceId}</span></p>
+                    <p class="t"><span>车辆ID:</span>${deviceIdHtml}</p>
                     <p><span>${dinfo}</span></p>
                 </div>
                 <img src="${Point_list_img}" />
@@ -125,7 +129,7 @@ const createInfoWindow_poplistinfo =(data)=> {
     })
 
     let content = [];
-    console.log(contenthtml);
+    // console.log(contenthtml);
 
     content.push(contenthtml);
     let info = document.createElement("div");

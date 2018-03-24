@@ -422,14 +422,14 @@ const showinfowindow = (deviceitem)=>{
   });
 }
 
-const showinfowindow_cluster = ({itemdevicelist,lnglat})=>{
+const showinfowindow_cluster = ({itemdevicelist,lnglat,SettingOfflineMinutes})=>{
   return new Promise((resolve,reject) =>{
       if(!window.AMapUI){
         alert('未加载到AMapUI！');
         reject();
         return;
       }
-      infoWindow = new window.AMap.InfoWindow(getlistpopinfowindowstyle(itemdevicelist));
+      infoWindow = new window.AMap.InfoWindow(getlistpopinfowindowstyle(itemdevicelist,SettingOfflineMinutes));
       window.amapmain.setCenter(lnglat);
       infoWindow.open(window.amapmain, lnglat);
       resolve(infoWindow);
@@ -881,9 +881,11 @@ export function* createmapmainflow(){
 
         //地图缩放到最大
         //yield put(md_mapmain_setzoomlevel(maxzoom));
-
+        const SettingOfflineMinutes =yield select((state)=>{
+          return get(state,'app.SettingOfflineMinutes',20);
+        });
         //弹框
-        yield call(showinfowindow_cluster,{itemdevicelist:listitem,lnglat});
+        yield call(showinfowindow_cluster,{itemdevicelist:listitem,lnglat,SettingOfflineMinutes});
 
         yield fork(function*(eventname){
          //while(true){//关闭时触发的事件

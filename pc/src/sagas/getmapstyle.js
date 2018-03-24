@@ -1,11 +1,11 @@
 import get from 'lodash.get';
-import store from '../env/store';
-import {ui_showmenu} from '../actions';
-import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
-import moment from 'moment';
+// import store from '../env/store';
+// import {ui_showmenu} from '../actions';
+// import { push,goBack,go  } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
+// import moment from 'moment';
 import lodashmap from 'lodash.map';
 import {bridge_deviceinfo_pop,bridge_deviceinfo_popcluster} from './datapiple/bridgedb';
-import {ui_btnclick_devicemessage} from '../actions';
+// import {ui_btnclick_devicemessage} from '../actions';
 import {getdevicestatus_alaramlevel} from '../util/getdeviceitemstatus';
 import {createInfoWindow_popinfo,createInfoWindow_poplistinfo} from './mapmain_infowindow';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
@@ -128,7 +128,7 @@ export const getpopinfowindowstyle = (deviceitem)=>{
 
 
 
-export const getlistpopinfowindowstyle = (deviceitemlist)=>{
+export const getlistpopinfowindowstyle = (deviceitemlist,SettingOfflineMinutes)=>{
     // let info = '<div class="getmapstylepage">';
     const result = bridge_deviceinfo_popcluster(deviceitemlist);
     const {kvlist} = result;
@@ -150,8 +150,12 @@ export const getlistpopinfowindowstyle = (deviceitemlist)=>{
             unit
           });
         });
+        // console.log(`deviceitem:${deviceitem.DeviceId},GPSTime:${}`)
+        const  {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
 
         data.push({
+          iconname,
+          isonline,
           DeviceId,
           fields
         });
