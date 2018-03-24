@@ -1353,16 +1353,23 @@ export function* createmapmainflow(){
       try{
         //切换到首页
         let {payload:DeviceId} = action;
-        // if(typeof DeviceId === 'string'){
-        //   DeviceId = parseInt(DeviceId);
-        // }
+
+        if(!!infoWindow){
+            infoWindow.close();
+            infoWindow = null;
+        }
         //先定位到地图模式,然后选择车辆
         let deviceitem = g_devicesdb[DeviceId];
         //console.log(`${deviceitem}`)
-        yield put(ui_sel_tabindex(0));
-        yield put(replace('/index'));
-        //选择第一个tab
-        yield put(ui_index_selstatus(0));
+        if(config.softmode === 'app'){
+          yield put(ui_sel_tabindex(0));
+          yield put(replace('/index'));
+          //选择第一个tab
+          yield put(ui_index_selstatus(0));
+        }
+        else if(config.softmode === 'pc'){
+          yield put(replace('/index'));
+        }
         //选择车辆
         if(!!deviceitem){
           yield put(ui_selcurdevice_request({DeviceId,deviceitem}));

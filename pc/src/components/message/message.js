@@ -9,7 +9,7 @@ import get from 'lodash.get';
 import AntdTable from "../controls/table.js";
 import moment from 'moment';
 import TreeSearchreport from '../search/search_message';
-
+import {ui_alarm_selcurdevice} from '../../actions';
 // import {
 //   callthen,uireport_searchalarm_request,uireport_searchalarm_result
 // } from '../../sagas/pagination';
@@ -97,7 +97,20 @@ class MessageAllDevice extends React.Component {
           };
           return column_item;
         });
-
+        const viewinmap = (row)=>{
+            console.log(row);//DeviceId
+            // this.props.history.push(`/alarminfo/${row._id}`);
+            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
+        }
+        let columns_action ={
+            title: "操作",
+            dataIndex: '',
+            key: 'x',
+            render: (text, row, index) => {
+                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+            }
+        }
+        columns.push(columns_action);
         const {g_devicesdb} = this.props;
         const {warninglevel,DeviceId} = this.state.query;
         let data = [];
