@@ -4,12 +4,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import map from 'lodash.map';
-import Devicestar from "../../img/16.png";
-import Moresetting from "../../img/17.png";
-import Footer from "../index/footer.js";
+// import Devicestar from "../../img/16.png";
+// import Moresetting from "../../img/17.png";
+// import Footer from "../index/footer.js";
 
-import {ui_mycar_showtype,ui_viewdevicedetail} from '../../actions';
-import Searchimg from "../../img/22.png";
+import {ui_viewdevicedetail} from '../../actions';
+// import Searchimg from "../../img/22.png";
 import SelectDevice from '../mydevice/selectdevice.js';
 
 const innerHeight = window.innerHeight;
@@ -39,7 +39,7 @@ class Page extends React.Component {
     }
     render() {
         let deviceidlist = [];
-        const height =  innerHeight - 70 - 60 - 66.08;
+        // const height =  innerHeight - 70 - 60 - 66.08;
         const mydevicecontentstyle = {pointerEvents: "none",background : "#FFF", flexGrow : "1"};
         let groupid = this.props.match.params.groupid;
         const {groups,g_devicesdb} = this.props;
@@ -63,12 +63,12 @@ class Page extends React.Component {
         //     }
         //   }
         // });
-        const columns = [{
-            title: '车牌',
-            dataIndex: 'DeviceId',
-            key: 'DeviceId',
-            render: text => <p>{text}</p>
-        }]
+        // const columns = [{
+        //     title: '车牌',
+        //     dataIndex: 'DeviceId',
+        //     key: 'DeviceId',
+        //     render: text => <p>{text}</p>
+        // }]
         let mydevices = [];
         if(!!g_devicesdb[this.state.deviceid]){
             let item = {...g_devicesdb[this.state.deviceid],key:this.state.deviceid};
@@ -84,7 +84,7 @@ class Page extends React.Component {
                     pointerEvents: "none",
                 }}>
                 <div className="navhead">
-                    <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
+                    <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
                     <div className="title" style={{paddingRight: "30px"}}>
                         {groups[groupid].name}
                     </div>

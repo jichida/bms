@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import './warning.css';
 import NavBar from "../tools/nav.js";
 import Avatars from "../../img/2.png";
-import {List, ListItem} from 'material-ui/List';
+import { ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import DatePicker from 'material-ui/DatePicker';
 import SelectField from 'material-ui/SelectField';
@@ -32,7 +32,7 @@ class Page extends React.Component {
     }
 
     render() {
-        const {mapseldeviceid,devices} = this.props;
+        // const {mapseldeviceid,devices} = this.props;
         let DeviceId;
         const formstyle={width:"100%",flexGrow:"1"};
         const textFieldStyle={width:"100%",flexGrow:"1"};

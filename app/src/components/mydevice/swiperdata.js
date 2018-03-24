@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
-import DataSet from '@antv/data-set';
+// import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
+import { Chart, Geom, Axis, Tooltip, } from 'bizcharts';
+// import DataSet from '@antv/data-set';
 import { Swiper, Slide } from 'react-dynamic-swiper';
 import 'react-dynamic-swiper/lib/styles.css';;
 
@@ -42,8 +42,8 @@ class Page extends React.Component {
                 style={{background:"#FFF"}}
                 >
                 <Slide className="Demo-swiper__slide">
-                    <div 
-                        className="bizcharts" 
+                    <div
+                        className="bizcharts"
                         style={{
                             marginLeft : "-35px",
                             height : "260px",

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import map from 'lodash.map';
-import filter from 'lodash.filter';
+// import map from 'lodash.map';
+// import filter from 'lodash.filter';
 import "./style.css";
 
 import {
@@ -67,7 +67,7 @@ class SelectDevice extends React.Component {
             <input name="" placeholder="请输入车辆ID" type="number" onChange={this.onChange.bind(this)} />
         </div>
         <div className="list">
-          
+
           <InfinitePage
               usecache={usecachedevice}
               listtypeid='listdevice'

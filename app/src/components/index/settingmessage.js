@@ -4,19 +4,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './index.css';
-import {List, ListItem} from 'material-ui/List';
-import Rightlnk from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
-import Divider from 'material-ui/Divider';
-import Avatar from '../../img/19.png';
+// import {List, ListItem} from 'material-ui/List';
+// import Rightlnk from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+// import Divider from 'material-ui/Divider';
+// import Avatar from '../../img/19.png';
 import Toggle from 'material-ui/Toggle';
 
 class Page extends React.Component {
 
     render() {
-        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
-        const pushurl = (name)=>{
-            this.props.history.push(name);
-        }
+        // const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
+        // const pushurl = (name)=>{
+        //     this.props.history.push(name);
+        // }
         return (
             <div className="settingPage AppPage" style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}>
                 <div className="navhead">

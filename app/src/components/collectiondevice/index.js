@@ -12,9 +12,9 @@ class Page extends React.Component {
 
     render() {
         let data = [];
-        const {carcollections,g_devicesdb} = this.props;
+        const {carcollections,} = this.props;
         map(carcollections,(id)=>{
-          let item = g_devicesdb[id];
+          // let item = g_devicesdb[id];
           data.push({name :`${id}`,id});
         });
 
@@ -27,7 +27,7 @@ class Page extends React.Component {
                               // this.props.history.push(`/deviceinfo/${d.id}`)}
                                 this.props.dispatch(ui_selworkorder(d.id));
                               }
-                            }><img src={Devicestar} />{d.name}</div>
+                            }><img src={Devicestar} alt=""/>{d.name}</div>
                         )
                     })
                 }<div></div>

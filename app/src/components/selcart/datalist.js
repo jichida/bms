@@ -4,12 +4,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Table from 'antd/lib/table';
-import Icon  from 'antd/lib/icon';
-import filter from 'lodash.filter';
-import sortBy from 'lodash.sortby';
+// import Icon  from 'antd/lib/icon';
+// import filter from 'lodash.filter';
+// import sortBy from 'lodash.sortby';
 import map from 'lodash.map';
-import Searchimg from '../../img/13.png';
-import Footer from "../index/footer.js";
+// import Searchimg from '../../img/13.png';
+// import Footer from "../index/footer.js";
 import { withRouter } from 'react-router-dom';
 import "../../css/antd.min.css";
 // import {ui_resetsearch} from '../../actions';

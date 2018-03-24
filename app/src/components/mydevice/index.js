@@ -3,14 +3,14 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import map from 'lodash.map';
-import Devicestar from "../../img/16.png";
-import Moresetting from "../../img/17.png";
+// import map from 'lodash.map';
+// import Devicestar from "../../img/16.png";
+// import Moresetting from "../../img/17.png";
 import Footer from "../index/footer.js";
 import Datapro from "./datapro";
 
-import {ui_mycar_showtype} from '../../actions';
-import Searchimg from "../../img/22.png";
+// import {ui_mycar_showtype} from '../../actions';
+// import Searchimg from "../../img/22.png";
 const innerHeight = window.innerHeight;
 class Page extends React.Component {
     constructor(props) {
@@ -26,8 +26,8 @@ class Page extends React.Component {
         this.setState({searchonfocus : false})
     }
     render() {
-        const height =  window.innerHeight - 70 - 60 - 66.08;
-        const mydevicecontentstyle = this.props.ui_mydeivce_showtype===0?{pointerEvents: "none",background : "none"}:{};
+        // const height =  window.innerHeight - 70 - 60 - 66.08;
+        // const mydevicecontentstyle = this.props.ui_mydeivce_showtype===0?{pointerEvents: "none",background : "none"}:{};
         // let count_connected = 0;
         // let count_running = 0;
         // let count_error = 0;

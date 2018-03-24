@@ -27,14 +27,14 @@ class Page extends React.Component {
         this.props.onClickRow(id);
     }
     updateContent = (item)=> {
-        let warningtext = {
-            "高":"1",
-            "中":"2",
-            "低":"3"
-        };
-
-        console.log("itemitem");
-        console.log(item);
+        // let warningtext = {
+        //     "高":"1",
+        //     "中":"2",
+        //     "低":"3"
+        // };
+        //
+        // console.log("itemitem");
+        // console.log(item);
 
         let level = 3;
         let  LevelDiv = (<i className="warninglevel warninglevel_3">低</i>);

@@ -1,11 +1,11 @@
 import React from 'react';
-import { Field } from 'redux-form';
+// import { Field } from 'redux-form';
 import Upload from 'antd/lib/upload';
 import Icon from 'antd/lib/icon';
-import message from 'antd/lib/message';
+// import message from 'antd/lib/message';
 import Modal from 'antd/lib/modal';
 import map from "lodash.map";
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 import './pictureswall.css';
 import 'antd/dist/antd.css';
 import config from '../../env/config.js';

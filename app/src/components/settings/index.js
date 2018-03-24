@@ -72,7 +72,7 @@ class Setting extends React.Component {
                 style={{height:`${this.state.innerHeight}px`,overflow:"hidden",paddingBottom:"0"}}
                 >
                 <div className="navhead">
-                    <a className="back" onClick={()=>{this.props.history.goBack()}}></a>
+                    <div className="back" onClick={()=>{this.props.history.goBack()}}></div>
                     <span className="title" style={{paddingRight : "30px"}}>消息提示设置</span>
                 </div>
 

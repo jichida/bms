@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 // } from '../../actions';
 
 import Datalist from "./datalist_rawinfos";
-let g_showdata = false;
+// let g_showdata = false;
 let g_usecachealarm = false;
 
 class Page extends React.Component {
@@ -30,7 +30,7 @@ class Page extends React.Component {
       });
     }
     componentDidMount () {
-      g_showdata = false;
+      // g_showdata = false;
       g_usecachealarm = false;
     }
 
@@ -44,7 +44,7 @@ class Page extends React.Component {
 
 
     onClickRow = (id)=>{
-      g_showdata = this.state.showdata;
+      // g_showdata = this.state.showdata;
       g_usecachealarm = true;
       // this.props.history.push(`/alarminfo/${id}`);
     }
@@ -63,9 +63,9 @@ class Page extends React.Component {
                 }}
                 >
                 <div className="navhead">
-                    <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
+                    <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
                     <span className="title" style={{paddingRight : "30px"}}>{`车辆:${this.props.match.params.deviceid}的报警信息`}</span>
-                    <a className="moresetting"></a>
+                    <div className="moresetting"></div>
                 </div>
 
                 <Datalist
@@ -81,10 +81,10 @@ class Page extends React.Component {
     }
 }
 
-const mapStateToProps = ({device,alarmpop}) => {
-    const {carcollections} = device;
-    const {alaramraws} = alarmpop;
-    return {carcollections,alaramraws};
-}
+// const mapStateToProps = ({device,alarmpop}) => {
+//     const {carcollections} = device;
+//     const {alaramraws} = alarmpop;
+//     return {carcollections,alaramraws};
+// }
 
 export default connect()(Page);

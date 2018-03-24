@@ -4,10 +4,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import './index.css';
-import Avatar from "../../img/2.png";
+// import Avatar from "../../img/2.png";
 import Userlnk from "../../img/11.png";
-import Setting from "../../img/12.png";
-import Searchimg from "../../img/22.png";
+// import Setting from "../../img/12.png";
+// import Searchimg from "../../img/22.png";
 import Config from "../../env/config";
 
 import Footer from "./footer.js";
@@ -38,11 +38,11 @@ class Page extends React.Component {
         this.setState({searchonfocus : false})
     }
     render() {
-        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
-        const pushurl = (name)=>{
-            this.props.history.push(name);
-        }
-        const height =  window.innerHeight - 67.08- 65- 52;
+        // const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
+        // const pushurl = (name)=>{
+        //     this.props.history.push(name);
+        // }
+        // const height =  window.innerHeight - 67.08- 65- 52;
         return (
             <div className="indexPage AppPage"
                 style={{

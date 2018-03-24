@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
+import { Field, reduxForm, Form,   } from 'redux-form';
 import { connect } from 'react-redux';
 import {changepwd_request} from '../../actions';
-import NavBar from '../tools/nav.js';
+// import NavBar from '../tools/nav.js';
 import { withRouter } from 'react-router-dom';
 import { set_weui } from '../../actions';
 import './login.css';
 import {
     required,
-    phone,
+    // phone,
     InputValidation,
-    length4,
+    // length4,
     passwordA,
     passwordB,
     minLength6
 } from "../tools/formvalidation-material-ui"
-import Loginbg from "../../img/1.png";
+// import Loginbg from "../../img/1.png";
 
 export class PageForm extends Component {
     render(){
@@ -123,7 +123,7 @@ export class Page extends Component {
                     height : `${window.innerHeight}px`
                 }}>
                 <div className="navhead">
-                    <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
+                    <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
                     <span className="title" style={{paddingRight : "30px"}}>修改密码</span>
                 </div>
 

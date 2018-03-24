@@ -7,7 +7,7 @@ import './style.css';
 import Datalist from "./datalist";
 import Fillerimg from '../../img/25.png';
 import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
-import { required,phone,InputValidation,length4,SelectValidation,InputHiddenValidation,ToggleInput } from "../tools/formvalidation-material-ui"
+import { required,InputValidation,SelectValidation,ToggleInput } from "../tools/formvalidation-material-ui"
 import {searchbattery_request,searchbattery_result} from '../../actions';
 import SelectDevice from './selectdevice.js';
 import map from 'lodash.map';
@@ -184,10 +184,10 @@ class Page extends React.Component {
     }
 
     render() {
-        const {mapseldeviceid,devices, g_devicesdb} = this.props;
-        let DeviceId;
-        const formstyle={width:"100%",flexGrow:"1"};
-        const textFieldStyle={width:"100%",flexGrow:"1"};
+        const { g_devicesdb} = this.props;
+        // let DeviceId;
+        // const formstyle={width:"100%",flexGrow:"1"};
+        // const textFieldStyle={width:"100%",flexGrow:"1"};
 
         let deviceidlist = [];
         map(g_devicesdb,(item)=>{
@@ -199,12 +199,12 @@ class Page extends React.Component {
                 style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}
                 >
                 <div className="navhead">
-                    <a className="back" onClick={()=>{this.onBack();}}></a>
+                    <div className="back" onClick={()=>{this.onBack();}}></div>
                     <span className="title" style={{paddingLeft : "18px"}}>选择汽车</span>
                     <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}  style={{display:"none"}}><img src={Fillerimg} /></div>
-                    <div 
-                        key={'0'} 
-                        onClick={this.onClickSel.bind(this,'0')} 
+                    <div
+                        key={'0'}
+                        onClick={this.onClickSel.bind(this,'0')}
                         style={{
                             fontSize: "16px",
                             color: "#FFF",

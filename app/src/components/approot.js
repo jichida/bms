@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import {map_setmapinited, carmapshow_destorymap, ui_setmapstyle} from '../actions';
+import {map_setmapinited, ui_setmapstyle} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
 
 
@@ -14,7 +14,7 @@ import Overview from './overview/overview';
 import Carlist from './mycars/carlist';
 import Collection from './collection/collection';
 import Playback from './playback';
-import Warning from './warning/';
+// import Warning from './warning/';
 import Warningdevice from './warningdevice/index.js';
 import Mydevice from './mydevice';
 import Myproject from './mydevice/project';
@@ -95,7 +95,6 @@ class AppRoot extends React.Component {
                     <Route path="/historyplay/:deviceid" component={requireAuthentication(Playback)} />
                     <Route path="/playback/:deviceid" component={requireAuthentication(Playback)} />
                     <Route path="/warningdevice/:deviceid" component={requireAuthentication(Warningdevice)} />
-                    <Route path="/warning" component={requireAuthentication(Warning)} />
                     <Route path="/system" component={Systems} />
                     <Route path="/mydevice" component={requireAuthentication(Mydevice)} />
                     <Route path="/project/:groupid" component={requireAuthentication(Myproject)} />

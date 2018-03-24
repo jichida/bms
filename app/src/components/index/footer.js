@@ -7,15 +7,15 @@ import './index.css';
 import { withRouter } from 'react-router-dom';
 import {ui_sel_tabindex} from '../../actions';
 import map from "lodash.map";
-import Avatar from "../../img/2.png";
+// import Avatar from "../../img/2.png";
 import Footer1 from "../../img/1.png";
 import Footer2 from "../../img/2.png";
 import Footer3 from "../../img/3.png";
 import Footer4 from "../../img/4.png";
 import Footer5 from "../../img/5.png";
 import Footer6 from "../../img/6.png";
-import Footer7 from "../../img/7.png";
-import Footer8 from "../../img/8.png";
+// import Footer7 from "../../img/7.png";
+// import Footer8 from "../../img/8.png";
 import Footer9 from "../../img/9.png";
 import Footer10 from "../../img/10.png";
 

@@ -3,19 +3,19 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-import { Chart, Geom, Axis, Tooltip, Coord, Label, Legend, View, Guide, Shape } from "bizcharts";
-import DataSet from '@antv/data-set';
+// import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
+import { Chart, Geom, Axis, Tooltip, Coord,Guide, Shape } from "bizcharts";
+// import DataSet from '@antv/data-set';
 import { Swiper, Slide } from 'react-dynamic-swiper';
-import translate from 'redux-polyglot/translate';
+// import translate from 'redux-polyglot/translate';
 import 'react-dynamic-swiper/lib/styles.css';
 import Wendu from '../../img/28.png';
-import Config from '../../env/config';
+// import Config from '../../env/config';
 import Sky from '../../img/1.jpg';
 import map from 'lodash.map';
 import get from 'lodash.get';
 
-const { Arc, Html, Line } = Guide;
+// const { Arc, Html, Line } = Guide;
 
 let swiperOptions = {
     navigation: true,
@@ -26,7 +26,7 @@ let swiperOptions = {
 
 export class Chart1 extends React.Component {
     componentWillMount () {
-        
+
     }
     render() {
         const datav = this.props.data || 65;
@@ -77,7 +77,7 @@ export class Chart1 extends React.Component {
         return (
             <Chart height={300} width={200} data={data} scale={cols} padding={[ -20, 0, 0, 0 ]} forceFit>
                 <Coord type='polar' startAngle={-9 / 8 * Math.PI} endAngle={1 / 8 * Math.PI} radius={0.75} />
-                <Axis 
+                <Axis
                     name='value'
                     zIndex={2}
                     line={null}
@@ -104,9 +104,9 @@ export class Chart1 extends React.Component {
                 />
                 <Axis name="1" visible ={false} />
                 <Guide>
-                    <Arc 
-                        zIndex={0} 
-                        start={[ 0, 0.965 ]} 
+                    <Arc
+                        zIndex={0}
+                        start={[ 0, 0.965 ]}
                         end={[ 100, 0.965 ]}
                         style={{ // 底灰色
                             stroke: '#000',
@@ -114,28 +114,28 @@ export class Chart1 extends React.Component {
                             opacity: 0.09
                         }}
                         />
-                    <Arc 
-                        zIndex={1} 
-                        start={[ 0, 0.965 ]} 
+                    <Arc
+                        zIndex={1}
+                        start={[ 0, 0.965 ]}
                         end={[ data[0].value, 0.965 ]}
                         style={{ // 底灰色
                             stroke: '#1890FF',
                             lineWidth: 18,
                         }}
                         />
-                    <Html 
+                    <Html
                         position={[ '50%', '95%' ]}
                         html={
                             () => {
                                 return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'%</p></div>')
                             }
-                        } 
+                        }
                         />
                 </Guide>
-                <Geom 
-                    type="point" 
-                    position="value*1" 
-                    shape='pointer' 
+                <Geom
+                    type="point"
+                    position="value*1"
+                    shape='pointer'
                     color='#1890FF'
                     active={false}
                     style={{stroke: '#fff',lineWidth: 1}}
@@ -149,8 +149,8 @@ export class Chart2 extends React.Component {
     render() {
         const data = this.props.data;
         const cols = {
-            'value': { 
-                tickCount: 10, 
+            'value': {
+                tickCount: 10,
             },
             'time': { range: [ 0.1 , 0.9] }
         };
@@ -174,11 +174,11 @@ export class Chart3 extends React.Component {
     render() {
         const data = this.props.data;
         let showdata = data;
-        if(parseInt(data)>80){showdata = 80}
-        if(parseInt(data)<0){showdata = 0}
+        if(parseInt(data,10)>80){showdata = 80}
+        if(parseInt(data,10)<0){showdata = 0}
         return (
             <div className="wenduchart">
-                <img src={Wendu} />
+                <img src={Wendu} alt=""/>
                 <div className="dataline"><span style={{height: `${showdata}px`}}></span></div>
                 <div className="data"><span>{data}℃</span></div>
             </div>
@@ -192,7 +192,7 @@ export class Chart4 extends React.Component {
         const data = this.props.data;
         const cols={
             'value': {
-                tickCount: 10, 
+                tickCount: 10,
             },
             'time': { range: [ 0 , 1 ] }
         };
@@ -222,7 +222,7 @@ class Page extends React.Component {
         const props_tickv = get(alarmchartdata,'tickv',[]);
         const props_ticka = get(alarmchartdata,'ticka',[]);
         const props_ticktime = get(alarmchartdata,'ticktime',[]);
-        
+
         let data_tickv = [];
         let data_ticka = [];
         let data_temperature = 0;
@@ -230,7 +230,7 @@ class Page extends React.Component {
             let item = { time: v, value: props_tickv[i] };
             let item2 = { time: v, value: props_ticka[i] };
             data_tickv.push(item);
-            data_ticka.push(item);
+            data_ticka.push(item2);
         })
         data_temperature = get(alarmchartdata,'temperature',0);
 

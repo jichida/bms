@@ -4,28 +4,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import IconButton from 'material-ui/IconButton';
-import {grey900} from 'material-ui/styles/colors';
+// import NavigationClose from 'material-ui/svg-icons/navigation/close';
+// import IconButton from 'material-ui/IconButton';
+// import {grey900} from 'material-ui/styles/colors';
 import DatePicker from 'react-mobile-datepicker';
-import NavBar from "../tools/nav.js";
+// import NavBar from "../tools/nav.js";
 import Map from './map';
 import "./map.css";
 import {mapplayback_start,mapplayback_end} from '../../actions';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+// import SelectField from 'material-ui/SelectField';
+// import MenuItem from 'material-ui/MenuItem';
 import Searchimg from '../../img/13.png';
 import Searchimg2 from '../../img/15.png';
-import Searchimg4 from '../../img/23.png';
+// import Searchimg4 from '../../img/23.png';
 import Searchimg5 from '../../img/24.png';
 import Slider from 'material-ui/Slider';
 import Car from '../../img/5.png';
 import Footer from "../index/footer.js";
-import Seltime from "../tools/seltime.js";
-import Button  from 'antd/lib/button';
+// import Seltime from "../tools/seltime.js";
+// import Button  from 'antd/lib/button';
 import moment from 'moment';
-import get from 'lodash.get';
-import SelectDevice from '../mydevice/selectdevice.js';
+// import get from 'lodash.get';
+// import SelectDevice from '../mydevice/selectdevice.js';
 
 const innerHeight = window.innerHeight;
 
@@ -126,10 +126,10 @@ class Page extends React.Component {
         }
     }
     render() {
-        const {g_devicesdb} = this.props;
-
-        const formstyle={width:"100%",flexGrow:"1"};
-        const textFieldStyle={width:"100%",flexGrow:"1"};
+        // const {g_devicesdb} = this.props;
+        //
+        // const formstyle={width:"100%",flexGrow:"1"};
+        // const textFieldStyle={width:"100%",flexGrow:"1"};
         const height = innerHeight-(66+58);
         const seltimestyle={
             flexGrow: "1",
@@ -143,34 +143,33 @@ class Page extends React.Component {
                 <div className="navhead">
                     <span className="title" style={{paddingLeft : "30px"}}>轨迹回放</span>
                     <a className="searchlnk" onClick={this.showset}>
-                        <img src={Searchimg} /></a>
+                        <img src={Searchimg} alt=""/></a>
                 </div>
                 {
                     this.state.showset &&
                     <div className="set seltimewamp" style={{height: "260px"}}>
                         <div className="seltimecontent selcarts" onClick={()=>{this.props.history.replace(`/selcart/playback/${this.props.match.params.deviceid}`)}}>
-                                <img src={Car} width={30} />
+                                <img src={Car} width={30} alt=""/>
                                 {this.state.deviceid !== ''?
                                   <span className="txt2">车辆信息:{`${this.state.deviceid}`}</span>:
                                   <span className="txt2">选择车辆</span>}
                             </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 0)}>
-                            <img src={Searchimg2} width={26} />
+                            <img src={Searchimg2} width={26} alt=""/>
                             <span style={seltimestyle}>开始时间:{ this.state.startDate.format('YYYY-MM-DD HH:mm')}</span>
                         </div>
                         <div className="seltimecontent" onClick={this.handleClick.bind(this, 1)}>
-                            <img src={Searchimg2} width={26} />
+                            <img src={Searchimg2} width={26} alt=""/>
                             <span style={seltimestyle}>结束时间:{ this.state.endDate.format('YYYY-MM-DD HH:mm')}</span>
                         </div>
                         <div className="seltimecontent setsudu" style={{marginBottom: "10px"}}>
-                            <img src={Searchimg5} width={26} />
+                            <img src={Searchimg5} width={26} alt=""/>
                             <span>播放速度:</span>
                             <Slider
                                 step={1}
                                 value={this.state.speed}
                                 max={500}
                                 min={1}
-                                onChange={(e,v)=>{console.log(v)}}
                                 style={{flexGrow: 1, margin: "10px"}}
                                 sliderStyle={{margin: 0,marginTop: "10px"}}
                                 onChange={(e,v)=>{this.setState({speed:v})}}

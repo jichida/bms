@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Field, reduxForm, Form, formValueSelector  } from 'redux-form';
 import { connect } from 'react-redux';
-import {loginsendauth_request,login_request} from '../../actions';
-import NavBar from '../tools/nav.js';
+import {login_request} from '../../actions';
+// import NavBar from '../tools/nav.js';
 import { withRouter } from 'react-router-dom';
 import { set_weui } from '../../actions';
 import './login.css';
 import {
     required,
-    phone,
+    // phone,
     InputValidation,
-    length4
+    // length4
 } from "../tools/formvalidation-material-ui"
 
 import Loginlogo from "../../img/loginlogo.png";
@@ -28,10 +28,10 @@ export class PageForm extends Component {
                 onSubmit={handleSubmit(onClickLogin)}
                 >
                 <div className="logo">
-                    <span className="logoimg"><img src={Loginlogo} /></span>
+                    <span className="logoimg"><img src={Loginlogo} alt=""/></span>
                 </div>
                 <div className="li" >
-                    <img src={Login1} className="loginicon" />
+                    <img src={Login1} className="loginicon"  alt=""/>
                     <Field
                         name="phonenumber"
                         id="phonenumber"
@@ -42,7 +42,7 @@ export class PageForm extends Component {
                     />
                 </div>
                 <div className="li">
-                    <img src={Login2} className="loginicon" />
+                    <img src={Login2} className="loginicon"  alt=""/>
                     <Field
                         name="password"
                         id="password"
@@ -62,9 +62,9 @@ export class PageForm extends Component {
                         disabled={pristine || submitting}
                         onClick={handleSubmit(onClickLogin)}
                         src={Login3}
-                        />                                                
+                         alt=""/>                                                
                 </div>
-            </Form>                                                 
+            </Form>
         )
     }
 }

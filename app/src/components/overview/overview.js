@@ -24,7 +24,7 @@ class Page extends React.Component {
      }
 
     render() {
-        const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
+        // const {showmenu,showhistoryplay,showdistcluster,showhugepoints,p} = this.props;
         return (
             <div className="overviewPage AppPage">
                 <NavBar title="总览" back={true} />

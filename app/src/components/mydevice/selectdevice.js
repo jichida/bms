@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import TreeSelect  from 'antd/lib/tree-select';
 import map from 'lodash.map';
 
-const TreeNode = TreeSelect.TreeNode;
+// const TreeNode = TreeSelect.TreeNode;
 
 class SelectDevice extends React.Component {
   constructor(props) {
@@ -40,13 +40,11 @@ class SelectDevice extends React.Component {
         style={{ width: '100%',fontSize: "16px",margin: "0 15px" }}
         value={this.state.value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-        placeholder={this.props.placeholder}
         allowClear
         treeDefaultExpandAll
         onChange={this.onChange}
         treeData={treeData}
         placeholder={this.props.placeholder}
-
         />
 
     );

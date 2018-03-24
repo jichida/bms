@@ -21,9 +21,9 @@ import {
 
 
 class Page extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
     componentWillMount () {
         // this.props.dispatch(setalarmreaded_request(this.props.match.params.alarmid));
     }
@@ -75,9 +75,9 @@ class Page extends React.Component {
                     height : `${window.innerHeight}px`
                 }}>
                 <div className="navhead">
-                    <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
+                    <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
                     <span className="title" style={{paddingRight : "30px"}}>报警详情</span>
-                    <a className="moresetting"></a>
+                    <div className="moresetting"></div>
                 </div>
                 <div className="deviceinfocontent">
                     {
