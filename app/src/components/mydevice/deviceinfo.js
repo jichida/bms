@@ -74,9 +74,9 @@ class Page extends React.Component {
                     height : `${window.innerHeight}px`
                 }}>
                 <div className="navhead">
-                    <a onClick={()=>{this.props.history.goBack()}} className="back"></a>
+                    <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
                     <span className="title" style={{paddingRight : "30px"}}>车辆详情</span>
-                    <a className="moresetting"></a>
+                    <div className="moresetting"></div>
                 </div>
                 <Swiperchart deviceid={this.props.match.params.deviceid} />
                 <div className="deviceinfocontent">

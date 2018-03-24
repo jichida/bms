@@ -201,7 +201,9 @@ class Page extends React.Component {
                 <div className="navhead">
                     <div className="back" onClick={()=>{this.onBack();}}></div>
                     <span className="title" style={{paddingLeft : "18px"}}>选择汽车</span>
-                    <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}  style={{display:"none"}}><img src={Fillerimg} /></div>
+                    <div className="filler" onClick={()=>{this.setState({fillerisOpen : !this.state.fillerisOpen})}}  style={{display:"none"}}>
+                      <img src={Fillerimg} alt=""/>
+                    </div>
                     <div
                         key={'0'}
                         onClick={this.onClickSel.bind(this,'0')}

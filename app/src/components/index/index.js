@@ -52,7 +52,7 @@ class Page extends React.Component {
 
                 }}>
                 <div className="navhead">
-                    <a className="userlnk" onClick={()=>{this.props.history.push("/usercenter")}}><img src={Userlnk} /></a>
+                    <a className="userlnk" onClick={()=>{this.props.history.push("/usercenter")}}><img src={Userlnk} alt=""/></a>
                 </div>
                 <div className="indexnav">
                     <span className={this.props.selstatus===0?"sel":''} onClick={this.indexnavclick.bind(this,0)}>所有车辆</span>

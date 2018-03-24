@@ -4,16 +4,16 @@
 import React from 'react';
 import "./formvalidation.css";
 import { connect } from 'react-redux';
-import DatePicker from 'react-mobile-datepicker';
-import moment from 'moment';
-import { _getBankInfoByCardNo } from "./validationbank";
+// import DatePicker from 'react-mobile-datepicker';
+// import moment from 'moment';
+// import { _getBankInfoByCardNo } from "./validationbank";
 import { set_weui } from '../../actions';
 import './formvalidation-material-ui.css';
 import map from 'lodash.map';
-import SelectField from 'material-ui/SelectField';
+// import SelectField from 'material-ui/SelectField';
 import Toggle from 'material-ui/Toggle';
 
-import MenuItem from 'material-ui/MenuItem'
+// import MenuItem from 'material-ui/MenuItem'
 
 //判断是否必填
 export const required = value => value ? undefined : '必填项'
@@ -114,7 +114,7 @@ let InputValidation = (props) => {
 
 //input表单验证
 let InputHiddenValidation = (props) => {
-	const {onError,input, placeholder, type, meta: { touched, error, warning }} = props;
+	const {input, placeholder,  meta: { touched, error, warning }} = props;
 	let err1 = (touched && error);
 	let err2 = (touched && warning);
 	let style = "formvalidation form_input";
@@ -177,15 +177,15 @@ let ToggleInput = (props) => {
 	} = props;
 	console.log(input)
 	return (
-		<Toggle 
+		<Toggle
 			label={label}
 			style={style}
-			labelStyle={labelStyle} 
-			thumbStyle={rippleStyle} 
+			labelStyle={labelStyle}
+			thumbStyle={rippleStyle}
 			thumbSwitchedStyle={rippleStyle}
 			trackStyle={rippleStyle}
 			trackSwitchedStyle={rippleStyle}
-			{...input} 
+			{...input}
 			/>
     )
 }
@@ -201,7 +201,3 @@ export {InputHiddenValidation};
 
 SelectValidation = connect(inputData,inputDispatchToProps)(SelectValidation);
 export {SelectValidation};
-
-
-
-

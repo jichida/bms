@@ -31,7 +31,7 @@ export class Page extends React.Component {
         if(nav.hasOwnProperty("action")){
             action = nav.action;
         }
-        if(nav.type=='push'){
+        if(nav.type === 'push'){
             action = this.pagePush.bind(this,nav.url);
         }
         return (
@@ -39,7 +39,7 @@ export class Page extends React.Component {
                 {
                     !!nav.icon?(
                         <span className="iconBtn" onClick={()=>{action(nav.url)}}>
-                            <img src={nav.icon} style={{width:nav.width,height:nav.height}}/>
+                            <img src={nav.icon} style={{width:nav.width,height:nav.height}} alt=""/>
                         </span>
                     ):""
                 }

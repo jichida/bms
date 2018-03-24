@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import './collection.css';
 import NavBar from "../tools/nav.js";
 import Avatars from "../../img/2.png";
-import {List, ListItem} from 'material-ui/List';
+import {ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Swipeout from 'rc-swipeout';
 import 'rc-swipeout/assets/index.css';

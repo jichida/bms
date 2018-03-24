@@ -31,27 +31,27 @@ class Page extends React.Component {
        this.props.history.replace(name);
    }
     render() {
-        const {count_unreadalarms,count_undoworkorders,tabindex} = this.props;
+        const {count_unreadalarms,tabindex} = this.props;
 
         return (
             <div className="footerPage">
                 <ul>
                     <li onClick={this.pushurl.bind(this, "/",0)}>
-                        <img src={tabindex===0?Footer1:Footer2} />
+                        <img src={tabindex===0?Footer1:Footer2} alt=""/>
                         <span className={tabindex===0?"sel":""}>总览</span>
                     </li>
                     <li onClick={this.pushurl.bind(this, "/warningdevice/0",1)}>
-                        <img src={tabindex===1?Footer3:Footer4} />
+                        <img src={tabindex===1?Footer3:Footer4} alt=""/>
                         <span className={tabindex===1?"sel":""}>报警信息</span>
                         {count_unreadalarms > 0 && <span className="num">{count_unreadalarms}</span>}
                     </li>
                     <li onClick={this.pushurl.bind(this, "/mydevice",2)}>
-                        <img src={tabindex===2?Footer5:Footer6} />
+                        <img src={tabindex===2?Footer5:Footer6} alt=""/>
                         <span className={tabindex===2?"sel":""}>车辆信息</span>
                     </li>
 
                     <li onClick={this.pushurl.bind(this, "/playback/0",4)}>
-                        <img src={tabindex===4?Footer9:Footer10} />
+                        <img src={tabindex===4?Footer9:Footer10} alt=""/>
                         <span className={tabindex===4?"sel":""}>轨迹监控</span></li>
                 </ul>
             </div>

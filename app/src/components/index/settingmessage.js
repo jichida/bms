@@ -20,7 +20,7 @@ class Page extends React.Component {
         return (
             <div className="settingPage AppPage" style={{height : `${window.innerHeight}px`,overflow: "hidden",paddingBottom:"0"}}>
                 <div className="navhead">
-                    <a className="back" onClick={()=>{this.props.history.goBack()}}></a>
+                    <div className="back" onClick={()=>{this.props.history.goBack()}}></div>
                     <span className="title" style={{paddingRight : "30px"}}>消息隐私设置</span>
                 </div>
                 <br/>
