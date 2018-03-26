@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const startexport = require('./handler/startexport');
 const _ = require('lodash');
+const bridge_historydeviceinfo = require('./handler/bridge_historydeviceinfo');
 const debug = require('debug')('srvinterval');
 
 const startexport_historydevice = (callbackfn)=>{
@@ -19,7 +20,7 @@ const startexport_historydevice = (callbackfn)=>{
 真实SOC(%),最高单体电压(V),最低单体电压(V),最高单体电压CSC号,最高单体电芯位置,最低单体电压CSC号,\
 最低单体电压电芯位置,最高单体温度,最低单体温度,平均单体温度,最高温度CSC号,最低温度CSC号,显示用SOC,平均单体电压,报警状态';
   const fn_convert = (doc,callbackfn)=>{
-    const newdoc = historydevice.bridge_historydeviceinfo(doc);
+    const newdoc = bridge_historydeviceinfo(doc);
     callbackfn(newdoc);
   }
   const query = {

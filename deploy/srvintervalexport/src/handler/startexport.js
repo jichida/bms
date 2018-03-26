@@ -32,7 +32,7 @@ const startexport = ({filename,dbModel,fields,csvfields,fn_convert,query})=>{
       doc = JSON.parse(JSON.stringify(doc));
       fn_convert(doc,(newdoc)=>{
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-         if (!err && !!csv && !cancelRequest) {
+         if (!err && !!csv ) {
              res.write(iconv.convert(csv));
            }
          });
