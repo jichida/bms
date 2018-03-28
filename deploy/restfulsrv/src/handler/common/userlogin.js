@@ -23,7 +23,6 @@ let userloginsuccess =(user,callback)=>{
 };
 
 const subscriberuser = (user,ctx)=>{
-  srvsystem.loginuser_add(ctx.userid);
   PubSub.unsubscribe( ctx.userDeviceSubscriber );
   PubSub.subscribe(`${config.pushdevicetopic}.${ctx.userid}`,ctx.userDeviceSubscriber);
 }

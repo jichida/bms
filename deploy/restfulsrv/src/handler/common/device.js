@@ -7,6 +7,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
 const debug = require('debug')('srvapp:device');
+const srvsystem = require('../../srvsystem.js');
 //
 // const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
 //
@@ -167,6 +168,7 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     queryexec.exec((err,list)=>{
       if(!err){
         debug(`device count:${list.length}`);
+        srvsystem.loginuser_add(ctx.userid);//开始监听
         callback({
           cmd:'querydevice_result',
           payload:{list}

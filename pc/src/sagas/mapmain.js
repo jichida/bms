@@ -245,22 +245,22 @@ const CreateMapUI_DistrictCluster =  (map)=>{
           	    return null;
         		}
             //重写行政区域,避免来回刷新时的闪烁
-             utils.extend(DistrictCluster.prototype,
-               {//重新设置数据时不刷新Marker
-                   setDataWithoutClear: function(data) {
-                      //
-                      data || (data = []);
-                      this.trigger("willBuildData", data);
-                      this._data.source = data;
-                      //  this._data.bounds = BoundsItem.getBoundsItemToExpand();
-                      this._buildDataItems(data);
-                      this._buildKDTree();
-                      this._distCounter.setData(this._data.list);
-                      this.trigger("didBuildData", data);
-                      this.renderLater(10);
-                      data.length && this._opts.autoSetFitView && this.setFitView();
-                    },
-              });
+            //  utils.extend(DistrictCluster.prototype,
+            //    {//重新设置数据时不刷新Marker
+            //        setDataWithoutClear: function(data) {
+            //           //
+            //           data || (data = []);
+            //           this.trigger("willBuildData", data);
+            //           this._data.source = data;
+            //           //  this._data.bounds = BoundsItem.getBoundsItemToExpand();
+            //           this._buildDataItems(data);
+            //           this._buildKDTree();
+            //           this._distCounter.setData(this._data.list);
+            //           this.trigger("didBuildData", data);
+            //           this.renderLater(10);
+            //           data.length && this._opts.autoSetFitView && this.setFitView();
+            //         },
+            //   });
              distCluster = new DistrictCluster({
                  zIndex: 100,
                  map: map, //所属的地图实例
@@ -442,17 +442,18 @@ const getclustertree_root =(SettingOfflineMinutes)=>{
   const adcodetop=100000;
   return new Promise((resolve,reject) => {
     if(!distCluster){
-      reject();
+      console.log(`distCluster is empty`);
+      reject(`distCluster is empty`);
       return;
     }
     distCluster.getClusterRecord(adcodetop,(err,result)=>{
       if(!err){
         const {children,dataItems} = result;
         if(!children || children.length === 0){
-          reject();
+          reject(`children or children.length is empty,${adcodetop}`);
         }
         if(!dataItems || dataItems.length === 0){
-          reject();
+          reject(`dataItems or dataItems.length is empty,${adcodetop}`);
           return;
         }
         let count_online = 0;
@@ -922,6 +923,7 @@ export function* createmapmainflow(){
       let {payload:{list:devicelist}} = deviceresult;
       try{
           while( !distCluster){
+            console.log(`wait for discluster`);
             yield call(delay,2500);
           }
           const SettingOfflineMinutes =yield select((state)=>{
@@ -931,14 +933,23 @@ export function* createmapmainflow(){
           g_devicesdb = {};//清空，重新初始化
           // console.log(`clear g_devicesdb...restart g_devicesdb...`)
           let devicelistresult = yield call(getgeodatabatch,devicelist);
+
           const data = [];
-          let deviceidonlines = [];
+          const datanolocate = [];
+          const deviceidonlines_loc = [];
+          const deviceidonlines_locno = [];
           lodashmap(devicelistresult,(deviceitem)=>{
             if(!!deviceitem.locz){
               data.push(deviceitem);
               if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
-                deviceidonlines.push(deviceitem.DeviceId);
+                deviceidonlines_loc.push(deviceitem.DeviceId);
               }
+            }
+            else{
+              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                deviceidonlines_locno.push(deviceitem.DeviceId);
+              }
+              datanolocate.push(deviceitem.DeviceId);
             }
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
           });
@@ -955,22 +966,13 @@ export function* createmapmainflow(){
           yield call(getclustertree_root,SettingOfflineMinutes);
           gmap_acode_treecount[1] = {//所有
             count_total:devicelistresult.length,
-            count_online:deviceidonlines.length,
+            count_online:deviceidonlines_loc.length,
           };
-          const datanolocate = [];
-          deviceidonlines = [];
-          lodashmap(g_devicesdb,(deviceitem)=>{
-            if(!deviceitem.locz){
-              datanolocate.push(deviceitem.DeviceId);
-              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
-                deviceidonlines.push(deviceitem.DeviceId);
-              }
-            }
-          });
+
           gmap_acode_devices[2] = datanolocate;
           gmap_acode_treecount[2] = {
             count_total:datanolocate.length,
-            count_online:deviceidonlines.length,
+            count_online:deviceidonlines_locno.length,
           }
 
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
@@ -1228,7 +1230,7 @@ export function* createmapmainflow(){
                   data.push(deviceitem);
                 }
               });
-              distCluster.setDataWithoutClear(data);//无闪烁刷新行政区域个数信息
+              distCluster.setData(data);//无闪烁刷新行政区域个数信息
             }
           }
           catch(e){
@@ -1271,7 +1273,7 @@ export function* createmapmainflow(){
 
           const getdevicestate = (state)=>{
             const {datatreeloc} = state.device;
-            return {datatreeloc};
+            return {datatreeloc:datatreeloc.children[0]};
           }
           let codelist = [];
           let curareaid;
@@ -1322,7 +1324,6 @@ export function* createmapmainflow(){
           }
           //刷新树中数据
           //《----未定位的数据个数也要刷
-
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
 
           //
