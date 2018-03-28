@@ -103,7 +103,7 @@ exports.uireport_searchdevice =  (actiondata,ctx,callback)=>{
 exports.querydevicegroup= (actiondata,ctx,callback)=>{
   let devicegroupModel = DBModels.DeviceGroupModel;
   let query = actiondata.query || {};
-
+  debug(`querydevicegroup start getdevicesids`);
   const devicesfields =   actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude LastHistoryTrack.GPSTime warninglevel LastRealtimeAlarm.DataTime alarmtxtstat';
   //   'DeviceId':1,
   //   'LastHistoryTrack.Latitude':1,
@@ -121,14 +121,12 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
     if(!query.systemflag){
       query.systemflag = 0;
     }
-
-    let queryexec = devicegroupModel.find(query).populate([
+    debug(`querydevicegroup start exec`);
+    devicegroupModel.find(query).populate([
         {path:'deviceids', select:devicesfields, model: 'device'},
     ]).lean().exec((err,list)=>{
       if(!err){
-        if(list.length > 0){
-          //console.log(`-->${JSON.stringify(list[0])}`);
-        }
+        debug(`querydevicegroup get list:${list.length}`);
         //for test only
         callback({
           cmd:'querydevicegroup_result',
@@ -158,11 +156,14 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     'LastRealtimeAlarm.DataTime':1,
     'alarmtxtstat':1
   };
+  debug(`device start getdevicesids`);
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    let queryexec = deviceModel.find(query).select(fields).lean();
+    debug(`device query ${JSON.stringify(query)}`);
+    const queryexec = deviceModel.find(query).select(fields).lean();
+    debug(`device start exec`);
     queryexec.exec((err,list)=>{
       if(!err){
         debug(`device count:${list.length}`);
