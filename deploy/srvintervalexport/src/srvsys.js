@@ -14,7 +14,7 @@ const startexport_historydevice = (DeviceId,callbackfn)=>{
   //filename,dbModel,fields,csvfields,fn_convert,query
   const curday = config.curday;//moment().subtract(1, 'days').format('YYYY-MM-DD');
   const dbModel = DBModels.HistoryDeviceModel;
-  const filename = `${curday}_${1713100888}.csv`;
+  const filename = `${curday}_${DeviceId}.csv`;
   const fields = null;
   const csvfields = '采集时间,保存时间,箱体测量电压(V),箱体累加电压(V),箱体电流(A),\
 真实SOC(%),最高单体电压(V),最低单体电压(V),最高单体电压CSC号,最高单体电芯位置,最低单体电压CSC号,\
@@ -30,7 +30,7 @@ const startexport_historydevice = (DeviceId,callbackfn)=>{
       $lte:`${curday} 23:59:59`,
     }
   };
-  startexport({filename,dbModel,fields:null,csvfields,fn_convert,query});
+  startexport({filename,dbModel,sort:{DataTime:1},fields:null,csvfields,fn_convert,query});
 }
 
 const intervalPushAlarm =()=>{
