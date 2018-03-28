@@ -544,7 +544,6 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
               else{
                 console.log(deviceitem);
               }
-
             }
           }
 
@@ -1035,13 +1034,15 @@ export function* createmapmainflow(){
           return new Promise((resolve) => {
             try{
               if(!!distCluster){
-                if(isshow){
-                  distCluster.show();
+                if(isshow !== distCluster.isHidden()){
+                  if(isshow){
+                    distCluster.show();
+                    distCluster.render();
+                  }
+                  else{
+                    distCluster.hide();
+                  }
                 }
-                else{
-                  distCluster.hide();
-                }
-                distCluster.render();
               }
             }
             catch(e){
@@ -1050,6 +1051,7 @@ export function* createmapmainflow(){
             resolve();
           });
         }
+
         yield call(showdistclusterfn,isshow);
 
     });
@@ -1306,9 +1308,6 @@ export function* createmapmainflow(){
           let forkhandles = [];
           for(let i=0;i<codelist.length ;i++){
             const handlefork = yield fork(function*(adcode){
-              const SettingOfflineMinutes =yield select((state)=>{
-                return get(state,'app.SettingOfflineMinutes',20);
-              });
               yield call(getclustertree_one,adcode,SettingOfflineMinutes);
             },codelist[i]);
             forkhandles.push(handlefork);
