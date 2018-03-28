@@ -80,7 +80,7 @@ const createInfoWindow_popinfo =(data)=> {
 //构建自定义信息窗体
 const createInfoWindow_poplistinfo =(data)=> {
     // console.log(map);
-    console.log(data);
+
     //iscollection
     let title = "<span class='p'></span><span>聚合点车辆</span>";
     // let Car_img = Car_online || Car_outline;
@@ -105,7 +105,7 @@ const createInfoWindow_poplistinfo =(data)=> {
     })
 
     let content = [];
-    console.log(contenthtml);
+
 
     content.push(contenthtml);
     let info = document.createElement("div");

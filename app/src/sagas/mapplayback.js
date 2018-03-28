@@ -8,7 +8,7 @@ import {
   carmapshow_destorymap,
   // mapmain_setenableddrawmapflag,
   // querydevice_result,
-  ui_selcurdevice_request,
+  // ui_selcurdevice_request,
   // querydeviceinfo_request,
 
   mapplayback_start,
@@ -222,32 +222,32 @@ export function* createmaptrackhistoryplaybackflow(){
 
     });
 
-    yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
-      const {payload:{deviceitem}} = actioncurdevice;
-      const selcurdevice_requestfn = (deviceitem)=>{
-        return new Promise((resolve) => {
-          try{
-            if(!!window.amaptrackhistoryplayback){
-              if(!!deviceitem){
-                const LastHistoryTrack = deviceitem.LastHistoryTrack;
-                if(!!LastHistoryTrack){
-                  if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
-                    let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-                    let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-                    window.amaptrackhistoryplayback.setCenter(wgs84togcj02);
-                  }
-                }
-              }
-            }
-          }
-          catch(e){
-            console.log(e);
-          }
-          resolve();
-        });
-      };
-      yield call(selcurdevice_requestfn,deviceitem);
-    });
+    // yield takeEvery(`${ui_selcurdevice_request}`,function*(actioncurdevice){
+    //   const {payload:{deviceitem}} = actioncurdevice;
+    //   const selcurdevice_requestfn = (deviceitem)=>{
+    //     return new Promise((resolve) => {
+    //       try{
+    //         if(!!window.amaptrackhistoryplayback){
+    //           if(!!deviceitem){
+    //             const LastHistoryTrack = deviceitem.LastHistoryTrack;
+    //             if(!!LastHistoryTrack){
+    //               if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
+    //                 let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+    //                 let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+    //                 window.amaptrackhistoryplayback.setCenter(wgs84togcj02);
+    //               }
+    //             }
+    //           }
+    //         }
+    //       }
+    //       catch(e){
+    //         console.log(e);
+    //       }
+    //       resolve();
+    //     });
+    //   };
+    //   yield call(selcurdevice_requestfn,deviceitem);
+    // });
 
     //mapplayback_start
     yield  takeLatest(`${mapplayback_start}`,function*(actionstart){
