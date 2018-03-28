@@ -1204,7 +1204,7 @@ export function* createmapmainflow(){
 
         yield put(devicelistgeochange_distcluster({}));
         // yield put(devicelistgeochange_pointsimplifierins({}));
-        yield put(devicelistgeochange_geotreemenu({}));
+        // yield put(devicelistgeochange_geotreemenu({}));
 
         if(!!infoWindow){//正在弹窗
           //判断当前车辆是否发生偏移
