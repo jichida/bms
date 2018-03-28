@@ -688,7 +688,16 @@ export function* createmapmainflow(){
               yield call(listenmapevent,eventname);
               // let centerlocation = window.amapmain.getCenter();
               // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
-              yield put(md_mapmain_setzoomlevel(window.amapmain.getZoom()));
+              // yield put(md_mapmain_setzoomlevel(window.amapmain.getZoom()));
+              const zoomlevel = window.amapmain.getZoom();
+              if(zoomlevel > 12){
+                yield put(ui_showhugepoints(true));
+                yield put(ui_showdistcluster(false));
+              }
+              else{
+                yield put(ui_showhugepoints(false));
+                yield put(ui_showdistcluster(true));
+              }
             }
           },'zoomend');
 
@@ -850,7 +859,9 @@ export function* createmapmainflow(){
             //不是最大时候才放大，否则会陷入一个循环两次的问题
             console.log(`地图当前层级${window.amapmain.getZoom()},最大:${maxzoom}`);
             window.amapmain.setZoom(maxzoom);
-            yield put(md_mapmain_setzoomlevel(maxzoom));
+            // yield put(md_mapmain_setzoomlevel(maxzoom));
+            yield put(ui_showhugepoints(true));
+            yield put(ui_showdistcluster(false));
           }
 
 
@@ -1090,20 +1101,21 @@ export function* createmapmainflow(){
             //========================================================================================
             let isarea = false;
             //获取该区域的数据
-
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
             if(!!result){
               isarea = result.type === 'device';
-              if(config.softmode === 'pc'){//仅pc端才需要刷新树
-                if(isarea){
-                  //如果返回车辆,则将车辆加载到树中
-                  yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+              yield fork(function*(){
+                if(config.softmode === 'pc'){//仅pc端才需要刷新树
+                  if(isarea){
+                    //如果返回车辆,则将车辆加载到树中
+                    yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+                  }
+                  else{
+                    //刷新树中的数据
+                    yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
+                  }
                 }
-                else{
-                  //刷新树中的数据
-                  yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
-                }
-              }
+              });
             }
 
             if(!!distCluster){//放大到该区域
@@ -1143,10 +1155,12 @@ export function* createmapmainflow(){
           console.log(e);
         }
 
-        //在树中将其他结点搜索，该节点展开
-        if(config.softmode === 'pc'){//pc端才有树啊
-          yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
-        }
+        yield fork(function*(){
+          //在树中将其他结点搜索，该节点展开
+          if(config.softmode === 'pc'){//pc端才有树啊
+            yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
+          }
+        });
 
     });
 
