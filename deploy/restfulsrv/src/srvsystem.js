@@ -64,8 +64,11 @@ const do_updatealldevices = (alldevicelist)=>{
     getdevicesids(userid,({deviceIds,isall})=>{
       //设置订阅设备消息
       if(isall){
-        debug(`推送给用户:${userid}==>${alldevicelist.length}`);
-        PubSub.publish(`${config.pushdevicetopic}.${userid}`,alldevicelist);
+        if(alldevicelist.length > 0){
+          debug(`推送给用户:${userid}==>${alldevicelist.length}`);
+          PubSub.publish(`${config.pushdevicetopic}.${userid}`,alldevicelist);
+        }
+
       }
       else{
         let devicelist = [];
@@ -78,8 +81,12 @@ const do_updatealldevices = (alldevicelist)=>{
            devicelist.push(item);
          }
         });
-        debug(`推送给用户:${userid}==>${alldevicelist.length}`);
-        PubSub.publish(`${config.pushdevicetopic}.${userid}`,devicelist);
+
+        if(devicelist.length > 0){
+          debug(`推送给用户:${userid}==>${alldevicelist.length}`);
+          PubSub.publish(`${config.pushdevicetopic}.${userid}`,devicelist);
+        }
+
       }
     });
   });

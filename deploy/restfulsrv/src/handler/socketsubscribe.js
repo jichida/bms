@@ -6,10 +6,10 @@ const debug = require('debug')('srvapp:pcpush');
 
 
 const pushusermessage = (socket,ctx,data)=>{
-  debug(`开始推送了,注意啊----->${JSON.stringify(data)}`);
-
-  socket.emit('serverpush_device',data);
-
+  if(data.length > 0){
+    debug(`开始推送了,注意啊----->${data.length}`);
+    socket.emit('serverpush_device',data);
+  }
 }
 
 const usersubfn  = (socket,ctx)=>{

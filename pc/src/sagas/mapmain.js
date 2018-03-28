@@ -287,9 +287,9 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                         fillStyle: 'rgba(199, 233, 192, 0.5)'
                       }
                   },
-                  //  featureClickToShowSub:true,
-                   clusterMarkerRecycleLimit:1000,
-                   clusterMarkerKeepConsistent:false,
+                   featureClickToShowSub:true,
+                   clusterMarkerRecycleLimit:100000,
+                   clusterMarkerKeepConsistent:true,
                    getClusterMarker : (feature, dataItems, recycledMarker)=> {
                       if(dataItems.length > 0){
                         return defaultgetClusterMarker(feature, dataItems, recycledMarker);
