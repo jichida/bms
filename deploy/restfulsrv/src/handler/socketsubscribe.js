@@ -7,7 +7,7 @@ const debug = require('debug')('srvapp:pcpush');
 
 const pushusermessage = (socket,ctx,data)=>{
   if(data.length > 0){
-    debug(`开始推送了,注意啊----->${data.length}`);
+    debug(`开始推送了,注意啊----->${data.length}--->${ctx.userid}`);
     socket.emit('serverpush_device',data);
   }
 }

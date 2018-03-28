@@ -11,16 +11,24 @@ const _ = require('lodash');
 const debug = require('debug')('srvapp:pcpush');
 const getdevicesids = require('./handler/getdevicesids');
 
-const FastSet = require("collections/fast-set");
-const userset = new FastSet();
+
+const userset = {};
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const loginuser_add = (userid)=>{
-  userset.add(userid);
+  const usersetref = userset[userid] || 0;
+  userset[userid] = usersetref+1;
+
+  debug(`${userid}:${usersetref+1}`)
 }
 
 const loginuser_remove = (userid)=>{
-  userset.delete(userid);
+  const usersetref = userset[userid];
+  userset[userid] = usersetref-1;
+  if(usersetref === 1){
+    userset = _.omit(userset,userid);
+  }
+  debug(`${userid}:${usersetref-1}`)
 }
 
 const getSystemLog = ()=>{
@@ -59,8 +67,9 @@ const checkDevice = (lasttime,callbackfn)=>{
 }
 
 const do_updatealldevices = (alldevicelist)=>{
-  debug(`获取所有设备:${alldevicelist.length}`)
-  userset.map((userid)=>{
+
+  _.map(userset,(v,userid)=>{
+    debug(`do_updatealldevices----->${alldevicelist.length}--->${userid}`);
     getdevicesids(userid,({deviceIds,isall})=>{
       //设置订阅设备消息
       if(isall){
