@@ -1,4 +1,3 @@
-
 const config = require('./src/config');
 const winston = require('./src/log/log.js');
 const DBModels = require('./src/handler/models.js');
@@ -10,7 +9,8 @@ const debug = require('debug')('start');
 
 debug(`start=====>version:${config.version}`);
 
-debug(`==========`);
+debug(`==========>isnow:${config.isnow},curday:${config.curday}`);
+debug(`==========>exportFlag:${config.exportFlag},DeviceId:${config.DeviceId}`);
 
 winston.initLog();
 process.setMaxListeners(0);

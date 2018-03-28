@@ -10,9 +10,9 @@ const _ = require('lodash');
 const bridge_historydeviceinfo = require('./handler/bridge_historydeviceinfo');
 const debug = require('debug')('srvinterval');
 
-const startexport_historydevice = (callbackfn)=>{
+const startexport_historydevice = (DeviceId,callbackfn)=>{
   //filename,dbModel,fields,csvfields,fn_convert,query
-  const curday = '2017-11-16';//moment().subtract(1, 'days').format('YYYY-MM-DD');
+  const curday = config.curday;//moment().subtract(1, 'days').format('YYYY-MM-DD');
   const dbModel = DBModels.HistoryDeviceModel;
   const filename = `${curday}_${1713100888}.csv`;
   const fields = null;
@@ -24,6 +24,7 @@ const startexport_historydevice = (callbackfn)=>{
     callbackfn(newdoc);
   }
   const query = {
+    DeviceId,
     DataTime:{
       $gte:`${curday} 00:00:00`,
       $lte:`${curday} 23:59:59`,
@@ -45,7 +46,35 @@ const intervalPushAlarm =()=>{
   //     }
   //   });
   // }, 5000);
-  startexport_historydevice();
+  if(config.exportFlag !== 'all' && !!config.DeviceId){
+    debug(`仅导出:${config.DeviceId}的记录`);
+    startexport_historydevice(config.DeviceId,(err,res)=>{
+
+    });
+  }
+
+  if(config.exportFlag === 'all'){
+    const deviceModel = DBModels.DeviceModel;
+    const query = {};
+    const fields = {
+      'DeviceId':1,
+    };
+
+    debug(`device query ${JSON.stringify(query)}`);
+    const queryexec = deviceModel.find(query).select(fields).lean();
+    debug(`device start exec`);
+    queryexec.exec((err,devicelist)=>{
+      if(!err && !!devicelist){
+        debug(`device start getdevicelist`);
+        _.map(devicelist,(device)=>{
+          debug(`导出:${device.DeviceId}的记录`);
+          startexport_historydevice(device.DeviceId,(err,res)=>{
+
+          });
+        });
+      }
+    });
+  }
 };
 
 
