@@ -387,7 +387,7 @@ const listenclusterevent = (eventname)=>{
             const {dataItems} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
-                  resolve({adcodetop:record.adcode,forcetoggled:true});
+                  resolve({adcodetop:record.adcode,forcetoggled:true,src:'map'});
                   return;
               }
             }
@@ -788,7 +788,7 @@ export function* createmapmainflow(){
 
     //选择一个车辆请求
     yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
-      let {payload:{DeviceId,deviceitem}} = actioncurdevice;
+      let {payload:{DeviceId,deviceitem,src}} = actioncurdevice;
       try{
           if(!deviceitem && !!DeviceId){
             deviceitem = g_devicesdb[DeviceId];
@@ -815,7 +815,7 @@ export function* createmapmainflow(){
                 }
                 const adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
-                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
+                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src}));
                 if(config.softmode === 'pc'){//pc端才有树啊
                   yield take(`${mapmain_getdistrictresult}`);//等待数据完成
                 }
@@ -1092,14 +1092,14 @@ export function* createmapmainflow(){
 
     //选中某个区域
     yield takeLatest(`${mapmain_seldistrict}`, function*(action_district) {
-        let {payload:{adcodetop,forcetoggled}} = action_district;
+        let {payload:{adcodetop,forcetoggled,src}} = action_district;
+        let isarea = false;
         try{
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
           });
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
-            let isarea = false;
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
             if(!!result){
@@ -1158,6 +1158,7 @@ export function* createmapmainflow(){
 
 
         if(config.softmode === 'pc'){//pc端才有树啊
+           console.log(`mapmain_seldistrict from ---->src:${src}`);
            yield fork(function*(){
             //在树中将其他结点搜索，该节点展开
               yield delay(500);
@@ -1223,13 +1224,13 @@ export function* createmapmainflow(){
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
 
-        if(!!infoWindow){//正在弹窗
-          //判断当前车辆是否发生偏移
-          const {mapseldeviceid} = yield select((state)=>{
-            return {mapseldeviceid:state.device.mapseldeviceid};
-          });
-          yield put(ui_mycar_selcurdevice(mapseldeviceid));
-        }
+        // if(!!infoWindow){//正在弹窗
+        //   //判断当前车辆是否发生偏移
+        //   const {mapseldeviceid} = yield select((state)=>{
+        //     return {mapseldeviceid:state.device.mapseldeviceid};
+        //   });
+        //   yield put(ui_mycar_selcurdevice(mapseldeviceid));
+        // }
       }
       catch(e){
         console.log(e);
@@ -1386,7 +1387,7 @@ export function* createmapmainflow(){
         // console.log(`${JSON.stringify(g_devicesdb)}`)
         // yield put(ui_mycar_showtype(0));
         if(!!deviceitem){
-          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem,src:'map'}));
         }
 
       }
@@ -1419,7 +1420,7 @@ export function* createmapmainflow(){
         }
         //选择车辆
         if(!!deviceitem){
-          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem,src:'map'}));
         }
       }
       catch(e){
@@ -1446,7 +1447,7 @@ export function* createmapmainflow(){
         yield put(replace('/index'));
         //选择车辆
         if(!!deviceitem){
-          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem,src:'map'}));
         }
       }
       catch(e){

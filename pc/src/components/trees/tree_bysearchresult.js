@@ -34,7 +34,7 @@ class Tree extends React.Component {
     //     // this.setState({ cursor: node });
     // }
     onclick(id){
-        this.props.dispatch(ui_selcurdevice_request({DeviceId:id}));
+        this.props.dispatch(ui_selcurdevice_request({DeviceId:id,src:'tree_bysearchresult'}));
     }
     render(){
         const {treesearchlist,g_devicesdb,SettingOfflineMinutes} = this.props;

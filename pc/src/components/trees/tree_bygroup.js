@@ -42,8 +42,7 @@ class Tree extends React.Component {
             const deviceitem = node.device;
             //console.log(`deviceitem==>${JSON.stringify(deviceitem)},deviceid:${(deviceid)}`)
             this.props.dispatch(mapmain_selgroup_deviceid({DeviceId:deviceitem.DeviceId,devicenodeid:node.id}));
-            this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
-
+            this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem,src:'tree_bygroup'}))
 
         }
         this.setState({ cursor: node });

@@ -40,7 +40,7 @@ class Tree extends React.Component {
             if(typeof id === 'string'){
               id = parseInt(id,10);
             }
-            this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false}));
+            this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false,src:'tree_byloc'}));
 
         }else{
             // node.toggled = toggled;
@@ -48,7 +48,7 @@ class Tree extends React.Component {
             const {g_devicesdb} = this.props;
             const deviceitem = g_devicesdb[deviceid];
              if(!!deviceitem ){//&& toggled
-              this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem}));
+              this.props.dispatch(ui_selcurdevice_request({DeviceId:deviceitem.DeviceId,deviceitem,src:'tree_byloc'}));
             }
         }
         this.setState({ cursor: node });
