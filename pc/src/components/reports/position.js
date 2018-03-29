@@ -9,7 +9,7 @@ import map from 'lodash.map';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
-import {download_excel} from '../../actions';
+import {download_excel,ui_alarm_selcurdevice} from '../../actions';
 import moment from 'moment';
 
 import TreeSearchreport from '../search/searchreport_position';
@@ -84,17 +84,12 @@ class TablePosition extends React.Component {
       return itemnew;
     }
     render(){
-        let column_data = {
-          "设备编号" : "",
-          "定位时间" : "",
-          "省" : "",
-          "市" : "",
-          "区" : "",
-        };
+        const column_data = ['设备编号','定位时间','省','市','区'];
+
         let columns = map(column_data, (data, index)=>{
           let column_item = {
-              title: index,
-              dataIndex: index,
+              title: data,
+              dataIndex: data,
               key: index,
               render: (text, row, index) => {
                   return <span>{text}</span>;
@@ -105,7 +100,20 @@ class TablePosition extends React.Component {
           };
           return column_item;
         });
-
+        const viewinmap = (row)=>{
+            console.log(row);//DeviceId
+            // this.props.history.push(`/alarminfo/${row._id}`);
+            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
+        }
+        let columns_action ={
+            title: "操作",
+            dataIndex: '',
+            key: 'x',
+            render: (text, row, index) => {
+                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+            }
+        }
+        columns.push(columns_action);
 
         return (
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>

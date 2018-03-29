@@ -9,7 +9,7 @@ import map from 'lodash.map';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
-import {download_excel} from '../../actions';
+import {download_excel,ui_alarm_selcurdevice} from '../../actions';
 import moment from 'moment';
 
 import TreeSearchreport from '../search/searchreport_cararchives';
@@ -93,26 +93,15 @@ class TablePosition extends React.Component {
       return itemnew;
     }
     render(){
-        let column_data = {
-          'RDB编号': "",
-          '项目': "",
-          '系统Barcode': "",
-          '省份': "",
-          '地区': "",
-          '生产日期': "",
-          '出厂日期': "",
-          '标称容量': "",
-          '串联数': "",
-          '并联数': "",
-          '客户名称': "",
-          '线路': "",
-          '电池剩余容量': "",
-          '历史报警次数': "",
-        };
+
+      const column_data = ['RDB编号','项目','系统Barcode','省份',
+      '地区','生产日期','出厂日期','标称容量','串联数','并联数','客户名称',
+      '线路','电池剩余容量','历史报警次数'];
+
         let columns = map(column_data, (data, index)=>{
           let column_item = {
-              title: index,
-              dataIndex: index,
+              title: data,
+              dataIndex: data,
               key: index,
               render: (text, row, index) => {
                   return <span>{text}</span>;
@@ -123,7 +112,20 @@ class TablePosition extends React.Component {
           };
           return column_item;
         });
-
+        const viewinmap = (row)=>{
+            console.log(row);//DeviceId
+            // this.props.history.push(`/alarminfo/${row._id}`);
+            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
+        }
+        let columns_action ={
+            title: "操作",
+            dataIndex: '',
+            key: 'x',
+            render: (text, row, index) => {
+                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+            }
+        }
+        columns.push(columns_action);
 
         return (
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>

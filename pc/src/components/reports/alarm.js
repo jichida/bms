@@ -106,17 +106,13 @@ class TableAlarm extends React.Component {
         if(warninglevel === 'all'){
           warninglevel = "-1";
         }
+        const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
 
-        let column_data = {
-          "车辆ID" : "",
-          "报警时间" : "",
-          "报警等级" : "",
-          "报警信息" : "绝缘故障",
-        };
+
         let columns = map(column_data, (data, index)=>{
           let column_item = {
-              title: index,
-              dataIndex: index,
+              title: data,
+              dataIndex: data,
               key: index,
               render: (text, row, index) => {
                   return <span>{text}</span>;

@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
-import {download_excel} from '../../actions';
+import {download_excel,ui_alarm_selcurdevice} from '../../actions';
 
 import TreeSearchreport from '../search/searchreport_alarmdetail';
 
@@ -109,16 +109,13 @@ class TableAlarmDetail extends React.Component {
           warninglevel = "-1";
         }
 
-        let column_data = {
-          "车辆ID" : "",
-          "报警时间" : "",
-          "报警等级" : "",
-          "报警信息" : "",
-        };
+
+        const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
+
         let columns = map(column_data, (data, index)=>{
           let column_item = {
-              title: index,
-              dataIndex: index,
+              title: data,
+              dataIndex: data,
               key: index,
               render: (text, row, index) => {
                   return <span>{text}</span>;
@@ -129,7 +126,20 @@ class TableAlarmDetail extends React.Component {
           };
           return column_item;
         });
-
+        const viewinmap = (row)=>{
+            console.log(row);//DeviceId
+            // this.props.history.push(`/alarminfo/${row._id}`);
+            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
+        }
+        let columns_action ={
+            title: "操作",
+            dataIndex: '',
+            key: 'x',
+            render: (text, row, index) => {
+                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+            }
+        }
+        columns.push(columns_action);
         return (
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
