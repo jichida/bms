@@ -1232,7 +1232,10 @@ export function* createmapmainflow(){
         yield put(devicelistgeochange_distcluster({}));
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
-
+        const SettingOfflineMinutes =yield select((state)=>{
+          return get(state,'app.SettingOfflineMinutes',20);
+        });
+        yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
         if(!!oldpopitem){//正在弹窗
           //判断当前车辆是否发生偏移
           let deviceitem = g_devicesdb[oldpopitem.DeviceId];
