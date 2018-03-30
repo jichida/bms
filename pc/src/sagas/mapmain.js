@@ -57,6 +57,7 @@ import {getcurrentpos} from './getcurrentpos';
 import { push,replace } from 'react-router-redux';
 import L from 'leaflet';
 import lodashmap from 'lodash.map';
+import lodashclone from 'lodash.clone';
 // import find from 'lodash.find';
 // import sampleSize from 'lodash.samplesize';
 import get from 'lodash.get';
@@ -1193,6 +1194,14 @@ export function* createmapmainflow(){
       const {payload} = action;
       let deviceinfolist = payload;
       try{
+        let oldpopitem;
+        if(!!infoWindow){//正在弹窗
+          //判断当前车辆是否发生偏移
+          const {mapseldeviceid} = yield select((state)=>{
+            return {mapseldeviceid:state.device.mapseldeviceid};
+          });
+          oldpopitem = lodashclone(g_devicesdb[mapseldeviceid]);
+        }
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
             let isget = true;
@@ -1224,13 +1233,30 @@ export function* createmapmainflow(){
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
 
-        // if(!!infoWindow){//正在弹窗
-        //   //判断当前车辆是否发生偏移
-        //   const {mapseldeviceid} = yield select((state)=>{
-        //     return {mapseldeviceid:state.device.mapseldeviceid};
-        //   });
-        //   yield put(ui_mycar_selcurdevice(mapseldeviceid));
-        // }
+        if(!!oldpopitem){//正在弹窗
+          //判断当前车辆是否发生偏移
+          let deviceitem = g_devicesdb[oldpopitem.DeviceId];
+          const GPSTime1 = get(deviceitem,'LastHistoryTrack.GPSTime');
+          const GPSTime2 = get(oldpopitem,'LastHistoryTrack.GPSTime');
+          const DataTime1 =  get(deviceitem,'LastRealtimeAlarm.DataTime');
+          const DataTime2 =  get(oldpopitem,'LastRealtimeAlarm.DataTime');
+          if( GPSTime1 !== GPSTime2 || DataTime1 !== DataTime2){
+            if(!!deviceitem.locz){
+              deviceitem = yield call(getdeviceinfo,deviceitem,true);
+            }
+            if(!deviceitem.UpdateTime){
+              yield put(querydeviceinfo_request({query:{DeviceId:deviceitem.DeviceId}}));
+              const {payload} = yield take(`${querydeviceinfo_result}`);
+              deviceitem = {...deviceitem,...payload};
+            }
+            infoWindow.setPosition(deviceitem.locz);
+            const {content} = getpopinfowindowstyle(deviceitem);
+            infoWindow.setContent(content);
+            //setPosition
+            // yield put(ui_mycar_selcurdevice(mapseldeviceid));
+            console.log(`${oldpopitem.DeviceId}信息发生变化`);
+          }
+        }
       }
       catch(e){
         console.log(e);
