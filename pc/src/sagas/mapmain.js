@@ -126,42 +126,66 @@ const CreateMapUI_MarkCluster = (map)=>{
   });
 }
 
+const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
+  let markers = [];
+  lodashmap(g_devicesdb,(item,key)=>{
+    if(!!item){//AMap.LngLat(lng:Number,lat:Number)
+      if(!!item.locz){
+        const pos = new window.AMap.LngLat(item.locz[0],item.locz[1]);
+        const marker = new window.AMap.Marker({
+           position:pos,
+           icon: new window.AMap.Icon({
+               size: new window.AMap.Size(34, 34),  //图标大小
+               image: getimageicon(item,SettingOfflineMinutes),
+               imageOffset: new window.AMap.Pixel(0, 0)
+           }),
+           angle:get(item,'angle',0),
+          //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+           offset: new window.AMap.Pixel(0, 0),//-113, -140
+           extData:key
+        });
+        marker.on('click',()=>{
+          //console.log(`click marker ${key}`);
+          window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+              store.dispatch(ui_mycar_selcurdevice(item.DeviceId));
+          });
+        });
+        markers.push(marker);
+      }
+    }
+  });
+  markCluster.setMarkers(markers);
+}
+
+const getMarkCluster_updateMarks = (g_devicesdb_updated,SettingOfflineMinutes)=>{
+  const allmarks = markCluster.getMarkers();
+  lodashmap(allmarks,(mark)=>{
+    const deviceitem = g_devicesdb[mark.getExtData()];
+    const deviceitemnew = g_devicesdb_updated[deviceitem.DeviceId];
+    if(!!deviceitemnew){
+      if(!!deviceitemnew.locz){
+        const pos = new window.AMap.LngLat(deviceitemnew.locz[0],deviceitemnew.locz[1]);
+        mark.setPosition(pos);
+        mark.setIcon(getimageicon(deviceitemnew,SettingOfflineMinutes));
+      }
+      else{
+        markCluster.removeMarker(mark);
+      }
+    }
+  });
+}
+
 const getMarkCluster_showMarks = ({isshow,SettingOfflineMinutes})=>{
   return new Promise((resolve,reject) => {
     if(isshow){
-      let markers = [];
-      lodashmap(g_devicesdb,(item,key)=>{
-        if(!!item){//AMap.LngLat(lng:Number,lat:Number)
-          if(!!item.locz){
-            const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
-            const marker = new window.AMap.Marker({
-               position:pos,
-               icon: new window.AMap.Icon({
-                   size: new window.AMap.Size(34, 34),  //图标大小
-                   image: getimageicon(item,SettingOfflineMinutes),
-                   imageOffset: new window.AMap.Pixel(0, 0)
-               }),
-               angle:get(item,'angle',0),
-              //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-               offset: new window.AMap.Pixel(0, 0),//-113, -140
-               extData:key
-            });
-            marker.on('click',()=>{
-              //console.log(`click marker ${key}`);
-              window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-
-                    store.dispatch(ui_mycar_selcurdevice(item.DeviceId));
-                  // store.dispatch(mapmain_showpopinfo({DeviceId:item.DeviceId}));
-              });
-            });
-            markers.push(marker);
-          }
-        }
-      });
-      markCluster.setMarkers(markers);
+      markCluster.setMap(window.amapmain);
+      if(markCluster.getMarkers().length === 0){
+        getMarkCluster_createMarks(SettingOfflineMinutes);
+      }
     }
     else{
-      markCluster.clearMarkers();
+      markCluster.setMap(null);
+      // markCluster.clearMarkers();
     }
     resolve();
   });
@@ -1202,6 +1226,7 @@ export function* createmapmainflow(){
           });
           oldpopitem = lodashclone(g_devicesdb[mapseldeviceid]);
         }
+        let g_devicesdb_updated = {};
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
             let isget = true;
@@ -1226,15 +1251,21 @@ export function* createmapmainflow(){
             // }
           }
           g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          g_devicesdb_updated[deviceinfo.DeviceId] = deviceinfo;
           // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
         });
 
         yield put(devicelistgeochange_distcluster({}));
+
+
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
         const SettingOfflineMinutes =yield select((state)=>{
           return get(state,'app.SettingOfflineMinutes',20);
         });
+
+        getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
+
         yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
         if(!!oldpopitem){//正在弹窗
           //判断当前车辆是否发生偏移
