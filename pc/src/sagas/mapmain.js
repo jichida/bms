@@ -126,6 +126,13 @@ const CreateMapUI_MarkCluster = (map)=>{
   });
 }
 
+const getMarkCluster_recreateMarks = (SettingOfflineMinutes)=>{
+  if(markCluster.getMarkers().length > 0){
+    markCluster.clearMarkers();
+  }
+  getMarkCluster_createMarks(SettingOfflineMinutes);
+}
+
 const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
   let markers = [];
   lodashmap(g_devicesdb,(item,key)=>{
@@ -166,7 +173,12 @@ const getMarkCluster_updateMarks = (g_devicesdb_updated,SettingOfflineMinutes)=>
       if(!!deviceitemnew.locz){
         const pos = new window.AMap.LngLat(deviceitemnew.locz[0],deviceitemnew.locz[1]);
         mark.setPosition(pos);
-        mark.setIcon(getimageicon(deviceitemnew,SettingOfflineMinutes));
+        const newIcon = new window.AMap.Icon({
+            size: new window.AMap.Size(34, 34),  //图标大小
+            image: getimageicon(deviceitemnew,SettingOfflineMinutes),
+            imageOffset: new window.AMap.Pixel(0, 0)
+        });
+        mark.setIcon(newIcon);
       }
       else{
         markCluster.removeMarker(mark);
@@ -1012,6 +1024,7 @@ export function* createmapmainflow(){
 
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
+          getMarkCluster_recreateMarks(SettingOfflineMinutes);
           if(window.amapmain.getZoom() > 12){
             yield put(ui_showhugepoints(true));
             yield put(ui_showdistcluster(false));
@@ -1095,16 +1108,6 @@ export function* createmapmainflow(){
     yield takeLatest(`${ui_showhugepoints}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
         try{
-          // if(!!distCluster){
-          //   if(isshow){
-          //     pointSimplifierIns.show();
-          //   }
-          //   else{
-          //     pointSimplifierIns.hide();
-          //   }
-          // pointSimplifierIns.hide();
-          //   pointSimplifierIns.render();
-          // }
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
           });
@@ -1288,7 +1291,7 @@ export function* createmapmainflow(){
             infoWindow.setContent(content);
             //setPosition
             // yield put(ui_mycar_selcurdevice(mapseldeviceid));
-            console.log(`${oldpopitem.DeviceId}信息发生变化`);
+            console.log(`${oldpopitem.DeviceId}信息发生变化,位置:${JSON.stringify(deviceitem.locz)}`);
           }
         }
       }
