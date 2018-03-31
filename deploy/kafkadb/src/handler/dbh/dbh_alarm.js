@@ -26,9 +26,12 @@ const dbh_alarm =(datasin,callbackfn)=>{
   _.map(datas,(devicedata)=>{
     asyncfnsz.push(
       (callbackfn)=>{
+        const DeviceId = devicedata["$set"].DeviceId;
+        const CurDay = devicedata["$set"].CurDay;
+        debug_alarm(`dbh_alarm--->DeviceId:${DeviceId},CurDay:${CurDay},devicedata:${JSON.stringify(devicedata)}`)
         dbModel.findOneAndUpdate({
-        		DeviceId:devicedata["$set"].DeviceId,
-            CurDay:devicedata["$set"].CurDay,
+        		DeviceId,
+            CurDay,
          },devicedata,{upsert:true,new:true}).lean().exec(callbackfn);
       }
     );

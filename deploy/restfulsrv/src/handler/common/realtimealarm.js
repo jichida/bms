@@ -27,7 +27,16 @@ const bridge_alarminfo = (alarminfo)=>{
   alarminfonew[`key`] = alarminfo._id;
   alarminfonew[`车辆ID`] = alarminfo[`DeviceId`];
   alarminfonew[`报警时间`] = alarminfo[`DataTime`];
-  alarminfonew[`报警等级`] = alarminfo[`warninglevel`];
+  const warninglevel = alarminfo[`warninglevel`];
+  if(warninglevel === '高'){
+    alarminfonew['报警等级'] = '三级';
+  }
+  else if(warninglevel === '中'){
+    alarminfonew['报警等级'] = '二级';
+  }
+  else if(warninglevel === '低'){
+    alarminfonew['报警等级'] = '一级';
+  }
 
   let alarminfotmp = _.clone(alarminfo);
   let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
@@ -53,7 +62,17 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   alarminfonew[`key`] = alarmrawinfo._id;
   alarminfonew[`车辆ID`] = alarmrawinfo[`DeviceId`];
   alarminfonew[`报警时间`] = alarmrawinfo[`DataTime`];
-  alarminfonew[`报警等级`] = alarmrawinfo[`warninglevel`];
+  // alarminfonew[`报警等级`] = alarmrawinfo[`warninglevel`];
+  const warninglevel = alarmrawinfo[`warninglevel`];
+  if(warninglevel === '高'){
+    alarminfonew['报警等级'] = '三级';
+  }
+  else if(warninglevel === '中'){
+    alarminfonew['报警等级'] = '二级';
+  }
+  else if(warninglevel === '低'){
+    alarminfonew['报警等级'] = '一级';
+  }
 
   // let alarminforawtmp = _.clone(alarmrawinfo);
   // let rest = _.omit(alarminforawtmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
@@ -75,7 +94,7 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   // });
   debug(`alarmtxtstat===>${alarmrawinfo[`alarmtxtstat`]}`)
   alarminfonew[`报警信息`] = alarmrawinfo[`alarmtxtstat`];
-  
+
   return alarminfonew;
 }
 exports.bridge_alarminfo = bridge_alarminfo;
