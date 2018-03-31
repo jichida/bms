@@ -1214,7 +1214,6 @@ export function* createmapmainflow(){
       }
     });
     //serverpush_devicegeo
-
     //某个车辆地理位置发送变化
     yield takeLatest(`${serverpush_device}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
@@ -1230,6 +1229,7 @@ export function* createmapmainflow(){
           oldpopitem = lodashclone(g_devicesdb[mapseldeviceid]);
         }
         let g_devicesdb_updated = {};
+        let deviceids_frereshdetails = [];
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
             let isget = true;
@@ -1253,7 +1253,43 @@ export function* createmapmainflow(){
             //   deviceinfo = {...deviceinfo,...addr};
             // }
           }
-          g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          const deviceinfoold = g_devicesdb[deviceinfo.DeviceId];
+          if(!!deviceinfoold){
+            if(!!oldpopitem){
+              if(oldpopitem.DeviceId === deviceinfo.DeviceId){
+                console.log(`oldpopitem==>${JSON.stringify(oldpopitem)}`);
+                console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
+              }
+            }
+            //<---------已经有详情了
+            const {LastHistoryTrack1,LastRealtimeAlarm1,locz1,...rest1} = deviceinfoold;
+            const {LastHistoryTrack2,LastRealtimeAlarm2,locz2,...rest2} = deviceinfo;
+            // {
+            //   'DeviceId':1,
+            //   'LastHistoryTrack.Latitude':1,
+            //   'LastHistoryTrack.Longitude':1,
+            //   'LastHistoryTrack.GPSTime':1,
+            //   'warninglevel':1,
+            //   'LastRealtimeAlarm.DataTime':1,
+            //   'alarmtxtstat':1
+            // };
+            const LastHistoryTrack = {...LastHistoryTrack1,...LastHistoryTrack2};
+            const LastRealtimeAlarm = {...LastRealtimeAlarm1,...LastRealtimeAlarm2};
+            const locz = {...locz1,...locz2};
+            const rest = {...rest1,...rest2};
+            const deviceinfonew = {
+              LastHistoryTrack,
+              LastRealtimeAlarm,
+              locz,
+              ...rest
+            };
+
+            g_devicesdb[deviceinfo.DeviceId] = deviceinfonew;
+            deviceids_frereshdetails.push(deviceinfo.DeviceId);
+          }
+          else{
+            g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          }
           g_devicesdb_updated[deviceinfo.DeviceId] = deviceinfo;
           // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
         });
@@ -1269,31 +1305,25 @@ export function* createmapmainflow(){
 
         getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
 
-        yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
         if(!!oldpopitem){//正在弹窗
           //判断当前车辆是否发生偏移
-          let deviceitem = g_devicesdb[oldpopitem.DeviceId];
-          const GPSTime1 = get(deviceitem,'LastHistoryTrack.GPSTime');
-          const GPSTime2 = get(oldpopitem,'LastHistoryTrack.GPSTime');
-          const DataTime1 =  get(deviceitem,'LastRealtimeAlarm.DataTime');
-          const DataTime2 =  get(oldpopitem,'LastRealtimeAlarm.DataTime');
-          if( GPSTime1 !== GPSTime2 || DataTime1 !== DataTime2){
-            if(!!deviceitem.locz){
-              deviceitem = yield call(getdeviceinfo,deviceitem,true);
-            }
-            if(!deviceitem.UpdateTime){
-              yield put(querydeviceinfo_request({query:{DeviceId:deviceitem.DeviceId}}));
-              const {payload} = yield take(`${querydeviceinfo_result}`);
-              deviceitem = {...deviceitem,...payload};
-            }
+          if(!!g_devicesdb_updated[oldpopitem.DeviceId]){
+            let deviceitem = g_devicesdb[oldpopitem.DeviceId];
+            yield put(querydeviceinfo_request({query:{DeviceId:deviceitem.DeviceId}}));
+            const {payload} = yield take(`${querydeviceinfo_result}`);
+            deviceitem = {...deviceitem,...payload};
+            g_devicesdb[deviceitem.DeviceId] = deviceitem;
+
             infoWindow.setPosition(deviceitem.locz);
             const {content} = getpopinfowindowstyle(deviceitem);
             infoWindow.setContent(content);
             //setPosition
             // yield put(ui_mycar_selcurdevice(mapseldeviceid));
-            console.log(`${oldpopitem.DeviceId}信息发生变化,位置:${JSON.stringify(deviceitem.locz)}`);
+            console.log(`${oldpopitem.DeviceId}信息发生变化,信息:${JSON.stringify(deviceitem)}`);
           }
         }
+        yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
+
       }
       catch(e){
         console.log(e);
