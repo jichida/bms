@@ -36,7 +36,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
       }
     );
   });
-  async.parallel(asyncfnsz,(err,result)=>{
+  async.series(asyncfnsz,(err,result)=>{
       debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
       // debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);
