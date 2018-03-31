@@ -69,6 +69,9 @@ const getdbdata_historytrack = (devicedata)=>{
 }
 
 const getdbdata_alarmraw = (devicedata)=>{
+  if(!devicedata.warninglevel || devicedata.warninglevel === ''){
+    return;
+  }
   let  LastRealtimeAlarmRaw = _.get(devicedata,'LastRealtimeAlarm.Alarm');
   if(!!LastRealtimeAlarmRaw){
     //含有报警信息
@@ -98,6 +101,10 @@ const getdbdata_alarmraw = (devicedata)=>{
 }
 
 const getdbdata_alarm = (devicedata,callbackfn)=>{
+  if(!devicedata.warninglevel || devicedata.warninglevel === ''){
+    callbackfn();
+    return;
+  }
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   const LastHistoryTrack = _.get(devicedata,'LastHistoryTrack');
   if(!!LastRealtimeAlarm){//含有历史设备数据
