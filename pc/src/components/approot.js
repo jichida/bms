@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {map_setmapinited} from '../actions';
 import { Route,Redirect,Switch} from 'react-router-dom';
-
+import 'antd/dist/antd.css';
 import Index from './home';
 
 import Message from './message/message.js';

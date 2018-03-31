@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Search from '../search/searchtree_device.js';
 import { Tabs } from 'antd';
 
-import "../../css/antd.css";
+// import "../../css/antd.css";
 import '../../css/treestyle.css';
 
 import TreeByloc from '../trees/tree_byloc';

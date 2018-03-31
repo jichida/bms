@@ -102,10 +102,26 @@ class TablePosition extends React.Component {
     }
     render(){
         const column_data = ['车辆ID','采集时间','保存时间','箱体测量电压(V)','箱体累加电压(V)',
-      '箱体电流(A)','真实SOC(%)','最高单体电压(V)','最低单体电压(V)','最高单体电压CSC号','最高单体电芯位置',
-      '最低单体电压CSC号','最低单体电压电芯位置','最高单体温度','最低单体温度','平均单体温度','最高温度CSC号',
-      '最低温度CSC号','显示用SOC','平均单体电压','报警信息'
-    ];
+          '箱体电流(A)','真实SOC(%)','最高单体电压(V)','最低单体电压(V)','最高单体电压CSC号','最高单体电芯位置',
+          '最低单体电压CSC号','最低单体电压电芯位置','最高单体温度','最低单体温度','平均单体温度','最高温度CSC号',
+          '最低温度CSC号','显示用SOC','平均单体电压','报警信息'
+        ];
+        const columnsprops = [];
+        //   {
+        //     width:100,
+        //     fixed: 'left'
+        //   },
+        //   {
+        //     width:150,
+        //     fixed: 'left'
+        //   }
+        // ];
+        for(let i = columnsprops.length ;i < column_data.length; i++){
+          columnsprops.push({
+            // width:300
+          });
+        }
+
         let columns = map(column_data, (data, index)=>{
           let column_item = {
               title: data,
@@ -118,6 +134,7 @@ class TablePosition extends React.Component {
                 return a[data] > b[data] ? 1:-1;
               }
           };
+          column_item = {...column_item,...columnsprops[index]};
           return column_item;
         });
 
@@ -128,6 +145,8 @@ class TablePosition extends React.Component {
         }
         let columns_action ={
             title: "操作",
+            width:100,
+            fixed: 'right',
             dataIndex: '',
             key: 'x',
             render: (text, row, index) => {
@@ -153,6 +172,7 @@ class TablePosition extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
+                      tableprops={{scroll:{x: columnsprops.length*100}}}
                       listtypeid = 'antdtabledevice'
                       ref='antdtabledevice'
                       onItemConvert={this.onItemConvert.bind(this)}

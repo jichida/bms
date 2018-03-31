@@ -7,7 +7,7 @@ import Modal from 'antd/lib/modal';
 import map from 'lodash.map';
 // import { connect } from 'react-redux';
 import './pictureswall.css';
-import 'antd/dist/antd.css';
+
 import config from '../../env/config.js';
 import PicaDisposePhoto from '../../util/pica_dispose_photo';
 

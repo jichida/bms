@@ -3,6 +3,7 @@ import { Table} from 'antd';
 import map from 'lodash.map';
 import get from 'lodash.get';
 import { connect } from 'react-redux';
+import './antdtable.css';
 
 const listtypeiddata = {
 
@@ -116,10 +117,12 @@ class AntdTable extends React.Component {
 
     render() {
 
-        const { columns } = this.props;
+        const { columns,tableprops } = this.props;
 
         return (
           <Table
+            size="small"
+            {...tableprops}
             ref='antdtable'
             columns={columns}
             rowKey={record => record.key}
