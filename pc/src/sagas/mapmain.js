@@ -1303,7 +1303,6 @@ export function* createmapmainflow(){
           return get(state,'app.SettingOfflineMinutes',20);
         });
 
-        getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
 
         if(!!oldpopitem){//正在弹窗
           //判断当前车辆是否发生偏移
@@ -1313,7 +1312,8 @@ export function* createmapmainflow(){
             const {payload} = yield take(`${querydeviceinfo_result}`);
             deviceitem = {...deviceitem,...payload};
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
-
+            g_devicesdb_updated[deviceitem.DeviceId] = deviceitem;
+            
             infoWindow.setPosition(deviceitem.locz);
             const {content} = getpopinfowindowstyle(deviceitem);
             infoWindow.setContent(content);
@@ -1322,6 +1322,9 @@ export function* createmapmainflow(){
             console.log(`${oldpopitem.DeviceId}信息发生变化,信息:${JSON.stringify(deviceitem)}`);
           }
         }
+
+        getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
+
         yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
 
       }
