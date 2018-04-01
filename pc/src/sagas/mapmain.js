@@ -551,7 +551,7 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
         const {adcode,dataItems,children} = result;
         let count_online = 0;
         if(!children || children.length === 0){
-          //device
+          //device,如果adcode底下全部是设备了【放到最大区域层级了】
           let deviceids = [];
           if(!!dataItems){
             lodashmap(dataItems,(deviceitem)=>{
@@ -606,6 +606,7 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             });
             return;
           }
+          //当前adcode的设备列表
           lodashmap(dataItems,(di)=>{
             const deviceitem = di.dataItem;
             if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
@@ -626,6 +627,7 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             count_online:count_online,
             count_offline:dataItems.length,
           };
+          //adcode的子区域
           lodashmap(children,(child)=>{
               if(child.dataItems.length > 0){
                 let count_online = 0;
@@ -706,6 +708,12 @@ export function* createmapmainflow(){
               let result = yield call(listenclusterevent,eventname);
               if(!!result){
                 yield put(mapmain_seldistrict(result));
+                const zoomlevel = window.amapmain.getZoom();
+                console.log(zoomlevel)
+                if(zoomlevel > 12){
+                  yield put(ui_showhugepoints(true));
+                  yield put(ui_showdistcluster(false));
+                }
               }
               // yield put(clusterMarkerClick(result));
             }
@@ -727,6 +735,7 @@ export function* createmapmainflow(){
               // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
               // yield put(md_mapmain_setzoomlevel(window.amapmain.getZoom()));
               const zoomlevel = window.amapmain.getZoom();
+              console.log(zoomlevel)
               if(zoomlevel > 12){
                 yield put(ui_showhugepoints(true));
                 yield put(ui_showdistcluster(false));
@@ -1025,7 +1034,9 @@ export function* createmapmainflow(){
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
           getMarkCluster_recreateMarks(SettingOfflineMinutes);
-          if(window.amapmain.getZoom() > 12){
+          const zoomlevel = window.amapmain.getZoom() > 12;
+          console.log(zoomlevel)
+          if(zoomlevel){
             yield put(ui_showhugepoints(true));
             yield put(ui_showdistcluster(false));
           }
@@ -1083,16 +1094,16 @@ export function* createmapmainflow(){
           return new Promise((resolve) => {
             try{
               if(!!distCluster){
-                if(isshow !== distCluster.isHidden()){
+                // if(isshow !== distCluster.isHidden()){
                   if(isshow){
                     distCluster.show();
-                    distCluster.render();
                   }
                   else{
                     distCluster.hide();
                   }
+                  distCluster.render();
                 }
-              }
+              // }
             }
             catch(e){
               console.log(e);
@@ -1313,7 +1324,7 @@ export function* createmapmainflow(){
             deviceitem = {...deviceitem,...payload};
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
             g_devicesdb_updated[deviceitem.DeviceId] = deviceitem;
-            
+
             infoWindow.setPosition(deviceitem.locz);
             const {content} = getpopinfowindowstyle(deviceitem);
             infoWindow.setContent(content);
