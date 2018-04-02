@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_device = require('debug')('dbh:device');
 const async = require('async');
-let globaldevicetable = {};//'deviceid'->'datatime'
+const config = requre('../../config.js');
 
 const dbh_device =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -15,15 +15,15 @@ const dbh_device =(datasin,callbackfn)=>{
   _.map(datasin,(o)=>{
     const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
     const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-    if(!globaldevicetable[o.DeviceId]){
+    if(!config.globaldevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+      config.globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
     }
     else{
-      if(globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
+      if(config.globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
         datas.push(o);
-        globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+        config.globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
       }
     }
   });

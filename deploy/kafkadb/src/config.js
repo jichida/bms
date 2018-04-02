@@ -32,7 +32,13 @@ let config =  {
   kafka_dbtopic_realtimealarmraws:'bmsdb.realtimealarmraws',
   kafka_dbtopic_index:process.env.IndexTopic ||'bmsindex',
   kafka_dbtopic_current:process.env.CurrentTopic ||'bmsindex',
-  version:'4.0.3'
+  version:'4.0.4',
+  globalhistorydevicetable:{},
+  globalalarmdevicetable:{},
+  globalalarmrawdevicetable:{},
+  globaldevicetable:{},
+  globalhistorytracktable:{},
+
   // consumertopics:['BMS.Data']
 };
 

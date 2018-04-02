@@ -2,8 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_alarm = require('debug')('dbh:alarm');
 const async = require('async');
-
-let globalalarmdevicetable = {};//'deviceid'->'datatime'
+const config = requre('../../config.js');
 
 const dbh_alarm =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -14,15 +13,15 @@ const dbh_alarm =(datasin,callbackfn)=>{
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!globalalarmdevicetable[o["$set"].DeviceId]){
+    if(!config.globalalarmdevicetable[o["$set"].DeviceId]){
       //找不到
       datas.push(o);
-      globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
+      config.globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
     }
     else{
-      if(globalalarmdevicetable[o["$set"].DeviceId] !== o["$set"].DataTime){
+      if(config.globalalarmdevicetable[o["$set"].DeviceId] !== o["$set"].DataTime){
         datas.push(o);
-        globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
+        config.globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
       }
     }
   });

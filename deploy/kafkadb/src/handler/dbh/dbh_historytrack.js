@@ -2,8 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historytrack = require('debug')('dbh:historytrack');
 const async = require('async');
-
-let globalhistorytracktable = {};//'deviceid'->'datatime'
+const config = requre('../../config.js');
 
 const dbh_historytrack =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -14,15 +13,15 @@ const dbh_historytrack =(datasin,callbackfn)=>{
 
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!globalhistorytracktable[o.DeviceId]){
+    if(!config.globalhistorytracktable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globalhistorytracktable[o.DeviceId] = o.GPSTime;
+      config.globalhistorytracktable[o.DeviceId] = o.GPSTime;
     }
     else{
-      if(globalhistorytracktable[o.DeviceId] !== o.GPSTime){
+      if(config.globalhistorytracktable[o.DeviceId] !== o.GPSTime){
         datas.push(o);
-        globalhistorytracktable[o.DeviceId] = o.GPSTime;
+        config.globalhistorytracktable[o.DeviceId] = o.GPSTime;
       }
     }
   });

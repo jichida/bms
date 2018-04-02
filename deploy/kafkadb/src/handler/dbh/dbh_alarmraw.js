@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_alarmraw = require('debug')('dbh:alarmraw');
 const async = require('async');
-let globalalarmrawdevicetable = {};//'deviceid'->'datatime'
+const config = requre('../../config.js');
 
 const dbh_alarmraw =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -14,15 +14,15 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!globalalarmrawdevicetable[o.DeviceId]){
+    if(!config.lobalalarmrawdevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
+      config.globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
     }
     else{
-      if(globalalarmrawdevicetable[o.DeviceId] !== o.DataTime){
+      if(config.globalalarmrawdevicetable[o.DeviceId] !== o.DataTime){
         datas.push(o);
-        globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
+        config.globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
       }
     }
   });

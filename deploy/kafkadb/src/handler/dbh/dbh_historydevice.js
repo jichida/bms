@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
-let globalhistorydevicetable = {};//'deviceid'->'datatime'
+const config = requre('../../config.js');
 
 const dbh_historydevice =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -13,15 +13,15 @@ const dbh_historydevice =(datasin,callbackfn)=>{
 
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!globalhistorydevicetable[o.DeviceId]){
+    if(!config.globalhistorydevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globalhistorydevicetable[o.DeviceId] = o.DataTime;
+      config.globalhistorydevicetable[o.DeviceId] = o.DataTime;
     }
     else{
-      if(globalhistorydevicetable[o.DeviceId] !== o.DataTime){
+      if(config.globalhistorydevicetable[o.DeviceId] !== o.DataTime){
         datas.push(o);
-        globalhistorydevicetable[o.DeviceId] = o.DataTime;
+        config.globalhistorydevicetable[o.DeviceId] = o.DataTime;
       }
     }
   });
