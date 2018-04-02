@@ -7,7 +7,7 @@ let globalalarmrawdevicetable = {};//'deviceid'->'datatime'
 const dbh_alarmraw =(datasin,callbackfn)=>{
   if(datasin.length === 0){
     debug_alarmraw(`dbh_alarmraw data is empty`);
-    callbackfn(null,[]);
+    callbackfn(null,true);
     return;
   }
   //过滤掉重复的数据
@@ -33,6 +33,12 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
   if(datas.length < datasin.length){
     // debug_alarmraw(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);
     debug_alarmraw(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
+
+  if(datas.length === 0){
+    debug_alarmraw(`debug_alarmraw data is empty`);
+    callbackfn(null,true);
+    return;
   }
   //
   const dbModel = DBModels.RealtimeAlarmRawModel;

@@ -8,7 +8,7 @@ let globalhistorytracktable = {};//'deviceid'->'datatime'
 const dbh_historytrack =(datasin,callbackfn)=>{
   if(datasin.length === 0){
     debug_historytrack(`debug_historytrack data is empty`);
-    callbackfn(null,[]);
+    callbackfn(null,true);
     return;
   }
 
@@ -33,6 +33,12 @@ const dbh_historytrack =(datasin,callbackfn)=>{
   if(datas.length < datasin.length){
     debug_historytrack(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
   }
+  if(datas.length === 0){
+    debug_historytrack(`debug_historytrack data is empty`);
+    callbackfn(null,true);
+    return;
+  }
+
   const dbModel = DBModels.HistoryTrackModel;
   debug_historytrack(`start dbh_historytrack,datas:${datas.length}`);
   // const asyncfnsz = [];

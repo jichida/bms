@@ -26,6 +26,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
       }
     }
   });
+
   // const datas = _.uniqBy(datasin, (o)=>{
   //   return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
   // });
@@ -33,6 +34,12 @@ const dbh_alarm =(datasin,callbackfn)=>{
   if(datas.length < datasin.length){
     // debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);
     debug_alarm(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
+
+  if(datas.length === 0){
+    debug_alarm(`dbh_alarm data is empty`);
+    callbackfn(null,[]);
+    return;
   }
   //
   const dbModel = DBModels.RealtimeAlarmModel;
