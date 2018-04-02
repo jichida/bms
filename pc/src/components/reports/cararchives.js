@@ -120,6 +120,8 @@ class TablePosition extends React.Component {
         let columns_action ={
             title: "操作",
             dataIndex: '',
+            width:100,
+            fixed: 'right',
             key: 'x',
             render: (text, row, index) => {
                 return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
@@ -151,7 +153,7 @@ class TablePosition extends React.Component {
                       columns={columns}
                       pagenumber={30}
                       query={this.state.query}
-                      sort={{'DataTime': -1}}
+                      sort={{'LastRealtimeAlarm.DataTime': -1}}
                       queryfun={(payload)=>{
                         return callthen(uireport_searchcararchives_request,uireport_searchcararchives_result,payload);
                       }}

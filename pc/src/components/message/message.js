@@ -6,6 +6,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import map from 'lodash.map';
 import get from 'lodash.get';
+import lodashsortby from 'lodash.sortby';
+import lodashreverse from 'lodash.reverse';
 import AntdTable from "../controls/table.js";
 import moment from 'moment';
 import TreeSearchreport from '../search/search_message';
@@ -100,6 +102,8 @@ class MessageAllDevice extends React.Component {
         }
         let columns_action ={
             title: "操作",
+            width:100,
+            fixed: 'right',
             dataIndex: column_data.length,
             key: column_data.length,
             render: (text, row, index) => {
@@ -139,6 +143,9 @@ class MessageAllDevice extends React.Component {
             data.push(this.onItemConvert(deviceitem));
           }
         });
+
+        data = lodashsortby(data,['LastRealtimeAlarm.DataTime']);
+        data = lodashreverse(data);
         // let viewrow = (row)=>{
         //     //console.log(row);
         //     g_querysaved = this.state.query;

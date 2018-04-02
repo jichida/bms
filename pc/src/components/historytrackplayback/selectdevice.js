@@ -28,7 +28,12 @@ class SelectDevice extends React.Component {
         let {deviceidlist} = this.props;
 
         if (!!deviceidlist) {
-            optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!==-1; })
+            optionsarr = filter(deviceidlist,function(o) {
+              if(!!o){
+                return o.indexOf(value)!==-1;
+              }
+              return false;
+            })
             if(optionsarr.length>100){optionsarr.length=100}
             options = map(optionsarr,(deviceid,index)=>{
                 return <Option key={deviceid}>{deviceid}</Option>;

@@ -134,6 +134,8 @@ class TableAlarm extends React.Component {
 
         let columns_action ={
             title: "操作",
+            width:100,
+            fixed: 'right',
             dataIndex: '',
             key: 'x',
             render: (text, row, index) => {

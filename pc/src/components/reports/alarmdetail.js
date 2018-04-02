@@ -134,6 +134,8 @@ class TableAlarmDetail extends React.Component {
         let columns_action ={
             title: "操作",
             dataIndex: '',
+            width:100,
+            fixed: 'right',
             key: 'x',
             render: (text, row, index) => {
                 return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
