@@ -8,7 +8,7 @@ let globalalarmdevicetable = {};//'deviceid'->'datatime'
 const dbh_alarm =(datasin,callbackfn)=>{
   if(datasin.length === 0){
     debug_alarm(`dbh_alarm data is empty`);
-    callbackfn(null,true);
+    callbackfn(null,[]);
     return;
   }
   //去重

@@ -8,7 +8,7 @@ let globalhistorytracktable = {};//'deviceid'->'datatime'
 const dbh_historytrack =(datasin,callbackfn)=>{
   if(datasin.length === 0){
     debug_historytrack(`debug_historytrack data is empty`);
-    callbackfn(null,true);
+    callbackfn(null,[]);
     return;
   }
 

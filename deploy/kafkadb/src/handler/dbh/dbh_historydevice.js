@@ -7,7 +7,7 @@ let globalhistorydevicetable = {};//'deviceid'->'datatime'
 const dbh_historydevice =(datasin,callbackfn)=>{
   if(datasin.length === 0){
     debug_historydevice(`dbh_historydevice data is empty`);
-    callbackfn(null,true);
+    callbackfn(null,[]);
     return;
   }
 

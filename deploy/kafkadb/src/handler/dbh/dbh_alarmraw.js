@@ -7,7 +7,7 @@ let globalalarmrawdevicetable = {};//'deviceid'->'datatime'
 const dbh_alarmraw =(datasin,callbackfn)=>{
   if(datasin.length === 0){
     debug_alarmraw(`dbh_alarmraw data is empty`);
-    callbackfn(null,true);
+    callbackfn(null,[]);
     return;
   }
   //过滤掉重复的数据
