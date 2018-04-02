@@ -14,15 +14,15 @@ const dbh_alarm =(datasin,callbackfn)=>{
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!globalalarmdevicetable[o.DeviceId]){
+    if(!globalalarmdevicetable[o["$set"].DeviceId]){
       //找不到
       datas.push(o);
-      globalalarmdevicetable[o.DeviceId] = o.DataTime;
+      globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
     }
     else{
-      if(globalalarmdevicetable[o.DeviceId] !== o.DataTime){
+      if(globalalarmdevicetable[o["$set"].DeviceId] !== o["$set"].DataTime){
         datas.push(o);
-        globalalarmdevicetable[o.DeviceId] = o.DataTime;
+        globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
       }
     }
   });
