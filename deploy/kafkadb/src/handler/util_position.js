@@ -11,9 +11,6 @@ const OsmgeoModel = mongoose.model('geo_osm',  OsmgeoSchema );
 const getpostion_frompos = (point,callback)=>{
   if(point[0] === 0 || !point){
     callback({
-      'Provice':'未知',
-      'City':'未知',
-      'Area':'未知',
     });
     return;
   }
@@ -54,9 +51,6 @@ const getpostion_frompos = (point,callback)=>{
   ],
   (err, result)=> {
     let resultobj = {
-      'Provice':'未知',
-      'City':'未知',
-      'Area':'未知',
     };
     if(!err && !!result){
       //[{"_id":"广西壮族自治区","admin_level":"4"},{"_id":"柳州市","admin_level":"5"},{"_id":"城中区","admin_level":"6"}]

@@ -29,9 +29,12 @@ const getdbdata_historydevice = (devicedata)=>{
     result_device.NodeID = config.NodeID;
     result_device.SN64 = devicedata.SN64;
     result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    // result_device.Provice = devicedata.Provice;
-    // result_device.City = devicedata.City;
-    // result_device.Area = devicedata.Area;
+    if(!!devicedata.Provice){
+      result_device.Provice = devicedata.Provice;
+      result_device.City = devicedata.City;
+      result_device.Area = devicedata.Area;
+    }
+
     result_device.GUID = devicedata.GUID;
     //+以下语句便于调试
     result_device.recvpartition = devicedata.recvpartition;
@@ -58,9 +61,12 @@ const getdbdata_historytrack = (devicedata)=>{
     result_historytrack.NodeID = config.NodeID;
     result_historytrack.SN64 = devicedata.SN64;
     result_historytrack.GUID = devicedata.GUID;
-    // result_historytrack.Provice = devicedata.Provice;
-    // result_historytrack.City = devicedata.City;
-    // result_historytrack.Area = devicedata.Area;
+    if(!!devicedata.Provice){
+      result_historytrack.Provice = devicedata.Provice;
+      result_historytrack.City = devicedata.City;
+      result_historytrack.Area = devicedata.Area;
+    }
+
     //+以下语句便于调试
     result_historytrack.recvpartition = devicedata.recvpartition;
     result_historytrack.recvoffset = devicedata.recvoffset;
@@ -94,9 +100,12 @@ const getdbdata_alarmraw = (devicedata)=>{
     result_alarm_raw.NodeID = config.NodeID;
     result_alarm_raw.SN64 = devicedata.SN64;
     result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    // result_alarm_raw.Provice = devicedata.Provice;
-    // result_alarm_raw.City = devicedata.City;
-    // result_alarm_raw.Area = devicedata.Area;
+    if(!!devicedata.Provice){
+      result_alarm_raw.Provice = devicedata.Provice;
+      result_alarm_raw.City = devicedata.City;
+      result_alarm_raw.Area = devicedata.Area;
+    }
+
     result_alarm_raw.warninglevel = devicedata.warninglevel;
     //+以下语句便于调试
     result_alarm_raw.recvpartition = devicedata.recvpartition;
@@ -128,10 +137,13 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
           SN64:devicedata.SN64,
           UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
           organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
-          // Provice:devicedata.Provice,
-          // City:devicedata.City,
-          // Area:devicedata.Area
         };
+        if(!!devicedata.Provice){
+          updatedset.Provice = devicedata.Provice;
+          updatedset.City = devicedata.City;
+          updatedset.Area = devicedata.Area;
+        }
+
         if(!!LastHistoryTrack){
           updatedset.Longitude = LastHistoryTrack.Longitude;
           updatedset.Latitude = LastHistoryTrack.Latitude;
@@ -183,14 +195,14 @@ const getindexmsgs = (data,callbackfn)=>{
       devicedata.warninglevel = resultalarmmatch[0].warninglevel;
     }
 
-    // utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
-    //   let newdevicedata = _.merge(devicedata,retobj);
-      let newdevicedata = _.clone(devicedata);
+    utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+      let newdevicedata = _.merge(devicedata,retobj);
+      // let newdevicedata = _.clone(devicedata);
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
       callbackfn(newdevicedata);
-    // });
+    });
   });
 
 }
