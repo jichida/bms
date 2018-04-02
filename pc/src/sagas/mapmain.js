@@ -906,11 +906,12 @@ export function* createmapmainflow(){
             console.log(`地图当前层级${window.amapmain.getZoom()},最大:${maxzoom}`);
             window.amapmain.setZoom(maxzoom);
             // yield put(md_mapmain_setzoomlevel(maxzoom));
-            yield put(ui_showhugepoints(true));
-            yield put(ui_showdistcluster(false));
+            // yield put(ui_showhugepoints(true));
+            // yield put(ui_showdistcluster(false));
+            yield delay(0);
           }
 
-
+          console.log(`call弹框`);
           //弹框
           yield call(showinfowindow,listitem[0]);
 
