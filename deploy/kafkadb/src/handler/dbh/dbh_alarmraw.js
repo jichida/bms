@@ -14,7 +14,7 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!config.lobalalarmrawdevicetable[o.DeviceId]){
+    if(!config.globalalarmrawdevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
       config.globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
