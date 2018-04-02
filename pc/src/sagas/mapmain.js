@@ -191,6 +191,10 @@ const getMarkCluster_updateMarks = (g_devicesdb_updated,SettingOfflineMinutes)=>
 
 const getMarkCluster_showMarks = ({isshow,SettingOfflineMinutes})=>{
   return new Promise((resolve,reject) => {
+    if(!markCluster){
+      resolve();
+      return;
+    }
     if(isshow){
       markCluster.setMap(window.amapmain);
       if(markCluster.getMarkers().length === 0){
@@ -281,7 +285,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                catch(e){
 
                }
-          	    return null;
+          	   return null;
         		}
             //重写行政区域,避免来回刷新时的闪烁
             //  utils.extend(DistrictCluster.prototype,
@@ -391,11 +395,15 @@ let CreateMap =({mapcenterlocation,zoomlevel})=> {
 //监听地图事件
 const listenmapevent = (eventname)=>{
   return new Promise(resolve => {
-    if(!!window.amapmain){
+      if(!window.amapmain){
+        resolve();
+        return;
+      }
+
       window.amapmain.on(eventname, (e)=> {
           resolve(eventname);
       });
-    }
+
   });
 }
 
@@ -411,15 +419,24 @@ const listenmapevent = (eventname)=>{
 //监听弹框事件
 const listenwindowinfoevent = (eventname)=>{
   return new Promise(resolve => {
+    if(!infoWindow){
+      resolve();
+      return;
+    }
     infoWindow.on(eventname, (e)=> {
         resolve(eventname);
     });
+
   });
 }
 
 //监听行政事件,clusterMarkerClick
 const listenclusterevent = (eventname)=>{
   return new Promise(resolve => {
+    if(!distCluster){
+      resolve();
+      return;
+    }
     distCluster.on(eventname, (e,record)=> {
         distCluster.getClusterRecord(record.adcode,(err,result)=>{
           if(!err){
