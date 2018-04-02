@@ -627,8 +627,10 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             return;
           }
           //当前adcode的设备列表
+          let deviceids = [];
           lodashmap(dataItems,(di)=>{
             const deviceitem = di.dataItem;
+            deviceids.push(deviceitem.DeviceId);
             if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
               count_online++;
             }
@@ -647,6 +649,17 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             count_online:count_online,
             count_offline:dataItems.length,
           };
+
+          if(adcode === 810000 || adcode === 820000){
+            //香港、澳门特殊处理
+            gmap_acode_devices[adcode]=deviceids;
+            resolve({
+              type:'device',
+              deviceids,
+              center
+            });
+            return;
+          }
           //adcode的子区域
           lodashmap(children,(child)=>{
               if(child.dataItems.length > 0){
