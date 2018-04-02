@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
-const config = requre('../../config.js');
+const config = require('../../config.js');
 
 const dbh_historydevice =(datasin,callbackfn)=>{
   if(datasin.length === 0){

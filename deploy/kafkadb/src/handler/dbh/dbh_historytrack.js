@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historytrack = require('debug')('dbh:historytrack');
 const async = require('async');
-const config = requre('../../config.js');
+const config = require('../../config.js');
 
 const dbh_historytrack =(datasin,callbackfn)=>{
   if(datasin.length === 0){

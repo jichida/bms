@@ -2,7 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_alarm = require('debug')('dbh:alarm');
 const async = require('async');
-const config = requre('../../config.js');
+const config = require('../../config.js');
 
 const dbh_alarm =(datasin,callbackfn)=>{
   if(datasin.length === 0){
