@@ -165,12 +165,12 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
 }
 
 const getindexmsgs = (data,callbackfn)=>{
-  // const getpoint = (v)=>{
-  //   if(!v){
-  //     return [0,0];
-  //   }
-  //   return [v.Longitude,v.Latitude];
-  // }
+  const getpoint = (v)=>{
+    if(!v){
+      return [0,0];
+    }
+    return [v.Longitude,v.Latitude];
+  }
 
   const LastRealtimeAlarm = _.clone(data.BMSData);
   const LastHistoryTrack = _.clone(data.Position);
