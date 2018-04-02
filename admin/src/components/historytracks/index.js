@@ -79,10 +79,16 @@ const DeviceFilter = (props) => (
 const LocationString = (props)=>{
   const { record } = props;
   let showstring = '未知';
-  if(!!record.Provice){
-    if(record.Provice !== '未知'){
-      showstring = `${record.Provice}${record.City}${record.Area}`
-    }
+  if(!!record.Provice && record.Provice !== '未知'){
+      showstring = `${record.Provice}`;
+
+      if(!!record.City && record.City !== '未知'){
+        showstring = `${showstring}${record.City}`;
+
+          if(!!record.Area && record.Area !== '未知'){
+            showstring = `${showstring}${record.Area}`;
+        }
+      }
   }
   return (<span>{showstring}</span>);
 }

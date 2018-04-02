@@ -35,9 +35,13 @@ export default (type, params) => {
 
     }
     if (type === AUTH_ERROR) {
-        // localStorage.removeItem('admintoken');
-        // localStorage.removeItem('usertype');
-        return Promise.resolve();
+      const status  = params.message.status;
+      if (status === 401 || status === 403) {
+        localStorage.removeItem('admintoken');
+        localStorage.removeItem('usertype');
+        return Promise.reject();
+      }
+      return Promise.resolve();
     }
     if (type === AUTH_LOGOUT) {
         localStorage.removeItem('admintoken');
