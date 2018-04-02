@@ -25,9 +25,10 @@ const dbh_historytrack =(datasin,callbackfn)=>{
       }
     }
   });
-  // const datas = _.uniqBy(datasin, (o)=>{
-  //   return `${o.DeviceId}_${o.GPSTime}`;
-  // });
+
+  datas = _.uniqBy(datas, (o)=>{
+    return `${o.DeviceId}_${o.GPSTime}`;
+  });
 
   if(datas.length < datasin.length){
     debug_historytrack(`去重有效,datas:${datas.length},datasin:${datasin.length}`);

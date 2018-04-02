@@ -26,9 +26,10 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
       }
     }
   });
-  // const datas = _.uniqBy(datasin, (o)=>{
-  //   return `${o.DeviceId}_${o.DataTime}`;
-  // });
+  
+  datas = _.uniqBy(datas, (o)=>{
+    return `${o.DeviceId}_${o.DataTime}`;
+  });
 
   if(datas.length < datasin.length){
     // debug_alarmraw(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);

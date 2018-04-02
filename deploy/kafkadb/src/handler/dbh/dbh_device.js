@@ -27,11 +27,12 @@ const dbh_device =(datasin,callbackfn)=>{
       }
     }
   });
-  // const datas = _.uniqBy(datasin, (o)=>{
-  //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-  //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-  //   return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
-  // });
+  
+  datas = _.uniqBy(datas, (o)=>{
+    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+    return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  });
 
   if(datas.length < datasin.length){
     debug_device(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
