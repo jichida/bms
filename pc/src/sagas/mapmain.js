@@ -21,6 +21,8 @@ import {
   // ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
+  ui_showdistcluster_result,
+  ui_showhugepoints_result,
   mapmain_seldistrict,
   // mapmain_seldistrict_init,
   mapmain_getdistrictresult,
@@ -708,12 +710,12 @@ export function* createmapmainflow(){
               let result = yield call(listenclusterevent,eventname);
               if(!!result){
                 yield put(mapmain_seldistrict(result));
-                const zoomlevel = window.amapmain.getZoom();
-                console.log(zoomlevel)
-                if(zoomlevel > 12){
-                  yield put(ui_showhugepoints(true));
-                  yield put(ui_showdistcluster(false));
-                }
+                // const zoomlevel = window.amapmain.getZoom();
+                // console.log(zoomlevel)
+                // if(zoomlevel > 12){
+                //   yield put(ui_showhugepoints(true));
+                //   yield put(ui_showdistcluster(false));
+                // }
               }
               // yield put(clusterMarkerClick(result));
             }
@@ -1112,22 +1114,35 @@ export function* createmapmainflow(){
             resolve();
           });
         }
+        const showdistcluster = yield select((state)=>{
+          return get(state,'app.showdistcluster');
+        });
+        console.log(`ui_showdistcluster-->${showdistcluster},isshow-->${isshow}`);
+        if(showdistcluster !== isshow){
+          yield call(showdistclusterfn,isshow);
+        }
 
-        yield call(showdistclusterfn,isshow);
-
+        yield put(ui_showdistcluster_result(isshow));
     });
     //显示海量点
     yield takeLatest(`${ui_showhugepoints}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
         try{
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
+          const showhugepoints = yield select((state)=>{
+            return get(state,'app.showhugepoints');
           });
-          yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
+          console.log(`ui_showhugepoints-->${showhugepoints},isshow-->${isshow}`);
+          if(showhugepoints !== isshow){
+            const SettingOfflineMinutes =yield select((state)=>{
+              return get(state,'app.SettingOfflineMinutes',20);
+            });
+            yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
+          }
         }
         catch(e){
           console.log(e);
         }
+        yield put(ui_showhugepoints_result(isshow));
     });
 
     //选中某个区域
