@@ -194,6 +194,7 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
 exports.logout = (actiondata,ctx,callback)=>{
   srvsystem.loginuser_remove(ctx.userid,ctx.connectid);
   delete ctx.userid;
+  ctx.userid = null;
   callback({
     cmd:'logout_result',
     payload:{}
