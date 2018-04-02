@@ -2,6 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_device = require('debug')('dbh:device');
 const async = require('async');
+let globaldevicetable = {};//'deviceid'->'datatime'
 
 const dbh_device =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -9,11 +10,28 @@ const dbh_device =(datasin,callbackfn)=>{
     callbackfn(null,true);
     return;
   }
-  const datas = _.uniqBy(datasin, (o)=>{
+
+  let datas = [];
+  _.map(datasin,(o)=>{
     const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
     const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-    return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+    if(!globaldevicetable[o.DeviceId]){
+      //找不到
+      datasin.push(o);
+      globaldevicetable[`DeviceId`] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+    }
+    else{
+      if(globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
+        datasin.push(o);
+        globaldevicetable[`DeviceId`] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+      }
+    }
   });
+  // const datas = _.uniqBy(datasin, (o)=>{
+  //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+  //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+  //   return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  // });
 
   if(datas.length < datasin.length){
     debug_device(`去重有效,datas:${datas.length},datasin:${datasin.length}`);

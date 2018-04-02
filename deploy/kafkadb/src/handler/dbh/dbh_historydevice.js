@@ -2,6 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
+let globalhistorydevicetable = {};//'deviceid'->'datatime'
 
 const dbh_historydevice =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -9,9 +10,24 @@ const dbh_historydevice =(datasin,callbackfn)=>{
     callbackfn(null,true);
     return;
   }
-  const datas = _.uniqBy(datasin, (o)=>{
-    return `${o.DeviceId}_${o.DataTime}`;
+
+  let datas = [];
+  _.map(datasin,(o)=>{
+    if(!globalhistorydevicetable[o.DeviceId]){
+      //找不到
+      datasin.push(o);
+      globalhistorydevicetable[`DeviceId`] = o.DataTime;
+    }
+    else{
+      if(globalhistorydevicetable[o.DeviceId] !== o.DataTime){
+        datasin.push(o);
+        globalhistorydevicetable[`DeviceId`] = o.DataTime;
+      }
+    }
   });
+  // const datas = _.uniqBy(datasin, (o)=>{
+  //   return `${o.DeviceId}_${o.DataTime}`;
+  // });
 
   if(datas.length < datasin.length){
     debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);

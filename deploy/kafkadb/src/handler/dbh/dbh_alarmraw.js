@@ -2,6 +2,7 @@ const DBModels = require('../models.js');
 const _ = require('lodash');
 const debug_alarmraw = require('debug')('dbh:alarmraw');
 const async = require('async');
+let globalalarmrawdevicetable = {};//'deviceid'->'datatime'
 
 const dbh_alarmraw =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -11,9 +12,23 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
   }
   //过滤掉重复的数据
   //去重
-  const datas = _.uniqBy(datasin, (o)=>{
-    return `${o.DeviceId}_${o.DataTime}`;
+  let datas = [];
+  _.map(datasin,(o)=>{
+    if(!globalalarmrawdevicetable[o.DeviceId]){
+      //找不到
+      datasin.push(o);
+      globalalarmrawdevicetable[`DeviceId`] = o.DataTime;
+    }
+    else{
+      if(globalalarmrawdevicetable[o.DeviceId] !== o.DataTime){
+        datasin.push(o);
+        globalalarmrawdevicetable[`DeviceId`] = o.DataTime;
+      }
+    }
   });
+  // const datas = _.uniqBy(datasin, (o)=>{
+  //   return `${o.DeviceId}_${o.DataTime}`;
+  // });
 
   if(datas.length < datasin.length){
     // debug_alarmraw(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);

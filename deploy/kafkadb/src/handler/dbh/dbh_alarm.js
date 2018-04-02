@@ -3,6 +3,7 @@ const _ = require('lodash');
 const debug_alarm = require('debug')('dbh:alarm');
 const async = require('async');
 
+let globalalarmdevicetable = {};//'deviceid'->'datatime'
 
 const dbh_alarm =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -11,9 +12,23 @@ const dbh_alarm =(datasin,callbackfn)=>{
     return;
   }
   //去重
-  const datas = _.uniqBy(datasin, (o)=>{
-    return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+  let datas = [];
+  _.map(datasin,(o)=>{
+    if(!globalalarmdevicetable[o.DeviceId]){
+      //找不到
+      datasin.push(o);
+      globalalarmdevicetable[`DeviceId`] = o.DataTime;
+    }
+    else{
+      if(globalalarmdevicetable[o.DeviceId] !== o.DataTime){
+        datasin.push(o);
+        globalalarmdevicetable[`DeviceId`] = o.DataTime;
+      }
+    }
   });
+  // const datas = _.uniqBy(datasin, (o)=>{
+  //   return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+  // });
 
   if(datas.length < datasin.length){
     // debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);

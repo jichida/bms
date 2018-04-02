@@ -3,6 +3,7 @@ const _ = require('lodash');
 const debug_historytrack = require('debug')('dbh:historytrack');
 const async = require('async');
 
+let globalhistorytracktable = {};//'deviceid'->'datatime'
 
 const dbh_historytrack =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -10,9 +11,24 @@ const dbh_historytrack =(datasin,callbackfn)=>{
     callbackfn(null,true);
     return;
   }
-  const datas = _.uniqBy(datasin, (o)=>{
-    return `${o.DeviceId}_${o.GPSTime}`;
+
+  let datas = [];
+  _.map(datasin,(o)=>{
+    if(!globalhistorytracktable[o.DeviceId]){
+      //找不到
+      datasin.push(o);
+      globalhistorytracktable[`DeviceId`] = o.GPSTime;
+    }
+    else{
+      if(globalhistorytracktable[o.DeviceId] !== o.GPSTime){
+        datasin.push(o);
+        globalhistorytracktable[`DeviceId`] = o.GPSTime;
+      }
+    }
   });
+  // const datas = _.uniqBy(datasin, (o)=>{
+  //   return `${o.DeviceId}_${o.GPSTime}`;
+  // });
 
   if(datas.length < datasin.length){
     debug_historytrack(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
