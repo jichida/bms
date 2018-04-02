@@ -57,13 +57,22 @@ const getpostion_frompos = (point,callback)=>{
       // ////console.log(`result=>${JSON.stringify(result)}`);
       _.map(result,(v)=>{
         if(_.get(v,'admin_level','') === '4'){
-          resultobj['Provice'] = _.get(v,'_id','未知');
+          const Provice = _.get(v,'_id');
+          if(!!Provice){
+            resultobj['Provice'] = Provice;
+          }
         }
         else if(_.get(v,'admin_level','') === '5'){
-          resultobj['City'] = _.get(v,'_id','未知');
+          const City = _.get(v,'_id');
+          if(!!City){
+            resultobj['City'] = City;
+          }
         }
         else if(_.get(v,'admin_level','') === '6'){
-          resultobj['Area'] = _.get(v,'_id','未知');
+          const Area = _.get(v,'_id');
+          if(!!Area){
+            resultobj['Area'] = Area;
+          }
         }
       });
     }
