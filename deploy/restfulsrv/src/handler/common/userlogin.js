@@ -24,7 +24,7 @@ let userloginsuccess =(user,callback)=>{
 
 const subscriberuser = (user,ctx)=>{
   PubSub.unsubscribe( ctx.userDeviceSubscriber );
-  PubSub.subscribe(`${config.pushdevicetopic}.${ctx.userid}`,ctx.userDeviceSubscriber);
+  PubSub.subscribe(`${config.pushdevicetopic}.${ctx.userid}.${ctx.connectid}`,ctx.userDeviceSubscriber);
 }
 
 let getdatafromuser =(user)=>{
@@ -192,7 +192,7 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
 
 //==============================
 exports.logout = (actiondata,ctx,callback)=>{
-  srvsystem.loginuser_remove(ctx.userid);
+  srvsystem.loginuser_remove(ctx.userid,ctx.connectid);
   delete ctx.userid;
   callback({
     cmd:'logout_result',

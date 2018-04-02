@@ -15,20 +15,24 @@ const getdevicesids = require('./handler/getdevicesids');
 const userset = {};
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-const loginuser_add = (userid)=>{
-  const usersetref = userset[userid] || 0;
-  userset[userid] = usersetref+1;
+const loginuser_add = (userid,connectid)=>{
+  const usersetref = userset[userid] || [];
+  userset[userid] = _.remove(usersetref,(o)=>{
+    return o === connectid;
+  });
+  usersetref.push(connectid);
+  userset[userid] = usersetref;
 
-  debug(`${userid}:${usersetref+1}`)
+  debug(`loginuser_add->${userid}:${JSON.stringify(usersetref)}`)
 }
 
-const loginuser_remove = (userid)=>{
-  const usersetref = userset[userid];
-  userset[userid] = usersetref-1;
-  if(usersetref === 1){
-    userset = _.omit(userset,userid);
-  }
-  debug(`${userid}:${usersetref-1}`)
+const loginuser_remove = (userid,connectid)=>{
+  const usersetref = userset[userid] || [];
+  userset[userid] = _.remove(usersetref,(o)=>{
+    return o === connectid;
+  });
+
+  debug(`loginuser_remove->${userid}:${JSON.stringify(usersetref)}`)
 }
 
 const getSystemLog = ()=>{
@@ -70,34 +74,47 @@ const do_updatealldevices = (alldevicelist)=>{
 
   _.map(userset,(v,userid)=>{
     debug(`do_updatealldevices----->${alldevicelist.length}--->${userid}`);
-    getdevicesids(userid,({deviceIds,isall})=>{
-      //设置订阅设备消息
-      if(isall){
-        if(alldevicelist.length > 0){
-          debug(`推送给用户:${userid}==>${alldevicelist.length}`);
-          PubSub.publish(`${config.pushdevicetopic}.${userid}`,alldevicelist);
-        }
+    if(v.length > 0){
+      getdevicesids(userid,({deviceIds,isall})=>{
+        let ispublish = false;
+        let publishvale = [];
+        //设置订阅设备消息
+        if(isall){
+          if(alldevicelist.length > 0){
+            publishvale = alldevicelist;
+            ispublish = true;
+            // PubSub.publish(`${config.pushdevicetopic}.${userid}`,alldevicelist);
+          }
 
-      }
-      else{
-        let devicelist = [];
-        _.map(deviceIds,(DeviceId)=>{
-          const item = _.find(alldevicelist, (deviceitem)=>{
-             return deviceitem.DeviceId === DeviceId;
+        }
+        else{
+          let devicelist = [];
+          _.map(deviceIds,(DeviceId)=>{
+            const item = _.find(alldevicelist, (deviceitem)=>{
+               return deviceitem.DeviceId === DeviceId;
+             }
+           );
+           if(!!item){
+             devicelist.push(item);
            }
-         );
-         if(!!item){
-           devicelist.push(item);
-         }
-        });
+          });
 
-        if(devicelist.length > 0){
-          debug(`推送给用户:${userid}==>${alldevicelist.length}`);
-          PubSub.publish(`${config.pushdevicetopic}.${userid}`,devicelist);
+          if(devicelist.length > 0){
+            publishvale = devicelist;
+            ispublish = true;
+            // PubSub.publish(`${config.pushdevicetopic}.${userid}`,devicelist);
+          }
         }
 
-      }
-    });
+        if(ispublish){
+          _.map(v,(connectid)=>{
+            debug(`推送给用户:${userid}==>${connectid}==>${publishvale.length}`);
+            PubSub.publish(`${config.pushdevicetopic}.${userid}.${connectid}`,publishvale);
+          });
+        }
+      });
+    }
+
   });
 }
 
@@ -179,4 +196,4 @@ const job=()=>{
 
 exports.job = job;
 exports.loginuser_add = loginuser_add;
-exports.loginuser_remove  = loginuser_add;
+exports.loginuser_remove  = loginuser_remove;

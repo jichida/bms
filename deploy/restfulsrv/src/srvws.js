@@ -4,6 +4,8 @@ const handleuserpc = require('./handler/pc/index.js');
 const handleuserapp = require('./handler/app/index.js');
 const PubSub = require('pubsub-js');
 const usersubfn = require('./handler/socketsubscribe');
+const uuid = require('uuid');
+const srvsystem = require('./srvsystem.js');
 
 const startwebsocketsrv = (http)=>{
   let io = require('socket.io')(http);
@@ -11,7 +13,9 @@ const startwebsocketsrv = (http)=>{
   io.on('connection', (socket)=>{
     //console.log('a user connected');
 
-    let ctx = {};//for each connection
+    let ctx = {
+      connectid:uuid.v4()
+    };//for each connection
     usersubfn(socket,ctx);
     //ctx.tokensubscribe = PubSub.subscribe('allmsg', ctx.userSubscriber);
 
@@ -35,11 +39,17 @@ const startwebsocketsrv = (http)=>{
 
 
     socket.on('error',(err)=>{
+      if(!!ctx.userid){
+        srvsystem.loginuser_remove(ctx.userid,ctx.connectid);//开始监听
+      }
       PubSub.unsubscribe( ctx.userDeviceSubscriber );
       socket.disconnect(true);
     });
 
     socket.on('disconnect', ()=> {
+      if(!!ctx.userid){
+        srvsystem.loginuser_remove(ctx.userid,ctx.connectid);//开始监听
+      }
       PubSub.unsubscribe( ctx.userDeviceSubscriber );
     });
   });

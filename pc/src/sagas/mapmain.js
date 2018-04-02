@@ -1353,7 +1353,7 @@ export function* createmapmainflow(){
         getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
 
         yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
-
+        console.log(`刷新树结构`)
       }
       catch(e){
         console.log(e);
