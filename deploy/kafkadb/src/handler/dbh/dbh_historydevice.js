@@ -15,12 +15,12 @@ const dbh_historydevice =(datasin,callbackfn)=>{
   _.map(datasin,(o)=>{
     if(!globalhistorydevicetable[o.DeviceId]){
       //找不到
-      datasin.push(o);
+      datas.push(o);
       globalhistorydevicetable[`DeviceId`] = o.DataTime;
     }
     else{
       if(globalhistorydevicetable[o.DeviceId] !== o.DataTime){
-        datasin.push(o);
+        datas.push(o);
         globalhistorydevicetable[`DeviceId`] = o.DataTime;
       }
     }

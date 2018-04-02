@@ -17,12 +17,12 @@ const dbh_device =(datasin,callbackfn)=>{
     const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
     if(!globaldevicetable[o.DeviceId]){
       //找不到
-      datasin.push(o);
+      datas.push(o);
       globaldevicetable[`DeviceId`] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
     }
     else{
       if(globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
-        datasin.push(o);
+        datas.push(o);
         globaldevicetable[`DeviceId`] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
       }
     }

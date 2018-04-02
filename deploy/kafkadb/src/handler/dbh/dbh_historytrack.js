@@ -16,12 +16,12 @@ const dbh_historytrack =(datasin,callbackfn)=>{
   _.map(datasin,(o)=>{
     if(!globalhistorytracktable[o.DeviceId]){
       //找不到
-      datasin.push(o);
+      datas.push(o);
       globalhistorytracktable[`DeviceId`] = o.GPSTime;
     }
     else{
       if(globalhistorytracktable[o.DeviceId] !== o.GPSTime){
-        datasin.push(o);
+        datas.push(o);
         globalhistorytracktable[`DeviceId`] = o.GPSTime;
       }
     }
