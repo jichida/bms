@@ -78,7 +78,7 @@ class TablePosition extends React.Component {
       itemnew[`key`] = get(item,'_id','');
       itemnew[`车辆ID`] = get(item,'DeviceId','');
       itemnew[`采集时间`] = get(item,'DataTime','');
-      itemnew[`保存时间`] = get(item,'RecvTime','');
+      itemnew[`保存时间`] = get(item,'UpdateTime','');
       itemnew[`箱体测量电压(V)`] = get(item,'ChargeACVoltage','');
       itemnew[`箱体累加电压(V)`] = get(item,'BAT_U_TOT_HVS','');
       itemnew[`箱体电流(A)`] = get(item,'BAT_I_HVS','');

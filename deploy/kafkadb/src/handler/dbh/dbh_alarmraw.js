@@ -17,12 +17,12 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
     if(!globalalarmrawdevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globalalarmrawdevicetable[`DeviceId`] = o.DataTime;
+      globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
     }
     else{
       if(globalalarmrawdevicetable[o.DeviceId] !== o.DataTime){
         datas.push(o);
-        globalalarmrawdevicetable[`DeviceId`] = o.DataTime;
+        globalalarmrawdevicetable[o.DeviceId] = o.DataTime;
       }
     }
   });

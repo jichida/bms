@@ -18,12 +18,12 @@ const dbh_device =(datasin,callbackfn)=>{
     if(!globaldevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globaldevicetable[`DeviceId`] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+      globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
     }
     else{
       if(globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
         datas.push(o);
-        globaldevicetable[`DeviceId`] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+        globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
       }
     }
   });

@@ -42,7 +42,7 @@ const getdbdata_historydevice = (devicedata)=>{
     if(!!devicedata.LastHistoryTrack){
       result_device.Longitude = devicedata.LastHistoryTrack.Longitude;
       result_device.Latitude = devicedata.LastHistoryTrack.Latitude;
-      result_device.GPSTime = devicedata.GPSTime;
+      result_device.GPSTime = devicedata.LastHistoryTrack.GPSTime;
     }
     return result_device;
   }
@@ -87,7 +87,7 @@ const getdbdata_alarmraw = (devicedata)=>{
     if(!!devicedata.LastHistoryTrack){
       result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
       result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
-      result_alarm_raw.GPSTime = devicedata.GPSTime;
+      result_alarm_raw.GPSTime = devicedata.LastHistoryTrack.GPSTime;
     }
     result_alarm_raw.TimeKey = moment(result_alarm_raw.DataTime).format('YYMMDD');
     // result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");

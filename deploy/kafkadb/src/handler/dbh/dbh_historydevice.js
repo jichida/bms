@@ -16,12 +16,12 @@ const dbh_historydevice =(datasin,callbackfn)=>{
     if(!globalhistorydevicetable[o.DeviceId]){
       //找不到
       datas.push(o);
-      globalhistorydevicetable[`DeviceId`] = o.DataTime;
+      globalhistorydevicetable[o.DeviceId] = o.DataTime;
     }
     else{
       if(globalhistorydevicetable[o.DeviceId] !== o.DataTime){
         datas.push(o);
-        globalhistorydevicetable[`DeviceId`] = o.DataTime;
+        globalhistorydevicetable[o.DeviceId] = o.DataTime;
       }
     }
   });
