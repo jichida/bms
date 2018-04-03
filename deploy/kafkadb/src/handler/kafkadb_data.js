@@ -165,12 +165,12 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
 }
 
 const getindexmsgs = (data,callbackfn)=>{
-  const getpoint = (v)=>{
-    if(!v){
-      return [0,0];
-    }
-    return [v.Longitude,v.Latitude];
-  }
+  // const getpoint = (v)=>{
+  //   if(!v){
+  //     return [0,0];
+  //   }
+  //   return [v.Longitude,v.Latitude];
+  // }
 
   const LastRealtimeAlarm = _.clone(data.BMSData);
   const LastHistoryTrack = _.clone(data.Position);
@@ -195,14 +195,14 @@ const getindexmsgs = (data,callbackfn)=>{
       devicedata.warninglevel = resultalarmmatch[0].warninglevel;
     }
 
-    utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
-      let newdevicedata = _.merge(devicedata,retobj);
-      // let newdevicedata = _.clone(devicedata);
+    // utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
+    //   let newdevicedata = _.merge(devicedata,retobj);
+      let newdevicedata = _.clone(devicedata);
       newdevicedata.indexrecvpartition = data.recvpartition;
       newdevicedata.indexrecvoffset = data.recvoffset;
 
       callbackfn(newdevicedata);
-    });
+    // });
   });
 
 }
