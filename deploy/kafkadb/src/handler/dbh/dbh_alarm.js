@@ -10,6 +10,10 @@ const dbh_alarm =(datasin,callbackfn)=>{
     callbackfn(null,[]);
     return;
   }
+  //排序
+  _.sortBy(users, [(o)=>{
+    return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+  }]);
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
@@ -26,9 +30,6 @@ const dbh_alarm =(datasin,callbackfn)=>{
     }
   });
 
-  datas = _.uniqBy(datas, (o)=>{
-    return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
-  });
 
   if(datas.length < datasin.length){
     // debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);
