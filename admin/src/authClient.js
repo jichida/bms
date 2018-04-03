@@ -39,7 +39,7 @@ export default (type, params) => {
       if (status === 401 || status === 403) {
         localStorage.removeItem('admintoken');
         localStorage.removeItem('usertype');
-        return Promise.reject();
+        return Promise.reject('请先登录');
       }
       return Promise.resolve();
     }

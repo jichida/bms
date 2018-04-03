@@ -51,7 +51,8 @@ class TableAlarmDetail extends React.Component {
 
         this.state = {
           query: query,
-          innerHeight: window.innerHeight
+          innerHeight: window.innerHeight,
+          clientHeight:window.clientHeight
         };
     }
 
@@ -99,6 +100,7 @@ class TableAlarmDetail extends React.Component {
         resizetimecontent = window.setTimeout(()=>{
             this.setState({
                 innerHeight: window.innerHeight,
+                clientHeight:window.clientHeight
             });
         },10)
     }
@@ -111,19 +113,28 @@ class TableAlarmDetail extends React.Component {
 
 
         const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
+        let columnx = 0;
+        const column_width = [200,300,100,0];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
               title: data,
               dataIndex: data,
               key: index,
-              render: (text, row, index) => {
-                  return <span>{text}</span>;
+              render: (text, row, index2) => {
+                if(column_width[index] > 0){
+                  return <span style={{width:`${column_width[index]}px`}}>{text}</span>;
+                }
+                return <span>{text}</span>;
               },
               sorter:(a,b)=>{
                 return a[data] > b[data] ? 1:-1;
               }
           };
+          columnx += column_width[index];
+          if(column_width[index] > 0){
+            column_item = {...column_item,width:`${column_width[index]}px`};
+          }
           return column_item;
         });
         const viewinmap = (row)=>{
@@ -134,7 +145,7 @@ class TableAlarmDetail extends React.Component {
         let columns_action ={
             title: "操作",
             dataIndex: '',
-            width:100,
+            width:`100px`,
             fixed: 'right',
             key: 'x',
             render: (text, row, index) => {
@@ -161,6 +172,15 @@ class TableAlarmDetail extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
+                      tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
+                        bordered:false,
+                        // footer:
+                        //   (v)=>{
+                        //     console.log(v)
+                        //     return `Here is footer`
+                        //   }
+
+                      }}
                       listtypeid = 'antdtablealarmdetail'
                       usecache = {!!g_querysaved}
                       ref='antdtablealarmdetail'

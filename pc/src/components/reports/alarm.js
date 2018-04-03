@@ -49,7 +49,8 @@ class TableAlarm extends React.Component {
 
         this.state = {
           query: query,
-          innerHeight: window.innerHeight
+          innerHeight: window.innerHeight,
+          clientHeight:window.clientHeight
         };
     }
 
@@ -107,7 +108,8 @@ class TableAlarm extends React.Component {
           warninglevel = "-1";
         }
         const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
-
+        let columnx = 0;
+        const column_width = [200,300,100,0];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
@@ -121,6 +123,10 @@ class TableAlarm extends React.Component {
                 return a[data] > b[data] ? 1:-1;
               }
           };
+          columnx += column_width[index];
+          if(column_width[index] > 0){
+            column_item = {...column_item,width:`${column_width[index]}px`};
+          }
           return column_item;
         });
 
@@ -134,7 +140,7 @@ class TableAlarm extends React.Component {
 
         let columns_action ={
             title: "操作",
-            width:100,
+            width:`100px`,
             fixed: 'right',
             dataIndex: '',
             key: 'x',
@@ -160,6 +166,15 @@ class TableAlarm extends React.Component {
                 </div>
                 <div className="tablelist">
                     <AntdTable
+                      tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
+                        bordered:false,
+                        // footer:
+                        //   (v)=>{
+                        //     console.log(v)
+                        //     return `Here is footer`
+                        //   }
+
+                      }}
                       listtypeid = 'antdtablealarm'
                       usecache = {!!g_querysaved}
                       ref='antdtablealarm'

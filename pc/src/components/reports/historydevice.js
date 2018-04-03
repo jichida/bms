@@ -34,7 +34,10 @@ class TablePosition extends React.Component {
           query.DeviceId = DeviceId;
         }
 
-        this.state = {query, innerHeight: window.innerHeight};
+        this.state = {query,
+          innerHeight: window.innerHeight,
+          clientHeight:window.clientHeight
+        };
     }
 
     componentDidMount() {
@@ -49,6 +52,7 @@ class TablePosition extends React.Component {
         resizetimecontent = window.setTimeout(()=>{
             this.setState({
                 innerHeight: window.innerHeight,
+                clientHeight:window.clientHeight
             });
         },10)
     }
@@ -102,25 +106,18 @@ class TablePosition extends React.Component {
     }
     render(){
         const column_data = ['车辆ID','采集时间','保存时间','箱体测量电压(V)','箱体累加电压(V)',
-          '箱体电流(A)','真实SOC(%)','最高单体电压(V)','最低单体电压(V)','最高单体电压CSC号','最高单体电芯位置',
-          '最低单体电压CSC号','最低单体电压电芯位置','最高单体温度','最低单体温度','平均单体温度','最高温度CSC号',
-          '最低温度CSC号','显示用SOC','平均单体电压','报警信息'
+          '箱体电流(A)','真实SOC(%)','最高单体电压(V)','最低单体电压(V)','最高单体电压CSC号',
+          '最高单体电芯位置','最低单体电压CSC号','最低单体电压电芯位置','最高单体温度','最低单体温度',
+          '平均单体温度','最高温度CSC号','最低温度CSC号','显示用SOC','平均单体电压',
+          '报警信息'
         ];
-        const columnsprops = [];
-        //   {
-        //     width:100,
-        //     fixed: 'left'
-        //   },
-        //   {
-        //     width:150,
-        //     fixed: 'left'
-        //   }
-        // ];
-        for(let i = columnsprops.length ;i < column_data.length; i++){
-          columnsprops.push({
-            // width:300
-          });
-        }
+        let columnx = 0;
+        const column_width = [200,300,300,150,150,
+          150,150,150,150,150,
+          150,150,150,150,150,
+          150,150,150,150,150,
+          0
+        ];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
@@ -134,7 +131,10 @@ class TablePosition extends React.Component {
                 return a[data] > b[data] ? 1:-1;
               }
           };
-          column_item = {...column_item,...columnsprops[index]};
+          columnx += column_width[index];
+          if(column_width[index] > 0){
+            column_item = {...column_item,width:`${column_width[index]}px`};
+          }
           return column_item;
         });
 
@@ -145,7 +145,7 @@ class TablePosition extends React.Component {
         }
         let columns_action ={
             title: "操作",
-            width:100,
+            width:`100px`,
             fixed: 'right',
             dataIndex: '',
             key: 'x',
@@ -153,9 +153,10 @@ class TablePosition extends React.Component {
                 return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
             }
         }
+        // columnx += 300;
         columns.push(columns_action);
         return (
-            <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
+            <div className="warningPage" style={{height : `${this.state.innerHeight}px`}}>
 
                 <div className="appbar">
 
@@ -170,9 +171,17 @@ class TablePosition extends React.Component {
                       query={this.state.query}
                     />
                 </div>
-                <div className="tablelist">
+                <div className="tablelist" style={{height:`${this.state.clientHeight-129-60-20}px`}}>
                     <AntdTable
-                      tableprops={{scroll:{x: columnsprops.length*100}}}
+                      tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
+                        // bordered:true,
+                        // footer:
+                        //   (v)=>{
+                        //     console.log(v)
+                        //     return `Here is footer`
+                        //   }
+
+                      }}
                       listtypeid = 'antdtabledevice'
                       ref='antdtabledevice'
                       onItemConvert={this.onItemConvert.bind(this)}
