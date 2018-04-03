@@ -35,7 +35,7 @@ export default (type, params) => {
 
     }
     if (type === AUTH_ERROR) {
-      const status  = params.message.status;
+      const status  = params.status;
       if (status === 401 || status === 403) {
         localStorage.removeItem('admintoken');
         localStorage.removeItem('usertype');
