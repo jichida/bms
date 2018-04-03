@@ -80,6 +80,7 @@ class TablePosition extends React.Component {
     onItemConvert(item){
       let itemnew = {};
       itemnew[`key`] = get(item,'_id','');
+      itemnew[`kafka偏移量`] = get(item,'recvoffset','');
       itemnew[`车辆ID`] = get(item,'DeviceId','');
       itemnew[`采集时间`] = get(item,'DataTime','');
       itemnew[`保存时间`] = get(item,'UpdateTime','');
@@ -105,14 +106,14 @@ class TablePosition extends React.Component {
       return itemnew;
     }
     render(){
-        const column_data = ['车辆ID','采集时间','保存时间','箱体测量电压(V)','箱体累加电压(V)',
+        const column_data = [`kafka偏移量`,'车辆ID','采集时间','保存时间','箱体测量电压(V)','箱体累加电压(V)',
           '箱体电流(A)','真实SOC(%)','最高单体电压(V)','最低单体电压(V)','最高单体电压CSC号',
           '最高单体电芯位置','最低单体电压CSC号','最低单体电压电芯位置','最高单体温度','最低单体温度',
           '平均单体温度','最高温度CSC号','最低温度CSC号','显示用SOC','平均单体电压',
           '报警信息'
         ];
         let columnx = 0;
-        const column_width = [200,300,300,150,150,
+        const column_width = [200,200,300,300,150,150,
           150,150,150,150,150,
           150,150,150,150,150,
           150,150,150,150,150,

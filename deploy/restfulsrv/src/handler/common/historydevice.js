@@ -68,6 +68,7 @@ exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
 const bridge_historydeviceinfo = (item)=>{
   let itemnew = {};
   itemnew[`key`] = get(item,'_id','');
+  itemnew[`kafka偏移量`] = get(item,'recvoffset','');
   itemnew[`车辆ID`] = get(item,'DeviceId','');
   itemnew[`采集时间`] = get(item,'DataTime','');
   itemnew[`保存时间`] = get(item,'UpdateTime','');

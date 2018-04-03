@@ -57,7 +57,8 @@ const dbh_alarm =(datasin,callbackfn)=>{
       }
     );
   });
-  async.series(asyncfnsz,(err,result)=>{
+  //执行完上一个再执行下一个,保证严格顺序
+  async.waterfall(asyncfnsz,(err,result)=>{
       debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
       // debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);

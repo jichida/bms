@@ -37,6 +37,7 @@ const bridge_alarminfo = (alarminfo)=>{
   else if(warninglevel === '低'){
     alarminfonew['报警等级'] = '一级';
   }
+  alarminfonew[`kafka偏移量`] = alarminfo['recvoffset'];
 
   let alarminfotmp = _.clone(alarminfo);
   let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
@@ -73,7 +74,7 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
   else if(warninglevel === '低'){
     alarminfonew['报警等级'] = '一级';
   }
-
+  alarminfonew[`kafka偏移量`] = alarmrawinfo['recvoffset'];
   // let alarminforawtmp = _.clone(alarmrawinfo);
   // let rest = _.omit(alarminforawtmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
   // //console.log(`rest===>${JSON.stringify(rest)}`);
