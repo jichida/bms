@@ -18,11 +18,13 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
     debug(`获取result个数:${result.length}`);
     if(!err && !!result){
       let devicealarmstat = {};
+      let iordermap = {};
       const listalarm = result;
       _.map(listalarm,(alarm)=>{
         if(alarm.warninglevel !== ''){
           devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmutil.getalarmtxt(alarm);
         }
+        iordermap[`${alarm.DeviceId}_${alarm.DataTime}`] = alarm.iorder;
       });
       debug(`所有设备统计信息:${JSON.stringify(devicealarmstat)}`);
       //<-------处理所有的allresult
@@ -40,11 +42,13 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
           o.alarmtxtstat = devicealarmstat[`${o.DeviceId}_${o.DataTime}`];
         }
+        o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
       });
       _.map(allresult['alarmraw'],(o)=>{
         if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
           o.alarmtxtstat = devicealarmstat[`${o.DeviceId}_${o.DataTime}`];
         }
+        o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
       });
     }
     else{

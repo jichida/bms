@@ -44,7 +44,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
   const dbModel = DBModels.RealtimeAlarmModel;
   debug_alarm(`start dbh_alarm,datas:${datas.length}`);
   const asyncfnsz = [];
-  _.map(datas,(devicedata)=>{
+  _.map(datas,(devicedata,index)=>{
     asyncfnsz.push(
       (callbackfn)=>{
         const DeviceId = devicedata["$set"].DeviceId;
@@ -53,12 +53,14 @@ const dbh_alarm =(datasin,callbackfn)=>{
         dbModel.findOneAndUpdate({
         		DeviceId,
             CurDay,
-         },devicedata,{upsert:true,new:true}).lean().exec(callbackfn);
+         },devicedata,{upsert:true,new:true}).lean().exec((err,result)=>{
+           result.iorder = index;
+           callbackfn(err,result);
+         });
       }
     );
   });
-  //执行完上一个再执行下一个,保证严格顺序
-  async.waterfall(asyncfnsz,(err,result)=>{
+  async.series(asyncfnsz,(err,result)=>{
       debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
       // debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);
