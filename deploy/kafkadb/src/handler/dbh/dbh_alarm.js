@@ -11,7 +11,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
     return;
   }
   //排序
-  _.sortBy(users, [(o)=>{
+  _.sortBy(datasin, [(o)=>{
     return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
   }]);
   //去重
