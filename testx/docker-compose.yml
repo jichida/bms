@@ -1,0 +1,15 @@
+version: '2'
+services:
+    test2psrv:
+      image: node:6.11.2
+      restart: always
+      command: node ./testkafka/test2p.js
+      working_dir: /app
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - ./:/app
+        - /root/bms/deploy/kafkadb/node_docker:/app/node_modules/node-rdkafka/build/Release
+      environment:
+        - KAFKA_HOST=192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092
+        - IndexTopic=bmsindex
+        - partitionnumber=384
