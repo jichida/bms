@@ -164,7 +164,13 @@ const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
       }
     }
   });
-  markCluster.setMarkers(markers);
+  try{
+    markCluster.addMarkers(markers);
+  }
+  catch(e){// Cannot read property 'p20ToLngLat' of null at c.addMarkers
+    console.log(e);
+  }
+
 }
 
 const getMarkCluster_updateMarks = (g_devicesdb_updated,SettingOfflineMinutes)=>{
