@@ -999,9 +999,9 @@ export function* createmapmainflow(){
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
       try{
-          while( !distCluster){
-            console.log(`wait for discluster`);
-            yield call(delay,2500);
+          while( !distCluster || !markCluster){
+            console.log(`wait for discluster ${!!distCluster} or markCluster ${!!markCluster}`);
+            yield call(delay,1000);
           }
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);

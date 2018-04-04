@@ -1,4 +1,4 @@
-let islocalhost = false;
+let islocalhost = true;
 const serverurl = islocalhost?'http://localhost:5011':'http://101.89.141.109:81';
 const serverurlrestful = islocalhost?`${serverurl}/api`:`${serverurl}/apisrv/api`;
 const wspath = islocalhost?'/socket.io':'/apisrv/socket.io';
@@ -9,7 +9,7 @@ let config = {
     serverurl:`${serverurl}`,
     wspath:`${wspath}`,
     requesttimeout:5000,
-    appversion:'1.3.10(build040303)',
+    appversion:'1.3.11(build040414)',
     sendlocationinterval:20000,
     softmode:'pc',
     wendu_max: 80,
