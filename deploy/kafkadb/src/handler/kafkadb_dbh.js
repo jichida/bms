@@ -48,26 +48,28 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
       //<-------处理所有的allresult
       _.map(allresult['device'],(o)=>{
         const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-
         o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,LastRealtimeAlarm_DataTime,devicealarmstat);
         // debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
 
       });
       _.map(allresult['historydevice'],(o)=>{
-
-        o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
-        o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
-        if(!o.iorder){
-          debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
-          winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+        if(!o.warninglevel || o.warninglevel === ''){
+          o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
+          o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
+          if(!o.iorder){
+            debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
+            winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+          }
         }
       });
       _.map(allresult['alarmraw'],(o)=>{
-        o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
-        o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
-        if(!o.iorder){
-          debug(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
-          winston.getlog().error(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+        if(!o.warninglevel || o.warninglevel === ''){
+          o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
+          o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
+          if(!o.iorder){
+            debug(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
+            winston.getlog().error(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+          }
         }
       });
     }
