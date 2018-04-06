@@ -239,12 +239,12 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   _.map(msgs,(msg)=>{
     fnsz.push((callbackfn)=>{
 
-      getindexmsgs(msg,(newdevicedata)=>{
+      getindexmsgs(msg,(newdevicedata)=>{//获得warninglevel
         const data_device = getdbdata_device(newdevicedata);
         const data_historydevice = getdbdata_historydevice(newdevicedata);
         const data_historytrack = getdbdata_historytrack(newdevicedata);
         const data_alarmraw = getdbdata_alarmraw(newdevicedata);
-        getdbdata_alarm(newdevicedata,(data_alarm)=>{
+        getdbdata_alarm(newdevicedata,(data_alarm)=>{//准备数据updatedset
              if(!!data_device){
                resultmsglist['device'].push(data_device);
              }
@@ -268,7 +268,7 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   debug(`start parseKafkaMsgs->${fnsz.length}`);
   async.parallel(fnsz,(err,result)=>{
     debug(`stop parseKafkaMsgs`);
-    callbackfn(resultmsglist);
+    callbackfn(resultmsglist);//会导致乱序
   });
 }
 //

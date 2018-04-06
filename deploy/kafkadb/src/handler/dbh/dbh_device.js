@@ -80,6 +80,12 @@ const dbh_device =(datasin,callbackfn)=>{
   const bulk = dbModel.collection.initializeOrderedBulkOp();
   if(!!bulk){
     _.map(datas,(devicedata)=>{
+      //注：如果无报警,则清空报警字段,避免替换最后一次报警的值
+      if(devicedata.warninglevel !== ''){
+        devicedata.last_warninglevel = devicedata.warninglevel;
+        devicedata.last_devicealarmstat = devicedata.devicealarmstat;
+      }
+
       bulk.find({
           DeviceId:devicedata.DeviceId
         })

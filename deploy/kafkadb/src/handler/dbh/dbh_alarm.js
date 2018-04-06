@@ -3,6 +3,7 @@ const _ = require('lodash');
 const debug_alarm = require('debug')('dbh:alarm');
 const async = require('async');
 const config = require('../../config.js');
+const winston = require('../../log/log.js');
 
 const dbh_alarm =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -56,6 +57,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
   debug_alarm(`start dbh_alarm,datas:${datas.length}`);
   const asyncfnsz = [];
   _.map(datas,(devicedata,index)=>{
+    devicedata.iorder = index;
     asyncfnsz.push(
       (callbackfn)=>{
         const DeviceId = devicedata["$set"].DeviceId;
@@ -65,14 +67,36 @@ const dbh_alarm =(datasin,callbackfn)=>{
         		DeviceId,
             CurDay,
          },devicedata,{upsert:true,new:true}).lean().exec((err,result)=>{
-           result.iorder = index;
+           result.iorder = devicedata.iorder;
+           if(!!err){
+             winston.getlog().error(`alarm insert error,${JSON.stringify(devicedata)}`)
+             winston.getlog().error(err);
+           }
            callbackfn(err,result);
          });
       }
     );
   });
   async.series(asyncfnsz,(err,result)=>{
-      debug_alarm(`stop dbh_alarm,err:${JSON.stringify(err)}`);
+
+      if(!!err){
+        winston.getlog().error(`async.series error,${JSON.stringify(datas)}`)
+        winston.getlog().error(err);
+      }
+
+      if(!err && !!result){
+        //进行排序
+        result = _.sortBy(result, [(o)=>{
+          const key = `${o.DeviceId}_${o.DataTime}`;
+          return key;
+        }]);
+
+        if(datas.length !== result.length){
+          winston.getlog().error(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`)
+          winston.getlog().error(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`)
+        }
+      }
+
       // debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);
   });

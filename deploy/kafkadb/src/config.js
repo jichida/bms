@@ -38,7 +38,7 @@ let config =  {
   globalalarmrawdevicetable:{},
   globaldevicetable:{},
   globalhistorytracktable:{},
-
+  gloabaldevicealarmstat_realtime:{}
   // consumertopics:['BMS.Data']
 };
 

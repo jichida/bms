@@ -4,6 +4,7 @@ const debug = require('debug')('dbh:handler');
 const dbh_alarm = require('./dbh/dbh_alarm');
 const dbh_device = require('./dbh/dbh_device');
 const config = require('../config');
+const winston = require('../log/log.js');
 const alarmutil = require('./getalarmtxt');
 // const sendtokafka = require('../kafka/sendtokafka');
 //
@@ -11,44 +12,62 @@ const dbh_alarmraw = require('./dbh/dbh_alarmraw');
 const dbh_historydevice = require('./dbh/dbh_historydevice');
 const dbh_historytrack  = require('./dbh/dbh_historytrack');
 
+const getrealtime_devicealarmstat = (DeviceId,DataTime,devicealarmstat)=>{
+  const devicekey = `${DeviceId}_${DataTime}`;
+  let alarmtxtstat;
+  if(!!devicealarmstat[devicekey]){
+    alarmtxtstat = devicealarmstat[devicekey];
+  }
+  else{
+    alarmtxtstat = _get(config,`gloabaldevicealarmstat_realtime.${alarm.DeviceId}.devicealarmstat`,'');
+  }
+  return alarmtxtstat;
+}
+
 const onHandleToDB_alarm = (allresult,callbackfn)=>{
   debug(`获取allresult个数:${allresult['alarm'].length}`);
 
   dbh_alarm(allresult['alarm'],(err,result)=>{
     debug(`获取result个数:${result.length}`);
     if(!err && !!result){
+      //result为报警信息返回结果,不确定result是否排序
       let devicealarmstat = {};
       let iordermap = {};
+
       const listalarm = result;
       _.map(listalarm,(alarm)=>{
-        if(alarm.warninglevel !== ''){
-          devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmutil.getalarmtxt(alarm);
-        }
+        //alarm数据库中返回的记录
+        config.gloabaldevicealarmstat_realtime[alarm.DeviceId] = {
+          warninglevel:alarm.warninglevel,
+          devicealarmstat:alarmutil.getalarmtxt(alarm)
+        };
+
+        devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmutil.getalarmtxt(alarm);
         iordermap[`${alarm.DeviceId}_${alarm.DataTime}`] = alarm.iorder;
       });
       debug(`所有设备统计信息:${JSON.stringify(devicealarmstat)}`);
       //<-------处理所有的allresult
       _.map(allresult['device'],(o)=>{
         const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-        const devicekey = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}`;
-        // debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
 
-        if(!!devicealarmstat[devicekey]){
-          o.alarmtxtstat = devicealarmstat[devicekey];
-        }
+        o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,LastRealtimeAlarm_DataTime,devicealarmstat);
+        // debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
 
       });
       _.map(allresult['historydevice'],(o)=>{
-        if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
-          o.alarmtxtstat = devicealarmstat[`${o.DeviceId}_${o.DataTime}`];
-        }
+
+        o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
         o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
+        if(!o.iorder){
+          winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+        }
       });
       _.map(allresult['alarmraw'],(o)=>{
-        if(!!devicealarmstat[`${o.DeviceId}_${o.DataTime}`]){
-          o.alarmtxtstat = devicealarmstat[`${o.DeviceId}_${o.DataTime}`];
-        }
+        o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
         o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
+        if(!o.iorder){
+          winston.getlog().error(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+        }
       });
     }
     else{
