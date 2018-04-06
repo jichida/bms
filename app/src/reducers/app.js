@@ -4,8 +4,8 @@ import {
     getsystemconfig_result,
     ui_showmenu,
     ui_showhistoryplay,
-    ui_showdistcluster,
-    ui_showhugepoints,
+    ui_showhugepoints_result,
+    ui_showdistcluster_result,
     ui_changemodeview,
     ui_mycar_showtype,
     ui_index_selstatus,
@@ -53,11 +53,11 @@ const app = createReducer({
         let modeview = payload;
         return {...state,modeview};
     },
-    [ui_showdistcluster]:(state,payload)=>{
+    [ui_showdistcluster_result]:(state,payload)=>{
         let showdistcluster = payload;
         return {...state,showdistcluster};
     },
-    [ui_showhugepoints]:(state,payload)=>{
+    [ui_showhugepoints_result]:(state,payload)=>{
         let showhugepoints = payload;
         return {...state,showhugepoints};
     },

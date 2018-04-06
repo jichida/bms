@@ -21,6 +21,8 @@ import {
   // ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
+  ui_showdistcluster_result,
+  ui_showhugepoints_result,
   mapmain_seldistrict,
   // mapmain_seldistrict_init,
   mapmain_getdistrictresult,
@@ -57,6 +59,7 @@ import {getcurrentpos} from './getcurrentpos';
 import { push,replace } from 'react-router-redux';
 import L from 'leaflet';
 import lodashmap from 'lodash.map';
+import lodashclone from 'lodash.clone';
 // import find from 'lodash.find';
 // import sampleSize from 'lodash.samplesize';
 import get from 'lodash.get';
@@ -86,7 +89,8 @@ let g_devicesdb = {};
 let gmap_acode_treecount = {};
 let gmap_acode_devices = {};
 
-
+const zoollevel_showhugepoints = 13;
+const zoollevel_showdistcluster = 12;
 //新建聚合点
 const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
@@ -125,42 +129,88 @@ const CreateMapUI_MarkCluster = (map)=>{
   });
 }
 
+const getMarkCluster_recreateMarks = (SettingOfflineMinutes)=>{
+  if(markCluster.getMarkers().length > 0){
+    markCluster.clearMarkers();
+  }
+  getMarkCluster_createMarks(SettingOfflineMinutes);
+}
+
+const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
+  let markers = [];
+  lodashmap(g_devicesdb,(item,key)=>{
+    if(!!item){//AMap.LngLat(lng:Number,lat:Number)
+      if(!!item.locz){
+        const pos = new window.AMap.LngLat(item.locz[0],item.locz[1]);
+        const marker = new window.AMap.Marker({
+           position:pos,
+           icon: new window.AMap.Icon({
+               size: new window.AMap.Size(34, 34),  //图标大小
+               image: getimageicon(item,SettingOfflineMinutes),
+               imageOffset: new window.AMap.Pixel(0, 0)
+           }),
+           angle:get(item,'angle',0),
+          //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+           offset: new window.AMap.Pixel(0, 0),//-113, -140
+           extData:key
+        });
+        marker.on('click',()=>{
+          //console.log(`click marker ${key}`);
+          window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+              store.dispatch(ui_mycar_selcurdevice(item.DeviceId));
+          });
+        });
+        markers.push(marker);
+      }
+    }
+  });
+  try{
+    markCluster.addMarkers(markers);
+  }
+  catch(e){// Cannot read property 'p20ToLngLat' of null at c.addMarkers
+    console.log(e);
+  }
+
+}
+
+const getMarkCluster_updateMarks = (g_devicesdb_updated,SettingOfflineMinutes)=>{
+  const allmarks = markCluster.getMarkers();
+  lodashmap(allmarks,(mark)=>{
+    const deviceitem = g_devicesdb[mark.getExtData()];
+    const deviceitemnew = g_devicesdb_updated[deviceitem.DeviceId];
+    if(!!deviceitemnew){
+      if(!!deviceitemnew.locz){
+        const pos = new window.AMap.LngLat(deviceitemnew.locz[0],deviceitemnew.locz[1]);
+        mark.setPosition(pos);
+        const newIcon = new window.AMap.Icon({
+            size: new window.AMap.Size(34, 34),  //图标大小
+            image: getimageicon(deviceitemnew,SettingOfflineMinutes),
+            imageOffset: new window.AMap.Pixel(0, 0)
+        });
+        mark.setIcon(newIcon);
+      }
+      else{
+        markCluster.removeMarker(mark);
+      }
+    }
+  });
+}
+
 const getMarkCluster_showMarks = ({isshow,SettingOfflineMinutes})=>{
   return new Promise((resolve,reject) => {
+    if(!markCluster){
+      resolve();
+      return;
+    }
     if(isshow){
-      let markers = [];
-      lodashmap(g_devicesdb,(item,key)=>{
-        if(!!item){//AMap.LngLat(lng:Number,lat:Number)
-          if(!!item.locz){
-            const pos = !!item.locz?new window.AMap.LngLat(item.locz[0],item.locz[1]):window.amapmain.getCenter();
-            const marker = new window.AMap.Marker({
-               position:pos,
-               icon: new window.AMap.Icon({
-                   size: new window.AMap.Size(34, 34),  //图标大小
-                   image: getimageicon(item,SettingOfflineMinutes),
-                   imageOffset: new window.AMap.Pixel(0, 0)
-               }),
-               angle:get(item,'angle',0),
-              //  content: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
-               offset: new window.AMap.Pixel(0, 0),//-113, -140
-               extData:key
-            });
-            marker.on('click',()=>{
-              //console.log(`click marker ${key}`);
-              window.AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
-
-                    store.dispatch(ui_mycar_selcurdevice(item.DeviceId));
-                  // store.dispatch(mapmain_showpopinfo({DeviceId:item.DeviceId}));
-              });
-            });
-            markers.push(marker);
-          }
-        }
-      });
-      markCluster.setMarkers(markers);
+      markCluster.setMap(window.amapmain);
+      if(markCluster.getMarkers().length === 0){
+        getMarkCluster_createMarks(SettingOfflineMinutes);
+      }
     }
     else{
-      markCluster.clearMarkers();
+      markCluster.setMap(null);
+      // markCluster.clearMarkers();
     }
     resolve();
   });
@@ -242,7 +292,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                catch(e){
 
                }
-          	    return null;
+          	   return null;
         		}
             //重写行政区域,避免来回刷新时的闪烁
             //  utils.extend(DistrictCluster.prototype,
@@ -352,11 +402,15 @@ let CreateMap =({mapcenterlocation,zoomlevel})=> {
 //监听地图事件
 const listenmapevent = (eventname)=>{
   return new Promise(resolve => {
-    if(!!window.amapmain){
+      if(!window.amapmain){
+        resolve();
+        return;
+      }
+
       window.amapmain.on(eventname, (e)=> {
           resolve(eventname);
       });
-    }
+
   });
 }
 
@@ -372,22 +426,31 @@ const listenmapevent = (eventname)=>{
 //监听弹框事件
 const listenwindowinfoevent = (eventname)=>{
   return new Promise(resolve => {
+    if(!infoWindow){
+      resolve();
+      return;
+    }
     infoWindow.on(eventname, (e)=> {
         resolve(eventname);
     });
+
   });
 }
 
 //监听行政事件,clusterMarkerClick
 const listenclusterevent = (eventname)=>{
   return new Promise(resolve => {
+    if(!distCluster){
+      resolve();
+      return;
+    }
     distCluster.on(eventname, (e,record)=> {
         distCluster.getClusterRecord(record.adcode,(err,result)=>{
           if(!err){
             const {dataItems} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
-                  resolve({adcodetop:record.adcode,forcetoggled:true});
+                  resolve({adcodetop:record.adcode,forcetoggled:true,src:'map'});
                   return;
               }
             }
@@ -514,7 +577,7 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
         const {adcode,dataItems,children} = result;
         let count_online = 0;
         if(!children || children.length === 0){
-          //device
+          //device,如果adcode底下全部是设备了【放到最大区域层级了】
           let deviceids = [];
           if(!!dataItems){
             lodashmap(dataItems,(deviceitem)=>{
@@ -569,8 +632,11 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             });
             return;
           }
+          //当前adcode的设备列表
+          let deviceids = [];
           lodashmap(dataItems,(di)=>{
             const deviceitem = di.dataItem;
+            deviceids.push(deviceitem.DeviceId);
             if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
               count_online++;
             }
@@ -589,6 +655,18 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
             count_online:count_online,
             count_offline:dataItems.length,
           };
+
+          if(adcode === 810000 || adcode === 820000){
+            //香港、澳门特殊处理
+            gmap_acode_devices[adcode]=deviceids;
+            resolve({
+              type:'device',
+              deviceids,
+              center
+            });
+            return;
+          }
+          //adcode的子区域
           lodashmap(children,(child)=>{
               if(child.dataItems.length > 0){
                 let count_online = 0;
@@ -690,14 +768,11 @@ export function* createmapmainflow(){
               // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
               // yield put(md_mapmain_setzoomlevel(window.amapmain.getZoom()));
               const zoomlevel = window.amapmain.getZoom();
-              if(zoomlevel > 12){
-                yield put(ui_showhugepoints(true));
-                yield put(ui_showdistcluster(false));
-              }
-              else{
-                yield put(ui_showhugepoints(false));
-                yield put(ui_showdistcluster(true));
-              }
+              console.log(zoomlevel)
+              yield put(ui_showhugepoints(zoomlevel>=zoollevel_showhugepoints));
+              yield put(ui_showdistcluster(zoomlevel<=zoollevel_showdistcluster));
+
+
             }
           },'zoomend');
 
@@ -788,7 +863,7 @@ export function* createmapmainflow(){
 
     //选择一个车辆请求
     yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
-      let {payload:{DeviceId,deviceitem}} = actioncurdevice;
+      let {payload:{DeviceId,deviceitem,src}} = actioncurdevice;
       try{
           if(!deviceitem && !!DeviceId){
             deviceitem = g_devicesdb[DeviceId];
@@ -815,7 +890,7 @@ export function* createmapmainflow(){
                 }
                 const adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
-                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true}));
+                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src}));
                 if(config.softmode === 'pc'){//pc端才有树啊
                   yield take(`${mapmain_getdistrictresult}`);//等待数据完成
                 }
@@ -859,12 +934,10 @@ export function* createmapmainflow(){
             //不是最大时候才放大，否则会陷入一个循环两次的问题
             console.log(`地图当前层级${window.amapmain.getZoom()},最大:${maxzoom}`);
             window.amapmain.setZoom(maxzoom);
-            // yield put(md_mapmain_setzoomlevel(maxzoom));
-            yield put(ui_showhugepoints(true));
-            yield put(ui_showdistcluster(false));
+            yield delay(0);
           }
 
-
+          console.log(`call弹框`);
           //弹框
           yield call(showinfowindow,listitem[0]);
 
@@ -932,9 +1005,9 @@ export function* createmapmainflow(){
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
       try{
-          while( !distCluster){
-            console.log(`wait for discluster`);
-            yield call(delay,2500);
+          while( !distCluster || !markCluster){
+            console.log(`wait for discluster ${!!distCluster} or markCluster ${!!markCluster}`);
+            yield call(delay,1000);
           }
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
@@ -987,14 +1060,11 @@ export function* createmapmainflow(){
 
           yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
 
-          if(window.amapmain.getZoom() > 12){
-            yield put(ui_showhugepoints(true));
-            yield put(ui_showdistcluster(false));
-          }
-          else{
-            yield put(ui_showhugepoints(false));
-            yield put(ui_showdistcluster(true));
-          }
+          getMarkCluster_recreateMarks(SettingOfflineMinutes);
+          const zoomlevel = window.amapmain.getZoom();
+          console.log(zoomlevel)
+          yield put(ui_showhugepoints(zoomlevel>=zoollevel_showhugepoints));
+          yield put(ui_showdistcluster(zoomlevel<=zoollevel_showdistcluster));
 
         }
         catch(e){
@@ -1002,41 +1072,6 @@ export function* createmapmainflow(){
         }
 
     });
-
-    //显示地图区域
-    // yield takeLatest(`${md_mapmain_setzoomlevel}`, function*(action_showflag) {
-    //   try{
-    //     let {payload:zoomlevel} = action_showflag;
-    //     let oldzoomlevel = yield select((state)=>{
-    //       return state.carmap.zoomlevel;
-    //     });
-    //
-    //     // console.log(`md_mapmain_setzoomlevel===>zoomlevel:${zoomlevel},oldzoomlevel:${oldzoomlevel},curzoom:${window.amapmain.getZoom()}`);
-    //     if(!!window.amapmain){
-    //       if(zoomlevel === window.amapmain.getZoom()){
-    //         //相同，但和oldzoom不同
-    //         if(zoomlevel !== oldzoomlevel){
-    //           yield put(mapmain_setzoomlevel(zoomlevel));
-    //         }
-    //       }
-    //       else {//if(zoomlevel !== window.amapmain.getZoom())
-    //         window.amapmain.setZoom(zoomlevel);
-    //       }
-    //     }
-    //     if(zoomlevel > 12){
-    //       yield put(ui_showhugepoints(true));
-    //       yield put(ui_showdistcluster(false));
-    //     }
-    //     else{
-    //       yield put(ui_showhugepoints(false));
-    //       yield put(ui_showdistcluster(true));
-    //     }
-    //   }
-    //   catch(e){
-    //     console.log(e);
-    //   }
-    //
-    // });
 
 
     yield takeLatest(`${ui_showdistcluster}`, function*(action_showflag) {
@@ -1045,16 +1080,16 @@ export function* createmapmainflow(){
           return new Promise((resolve) => {
             try{
               if(!!distCluster){
-                if(isshow !== distCluster.isHidden()){
+                // if(isshow !== distCluster.isHidden()){
                   if(isshow){
                     distCluster.show();
-                    distCluster.render();
                   }
                   else{
                     distCluster.hide();
                   }
+                  distCluster.render();
                 }
-              }
+              // }
             }
             catch(e){
               console.log(e);
@@ -1062,44 +1097,47 @@ export function* createmapmainflow(){
             resolve();
           });
         }
+        const showdistcluster = yield select((state)=>{
+          return get(state,'app.showdistcluster');
+        });
+        console.log(`ui_showdistcluster-->${showdistcluster},isshow-->${isshow}`);
+        if(showdistcluster !== isshow){
+          yield call(showdistclusterfn,isshow);
+        }
 
-        yield call(showdistclusterfn,isshow);
-
+        yield put(ui_showdistcluster_result(isshow));
     });
     //显示海量点
     yield takeLatest(`${ui_showhugepoints}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
         try{
-          // if(!!distCluster){
-          //   if(isshow){
-          //     pointSimplifierIns.show();
-          //   }
-          //   else{
-          //     pointSimplifierIns.hide();
-          //   }
-          // pointSimplifierIns.hide();
-          //   pointSimplifierIns.render();
-          // }
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
+          const showhugepoints = yield select((state)=>{
+            return get(state,'app.showhugepoints');
           });
-          yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
+          console.log(`ui_showhugepoints-->${showhugepoints},isshow-->${isshow}`);
+          if(showhugepoints !== isshow){
+            const SettingOfflineMinutes =yield select((state)=>{
+              return get(state,'app.SettingOfflineMinutes',20);
+            });
+            yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
+          }
         }
         catch(e){
           console.log(e);
         }
+        yield put(ui_showhugepoints_result(isshow));
     });
 
     //选中某个区域
     yield takeLatest(`${mapmain_seldistrict}`, function*(action_district) {
-        let {payload:{adcodetop,forcetoggled}} = action_district;
+        let {payload:{adcodetop,forcetoggled,src}} = action_district;
+        let isarea = false;
         try{
           const SettingOfflineMinutes =yield select((state)=>{
             return get(state,'app.SettingOfflineMinutes',20);
           });
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
-            let isarea = false;
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
             if(!!result){
@@ -1122,7 +1160,8 @@ export function* createmapmainflow(){
             if(!!distCluster){//放大到该区域
               if(isarea){
                 if(!!result.center){
-                  const targetzoom = window.amapmain.getZoom() > 13?window.amapmain.getZoom():13;
+                  const zoomlevel = window.amapmain.getZoom();
+                  const targetzoom = zoomlevel > 13?zoomlevel:13;
                   window.amapmain.setZoomAndCenter(targetzoom,result.center);//fixed window.amapmain.getZoom()+1
                 }
               }
@@ -1158,6 +1197,7 @@ export function* createmapmainflow(){
 
 
         if(config.softmode === 'pc'){//pc端才有树啊
+           console.log(`mapmain_seldistrict from ---->src:${src}`);
            yield fork(function*(){
             //在树中将其他结点搜索，该节点展开
               yield delay(500);
@@ -1185,13 +1225,22 @@ export function* createmapmainflow(){
       }
     });
     //serverpush_devicegeo
-
     //某个车辆地理位置发送变化
     yield takeLatest(`${serverpush_device}`,function*(action){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
       let deviceinfolist = payload;
       try{
+        let oldpopitem;
+        if(!!infoWindow){//正在弹窗
+          //判断当前车辆是否发生偏移
+          const {mapseldeviceid} = yield select((state)=>{
+            return {mapseldeviceid:state.device.mapseldeviceid};
+          });
+          oldpopitem = lodashclone(g_devicesdb[mapseldeviceid]);
+        }
+        let g_devicesdb_updated = {};
+        let deviceids_frereshdetails = [];
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
             let isget = true;
@@ -1215,21 +1264,80 @@ export function* createmapmainflow(){
             //   deviceinfo = {...deviceinfo,...addr};
             // }
           }
-          g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          const deviceinfoold = g_devicesdb[deviceinfo.DeviceId];
+          if(!!deviceinfoold){
+            if(!!oldpopitem){
+              if(oldpopitem.DeviceId === deviceinfo.DeviceId){
+                console.log(`oldpopitem==>${JSON.stringify(oldpopitem)}`);
+                console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
+              }
+            }
+            //<---------已经有详情了
+            const {LastHistoryTrack1,LastRealtimeAlarm1,locz1,...rest1} = deviceinfoold;
+            const {LastHistoryTrack2,LastRealtimeAlarm2,locz2,...rest2} = deviceinfo;
+            // {
+            //   'DeviceId':1,
+            //   'LastHistoryTrack.Latitude':1,
+            //   'LastHistoryTrack.Longitude':1,
+            //   'LastHistoryTrack.GPSTime':1,
+            //   'warninglevel':1,
+            //   'LastRealtimeAlarm.DataTime':1,
+            //   'alarmtxtstat':1
+            // };
+            const LastHistoryTrack = {...LastHistoryTrack1,...LastHistoryTrack2};
+            const LastRealtimeAlarm = {...LastRealtimeAlarm1,...LastRealtimeAlarm2};
+            const locz = {...locz1,...locz2};
+            const rest = {...rest1,...rest2};
+            const deviceinfonew = {
+              LastHistoryTrack,
+              LastRealtimeAlarm,
+              locz,
+              ...rest
+            };
+
+            g_devicesdb[deviceinfo.DeviceId] = deviceinfonew;
+            deviceids_frereshdetails.push(deviceinfo.DeviceId);
+          }
+          else{
+            g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+          }
+          g_devicesdb_updated[deviceinfo.DeviceId] = deviceinfo;
           // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
         });
 
         yield put(devicelistgeochange_distcluster({}));
+
+
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
+        const SettingOfflineMinutes =yield select((state)=>{
+          return get(state,'app.SettingOfflineMinutes',20);
+        });
 
-        if(!!infoWindow){//正在弹窗
+
+        if(!!oldpopitem){//正在弹窗
           //判断当前车辆是否发生偏移
-          const {mapseldeviceid} = yield select((state)=>{
-            return {mapseldeviceid:state.device.mapseldeviceid};
-          });
-          yield put(ui_mycar_selcurdevice(mapseldeviceid));
+          if(!!g_devicesdb_updated[oldpopitem.DeviceId]){
+            let deviceitem = g_devicesdb[oldpopitem.DeviceId];
+            yield put(querydeviceinfo_request({query:{DeviceId:deviceitem.DeviceId}}));
+            const {payload} = yield take(`${querydeviceinfo_result}`);
+            deviceitem = {...deviceitem,...payload};
+            g_devicesdb[deviceitem.DeviceId] = deviceitem;
+            g_devicesdb_updated[deviceitem.DeviceId] = deviceitem;
+
+            infoWindow.setPosition(deviceitem.locz);
+            const {content} = getpopinfowindowstyle(deviceitem);
+            infoWindow.setContent(content);
+            //setPosition
+            // yield put(ui_mycar_selcurdevice(mapseldeviceid));
+            console.log(`${oldpopitem.DeviceId}信息发生变化,信息:${JSON.stringify(deviceitem)}`);
+          }
         }
+
+        getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
+
+        yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
+        console.log(`刷新树结构`)
       }
       catch(e){
         console.log(e);
@@ -1386,7 +1494,7 @@ export function* createmapmainflow(){
         // console.log(`${JSON.stringify(g_devicesdb)}`)
         // yield put(ui_mycar_showtype(0));
         if(!!deviceitem){
-          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem,src:'map'}));
         }
 
       }
@@ -1419,7 +1527,7 @@ export function* createmapmainflow(){
         }
         //选择车辆
         if(!!deviceitem){
-          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem,src:'map'}));
         }
       }
       catch(e){
@@ -1446,7 +1554,7 @@ export function* createmapmainflow(){
         yield put(replace('/index'));
         //选择车辆
         if(!!deviceitem){
-          yield put(ui_selcurdevice_request({DeviceId,deviceitem}));
+          yield put(ui_selcurdevice_request({DeviceId,deviceitem,src:'map'}));
         }
       }
       catch(e){

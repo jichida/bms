@@ -24,7 +24,8 @@ import {
     querydevice_result,
 
     querydeviceinfo_request,
-    querydeviceinfo_result,
+    md_querydeviceinfo_result,
+    // querydeviceinfo_result,
 
     querydeviceinfo_list_request,
     querydeviceinfo_list_result,
@@ -86,7 +87,7 @@ let recvmessagetoresultpair = {
   'logout_result':logout_result,
   'querydevicegroup_result':querydevicegroup_result,
   'querydevice_result':querydevice_result,
-  'querydeviceinfo_result':querydeviceinfo_result,
+  'querydeviceinfo_result':md_querydeviceinfo_result,//先预处理
   'querydeviceinfo_list_result':querydeviceinfo_list_result,
 
   'queryhistorytrack_result':queryhistorytrack_result,
