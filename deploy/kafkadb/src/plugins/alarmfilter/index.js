@@ -208,5 +208,6 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
 
 }
 
+exports.getCurDay = getCurDay;
 exports.matchalarm = matchalarm;
 exports.dofilter = dofilter;

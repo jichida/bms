@@ -7,6 +7,7 @@ const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
 const debug = require('debug')('start');
+const schedule = require('node-schedule');
 
 debug(`start=====>version:${config.version},groupid:${config.kafka_cconfig1['group.id']}\
   clientid:${config.kafka_cconfig1['client.id']} \
@@ -58,7 +59,59 @@ dbdictModel.find({
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 winston.getlog().info(`start kafkadb ok`);
 
-// const deviceModel = DBModels.DeviceModel;
-// const
+const getInitAlarm = (callback)=>{
+  const deviceModel = DBModels.DeviceModel;
+  const fields = {'DeviceId':1,'warninglevel':1,'alarmtxtstat':1,'CurDay':1};
+  const queryexec = deviceModel.find({CurDay:alarmplugin.getCurDay()}).select(fields).lean();
+  debug(`device start exec`);
+  queryexec.exec((err,list)=>{
+    if(!err && !!list){
+      _.map(list,(deviceinfo)=>{
+        config.gloabaldevicealarmstat_realtime[`${deviceinfo.DeviceId}`] = {
+          CurDay:_.get(deviceinfo,'CurDay',alarmplugin.getCurDay()),
+          warninglevel:deviceinfo.warninglevel,
+          devicealarmstat:deviceinfo.alarmtxtstat
+        };
+      });
+    }
+    callback();
+  });
+}
 
-startsrv(config);
+
+
+const everydayjob = (callback)=>{
+  const deviceModel = DBModels.DeviceModel;
+  deviceModel.update({
+    CurDay:{
+      $ne:alarmplugin.getCurDay()
+    }
+  },{
+    warninglevel:'',
+    devicealarmstat:'',
+    CurDay: alarmplugin.getCurDay(),
+  }, { multi: true },(err,result)=>{
+    getInitAlarm(callback);
+  });
+}
+
+everydayjob(()=>{
+  startsrv(config);
+});
+
+// *    *    *    *    *    *
+// ┬    ┬    ┬    ┬    ┬    ┬
+// │    │    │    │    │    |
+// │    │    │    │    │    └ day of week (0 - 7) (0 or 7 is Sun)
+// │    │    │    │    └───── month (1 - 12)
+// │    │    │    └────────── day of month (1 - 31)
+// │    │    └─────────────── hour (0 - 23)
+// │    └──────────────────── minute (0 - 59)
+// └───────────────────────── second (0 - 59, OPTIONAL)
+
+schedule.scheduleJob('0 18 * * *', ()=>{
+  //每天0点更新优惠券过期信息
+  everydayjob(()=>{
+    winston.getlog().info(`定时执行完毕`);
+  });
+});

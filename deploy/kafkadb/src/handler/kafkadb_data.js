@@ -80,9 +80,9 @@ const getdbdata_historytrack = (devicedata)=>{
 }
 
 const getdbdata_alarmraw = (devicedata)=>{
-  if(!devicedata.warninglevel || devicedata.warninglevel === ''){
-    return;
-  }
+  // if(!devicedata.warninglevel || devicedata.warninglevel === ''){
+  //   return;
+  // }
   let  LastRealtimeAlarmRaw = _.get(devicedata,'LastRealtimeAlarm.Alarm');
   if(!!LastRealtimeAlarmRaw){
     //含有报警信息
@@ -116,10 +116,6 @@ const getdbdata_alarmraw = (devicedata)=>{
 }
 
 const getdbdata_alarm = (devicedata,callbackfn)=>{
-  if(!devicedata.warninglevel || devicedata.warninglevel === ''){
-    callbackfn();
-    return;
-  }
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   const LastHistoryTrack = _.get(devicedata,'LastHistoryTrack');
   if(!!LastRealtimeAlarm){//含有历史设备数据
@@ -195,13 +191,25 @@ const getindexmsgs = (data,callbackfn)=>{
       devicedata.warninglevel = resultalarmmatch[0].warninglevel;
     }
 
+    //------取最大的warninglevel
+    let level = {
+      '高':3,
+      '中':2,
+      '低':1,
+    }
+    const config_warninglevel = _.get(config,`gloabaldevicealarmstat_realtime.${devicedata.DeviceId}.warninglevel`,'');
+    if(_.get(level,'config_warninglevel',0) > _.get(devicedata,'warninglevel',0)){
+      devicedata.warninglevel = config_warninglevel;
+    }
+    //------取最大的warninglevel
+
     // utilposition.getpostion_frompos(getpoint(LastHistoryTrack),(retobj)=>{
     //   let newdevicedata = _.merge(devicedata,retobj);
-      let newdevicedata = _.clone(devicedata);
-      newdevicedata.indexrecvpartition = data.recvpartition;
-      newdevicedata.indexrecvoffset = data.recvoffset;
+    let newdevicedata = _.clone(devicedata);
+    newdevicedata.indexrecvpartition = data.recvpartition;
+    newdevicedata.indexrecvoffset = data.recvoffset;
 
-      callbackfn(newdevicedata);
+    callbackfn(newdevicedata);
     // });
   });
 
@@ -238,12 +246,11 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   const fnsz = [];
   _.map(msgs,(msg)=>{
     fnsz.push((callbackfn)=>{
-
       getindexmsgs(msg,(newdevicedata)=>{//获得warninglevel
         const data_device = getdbdata_device(newdevicedata);
         const data_historydevice = getdbdata_historydevice(newdevicedata);
         const data_historytrack = getdbdata_historytrack(newdevicedata);
-        const data_alarmraw = getdbdata_alarmraw(newdevicedata);
+        const data_alarmraw = getdbdata_alarmraw(newdevicedata);//含有Alarm即有报警
         getdbdata_alarm(newdevicedata,(data_alarm)=>{//准备数据updatedset
              if(!!data_device){
                resultmsglist['device'].push(data_device);
