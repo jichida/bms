@@ -11,6 +11,20 @@ const dbh_historytrack =(datasin,callbackfn)=>{
     return;
   }
 
+  debug_historytrack(`datas start:${datasin.length}`);
+  //先排序,后去重
+  datasin = _.sortBy(datasin, [(o)=>{
+    const key = `${o.DeviceId}_${o.GPSTime}`;
+    return key;
+  }]);
+
+  datasin = _.sortedUniqBy(datasin,[(o)=>{
+    const key = `${o.DeviceId}_${o.GPSTime}`;
+    return key;
+  }]);
+
+  debug_historytrack(`datas end:${datasin.length}`);
+
   let datas = [];
   _.map(datasin,(o)=>{
     if(!config.globalhistorytracktable[o.DeviceId]){
@@ -26,9 +40,6 @@ const dbh_historytrack =(datasin,callbackfn)=>{
     }
   });
 
-  datas = _.uniqBy(datas, (o)=>{
-    return `${o.DeviceId}_${o.GPSTime}`;
-  });
 
   if(datas.length < datasin.length){
     debug_historytrack(`去重有效,datas:${datas.length},datasin:${datasin.length}`);

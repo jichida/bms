@@ -11,6 +11,21 @@ const dbh_device =(datasin,callbackfn)=>{
     return;
   }
 
+  //先排序,后去重
+  datasin = _.sortBy(datasin, [(o)=>{
+    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+    const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+    return key;
+  }]);
+
+  datasin = _.sortedUniqBy(datasin,[(o)=>{
+    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+    const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+    return key;
+  }]);
+
   let datas = [];
   _.map(datasin,(o)=>{
     const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
@@ -27,12 +42,12 @@ const dbh_device =(datasin,callbackfn)=>{
       }
     }
   });
-  
-  datas = _.uniqBy(datas, (o)=>{
-    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-    return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
-  });
+
+  // datas = _.uniqBy(datas, (o)=>{
+  //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+  //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+  //   return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  // });
 
   if(datas.length < datasin.length){
     debug_device(`去重有效,datas:${datas.length},datasin:${datasin.length}`);

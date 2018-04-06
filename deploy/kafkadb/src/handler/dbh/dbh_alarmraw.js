@@ -10,7 +10,17 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
     callbackfn(null,true);
     return;
   }
-  //过滤掉重复的数据
+  //先排序,后去重
+  datasin = _.sortBy(datasin, [(o)=>{
+    const key = `${o.DeviceId}_${o.DataTime}`;
+    return key;
+  }]);
+
+  datasin = _.sortedUniqBy(datasin,[(o)=>{
+    const key = `${o.DeviceId}_${o.DataTime}`;
+    return key;
+  }]);
+
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
@@ -26,10 +36,10 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
       }
     }
   });
-  
-  datas = _.uniqBy(datas, (o)=>{
-    return `${o.DeviceId}_${o.DataTime}`;
-  });
+
+  // datas = _.uniqBy(datas, (o)=>{
+  //   return `${o.DeviceId}_${o.DataTime}`;
+  // });
 
   if(datas.length < datasin.length){
     // debug_alarmraw(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);

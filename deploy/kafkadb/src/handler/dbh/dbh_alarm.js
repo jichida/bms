@@ -10,7 +10,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
     callbackfn(null,[]);
     return;
   }
-  //排序
+  //先排序,后去重
   datasin = _.sortBy(datasin, [(o)=>{
     const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
     return key;

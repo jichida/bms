@@ -12,9 +12,16 @@ const dbh_historydevice =(datasin,callbackfn)=>{
   }
 
   debug_historydevice(`datas start:${datasin.length}`);
-  datasin = _.uniqBy(datasin, (o)=>{
-    return `${o.DeviceId}_${o.DataTime}`;
-  });
+  //先排序,后去重
+  datasin = _.sortBy(datasin, [(o)=>{
+    const key = `${o.DeviceId}_${o.DataTime}`;
+    return key;
+  }]);
+
+  datasin = _.sortedUniqBy(datasin,[(o)=>{
+    const key = `${o.DeviceId}_${o.DataTime}`;
+    return key;
+  }]);
 
   debug_historydevice(`${datasin.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
 
