@@ -19,7 +19,7 @@ const getdbdata_historydevice = (devicedata)=>{
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   if(!!LastRealtimeAlarm){
     let result_device = _.clone(LastRealtimeAlarm);
-    result_device = _.omit(result_device,['Alarm']);
+    // result_device = _.omit(result_device,['Alarm']);保留报警便于定位问题
     // if(!!alarmtxt && alarmtxt!==''){
     //   result_device.alarmtxt = alarmtxt;
     // }

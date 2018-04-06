@@ -52,12 +52,16 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         // debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
 
       });
+
+      //注：listalarm 只有一条记录,但allresult['historydevice']有多条,why????
       _.map(allresult['historydevice'],(o)=>{
         if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
           if(!o.iorder){
             debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
+            debug(`---`);
+            debug(`allresult:${JSON.stringify(allresult)}`);
             winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
         }
