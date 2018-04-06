@@ -12,24 +12,34 @@ const dbh_alarm =(datasin,callbackfn)=>{
   }
   //排序
   datasin = _.sortBy(datasin, [(o)=>{
-    return `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+    const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+    return key;
   }]);
+
+  datasin = _.sortedUniqBy(datasin,[(o)=>{
+    const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+    return key;
+  }]);
+
+  debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
-    if(!config.globalalarmdevicetable[o["$set"].DeviceId]){
+    const DeviceId_cur = o["$set"].DeviceId;
+    const DataTime_cur = o["$set"].DataTime;
+    if(!config.globalalarmdevicetable[DeviceId_cur]){
       //找不到
       datas.push(o);
-      config.globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
+      config.globalalarmdevicetable[DeviceId_cur] = DataTime_cur;
     }
     else{
-      if(config.globalalarmdevicetable[o["$set"].DeviceId] !== o["$set"].DataTime){
+      if(config.globalalarmdevicetable[DeviceId_cur] !== DataTime_cur){
         datas.push(o);
-        config.globalalarmdevicetable[o["$set"].DeviceId] = o["$set"].DataTime;
+        config.globalalarmdevicetable[DeviceId_cur] = DataTime_cur;
       }
     }
   });
-
+  debug_alarm(`cur end,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
 
   if(datas.length < datasin.length){
     // debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);
