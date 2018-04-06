@@ -154,6 +154,9 @@ const matchalarm = (alarmdata,callback)=>{
 }
 
 const getCurDay = (DataTime)=>{
+  if(!DataTime){
+    DataTime = moment().format('YYYY-MM-DD');
+  }
   // const SpecialCurDayTime = moment(DataTime).format('YYYY-MM-DD') + config.SpecialCurDayTime;
   // return moment(DataTime).format('YYYY-MM-DD');//SpecialCurDayTime;
   const momentDatetime = moment(DataTime);

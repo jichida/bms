@@ -19,7 +19,7 @@ const getrealtime_devicealarmstat = (DeviceId,DataTime,devicealarmstat)=>{
     alarmtxtstat = devicealarmstat[devicekey];
   }
   else{
-    alarmtxtstat = _get(config,`gloabaldevicealarmstat_realtime.${alarm.DeviceId}.devicealarmstat`,'');
+    alarmtxtstat = _.get(config,`gloabaldevicealarmstat_realtime.${alarm.DeviceId}.devicealarmstat`,'');
   }
   return alarmtxtstat;
 }
