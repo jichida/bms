@@ -11,12 +11,12 @@ const dbh_historydevice =(datasin,callbackfn)=>{
     return;
   }
 
-  debug_historydevice(`datas start:${datas.length}`);
+  debug_historydevice(`datas start:${datasin.length}`);
   datasin = _.uniqBy(datasin, (o)=>{
     return `${o.DeviceId}_${o.DataTime}`;
   });
 
-  debug_historydevice(`${datas.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
+  debug_historydevice(`${datasin.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
 
   let datas = [];
   _.map(datasin,(o)=>{
