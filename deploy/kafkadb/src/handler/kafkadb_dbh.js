@@ -53,7 +53,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
 
       });
       _.map(allresult['historydevice'],(o)=>{
-        if(!o.warninglevel || o.warninglevel === ''){
+        if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
           if(!o.iorder){
@@ -63,7 +63,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         }
       });
       _.map(allresult['alarmraw'],(o)=>{
-        if(!o.warninglevel || o.warninglevel === ''){
+        if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
           if(!o.iorder){
