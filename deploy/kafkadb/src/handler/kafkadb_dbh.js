@@ -61,7 +61,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
           if(!o.iorder){
             debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
             debug(`---`);
-            debug(`allresult:${JSON.stringify(allresult)}`);
+            debug(`allresult:${JSON.stringify(allresult['alarm'])}`);
             winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
         }
