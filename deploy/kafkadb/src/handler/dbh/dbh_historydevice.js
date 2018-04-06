@@ -11,6 +11,13 @@ const dbh_historydevice =(datasin,callbackfn)=>{
     return;
   }
 
+  debug_historydevice(`datas start:${datas.length}`);
+  datasin = _.uniqBy(datasin, (o)=>{
+    return `${o.DeviceId}_${o.DataTime}`;
+  });
+
+  debug_historydevice(`${datas.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
+
   let datas = [];
   _.map(datasin,(o)=>{
     if(!config.globalhistorydevicetable[o.DeviceId]){
@@ -25,10 +32,12 @@ const dbh_historydevice =(datasin,callbackfn)=>{
       }
     }
   });
-  
-  datas = _.uniqBy(datas, (o)=>{
-    return `${o.DeviceId}_${o.DataTime}`;
-  });
+
+  debug_historydevice(`cur end,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
+
+  // datas = _.uniqBy(datas, (o)=>{
+  //   return `${o.DeviceId}_${o.DataTime}`;
+  // });
 
   if(datas.length < datasin.length){
     debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);

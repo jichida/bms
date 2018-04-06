@@ -31,7 +31,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
       _.map(allresult['device'],(o)=>{
         const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
         const devicekey = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}`;
-        debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
+        // debug(`check--->:${devicekey},warninglevel:${o.warninglevel},result-->${JSON.stringify(devicealarmstat[devicekey])}`);
 
         if(!!devicealarmstat[devicekey]){
           o.alarmtxtstat = devicealarmstat[devicekey];
