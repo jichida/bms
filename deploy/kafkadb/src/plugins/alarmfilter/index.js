@@ -168,7 +168,7 @@ const getCurDay = (DataTime)=>{
     CurDay = momentDatetime.add(1,'days').format('YYYY-MM-DD');
   }
   //算今天
-  debug(`DataTime:${DataTime},统计入:${CurDay}中`);
+  // debug(`DataTime:${DataTime},统计入:${CurDay}中`);
   return CurDay;
 }
 
