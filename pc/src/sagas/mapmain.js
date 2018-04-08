@@ -165,10 +165,14 @@ const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
     }
   });
   try{
+    lodashmap(markers,(mark)=>{
+      console.log(`${mark.getExtData()}-->${mark.getPosition()}`)
+    });
     markCluster.addMarkers(markers);
   }
   catch(e){// Cannot read property 'p20ToLngLat' of null at c.addMarkers
     console.log(e);
+
   }
 
 }
@@ -1230,6 +1234,7 @@ export function* createmapmainflow(){
       //https://redux-saga.js.org/docs/recipes/
       const {payload} = action;
       let deviceinfolist = payload;
+      let g_devicesdb_updated = {};
       try{
         let oldpopitem;
         if(!!infoWindow){//正在弹窗
@@ -1239,7 +1244,6 @@ export function* createmapmainflow(){
           });
           oldpopitem = lodashclone(g_devicesdb[mapseldeviceid]);
         }
-        let g_devicesdb_updated = {};
         let deviceids_frereshdetails = [];
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
@@ -1341,6 +1345,7 @@ export function* createmapmainflow(){
       }
       catch(e){
         console.log(e);
+        console.log(g_devicesdb_updated);
       }
     });
 
