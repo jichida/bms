@@ -16,10 +16,10 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
     return key;
   }]);
 
-  datasin = _.sortedUniqBy(datasin,[(o)=>{
+  datasin = _.sortedUniqBy(datasin,(o)=>{
     const key = `${o.DeviceId}_${o.DataTime}`;
     return key;
-  }]);
+  });
 
   //去重
   let datas = [];

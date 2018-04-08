@@ -20,10 +20,10 @@ const dbh_alarm =(datasin,callbackfn)=>{
   }]);
   debug_alarm(`after sortBy dbh_alarm->count:${datasin.length}`);
 
-  datasin = _.sortedUniqBy(datasin,[(o)=>{
+  datasin = _.sortedUniqBy(datasin,(o)=>{
     const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
     return key;
-  }]);
+  });
   debug_alarm(`after sortedUniqBy dbh_alarm->count:${datasin.length}`);
 
   debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);

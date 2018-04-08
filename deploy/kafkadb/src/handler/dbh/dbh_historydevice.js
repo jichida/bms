@@ -18,10 +18,10 @@ const dbh_historydevice =(datasin,callbackfn)=>{
     return key;
   }]);
 
-  datasin = _.sortedUniqBy(datasin,[(o)=>{
+  datasin = _.sortedUniqBy(datasin,(o)=>{
     const key = `${o.DeviceId}_${o.DataTime}`;
     return key;
-  }]);
+  });
 
   debug_historydevice(`${datasin.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
 

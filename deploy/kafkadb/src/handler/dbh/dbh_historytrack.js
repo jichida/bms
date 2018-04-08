@@ -18,10 +18,10 @@ const dbh_historytrack =(datasin,callbackfn)=>{
     return key;
   }]);
 
-  datasin = _.sortedUniqBy(datasin,[(o)=>{
+  datasin = _.sortedUniqBy(datasin,(o)=>{
     const key = `${o.DeviceId}_${o.GPSTime}`;
     return key;
-  }]);
+  });
 
   debug_historytrack(`datas end:${datasin.length}`);
 

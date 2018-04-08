@@ -19,12 +19,12 @@ const dbh_device =(datasin,callbackfn)=>{
     return key;
   }]);
 
-  datasin = _.sortedUniqBy(datasin,[(o)=>{
+  datasin = _.sortedUniqBy(datasin,(o)=>{
     const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
     const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
     const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
     return key;
-  }]);
+  });
 
   let datas = [];
   _.map(datasin,(o)=>{
