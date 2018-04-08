@@ -12,19 +12,21 @@ const dbh_alarm =(datasin,callbackfn)=>{
     return;
   }
 
-  debug_alarm(`dbh_alarm->count:${dbh_alarm.length}`);
+  debug_alarm(`dbh_alarm->count:${datasin.length}`);
   //先排序,后去重
   datasin = _.sortBy(datasin, [(o)=>{
     const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
     return key;
   }]);
+  debug_alarm(`after sortBy dbh_alarm->count:${datasin.length}`);
 
   datasin = _.sortedUniqBy(datasin,[(o)=>{
     const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
     return key;
   }]);
+  debug_alarm(`after sortedUniqBy dbh_alarm->count:${datasin.length}`);
 
-  debug_alarm(`dbh_alarm->count:${dbh_alarm.length}/cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
+  debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
   //去重
   let datas = [];
   _.map(datasin,(o)=>{
