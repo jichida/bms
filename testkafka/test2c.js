@@ -1,7 +1,7 @@
 const getConsumer = require('./rkafka/c.js');
 const globalconfig = {
     'group.id': 'kafkabmsgroup',
-    'metadata.broker.list': '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
+    'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
     'client.id':process.pid,
     'partition.assignment.strategy':'roundrobin',
     'enable.auto.commit': false
