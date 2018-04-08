@@ -165,13 +165,14 @@ const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
     }
   });
   try{
-    lodashmap(markers,(mark)=>{
-      console.log(`${mark.getExtData()}-->${mark.getPosition()}`)
-    });
     markCluster.addMarkers(markers);
   }
   catch(e){// Cannot read property 'p20ToLngLat' of null at c.addMarkers
+    console.log(e.stack);
     console.log(e);
+    lodashmap(markers,(mark)=>{
+      console.log(`${mark.getExtData()}-->${mark.getPosition()}`)
+    });
 
   }
 
@@ -1072,6 +1073,7 @@ export function* createmapmainflow(){
 
         }
         catch(e){
+          console.log(e.stack);
           console.log(e);
         }
 
