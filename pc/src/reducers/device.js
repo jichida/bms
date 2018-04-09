@@ -30,7 +30,7 @@ import {get_initgeotree} from '../util/treedata';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 
 
-const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
+const {datatree,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = get_initgeotree();
 
 
 const getsorteddevicelist = (devicedb,g_devicesdb)=>{
@@ -51,6 +51,7 @@ const initial = {
     carcollections:[],
     mapseldeviceid:undefined,//当前选中的车辆
     // mapdeviceidlist:[],
+    gmap_acode_node,
     gmap_acode_treename,//key:acode/value:name
     gmap_acode_treecount,//key:acode/value:count
     datatreeloc:datatree,
@@ -263,6 +264,9 @@ const device = createReducer({
          return null;
        }
        findandsettreenodedevice(datatreeloc);
+      //  const gmap_acode_node = state.gmap_acode_node;
+      //  if(gmap_acode_node[])
+      //  findandsettreenodedevice(gmap_acode_node[adcode]);
     }
     else{
       let children1 = datatreeloc.children[1];
@@ -289,9 +293,9 @@ const device = createReducer({
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-     const {datatree} = get_initgeotree();
+     const {datatree,gmap_acode_node} = get_initgeotree();
      let datatreeloc = {...datatree};
-     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
+     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc,gmap_acode_node};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode,forcetoggled} = payload;
