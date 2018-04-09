@@ -22,18 +22,36 @@ import{
 // import filter from 'lodash.filter';
 import map from 'lodash.map';
 import get from 'lodash.get';
+import lodashsortby from 'lodash.sortby';
+import lodashreverse from 'lodash.reverse';
 // import groupBy from 'lodash.groupby';
 // import {getadcodeinfo} from '../util/addressutil';
 import {get_initgeotree} from '../util/treedata';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 
-const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
+
+const {datatree,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = get_initgeotree();
+
+
+const getsorteddevicelist = (devicedb,g_devicesdb)=>{
+  const listdevices = lodashsortby(devicedb, [(deviceid)=>{
+    const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    return datatime;
+  }]);
+  // map(listdevices,(deviceid)=>{
+  //   const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+  //   console.log(`${deviceid}=>${datatime}`);
+  // });
+  return lodashreverse(listdevices);
+}
+
 const initial = {
   device:{
     treefilter:undefined,
     carcollections:[],
     mapseldeviceid:undefined,//当前选中的车辆
     // mapdeviceidlist:[],
+    gmap_acode_node,
     gmap_acode_treename,//key:acode/value:name
     gmap_acode_treecount,//key:acode/value:count
     datatreeloc:datatree,
@@ -229,7 +247,8 @@ const device = createReducer({
              if(!!tmpnode){
                //<---
                let children = [];
-               map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
+               const deviceresullist = getsorteddevicelist(gmap_acode_devices[tmpnode.adcode],state.g_devicesdb);
+               map(deviceresullist,(deviceid)=>{
                  children.push({
                    type:'device',
                    loading:false,
@@ -245,19 +264,27 @@ const device = createReducer({
          return null;
        }
        findandsettreenodedevice(datatreeloc);
+      //  const gmap_acode_node = state.gmap_acode_node;
+      //  if(gmap_acode_node[])
+      //  findandsettreenodedevice(gmap_acode_node[adcode]);
     }
     else{
       let children1 = datatreeloc.children[1];
       let children = [];
+      let nodevicelocdevicelist = [];
       map(g_devicesdb,(deviceitem)=>{
         if(!deviceitem.locz){
-          children.push({
-            type:'device',
-            loading:false,
-            name:deviceitem.DeviceId,
-            device:deviceitem
-          });
+          nodevicelocdevicelist.push(deviceitem.DeviceId);
         }
+      });
+      const deviceresullist = getsorteddevicelist(nodevicelocdevicelist,state.g_devicesdb);
+      map(deviceresullist,(deviceid)=>{
+        children.push({
+          type:'device',
+          loading:false,
+          name:g_devicesdb[deviceid].DeviceId,
+          device:g_devicesdb[deviceid]
+        });
       });
       children1.children = children;
       datatreeloc.children[1] = {...children1};
@@ -266,20 +293,9 @@ const device = createReducer({
   },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
-     const {datatree} = get_initgeotree();
+     const {datatree,gmap_acode_node} = get_initgeotree();
      let datatreeloc = {...datatree};
-    //  datatreeloc.children[1].children = [];
-    //  map(g_devicesdb,(deviceitem)=>{
-    //    if(!deviceitem.locz){
-    //      datatreeloc.children[1].children.push({
-    //        type:'device',
-    //        loading:false,
-    //        name:deviceitem.DeviceId,
-    //        device:deviceitem
-    //      });
-    //    }
-    //  });
-     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
+     return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc,gmap_acode_node};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
     let {adcode,forcetoggled} = payload;

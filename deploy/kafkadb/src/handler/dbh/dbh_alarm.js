@@ -26,7 +26,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
   });
   debug_alarm(`after sortedUniqBy dbh_alarm->count:${datasin.length}`);
 
-  debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
+  // debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
   //去重
   let datas = [];
   _.map(datasin,(o)=>{

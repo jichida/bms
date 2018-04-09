@@ -13,7 +13,7 @@ import map from 'lodash.map';
 
 export function get_initgeotree(){
   //获取第一次完整树结构
-
+  let gmap_acode_node = {};
   //root
   let gmap_acode_treename = {};
   let gmap_acode_treecount = {};
@@ -26,6 +26,7 @@ export function get_initgeotree(){
       type:'group_root',
       children:[]
   };
+  gmap_acode_node[100000] = datatree;
   gmap_acode_treename[100000] = '全国';
   gmap_acode_treecount[100000] = {
     count_total:0,
@@ -42,6 +43,7 @@ export function get_initgeotree(){
       type:'group_provice',
       children:[]
     };
+    gmap_acode_node[provicecode] = provicenode;
     gmap_acode_treename[provicecode] = province.name;
     gmap_acode_treecount[provicecode] = {
       count_total:0,
@@ -60,6 +62,7 @@ export function get_initgeotree(){
           type:'group_city',
           children:[]
         };
+        gmap_acode_node[citycode] = citynode;
         gmap_acode_treename[citycode] = city.name;
         gmap_acode_treecount[citycode] = {
           count_total:0,
@@ -78,6 +81,7 @@ export function get_initgeotree(){
               type:'group_area',
               children:[]
             };
+            gmap_acode_node[areacode] = areanode;
             gmap_acode_treename[areacode] = area.name;
             gmap_acode_treecount[areacode] = {
               count_total:0,
@@ -101,6 +105,17 @@ export function get_initgeotree(){
     datatree.children.push(provicenode);
   });
 
+  const node2 = {
+    id:2,
+    adcode:2,
+    loading: false,
+    active : false,
+    toggled:false,
+    name:'未定位',
+    type:'group_area',
+    usefixedname:true,
+    children:[]
+  };
   let datatreeall =  {
       id:1,
       adcode:1,
@@ -111,20 +126,14 @@ export function get_initgeotree(){
       name:'所有',
       children:[
         datatree,
-        {
-          id:2,
-          adcode:2,
-          loading: false,
-          active : false,
-          toggled:false,
-          name:'未定位',
-          type:'group_area',
-          usefixedname:true,
-          children:[]
-        }
+        node2
       ]
   };
+
+  gmap_acode_node[1] = datatreeall;
   gmap_acode_treename[1] = '所有';
+
+  gmap_acode_node[2] = node2;
   gmap_acode_treename[2] = '未定位';
   gmap_acode_treecount[1] = {
     count_total:0,
@@ -136,5 +145,5 @@ export function get_initgeotree(){
     count_online:0,
     count_offline:0,
   };
-  return {datatree:datatreeall,gmap_acode_treename,gmap_acode_treecount};
+  return {datatree:datatreeall,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node};
 };

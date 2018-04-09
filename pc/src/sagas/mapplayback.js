@@ -45,13 +45,20 @@ const CreateMapUI =  (map)=>{
                   return pathData.path;
               },
               getHoverTitle: (pathData, pathIndex, pointIndex)=> {
+                  const {name,path,devicegpstimes} = pathData;
                   //返回鼠标悬停时显示的信息
-                  if (pointIndex >= 0) {
-                      //鼠标悬停在某个轨迹节点上
-                      return pathData.name + '，点:' + pointIndex + '/' + pathData.path.length;
+                  if(!!pointIndex){
+                    if (pointIndex >= 0) {
+                        //鼠标悬停在某个轨迹节点上
+                        return `${name}于${devicegpstimes[pointIndex].GPSTime}`;//name + '，点:' + pointIndex + '/' + path.length;
+                    }
                   }
+
                   //鼠标悬停在节点之间的连线上
-                  return pathData.name + '，点数量' + pathData.path.length;
+                  if(devicegpstimes.length > 2){
+                    return `${name}在${devicegpstimes[0].GPSTime}~${devicegpstimes[devicegpstimes.length-1].GPSTime}`;
+                  }
+                  return pathData.name + '，点数量' + path.length;
               },
               renderOptions: {
                   //轨迹线的样式
@@ -256,6 +263,7 @@ export function* createmaptrackhistoryplaybackflow(){
           yield put(queryhistorytrack_request({query}));
           const {payload:{list}} = yield take(`${queryhistorytrack_result}`);
           let path = [];
+          let devicegpstimes = [];
           let latlngs = [];
           let center;
           for(let i = 0;i < list.length ;i ++){
@@ -264,12 +272,13 @@ export function* createmaptrackhistoryplaybackflow(){
             let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
             latlngs.push([wgs84togcj02[1],wgs84togcj02[0]]);
             path.push(wgs84togcj02);
-
-              if(!center){
+            devicegpstimes.push({
+              GPSTime:list[i].GPSTime
+            });
+            if(!center){
               center = wgs84togcj02;
             }
           }
-
           }
 
           if(path.length > 0){
@@ -281,7 +290,9 @@ export function* createmaptrackhistoryplaybackflow(){
             window.amaptrackhistoryplayback.setBounds(amapboounds);
             pathSimplifierIns.setData([{
               name: `车辆:${query.DeviceId}`,
-              path
+              DeviceId:query.DeviceId,
+              path,
+              devicegpstimes
             }]);
             yield call(startplayback,{isloop,speed});
             //console.log(`路线:${JSON.stringify({
