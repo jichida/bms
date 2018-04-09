@@ -21,8 +21,8 @@ import {
   // ui_showmenu,
   ui_showdistcluster,
   ui_showhugepoints,
-  ui_showdistcluster_result,
-  ui_showhugepoints_result,
+  // ui_showdistcluster_result,
+  // ui_showhugepoints_result,
   mapmain_seldistrict,
   // mapmain_seldistrict_init,
   mapmain_getdistrictresult,
@@ -1089,16 +1089,16 @@ export function* createmapmainflow(){
           return new Promise((resolve) => {
             try{
               if(!!distCluster){
-                // if(isshow !== distCluster.isHidden()){
                   if(isshow){
-                    distCluster.show();
+                    if(isshow !== distCluster.isHidden()){
+                      distCluster.show();
+                      distCluster.render();
+                    }
                   }
                   else{
                     distCluster.hide();
                   }
-                  distCluster.render();
                 }
-              // }
             }
             catch(e){
               console.log(e);
@@ -1106,36 +1106,38 @@ export function* createmapmainflow(){
             resolve();
           });
         }
-        const showdistcluster = yield select((state)=>{
-          return get(state,'app.showdistcluster');
-        });
-        console.log(`ui_showdistcluster-->${showdistcluster},isshow-->${isshow}`);
-        if(showdistcluster !== isshow){
+        // const showdistcluster = yield select((state)=>{
+        //   return get(state,'app.showdistcluster');
+        // });
+        console.log(`ui_showdistcluster isshow-->${isshow}`);
+        // if(showdistcluster !== isshow){
           yield call(showdistclusterfn,isshow);
-        }
+        // }
 
-        yield put(ui_showdistcluster_result(isshow));
+        // yield put(ui_showdistcluster_result(isshow));
     });
     //显示海量点
     yield takeLatest(`${ui_showhugepoints}`, function*(action_showflag) {
         let {payload:isshow} = action_showflag;
         try{
-          const showhugepoints = yield select((state)=>{
-            return get(state,'app.showhugepoints');
-          });
-          console.log(`ui_showhugepoints-->${showhugepoints},isshow-->${isshow}`);
-          if(showhugepoints !== isshow){
+          // const showhugepoints = yield select((state)=>{
+          //   return get(state,'app.showhugepoints');
+          // });
+          console.log(`ui_showhugepoints,isshow-->${isshow}`);
+          // if(showhugepoints !== isshow){
             const SettingOfflineMinutes =yield select((state)=>{
               return get(state,'app.SettingOfflineMinutes',20);
             });
+            console.log(`getMarkCluster_showMarks-->${SettingOfflineMinutes}`);
             yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
-          }
+          // }
         }
         catch(e){
           console.log(e);
           console.log(e.stack);
         }
-        yield put(ui_showhugepoints_result(isshow));
+        console.log(`ui_showhugepoints_result-->${isshow}`);
+        // yield put(ui_showhugepoints_result(isshow));
     });
 
     //选中某个区域
@@ -1314,9 +1316,9 @@ export function* createmapmainflow(){
           g_devicesdb_updated[deviceinfo.DeviceId] = deviceinfo;
           // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
         });
-
+        console.log(`serverpush1-->devicelistgeochange_distcluster`);
         yield put(devicelistgeochange_distcluster({}));
-
+        console.log(`serverpush2-->devicelistgeochange_distcluster`);
 
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
