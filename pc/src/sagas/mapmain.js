@@ -1158,7 +1158,7 @@ export function* createmapmainflow(){
               isarea = result.type === 'device';
               if(config.softmode === 'pc'){//仅pc端才需要刷新树
                 yield fork(function*(){
-                    yield delay(500);
+                    yield delay(0);
                     if(isarea){
                       //如果返回车辆,则将车辆加载到树中
                       yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
@@ -1214,7 +1214,7 @@ export function* createmapmainflow(){
            console.log(`mapmain_seldistrict from ---->src:${src}`);
            yield fork(function*(){
             //在树中将其他结点搜索，该节点展开
-              yield delay(500);
+              yield delay(0);
               yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
             });
         }
