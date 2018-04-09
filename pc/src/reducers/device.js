@@ -22,12 +22,29 @@ import{
 // import filter from 'lodash.filter';
 import map from 'lodash.map';
 import get from 'lodash.get';
+import lodashsortby from 'lodash.sortby';
+import lodashreverse from 'lodash.reverse';
 // import groupBy from 'lodash.groupby';
 // import {getadcodeinfo} from '../util/addressutil';
 import {get_initgeotree} from '../util/treedata';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 
+
 const {datatree,gmap_acode_treename,gmap_acode_treecount} = get_initgeotree();
+
+
+const getsorteddevicelist = (devicedb,g_devicesdb)=>{
+  const listdevices = lodashsortby(devicedb, [(deviceid)=>{
+    const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    return datatime;
+  }]);
+  // map(listdevices,(deviceid)=>{
+  //   const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+  //   console.log(`${deviceid}=>${datatime}`);
+  // });
+  return lodashreverse(listdevices);
+}
+
 const initial = {
   device:{
     treefilter:undefined,
@@ -229,7 +246,8 @@ const device = createReducer({
              if(!!tmpnode){
                //<---
                let children = [];
-               map(gmap_acode_devices[tmpnode.adcode],(deviceid)=>{
+               const deviceresullist = getsorteddevicelist(gmap_acode_devices[tmpnode.adcode],state.g_devicesdb);
+               map(deviceresullist,(deviceid)=>{
                  children.push({
                    type:'device',
                    loading:false,
@@ -249,15 +267,20 @@ const device = createReducer({
     else{
       let children1 = datatreeloc.children[1];
       let children = [];
+      let nodevicelocdevicelist = [];
       map(g_devicesdb,(deviceitem)=>{
         if(!deviceitem.locz){
-          children.push({
-            type:'device',
-            loading:false,
-            name:deviceitem.DeviceId,
-            device:deviceitem
-          });
+          nodevicelocdevicelist.push(deviceitem.DeviceId);
         }
+      });
+      const deviceresullist = getsorteddevicelist(nodevicelocdevicelist,state.g_devicesdb);
+      map(deviceresullist,(deviceid)=>{
+        children.push({
+          type:'device',
+          loading:false,
+          name:g_devicesdb[deviceid].DeviceId,
+          device:g_devicesdb[deviceid]
+        });
       });
       children1.children = children;
       datatreeloc.children[1] = {...children1};
@@ -268,17 +291,6 @@ const device = createReducer({
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
      const {datatree} = get_initgeotree();
      let datatreeloc = {...datatree};
-    //  datatreeloc.children[1].children = [];
-    //  map(g_devicesdb,(deviceitem)=>{
-    //    if(!deviceitem.locz){
-    //      datatreeloc.children[1].children.push({
-    //        type:'device',
-    //        loading:false,
-    //        name:deviceitem.DeviceId,
-    //        device:deviceitem
-    //      });
-    //    }
-    //  });
      return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc};
   },
   [mapmain_getdistrictresult]:(state,payload)=>{
