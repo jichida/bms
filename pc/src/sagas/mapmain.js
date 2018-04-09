@@ -50,7 +50,8 @@ import {
 
   mapmain_showpopinfo,
   mapmain_showpopinfo_list,
-
+  getsystemconfig_result,
+  getsystemconfig_result_result,
   ui_viewdevicedetail
 } from '../actions';
 // import async from 'async';
@@ -91,6 +92,8 @@ let gmap_acode_devices = {};
 
 const zoollevel_showhugepoints = 13;
 const zoollevel_showdistcluster = 12;
+
+let g_SettingOfflineMinutes = 20;
 //新建聚合点
 const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
@@ -715,7 +718,12 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
 
 //地图主流程
 export function* createmapmainflow(){
-
+    yield takeLatest(`${getsystemconfig_result}`, function*(action) {
+      const {payload} = action;
+      g_SettingOfflineMinutes = get(payload,'SettingOfflineMinutes',20);
+      console.log(`g_SettingOfflineMinutes-->${g_SettingOfflineMinutes}`)
+      yield put(getsystemconfig_result_result(payload));
+    });
     //创建地图
     yield takeEvery(`${carmapshow_createmap}`, function*(action_createmap) {
       try{
@@ -887,9 +895,7 @@ export function* createmapmainflow(){
               //调用一次citycode，防止加载不到AreaNode
               if(!!result.adcode){
                 try{
-                  const SettingOfflineMinutes =yield select((state)=>{
-                    return get(state,'app.SettingOfflineMinutes',20);
-                  });
+                  const SettingOfflineMinutes = g_SettingOfflineMinutes;
                   let adcodeinfo = getadcodeinfo(result.adcode);
                   yield call(getclustertree_one,adcodeinfo.parent_code,SettingOfflineMinutes);
                 }
@@ -986,9 +992,8 @@ export function* createmapmainflow(){
 
         //地图缩放到最大
         //yield put(md_mapmain_setzoomlevel(maxzoom));
-        const SettingOfflineMinutes =yield select((state)=>{
-          return get(state,'app.SettingOfflineMinutes',20);
-        });
+        const SettingOfflineMinutes = g_SettingOfflineMinutes;
+
         //弹框
         yield call(showinfowindow_cluster,{itemdevicelist:listitem,lnglat,SettingOfflineMinutes});
 
@@ -1017,9 +1022,7 @@ export function* createmapmainflow(){
             console.log(`wait for discluster ${!!distCluster} or markCluster ${!!markCluster}`);
             yield call(delay,1000);
           }
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
-          });
+          const SettingOfflineMinutes = g_SettingOfflineMinutes;
           //批量转换一次
           g_devicesdb = {};//清空，重新初始化
           // console.log(`clear g_devicesdb...restart g_devicesdb...`)
@@ -1089,8 +1092,10 @@ export function* createmapmainflow(){
           return new Promise((resolve) => {
             try{
               if(!!distCluster){
+                  const ishidden =  distCluster.isHidden();
+                  console.log(ishidden);
                   if(isshow){
-                    if(isshow !== distCluster.isHidden()){
+                    if(isshow === ishidden){
                       distCluster.show();
                       distCluster.render();
                     }
@@ -1125,9 +1130,8 @@ export function* createmapmainflow(){
           // });
           console.log(`ui_showhugepoints,isshow-->${isshow}`);
           // if(showhugepoints !== isshow){
-            const SettingOfflineMinutes =yield select((state)=>{
-              return get(state,'app.SettingOfflineMinutes',20);
-            });
+          const SettingOfflineMinutes = g_SettingOfflineMinutes;
+
             console.log(`getMarkCluster_showMarks-->${SettingOfflineMinutes}`);
             yield call(getMarkCluster_showMarks,{isshow,SettingOfflineMinutes});
           // }
@@ -1145,9 +1149,7 @@ export function* createmapmainflow(){
         let {payload:{adcodetop,forcetoggled,src}} = action_district;
         let isarea = false;
         try{
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
-          });
+          const SettingOfflineMinutes = g_SettingOfflineMinutes;
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
             //获取该区域的数据
@@ -1322,9 +1324,7 @@ export function* createmapmainflow(){
 
         // yield put(devicelistgeochange_pointsimplifierins({}));
         // yield put(devicelistgeochange_geotreemenu({}));
-        const SettingOfflineMinutes =yield select((state)=>{
-          return get(state,'app.SettingOfflineMinutes',20);
-        });
+        const SettingOfflineMinutes = g_SettingOfflineMinutes;
 
 
         if(!!oldpopitem){//正在弹窗
@@ -1404,9 +1404,7 @@ export function* createmapmainflow(){
       try{
         //获取当前树，当前选择展开的行政编码code，放数组中,循环设置
           //
-          const SettingOfflineMinutes =yield select((state)=>{
-            return get(state,'app.SettingOfflineMinutes',20);
-          });
+          const SettingOfflineMinutes = g_SettingOfflineMinutes;
           yield call(getclustertree_root,SettingOfflineMinutes);
           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
           //
