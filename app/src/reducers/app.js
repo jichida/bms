@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-act';
 import {
     notify_socket_connected,
-    getsystemconfig_result,
+    getsystemconfig_result_result,
     ui_showmenu,
     ui_showhistoryplay,
     ui_showhugepoints_result,
@@ -75,7 +75,7 @@ const app = createReducer({
         }
         return {...state,showmenu,oldshowmenu};
     },
-    [getsystemconfig_result]:(state,payload)=>{
+    [getsystemconfig_result_result]:(state,payload)=>{
         return {...state,...payload};
     },
     [notify_socket_connected]:(state,socketconnected)=>{
