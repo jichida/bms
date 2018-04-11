@@ -57,28 +57,30 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
       _.map(allresult['historydevice'],(o)=>{
         if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
-          o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
-          if(o.iorder >= 0 ){
+          const iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
+          if(iorder >= 0 ){
+            o.iorder = iorder;
           }
           else{
             debug(`--->${JSON.stringify(iordermap)}`);
             debug(`--->key:${o.DeviceId}_${o.DataTime}`)
-            debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
-
-            debug(`allresult:${JSON.stringify(allresult['alarm'])}`);
-            winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+            // debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
+            //
+            // debug(`allresult:${JSON.stringify(allresult['alarm'])}`);
+            // winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
         }
       });
       _.map(allresult['alarmraw'],(o)=>{
         if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
-          o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
-          if(o.iorder >= 0){
+          const iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
+          if(iorder >= 0 ){
+            o.iorder = iorder;
           }
           else{
             debug(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
-            winston.getlog().error(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
+            // winston.getlog().error(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
         }
       });
