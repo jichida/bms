@@ -58,11 +58,13 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
-          if(!!o.iorder){
+          if(o.iorder >= 0 ){
           }
           else{
-            debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
             debug(`--->${JSON.stringify(iordermap)}`);
+            debug(`--->key:${o.DeviceId}_${o.DataTime}`)
+            debug(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
+
             debug(`allresult:${JSON.stringify(allresult['alarm'])}`);
             winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
@@ -72,7 +74,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           o.iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
-          if(!!o.iorder){
+          if(o.iorder >= 0){
           }
           else{
             debug(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
