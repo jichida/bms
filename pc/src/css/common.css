@@ -1206,8 +1206,6 @@
     display: flex;
     display: -webkit-flex;
     -moz-box-direction:normal;
-    flex-direction:column;
-    -webkit-flex-direction:column;
     -moz-justify-content: flex-start;
     -webkit-justify-content: flex-start;
     justify-content: flex-start;
@@ -1219,6 +1217,7 @@
     width: 60%;
     padding-bottom: 20px;
     flex-shrink: 0;
+    flex-wrap: wrap;
 }
 
 .devicePage .lists.devicechartlists{
