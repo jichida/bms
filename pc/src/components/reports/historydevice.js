@@ -17,7 +17,7 @@ import {
   callthen,uireport_searchhistorydevice_request,uireport_searchhistorydevice_result
 } from '../../sagas/pagination';
 import get from 'lodash.get';
-
+import { set_weui } from '../../actions';
 let resizetimecontent = null;
 
 class TablePosition extends React.Component {
@@ -68,12 +68,26 @@ class TablePosition extends React.Component {
 
     onClickQuery(query){
       //console.log(query);
+      this.setState({query,querydo:query});
+      let hasDeviceId = !!query.DeviceId;
+      if(!hasDeviceId && !!query['$and']){
+        hasDeviceId = query['$and'].DeviceId;
+      }
+      if(hasDeviceId){
+        window.setTimeout(()=>{
+          //console.log(this.refs);
+          this.refs.antdtabledevice.getWrappedInstance().onRefresh();
+        },0);
+      }
+      else{
+        this.props.dispatch(set_weui({
+          toast:{
+          text:'设备ID必选',
+          show: true,
+          type:'warning'
+        }}));
+      }
 
-      this.setState({query});
-      window.setTimeout(()=>{
-        //console.log(this.refs);
-        this.refs.antdtabledevice.getWrappedInstance().onRefresh();
-      },0);
     }
 
 
@@ -188,7 +202,7 @@ class TablePosition extends React.Component {
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
                       pagenumber={30}
-                      query={this.state.query}
+                      query={this.state.querydo}
                       sort={{'DataTime': -1}}
                       queryfun={(payload)=>{
                         return callthen(uireport_searchhistorydevice_request,uireport_searchhistorydevice_result,payload);
