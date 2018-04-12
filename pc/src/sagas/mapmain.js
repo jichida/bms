@@ -1033,19 +1033,21 @@ export function* createmapmainflow(){
           const deviceidonlines_loc = [];
           const deviceidonlines_locno = [];
           lodashmap(devicelistresult,(deviceitem)=>{
-            if(!!deviceitem.locz){
-              data.push(deviceitem);
-              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
-                deviceidonlines_loc.push(deviceitem.DeviceId);
+            if(!!deviceitem.DeviceId){
+              if(!!deviceitem.locz){
+                data.push(deviceitem);
+                if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                  deviceidonlines_loc.push(deviceitem.DeviceId);
+                }
               }
-            }
-            else{
-              if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
-                deviceidonlines_locno.push(deviceitem.DeviceId);
+              else{
+                if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+                  deviceidonlines_locno.push(deviceitem.DeviceId);
+                }
+                datanolocate.push(deviceitem.DeviceId);
               }
-              datanolocate.push(deviceitem.DeviceId);
+              g_devicesdb[deviceitem.DeviceId] = deviceitem;
             }
-            g_devicesdb[deviceitem.DeviceId] = deviceitem;
           });
           // console.log(`clear g_devicesdb...restart g_devicesdb...${data.length}`)
           distCluster.setData(data);

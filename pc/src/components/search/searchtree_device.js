@@ -118,12 +118,23 @@ class TreeSearchBattery extends React.Component {
       const {g_devicesdb} = this.props;
       let deviceidlist = [];
       map(g_devicesdb,(item)=>{
-          deviceidlist.push(item.DeviceId);
+          if(!!item.DeviceId){
+            deviceidlist.push(item.DeviceId);
+          }
+          else{
+            console.log(item);
+          }
       });
       let optionsarr=[];
 
       if (!!deviceidlist) {
-        optionsarr = filter(deviceidlist,function(o) { return o.indexOf(value)!==-1; })
+        optionsarr = filter(deviceidlist,function(o,index) {
+          if(!!o){
+            return o.indexOf(value)!==-1;
+          }
+          console.log(`o is null,${index},deviceidlist length:${deviceidlist.length}`);
+          return false;
+        })
         if(optionsarr.length>100){optionsarr.length=100}
       }
       this.props.dispatch(set_treesearchlist(optionsarr));
