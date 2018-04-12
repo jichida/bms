@@ -14,7 +14,7 @@ import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
 
-import 'react-select/dist/react-select.css';
+import './reactselect.css';
 
 
 
