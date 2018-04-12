@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import map from 'lodash.map';
 import get from 'lodash.get';
 import './listview.css';
+import {set_weui} from '../../actions';
 //https://github.com/edwardhotchkiss/mongoose-paginate
 //https://github.com/react-component/m-list-view
 //https://github.com/ant-design/ant-design-mobile/issues/541
@@ -115,6 +116,15 @@ class Page extends React.Component {
           isend:result.offset + result.limit >= result.total
         });
       }
+    }).catch((e)=>{
+      this.setState({ refreshing: true });
+      this.props.dispatch(set_weui({
+        toast:{
+        text:e,
+        show: true,
+        type:'warning'
+      }}));
+      console.log(e);
     });
   }
   //到达底部事件
@@ -151,6 +161,15 @@ class Page extends React.Component {
                 isend:result.offset + result.limit >= result.total
               });
             }
+          }).catch((e)=>{
+            this.setState({ refreshing: true });
+            this.props.dispatch(set_weui({
+              toast:{
+              text:e,
+              show: true,
+              type:'warning'
+            }}));
+            console.log(e);
           });
     }
     else{
@@ -173,7 +192,7 @@ class Page extends React.Component {
       return this.props.renderSeparator(sectionID, rowID);
     }
     return
-    (<div key={`${sectionID}-${rowID}`} style={{ backgroundColor: '#F5F5F9', height: 8 }} />);
+    (<div key={`${sectionID}-${rowID}`} style={{ backgroundColor: '#F5F5F9', height: 8 }} ></div>);
   }
   updateContent(item){
     return this.props.updateContent(item,this.onRefresh.bind(this));

@@ -4,6 +4,7 @@ import map from 'lodash.map';
 import get from 'lodash.get';
 import { connect } from 'react-redux';
 import './antdtable.css';
+import {set_weui} from '../../actions';
 
 const listtypeiddata = {
 
@@ -70,6 +71,15 @@ class AntdTable extends React.Component {
             }
           });
         }
+      }).catch((e)=>{
+        this.setState({ refreshing: false });
+        console.log(e);
+        this.props.dispatch(set_weui({
+          toast:{
+          text:e,
+          show: true,
+          type:'warning'
+        }}));
       });
     }
 
