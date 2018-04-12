@@ -84,7 +84,7 @@ class TableAlarmDetail extends React.Component {
       else if(warninglevel === '低'){
         item['报警等级'] = '一级';
       }
-      
+
       return item;
     }
 
@@ -113,9 +113,9 @@ class TableAlarmDetail extends React.Component {
         }
 
 
-        const column_data = [`kafka偏移量`,'车辆ID','报警时间','报警等级','报警信息'];
+        const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
         let columnx = 0;
-        const column_width = [100,200,300,100,0];
+        const column_width = [200,300,100,0];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
