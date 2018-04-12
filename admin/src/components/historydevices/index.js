@@ -124,16 +124,13 @@ const HistoryDeviceShow = (props)=> {
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId" />
-    <TextInput label="SN64" source="SN64_int" />
   </Filter>
 )
 
 const HistoryDeviceList = (props)=> (
-  <List title={<HistoryDeviceTitle />}  filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}  perPage={config.listperpage}>
+  <List title={<HistoryDeviceTitle />}  filters={<DeviceFilter />} sort={{field:'DataTime',order:'DESC'}} {...props}  perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
-      <TextField label="NodeID" source="NodeID" sortable={false} />
-      <TextField label="SN64" source="SN64"/>
       <TextField label="采集时间" source="DataTime"  />
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <ShowButton />
