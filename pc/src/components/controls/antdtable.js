@@ -108,8 +108,10 @@ class AntdTable extends React.Component {
       // this.onAjax(this.props.query,this.props.sort,this.props.pagenumber,1);
      }
      onRefresh() {
-       this.setState({ refreshing: true });
-       this.onAjax(this.props.query,this.props.sort,this.props.pagenumber,1);
+       if(!!this.props.query){
+         this.setState({ refreshing: true });
+         this.onAjax(this.props.query,this.props.sort,this.props.pagenumber,1);
+       }
      }
 
     // In the fifth row, other columns are merged into first column

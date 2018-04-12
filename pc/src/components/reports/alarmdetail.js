@@ -17,6 +17,7 @@ import {
 } from '../../sagas/pagination';
 import map from 'lodash.map';
 import moment from 'moment';
+import { set_weui } from '../../actions';
 
 let resizetimecontent = null;
 let g_querysaved;
@@ -67,11 +68,25 @@ class TableAlarmDetail extends React.Component {
     // ReviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,BAT_Ucell_Max_CELL,BAT_Ucell_Min_CSC,BAT_Ucell_Min_CELL,BAT_T_Max,BAT_T_Min,BAT_T_Avg,BAT_T_Max_CSC,BAT_T_Min_CSC,BAT_User_SOC_HVS,BAT_Ucell_Avg,ALARM,ALIV_ST_SW_HVS,ST_AC_SW_HVS,ST_Aux_SW_HVS,ST_Main_Neg_SW_HVS,ST_Pre_SW_HVS,ST_Main_Pos_SW_HVS,ST_Chg_SW_HVS,ST_Fan_SW_HVS,ST_Heater_SW_HVS,BAT_U_HVS,BAT_Allow_Discharge_I,BAT_Allow_Charge_I,BAT_ISO_R_Pos,BAT_ISO_R_Neg,KeyOnVoltage,PowerVoltage,ChargeACVoltage,ChargeDCVoltage,CC2Voltage,ChargedCapacity,TotalWorkCycle,CSC_Power_Current,BAT_MAX_SOC_HVS,BAT_MIN_SOC_HVS,BAT_WEI_SOC_HVS,BAT_Chg_AmperReq,BPM_24V_Uout,ST_NegHeater_SW_HVS,ST_WirelessChg_SW,ST_SpearChg_SW_2,ST_PowerGridChg_SW,CC2Voltage_2,DIAG_H,DIAG_L
     onClickQuery(query){
       //console.log(query);
-      this.setState({query});
-      window.setTimeout(()=>{
-        //console.log(this.refs);
-        this.refs.antdtablealarmdetail.getWrappedInstance().onRefresh();
-      },0);
+      this.setState({query,querydo:query});
+      let hasDeviceId = !!query.DeviceId;
+      if(!hasDeviceId && !!query['$and']){
+        hasDeviceId = query['$and'].DeviceId;
+      }
+      if(hasDeviceId){
+        window.setTimeout(()=>{
+          //console.log(this.refs);
+          this.refs.antdtablealarmdetail.getWrappedInstance().onRefresh();
+        },0);
+      }
+      else{
+        this.props.dispatch(set_weui({
+          toast:{
+          text:'设备ID必选',
+          show: true,
+          type:'warning'
+        }}));
+      }
     }
     onItemConvert(item){
       const warninglevel = item['报警等级'];
@@ -175,12 +190,6 @@ class TableAlarmDetail extends React.Component {
                     <AntdTable
                       tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
                         bordered:false,
-                        // footer:
-                        //   (v)=>{
-                        //     console.log(v)
-                        //     return `Here is footer`
-                        //   }
-
                       }}
                       listtypeid = 'antdtablealarmdetail'
                       usecache = {!!g_querysaved}
@@ -188,7 +197,7 @@ class TableAlarmDetail extends React.Component {
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
                       pagenumber={30}
-                      query={this.state.query}
+                      query={this.state.querydo}
                       sort={{DataTime: -1}}
                       queryfun={(payload)=>{
                         return callthen(uireport_searchalarmdetail_request,uireport_searchalarmdetail_result,payload);
