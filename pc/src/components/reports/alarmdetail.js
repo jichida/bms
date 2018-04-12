@@ -71,7 +71,9 @@ class TableAlarmDetail extends React.Component {
       this.setState({query,querydo:query});
       let hasDeviceId = !!query.DeviceId;
       if(!hasDeviceId && !!query['$and']){
-        hasDeviceId = query['$and'].DeviceId;
+        if(query['$and'].length > 0){
+          hasDeviceId = query['$and'][0].DeviceId;
+        }
       }
       if(hasDeviceId){
         window.setTimeout(()=>{
