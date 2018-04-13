@@ -73,6 +73,7 @@ class TablePosition extends React.Component {
       if(!hasDeviceId && !!query['$and']){
         hasDeviceId = query['$and'].DeviceId;
       }
+      // hasDeviceId = true;
       if(hasDeviceId){
         window.setTimeout(()=>{
           //console.log(this.refs);
@@ -127,9 +128,10 @@ class TablePosition extends React.Component {
           '报警信息'
         ];
         let columnx = 0;
-        const column_width = [200,300,300,150,150,
+        const column_width = [
+          200,300,300,150,150,
           150,150,150,150,150,
-          150,150,150,150,150,
+          150,180,200,150,150,
           150,150,150,150,150,
           0
         ];
@@ -170,6 +172,8 @@ class TablePosition extends React.Component {
         }
         // columnx += 300;
         columns.push(columns_action);
+        // const tableheight = `${this.state.innerHeight-129-60}px`;
+        // console.log(tableheight );
         return (
             <div className="warningPage" style={{height : `${this.state.innerHeight}px`}}>
 
@@ -186,17 +190,12 @@ class TablePosition extends React.Component {
                       query={this.state.query}
                     />
                 </div>
-                <div className="tablelist" style={{height:`${this.state.clientHeight-129-60-20}px`}}>
+                <div className="tablelist" >
                     <AntdTable
                       tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
-                        // bordered:true,
-                        // footer:
-                        //   (v)=>{
-                        //     console.log(v)
-                        //     return `Here is footer`
-                        //   }
-
+                      bordered:true,
                       }}
+
                       listtypeid = 'antdtabledevice'
                       ref='antdtabledevice'
                       onItemConvert={this.onItemConvert.bind(this)}

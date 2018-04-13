@@ -188,10 +188,10 @@ class TableAlarmDetail extends React.Component {
                       onClickExport={this.onClickExport.bind(this)}
                     />
                 </div>
-                <div className="tablelist">
+                <div className="tablelist" >
                     <AntdTable
                       tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
-                        bordered:false,
+                        bordered:true,
                       }}
                       listtypeid = 'antdtablealarmdetail'
                       usecache = {!!g_querysaved}

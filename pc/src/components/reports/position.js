@@ -129,7 +129,8 @@ class TablePosition extends React.Component {
             }
         }
         columns.push(columns_action);
-
+        // const tableheight = `${this.state.innerHeight-129-60}px`;
+        // console.log(tableheight );
         return (
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
@@ -146,7 +147,11 @@ class TablePosition extends React.Component {
                       onClickExport={this.onClickExport.bind(this)}/>
                 </div>
                 <div className="tablelist">
+
                     <AntdTable
+                      tableprops={{
+                        bordered:true,
+                      }}
                       listtypeid = 'antdtableposition'
                       ref='antdtableposition'
                       onItemConvert={this.onItemConvert.bind(this)}
@@ -158,6 +163,8 @@ class TablePosition extends React.Component {
                         return callthen(uireport_searchposition_request,uireport_searchposition_result,payload);
                       }}
                     />
+
+
                 </div>
             </div>
 
