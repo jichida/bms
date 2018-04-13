@@ -42,13 +42,13 @@ const adminauth = (req,res)=>{
       });
       return;
     }
-    if(!user.organizationid){
-      res.status(200).json({
-        loginsuccess:false,
-        err:'用户尚未分配'
-      });
-      return;
-    }
+    // if(!user.organizationid){
+    //   res.status(200).json({
+    //     loginsuccess:false,
+    //     err:'用户尚未分配'
+    //   });
+    //   return;
+    // }
     pwd.checkPassword(user.passwordhash,user.passwordsalt,actiondata.password,(err,isloginsuccess)=>{
       if(!err && isloginsuccess){
         let adminflag = user.adminflag;

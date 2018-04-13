@@ -17,7 +17,7 @@ import {
   callthen,uireport_searchhistorydevice_request,uireport_searchhistorydevice_result
 } from '../../sagas/pagination';
 import get from 'lodash.get';
-
+import { set_weui } from '../../actions';
 let resizetimecontent = null;
 
 class TablePosition extends React.Component {
@@ -68,12 +68,27 @@ class TablePosition extends React.Component {
 
     onClickQuery(query){
       //console.log(query);
+      this.setState({query,querydo:query});
+      let hasDeviceId = !!query.DeviceId;
+      if(!hasDeviceId && !!query['$and']){
+        hasDeviceId = query['$and'].DeviceId;
+      }
+      // hasDeviceId = true;
+      if(hasDeviceId){
+        window.setTimeout(()=>{
+          //console.log(this.refs);
+          this.refs.antdtabledevice.getWrappedInstance().onRefresh();
+        },0);
+      }
+      else{
+        this.props.dispatch(set_weui({
+          toast:{
+          text:'设备ID必选',
+          show: true,
+          type:'warning'
+        }}));
+      }
 
-      this.setState({query});
-      window.setTimeout(()=>{
-        //console.log(this.refs);
-        this.refs.antdtabledevice.getWrappedInstance().onRefresh();
-      },0);
     }
 
 
@@ -106,16 +121,17 @@ class TablePosition extends React.Component {
       return itemnew;
     }
     render(){
-        const column_data = [`kafka偏移量`,'车辆ID','采集时间','保存时间','箱体测量电压(V)','箱体累加电压(V)',
+        const column_data = ['车辆ID','采集时间','保存时间','箱体测量电压(V)','箱体累加电压(V)',
           '箱体电流(A)','真实SOC(%)','最高单体电压(V)','最低单体电压(V)','最高单体电压CSC号',
           '最高单体电芯位置','最低单体电压CSC号','最低单体电压电芯位置','最高单体温度','最低单体温度',
           '平均单体温度','最高温度CSC号','最低温度CSC号','显示用SOC','平均单体电压',
           '报警信息'
         ];
         let columnx = 0;
-        const column_width = [200,200,300,300,150,150,
+        const column_width = [
+          200,300,300,150,150,
           150,150,150,150,150,
-          150,150,150,150,150,
+          150,180,200,150,150,
           150,150,150,150,150,
           0
         ];
@@ -156,6 +172,8 @@ class TablePosition extends React.Component {
         }
         // columnx += 300;
         columns.push(columns_action);
+        // const tableheight = `${this.state.innerHeight-129-60}px`;
+        // console.log(tableheight );
         return (
             <div className="warningPage" style={{height : `${this.state.innerHeight}px`}}>
 
@@ -172,23 +190,18 @@ class TablePosition extends React.Component {
                       query={this.state.query}
                     />
                 </div>
-                <div className="tablelist" style={{height:`${this.state.clientHeight-129-60-20}px`}}>
+                <div className="tablelist" >
                     <AntdTable
                       tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
-                        // bordered:true,
-                        // footer:
-                        //   (v)=>{
-                        //     console.log(v)
-                        //     return `Here is footer`
-                        //   }
-
+                      bordered:true,
                       }}
+
                       listtypeid = 'antdtabledevice'
                       ref='antdtabledevice'
                       onItemConvert={this.onItemConvert.bind(this)}
                       columns={columns}
                       pagenumber={30}
-                      query={this.state.query}
+                      query={this.state.querydo}
                       sort={{'DataTime': -1}}
                       queryfun={(payload)=>{
                         return callthen(uireport_searchhistorydevice_request,uireport_searchhistorydevice_result,payload);

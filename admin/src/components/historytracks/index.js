@@ -72,7 +72,6 @@ const HistoryTrackShow = (props)=> {
 const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId" />
-    <TextInput label="SN64" source="SN64_int" />
   </Filter>
 )
 
@@ -93,13 +92,11 @@ const LocationString = (props)=>{
   return (<span>{showstring}</span>);
 }
 const HistoryTrackList = (props)=> (
-  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}  perPage={config.listperpage}>
+  <List title={<HistoryTrackTitle />}  filters={<DeviceFilter />} sort={{field:'GPSTime',order:'DESC'}} {...props}  perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="定位时间" source="GPSTime" />
       <LocationString label="省市区"/>
-      <TextField label="NodeID" source="NodeID" sortable={false}/>
-      <TextField label="SN64" source="SN64"/>
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <ShowButton />
     </Datagrid>

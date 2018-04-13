@@ -109,7 +109,7 @@ class TableAlarm extends React.Component {
         }
         const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
         let columnx = 0;
-        const column_width = [200,300,100,0];
+        const column_width = [100,200,150,0];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
@@ -123,14 +123,15 @@ class TableAlarm extends React.Component {
                 return a[data] > b[data] ? 1:-1;
               }
           };
+
           columnx += column_width[index];
           if(column_width[index] > 0){
-            column_item = {...column_item,width:`${column_width[index]}px`};
+            column_item = {...column_item,fixed: 'left',width:`${column_width[index]}px`,};
           }
           return column_item;
         });
 
-
+        columnx = 200;
         let viewrow = (row)=>{
             //console.log(row);
             const DeviceId = row['车辆ID'];
@@ -164,16 +165,11 @@ class TableAlarm extends React.Component {
                       onClickExport={this.onClickExport.bind(this)}
                       />
                 </div>
-                <div className="tablelist">
+                <div className="tablelist" >
                     <AntdTable
-                      tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
-                        bordered:false,
-                        // footer:
-                        //   (v)=>{
-                        //     console.log(v)
-                        //     return `Here is footer`
-                        //   }
-
+                      tableprops={{
+                        scroll:{x: `${columnx+200}px`, y: 30*22},
+                        bordered:true,
                       }}
                       listtypeid = 'antdtablealarm'
                       usecache = {!!g_querysaved}
