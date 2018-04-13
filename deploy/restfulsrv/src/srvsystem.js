@@ -16,22 +16,22 @@ const userset = {};
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const loginuser_add = (userid,connectid)=>{
-  const usersetref = userset[userid] || [];
-  let resultref = _.remove(usersetref,(o)=>{
+  let usersetref = userset[userid] || [];
+  _.remove(usersetref,(o)=>{
     return o === connectid;
   });
-  resultref.push(connectid);
-  userset[userid] = resultref;
+  usersetref.push(connectid);
+  userset[userid] = usersetref;
 
   debug(`loginuser_add->${userid}+${connectid}:${JSON.stringify(userset[userid])}`)
 }
 
 const loginuser_remove = (userid,connectid)=>{
-  const usersetref = userset[userid] || [];
-  userset[userid] = _.remove(usersetref,(o)=>{
+  let usersetref = userset[userid] || [];
+   _.remove(usersetref,(o)=>{
     return o === connectid;
   });
-
+  userset[userid] = usersetref;
   debug(`loginuser_remove->${userid}-${connectid}:${JSON.stringify(userset[userid])}`)
 }
 
