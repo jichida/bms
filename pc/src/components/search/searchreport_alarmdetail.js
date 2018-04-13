@@ -13,7 +13,7 @@ import moment from 'moment';
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
-
+import {gettimekey} from '../../util/getshardkey';
 import './reactselect.css';
 
 
@@ -107,7 +107,15 @@ class TreeSearchBattery extends React.Component {
          if(this.state.DeviceId !== ''){
            query1['DeviceId'] = this.state.DeviceId;
          }
-
+         //新建timekey
+         const timekeysz = gettimekey(this.state.startDate.format('YYYY-MM-DD HH:mm:ss'),this.state.endDate.format('YYYY-MM-DD HH:mm:ss'));
+         if(timekeysz.length === 0){
+           query1['TimeKey'] = timekeysz[0];
+         }
+         else if(timekeysz.length > 0){
+           query1['TimeKey'] = { $in:timekeysz};
+         }
+         //====
          let query = {};
          if(this.state.columndata_extra.length > 0){
            let query2 = {

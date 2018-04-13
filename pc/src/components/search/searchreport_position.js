@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import Seltime from './seltimerange_antd.js';
 import { Button } from 'antd';
-
+import {gettimekey} from '../../util/getshardkey';
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
@@ -59,6 +59,15 @@ class TreeSearchBattery extends React.Component {
       if(this.state.DeviceId !== ''){
         query['DeviceId'] = this.state.DeviceId;
       }
+      //新建timekey
+      const timekeysz = gettimekey(this.state.startDate.format('YYYY-MM-DD HH:mm:ss'),this.state.endDate.format('YYYY-MM-DD HH:mm:ss'));
+      if(timekeysz.length === 0){
+        query['TimeKey'] = timekeysz[0];
+      }
+      else if(timekeysz.length > 0){
+        query['TimeKey'] = { $in:timekeysz};
+      }
+      //====
       return query;
     }
 
