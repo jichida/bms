@@ -17,13 +17,13 @@ let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const loginuser_add = (userid,connectid)=>{
   const usersetref = userset[userid] || [];
-  userset[userid] = _.remove(usersetref,(o)=>{
+  let resultref = _.remove(usersetref,(o)=>{
     return o === connectid;
   });
-  usersetref.push(connectid);
-  userset[userid] = usersetref;
+  resultref.push(connectid);
+  userset[userid] = resultref;
 
-  debug(`loginuser_add->${userid}:${JSON.stringify(usersetref)}`)
+  debug(`loginuser_add->${userid}+${connectid}:${JSON.stringify(userset[userid])}`)
 }
 
 const loginuser_remove = (userid,connectid)=>{
@@ -32,7 +32,7 @@ const loginuser_remove = (userid,connectid)=>{
     return o === connectid;
   });
 
-  debug(`loginuser_remove->${userid}:${JSON.stringify(usersetref)}`)
+  debug(`loginuser_remove->${userid}-${connectid}:${JSON.stringify(userset[userid])}`)
 }
 
 const getSystemLog = ()=>{
