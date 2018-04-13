@@ -9,7 +9,7 @@ const util = require('util');
 
 const startuploader = (app)=>{
   app.post('/upload',middlewareauth,(req,res)=>{
-    //console.log("userid:" + req.userid);
+    ////console.log("userid:" + req.userid);
     // let data = req.body;
     // data.userid = req.userid;
     // let userModel = mongoose.model('UserRider', DBModels.UserRiderSchema);
@@ -19,8 +19,8 @@ const startuploader = (app)=>{
      //form.keepExtensions = true;
 
      form.parse(req, (err, fields, files)=> {
-       //console.log('file name:' + util.inspect({fields: fields, files: files}));
-       //console.log('file name:' + files['file'].path);
+       ////console.log('file name:' + util.inspect({fields: fields, files: files}));
+       ////console.log('file name:' + files['file'].path);
        let basename = path.basename(files['file'].path);
        let extname = path.extname(fields['filename']);
        let filename = basename + extname;
@@ -44,12 +44,12 @@ const startuploader = (app)=>{
 
      });
     //  form.on('file', (name, file)=> {
-    //    //console.log("file name:" + name);
-    //    //console.log("file file:" + JSON.stringify(file));
+    //    ////console.log("file name:" + name);
+    //    ////console.log("file file:" + JSON.stringify(file));
     //  });
      form.on('progress', (bytesReceived, bytesExpected)=> {
-       //console.log('已接受:' + bytesReceived);
-       //console.log('一共:' + bytesExpected);
+       ////console.log('已接受:' + bytesReceived);
+       ////console.log('一共:' + bytesExpected);
      });
 
   });

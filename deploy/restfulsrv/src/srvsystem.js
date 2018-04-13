@@ -37,7 +37,7 @@ const loginuser_remove = (userid,connectid)=>{
 
 const getSystemLog = ()=>{
   PubSub.subscribe('userlog_data', ( msg, data )=>{
-    console.log(`userlog_data===>${msg},${JSON.stringify(data)}`);
+    //console.log(`userlog_data===>${msg},${JSON.stringify(data)}`);
 
     data.creator = mongoose.Types.ObjectId(data.creator);
     data.organizationid = mongoose.Types.ObjectId('599af5dc5f943819f10509e6');
@@ -189,7 +189,7 @@ const job=()=>{
     // });
     //
     // schedule.scheduleJob('*/5 * * * *', ()=>{
-    //   ////console.log('每隔5分钟执行这里!');
+    //   //////console.log('每隔5分钟执行这里!');
     //   updatesystemconfig();
     // });
 };

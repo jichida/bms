@@ -13,11 +13,11 @@ const getmoment =()=>{
 
 exports.gettipcount = (actiondata,ctx,callback)=>{
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
-    //console.log(deviceIds);
-    //console.log(devicegroupIds);
+    ////console.log(deviceIds);
+    ////console.log(devicegroupIds);
     //统计在线／离线个数
 
-    // console.log(`deviceIds:${JSON.stringify(deviceIds)}`);
+    // //console.log(`deviceIds:${JSON.stringify(deviceIds)}`);
     const fn_online = (callbackfn)=>{
       const dbModel = DBModels.SystemConfigModel;
       dbModel.findOne({}).lean().exec((err,systemconfig)=>{
@@ -27,7 +27,7 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
               SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',SettingOfflineMinutes);
            }
            const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
-          //  console.log(`curtimebefore:${curtimebefore}`);
+          //  //console.log(`curtimebefore:${curtimebefore}`);
            let query = {
              'LastHistoryTrack.Latitude': {$ne:0},
              'LastHistoryTrack.GPSTime': {$gt: curtimebefore,$exists:true}
@@ -121,13 +121,13 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
   // let query = actiondata.query || {};
   // const devicesfields = actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude';
   //
-  // //console.log(`devicesfields-->${JSON.stringify(devicesfields)}`);
+  // ////console.log(`devicesfields-->${JSON.stringify(devicesfields)}`);
   // let queryexec = devicegroupModel.find(query).populate([
   //     {path:'deviceids', select:devicesfields, model: 'device'},
   // ]).exec((err,list)=>{
   //   if(!err){
   //     if(list.length > 0){
-  //       //console.log(`-->${JSON.stringify(list[0])}`);
+  //       ////console.log(`-->${JSON.stringify(list[0])}`);
   //     }
   //     //for test only
   //     callback({

@@ -18,9 +18,9 @@ mongoose.connect(config.mongodburl,{
 	  },
   },(err)=>{
     if(!!err){
-      //console.log(`mongodb connect${JSON.stringify(err)}`);
+      ////console.log(`mongodb connect${JSON.stringify(err)}`);
     }
-    //console.log(`mongodb connect`);
+    ////console.log(`mongodb connect`);
   });
 
 const result = excelToJson({
@@ -31,11 +31,11 @@ const result = excelToJson({
 });
 
 mongoose.connection.once('open', ()=> {
-    //console.log(`MongoDB event open`);
-    //console.log(`MongoDB connected ${config.mongodburl}`);
+    ////console.log(`MongoDB event open`);
+    ////console.log(`MongoDB connected ${config.mongodburl}`);
 
     //mongoose.connection.on('connected', ()=> {
-      //console.log('MongoDB connected');
+      ////console.log('MongoDB connected');
 
       const BAT_Last = result['BAT_Last'];
       const TLast = result['TLast'];
@@ -49,7 +49,7 @@ mongoose.connection.once('open', ()=> {
           dbModel.findOneAndUpdate({DeviceId:batlast.DeviceId},{$set:createddata},{
             upsert:true,new:true
           },(err,result)=>{
-            //console.log(`create device batlast,err:${err},${JSON.stringify(result)}`);
+            ////console.log(`create device batlast,err:${err},${JSON.stringify(result)}`);
             if(!err && !!result){
             }
           });
@@ -64,7 +64,7 @@ mongoose.connection.once('open', ()=> {
           dbModel.findOneAndUpdate({DeviceId:tlast.DeviceId},{$set:createddata},{
             upsert:true,new:true
           },(err,result)=>{
-            //console.log(`create device tlast,err:${err},${JSON.stringify(result)}`);
+            ////console.log(`create device tlast,err:${err},${JSON.stringify(result)}`);
             if(!err && !!result){
             }
           });

@@ -7,9 +7,9 @@ const PubSub = require('pubsub-js');
 const moment = require('moment');
 
 const importexcel = (excelfilepath,userid,callbackfn)=>{
-  console.log(`开始导入excel:${excelfilepath}`);
+  //console.log(`开始导入excel:${excelfilepath}`);
   const obj = xlsx.parse(excelfilepath);
-  console.log(JSON.stringify(obj));
+  //console.log(JSON.stringify(obj));
   let listdeviceextra = [];
   let resultkey = [];
   _.map(obj,(v)=>{
@@ -27,7 +27,7 @@ const importexcel = (excelfilepath,userid,callbackfn)=>{
     });
   });
 
-  console.log(listdeviceextra);
+  //console.log(listdeviceextra);
   let deviceids_success = [];
   let deviceids_notfound = [];
 

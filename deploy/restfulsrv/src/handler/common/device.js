@@ -167,7 +167,8 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     debug(`device start exec`);
     queryexec.exec((err,list)=>{
       if(!err){
-        debug(`device count:${list.length}`);
+        // debug(`device count:${list.length}`);
+        debug(`querydevice loginuser_add:${ctx.userid},${ctx.connectid}`);
         srvsystem.loginuser_add(ctx.userid,ctx.connectid);//开始监听
         callback({
           cmd:'querydevice_result',
@@ -188,7 +189,7 @@ exports.querydeviceinfo =  (actiondata,ctx,callback)=>{
   let deviceModel = DBModels.DeviceModel;
   let query = actiondata.query || {};
   let fields = actiondata.fields || {};
-  //console.log(`fields-->${JSON.stringify(fields)}`);
+  ////console.log(`fields-->${JSON.stringify(fields)}`);
   let queryexec = deviceModel.findOne(query).select(fields).lean();
   queryexec.exec((err,result)=>{
     if(!err && !!result){
@@ -241,7 +242,7 @@ exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
 //   deviceModel.aggregate({$sample: {size: 50}}).exec((err,list)=>{
 //     if(!err){
 //       if(list.length > 0){
-//         //console.log(`-->${JSON.stringify(list[0])}`);
+//         ////console.log(`-->${JSON.stringify(list[0])}`);
 //       }
 //       callback({
 //         cmd:'searchbattery_result',
@@ -259,12 +260,12 @@ exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
   //<-----处理query条件
   // let r = Math.random()*10000;
   // query = {};
-  // //console.log(`fields-->${JSON.stringify(fields)}`);
+  // ////console.log(`fields-->${JSON.stringify(fields)}`);
   // let queryexec = deviceModel.find(query).select(fields).limit(50).skip(r);
   // queryexec.exec((err,list)=>{
   //   if(!err){
   //     if(list.length > 0){
-  //       //console.log(`-->${JSON.stringify(list[0])}`);
+  //       ////console.log(`-->${JSON.stringify(list[0])}`);
   //     }
   //     callback({
   //       cmd:'searchbattery_result',
@@ -339,7 +340,7 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
           };
 
           if(list.length > 0){
-            //console.log(`-->${JSON.stringify(list[0])},变化个数==>${items.length}`);
+            ////console.log(`-->${JSON.stringify(list[0])},变化个数==>${items.length}`);
           }
           callback({
             cmd:'serverpush_devicegeo_sz_result',
@@ -364,7 +365,7 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    // console.log(query);
+    // //console.log(query);
     actiondata.options = actiondata.options || {};
     actiondata.options.lean = true;
     deviceModel.paginate(query,actiondata.options,(err,result)=>{
@@ -397,16 +398,16 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
 //      curdatatime = moment(actiondata.TPData.DataTime).format('YYYY-MM-DD HH:mm:ss');
 //   }
 //   catch(e){
-//     //console.log(`e==>${JSON.stringify(e)}`);
+//     ////console.log(`e==>${JSON.stringify(e)}`);
 //   }
 //   actiondata.TPData.DataTime = curdatatime;
-//   //console.log(`savedevice==>${JSON.stringify(actiondata)}`);
+//   ////console.log(`savedevice==>${JSON.stringify(actiondata)}`);
 //
 //   const deviceModel = DBModels.DeviceModel;
 //   deviceModel.findOneAndUpdate({
 //       DeviceId: actiondata.DeviceId,
 //   },{$set:actiondata}, {new: true, upsert: true}, (err, updateditem)=> {
-//     //console.log(`deviceModel=>err:${JSON.stringify(err)},updateditem:${JSON.stringify(updateditem)}`);
+//     ////console.log(`deviceModel=>err:${JSON.stringify(err)},updateditem:${JSON.stringify(updateditem)}`);
 //     callback(err,updateditem);
 //   });
 //
@@ -419,7 +420,7 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
 //       DeviceId: actiondata.DeviceId,
 //       GPSTime:curdatatime
 //   },{$set:actiondata.LastHistoryTrack}, {new: true, upsert: true}, (err, updateditem)=> {
-//     //console.log(`historyTrackModel=>err:${JSON.stringify(err)},updateditem:${JSON.stringify(updateditem)}`);
+//     ////console.log(`historyTrackModel=>err:${JSON.stringify(err)},updateditem:${JSON.stringify(updateditem)}`);
 //     callback(err,updateditem);
 //   });
 // };

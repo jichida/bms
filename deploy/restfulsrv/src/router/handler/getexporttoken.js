@@ -8,7 +8,7 @@ const uuid = require('uuid');
 const getexporttoken = (req,res)=>{
   let query = {};
   try{
-    //console.log(req.body);
+    ////console.log(req.body);
     query = req.body;
   }
   catch(e){
@@ -18,7 +18,7 @@ const getexporttoken = (req,res)=>{
   if(typeof userid === 'string'){
     userid = mongoose.Types.ObjectId(userid);
   }
-  //console.log(userid);
+  ////console.log(userid);
 
   const dbModel = DBModels.ExportTokenModel;
   dbModel.findOneAndUpdate({userid}, {$set:{
@@ -32,7 +32,7 @@ const getexporttoken = (req,res)=>{
       });
     }
     else{
-      console.log(err);
+      //console.log(err);
       res.status(200).json({
         err:'无法获取token'
       });

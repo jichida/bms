@@ -14,7 +14,7 @@ const startdownload = ({req,res,dbModel,fields,csvfields,fn_convert,query})=>{
   // write BOM
   // res.write('\ufeff');
   // res.write(new Buffer('\xEF\xBB\xBF','binary'));
-  console.log(iconv.convert(csvfields));
+  //console.log(iconv.convert(csvfields));
   res.write(iconv.convert(csvfields));
   res.write(iconv.convert('\n'));
 
@@ -25,7 +25,7 @@ const startdownload = ({req,res,dbModel,fields,csvfields,fn_convert,query})=>{
 
   const cursor = dbModel.find(query,fields).cursor();
   cursor.on('error', (err)=> {
-    console.log(`算结束了啊..............`);
+    //console.log(`算结束了啊..............`);
     res.end('');
   });
 
@@ -33,15 +33,15 @@ const startdownload = ({req,res,dbModel,fields,csvfields,fn_convert,query})=>{
   {
     if(cancelRequest){
       cursor.close();
-      console.log(`取消下载了..............`);
+      //console.log(`取消下载了..............`);
     }
     else{
       doc = JSON.parse(JSON.stringify(doc));
       fn_convert(doc,(newdoc)=>{
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
          if (!err && !!csv && !cancelRequest) {
-             console.log(csv);
-             console.log(iconv.convert(csv));
+             //console.log(csv);
+             //console.log(iconv.convert(csv));
              res.write(iconv.convert(csv));
            }
          });
@@ -68,7 +68,7 @@ const export_downloadexcel = ({req,res,dbModel,fields,csvfields,fn_convert,name}
         query = JSON.parse(tokenobj.queryobjstring);
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
 
      getdevicesids(tokenobj.userid,({devicegroupIds,deviceIds,isall})=>{
