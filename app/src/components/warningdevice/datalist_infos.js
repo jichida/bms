@@ -16,6 +16,7 @@ import {
   callthen,uireport_searchdevice_request,uireport_searchdevice_result
 } from '../../sagas/pagination';
 import InfinitePage from '../controls/listview';
+import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 
 
 
@@ -46,7 +47,7 @@ class Page extends React.Component {
                 onClick={this.rowClick.bind(this,item["车辆ID"])}
                 >
                 <span className="warningtdtitle">
-                  <b className={`warningtype_${warningtext[item["报警等级"]]}`}>{item["报警等级"]}</b>
+                  <b className={`warningtype_${warningtext[item["报警等级"]]}`}>{getwarningleveltext(item["报警等级"])}</b>
                 </span>
                 <span>车辆: <br/>{item["车辆ID"]}</span>
                 <span className="time">{item["报警时间"]}</span>

@@ -138,10 +138,10 @@ class Page extends React.Component {
       };
       //新建timekey
       const timekeysz = gettimekey(startDate.format('YYYY-MM-DD HH:mm:ss'),endDate.format('YYYY-MM-DD HH:mm:ss'));
-      if(timekeysz.length === 0){
+      if(timekeysz.length === 1){
         query['TimeKey'] = timekeysz[0];
       }
-      else if(timekeysz.length > 0){
+      else if(timekeysz.length > 1){
         query['TimeKey'] = { $in:timekeysz};
       }
       //====

@@ -33,24 +33,28 @@ export function callthen(actionreq,actionres,payload){
 export function* createsagacallbackflow(){
   yield takeLatest(`${synccallreq}`,function*(action){
     const {payload:{actionreq,actionres,resolve,reject,...data}} = action;
-    yield put(actionreq(data));//发送请求
-
-
-    const { response, timeout } = yield race({
-       response: take(actionres),
-       timeout: call(delay, 30000)
-    });
-    if(!!timeout){
-      reject('请求超时!');
-    }
-    else{
-      let {payload:{err,result}} = response;
-      if (!!err) {
-        reject(err);
+    try{
+      yield put(actionreq(data));//发送请求
+      const { response, timeout } = yield race({
+         response: take(actionres),
+         timeout: call(delay, 30000)
+      });
+      if(!!timeout){
+        reject('请求超时!');
       }
       else{
-        resolve({result});
+        let {payload:{err,result}} = response;
+        if (!!err) {
+          reject(err);
+        }
+        else{
+          resolve({result});
+        }
       }
+    }
+    catch(e){
+      console.log(e);
+      reject(e);
     }
   });
 

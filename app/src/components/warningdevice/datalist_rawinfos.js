@@ -17,6 +17,7 @@ import "../../css/antd.min.css";
 import { callthen,uireport_searchalarmdetail_request,uireport_searchalarmdetail_result } from '../../sagas/pagination';
 import InfinitePage from '../controls/listview';
 import moment from 'moment';
+import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 
 
 class Page extends React.Component {
@@ -36,17 +37,17 @@ class Page extends React.Component {
         // console.log("itemitem");
         // console.log(item);
 
-        let level = 3;
-        let  LevelDiv = (<i className="warninglevel warninglevel_3">低</i>);
-        if(item["报警信息"] === '高'){
-          level = 1;
-          LevelDiv = (<i className="warninglevel warninglevel_1">高</i>);
-        }
-        else if(item["报警信息"] === '中'){
-          level = 2;
-          LevelDiv = (<i className="warninglevel warninglevel_2">中</i>);
-        }
-//
+//         let level = 3;
+//         let  LevelDiv = (<i className="warninglevel warninglevel_3">一级</i>);
+//         if(item["报警信息"] === '高'){
+//           level = 1;
+//           LevelDiv = (<i className="warninglevel warninglevel_1">三级</i>);
+//         }
+//         else if(item["报警信息"] === '中'){
+//           level = 2;
+//           LevelDiv = (<i className="warninglevel warninglevel_2">二级</i>);
+//         }
+// //
 // key
 // :
 // "5a1bfa0f46a68b00019fd34e"
@@ -61,13 +62,13 @@ class Page extends React.Component {
 // "1727202266"
         return  (
             <div
+                className={`warningtypelist alarmrawinfos`}
                 key={item._id}
-                className={`warningtypelist warningtype_${level} alarmrawinfos`}
                 onClick={this.rowClick.bind(this,item.key)}
                 >
                 {/* { !!item.warningtext && <span className="warningtdtitle"><b className={`warningtype_${item.warninglevel}`}>{warningtext[item.warninglevel]}</b></span> } */}
-                {LevelDiv}
-                <span className="warningtext">{moment(item["报警时间"]).format("YYYY-MM-DD HH:mm:ss")}</span>
+                <span className="warninglevel">{getwarningleveltext(item["报警等级"])}</span>
+                <span className="warningtext">{moment(item["报警时间"]).format("YYMMDD HH:mm:ss")}</span>
                 <span className="time">{item["报警信息"]}</span>
             </div>
         );

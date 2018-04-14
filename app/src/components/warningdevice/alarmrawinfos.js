@@ -53,6 +53,7 @@ class Page extends React.Component {
         // const formstyle={width:"100%",flexGrow:"1"};
         // const textFieldStyle={width:"100%",flexGrow:"1"};
         // const height =  window.innerHeight - 65 - 209;
+        const deviceid = this.props.match.params.deviceid;
         return (
             <div className="playbackPage AppPage warningmessagePage"
                 style={{
@@ -64,7 +65,7 @@ class Page extends React.Component {
                 >
                 <div className="navhead">
                     <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
-                    <span className="title" style={{paddingRight : "30px"}}>{`车辆:${this.props.match.params.deviceid}的报警信息`}</span>
+                    <span className="title" style={{paddingRight : "30px"}}>{`车辆${deviceid}的报警信息`}</span>
                     <div className="moresetting"></div>
                 </div>
 
