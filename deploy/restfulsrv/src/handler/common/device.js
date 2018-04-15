@@ -155,7 +155,8 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     'LastHistoryTrack.GPSTime':1,
     'warninglevel':1,
     'LastRealtimeAlarm.DataTime':1,
-    'alarmtxtstat':1
+    'alarmtxtstat':1,
+    'PackNo_BMU':1
   };
   debug(`device start getdevicesids`);
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{

@@ -254,6 +254,7 @@ const DeviceList = (props) => (
   {permissions =>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
+      <TextField label="PackNo" source="PackNo_BMU" />
       <TextField label="报警等级" source="warninglevel" />
       <TextField label="报警信息" source="alarmtxtstat" />
       <TextField label="最后数据时间" source="LastRealtimeAlarm.DataTime" />

@@ -61,7 +61,8 @@ const checkDevice = (lasttime,callbackfn)=>{
     'warninglevel':1,
     'LastRealtimeAlarm.DataTime':1,
     'alarmtxtstat':1,
-    'UpdateTime':1
+    'UpdateTime':1,
+    'PackNo_BMU':1
   };
   deviceModel.find({
     UpdateTime:{
