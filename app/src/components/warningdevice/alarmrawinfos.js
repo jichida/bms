@@ -39,6 +39,10 @@ class Page extends React.Component {
       if(deviceid !== ''){
         query.DeviceId = deviceid;
       }
+      //无TimeKey
+      query['warninglevel'] = {
+        $in:['高','中','低']
+      };
       return query;
     }
 
