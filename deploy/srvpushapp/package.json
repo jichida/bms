@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmsp node index"
+    "start":"DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bms.com28.cn:27018/bms node index"
   },
   "author": "",
   "license": "ISC",

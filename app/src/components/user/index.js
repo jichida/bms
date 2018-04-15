@@ -52,7 +52,7 @@ class Page extends React.Component {
                     </div>
                     <List style={{background: "#FFF",padding:"0"}}>
                         <ListItem
-                            primaryText="设置"
+                            primaryText="报警推送设置"
                             leftIcon={<img src={Settingicon}  alt=""/>}
                             rightIcon={<Rightlnk />}
                             style={{marginBottom: "1px"}}

@@ -1,38 +1,28 @@
 import React from 'react';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
 import Select from 'react-select';
-import map from 'lodash.map';
+
 import 'react-select/dist/react-select.css';
 
 class SelectDevice extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            devicelist : props.value
-        };
-    }
+    // constructor(props) {
+    //     super(props);
+    // }
 
     onChange = (newv)=>{
       const sz = newv.split(',');
-      this.setState({devicelist:sz});
       this.props.onChange(sz);
     }
 
     render(){
-      const {g_devicesdb,value,onChange,...rest} = this.props;
-      let options = [];
-      map(g_devicesdb,(v)=>{
-        options.push({
-          value:v.DeviceId,
-          label:v.DeviceId,
-        });
-      });
+      const {options,value,onChange,...rest} = this.props;
+
       return (
          <span>
           <Select
             multi
-            value={this.state.devicelist}
+            value={value}
             onChange={this.onChange}
             options={options}
             {...rest}
@@ -52,7 +42,8 @@ class SelectDevice extends React.Component {
 
 }
 
-const mapStateToProps = ({device:{ g_devicesdb }}) => {
-    return { g_devicesdb };
-}
-export default connect(mapStateToProps)(SelectDevice);
+export default  SelectDevice;
+// const mapStateToProps = ({device:{ g_devicesdb }}) => {
+//     return { g_devicesdb };
+// }
+// export default connect(mapStateToProps)(SelectDevice);

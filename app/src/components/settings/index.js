@@ -6,12 +6,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 // import map from 'lodash.map';
 import "../../css/message.css";
-import  Select  from "antd/lib/select";
+// import  Select  from "antd/lib/select";
 import {savealarmsettings_request} from '../../actions';
 import ReactSelect from "../controls/reactselect";
-const Option = Select.Option;
 
+import lodashmap from 'lodash.map';
 
+// const Option = Select.Option;
 let resizetimecontent = null;
 
 class Setting extends React.Component {
@@ -20,8 +21,8 @@ class Setting extends React.Component {
         super(props);
         this.state = {
             innerHeight: window.innerHeight,
-            warninglevel : props.warninglevel,
-            devicelist : props.subscriberdeviceids
+            warninglevels : props.alarmsettings.warninglevels,
+            devicegroups : props.alarmsettings.devicegroups
         };
     }
 
@@ -35,14 +36,14 @@ class Setting extends React.Component {
     handleChange_warninglev=(v)=>{
         console.log(v);
         this.setState({
-            warninglevel: v
+            warninglevels: v
         })
     }
 
     handleChange_devicelist=(v)=>{
         console.log(v);
         this.setState({
-            devicelist: v
+            devicegroups: v
         })
     }
 
@@ -57,8 +58,8 @@ class Setting extends React.Component {
 
     clickSend = ()=>{
       const payload = {
-        warninglevel : this.state.warninglevel,
-        subscriberdeviceids:this.state.devicelist
+        warninglevels : this.state.warninglevels,
+        devicegroups:this.state.devicegroups
       };
       this.props.dispatch(savealarmsettings_request(payload))
     }
@@ -66,14 +67,27 @@ class Setting extends React.Component {
     render(){
 
         // const { subscriberdeviceids } = this.props;
+        const {groups} = this.props;
+        let options = [];
+        lodashmap(groups,(v)=>{
+          options.push({
+            value:v._id,
+            label:v.name,
+          });
+        });
 
+        let options_warninglevels = [];
+        options_warninglevels.push({value:'高',label:'三级'});
+        options_warninglevels.push({value:'中',label:'二级'});
+        options_warninglevels.push({value:'低',label:'一级'});
+        console.log(groups)
         return (
             <div className="settingPage AppPage"
                 style={{height:`${this.state.innerHeight}px`,overflow:"hidden",paddingBottom:"0"}}
                 >
                 <div className="navhead">
                     <div className="back" onClick={()=>{this.props.history.goBack()}}></div>
-                    <span className="title" style={{paddingRight : "30px"}}>消息提示设置</span>
+                    <span className="title" style={{paddingRight : "30px"}}>报警信息推送设置</span>
                 </div>
 
                 <div className="settingform">
@@ -81,16 +95,11 @@ class Setting extends React.Component {
                         <div>
                             <div className="p">选择报警等级</div>
                             <div className="p">
-                                <Select
-                                    value={this.state.warninglevel}
-                                    style={{ width: 120 }}
-                                    onChange={this.handleChange_warninglev}
-                                    >
-                                    <Option value={""}>请选择</Option>
-                                    <Option value={"高"}>三级</Option>
-                                    <Option value={"中"}>二级</Option>
-                                    <Option value={"低"}>一级</Option>
-                                </Select>
+                              <ReactSelect
+                                onChange={this.handleChange_warninglev}
+                                value={this.state.warninglevels}
+                                options={options_warninglevels}
+                              />
                             </div>
                         </div>
                         <div className="selectform">
@@ -98,7 +107,8 @@ class Setting extends React.Component {
                             <div className="p s">
                                 <ReactSelect
                                   onChange={this.handleChange_devicelist}
-                                  value={this.state.devicelist}
+                                  value={this.state.devicegroups}
+                                  options={options}
                                 />
                             </div>
                         </div>
@@ -110,9 +120,9 @@ class Setting extends React.Component {
     }
 }
 
-const mapStateToProps = ({userlogin:{ alarmsettings }}) => {
+const mapStateToProps = ({userlogin:{ alarmsettings },device:{ groups }}) => {
     // console.log(g_devicesdb);
     // g_devicesdb.length = 10;
-    return { ...alarmsettings };
+    return { alarmsettings,groups };
 }
 export default connect(mapStateToProps)(Setting);

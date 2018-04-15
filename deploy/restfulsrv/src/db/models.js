@@ -46,8 +46,10 @@ const UserSchema = new Schema({
   devicegroups:[{ type: Schema.Types.ObjectId, ref: 'devicegroup', default: [] }],
   devicecollections:[],
   alarmsettings:{
-    warninglevel:String,//报警等级
-    subscriberdeviceids:[],//订阅的设备
+    warninglevels:[],//报警等级
+    devicegroups:[{ type: Schema.Types.ObjectId, ref: 'devicegroup', default: [] }],//设备组ID
+    // warninglevel:String,//报警等级
+    // subscriberdeviceids:[],//订阅的设备
   }
 });
 UserSchema.plugin(mongoosePaginate);

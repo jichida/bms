@@ -8,6 +8,11 @@ const startsrv = require('./src/srvsys');
 const moment = require('moment');
 const debug = require('debug')('start');
 
+
+// const index = _.findIndex(['高','中','低'],(o)=>{
+//   return o === '中';
+// });
+// debug(`index->${index}`);
 debug(`start=====>version:${config.version}`);
 
 debug(`==========`);

@@ -33,8 +33,10 @@ let getdatafromuser =(user)=>{
     userid:user._id,
     devicecollections:user.devicecollections || [],
     alarmsettings:{
-      warninglevel:_.get(user,'alarmsettings.warninglevel',''),
-      subscriberdeviceids:_.get(user,'alarmsettings.subscriberdeviceids',[]),
+      warninglevels:_.get(user,'alarmsettings.warninglevels',''),
+      devicegroups:_.get(user,'alarmsettings.devicegroups',''),
+      // warninglevel:_.get(user,'alarmsettings.warninglevel',''),
+      // subscriberdeviceids:_.get(user,'alarmsettings.subscriberdeviceids',[]),
     }
   };
 };
