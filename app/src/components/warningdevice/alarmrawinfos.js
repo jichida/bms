@@ -15,30 +15,47 @@ import { connect } from 'react-redux';
 import Datalist from "./datalist_rawinfos";
 // let g_showdata = false;
 let g_usecachealarm = false;
-
+let resizetimecontent;
 class Page extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     //1727202266
-    // }
-
-    componentWillMount () {
+  constructor(props) {
+      super(props);
       let deviceid =  this.props.match.params.deviceid;
       let query = this.getquery({deviceid});
-      this.setState({
-        query
-      });
+
+      this.state = {
+        query: query,
+        innerHeight: window.innerHeight,
+      };
     }
-    componentDidMount () {
-      // g_showdata = false;
-      g_usecachealarm = false;
+
+    componentDidMount() {
+        g_usecachealarm = false;
+        window.addEventListener('resize', this.onWindowResize);
     }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize);
+    }
+
+    onWindowResize=()=> {
+        window.clearTimeout(resizetimecontent);
+        resizetimecontent = window.setTimeout(()=>{
+            this.setState({
+                innerHeight: window.innerHeight,
+            });
+        },10)
+    }
+
+
 
     getquery({deviceid}){
       let query = {};
       if(deviceid !== ''){
         query.DeviceId = deviceid;
       }
+      //无TimeKey
+      query['warninglevel'] = {
+        $in:['高','中','低']
+      };
       return query;
     }
 
@@ -53,10 +70,11 @@ class Page extends React.Component {
         // const formstyle={width:"100%",flexGrow:"1"};
         // const textFieldStyle={width:"100%",flexGrow:"1"};
         // const height =  window.innerHeight - 65 - 209;
+        const deviceid = this.props.match.params.deviceid;
         return (
             <div className="playbackPage AppPage warningmessagePage"
                 style={{
-                    height : `${window.innerHeight}px`,
+                    height : `${this.state.innerHeight}px`,
                     overflow: "hidden",
                     paddingBottom:"0",
 
@@ -64,7 +82,7 @@ class Page extends React.Component {
                 >
                 <div className="navhead">
                     <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
-                    <span className="title" style={{paddingRight : "30px"}}>{`车辆:${this.props.match.params.deviceid}的报警信息`}</span>
+                    <span className="title" style={{paddingRight : "30px"}}>{`车辆${deviceid}的报警信息`}</span>
                     <div className="moresetting"></div>
                 </div>
 

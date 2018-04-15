@@ -6,12 +6,12 @@ const PubSub = require('pubsub-js');
 const usersubfn = require('./handler/socketsubscribe');
 const uuid = require('uuid');
 const srvsystem = require('./srvsystem.js');
-
+const debug = require('debug')('srvapp:ws');
 const startwebsocketsrv = (http)=>{
   let io = require('socket.io')(http);
 
   io.on('connection', (socket)=>{
-    //console.log('a user connected');
+    ////console.log('a user connected');
 
     let ctx = {
       connectid:uuid.v4()
@@ -23,7 +23,7 @@ const startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'pc';
       }
-      // //console.log('\npc get message:' + JSON.stringify(payload));
+      // ////console.log('\npc get message:' + JSON.stringify(payload));
       winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserpc(socket,payload,ctx);
     });
@@ -32,13 +32,14 @@ const startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'app';
       }
-      // //console.log('\napp get message:' + JSON.stringify(payload));
+      // ////console.log('\napp get message:' + JSON.stringify(payload));
       winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserapp(socket,payload,ctx);
     });
 
 
     socket.on('error',(err)=>{
+      debug(`err:${ctx.userid},${ctx.connectid}`);
       if(!!ctx.userid){
         srvsystem.loginuser_remove(ctx.userid,ctx.connectid);//开始监听
       }
@@ -47,6 +48,7 @@ const startwebsocketsrv = (http)=>{
     });
 
     socket.on('disconnect', ()=> {
+      debug(`disconnect:${ctx.userid},${ctx.connectid}`);
       if(!!ctx.userid){
         srvsystem.loginuser_remove(ctx.userid,ctx.connectid);//开始监听
       }

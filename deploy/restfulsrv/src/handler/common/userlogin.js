@@ -126,7 +126,7 @@ exports.loginuser = (actiondata,ctx,callback)=>{
       });
       return;
     }
-    //console.log(user);
+    ////console.log(user);
     pwd.hashPassword(oneUser.password, user.passwordsalt, (err, passwordHash)=> {
       if(!err && !!passwordHash){
         if (passwordHash === user.passwordhash) {
@@ -162,7 +162,7 @@ exports.loginuser = (actiondata,ctx,callback)=>{
 exports.loginwithtoken = (actiondata,ctx,callback)=>{
   try {
       let decodeduser = jwt.verify(actiondata.token, config.secretkey);
-      //console.log("decode user===>" + JSON.stringify(decodeduser));
+      ////console.log("decode user===>" + JSON.stringify(decodeduser));
       let userid = decodeduser._id;
       let userModel = DBModels.UserModel;
       userModel.findByIdAndUpdate(userid,{updated_at:moment().format('YYYY-MM-DD HH:mm:ss')},{new: true}).lean().exec((err,result)=>{
@@ -179,8 +179,8 @@ exports.loginwithtoken = (actiondata,ctx,callback)=>{
 
     //  PubSub.publish(userid, {msg:'allriders',data:'bbbb',topic:'name'});
   } catch (e) {
-    //console.log("invalied token===>" + JSON.stringify(actiondata.token));
-    //console.log("invalied token===>" + JSON.stringify(e));
+    ////console.log("invalied token===>" + JSON.stringify(actiondata.token));
+    ////console.log("invalied token===>" + JSON.stringify(e));
     callback({
       cmd:'common_err',
       payload:{errmsg:`登录超时,请重新登录`,type:'login'}

@@ -4,7 +4,7 @@ import {delay} from 'redux-saga';
 import paginate_array from 'paginate-array';
 import lodashmap from 'lodash.map';
 import lodashincludes from 'lodash.includes';
-
+import lodashget from 'lodash.get';
 const synccallreq = createAction('synccallreq');
 export const ui_searchdevice_request = createAction('ui_searchdevice_request');
 export const ui_searchdevice_result = createAction('ui_searchdevice_result');
@@ -33,24 +33,28 @@ export function callthen(actionreq,actionres,payload){
 export function* createsagacallbackflow(){
   yield takeLatest(`${synccallreq}`,function*(action){
     const {payload:{actionreq,actionres,resolve,reject,...data}} = action;
-    yield put(actionreq(data));//发送请求
-
-
-    const { response, timeout } = yield race({
-       response: take(actionres),
-       timeout: call(delay, 30000)
-    });
-    if(!!timeout){
-      reject('请求超时!');
-    }
-    else{
-      let {payload:{err,result}} = response;
-      if (!!err) {
-        reject(err);
+    try{
+      yield put(actionreq(data));//发送请求
+      const { response, timeout } = yield race({
+         response: take(actionres),
+         timeout: call(delay, 30000)
+      });
+      if(!!timeout){
+        reject('请求超时!');
       }
       else{
-        resolve({result});
+        let {payload:{err,result}} = response;
+        if (!!err) {
+          reject(err);
+        }
+        else{
+          resolve({result});
+        }
       }
+    }
+    catch(e){
+      console.log(e);
+      reject(e);
     }
   });
 
@@ -64,14 +68,22 @@ export function* createsagacallbackflow(){
       let deviceall = [];
       lodashmap(g_devicesdb,(deviceinfo)=>{
         if(!!payload.query.DeviceId){
-          if(lodashincludes(deviceinfo.DeviceId,payload.query.DeviceId)){
+          const queryvalue = payload.query.DeviceId;
+          if(lodashincludes(deviceinfo.DeviceId,queryvalue)){
             deviceall.push(deviceinfo);
+          }
+          else{
+            const PackNo_BMU = lodashget(deviceinfo,'PackNo_BMU','');
+            if(PackNo_BMU !== ''){
+               if(PackNo_BMU.indexOf(queryvalue)!==-1){
+                 deviceall.push(deviceinfo);
+               }
+            }
           }
         }
         else{
           deviceall.push(deviceinfo);
         }
-
       });
 
       const {offset,limit} = payload.options;

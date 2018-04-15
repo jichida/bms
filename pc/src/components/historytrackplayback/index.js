@@ -23,7 +23,7 @@ import {
   mapplayback_start,
   mapplayback_end
 } from '../../actions';
-
+import {gettimekey} from '../../util/getshardkey';
 const Option = Select.Option;
 
 
@@ -136,6 +136,15 @@ class Page extends React.Component {
       query.Longitude = {
         $ne:0
       };
+      //新建timekey
+      const timekeysz = gettimekey(startDate.format('YYYY-MM-DD HH:mm:ss'),endDate.format('YYYY-MM-DD HH:mm:ss'));
+      if(timekeysz.length === 1){
+        query['TimeKey'] = timekeysz[0];
+      }
+      else if(timekeysz.length > 1){
+        query['TimeKey'] = { $in:timekeysz};
+      }
+      //====
       this.props.dispatch(mapplayback_start({isloop:false,speed:this.state.speed,query}));
 
     }
@@ -174,7 +183,7 @@ class Page extends React.Component {
                     <div className="selcar">
                       <span className="t">车辆ID：</span>
                       <SelectDevice
-                        placeholder={"请输入设备ID"}
+                        placeholder={"请输入设备ID或PACK号"}
                         initdeviceid={this.state.deviceid}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}
                         deviceidlist={deviceidlist}

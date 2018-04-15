@@ -153,9 +153,9 @@ class Page extends React.Component {
                                     listStyle={{textAlign:"center"}}
                                     >
                                     <MenuItem value={-1} primaryText="报警等级" />
-                                    <MenuItem value={0} primaryText="高" />
-                                    <MenuItem value={1} primaryText="中" />
-                                    <MenuItem value={2} primaryText="低" />
+                                    <MenuItem value={0} primaryText="三级" />
+                                    <MenuItem value={1} primaryText="二级" />
+                                    <MenuItem value={2} primaryText="一级" />
                                 </SelectField>
                             </div>
 

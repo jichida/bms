@@ -17,7 +17,7 @@ exports.uireport_searchhistorydevice =  (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    // console.log(query);
+    // //console.log(query);
     debug(`uireport_searchhistorydevice start--->`);
     actiondata.options = actiondata.options || {};
     actiondata.options.lean = true;
@@ -100,7 +100,7 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
     const deviceModel = DBModels.DeviceModel;
     const query = actiondata.query || {};
     const fields = actiondata.fields || {};
-    //console.log(`fields-->${JSON.stringify(fields)}`);
+    ////console.log(`fields-->${JSON.stringify(fields)}`);
     const queryexec = deviceModel.findOne(query).select(fields).lean();
     queryexec.exec((err,result)=>{
       if(!err && !!result){

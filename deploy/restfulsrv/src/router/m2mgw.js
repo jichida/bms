@@ -114,7 +114,7 @@ let startmodule = (app)=>{
 
   //设置设备数据(地理位置\胎压）
   // app.post('/api/setdevicegeo',(req,res)=>{
-  //     //console.log(`get data:${JSON.stringify(req.body)}`);
+  //     ////console.log(`get data:${JSON.stringify(req.body)}`);
   //     const data = req.body;
   //     map(data,(item,index)=>{
   //       let Speed = item.Speed;

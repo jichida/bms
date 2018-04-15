@@ -16,28 +16,28 @@ const userset = {};
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const loginuser_add = (userid,connectid)=>{
-  const usersetref = userset[userid] || [];
-  userset[userid] = _.remove(usersetref,(o)=>{
+  let usersetref = userset[userid] || [];
+  _.remove(usersetref,(o)=>{
     return o === connectid;
   });
   usersetref.push(connectid);
   userset[userid] = usersetref;
 
-  debug(`loginuser_add->${userid}:${JSON.stringify(usersetref)}`)
+  debug(`loginuser_add->${userid}+${connectid}:${JSON.stringify(userset[userid])}`)
 }
 
 const loginuser_remove = (userid,connectid)=>{
-  const usersetref = userset[userid] || [];
-  userset[userid] = _.remove(usersetref,(o)=>{
+  let usersetref = userset[userid] || [];
+   _.remove(usersetref,(o)=>{
     return o === connectid;
   });
-
-  debug(`loginuser_remove->${userid}:${JSON.stringify(usersetref)}`)
+  userset[userid] = usersetref;
+  debug(`loginuser_remove->${userid}-${connectid}:${JSON.stringify(userset[userid])}`)
 }
 
 const getSystemLog = ()=>{
   PubSub.subscribe('userlog_data', ( msg, data )=>{
-    console.log(`userlog_data===>${msg},${JSON.stringify(data)}`);
+    //console.log(`userlog_data===>${msg},${JSON.stringify(data)}`);
 
     data.creator = mongoose.Types.ObjectId(data.creator);
     data.organizationid = mongoose.Types.ObjectId('599af5dc5f943819f10509e6');
@@ -61,7 +61,8 @@ const checkDevice = (lasttime,callbackfn)=>{
     'warninglevel':1,
     'LastRealtimeAlarm.DataTime':1,
     'alarmtxtstat':1,
-    'UpdateTime':1
+    'UpdateTime':1,
+    'PackNo_BMU':1
   };
   deviceModel.find({
     UpdateTime:{
@@ -189,7 +190,7 @@ const job=()=>{
     // });
     //
     // schedule.scheduleJob('*/5 * * * *', ()=>{
-    //   ////console.log('每隔5分钟执行这里!');
+    //   //////console.log('每隔5分钟执行这里!');
     //   updatesystemconfig();
     // });
 };

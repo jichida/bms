@@ -10,9 +10,9 @@ const PubSub = require('pubsub-js');
 
 const adminauth = (req,res)=>{
   const actiondata =   req.body;
-  //console.log("actiondata=>" + JSON.stringify(actiondata));
+  ////console.log("actiondata=>" + JSON.stringify(actiondata));
   const organizationid = mongoose.Types.ObjectId(req.params.organizationid);
-  //console.log(`--organizationid=>${organizationid}`);
+  ////console.log(`--organizationid=>${organizationid}`);
 
   const userModel = DBModels.UserModel;
   // userModel.findOne({ username: actiondata.username,adminflag:1 },
@@ -28,7 +28,7 @@ const adminauth = (req,res)=>{
         ]
       }]).lean().exec((err, user)=> {
     if (!!err) {
-      console.log(err);
+      //console.log(err);
       res.status(200).json({
         loginsuccess:false,
         err:'服务器内部错误'

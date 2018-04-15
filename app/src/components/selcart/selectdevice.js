@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // import map from 'lodash.map';
 // import filter from 'lodash.filter';
 import "./style.css";
+import lodashget from 'lodash.get';
 
 import {
   ui_searchdevice_request,
@@ -54,17 +55,22 @@ class SelectDevice extends React.Component {
   //   this.setState({ options });
   // }
 
-  updateContent = (item)=> {
-      console.log(`item:${JSON.stringify(item)}`);
+  updateContent = (deviceItem)=> {
+      console.log(`item:${JSON.stringify(deviceItem)}`);
+      let value = deviceItem.DeviceId;
+      const PackNo_BMU = lodashget(deviceItem,'PackNo_BMU','');
+      if(PackNo_BMU !== ''){
+         value = `${deviceItem.DeviceId}(${PackNo_BMU})`;
+      }
       return  (
-        <div key={item.DeviceId} onClick={this.onClick.bind(this,item.DeviceId)}>{item.DeviceId}</div>
+        <div key={deviceItem.DeviceId} onClick={this.onClick.bind(this,deviceItem.DeviceId)}>{value}</div>
       );
   }
   render() {
     return (
       <div className="onseldevice">
         <div className="titleinput">
-            <input name="" placeholder="请输入车辆ID" type="number" onChange={this.onChange.bind(this)} />
+            <input name="" placeholder="请输入车辆ID或PACK号" type="number" onChange={this.onChange.bind(this)} />
         </div>
         <div className="list">
 

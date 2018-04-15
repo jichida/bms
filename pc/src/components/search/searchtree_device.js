@@ -13,6 +13,7 @@ import map from 'lodash.map';
 import { Input, Select, AutoComplete, Button } from 'antd';
 import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
 import TreeselectByloc from "../trees/treeselect_byloc.js";
+import lodashget from 'lodash.get';
 // import moment from 'moment';
 import filter from 'lodash.filter';
 
@@ -129,18 +130,25 @@ class TreeSearchBattery extends React.Component {
 
       if (!!deviceidlist) {
         optionsarr = filter(deviceidlist,function(o,index) {
+          const deviceItem = g_devicesdb[o];
           if(!!o){
-            return o.indexOf(value)!==-1;
+             if(o.indexOf(value)!==-1){
+               return true;
+             };
           }
-          console.log(`o is null,${index},deviceidlist length:${deviceidlist.length}`);
+          const PackNo_BMU = lodashget(deviceItem,'PackNo_BMU','');
+          if(PackNo_BMU !== ''){
+             if(PackNo_BMU.indexOf(value)!==-1){
+               return true;
+             }
+          }
           return false;
         })
-        if(optionsarr.length>100){optionsarr.length=100}
+        if(optionsarr.length > 100){
+          optionsarr.length = 100;
+        }
       }
       this.props.dispatch(set_treesearchlist(optionsarr));
-      // this.setState({ options });
-      // this.props.onSelDeviceid(value);
-
     }
 
     onClickQuery=()=>{
@@ -180,7 +188,7 @@ class TreeSearchBattery extends React.Component {
             <div className="searchtree" style={{textAlign: "center"}}>
                     <br/>
                     <Input
-                        name="searchkey" id="searchkey" placeholder="请输入车辆ID" style={{width: "320px"}}
+                        name="searchkey" id="searchkey" placeholder="请输入车辆ID或PACK号" style={{width: "320px"}}
                         onChange={this.onChange}
                     />
 

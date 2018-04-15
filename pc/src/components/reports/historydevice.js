@@ -129,10 +129,10 @@ class TablePosition extends React.Component {
         ];
         let columnx = 0;
         const column_width = [
-          200,300,300,150,150,
-          150,150,150,150,150,
-          150,180,200,150,150,
-          150,150,150,150,150,
+          200,300,300,200,200,
+          200,200,200,200,200,
+          200,200,250,200,200,
+          200,200,200,200,200,
           0
         ];
 
@@ -158,7 +158,7 @@ class TablePosition extends React.Component {
         const viewinmap = (row)=>{
             console.log(row);//DeviceId
             // this.props.history.push(`/alarminfo/${row._id}`);
-            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
+            this.props.dispatch(ui_alarm_selcurdevice(row[`车辆ID`]));
         }
         let columns_action ={
             title: "操作",
@@ -193,7 +193,6 @@ class TablePosition extends React.Component {
                 <div className="tablelist" >
                     <AntdTable
                       tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
-                      bordered:true,
                       }}
 
                       listtypeid = 'antdtabledevice'

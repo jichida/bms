@@ -115,7 +115,7 @@ class TablePosition extends React.Component {
         const viewinmap = (row)=>{
             console.log(row);//DeviceId
             // this.props.history.push(`/alarminfo/${row._id}`);
-            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
+            this.props.dispatch(ui_alarm_selcurdevice(row[`RDB编号`]));
         }
         let columns_action ={
             title: "操作",

@@ -2,9 +2,10 @@ import React from 'react';
 import ListView from 'rmc-list-view';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import get from 'lodash.get';
 import map from 'lodash.map';
+import get from 'lodash.get';
 import './listview.css';
+import {set_weui} from '../../actions';
 //https://github.com/edwardhotchkiss/mongoose-paginate
 //https://github.com/react-component/m-list-view
 //https://github.com/ant-design/ant-design-mobile/issues/541
@@ -70,15 +71,14 @@ class Page extends React.Component {
       listdata:this.initData,
       pos:pos//document.body.scrollTop||document.documentElement.scrollTop
     };
-    console.log(`保存位置数据:,pos:${pos}`);
+
   }
   componentDidMount(){
     this.mounted = true;
-    console.log(`滚动到位置数据:${JSON.stringify(this.state.pos)}`);
+
     this.refs.listview.scrollTo(0,this.state.pos);
   }
   onRefresh() {
-    console.log('onRefresh');
     this.setState({ refreshing: true });
     this.onAjax(this.props.query,this.props.sort,this.props.pagenumber);
   }
@@ -94,6 +94,7 @@ class Page extends React.Component {
     this.props.dispatch(this.props.queryfun({
         query: query,
         options: {
+            select:this.props.select || {},
             sort: sort,
             offset: offset,
             limit: pagenumber,
@@ -115,53 +116,67 @@ class Page extends React.Component {
           isend:result.offset + result.limit >= result.total
         });
       }
+    }).catch((e)=>{
+      this.setState({ refreshing: true });
+      this.props.dispatch(set_weui({
+        toast:{
+        text:e,
+        show: true,
+        type:'warning'
+      }}));
+      console.log(e);
     });
   }
   //到达底部事件
   _onEndReached(event) {
     // load new data
-    console.log('reach end', event);
-    if(!!event){
-      if(this.state.offset + this.props.pagenumber < this.state.total){
-          this.setState({
-            isLoading: true,//加载中
-            isend:false//是否最后一页
-          });
-          let offset = this.state.offset + this.props.pagenumber;
-          let that = this;
-          this.props.dispatch(this.props.queryfun({
-              query: this.props.query,
-              options: {
-                  sort: this.props.sort,
-                  offset: offset,
-                  limit: this.props.pagenumber,
-              }
-          })).then(({result})=> {
-            if (that.mounted){
-                if(!!result){
-                  map(result.docs,(item)=>{
-                    that.initData.push(item);
-                  });
-                }
-                let dateSource =  that.state.dataSource.cloneWithRows([...that.initData]);
-                that.setState({
-                  dataSource:dateSource,
-                  isLoading: false,
-                  offset:result.offset,//当前页
-                  total:result.total,
-                  isend:result.offset + result.limit >= result.total
+
+    if(this.state.offset + this.props.pagenumber < this.state.total){
+        this.setState({
+          isLoading: true,//加载中
+          isend:false//是否最后一页
+        });
+        let offset = this.state.offset + this.props.pagenumber;
+        let that = this;
+        this.props.dispatch(this.props.queryfun({
+            query: this.props.query,
+            options: {
+                sort: this.props.sort,
+                offset: offset,
+                limit: this.props.pagenumber,
+            }
+        })).then(({result})=> {
+          if (that.mounted){
+              if(!!result){
+                map(result.docs,(item)=>{
+                  that.initData.push(item);
                 });
               }
-            });
-      }
-      else{
-        this.setState({
-          isLoading: false,
-          isend:true
-        });
-      }
-    }else{
-      return ;
+              let dateSource =  that.state.dataSource.cloneWithRows([...that.initData]);
+              that.setState({
+                dataSource:dateSource,
+                isLoading: false,
+                offset:result.offset,//当前页
+                total:result.total,
+                isend:result.offset + result.limit >= result.total
+              });
+            }
+          }).catch((e)=>{
+            this.setState({ refreshing: true });
+            this.props.dispatch(set_weui({
+              toast:{
+              text:e,
+              show: true,
+              type:'warning'
+            }}));
+            console.log(e);
+          });
+    }
+    else{
+      this.setState({
+        isLoading: false,
+        isend:true
+      });
     }
   }
 
@@ -176,9 +191,8 @@ class Page extends React.Component {
     if(!!this.props.renderSeparator){
       return this.props.renderSeparator(sectionID, rowID);
     }
-
-    return (<div key={`${sectionID}-${rowID}`} style={{ backgroundColor: '#F5F5F9', height: 8 }} >
-      </div>);
+    return
+    (<div key={`${sectionID}-${rowID}`} style={{ backgroundColor: '#F5F5F9', height: 8 }} ></div>);
   }
   updateContent(item){
     return this.props.updateContent(item,this.onRefresh.bind(this));

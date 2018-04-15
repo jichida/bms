@@ -27,9 +27,9 @@ const getusers = (listusers)=>{
 
 
 const importexcel = (excelfilepath,userid,callbackfn)=>{
-  console.log(`开始导入excel:${excelfilepath}`);
+  //console.log(`开始导入excel:${excelfilepath}`);
   const obj = xlsx.parse(excelfilepath);
-  console.log(JSON.stringify(obj));
+  //console.log(JSON.stringify(obj));
   let listusers = [];
   let resultkey = [];
   _.map(obj,(v)=>{
@@ -48,9 +48,9 @@ const importexcel = (excelfilepath,userid,callbackfn)=>{
     });
   });
 
-  console.log(listusers);
+  //console.log(listusers);
   const newlistusers = getusers(listusers);
-  console.log(newlistusers);
+  //console.log(newlistusers);
 
   let asyncgetidsfnsz = [];
   _.map(newlistusers,(userinfo)=>{

@@ -26,7 +26,7 @@ import Footer from "../index/footer.js";
 import moment from 'moment';
 // import get from 'lodash.get';
 // import SelectDevice from '../mydevice/selectdevice.js';
-
+import {gettimekey} from '../../util/getshardkey';
 const innerHeight = window.innerHeight;
 
 class Page extends React.Component {
@@ -69,6 +69,15 @@ class Page extends React.Component {
         query.Longitude = {
           $ne:0
         };
+        //新建timekey
+        const timekeysz = gettimekey(startDate.format('YYYY-MM-DD HH:mm:ss'),endDate.format('YYYY-MM-DD HH:mm:ss'));
+        if(timekeysz.length === 1){
+          query['TimeKey'] = timekeysz[0];
+        }
+        else if(timekeysz.length > 1){
+          query['TimeKey'] = { $in:timekeysz};
+        }
+        //====
         this.props.dispatch(mapplayback_start({isloop:false,speed,query}));
         this.showset();
 

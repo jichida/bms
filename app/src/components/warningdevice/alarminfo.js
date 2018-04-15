@@ -17,7 +17,7 @@ import {
     ui_alarm_selcurdevice,
     // setalarmreaded_request
 } from '../../actions';
-// import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
+import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 
 
 class Page extends React.Component {
@@ -46,7 +46,7 @@ class Page extends React.Component {
         const datadevice = {
             "基本信息" :[{
                     name:'报警等级',
-                    value: `${curdeviceinfo['warninglevel']}`,
+                    value: getwarningleveltext(`${curdeviceinfo['warninglevel']}`),
                 },
                 {
                     name:'车辆ID',
