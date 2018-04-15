@@ -122,7 +122,7 @@ class SearchMessage extends React.Component {
                     <div className="selcar">
                       <span className="t">车辆ID：</span>
                       <SelectDevice
-                        placeholder={"请输入设备ID"}
+                        placeholder={"请输入设备ID或PACK号"}
                         initdeviceid={this.state.DeviceId}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}
                         deviceidlist={deviceidlist}

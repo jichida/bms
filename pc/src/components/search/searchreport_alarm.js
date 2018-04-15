@@ -112,7 +112,7 @@ class TreeSearchBattery extends React.Component {
                     <div className="selcar setsearchid">
                       <span className="t">车辆ID：</span>
                       <SelectDevice
-                        placeholder={"请输入设备ID"}
+                        placeholder={"请输入设备ID或PACK号"}
                         initdeviceid={this.state.DeviceId|| this.props.DeviceId}
                         onSelDeviceid={this.onSelDeviceid.bind(this)}
                         deviceidlist={deviceidlist}
