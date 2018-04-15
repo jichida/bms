@@ -40,7 +40,7 @@ class Page extends React.Component {
             time: new Date(),
             isOpen: false,
             seltype : 0,
-            startDate:moment().subtract(5, 'hours'),
+            startDate:moment(moment().format('YYYY-MM-DD 00:00:00')),//moment().subtract(5, 'hours'),
             endDate:moment(),
             deviceid,
             mindata : new Date(1970, 0, 1),
