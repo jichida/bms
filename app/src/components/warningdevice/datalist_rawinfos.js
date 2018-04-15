@@ -21,9 +21,12 @@ import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 
 
 class Page extends React.Component {
-    componentWillMount() {
-      // this.props.dispatch(ui_resetsearch({}));
-    }
+  componentDidMount () {
+    window.setTimeout(()=>{
+      //console.log(this.refs);
+      this.refs.alarmrawlist.getWrappedInstance().onRefresh();
+    },0);
+  }
     rowClick(id){
         this.props.onClickRow(id);
     }

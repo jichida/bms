@@ -15,24 +15,37 @@ import { connect } from 'react-redux';
 import Datalist from "./datalist_rawinfos";
 // let g_showdata = false;
 let g_usecachealarm = false;
-
+let resizetimecontent;
 class Page extends React.Component {
-    // constructor(props) {
-    //     super(props);
-    //     //1727202266
-    // }
-
-    componentWillMount () {
+  constructor(props) {
+      super(props);
       let deviceid =  this.props.match.params.deviceid;
       let query = this.getquery({deviceid});
-      this.setState({
-        query
-      });
+
+      this.state = {
+        query: query,
+        innerHeight: window.innerHeight,
+      };
     }
-    componentDidMount () {
-      // g_showdata = false;
-      g_usecachealarm = false;
+
+    componentDidMount() {
+        g_usecachealarm = false;
+        window.addEventListener('resize', this.onWindowResize);
     }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize);
+    }
+
+    onWindowResize=()=> {
+        window.clearTimeout(resizetimecontent);
+        resizetimecontent = window.setTimeout(()=>{
+            this.setState({
+                innerHeight: window.innerHeight,
+            });
+        },10)
+    }
+
+
 
     getquery({deviceid}){
       let query = {};
@@ -61,7 +74,7 @@ class Page extends React.Component {
         return (
             <div className="playbackPage AppPage warningmessagePage"
                 style={{
-                    height : `${window.innerHeight}px`,
+                    height : `${this.state.innerHeight}px`,
                     overflow: "hidden",
                     paddingBottom:"0",
 
