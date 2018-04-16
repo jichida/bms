@@ -12,6 +12,7 @@ import AntdTable from "../controls/table.js";
 import moment from 'moment';
 import TreeSearchreport from '../search/search_message';
 import {ui_alarm_selcurdevice} from '../../actions';
+import { Tooltip } from 'antd';
 // import {
 //   callthen,uireport_searchalarm_request,uireport_searchalarm_result
 // } from '../../sagas/pagination';
@@ -87,7 +88,7 @@ class MessageAllDevice extends React.Component {
               dataIndex: data,
               key: index,
               render: (text, row, index) => {
-                  return <span>{text}</span>;
+                  return <Tooltip title={`${text}`}><span>{text}</span></Tooltip>;
               },
               sorter:(a,b)=>{
                 return a[data] > b[data] ? 1:-1;
