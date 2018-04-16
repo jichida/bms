@@ -8,7 +8,7 @@ import map from 'lodash.map';
 
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
-
+import { Tooltip } from 'antd';
 // import {bridge_alarminfo} from '../../sagas/datapiple/bridgedb';
 import moment from 'moment';
 
@@ -117,7 +117,7 @@ class TableAlarm extends React.Component {
               dataIndex: data,
               key: index,
               render: (text, row, index) => {
-                  return <span>{text}</span>;
+                  return <Tooltip title={`${text}`}><span>{text}</span> </Tooltip>;
               },
               sorter:(a,b)=>{
                 return a[data] > b[data] ? 1:-1;

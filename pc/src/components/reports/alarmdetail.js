@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-
+import { Tooltip } from 'antd';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
@@ -141,9 +141,9 @@ class TableAlarmDetail extends React.Component {
               key: index,
               render: (text, row, index2) => {
                 if(column_width[index] > 0){
-                  return <span style={{width:`${column_width[index]}px`}}>{text}</span>;
+                  return <Tooltip title={`${text}`}><span style={{width:`${column_width[index]}px`}}>{text}</span></Tooltip>;
                 }
-                return <span>{text}</span>;
+                return <Tooltip title={`${text}`}><span>{text}</span> </Tooltip>;
               },
               sorter:(a,b)=>{
                 return a[data] > b[data] ? 1:-1;
