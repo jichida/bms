@@ -31,6 +31,8 @@ const getOptions = (resourcename,label,value,query={})=>{
           });
         });
         callback(null, { options: options ,complete: true});
+    }).catch((e)=>{
+      callback(null, { options: [] ,complete: true});
     });
   }
 }

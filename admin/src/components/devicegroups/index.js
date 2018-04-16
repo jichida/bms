@@ -13,8 +13,8 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import {CreateActions,EditActions} from '../controls/createeditactions';
-import {getOptions} from '../controls/getselect.js';
-import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
+import {getDeviceOptions} from './devicealloptions';
+import {SelectDevices} from './selectdevices';
 
 
 const DeviceGroupTitle = ({record}) => {
@@ -27,7 +27,7 @@ const DeviceGroupCreate = (props) => (
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
-      <CfSelectArrayInput label="选择设备列表" source="deviceids" loadOptions={getOptions('device','DeviceId','_id')}/>
+      <SelectDevices label="选择设备列表" source="deviceids" loadOptions={getDeviceOptions()}/>
     </SimpleForm>
   </Create>
 );
@@ -38,7 +38,7 @@ const DeviceGroupEdit = (props) => {
       <TextInput label="分组名称" source="name" validate={required} />
       <TextInput label="备注" source="memo" />
       <TextInput label="联系人" source="contact" />
-      <CfSelectArrayInput label="选择设备列表" source="deviceids" loadOptions={getOptions('device','DeviceId','_id')}/>
+      <SelectDevices label="选择设备列表" source="deviceids" loadOptions={getDeviceOptions()}/>
     </SimpleForm>
   </Edit>
   );

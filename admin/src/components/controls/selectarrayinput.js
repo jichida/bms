@@ -29,6 +29,7 @@ const renderSelect = ({ meta: { touched, error } = {}, input: { ...inputProps },
 }
 
 const CfSelectArrayInput = ({source,label,loadOptions}) => {
+  console.log(loadOptions)
   return(
       <span>
         <Field
