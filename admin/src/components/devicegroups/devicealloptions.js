@@ -3,6 +3,8 @@ import config from '../../env/config';
 import _ from 'lodash';
 
 let deviceoptions = [];
+let mapdevices = {};
+let mapdevices_r = {};
 const startLoadDeviceOptions = (callbackfn)=>{
   const query = {};
   const label = 'DeviceId';
@@ -33,6 +35,8 @@ const startLoadDeviceOptions = (callbackfn)=>{
           label:v[label],
           value:v[value]
         });
+        mapdevices[v[value]] = v[label];
+        mapdevices_r[v[label]] = v[value];
       });
       callbackfn(deviceoptions);
   }).catch((e)=>{
@@ -54,4 +58,5 @@ const getDeviceOptions = ()=>{
   };
 }
 
-export {startLoadDeviceOptions,getDeviceOptions};
+
+export {startLoadDeviceOptions,getDeviceOptions,mapdevices,mapdevices_r};
