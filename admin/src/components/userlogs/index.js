@@ -30,7 +30,7 @@ import {
   ReferenceInput,
   Filter
 } from 'admin-on-rest/lib/mui';
-
+import config from '../../env/config';
 import { Field,FieldArray } from 'redux-form';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -46,7 +46,7 @@ const UserFilter = (props) => (
 );
 
 const UserlogList = (props) => (
-     <List title="用户登录信息列表" filters={<UserFilter />}  {...props} >
+     <List title="用户日志管理" filters={<UserFilter />}  {...props} sort={{field:'created_at',order:'DESC'}} perPage={config.listperpage}>
         <Datagrid  bodyOptions={{ showRowHover: true }}>
           <ReferenceField label="用户" source="creator" reference="user" allowEmpty>
             <TextField source="username" />
