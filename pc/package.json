@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@antv/data-set": "^0.8.5",
-    "antd": "^2.12.7",
+    "antd": "3.4.1",
     "async": "^2.5.0",
     "autoprefixer": "7.1.1",
     "babel-core": "6.25.0",

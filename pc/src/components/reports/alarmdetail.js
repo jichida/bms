@@ -190,7 +190,7 @@ class TableAlarmDetail extends React.Component {
                 </div>
                 <div className="tablelist" >
                     <AntdTable
-                      tableprops={{scroll:{x: `${columnx+500}px`, y: 30*22},
+                      tableprops={{scroll:{x: `${columnx+500}px`},
                         bordered:true,
                       }}
                       listtypeid = 'antdtablealarmdetail'
