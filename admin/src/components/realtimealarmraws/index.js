@@ -35,6 +35,7 @@ import _ from 'lodash';
 import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
 import config from '../../env/config';
+import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 
 const RealtimeAlamTitle = ({record}) => {
    return <span>实时报警明细</span>
@@ -81,14 +82,13 @@ const AlarmField = ({ record = {} }) => {
   return (<span>{alarmtxt}</span>);
 }
 
-// const AlarmFieldShow = (props) => {
-//   let {source,label} = props;
-//   return(
-//     <span>
-//       <Field name={source} component={renderDatePicker} label={label}/>
-//     </span>
-//   )
-// }
+const AlarmLevel = ({record,source}) => {
+  return(
+    <span>
+      {getwarningleveltext(record[source])}
+    </span>
+  )
+}
 
 
 
@@ -96,7 +96,7 @@ const RealtimeAlarmRawShow = (props) => {
   return (<Show title={<RealtimeAlamTitle />} {...props} actions={<ShowActions />}>
     <SimpleShowLayout>
      <TextField label="设备ID" source="DeviceId" />
-     <TextField label="报警等级" source="warninglevel" />
+     <AlarmLevel label="报警等级" source="warninglevel" addLabel={true}/>
      <TextField label="报警时间" source="DataTime"  />
      <AlarmField label="报警信息" addLabel={true}/>
     </SimpleShowLayout>
@@ -108,9 +108,9 @@ const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId" />
     <SelectInput  label="报警等级"  source="warninglevel" choices={[
-        { id: '高', name: '高' },
-        { id: '中', name: '中' },
-        { id: '低', name: '低' },
+        { id: '高', name: '三级' },
+        { id: '中', name: '二级' },
+        { id: '低', name: '一级' },
     ]} />
   </Filter>
 )
@@ -119,7 +119,7 @@ const RealtimeAlarmRawList = (props) => (
   <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'DataTime',order:'DESC'}} perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备" source="DeviceId" />
-      <TextField label="报警等级" source="warninglevel" />
+      <AlarmLevel label="报警等级" source="warninglevel" />
       <TextField label="报警时间" source="DataTime"  />
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <AlarmField label="报警信息" />

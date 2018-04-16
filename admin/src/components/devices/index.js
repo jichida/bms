@@ -39,8 +39,16 @@ import moment from 'moment';
 import {CreateActions,EditActions} from '../controls/createeditactions';
 import ImportExcelButton from './importexcelbtn';
 import config from '../../env/config';
-
+import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 const deviceDefaultValue = {created_at:moment().format('YYYY-MM-DD HH:mm:ss'),updated_at:moment().format('YYYY-MM-DD HH:mm:ss')};
+
+const AlarmLevel = ({record,source}) => {
+  return(
+    <span>
+      {getwarningleveltext(record[source])}
+    </span>
+  )
+}
 
 const DeviceCreate = (props) => (
   <Create title="创建设备"  {...props} actions={<CreateActions />}>
@@ -248,6 +256,8 @@ const DeviceActions = ({ resource, filters, displayedFilters, filterValues, base
     </CardActions>
 );
 
+
+
 const DeviceList = (props) => (
   <List title="设备管理" filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}
   actions={<DeviceActions />} perPage={config.listperpage}>
@@ -255,7 +265,7 @@ const DeviceList = (props) => (
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="PackNo" source="PackNo_BMU" />
-      <TextField label="报警等级" source="warninglevel" />
+      <AlarmLevel label="报警等级" source="warninglevel" />
       <TextField label="报警信息" source="alarmtxtstat" />
       <TextField label="最后数据时间" source="LastRealtimeAlarm.DataTime" />
       <TextField label="最后定位时间" source="LastHistoryTrack.GPSTime" />

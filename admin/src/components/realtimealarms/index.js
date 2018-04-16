@@ -36,6 +36,7 @@ import {ShowActions} from '../controls/createeditactions';
 import ShowButton from '../controls/ShowButton';
 import config from '../../env/config';
 import {DateInputFilter} from '../controls/FilterControls';
+import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 
 const RealtimeAlamTitle = ({record}) => {
    return <span>每日报警统计</span>
@@ -73,14 +74,13 @@ const AlarmField = ({ record = {} }) => {
   return (<span>{alarmtxt}</span>);
 }
 
-// const AlarmFieldShow = (props) => {
-//   let {source,label} = props;
-//   return(
-//     <span>
-//       <Field name={source} component={renderDatePicker} label={label}/>
-//     </span>
-//   )
-// }
+const AlarmLevel = ({record,source}) => {
+  return(
+    <span>
+      {getwarningleveltext(record[source])}
+    </span>
+  )
+}
 
 
 
@@ -90,6 +90,7 @@ const RealtimeAlarmShow = (props) => {
      <TextField label="设备ID" source="DeviceId" />
      <TextField label="日期" source="CurDay" />
      <TextField label="采集时间" source="DataTime"  />
+     <AlarmLevel label="报警等级" source="warninglevel" addLabel={true}/>
      <AlarmField label="报警信息" addLabel={true}/>
     </SimpleShowLayout>
   </Show>
@@ -100,9 +101,9 @@ const DeviceFilter = (props) => (
   <Filter {...props}>
     <TextInput label="搜索设备" source="DeviceId" />
     <SelectInput  label="报警等级"  source="warninglevel" choices={[
-        { id: '高', name: '高' },
-        { id: '中', name: '中' },
-        { id: '低', name: '低' },
+        { id: '高', name: '三级' },
+        { id: '中', name: '二级' },
+        { id: '低', name: '一级' },
     ]} />
     <DateInputFilter source="CurDay" label="当前日期" options={{
       okLabel: '确定',
@@ -118,7 +119,7 @@ const RealtimeAlarmList = (props) => (
       <TextField label="设备" source="DeviceId" />
       <TextField label="日期" source="CurDay" />
       <TextField label="采集时间" source="DataTime"  />
-      <TextField label="报警等级" source="warninglevel" />
+      <AlarmLevel label="报警等级" source="warninglevel" />
       <AlarmField label="报警信息" />
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <ShowButton />
