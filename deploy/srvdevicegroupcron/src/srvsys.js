@@ -9,7 +9,7 @@ const moment = require('moment');
 const startcron = require('./lib/startcron');
 const _ = require('lodash');
 const coordtransform = require('coordtransform');
-const debug = require('debug')('srvdevicegroupcron:cron');
+const debug = require('debug')('srvdevicegroupcron:index');
 
 
 const getDevice = (callbackfn)=>{
@@ -43,9 +43,12 @@ const getDevice = (callbackfn)=>{
 
 
 const startsrv =()=>{
+  debug(`开始执行...`);
   getDevice((devicelist)=>{
     // debug(`getDevice-->${JSON.stringify(devicelist)}`);
-    startcron(devicelist);
+    startcron(devicelist,(err,result)=>{
+      debug(`全部执行完毕...`);
+    });
   });
 }
 

@@ -43,7 +43,7 @@ const cron_devicegroup = (callbackfn)=>{
   });
 }
 
-const startcron = (devicelist)=>{
+const startcron = (devicelist,callbackfnindex)=>{
   let fnsz = [];
   fnsz.push((callbackfn)=>{
     cron_devicegroup((citycode_devicegroupid)=>{
@@ -80,7 +80,7 @@ const startcron = (devicelist)=>{
     });
 
     //---->
-    startcron_updatedevicegroup(retmapgroupidtodevice);
+    startcron_updatedevicegroup(retmapgroupidtodevice,callbackfnindex);
   });
 }
 

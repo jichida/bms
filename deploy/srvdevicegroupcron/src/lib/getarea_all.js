@@ -64,7 +64,7 @@ const getallarea_all_fromamap = (devicelist,callback)=>{
   }
 
   debug(`getallarea_all_fromamap-->${fnsz.length}`)
-  async.series(asyncfnsz,(err,result)=>{
+  async.series(fnsz,(err,result)=>{
     callback(success_list);
   });
 };
