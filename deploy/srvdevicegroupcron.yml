@@ -1,0 +1,18 @@
+version: '2'
+services:
+  srvdevicegroupcron:
+    image: node:6.11.2
+    restart: always
+    command: node ./index.js
+    working_dir: /app
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./srvdevicegroupcron:/app
+      - ./dist/log:/log
+    environment:
+      - DEBUG=*
+      - DEBUG_COLORS=1
+      - MONGO_URL=mongodb://localhost:27018/bmscatl
+      - mongos=false
+      - logdir=/log
+    network_mode: "host"
