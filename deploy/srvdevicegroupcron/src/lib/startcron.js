@@ -5,7 +5,7 @@ const debug = require('debug')('srvdevicegroupcron:startcron');
 
 const getalldefault_devicegroups = require('./getallcities');
 const getallarea_start = require('./getarea_all');
-
+const startcron_updatedevicegroup = require('./startcron_updatedevicegroup');
 
 const cron_devicegroup = (callbackfn)=>{
   let citycode_devicegroupid = {};
@@ -63,6 +63,24 @@ const startcron = (devicelist)=>{
   async.series(fnsz,(err,result)=>{
     const citycode_devicegroupid = result[0];//dg.citycode->groupid
     const allret = result[1];//_id,citycode
+    //>[{"_id":"5a0ee444b2370efa845fe59a","citycode":"0898","getflag":"fromdb"}]
+    let retmapgroupidtodevice = {};
+    _.map(allret,(device2citycode)=>{
+      const groupid = citycode_devicegroupid[device2citycode.citycode];
+      if(!!groupid){
+        if(!retmapgroupidtodevice[groupid]){
+          retmapgroupidtodevice[groupid] = [];
+        }
+        retmapgroupidtodevice[groupid].push(device2citycode._id);
+      }
+      else{
+        debug(`【注意】citycode->${device2citycode.citycode}找不到groupid`)
+      }
+
+    });
+
+    //---->
+    startcron_updatedevicegroup(retmapgroupidtodevice);
   });
 }
 
