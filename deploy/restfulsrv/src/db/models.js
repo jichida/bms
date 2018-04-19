@@ -27,7 +27,7 @@ const DeviceGroupSchema = new Schema({
   deviceids:[{ type: Schema.Types.ObjectId, ref: 'device', default: [] }],
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   systemflag:{ type: Schema.Types.Number,default: 0 },
-});
+}, { strict: false });
 DeviceGroupSchema.plugin(mongoosePaginate);
 const DeviceGroupModel =mongoose.model('devicegroup',  DeviceGroupSchema);
 
