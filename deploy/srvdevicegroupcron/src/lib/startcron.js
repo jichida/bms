@@ -2,7 +2,7 @@ const async = require("async");
 const _ = require('lodash');
 const DBModels = require('../handler/models');
 const debug = require('debug')('srvdevicegroupcron:startcron');
-
+const winston = require('../log/log.js');
 const getalldefault_devicegroups = require('./getallcities');
 const getallarea_start = require('./getarea_all');
 const startcron_updatedevicegroup = require('./startcron_updatedevicegroup');
@@ -75,6 +75,7 @@ const startcron = (devicelist,callbackfnindex)=>{
       }
       else{
         debug(`【注意】citycode->${device2citycode.citycode}找不到groupid`)
+        winston.getlog().error(`【注意】citycode->${device2citycode.citycode}找不到groupid`);
       }
     });
 

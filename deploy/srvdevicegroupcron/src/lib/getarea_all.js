@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const async = require('async');
 const DBModels = require('../handler/models.js');
+const winston = require('../log/log.js');
 const getarea_db_single = require('./getarea_db_single');
 const getamap_area_batch = require('./getamap_area_batch');
 const debug = require('debug')('srvdevicegroupcron:startcron');
@@ -23,16 +24,17 @@ const getallarea_all = (devicelist,callback)=>{
         else{
           failed_list.push(v);
         }
-        debug(`【根据设备ID获取城市】数据库中获取到数据-->${_id}->${citycode}->成功${success_list.length},失败:${failed_list.length},一共${devicelist.length}`)
+        debug(`【根据设备ID获取城市(数据库)】数据库中获取到数据-->${_id}->${citycode}->成功${success_list.length},失败:${failed_list.length},一共${devicelist.length}`)
         callbackfn(null,true);
       });
     });
   });
 
   debug(`getallarea_all-->${fnsz.length}`)
-  async.parallel(fnsz,(err,result)=>{
+  async.series(fnsz,(err,result)=>{
     debug(`【根据设备ID获取城市】成功个数-->${success_list.length}`)
     debug(`【根据设备ID获取城市】失败个数-->${failed_list.length}`)
+    winston.getlog().info(`【根据设备ID获取城市】,成功【${success_list.length}】,失败【${failed_list.length}】`);
     callback({success_list,failed_list});
   });
 
@@ -49,22 +51,22 @@ const getallarea_all_fromamap = (devicelist,callback)=>{
   for(let i = 0 ;i < devicelist.length; i += 20){
     const lend = i+20 > devicelist.length?devicelist.length:i+20;
     const target_devicelist = devicelist.slice(i, lend);
-    _.map(target_devicelist,(v)=>{
-      /*
-      _id,Longitude,Latitude
-      */
-      fnsz.push((callbackfn)=>{
-        getamap_area_batch(target_devicelist,(retlist)=>{
-          success_list = _.concat(success_list, retlist);
-          debug(`getallarea_all_fromamap->success_list-->${success_list.length}`)
-          callbackfn();
-        });
+    /*
+    _id,Longitude,Latitude
+    */
+    fnsz.push((callbackfn)=>{
+      getamap_area_batch(target_devicelist,(retlist)=>{
+        success_list = _.concat(success_list, retlist);
+        debug(`所有设备结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
+        callbackfn();
       });
     });
+
   }
 
   debug(`getallarea_all_fromamap-->${fnsz.length}`)
   async.series(fnsz,(err,result)=>{
+    winston.getlog().info(`【根据设备ID获取城市(地图API)】,成功【${success_list.length}】`);
     callback(success_list);
   });
 };

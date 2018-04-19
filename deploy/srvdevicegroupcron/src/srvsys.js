@@ -10,7 +10,7 @@ const startcron = require('./lib/startcron');
 const _ = require('lodash');
 const coordtransform = require('coordtransform');
 const debug = require('debug')('srvdevicegroupcron:index');
-
+const winston = require('./log/log.js');
 
 const getDevice = (callbackfn)=>{
   const deviceModel = DBModels.DeviceModel;
@@ -48,6 +48,7 @@ const startsrv =()=>{
     // debug(`getDevice-->${JSON.stringify(devicelist)}`);
     startcron(devicelist,(err,result)=>{
       debug(`全部执行完毕...`);
+      winston.getlog().info(`全部执行完毕`);
     });
   });
 }
