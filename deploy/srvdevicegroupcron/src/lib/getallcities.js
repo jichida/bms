@@ -45,6 +45,7 @@ const getalldefault_devicegroups = (GeoModel,callback)=>{
    },{
      "name":1,
      "citycode":1,
+     "provicename":1,
      "level":1,
    }).lean().exec((err,listcities)=>{
      if(!err && !!listcities){

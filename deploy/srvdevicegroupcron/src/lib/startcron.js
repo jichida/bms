@@ -26,7 +26,7 @@ const cron_devicegroup = (callbackfn)=>{
           citycode:dg.citycode,
           systemflag:1,
         }
-        devicegroupModel.findOneAndUpdate({name:groupobj.name,systemflag:1}, {$set:groupobj},{new: true,upsert:true},(err,result)=>{
+        devicegroupModel.findOneAndUpdate({citycode:groupobj.citycode,systemflag:1}, {$set:groupobj},{new: true,upsert:true},(err,result)=>{
           if(!err && !!result){
             citycode_devicegroupid[dg.citycode] = result._id;
           }
@@ -60,9 +60,9 @@ const startcron = (devicelist)=>{
   });
 
   debug(`startcron-->${JSON.stringify(devicelist.length)}`);
-  async.parallel(fnsz,(err,result)=>{
-    const citycode_devicegroupid = result[0];
-    const allret = result[1];
+  async.series(fnsz,(err,result)=>{
+    const citycode_devicegroupid = result[0];//dg.citycode->groupid
+    const allret = result[1];//_id,citycode
   });
 }
 

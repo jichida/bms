@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=srvdevicegroupcron:* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bms.com28.cn:27018/bmscatl node index"
+    "start": "DEBUG=srvdevicegroupcron:* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bms.com28.cn:27018/bmscatl node index",
+    "start2": "DEBUG=srvdevicegroupcron:* logdir=/root MONGO_URL=mongodb://localhost:27018/bmscatl node index"
   },
   "author": "",
   "license": "ISC",

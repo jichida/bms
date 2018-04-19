@@ -15,9 +15,11 @@ const getallarea_all = (devicelist,callback)=>{
     _id,Longitude,Latitude
     */
     fnsz.push((callbackfn)=>{
-      getarea_db_single(DBModels.GeoModel,v,({_id,adcode,getflag})=>{
-        if(!!adcode){
-          success_list.push({_id,adcode,getflag});
+      debug(`getarea_db_single-->${JSON.stringify(v)}`)
+      getarea_db_single(DBModels.GeoModel,v,({_id,citycode,getflag})=>{
+        debug(`getarea_db_single-->${_id}->${citycode}`)
+        if(!!citycode){
+          success_list.push({_id,citycode,getflag});
         }
         else{
           failed_list.push(v);
