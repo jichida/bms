@@ -15,15 +15,15 @@ const getallarea_all = (devicelist,callback)=>{
     _id,Longitude,Latitude
     */
     fnsz.push((callbackfn)=>{
-      debug(`getarea_db_single-->${JSON.stringify(v)}`)
+      // debug(`getarea_db_single-->${JSON.stringify(v)}`)
       getarea_db_single(DBModels.GeoModel,v,({_id,citycode,getflag})=>{
-        debug(`getarea_db_single-->${_id}->${citycode}`)
         if(!!citycode){
           success_list.push({_id,citycode,getflag});
         }
         else{
           failed_list.push(v);
         }
+        debug(`【根据设备ID获取城市】数据库中获取到数据-->${_id}->${citycode}->成功${success_list.length},失败:${failed_list.length},一共${devicelist.length}`)
         callbackfn(null,true);
       });
     });
@@ -31,8 +31,8 @@ const getallarea_all = (devicelist,callback)=>{
 
   debug(`getallarea_all-->${fnsz.length}`)
   async.parallel(fnsz,(err,result)=>{
-    debug(`success_list-->${success_list.length}`)
-    debug(`failed_list-->${failed_list.length}`)
+    debug(`【根据设备ID获取城市】成功个数-->${success_list.length}`)
+    debug(`【根据设备ID获取城市】失败个数-->${failed_list.length}`)
     callback({success_list,failed_list});
   });
 

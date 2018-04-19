@@ -76,7 +76,6 @@ const startcron = (devicelist,callbackfnindex)=>{
       else{
         debug(`【注意】citycode->${device2citycode.citycode}找不到groupid`)
       }
-
     });
 
     //---->

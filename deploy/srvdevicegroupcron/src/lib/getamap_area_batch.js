@@ -15,7 +15,7 @@ const getareasz = (devicelist,callbackfn)=>{
   });
   let retlist = [];
   const url = `http://restapi.amap.com/v3/geocode/regeo?key=${key}&location=${alllocations}&batch=true`;
-  console.log(`url==>${url}`);
+  // console.log(`url==>${url}`);
   // "key=" + key + "&location=" + location[0] + "," + location[1] +
   // "&poitype=商务住宅&radius=0&extensions=base&batch=false&roadlevel=0";
   fetch(url).then((res)=>{
