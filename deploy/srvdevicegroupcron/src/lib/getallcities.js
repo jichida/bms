@@ -41,18 +41,18 @@ const getalldefault_devicegroups = (GeoModel,callback)=>{
   GeoModel.find({
         levelint:{$lt:3},
         citycode:{$type:2},
-        level:{$in:['city','provice']}
+        level:{$in:['city','province']}
    },{
      "name":1,
      "citycode":1,
-     "provicename":1,
+     "provincename":1,
      "level":1,
    }).lean().exec((err,listcities)=>{
      if(!err && !!listcities){
        let devicelist = [];
        _.map(listcities,(v)=>{
          devicelist.push({
-           name:v.level === 'city' ?`${v.provicename}${v.name}`:v.name,
+           name:v.level === 'city' ?`${v.provincename}${v.name}`:v.name,
            citycode:v.citycode,
            level:v.level
          });
