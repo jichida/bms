@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const startexport = require('./handler/startexport');
 const _ = require('lodash');
-const bridge_historydeviceinfo = require('./handler/bridge_historydeviceinfo');
 const debug = require('debug')('srvinterval');
 
 const startexport_historydevice = (DeviceId,callbackfn)=>{

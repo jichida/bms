@@ -3,7 +3,8 @@ const winston = require('./src/log/log.js');
 const DBModels = require('./src/handler/models.js');
 const _ = require('lodash');
 const mongoose     = require('mongoose');
-const startsrv = require('./src/srvsys');
+// const startsrv = require('./src/srvsys');
+const startsrv = require('./src/test');//《------
 const moment = require('moment');
 const debug = require('debug')('start');
 
@@ -28,7 +29,7 @@ mongoose.connect(config.mongodburl,{
   });
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-winston.getlog().info(`start kafkadb ok`);
+// winston.getlog().info(`start kafkadb ok`);
 
 
 startsrv();
