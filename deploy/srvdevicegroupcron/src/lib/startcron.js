@@ -6,6 +6,7 @@ const winston = require('../log/log.js');
 const getalldefault_devicegroups = require('./getallcities');
 const getallarea_start = require('./getarea_all');
 const startcron_updatedevicegroup = require('./startcron_updatedevicegroup');
+const startcron_updateunlocateddevicegroup =  require('./startcron_updateunlocateddevicegroup');
 
 const cron_devicegroup = (callbackfn)=>{
   let citycode_devicegroupid = {};
@@ -81,7 +82,13 @@ const startcron = (devicelist,callbackfnindex)=>{
 
     //---->
     startcron_updatedevicegroup(retmapgroupidtodevice,callbackfnindex);
+
   });
+
+  startcron_updateunlocateddevicegroup(()=>{
+    
+  });
+
 }
 
 module.exports = startcron;
