@@ -4,7 +4,7 @@ const export_alarm = require('./lib/export_alarm');
 const export_history = require('./lib/export_history');
 const _ = require('lodash');
 const debug = require('debug')('srvinterval:test');
-const winston = require('../log/log.js');
+const winston = require('./log/log.js');
 const async = require('async');
 const schedule = require('node-schedule');
 
