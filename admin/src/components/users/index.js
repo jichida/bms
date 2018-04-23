@@ -33,7 +33,7 @@ const UserCreate = (props) => (
       <TextInput label="用户名" source="username" validate={required} />
       <TextInput label="密码" source="password" validate={required} />
       <TextInput label="真实姓名" source="truename"/>
-      <TextInput label="备注" source="demo" />
+      <TextInput label="备注" source="memo" />
       <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
         <SelectInput optionText="name" />
       </ReferenceInput>
@@ -50,7 +50,7 @@ const UserEdit = (props) => {
         <TextField source="id" />
         <TextField label="用户名" source="username" validate={required} />
         <TextInput label="真实姓名" source="truename"/>
-        <TextInput label="备注" source="demo" />
+        <TextInput label="备注" source="memo" />
         <ReferenceInput label="用户角色" source="roleid" reference="role" allowEmpty>
           <SelectInput optionText="name" />
         </ReferenceInput>
