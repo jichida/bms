@@ -6,7 +6,7 @@ const iconv = new Iconv('UTF-8', 'GBK');
 const moment  = require('moment');
 const config = require('../config');
 const fs = require('fs');
-const debug = require('debug')('srvinterval');
+const debug = require('debug')('srvinterval:export');
 
 const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},callbackfn)=>{
   // const filename = 'db-data-' + new Date().getTime() + '.csv';
