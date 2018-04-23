@@ -3,6 +3,7 @@ const DBModels = require('../handler/models.js');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const startexport = require('../handler/startexport');
+const winston = require('../log/log.js');
 const _ = require('lodash');
 const async = require('async');
 const debug = require('debug')('srvinterval:history');
