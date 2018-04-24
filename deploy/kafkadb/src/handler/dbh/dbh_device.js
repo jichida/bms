@@ -82,9 +82,17 @@ const dbh_device =(datasin,callbackfn)=>{
     _.map(datas,(devicedata)=>{
       //注：如果无报警,则清空报警字段,避免替换最后一次报警的值
       if(devicedata.warninglevel !== ''){
+        devicedata.last_alarmtime = _.get(devicedata,'LastRealtimeAlarm.DataTime','');
         devicedata.last_warninglevel = devicedata.warninglevel;
         devicedata.last_devicealarmstat = devicedata.devicealarmstat;
       }
+      //新增一个有效的最后经纬度
+      if(_.get(devicedata,'LastHistoryTrack.Longitude',0) !== 0){
+        devicedata.last_GPSTime = _.get(devicedata,'LastHistoryTrack.GPSTime','');
+        devicedata.last_Longitude = _.get(devicedata,'LastHistoryTrack.Longitude',0);
+        devicedata.last_Latitude = _.get(devicedata,'LastHistoryTrack.Latitude',0);
+      }
+
 
       bulk.find({
           DeviceId:devicedata.DeviceId
