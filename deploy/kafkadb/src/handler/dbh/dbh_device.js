@@ -84,7 +84,7 @@ const dbh_device =(datasin,callbackfn)=>{
       if(devicedata.warninglevel !== ''){
         devicedata.last_alarmtime = _.get(devicedata,'LastRealtimeAlarm.DataTime','');
         devicedata.last_warninglevel = devicedata.warninglevel;
-        devicedata.last_devicealarmstat = devicedata.devicealarmstat;
+        devicedata.last_alarmtxtstat = devicedata.alarmtxtstat;
       }
       //新增一个有效的最后经纬度
       if(_.get(devicedata,'LastHistoryTrack.Longitude',0) !== 0){

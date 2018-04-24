@@ -137,7 +137,12 @@ const DeviceEdit = (props) => {
           <TextField label="设备ID" source="DeviceId"  validate={required} />
           <TextField label="创建时间" source="created_at"  />
           <TextField label="插入数据库时间" source="updated_at"  />
-          <TextField label="更新时间" source="UpdateTime"  />
+          <TextField label="最后报警时间" source="last_alarmtime"  />
+          <TextField label="最后报警等级" source="last_warninglevel"  />
+          <TextField label="最后报警信息" source="last_alarmtxtstat"  />
+          <TextField label="最后定位时间" source="last_GPSTime"  />
+          <TextField label="最后定位经度" source="last_Longitude"  />
+          <TextField label="最后定位纬度" source="last_Latitude"  />
         </FormTab>
         <FormTab label="基本信息">
           <TextField label="数据包序号" source="LastRealtimeAlarm.SN" />
