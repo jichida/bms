@@ -5,9 +5,10 @@ const moment = require('moment');
 const startexport = require('../handler/startexport');
 const winston = require('../log/log.js');
 const _ = require('lodash');
+const fs = require('fs');
 const async = require('async');
 const debug = require('debug')('srvinterval:history');
-const batchcount = 20;
+const batchcount = 200;
 const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
   const curdays = moment(curday).format('YYYYMMDD');
   const TimeKey = moment(curday).format('YYMMDD');
@@ -51,8 +52,11 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
 }
 
 const startexport_export = (devicelist,callbackfn)=>{
-  const curday = moment().subtract(1, 'days').format('YYYY-MM-DD');
-  const exportdir = config.exportdir;
+  const moments = moment().subtract(1, 'days');
+  const curday = moments.format('YYYY-MM-DD');
+  const exportdir = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
+  fs.mkdirSync(exportdir);
+  winston.getlog().info(`新建一个目录${exportdir}`);
 
   let success_list = [];
   const fnsz = [];

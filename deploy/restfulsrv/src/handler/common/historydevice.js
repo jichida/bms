@@ -200,7 +200,11 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
                 ticka:
                 {
                     $avg: "$BAT_I_HVS"
-                }
+                },
+                ticks:
+                {
+                    $avg: "$BAT_User_SOC_HVS"
+                },
 
             }
         },
@@ -213,13 +217,15 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
       let listret = {
         ticktime:[],
         tickv:[],
-        ticka:[]
+        ticka:[],
+        ticks:[],
       };
       if(!err && !!result){
           _.map(result,(v)=>{
             listret.ticktime.push(v._id.ticktime);
             listret.tickv.push(v.tickv);
             listret.ticka.push(v.ticka);
+            listret.ticks.push(v.ticks);
           });
       }
       callbackfn(listret);

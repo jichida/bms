@@ -43,6 +43,7 @@ const cron_0 = (callbackfn)=>{
 }
 
 const cron_18 = (callbackfn)=>{
+  winston.getlog().info(`18点开始执行`);
   export_alarm(()=>{
     winston.getlog().info(`导出报警记录完毕`);
     callbackfn(null,true);
@@ -51,13 +52,13 @@ const cron_18 = (callbackfn)=>{
 
 const job=()=>{
   debug(`start job ...`);
-  cron_0(()=>{
-
-  });
-
-  cron_18(()=>{
-
-  });
+  // cron_0(()=>{
+  //
+  // });
+  //
+  // cron_18(()=>{
+  //
+  // });
 
   schedule.scheduleJob('0 0 * * *', ()=>{
     //每天0点开始工作
