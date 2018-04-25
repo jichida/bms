@@ -11,6 +11,44 @@ const async = require('async');
 const debug = require('debug')('srvinterval:alarm');
 const getdevice_location = require('../lib/getdevice_location');
 
+const getalarmfieldtotxt = (alarmfield)=>{
+    const mapdict = config.mapdict;
+    if(_.startsWith(alarmfield, 'AL_') || _.startsWith(alarmfield, 'F[')){
+      if(_.startsWith(alarmfield, 'AL_')){
+        if(!!mapdict[alarmfield]){
+          return mapdict[alarmfield].showname;
+        }
+      }
+      return alarmfield;
+    }
+    return undefined;
+};
+
+
+const bridge_alarminfo = (alarminfo)=>{
+  // ////console.log(`alarminfo===>${JSON.stringify(alarminfo)}`);
+  let alarmtxt = '';
+  let alarminfonew = {};
+  alarminfonew[`_id`] = alarminfo._id;
+  alarminfonew[`DeviceId`] = alarminfo[`DeviceId`];
+
+
+  let alarminfotmp = _.clone(alarminfo);
+  let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
+  // ////console.log(`rest===>${JSON.stringify(rest)}`);
+  _.map(rest,(v,key)=>{
+    let keytxt = getalarmfieldtotxt(key);
+    if(!!keytxt){
+      alarmtxt += `${keytxt} ${v}次|`
+    }
+
+  });
+
+  alarminfonew[`alarmtxtstat`] = alarmtxt;
+  // ////console.log(`alarminfonew===>${JSON.stringify(alarminfonew)}`);
+  return alarminfonew;
+}
+
 const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   const filepath = `${exportdir}/Alarm${curday}.csv`;
 
@@ -53,18 +91,13 @@ const startexport_export = (callbackfn)=>{
     const deviceModel = DBModels.RealtimeAlarmModel;
     deviceModel.find({
       CurDay,
-    },{
-      'DeviceId':1,
-      'Latitude':1,
-      'Longitude':1,
-      'alarmtxtstat':1
     }).lean().exec((err,result)=>{
       debug(err)
       debug(result)
       rlst = [];
       if(!err && !!result){
         _.map(result,(item)=>{
-          rlst.push(item);
+          rlst.push(bridge_alarminfo(item));
         });
       }
       debug(`[获取所有设备个数]===>${rlst.length}`)

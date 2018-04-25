@@ -9,13 +9,13 @@ const getallunlocateddevice = (callbackfn)=>{
   deviceModel.find({
     $or:[
       {
-        'LastHistoryTrack':{$exists:false},
+        'last_GPSTime':{$exists:false},
       },
       {
-        'LastHistoryTrack.Latitude':0,
+        'last_Longitude':0,
       },
       {
-        'LastHistoryTrack.Longitude':0
+        'last_Latitude':0
       }
     ]
   },{

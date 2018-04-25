@@ -15,19 +15,18 @@ const winston = require('./log/log.js');
 const getDevice = (callbackfn)=>{
   const deviceModel = DBModels.DeviceModel;
   deviceModel.find({
-    'LastHistoryTrack':{$exists:true},
-    'LastHistoryTrack.Latitude':{$ne:0},
-    'LastHistoryTrack.Longitude':{$ne:0}
+    'last_GPSTime':{$exists:true},
+    'last_Longitude':{$ne:0},
   },{
     'DeviceId':1,
-    'LastHistoryTrack.Latitude':1,
-    'LastHistoryTrack.Longitude':1,
-    'LastHistoryTrack.GPSTime':1,
+    'last_GPSTime':1,
+    'last_Longitude':1,
+    'last_Latitude':1,
   }).lean().exec((err,result)=>{
     rlst = [];
     if(!err && !!result){
       _.map(result,(item)=>{
-        const cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+        const cor = [last_Longitude,last_Latitude];
         const wgs84togcj02 = coordtransform.wgs84togcj02(cor[0],cor[1]);
         rlst.push({
           _id:item._id,

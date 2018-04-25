@@ -30,6 +30,23 @@ mongoose.connect(config.mongodburl,{
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 // winston.getlog().info(`start kafkadb ok`);
+const alname = 'AL_';
+//还应该包括所有AL开头字母的信息
+const dbdictModel = DBModels.DataDictModel;
+dbdictModel.find({
+    name:{'$regex':alname, $options: "i"}
+  },(err,dictlist)=>{
+  let mapdict = {};
+  if(!err && dictlist.length > 0){
+    _.map(dictlist,(v)=>{
+      mapdict[v.name] = {
+        name:v.name,
+        showname:v.showname,
+        unit:v.unit
+      }
+    });
+  }
+  config.mapdict = _.merge(config.mapdict,mapdict);
 
-
-startsrv();
+  startsrv();
+});

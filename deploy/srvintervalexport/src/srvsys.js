@@ -52,13 +52,13 @@ const cron_18 = (callbackfn)=>{
 
 const job=()=>{
   debug(`start job ...`);
-  // cron_0(()=>{
-  //
-  // });
-  //
-  // cron_18(()=>{
-  //
-  // });
+  cron_0(()=>{
+
+  });
+  
+  cron_18(()=>{
+
+  });
 
   schedule.scheduleJob('0 0 * * *', ()=>{
     //每天0点开始工作
