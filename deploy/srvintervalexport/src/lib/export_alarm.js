@@ -41,7 +41,6 @@ const bridge_alarminfo = (alarminfo)=>{
     if(!!keytxt){
       alarmtxt += `${keytxt} ${v}次|`
     }
-
   });
 
   alarminfonew[`alarmtxtstat`] = alarmtxt;
@@ -86,10 +85,10 @@ const startexport_export = (callbackfn)=>{
   const CurDay = momentprev.format('YYYY-MM-DD');
   const exportdir = config.exportdir;
 
-  const getDevicelist = (callbackfn)=>{
+  const getAlarmlist = (callbackfn)=>{
     debug(`start getDevicelist===>`)
-    const deviceModel = DBModels.RealtimeAlarmModel;
-    deviceModel.find({
+    const alarmModel = DBModels.RealtimeAlarmModel;
+    alarmModel.find({
       CurDay,
     }).lean().exec((err,result)=>{
       rlst = [];
@@ -110,8 +109,8 @@ const startexport_export = (callbackfn)=>{
     return [v.Longitude,v.Latitude];
   }
 
-  getDevicelist((devicelist)=>{
-    getdevice_location(devicelist,getpoint,(retlist)=>{
+  getAlarmlist((alarmlist)=>{
+    getdevice_location(alarmlist,getpoint,(retlist)=>{
       startexport_do(exportdir,curday,retlist,callbackfn);
     });
   });
