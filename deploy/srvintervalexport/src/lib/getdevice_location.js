@@ -8,13 +8,6 @@ const debug = require('debug')('srvinterval:location');
 const batchcount = 20;
 
 
-const getDevice_withPos_batch = (devicelist,getpoint,callbackfn)=>{
-  debug(`getDevice_withPos_batch-->${devicelist.length}`)
-  utilposition.getlist_pos(devicelist,getpoint,(err,newdevicelist)=>{
-    callbackfn(newdevicelist);
-  });
-}
-
 
 const getDevice_withPos = (devicelist,getpoint,callbackfn)=>{
   // getDevicelist((devicelist)=>{
@@ -23,11 +16,13 @@ const getDevice_withPos = (devicelist,getpoint,callbackfn)=>{
     for(let i = 0 ;i < devicelist.length; i += batchcount){
       const lend = i+batchcount > devicelist.length?devicelist.length:i+batchcount;
       const target_devicelist = devicelist.slice(i, lend);
-      fnsz.push((callbackfn)=>{
-        getDevice_withPos_batch(target_devicelist,getpoint,(retlist)=>{
-          success_list = _.concat(success_list, retlist);
+      fnsz.push((callback)=>{
+        utilposition.getlist_pos(target_devicelist,getpoint,(err,retlist)=>{
+          if(!err && !!retlist){
+            success_list = _.concat(success_list, retlist);
+          }
           debug(`获取设备数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
-          callbackfn();
+          callback();
         });
       });
     }

@@ -92,8 +92,6 @@ const startexport_export = (callbackfn)=>{
     deviceModel.find({
       CurDay,
     }).lean().exec((err,result)=>{
-      debug(err)
-      debug(result)
       rlst = [];
       if(!err && !!result){
         _.map(result,(item)=>{
