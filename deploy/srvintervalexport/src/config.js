@@ -8,7 +8,7 @@ const config =  {
   DeviceId:process.env.DeviceId,
   exportFlag:process.env.exportFlag || 'all',
   exportdir:process.env.exportdir ||'../../dist/exportdir',
-  version:'1.0.0',
+  version:'1.0.1',
   mapdict:{},
 };
 
