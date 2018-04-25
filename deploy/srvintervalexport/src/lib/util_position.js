@@ -99,7 +99,9 @@ const getlist_pos = (list,fngetpoint,callbackfn)=>{
     }
     asyncfnsz.push(fn);
   });
-  async.parallel(asyncfnsz,callbackfn);
+  async.series(asyncfnsz,(err,result)=>{
+    callbackfn(err,result)
+  });
 
 }
 
