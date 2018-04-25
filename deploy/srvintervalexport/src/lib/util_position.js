@@ -80,30 +80,29 @@ const getpostion_frompos = (point,callback)=>{
 
 const getlist_pos = (list,fngetpoint,callbackfn)=>{
   let asyncfnsz = [];
+  let newlist = [];
   _.map(list,(v)=>{
-    const fn = (callback)=>{
+    asyncfnsz.push((callback)=>{
       if(!v.Provice){
         const point = fngetpoint(v);
-        ////console.log(`call:${JSON.stringify(point)}`)
         getpostion_frompos(point,(retobj)=>{
           const newitem = _.merge(v,retobj);
-          ////console.log(`retobj:${JSON.stringify(retobj)}`)
-          // console.log(`newitem:${JSON.stringify(newitem)}`)
+          newlist.push(newitem);
           callback(null,newitem);
         });
       }
       else{
+        newlist.push(v);
         callback(null,v);
       }
-
-    }
-    asyncfnsz.push(fn);
+    });
   });
+
   async.series(asyncfnsz,(err,result)=>{
-    callbackfn(err,result)
+    callbackfn(err,newlist)
   });
 
 }
 
-exports.getpostion_frompos = getpostion_frompos;
+// exports.getpostion_frompos = getpostion_frompos;
 exports.getlist_pos = getlist_pos;
