@@ -13,7 +13,7 @@ const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
   const curdays = moment(curday).format('YYYYMMDD');
   const TimeKey = moment(curday).format('YYMMDD');
   const dbModel = DBModels.HistoryDeviceModel;
-  const filename = `${config.exportdir}/${curdays}_${DeviceId}.csv`;
+  const filename = `${exportdir}/${curdays}_${DeviceId}.csv`;
   const fields = null;
   const csvfields = 'DeviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,\
   BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,\
