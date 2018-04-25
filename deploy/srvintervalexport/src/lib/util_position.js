@@ -78,7 +78,7 @@ const getpostion_frompos = (point,callback)=>{
   });
 }
 
-const getlist_pos = (list,fngetpoint,callback)=>{
+const getlist_pos = (list,fngetpoint,callbackfn)=>{
   let asyncfnsz = [];
   _.map(list,(v)=>{
     const fn = (callback)=>{
@@ -99,7 +99,7 @@ const getlist_pos = (list,fngetpoint,callback)=>{
     }
     asyncfnsz.push(fn);
   });
-  async.parallel(asyncfnsz,callback);
+  async.parallel(asyncfnsz,callbackfn);
 
 }
 
