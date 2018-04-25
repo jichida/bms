@@ -85,7 +85,11 @@ const getlist_pos = (list,fngetpoint,callbackfn)=>{
     asyncfnsz.push((callback)=>{
       if(!v.Provice){
         const point = fngetpoint(v);
-        getpostion_frompos(point,(retobj)=>{
+        //http://caolan.github.io/async/docs.html#ensureAsync
+        /*
+        */
+        const asyncfn = async.ensureAsync(getpostion_frompos);//<-----
+        asyncfn(point,(retobj)=>{
           const newitem = _.merge(v,retobj);
           newlist.push(newitem);
           callback(null,newitem);
