@@ -8,7 +8,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const async = require('async');
 const debug = require('debug')('srvinterval:history');
-const batchcount = 200;
+const batchcount = 50;
 const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
   const curdays = moment(curday).format('YYYYMMDD');
   const TimeKey = moment(curday).format('YYMMDD');

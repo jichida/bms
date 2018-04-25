@@ -9,6 +9,7 @@ const batchcount = 20;
 
 
 const getDevice_withPos_batch = (devicelist,getpoint,callbackfn)=>{
+  debug(`getDevice_withPos_batch-->${devicelist.length}`)
   utilposition.getlist_pos(devicelist,getpoint,(err,newdevicelist)=>{
     callbackfn(newdevicelist);
   });
