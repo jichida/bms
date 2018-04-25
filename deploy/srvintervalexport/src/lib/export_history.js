@@ -67,7 +67,7 @@ const startexport_export = (devicelist,callbackfn)=>{
       startexport_batch(target_devicelist,exportdir,curday,(retlist)=>{
         success_list = _.concat(success_list, retlist);
         debug(`导出历史数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
-        callbackfn();
+        callbackfn(null,true);
       });
     });
 

@@ -22,7 +22,7 @@ const getDevice_withPos = (devicelist,getpoint,callbackfn)=>{
             success_list = _.concat(success_list, retlist);
           }
           debug(`获取设备数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
-          callback();
+          callback(null,true);
         });
       });
     }
