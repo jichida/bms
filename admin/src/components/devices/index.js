@@ -264,7 +264,7 @@ const DeviceActions = ({ resource, filters, displayedFilters, filterValues, base
 
 
 const DeviceList = (props) => (
-  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'SN64',order:'DESC'}} {...props}
+  <List title="设备管理" filters={<DeviceFilter />} sort={{field:'last_GPSTime',order:'DESC'}} {...props}
   actions={<DeviceActions />} perPage={config.listperpage}>
   {permissions =>
     <Datagrid  bodyOptions={{ showRowHover: true }}>
@@ -273,7 +273,7 @@ const DeviceList = (props) => (
       <AlarmLevel label="报警等级" source="warninglevel" />
       <TextField label="报警信息" source="alarmtxtstat" />
       <TextField label="最后数据时间" source="LastRealtimeAlarm.DataTime" />
-      <TextField label="最后定位时间" source="LastHistoryTrack.GPSTime" />
+      <TextField label="最后定位时间" source="last_GPSTime" />
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>
