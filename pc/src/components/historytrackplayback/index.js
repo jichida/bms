@@ -176,10 +176,6 @@ class Page extends React.Component {
             <div className="historytrackplayback" id="historytrackplayback" style={{height: this.state.innerHeight+"px"}} >
                 <div className="appbar" style={{height: "72px"}}>
 
-                    <div className="deviceinfo">
-
-                        <span>车辆信息</span>
-                    </div>
                     <div className="selcar">
                       <span className="t">车辆ID：</span>
                       <SelectDevice
