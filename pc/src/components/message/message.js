@@ -20,7 +20,7 @@ import { Tooltip } from 'antd';
 
 import "../../css/message.css";
 
-
+let resizetimecontent;
 let g_querysaved;
 class MessageAllDevice extends React.Component {
 
@@ -53,9 +53,25 @@ class MessageAllDevice extends React.Component {
           query: g_querysaved || queryalarm
         }
     }
-    componentDidMount () {
-      g_querysaved = null;
+
+    componentDidMount() {
+        g_querysaved = null;
+        window.addEventListener('resize', this.onWindowResize);
     }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize);
+    }
+
+    onWindowResize=()=> {
+        window.clearTimeout(resizetimecontent);
+        resizetimecontent = window.setTimeout(()=>{
+            this.setState({
+                innerHeight: window.innerHeight,
+            });
+        },10)
+    }
+
+
     onClickQuery(query){
       //console.log(query);
       this.setState({query});
