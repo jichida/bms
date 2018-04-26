@@ -524,10 +524,13 @@ const getclustertree_root =(SettingOfflineMinutes)=>{
       if(!err){
         const {children,dataItems} = result;
         if(!children || children.length === 0){
-          reject(`children or children.length is empty,${adcodetop}`);
+          // reject(`children or children.length is empty,${adcodetop}`);
+          resolve([]);
+          return;
         }
         if(!dataItems || dataItems.length === 0){
-          reject(`dataItems or dataItems.length is empty,${adcodetop}`);
+          // reject(`dataItems or dataItems.length is empty,${adcodetop}`);
+          resolve([]);
           return;
         }
         let count_online = 0;
