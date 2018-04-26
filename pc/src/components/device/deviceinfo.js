@@ -10,8 +10,13 @@ import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
 import { deviceinfoquerychart_request } from '../../actions';
-import { Chart1, Chart2, Chart3, Chart4 } from "./swiperchart";
+import { Chart2, Chart3 } from "./swiperchart";
 import moment from 'moment';
+import { Tabs } from 'antd';
+import './deviceinfo.css';
+
+const TabPane = Tabs.TabPane;
+
 class Page extends React.Component {
 
     componentWillMount() {
@@ -38,7 +43,7 @@ class Page extends React.Component {
         let data_ticks = [];
         let data_temperature = 0;
         map(props_ticktime,(v, i)=>{
-            const moments = parseInt(moment(v).format('HH'),10);
+            const moments = moment(v).format('HH:mm')//parseInt(moment(v).format('HH'),10);
             const vv = parseFloat(props_tickv[i].toFixed(2));
             const va = parseFloat(props_ticka[i].toFixed(2));
             const vs = parseFloat(props_ticks[i].toFixed(2));
@@ -83,79 +88,48 @@ class Page extends React.Component {
 
             <div className="warningPage devicePage deviceinfoPage">
                 <div className="appbar">
-
                     <div className="title">车辆详情</div>
                     <div className="devicebtnlist">
-                      {/*   <Button type="primary" icon="play-circle-o" onClick={
-                          ()=>
-                          {
-                            this.props.dispatch(ui_clickplayback(this.props.match.params.deviceid));
-                          }
-
-                        }>车辆轨迹监控</Button>
-                        <Button type="primary" icon="area-chart" onClick={
-                          ()=>
-                          {
-                            // this.props.dispatch(ui_clickplayback(mapseldeviceid));
-                            const id = this.props.match.params.deviceid;
-                            this.props.history.push(`/devicedata/${id}`);// ./devicedata.js
-                          }
-
-                        }>车辆历史数据</Button>
-                        <Button type="primary" icon="clock-circle-o" onClick={()=>{
-                          const id = this.props.match.params.deviceid;
-                          this.props.dispatch(ui_btnclick_devicemessage({DeviceId:id}));
-                          //this.props.history.push(`/devicemessage/${mapseldeviceid}`)
-                        }}>历史警告</Button> */}
-                      <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
+                    <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                     </div>
                 </div>
 
-                <div className="deviceinfoPage">
-                <div className="lists deviceinfolist"
-                    style={{
-                        flexGrow: 0,
-                    }}
-                    >
-                    {
-                      map(datadevice,(item,index)=>{
-                        return (
-                            <div key={index} className="li">
-                            <div>
-                                <div className="tit">{item.groupname}</div>
-                                {
-                                    map(item.kv,(i,k)=>{
-                                        let value = i.value;
-                                        if(i.unit !== ''){
-                                          value = `${value}${i.unit}`;
-                                        }
-                                        return (<div key={k} ><span>{`${i.name}`}</span><span>{`${value}`}</span></div>);
-                                    })
-                                }
-                                </div>
-                            </div>
-                        );
-                      })
-                    }
-                    {
-                        // map(datadevice,(item,i)=>{
-                        //     return (
-                        //         <div className="li" key={i}>
-                        //             <div>
-                        //             <div className="name">{item.name}</div><div className="text">{item.value}</div>
-                        //             </div>
-                        //         </div>
-                        //     )
-                        // })
-                    }
-                </div>
-                <div className="lists devicechartlists">
-                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
-                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
-                    <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
-                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
-                </div>
-                </div>
+                <div className="deviceinfodetail">
+                  <Tabs type="card">
+                    <TabPane tab="基本信息" key="1">
+                      <div  className="listsdeviceinfolist">
+                          {
+                            map(datadevice,(item,index)=>{
+                              return (
+                                  <div key={index} className="li">
+                                  <div>
+                                      <div className="tit">{item.groupname}</div>
+                                      {
+                                          map(item.kv,(i,k)=>{
+                                              let value = i.value;
+                                              if(i.unit !== ''){
+                                                value = `${value}${i.unit}`;
+                                              }
+                                              return (<div key={k} ><span>{`${i.name}`}</span><span>{`${value}`}</span></div>);
+                                          })
+                                      }
+                                      </div>
+                                  </div>
+                              );
+                            })
+                          }
+                      </div>
+                    </TabPane>
+                    <TabPane tab="图表信息" key="2">
+                      <div className="listsdevicechartlists">
+                          <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
+                          <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
+                          <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
+                          <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
+                      </div>
+                    </TabPane>
+                  </Tabs>
+                  </div>
             </div>
         );
     }
