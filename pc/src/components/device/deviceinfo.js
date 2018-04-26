@@ -11,7 +11,7 @@ import translate from 'redux-polyglot/translate';
 import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
 import { deviceinfoquerychart_request } from '../../actions';
 import { Chart1, Chart2, Chart3, Chart4 } from "./swiperchart";
-
+import moment from 'moment';
 class Page extends React.Component {
 
     componentWillMount() {
@@ -27,20 +27,30 @@ class Page extends React.Component {
         const {g_devicesdb,mapdetailfields,mapdict,alarmchart} = this.props;
         let deviceid = this.props.match.params.deviceid;
         const alarmchartdata = alarmchart[deviceid];
-        const data_soc = get(alarmchartdata,'soc','');
+        // const data_soc = get(alarmchartdata,'soc','');
         const props_tickv = get(alarmchartdata,'tickv',[]);
         const props_ticka = get(alarmchartdata,'ticka',[]);
+        const props_ticks = get(alarmchartdata,'ticks',[]);
         const props_ticktime = get(alarmchartdata,'ticktime',[]);
 
         let data_tickv = [];
         let data_ticka = [];
+        let data_ticks = [];
         let data_temperature = 0;
         map(props_ticktime,(v, i)=>{
-            let item = { time: v, value: props_tickv[i] };
-            let item2 = { time: v, value: props_ticka[i] };
+            const moments = parseInt(moment(v).format('HH'),10);
+            const vv = parseFloat(props_tickv[i].toFixed(2));
+            const va = parseFloat(props_ticka[i].toFixed(2));
+            const vs = parseFloat(props_ticks[i].toFixed(2));
+            let item = { time: moments, value: vv };
+            let item2 = { time: moments, value: va };
+            let item3 = { time: moments, value: vs };
             data_tickv.push(item);
             data_ticka.push(item2);
+            data_ticks.push(item3);
         })
+        // console.log(data_tickv);
+        // console.log(data_ticka);
         data_temperature = get(alarmchartdata,'temperature',0);
 
 
@@ -140,10 +150,10 @@ class Page extends React.Component {
                     }
                 </div>
                 <div className="lists devicechartlists">
-                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart1 data={data_soc} /></div>
-                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} /></div>
+                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
+                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
                     <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
-                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart4 data={data_ticka}/></div>
+                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
                 </div>
                 </div>
             </div>

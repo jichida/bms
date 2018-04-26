@@ -65,7 +65,23 @@ class TablePosition extends React.Component {
       //console.log(`导出excel:${JSON.stringify(payload)}`);
       this.props.dispatch(download_excel(payload));
     }
-
+    onClickLoc = (query)=>{
+      let DeviceId = query.DeviceId;
+      if(!DeviceId && !!query['$and']){
+        DeviceId = query['$and'].DeviceId;
+      }
+      if(!!DeviceId){
+        this.props.dispatch(ui_alarm_selcurdevice(DeviceId));
+      }
+      else{
+        this.props.dispatch(set_weui({
+          toast:{
+          text:'设备ID必选',
+          show: true,
+          type:'warning'
+        }}));
+      }
+    }
     onClickQuery(query){
       //console.log(query);
       this.setState({query,querydo:query});
@@ -158,23 +174,23 @@ class TablePosition extends React.Component {
           return column_item;
         });
 
-        const viewinmap = (row)=>{
-            console.log(row);//DeviceId
-            // this.props.history.push(`/alarminfo/${row._id}`);
-            this.props.dispatch(ui_alarm_selcurdevice(row[`车辆ID`]));
-        }
-        let columns_action ={
-            title: "操作",
-            width:`100px`,
-            fixed: 'right',
-            dataIndex: '',
-            key: 'x',
-            render: (text, row, index) => {
-                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
-            }
-        }
+        // const viewinmap = (row)=>{
+        //     console.log(row);//DeviceId
+        //     // this.props.history.push(`/alarminfo/${row._id}`);
+        //     this.props.dispatch(ui_alarm_selcurdevice(row[`车辆ID`]));
+        // }
+        // let columns_action ={
+        //     title: "操作",
+        //     width:`100px`,
+        //     fixed: 'right',
+        //     dataIndex: '',
+        //     key: 'x',
+        //     render: (text, row, index) => {
+        //         return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+        //     }
+        // }
         // columnx += 300;
-        columns.push(columns_action);
+        // columns.push(columns_action);
         // const tableheight = `${this.state.innerHeight-129-60}px`;
         // console.log(tableheight );
         return (
@@ -191,6 +207,7 @@ class TablePosition extends React.Component {
                       onClickQuery={this.onClickQuery.bind(this)}
                       onClickExport={this.onClickExport.bind(this)}
                       query={this.state.query}
+                      onClickLoc={this.onClickLoc.bind(this)}
                     />
                 </div>
                 <div className="tablelist" >

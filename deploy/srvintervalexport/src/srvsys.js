@@ -1,93 +1,12 @@
-/**
- * Created by wangxiaoqing on 2017/3/25.
- */
-const config = require('./config');
-const DBModels = require('./handler/models.js');
-const mongoose = require('mongoose');
-const moment = require('moment');
-const startexport = require('./handler/startexport');
+const getdevice_location = require('./lib/getdevice_location');
+const export_position = require('./lib/export_position');
+const export_alarm = require('./lib/export_alarm');
+const export_history = require('./lib/export_history');
 const _ = require('lodash');
-const bridge_historydeviceinfo = require('./handler/bridge_historydeviceinfo');
-const debug = require('debug')('srvinterval');
-
-const startexport_historydevice = (DeviceId,callbackfn)=>{
-  //filename,dbModel,fields,csvfields,fn_convert,query
-  const curday = config.curday;//moment().subtract(1, 'days').format('YYYY-MM-DD');
-  const dbModel = DBModels.HistoryDeviceModel;
-  const filename = `${curday}_${DeviceId}.csv`;
-  const fields = null;
-  const csvfields = 'DeviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,\
-  BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,\
-  BAT_Ucell_Max_CELL,BAT_Ucell_Min_CSC,BAT_Ucell_Min_CELL,BAT_T_Max,BAT_T_Min,\
-  BAT_T_Avg,BAT_T_Max_CSC,BAT_T_Min_CSC,BAT_User_SOC_HVS,BAT_Ucell_Avg,ALARM,ALIV_ST_SW_HVS,\
-  ST_AC_SW_HVS,ST_Aux_SW_HVS,ST_Main_Neg_SW_HVS,ST_Pre_SW_HVS,ST_Main_Pos_SW_HVS,ST_Chg_SW_HVS,\
-  ST_Fan_SW_HVS,ST_Heater_SW_HVS,BAT_U_HVS,BAT_Allow_Discharge_I,BAT_Allow_Charge_I,BAT_ISO_R_Pos,\
-  BAT_ISO_R_Neg,KeyOnVoltage,PowerVoltage,ChargeACVoltage,ChargeDCVoltage,CC2Voltage,ChargedCapacity,\
-  TotalWorkCycle,CSC_Power_Current,BAT_MAX_SOC_HVS,BAT_MIN_SOC_HVS,BAT_WEI_SOC_HVS,BAT_Chg_AmperReq,\
-  BPM_24V_Uout,ST_NegHeater_SW_HVS,ST_WirelessChg_SW,ST_SpearChg_SW_2,ST_PowerGridChg_SW,CC2Voltage_2,DIAG_H,DIAG_L';
-
-//   const csvfields = '采集时间,保存时间,箱体测量电压(V),箱体累加电压(V),箱体电流(A),\
-// 真实SOC(%),最高单体电压(V),最低单体电压(V),最高单体电压CSC号,最高单体电芯位置,最低单体电压CSC号,\
-// 最低单体电压电芯位置,最高单体温度,最低单体温度,平均单体温度,最高温度CSC号,最低温度CSC号,显示用SOC,平均单体电压,报警状态';
-  const fn_convert = (doc,callbackfn)=>{
-    const newdoc = bridge_historydeviceinfo(doc);
-    callbackfn(newdoc);
-  }
-  const query = {
-    DeviceId,
-    DataTime:{
-      $gte:`${curday} 00:00:00`,
-      $lte:`${curday} 23:59:59`,
-    }
-  };
-  startexport({filename,dbModel,sort:{DataTime:1},fields:null,csvfields,fn_convert,query});
-}
-
-const intervalPushAlarm =()=>{
-  // setInterval(()=>{
-  //   checkHistoryDevice((err,result)=>{
-  //     if(!err && !!result){
-  //       _.map(result,(devicedata)=>{
-  //         lasttime = devicedata.UpdateTime;
-  //         kafka_pushalaramtopic_app(devicedata,(err,result)=>{
-  //
-  //         });
-  //       });
-  //     }
-  //   });
-  // }, 5000);
-  if(config.exportFlag !== 'all' && !!config.DeviceId){
-    debug(`仅导出:${config.DeviceId}的记录`);
-    startexport_historydevice(config.DeviceId,(err,res)=>{
-
-    });
-  }
-
-  if(config.exportFlag === 'all'){
-    const deviceModel = DBModels.DeviceModel;
-    const query = {};
-    const fields = {
-      'DeviceId':1,
-    };
-
-    debug(`device query ${JSON.stringify(query)}`);
-    const queryexec = deviceModel.find(query).select(fields).lean();
-    debug(`device start exec`);
-    queryexec.exec((err,devicelist)=>{
-      if(!err && !!devicelist){
-        debug(`device start getdevicelist`);
-        _.map(devicelist,(device)=>{
-          debug(`导出:${device.DeviceId}的记录`);
-          startexport_historydevice(device.DeviceId,(err,res)=>{
-
-          });
-        });
-      }
-    });
-  }
-};
-
-
+const debug = require('debug')('srvinterval:test');
+const winston = require('./log/log.js');
+const async = require('async');
+const schedule = require('node-schedule');
 
 // *    *    *    *    *    *
 // ┬    ┬    ┬    ┬    ┬    ┬
@@ -99,9 +18,63 @@ const intervalPushAlarm =()=>{
 // │    └──────────────────── minute (0 - 59)
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
+const cron_0 = (callbackfn)=>{
+  winston.getlog().info(`零点开始执行`);
+  let fnsz = [];
+  fnsz.push((callbackfn)=>{
+    export_position(()=>{
+      winston.getlog().info(`导出位置记录完毕`);
+      // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
+      callbackfn(null,true);
+    });
+  });
+
+  fnsz.push((callbackfn)=>{
+    export_history(()=>{
+      winston.getlog().info(`导出历史记录完毕`);
+      // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
+      callbackfn(null,true);
+    });
+  });
+
+  async.series(fnsz,(err,result)=>{
+    callbackfn(err,result);
+  });
+}
+
+const cron_18 = (callbackfn)=>{
+  winston.getlog().info(`18点开始执行`);
+  export_alarm(()=>{
+    winston.getlog().info(`导出报警记录完毕`);
+    callbackfn(null,true);
+  });
+}
 
 const job=()=>{
-    intervalPushAlarm();
+  debug(`start job ...`);
+  // cron_18(()=>{
+  //   cron_0(()=>{
+  //
+  //   });
+  // });
+
+
+
+
+  schedule.scheduleJob('0 0 * * *', ()=>{
+    //每天0点开始工作
+    cron_0(()=>{
+
+    });
+  });
+
+  schedule.scheduleJob('0 18 * * *', ()=>{
+    //每天0点开始工作
+    cron_18(()=>{
+
+    });
+  });
 };
+
 
 module.exports = job;

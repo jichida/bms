@@ -143,21 +143,36 @@ export class Chart1 extends React.Component {
 
 export class Chart2 extends React.Component {
     render() {
-        const data = this.props.data;
-        const cols = {
-            'value': {
-                tickCount: 10,
-            },
-            'time': { range: [ 0.1 , 0.9] }
+        const {data,unit} = this.props;
+        // const cols = {
+        //     'value': {
+        //         tickCount: 10,
+        //     },
+        //     'time': { range: [ 0 , 1] }
+        // };
+        const scale = {
+          'sales': {
+            type: 'time', // 指定数据类型
+            //alias: string, // 数据字段的别名
+            formatter: () => {}, // 格式化文本内容
+            range: [0,1], // 输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
+            tickCount: data.length, // 设置坐标轴上刻度点的个数
+            //ticks: array, // 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示
+            //sync: boolean // 当 chart 存在不同数据源的 view 时，用于统一相同数据属性的值域范围
+          }
         };
         return (
-            <Chart height={260} data={data} scale={cols} padding={[20, 40, 40, 60]} forceFit>
+            <Chart height={260} data={data} scale={scale} padding={[20, 40, 40, 60]} forceFit>
                 <Axis name="time" label={{
                     formatter: val => {
-                    return val.substr(5, val.length);
+                      return `${val}时`;
                     }
                 }} />
-                <Axis name="value" line={{stroke: '#EEEEEE'}} />
+                <Axis name="value" line={{stroke: '#EEEEEE'}}  label={{
+                    formatter: val => {
+                      return `${val}${unit}`;
+                    }
+                }} />
                 <Tooltip crosshairs={{type : "y"}}/>
                 <Geom type="line" position="time*value" size={2} />
                 <Geom type='point' position="time*value" size={4} shape={'circle'} style={{ stroke: '#fff', lineWidth: 1}} />
@@ -186,20 +201,35 @@ export class Chart4 extends React.Component {
 
     render() {
         const data = this.props.data;
-        const cols={
-            'value': {
-                tickCount: 10,
-            },
-            'time': { range: [ 0 , 1 ] }
+        // const cols={
+        //     'value': {
+        //         tickCount: 10,
+        //     },
+        //     'time': { range: [ 0 , 1] }
+        // };
+        const scale = {
+          'sales': {
+            type: 'time', // 指定数据类型
+            //alias: string, // 数据字段的别名
+            formatter: () => {}, // 格式化文本内容
+            range: [0,1], // 输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
+            tickCount: data.length, // 设置坐标轴上刻度点的个数
+            //ticks: array, // 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示
+            //sync: boolean // 当 chart 存在不同数据源的 view 时，用于统一相同数据属性的值域范围
+          }
         };
         return (
-            <Chart height={260} data={data} scale={cols} padding={[20, 40, 40, 60]} forceFit>
+            <Chart height={260} data={data} scale={scale} padding={[20, 40, 40, 60]} forceFit>
                 <Axis name="time" label={{
                     formatter: val => {
-                    return val.substr(5, val.length);
+                      return `${val}时`;
                     }
                 }} />
-                <Axis name="value" />
+                <Axis name="value"  label={{
+                    formatter: val => {
+                      return `${val}A`;
+                    }
+                }} />
                 <Tooltip crosshairs={{type:'line'}}/>
                 <Geom type="area" position="time*value" />
                 <Geom type="line" position="time*value" size={2} />

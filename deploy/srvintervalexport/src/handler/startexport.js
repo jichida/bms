@@ -6,16 +6,16 @@ const iconv = new Iconv('UTF-8', 'GBK');
 const moment  = require('moment');
 const config = require('../config');
 const fs = require('fs');
-const debug = require('debug')('srvinterval');
+const debug = require('debug')('srvinterval:export');
 
-const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query})=>{
+const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},callbackfn)=>{
   // const filename = 'db-data-' + new Date().getTime() + '.csv';
   // res.set({'Content-Disposition': 'attachment; filename=\"' + filename + '\"', 'Content-type': 'text/csv;charset=GBK'});
   // write BOM
   // res.write('\ufeff');
   // res.write(new Buffer('\xEF\xBB\xBF','binary'));
 
-  const filepath = `${config.exportdir}/${filename}`;
+  const filepath = `${filename}`;
 
   debug(`start filepath--->${filepath}`);
   const res = fs.createWriteStream(filepath,{
@@ -31,6 +31,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query})=
     // console.log(`算结束了啊..............`);
     res.end('');
     debug(`end file--->${filename}`);
+    callbackfn(null,true);
   });
 
   cursor.on('data', (doc)=>
@@ -49,6 +50,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query})=
     setTimeout(()=> {
       res.end('');
       debug(`end file--->${filename}`);
+      callbackfn(null,true);
     }, 2000);
   });
 };
