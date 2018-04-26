@@ -10,6 +10,13 @@ const importexcel_device = require('./handler/importexcel_device.js');
 const importexcel_user = require('./handler/importexcel_user.js');
 
 const startuploader = (app)=>{
+  app.get('/uploadexcel/:resourcename',middlewareauth,(req,res)=>{
+    const resourcename = req.params.resourcename;
+    res.status(200)
+        .json({
+          result:`请使用Post方式上传${resourcename}`,
+        });
+  });
   app.post('/uploadexcel/:resourcename',middlewareauth,(req,res)=>{
     //console.log("userid:" + req.userid);
     const resourcename = req.params.resourcename;
