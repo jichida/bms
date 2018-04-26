@@ -190,7 +190,7 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
                 {
                     ticktime:
                     {
-                        $substrBytes: [ "$DataTime", 0, 13 ]
+                        $substrBytes: [ "$DataTime", 0, 16 ]
                     }
                 },
                 tickv:
