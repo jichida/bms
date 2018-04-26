@@ -24,15 +24,15 @@ let startsrv = ()=>{
   // ////console.log("static test:" + testdir);
   // app.use('/test', express.static(testdir));
 
-  let logdir = config.logdir;
+  const logdir = config.logdir;
   //console.log("static logdir:" + logdir);
   app.use('/log', express.static(logdir));
 
-  let admindir = path.join(__dirname,config.publishdiradmin);
+  const admindir = path.join(__dirname,config.publishdiradmin);
   ////console.log("static admin:" + admindir);
   app.use('/admin', express.static(admindir));
 
-  let uploaddir = path.join(__dirname,'./router',config.uploaddir);
+  const uploaddir = config.uploaddir;
   //console.log("static upload:" + uploaddir);
   app.use(config.uploadurl, express.static(uploaddir));
 
