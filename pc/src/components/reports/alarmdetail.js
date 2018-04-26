@@ -65,6 +65,23 @@ class TableAlarmDetail extends React.Component {
       //console.log(`导出excel:${JSON.stringify(payload)}`);
       this.props.dispatch(download_excel(payload));
     }
+    onClickLoc = (query)=>{
+      let DeviceId = query.DeviceId;
+      if(!DeviceId && !!query['$and']){
+        DeviceId = query['$and'][0].DeviceId;
+      }
+      if(!!DeviceId){
+        this.props.dispatch(ui_alarm_selcurdevice(DeviceId));
+      }
+      else{
+        this.props.dispatch(set_weui({
+          toast:{
+          text:'设备ID必选',
+          show: true,
+          type:'warning'
+        }}));
+      }
+    }
     // ReviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,BAT_Ucell_Max_CELL,BAT_Ucell_Min_CSC,BAT_Ucell_Min_CELL,BAT_T_Max,BAT_T_Min,BAT_T_Avg,BAT_T_Max_CSC,BAT_T_Min_CSC,BAT_User_SOC_HVS,BAT_Ucell_Avg,ALARM,ALIV_ST_SW_HVS,ST_AC_SW_HVS,ST_Aux_SW_HVS,ST_Main_Neg_SW_HVS,ST_Pre_SW_HVS,ST_Main_Pos_SW_HVS,ST_Chg_SW_HVS,ST_Fan_SW_HVS,ST_Heater_SW_HVS,BAT_U_HVS,BAT_Allow_Discharge_I,BAT_Allow_Charge_I,BAT_ISO_R_Pos,BAT_ISO_R_Neg,KeyOnVoltage,PowerVoltage,ChargeACVoltage,ChargeDCVoltage,CC2Voltage,ChargedCapacity,TotalWorkCycle,CSC_Power_Current,BAT_MAX_SOC_HVS,BAT_MIN_SOC_HVS,BAT_WEI_SOC_HVS,BAT_Chg_AmperReq,BPM_24V_Uout,ST_NegHeater_SW_HVS,ST_WirelessChg_SW,ST_SpearChg_SW_2,ST_PowerGridChg_SW,CC2Voltage_2,DIAG_H,DIAG_L
     onClickQuery(query){
       //console.log(query);
@@ -155,22 +172,22 @@ class TableAlarmDetail extends React.Component {
           }
           return column_item;
         });
-        const viewinmap = (row)=>{
-            console.log(row);//DeviceId
-            // this.props.history.push(`/alarminfo/${row._id}`);
-            this.props.dispatch(ui_alarm_selcurdevice(row['车辆ID']));
-        }
-        let columns_action ={
-            title: "操作",
-            dataIndex: '',
-            width:`100px`,
-            fixed: 'right',
-            key: 'x',
-            render: (text, row, index) => {
-                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
-            }
-        }
-        columns.push(columns_action);
+        // const viewinmap = (row)=>{
+        //     console.log(row);//DeviceId
+        //     // this.props.history.push(`/alarminfo/${row._id}`);
+        //     this.props.dispatch(ui_alarm_selcurdevice(row['车辆ID']));
+        // }
+        // let columns_action ={
+        //     title: "操作",
+        //     dataIndex: '',
+        //     width:`100px`,
+        //     fixed: 'right',
+        //     key: 'x',
+        //     render: (text, row, index) => {
+        //         return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+        //     }
+        // }
+        // columns.push(columns_action);
         return (
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
@@ -186,6 +203,7 @@ class TableAlarmDetail extends React.Component {
                       mapdict={this.props.mapdict}
                       query={this.state.query}
                       onClickExport={this.onClickExport.bind(this)}
+                      onClickLoc={this.onClickLoc.bind(this)}
                     />
                 </div>
                 <div className="tablelist" >

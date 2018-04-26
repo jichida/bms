@@ -155,6 +155,11 @@ class TreeSearchBattery extends React.Component {
         this.props.onClickExport(this.getQueryObj());
       }
     }
+    onClickLoc = ()=>{
+      if(!!this.props.onClickQuery){
+        this.props.onClickLoc(this.getQueryObj());
+      }
+    }
     onClickQuery=()=>{
       if(!!this.props.onClickQuery){
         this.props.onClickQuery(this.getQueryObj());
@@ -204,6 +209,7 @@ class TreeSearchBattery extends React.Component {
                       />
                 </div>
                 <div className="b">
+                    <Button type="primary" icon="environment-o" onClick={this.onClickLoc}>定位</Button>
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>
                     <Button icon="download" onClick={this.onClickExport}>导出结果</Button>
                 </div>
