@@ -124,12 +124,17 @@ const intervalCheckDevice =()=>{
   setInterval(()=>{
       checkDevice(lasttime,(err,result)=>{
         if(!err && !!result){
+          debug(`check list----->${result.length}`);
           _.map(result,(device)=>{
             lasttime = device.UpdateTime;
             // PubSub.publish(`${config.pushdevicetopic}.${device.DeviceId}`,device);
             // debug(`push device:${device.DeviceId} device`);
           });
           do_updatealldevices(result);//处理所有的DeviceId
+        }
+        else{
+          debug(err);
+          debug(result);
         }
       });
   }, 30000);
