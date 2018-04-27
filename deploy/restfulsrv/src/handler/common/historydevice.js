@@ -170,18 +170,44 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
     });
   }
 
+const gettimekey =(timestart,timeend)=> {
+    const timekeysz = [];
+    const momentstart = moment(timestart);
+    const momentend = moment(timeend);
+    let momenti;
+    for(momenti =momentstart ;momenti <= momentend;  ){
+      const timekey = momenti.format('YYMMDD');
+      timekeysz.push(timekey);
+      momenti = momenti.add(1, 'days');
+    }
+    console.log(`timekeysz--->${JSON.stringify(timekeysz)}`);
+    return timekeysz;
+  }
+
+
   const getdeviceinfoquerychartresult = ({DeviceId,DataTime},callbackfn)=>{
     const momentmin = moment(DataTime).subtract(10,'hours').format('YYYY-MM-DD HH:mm:ss');
+    const momentmax = moment(DataTime).format('YYYY-MM-DD HH:mm:ss');
+    const timekeysz = gettimekey(momentmin,momentmax);
+    let query = {
+        DeviceId:DeviceId,
+        DataTime:{
+          $gte: momentmin
+        }
+    };
+    if(timekeysz.length === 1){
+      query['TimeKey'] = timekeysz[0];
+    }
+    else if(timekeysz.length > 1){
+      query['TimeKey'] = { $in:timekeysz};
+    }
+
+    debug(`getdeviceinfoquerychartresult--->${JSON.stringify(query)}`);
+    
     const historydeviceModel = DBModels.HistoryDeviceModel;
     historydeviceModel.aggregate([
         {
-            $match:
-            {
-                DeviceId:DeviceId,
-                DataTime:{
-                  $gte: momentmin
-                }
-            }
+            $match:query
         },
         {
             $group:

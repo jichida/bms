@@ -68,7 +68,9 @@ const checkDevice = (lasttime,callbackfn)=>{
     UpdateTime:{
       $gte:lasttime
     }
-  }).select(fields).sort({UpdateTime:1}).lean().exec(callbackfn);
+  },fields).sort({UpdateTime:1}).lean().exec((err,result)=>{
+    callbackfn(err,result);
+  });
 }
 
 const do_updatealldevices = (alldevicelist)=>{
