@@ -73,7 +73,7 @@ class SelectDevice extends React.Component {
     return (
       <Select
         mode="combobox"
-        style={{ width: 200 }}
+        style={{ width: 160 }}
         onChange={this.onChange}
         filterOption={false}
         placeholder={placeholder}

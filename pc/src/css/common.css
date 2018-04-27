@@ -648,6 +648,9 @@
     font-size:30px;
     padding: 0 20px;
     background-size: #FFF;
+    position: absolute;
+    right: 0;
+    top: 20px;
 
 }
 .appbar .title{
@@ -689,11 +692,6 @@
     display: -webkit-flex;
     -webkit-flex-grow: 1;
     flex-grow: 1;
-    justify-content: flex-end;
-    -moz-justify-content: flex-end;
-    -webkit-justify-content: flex-end;
-    justify-content: flex-end;
-    margin-right: 20px;
 }
 .appbar .controlbtn span{
     display: inline-block;
