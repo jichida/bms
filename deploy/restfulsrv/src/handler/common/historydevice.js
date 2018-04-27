@@ -203,7 +203,7 @@ const gettimekey =(timestart,timeend)=> {
     }
 
     debug(`getdeviceinfoquerychartresult--->${JSON.stringify(query)}`);
-    
+
     const historydeviceModel = DBModels.HistoryDeviceModel;
     historydeviceModel.aggregate([
         {
@@ -247,6 +247,7 @@ const gettimekey =(timestart,timeend)=> {
         ticks:[],
       };
       if(!err && !!result){
+         debug(`getdeviceinfoquerychartresult[获取到数据]--->${result.length}`);
           _.map(result,(v)=>{
             listret.ticktime.push(v._id.ticktime);
             listret.tickv.push(v.tickv);
