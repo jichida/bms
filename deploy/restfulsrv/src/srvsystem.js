@@ -71,6 +71,7 @@ const checkDevice = (lasttime,callbackfn)=>{
       $gte:lasttime
     }
   },fields).sort({UpdateTime:1}).lean().exec((err,result)=>{
+    //MongoError: Executor error during find command: OperationFailed: Sort operation used more than the maximum 33554432 bytes of RAM. Add an index, or specify a smaller limit.
     callbackfn(err,result);
   });
 }
