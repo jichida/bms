@@ -174,7 +174,13 @@ class Page extends React.Component {
         }
         return (
             <div className="historytrackplayback" id="historytrackplayback" style={{height: this.state.innerHeight+"px"}} >
-                <div className="appbar" style={{height: "72px"}}>
+                <div className="appbar" style={{minHeight: "90px"}}>
+
+                    <div className="deviceinfo_title">
+
+                        <span>车辆信息</span>
+                    </div>
+
 
                     <div className="selcar">
                       <span className="t">车辆ID：</span>
@@ -207,13 +213,15 @@ class Page extends React.Component {
                           endDate = {this.state.endDate}
                          onChangeSelDate={this.onChangeSelDate.bind(this)}/>
 
-                        <div className="Setspeed">
+                        
+                    </div>
+
+                    <div className="Setspeed">
                           <span>播放速度: </span>
                           <Select className="bfsd" labelInValue defaultValue={{ key: '60' }} style={{ width: 400 }} onChange={this.handleChange}>
                             {speedoptions}
                           </Select>
                         </div>
-                    </div>
 
 
                     <div className="controlbtn">

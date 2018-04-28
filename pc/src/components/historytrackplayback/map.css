@@ -2,7 +2,9 @@
     font-size:30px;
     padding: 0 20px;
     background-size: #FFF;
-
+    position: absolute;
+    right: 0;
+    top: 20px;
 }
 .historytrackplayback .set{
     border-bottom: 1px solid #EEE;
@@ -25,7 +27,29 @@
 #historytrackplayback .appbar{
     background: #daf0e1;
     color : #333;
+    padding-right: 65px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    position: relative;
+    padding-left: 127px;
+    flex-wrap: wrap;
+    -webkit-box-align:flex-start ;
+    align-items: flex-start;
+    -webkit-align-items: flex-start;
+    height: auto;
 }
+
+#historytrackplayback .appbar>.selcar,
+#historytrackplayback .appbar>.Setspeed,
+#historytrackplayback .appbar>.anddday,
+#historytrackplayback .appbar>.controlbtn{
+    margin-bottom: 10px;
+}
+#historytrackplayback .appbar>.Setspeed{
+    margin-left: 0;
+    margin-right: 10px;
+}
+
 #historytrackplayback .appbar .title{
     background: #FFF;
     color:#333;
@@ -33,10 +57,16 @@
     height: 60px;
     line-height: 60px;
 }
+#historytrackplayback .appbar .deviceinfo_title{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    width: 108px;
+}
 #historytrackplayback .appbar .day,
 #historytrackplayback .appbar .anddday{
     background: #FFF;
-    margin-left: 10px;
+    margin-right: 10px;
     height: 60px;
     color : #333;
 }
@@ -53,9 +83,11 @@
 #historytrackplayback  .appbar .controlbtn span{
     background: #e95740;
     color: #FFF;
-    border-radius: 4px;
-    width: 100px;
+    border-radius: 0px;
+    width: 80px;
     text-align: center;
+    height: 60px;
+    line-height: 60px;
 }
 #historytrackplayback  .appbar .controlbtn span:first-child{
     background: #6aba9d;
@@ -154,7 +186,7 @@
 #historytrackplayback  .selcar {
     background:#FFF;
     height: 60px;
-    margin-left: 15px;
+    margin-right: 10px;
     display: flex;
     align-items: center;
     flex-shrink: 0;
