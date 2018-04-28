@@ -4,6 +4,7 @@ const _ = require('lodash');
 const config = require('../config.js');
 const moment = require('moment');
 const alarmplugin = require('../plugins/alarmfilter/index');
+const deviceplugin = require('../plugins/devicefilter/index');
 const utilposition = require('./util_position');
 const debug = require('debug')('dbdata');
 
@@ -234,7 +235,9 @@ const getkafkamsg = (msg)=>{
 const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   const msgs = [];
   _.map(kafkamsgs,(msg)=>{
-    msgs.push(getkafkamsg(msg));
+    let newmsg = getkafkamsg(msg);
+    newmsg = deviceplugin(newmsg);
+    msgs.push(newmsg);
   });
   const resultmsglist = {
     'device':[],
