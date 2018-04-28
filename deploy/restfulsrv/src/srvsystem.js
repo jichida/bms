@@ -14,6 +14,8 @@ const getdevicesids = require('./handler/getdevicesids');
 
 const userset = {};
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
+let lastdeviceid = '';
+let lasttime_result = moment().format('YYYY-MM-DD HH:mm:ss');
 
 const loginuser_add = (userid,connectid)=>{
   let usersetref = userset[userid] || [];
@@ -50,7 +52,7 @@ const getSystemLog = ()=>{
 }
 
 const checkDevice = (lasttime,callbackfn)=>{
-  debug(`start check device:${lasttime}`);
+  debug(`start check device:${lasttime},lastdeviceid:${lastdeviceid},lasttime_result:${lasttime_result}`);
 
   const deviceModel = DBModels.DeviceModel;
   const fields = {
@@ -121,24 +123,28 @@ const do_updatealldevices = (alldevicelist)=>{
   });
 }
 
-const intervalCheckDevice =()=>{
-
-  setInterval(()=>{
-      checkDevice(lasttime,(err,result)=>{
-        if(!err && !!result){
-          debug(`check list----->${result.length}`);
-          _.map(result,(device)=>{
-            lasttime = device.UpdateTime;
-            // PubSub.publish(`${config.pushdevicetopic}.${device.DeviceId}`,device);
-            // debug(`push device:${device.DeviceId} device`);
-          });
-          do_updatealldevices(result);//处理所有的DeviceId
-        }
-        else{
-          debug(err);
-          debug(result);
-        }
+const do_interval = ()=>{
+  checkDevice(lasttime,(err,result)=>{
+    lasttime_result = moment().format('YYYY-MM-DD HH:mm:ss');
+    if(!err && !!result){
+      debug(`check list----->${result.length}`);
+      _.map(result,(device)=>{
+        lasttime = device.UpdateTime;
+        lastdeviceid = device._id;
       });
+      do_updatealldevices(result);//处理所有的DeviceId
+    }
+    else{
+      debug(err);
+      debug(result);
+    }
+  });
+}
+
+
+const intervalCheckDevice =()=>{
+  setInterval(()=>{
+    do_interval();
   }, 30000);
 };
 // const mongoose = require('mongoose');
