@@ -12,7 +12,7 @@ import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
 import { deviceinfoquerychart_request } from '../../actions';
 import { Chart2, Chart3 } from "./swiperchart";
 import moment from 'moment';
-import { Tabs } from 'antd';
+import { Tabs,Spin } from 'antd';
 import './deviceinfo.css';
 
 const TabPane = Tabs.TabPane;
@@ -83,7 +83,21 @@ class Page extends React.Component {
 
             datadevice.push(record);
         });
-            // console.log(datadevice);
+        const isloading = props_ticktime.length === 0 && this.props.isloading;
+        let chartC;
+        if(isloading){
+          chartC = (<div className="deviceinfospin"><Spin size="large" tip="正在加载图表,请稍后..."/></div>);
+        }
+        else {
+          chartC = (
+            <div className="listsdevicechartlists">
+                <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
+                <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
+                <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
+                <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
+            </div>
+          );
+        }
         return (
 
             <div className="warningPage devicePage deviceinfoPage">
@@ -121,12 +135,7 @@ class Page extends React.Component {
                       </div>
                     </TabPane>
                     <TabPane tab="图表信息" key="2">
-                      <div className="listsdevicechartlists">
-                          <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
-                          <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
-                          <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
-                          <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
-                      </div>
+                      {chartC}
                     </TabPane>
                   </Tabs>
                   </div>
@@ -139,9 +148,9 @@ class Page extends React.Component {
 const mapStateToProps = ({device,app,deviceinfoquerychart}) => {
     const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
-    const {alarmchart} = deviceinfoquerychart;
+    const {alarmchart,isloading} = deviceinfoquerychart;
 
-    return { g_devicesdb, mapdetailfields, mapdict,alarmchart };
+    return { g_devicesdb, mapdetailfields, mapdict,alarmchart,isloading };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);
