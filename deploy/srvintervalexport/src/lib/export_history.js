@@ -10,12 +10,12 @@ const async = require('async');
 const debug = require('debug')('srvinterval:history');
 const batchcount = 500;
 const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
-const curdays = moment(curday).format('YYYYMMDD');
-const TimeKey = moment(curday).format('YYMMDD');
-const dbModel = DBModels.HistoryDeviceModel;
-const filename = `${exportdir}/${curdays}_${DeviceId}.csv`;
-const fields = null;
-const csvfields = 'DeviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,\
+  const curdays = moment(curday).format('YYYYMMDD');
+  const TimeKey = moment(curday).format('YYMMDD');
+  const dbModel = DBModels.HistoryDeviceModel;
+  const filename = `${exportdir}/${curdays}_${DeviceId}.csv`;
+  const fields = null;
+  const csvfields = 'DeviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,\
 BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,\
 BAT_Ucell_Max_CELL,BAT_Ucell_Min_CSC,BAT_Ucell_Min_CELL,BAT_T_Max,BAT_T_Min,\
 BAT_T_Avg,BAT_T_Max_CSC,BAT_T_Min_CSC,BAT_User_SOC_HVS,BAT_Ucell_Avg,ALARM,ALIV_ST_SW_HVS,\
@@ -58,7 +58,13 @@ const startexport_export = (devicelist,callbackfn)=>{
   const moments = moment().subtract(1, 'days');
   const curday = moments.format('YYYY-MM-DD');
   const exportdir = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
-  fs.mkdirSync(exportdir);
+  try{
+    fs.mkdirSync(exportdir);
+  }
+  catch(e){
+
+  }
+
   winston.getlog().info(`新建一个目录${exportdir}`);
 
   let success_list = [];
@@ -78,7 +84,7 @@ const startexport_export = (devicelist,callbackfn)=>{
 
   async.series(fnsz,(err,result)=>{
     winston.getlog().info(`导出结果【历史数据】,成功【${success_list.length}】`);
-    callback(exportdir);
+    callbackfn(exportdir);
   });
 }
 

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log exportdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bms.com28.cn:27018/bms node index",
+    "start2": "DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log exportdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://localhost/bmscatl node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
