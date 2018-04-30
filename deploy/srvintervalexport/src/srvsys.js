@@ -66,8 +66,9 @@ const job=()=>{
   });
   cron_18((alarmfilepath)=>{
     winston.getlog().info(`拷贝文件:${alarmfilepath}`);
-    fs.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
+    fse.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
     .then(()=>{
+      debug(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
       winston.getlog().info(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
     })
     .catch((err)=>{
@@ -95,8 +96,9 @@ const job=()=>{
     //每天18点开始工作
     cron_18((alarmfilepath)=>{
       winston.getlog().info(`拷贝文件:${alarmfilepath}`);
-      fs.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
+      fse.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
       .then(()=>{
+        debug(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
         winston.getlog().info(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
       })
       .catch((err)=>{
