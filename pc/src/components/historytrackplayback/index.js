@@ -176,12 +176,6 @@ class Page extends React.Component {
             <div className="historytrackplayback" id="historytrackplayback" style={{height: this.state.innerHeight+"px"}} >
                 <div className="appbar" style={{minHeight: "90px"}}>
 
-                    <div className="deviceinfo_title">
-
-                        <span>车辆信息</span>
-                    </div>
-
-
                     <div className="selcar">
                       <span className="t">车辆ID：</span>
                       <SelectDevice
@@ -213,7 +207,7 @@ class Page extends React.Component {
                           endDate = {this.state.endDate}
                          onChangeSelDate={this.onChangeSelDate.bind(this)}/>
 
-                        
+
                     </div>
 
                     <div className="Setspeed">
