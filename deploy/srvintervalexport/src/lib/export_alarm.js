@@ -75,7 +75,7 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
      });
   });
   res.end('');
-  callbackfn(null,true);
+  callbackfn(filepath);
 }
 
 
