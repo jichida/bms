@@ -12,9 +12,10 @@ const srvsystem = require('../../srvsystem.js');
 
 const debug = require('debug')('srvapp:userlogin');
 
-let userloginsuccess =(user,callback)=>{
+const userloginsuccess =(user,callback,ctx)=>{
     //主动推送一些数据什么的
   const userlog = {
+    remoteip:ctx.remoteip || '',
     creator:user._id,
     created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
     logtxt:`用户登录`
@@ -73,7 +74,7 @@ let setloginsuccess = (ctx,user,callback)=>{
       payload:userdata
     });
 
-    userloginsuccess(user,callback);
+    userloginsuccess(user,callback,ctx);
 
     subscriberuser(user,ctx);
 

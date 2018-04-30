@@ -2,6 +2,7 @@ const DBModels = require('../db/models.js');
 const pwd = require('../util/pwd');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
+const requestIp = require('request-ip');
 
 const preaction =(actionname,collectionname,doc,fnresult)=>{
   ////console.log(`preaction doc:${JSON.stringify(doc)}`);
@@ -44,11 +45,13 @@ const collectionnamemap = {
   'datadict':'数据字典'
 };
 
-const postaction =(actionname,collectionname,doc,userid)=>{
+const postaction =(actionname,collectionname,doc,req)=>{
+  const userid = req.userid;
   const actionname_s = actionnamemap[actionname];
   const collectionname_s =  collectionnamemap[collectionname];
   if(!!actionname_s && !!collectionname_s){
     const userlog = {
+      remoteip:requestIp.getClientIp(req) || '',
       creator:userid,
       created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
       logtxt:`${actionname_s} ${collectionname_s}`

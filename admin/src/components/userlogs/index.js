@@ -52,6 +52,7 @@ const UserlogList = (props) => (
             <TextField source="username" />
           </ReferenceField>
           <TextField label="时间" source="created_at"  />
+          <TextField label="IP" source="remoteip"  />
           <TextField label="信息" source="logtxt" />
         </Datagrid>
     </List>

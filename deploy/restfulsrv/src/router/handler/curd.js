@@ -161,7 +161,7 @@ const curd = (schmodel)=>{
             if(!err){
               res.status(200)
                   .json(result);
-              adminaction.postaction('save',schmodel.collectionname,result,req.userid);
+              adminaction.postaction('save',schmodel.collectionname,result,req);
             }
             else{
               res.status(500)
@@ -194,7 +194,7 @@ const curd = (schmodel)=>{
                     if(!err){
                       res.status(200)
                           .json(result);
-                      adminaction.postaction('findByIdAndUpdate',schmodel.collectionname,result,req.userid);
+                      adminaction.postaction('findByIdAndUpdate',schmodel.collectionname,result,req);
                     }
                     else{
                       res.status(500)
@@ -216,7 +216,7 @@ const curd = (schmodel)=>{
           ////console.log("DELETE err=>" + JSON.stringify(err));
           ////console.log("DELETE result=>" + JSON.stringify(result));
           if(!err){
-            adminaction.postaction('delete',schmodel.collectionname,result,req.userid);
+            adminaction.postaction('delete',schmodel.collectionname,result,req);
             res.status(200)
                 .json(result);
           }

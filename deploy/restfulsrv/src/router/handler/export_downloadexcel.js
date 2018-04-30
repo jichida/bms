@@ -7,6 +7,7 @@ const Iconv = require('iconv').Iconv;
 const iconv = new Iconv('UTF-8', 'GBK');
 const PubSub = require('pubsub-js');
 const moment  = require('moment');
+const requestIp = require('request-ip');
 
 const startdownload = ({req,res,dbModel,fields,csvfields,fn_convert,query})=>{
   const filename = 'db-data-' + new Date().getTime() + '.csv';
@@ -76,6 +77,7 @@ const export_downloadexcel = ({req,res,dbModel,fields,csvfields,fn_convert,name}
            query.DeviceId = {'$in':deviceIds};
          }
          const userlog = {
+           remoteip:requestIp.getClientIp(req) || '',
            creator:tokenobj.userid,
            created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
            logtxt:`用户导出${name}数据`
