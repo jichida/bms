@@ -65,7 +65,7 @@ const cron_18 = (callbackfn)=>{
 }
 
 const job=()=>{
-  debug(`start job ...`);
+  winston.getlog().info(`===开始===`);
 
   cron_0((err,result)=>{
     const positionfilepath = result[0];
@@ -96,7 +96,8 @@ const job=()=>{
     //每天0点开始工作
     cron_0((err,result)=>{
       const positionfilepath = result[0];
-      const exportdir = result[1];
+      const deviceextfilepath = result[1];
+      const exportdir = result[2];
       winston.getlog().info(`开始压缩文件夹:${exportdir}`);
       zipdir(exportdir, { saveTo: `${exportdir}.zip` }, function (err, buffer) {
         winston.getlog().info(`压缩完毕:${exportdir}.zip`);
