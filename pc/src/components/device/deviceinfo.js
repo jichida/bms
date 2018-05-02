@@ -44,9 +44,21 @@ class Page extends React.Component {
         let data_temperature = 0;
         map(props_ticktime,(v, i)=>{
             const moments = moment(v).format('HH:mm')//parseInt(moment(v).format('HH'),10);
-            const vv = parseFloat(props_tickv[i].toFixed(2));
-            const va = parseFloat(props_ticka[i].toFixed(2));
-            const vs = parseFloat(props_ticks[i].toFixed(2));
+            let vv = 0;
+            if(!!props_tickv[i]){
+              vv = parseFloat(props_tickv[i].toFixed(2));
+            }
+
+            let va = 0;
+            if(!!props_ticka[i]){
+              va = parseFloat(props_ticka[i].toFixed(2));
+            }
+            
+            let vs = 0;
+            if(!!props_ticks[i]){
+               vs = parseFloat(props_ticks[i].toFixed(2));
+            }
+
             let item = { time: moments, value: vv };
             let item2 = { time: moments, value: va };
             let item3 = { time: moments, value: vs };
