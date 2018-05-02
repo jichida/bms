@@ -7,7 +7,6 @@ const _ = require('lodash');
 const debug = require('debug')('srvinterval:test');
 const winston = require('./log/log.js');
 const async = require('async');
-const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
 const fse = require('fs-extra');
 const path = require('path');
@@ -66,8 +65,7 @@ const cron_18 = (callbackfn)=>{
   });
 }
 
-const job=()=>{
-  winston.getlog().info(`===开始===`);
+
   const start_cron0 = ()=>{
     cron_0((err,result)=>{
       const positionfilepath = result[0];
@@ -126,22 +124,9 @@ const job=()=>{
 
 
 
-  start_cron0();
-  start_cron18();
 
 
-  schedule.scheduleJob('0 0 * * *', ()=>{
-    //每天0点开始工作
-    start_cron0();
-  });
-
-  schedule.scheduleJob('0 18 * * *', ()=>{
-    //每天18点开始工作
-    start_cron18();
-  });
-
-  winston.getlog().info(`===执行到末尾===`);
-};
 
 
-module.exports = job;
+exports.start_cron0 = start_cron0;
+exports.start_cron18 = start_cron18;
