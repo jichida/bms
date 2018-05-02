@@ -42,15 +42,15 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
       let name = values["columns"][0].value;
       let op = values["columns"][1].value;
       let value = values["columns"][2].value;
-      let content = values["columns"][3].value;
-      newv[index] = {name,op,value,content};
+      // let content = values["columns"][3].value;
+      newv[index] = {name,op,value};
     }
     else if(index >= vsz.length){
       let name = values["columns"][0].value;
       let op = values["columns"][1].value;
       let value = values["columns"][2].value;
-      let content = values["columns"][3].value;
-      newv.push( {name,op,value,content});
+      // let content = values["columns"][3].value;
+      newv.push( {name,op,value});
     }
     else{
       return;
@@ -68,7 +68,7 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
        { value: '<', label: '小于' },
      ]},
      {value: '值', type: 'TextField', width: 200},
-     {value: '报警信息', type: 'TextField', width: 'auto'},
+    //  {value: '报警信息', type: 'TextField', width: 'auto'},
   ];
 
   _.map(vsz,(v)=>{
@@ -77,7 +77,7 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
         {value: v.name},
         {value: v.op},
         {value: v.value},
-        {value: v.content},
+        // {value: v.content},
       ]}
     );
   });

@@ -8,7 +8,7 @@ import {
     ui_selcurdevice_request,
 } from '../../actions';
 import {getimageicon_isonline} from '../../sagas/getmapstyle';
-import lodashget from 'lodash.get';
+import {getPackNo_BMU} from '../../util';
 // const treeviewstyle = 'bysearchresult';
 decorators.Header = HeaderCo;
 
@@ -45,7 +45,7 @@ class Tree extends React.Component {
               map(treesearchlist, (id, key)=>{
                 const deviceitem = g_devicesdb[id];
                 let value = id;
-                const PackNo_BMU = lodashget(deviceitem,'PackNo_BMU','');
+                const PackNo_BMU = getPackNo_BMU(deviceitem);
                 if(PackNo_BMU !== ''){
                   value = `${id}(${PackNo_BMU})`;
                 }

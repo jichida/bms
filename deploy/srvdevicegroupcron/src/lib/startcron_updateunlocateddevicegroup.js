@@ -2,6 +2,7 @@ const _ = require('lodash');
 const async = require("async");
 const DBModels = require('../handler/models.js');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const debug = require('debug')('srvdevicegroupcron:startcron');
 
 const getallunlocateddevice = (callbackfn)=>{
@@ -36,11 +37,13 @@ const getallunlocateddevice = (callbackfn)=>{
 const startcron_updateunlocateddevicegroup = (callbackfn)=>{
 
   getallunlocateddevice((devicelist)=>{
+    const updatetime = moment().format('YYYY-MM-DD HH:mm:ss');
     const dbDeviceGroupModel = DBModels.DeviceGroupModel;
     const groupobj = {
       name:'未定位分组',
       systemflag:1,
-      deviceids:devicelist
+      deviceids:devicelist,
+      updatetime
     }
     dbDeviceGroupModel.findOneAndUpdate({name:groupobj.name,systemflag:1}, {$set:groupobj},{new: true,upsert:true},(err,result)=>{
       callbackfn(err,result);
