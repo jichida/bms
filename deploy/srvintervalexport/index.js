@@ -49,8 +49,15 @@ dbdictModel.find({
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
-  job.start_cron0();
-  job.start_cron18();
+  schedule.scheduleJob('0 0 * * *', ()=>{
+      //每天0点开始工作
+      job.start_cron0();
+  });
+
+  schedule.scheduleJob('0 18 * * *', ()=>{
+    //每天18点开始工作
+    job.tart_cron18();
+  });
 });
 
 
@@ -63,14 +70,6 @@ process.on('unhandledException', (err) => {
 })
 
 
-schedule.scheduleJob('0 0 * * *', ()=>{
-    //每天0点开始工作
-    job.start_cron0();
-});
 
-schedule.scheduleJob('0 18 * * *', ()=>{
-  //每天18点开始工作
-  job.tart_cron18();
-});
 
 winston.getlog().info(`===执行到末尾===`);
