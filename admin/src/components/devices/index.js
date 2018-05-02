@@ -134,6 +134,7 @@ const DeviceEdit = (props) => {
           <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
         </FormTab>
         <FormTab label="设备基本信息">
+          <TextInput label="PackNo" source="PackNo_BMU" />
           <TextField label="设备ID" source="DeviceId"  validate={required} />
           <TextField label="创建时间" source="created_at"  />
           <TextField label="插入数据库时间" source="updated_at"  />

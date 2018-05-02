@@ -13,7 +13,7 @@ import map from 'lodash.map';
 import { Input, Select, AutoComplete, Button } from 'antd';
 import TreeSelectBygroup from "../trees/treeselect_bygroup.js";
 import TreeselectByloc from "../trees/treeselect_byloc.js";
-import lodashget from 'lodash.get';
+import {getPackNo_BMU} from '../../util';
 // import moment from 'moment';
 import filter from 'lodash.filter';
 
@@ -136,7 +136,7 @@ class TreeSearchBattery extends React.Component {
                return true;
              };
           }
-          const PackNo_BMU = lodashget(deviceItem,'PackNo_BMU','');
+          const PackNo_BMU = getPackNo_BMU(deviceItem);
           if(PackNo_BMU !== ''){
              if(PackNo_BMU.indexOf(value)!==-1){
                return true;
