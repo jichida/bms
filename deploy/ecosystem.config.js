@@ -2,7 +2,7 @@ module.exports = {
   apps : [
       {
         name: "srvexport",
-        script: "./srvintervalexport/index.js",
+        script: "/root/bms/deploy/srvintervalexport/index.js",
         watch: true,
         env: {
           "NODE_ENV": "production",
