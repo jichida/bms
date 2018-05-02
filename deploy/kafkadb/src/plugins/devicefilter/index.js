@@ -2,18 +2,18 @@ const _ = require('lodash');
 const getFieldname = require('./mapalarmtroublecode');
 /*
 1、从kafka中获取的数据，预先转换：
-1>将AL_Trouble_Code_2转成
+1>将AL_TROUBLE_CODE_2转成
 */
 const devicedatapile = (data)=>{
   let newdata = data;
   const Alarm = _.get(data,'BMSData.Alarm');
   if(!!Alarm){
     //含有报警
-    const AL_Trouble_Code_2 = _.get(data,'BMSData.Alarm.AL_Trouble_Code_2',[]);
+    const AL_TROUBLE_CODE_2 = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE_2',[]);
     const CANType = _.get(data,'BMSData.CANType',-1);
     let newAlarm = _.clone(Alarm);
-    newAlarm = _.omit(newAlarm,['AL_Trouble_Code_2']);
-    _.map(AL_Trouble_Code_2,(errcode)=>{
+    newAlarm = _.omit(newAlarm,['AL_TROUBLE_CODE_2']);
+    _.map(AL_TROUBLE_CODE_2,(errcode)=>{
       const fieldname = getFieldname(CANType,errcode);
       newAlarm[fieldname] = 1;
     });
@@ -43,7 +43,7 @@ const devicedatapile = (data)=>{
 // 			"AL_dV_Ucell": 1,
 // 			"AL_Err_Bal_Circuit": 1,
 // 			"AL_Trouble_Code": 91,
-//       "AL_Trouble_Code_2":[0,10,1]
+//       "AL_TROUBLE_CODE_2":[0,10,1]
 // 		},
 // 		"BAT_U_Out_HVS": 358.0,
 // 		"BAT_U_TOT_HVS": 357.9,
