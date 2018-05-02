@@ -24,6 +24,7 @@ var ftps = new FTPS({
 debug(`--start connect:${JSON.stringify(config.srvsftp)}`);
 const sftptosrv = (localdir,localfilename,callback)=>{
   debug(`开始连接:${JSON.stringify(config.srvsftp)}`);
+  debug(`本地目录${localdir},文件${localfilename},远程目录: data/${localfilename}`);
   ftps.put(`${localdir}/${localfilename}`, `data/${localfilename}`).exec((err, res)=> {
     debug(`上传文件到data目录:${localdir}/${localfilename}`);
     if(!err){
