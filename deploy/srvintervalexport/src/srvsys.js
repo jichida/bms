@@ -10,6 +10,8 @@ const async = require('async');
 const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
 const fse = require('fs-extra');
+const path = require('path');
+const sftptosrv =  require('./src/ftps/index.js');
 const config = require('./config');
 
 // *    *    *    *    *    *
@@ -66,58 +68,76 @@ const cron_18 = (callbackfn)=>{
 
 const job=()=>{
   winston.getlog().info(`===开始===`);
-
-  cron_0((err,result)=>{
-    const positionfilepath = result[0];
-    const deviceextfilepath = result[1];
-    const exportdir = result[2];
-    winston.getlog().info(`开始压缩文件夹:${exportdir}`);
-    zipdir(exportdir, { saveTo: `${exportdir}.zip` }, function (err, buffer) {
-      winston.getlog().info(`压缩完毕:${exportdir}.zip`);
-    });
-  });
-  cron_18((alarmfilepath)=>{
-    winston.getlog().info(`拷贝文件:${alarmfilepath}`);
-    fse.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
-    .then(()=>{
-      debug(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
-      winston.getlog().info(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
-    })
-    .catch((err)=>{
-      winston.getlog().info(`拷贝文件失败`);
-    })
-  });
-
-
-
-
-
-  schedule.scheduleJob('0 0 * * *', ()=>{
-    //每天0点开始工作
+  const start_cron0 = ()=>{
     cron_0((err,result)=>{
       const positionfilepath = result[0];
       const deviceextfilepath = result[1];
       const exportdir = result[2];
+
+      debug(`开始压缩文件夹:${exportdir}`);
       winston.getlog().info(`开始压缩文件夹:${exportdir}`);
+
       zipdir(exportdir, { saveTo: `${exportdir}.zip` }, function (err, buffer) {
+        debug(`压缩完毕:${exportdir}.zip`);
         winston.getlog().info(`压缩完毕:${exportdir}.zip`);
+
+        const filename3 = path.basename(`${exportdir}.zip`);
+        sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
+          winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+          debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+        });
+      });
+
+      const filename1 = path.basename(positionfilepath);
+      sftptosrv(`${config.exportdir}`,filename1,(err,result)=>{
+        debug(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
+        winston.getlog().info(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
+      });
+
+      const filename2 = path.basename(deviceextfilepath);
+      sftptosrv(`${config.exportdir}`,filename2 ,(err,result)=>{
+        debug(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
+        winston.getlog().info(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
       });
     });
-  });
+  }
 
-  schedule.scheduleJob('0 18 * * *', ()=>{
-    //每天18点开始工作
+  const start_cron18 = ()=>{
     cron_18((alarmfilepath)=>{
+      debug(`拷贝文件:${alarmfilepath}`);
       winston.getlog().info(`拷贝文件:${alarmfilepath}`);
+
       fse.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
       .then(()=>{
         debug(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
         winston.getlog().info(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
+        
+        sftptosrv(`${config.exportdir}`,`LastestAlarm.csv` ,(err,result)=>{
+
+          debug(`上传文件:${config.exportdir}/LastestAlarm.csv到ftp服务器`);
+          winston.getlog().info(`上传文件:${config.exportdir}/LastestAlarm.csv到ftp服务器`);
+        });
       })
       .catch((err)=>{
         winston.getlog().info(`拷贝文件失败`);
       })
     });
+  }
+
+
+
+  start_cron0();
+  start_cron18();
+
+
+  schedule.scheduleJob('0 0 * * *', ()=>{
+    //每天0点开始工作
+    start_cron0();
+  });
+
+  schedule.scheduleJob('0 18 * * *', ()=>{
+    //每天18点开始工作
+    start_cron18();
   });
 };
 

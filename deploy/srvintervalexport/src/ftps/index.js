@@ -1,7 +1,7 @@
 const FTPS = require('ftps');
 //参考文档：https://github.com/Atinux/node-ftps
 const config = require('../config.js');
-
+const debug = require('debug')('srvinterval:ftps');
 var ftps = new FTPS({
   host: config.srvsftp.host, // required
   username: config.srvsftp.username, // Optional. Use empty username for anonymous access.
@@ -21,11 +21,11 @@ var ftps = new FTPS({
   additionalLftpCommands: '', // Additional commands to pass to lftp, splitted by ';'
 });
 // Do some amazing things
-console.log(`--start connect:${JSON.stringify(config.srvsftp)}`);
+debug(`--start connect:${JSON.stringify(config.srvsftp)}`);
 const sftptosrv = (localdir,localfilename,callback)=>{
-  console.log(`开始连接:${JSON.stringify(config.srvsftp)}`);
+  debug(`开始连接:${JSON.stringify(config.srvsftp)}`);
   ftps.put(`${localdir}/${localfilename}`, `data/${localfilename}`).exec((err, res)=> {
-    console.log(`上传文件到data目录:${localdir}/${localfilename}`);
+    debug(`上传文件到data目录:${localdir}/${localfilename}`);
     if(!err){
       console.log(err);
     }
