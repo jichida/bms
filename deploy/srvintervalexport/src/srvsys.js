@@ -11,7 +11,7 @@ const schedule = require('node-schedule');
 const zipdir = require('zip-dir');
 const fse = require('fs-extra');
 const path = require('path');
-const sftptosrv =  require('./src/ftps/index.js');
+const sftptosrv =  require('./ftps/index.js');
 const config = require('./config');
 
 // *    *    *    *    *    *
@@ -111,7 +111,7 @@ const job=()=>{
       .then(()=>{
         debug(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
         winston.getlog().info(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
-        
+
         sftptosrv(`${config.exportdir}`,`LastestAlarm.csv` ,(err,result)=>{
 
           debug(`上传文件:${config.exportdir}/LastestAlarm.csv到ftp服务器`);
