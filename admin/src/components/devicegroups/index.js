@@ -69,6 +69,7 @@ const DeviceGroupList = (props) => (
         <TextField label="分组名称" source="name" />
         <TextField label="备注" source="memo" />
         <TextField label="联系人" source="contact" />
+        <TextField label="最后更新时间" source="updatetime" />
         <TextFieldGroupDeviceCount label="设备个数" source="deviceids" sortable={false}/>
         {permissions==='admin'?<EditBtnif />:null}
       </Datagrid>
