@@ -139,6 +139,8 @@ const job=()=>{
     //每天18点开始工作
     start_cron18();
   });
+
+  winston.getlog().info(`===执行到末尾===`);
 };
 
 
