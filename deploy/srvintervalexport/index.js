@@ -50,3 +50,12 @@ dbdictModel.find({
 
   startsrv();
 });
+
+
+process.on('unhandledRejection', (err) => {
+  winston.getlog().info(`unhandledRejection:${JSON.stringify(err)}`);
+})
+
+process.on('unhandledException', (err) => {
+  winston.getlog().info(`unhandledException:${JSON.stringify(err)}`);
+})
