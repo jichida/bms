@@ -61,7 +61,7 @@ class DateRange extends React.Component {
         const {endOpen} = this.state;
         const { startDate, endDate } = this.props;
         return (
-            <div>
+            <div className="wrapping2date">
                 <DatePicker
                     className="mydatapicker"
                     locale={cnLocale}
