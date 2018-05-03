@@ -61,8 +61,9 @@ class DateRange extends React.Component {
         const {endOpen} = this.state;
         const { startDate, endDate } = this.props;
         return (
-            <div className="daterange">
+            <div>
                 <DatePicker
+                    className="mydatapicker"
                     locale={cnLocale}
                     disabledDate={this.disabledStartDate}
                     showTime
@@ -71,9 +72,10 @@ class DateRange extends React.Component {
                     placeholder="开始日期和时间"
                     onChange={this.onStartChange}
                     onOpenChange={this.handleStartOpenChange}
-                    style={{width: !!this.props.width?`${this.props.width}px`:"180px",marginRight : "10px"}}
+                    style={{width: !!this.props.width?`${this.props.width}px`:"180px",marginRight : "10px",height: "40px", marginBottom: "0", paddingBottom: "0"}}
                 />
                 <DatePicker
+                   className="mydatapicker"
                     locale={cnLocale}
                     disabledDate={this.disabledEndDate}
                     showTime
@@ -83,7 +85,7 @@ class DateRange extends React.Component {
                     onChange={this.onEndChange}
                     open={endOpen}
                     onOpenChange={this.handleEndOpenChange}
-                    style={{width: !!this.props.width?`${this.props.width}px`:"180px"}}
+                    style={{width: !!this.props.width?`${this.props.width}px`:"180px",height: "40px", marginBottom: "0", paddingBottom: "0"}}
                 />
             </div>
         );

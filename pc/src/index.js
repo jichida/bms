@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
+import 'moment/locale/zh-cn';
 import Root from './env/root';
 import store,{sagaMiddleware} from './env/store';
 import rootSaga from './sagas';
@@ -11,7 +12,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import { setLanguage, } from 'redux-polyglot';
 import lan from './i18n';
 
-import 'moment/locale/zh-cn';
+
 moment.locale('zh-cn');
 
 injectTapEventPlugin();
