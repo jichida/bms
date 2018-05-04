@@ -1,6 +1,7 @@
 const config = {
   logdir:process.env.logdir||'/root/bms/deploy/dist/log',
   localdir:process.env.localdir||'/root/bms/deploy/dist/exportdir',
+  localfilename:process.env.localfilename || '20180513.zip',
   srvsftp:{
       host: process.env.srvsftp_host||'192.168.2.14',
       port: process.env.srvsftp_port||'22',

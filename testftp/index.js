@@ -1,7 +1,7 @@
 const sftptosrv =  require('./src/ftps/index.js');
 const config = require('./src/config.js');
 
-const localfilename = `LastestAlarm.csv`;
+const localfilename = config.localfilename;
 
 console.log(`start....`);
 sftptosrv(`${config.localdir}`,localfilename,(err,result)=>{
