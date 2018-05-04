@@ -13,7 +13,9 @@
 }
 .deviceinfodetail .listsdeviceinfolist{
     padding-top: 15px;
-    width: 100%;
+    width: 50%;
+    min-width: 600px;
+    padding-bottom:10px;
 }
 .deviceinfodetail .listsdeviceinfolist .l{
     height: 260px;

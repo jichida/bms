@@ -53,7 +53,7 @@ class Page extends React.Component {
             if(!!props_ticka[i]){
               va = parseFloat(props_ticka[i].toFixed(2));
             }
-            
+
             let vs = 0;
             if(!!props_ticks[i]){
                vs = parseFloat(props_ticks[i].toFixed(2));
@@ -136,7 +136,9 @@ class Page extends React.Component {
                                               if(i.unit !== ''){
                                                 value = `${value}${i.unit}`;
                                               }
-                                              return (<div key={k} ><span>{`${i.name}`}</span><span>{`${value}`}</span></div>);
+                                              return (<div key={k} >
+                                                <span>{`${i.name}`}</span>
+                                                <span>{`${value}`}</span></div>);
                                           })
                                       }
                                       </div>
