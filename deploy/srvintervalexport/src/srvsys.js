@@ -80,6 +80,8 @@ const cron_18 = (callbackfn)=>{
         winston.getlog().info(`压缩完毕:${exportdir}.zip`);
 
         const filename3 = path.basename(`${exportdir}.zip`);
+        winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
+
         sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
           winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
           debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
@@ -87,12 +89,14 @@ const cron_18 = (callbackfn)=>{
       });
 
       const filename1 = path.basename(positionfilepath);
+      winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename1}`);
       sftptosrv(`${config.exportdir}`,filename1,(err,result)=>{
         debug(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
         winston.getlog().info(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
       });
 
       const filename2 = path.basename(deviceextfilepath);
+      winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename2}`);
       sftptosrv(`${config.exportdir}`,filename2 ,(err,result)=>{
         debug(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
         winston.getlog().info(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
@@ -105,15 +109,22 @@ const cron_18 = (callbackfn)=>{
       debug(`拷贝文件:${alarmfilepath}`);
       winston.getlog().info(`拷贝文件:${alarmfilepath}`);
 
-      fse.copy(alarmfilepath,`${config.exportdir}/LastestAlarm.csv`)
+      const alarmfilename =  path.basename(alarmfilepath);
+      winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${alarmfilename}`);
+      sftptosrv(`${config.exportdir}`,alarmfilename,(err,result)=>{
+        debug(`上传文件:${config.exportdir}/${alarmfilename}到ftp服务器`);
+        winston.getlog().info(`上传文件:${config.exportdir}/${alarmfilename}到ftp服务器`);
+      });
+
+      const filenamelastestalfname = 'LastestAlarm.csv';
+      fse.copy(alarmfilepath,`${config.exportdir}/${filenamelastestalfname}`)
       .then(()=>{
-        debug(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
-        winston.getlog().info(`拷贝文件到:${config.exportdir}/LastestAlarm.csv`);
-
-        sftptosrv(`${config.exportdir}`,`LastestAlarm.csv` ,(err,result)=>{
-
-          debug(`上传文件:${config.exportdir}/LastestAlarm.csv到ftp服务器`);
-          winston.getlog().info(`上传文件:${config.exportdir}/LastestAlarm.csv到ftp服务器`);
+        debug(`拷贝文件到:${config.exportdir}/${filenamelastestalfname}`);
+        winston.getlog().info(`拷贝文件到:${config.exportdir}/${filenamelastestalfname}`);
+        winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filenamelastestalfname}`);
+        sftptosrv(`${config.exportdir}`,filenamelastestalfname,(err,result)=>{
+          debug(`上传文件:${config.exportdir}/${filenamelastestalfname}到ftp服务器`);
+          winston.getlog().info(`上传文件:${config.exportdir}/${filenamelastestalfname}到ftp服务器`);
         });
       })
       .catch((err)=>{

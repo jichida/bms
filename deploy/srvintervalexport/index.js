@@ -49,6 +49,8 @@ dbdictModel.find({
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
+winston.getlog().info(`==程序启动${config.version}===`);
+
   schedule.scheduleJob('0 0 * * *', ()=>{
       //每天0点开始工作
       job.start_cron0();
@@ -56,7 +58,7 @@ dbdictModel.find({
 
   schedule.scheduleJob('0 18 * * *', ()=>{
     //每天18点开始工作
-    job.tart_cron18();
+    job.start_cron18();
   });
 });
 
