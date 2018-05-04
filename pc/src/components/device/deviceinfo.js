@@ -10,7 +10,8 @@ import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
 import { deviceinfoquerychart_request } from '../../actions';
-import { Chart2, Chart3 } from "./swiperchart";
+import { Chart3 } from "./swiperchart";
+import Chart2 from './chart_rechart';
 import moment from 'moment';
 import { Tabs,Spin } from 'antd';
 import './deviceinfo.css';
@@ -101,12 +102,47 @@ class Page extends React.Component {
           chartC = (<div className="deviceinfospin"><Spin size="large" tip="正在加载图表,请稍后..."/></div>);
         }
         else {
+
+          // let data_ticks_labeltime = [];
+          // let data_tickv_labeltime = [];
+          // let data_ticks_labeltime = [];
+          // let data_ticks_labeltime = [];
+          const convert_addlabeltime = (data_ticks)=>{
+            let dataret = [];
+            let maptimevalue = {};
+            map(data_ticks,(v,k)=>{
+              maptimevalue[v.time] = v.value;
+            });
+            if(props_ticktime.length > 0){
+              //<----加10小时time时间---
+              const momentmin = moment(props_ticktime[props_ticktime.length-1].ticktime).subtract(10,'hours');//.format('YYYY-MM-DD HH:mm:ss');
+              const momentmax = moment();//.format('YYYY-MM-DD HH:mm:ss');
+              for(let m = momentmin ;m < momentmax ;){
+                 const curv = m.format('HH:mm');
+                 let v = {};
+                 v.time = curv;
+                 if(!!maptimevalue[curv]){
+                   v.timev = curv;
+                   v.value = maptimevalue[curv];
+                 }
+                 dataret.push(v);
+                 m = m.add(1,'minutes');
+              }
+            }
+            return dataret;
+          }
+
+          const ret_data_ticks = convert_addlabeltime(data_ticks);
+          console.log(`--->\n${JSON.stringify(ret_data_ticks)}`);
+          const ret_data_tickv = convert_addlabeltime(data_tickv);
+          const ret_data_ticka = convert_addlabeltime(data_ticka);
+
           chartC = (
             <div className="listsdevicechartlists">
-                <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
-                <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
+                <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 chartdata={ret_data_ticks}  unit={'%'}/></div>
+                <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 chartdata={ret_data_tickv} unit={'V'}/></div>
                 <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
-                <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
+                <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 chartdata={ret_data_ticka} unit={'A'}/></div>
             </div>
           );
         }

@@ -145,13 +145,7 @@ import Wendu from '../../img/28.png';
 export class Chart2 extends React.Component {
     render() {
         const {data,unit} = this.props;
-        console.log(data);
-        // const cols = {
-        //     'value': {
-        //         tickCount: 10,
-        //     },
-        //     'time': { range: [ 0 , 1] }
-        // };
+        // console.log(data);
         const scale = {
           'sales': {
             type: 'time', // 指定数据类型
@@ -165,21 +159,22 @@ export class Chart2 extends React.Component {
         };
         return (
             <Chart height={260} data={data} scale={scale} padding={[20, 40, 40, 60]} forceFit>
-                <Axis name="time" label={{
+                <Axis name="timev" label={{
                     formatter: (text, item, index) => {
-                      if(index%10===0){
+                      // console.log(text);
+                      if(index%50===0){
                         return `${text}`;
                       }
                     }
-                }} />
+                }}/>
+                <Geom type="line" position="timev*value" size={2} />
                 <Axis name="value" line={{stroke: '#EEEEEE'}}  label={{
                     formatter: val => {
                       return `${val}${unit}`;
                     }
                 }} />
                 <Tooltip crosshairs={{type : "y"}}/>
-                <Geom type="line" position="time*value" size={2} />
-                <Geom type='point' position="time*value" size={4} shape={'circle'} style={{ stroke: '#fff', lineWidth: 1}} />
+                <Geom type='point' position="timev*value" size={2} shape={'circle'} style={{ stroke: '#fff', lineWidth: 1}} />
             </Chart>
         )
     }
