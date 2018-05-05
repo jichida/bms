@@ -82,7 +82,12 @@
     border-bottom:1px solid #EEE;
     line-height: 30px;
 }
-
+.deviceinfodetail .listsdeviceinfolist .li >div>div span:first-child{
+    flex-shrink: 0;
+}
+.deviceinfodetail .listsdeviceinfolist .li >div>div span:last-child{
+    margin-left: 40px
+}
 .deviceinfodetail .listsdevicechartlists{
     padding-top: 15px;
     display: -webkit-box;
@@ -95,7 +100,6 @@
     width: 100%;
     flex-shrink: 0;
 }
-
 .deviceinfodetail .listsdevicechartlists .l{
     height: 260px;
     margin-bottom: 20px;
@@ -115,9 +119,6 @@
     -webkit-justify-content: flex-start;
     justify-content: flex-start;
 }
-
-
-
 .deviceinfodetail .listsdevicechartlists .l{
     height: 260px;
     margin-bottom: 20px;
@@ -191,7 +192,6 @@
     border-bottom:1px solid #EEE;
     line-height: 30px;
 }
-
 .listsdevicechartlists .lli{
     border: 1px solid #EEE;
     margin-right: 20px;
