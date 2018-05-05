@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { DatePicker} from 'antd';
-
+import cnLocale from 'antd/lib/date-picker/locale/zh_CN.js';
 
 class DateRange extends React.Component {
     constructor(props) {
@@ -63,6 +63,7 @@ class DateRange extends React.Component {
         return (
             <div className="daterange">
                 <DatePicker
+                    locale={cnLocale}
                     disabledDate={this.disabledStartDate}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"
@@ -73,6 +74,7 @@ class DateRange extends React.Component {
                     style={{width: !!this.props.width?`${this.props.width}px`:"180px",marginRight : "10px"}}
                 />
                 <DatePicker
+                    locale={cnLocale}
                     disabledDate={this.disabledEndDate}
                     showTime
                     format="YYYY-MM-DD HH:mm:ss"

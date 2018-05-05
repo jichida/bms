@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log exportdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bms.com28.cn:27018/bms node index",
+    "start2": "DEBUG=* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log exportdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://localhost/bmscatl node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ftps": "^1.1.0",
     "csvwriter": "^1.3.0",
     "debug": "^3.1.0",
+    "fs-extra": "^5.0.0",
     "iconv": "^2.3.0",
     "lodash": "^4.17.5",
     "moment": "^2.21.0",
@@ -19,6 +22,7 @@
     "mongoose-paginate": "^5.0.3",
     "node-schedule": "^1.3.0",
     "node-xlsx": "^0.12.0",
-    "winston": "^2.4.1"
+    "winston": "^2.4.1",
+    "zip-dir": "^1.0.2"
   }
 }

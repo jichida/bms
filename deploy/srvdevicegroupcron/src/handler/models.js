@@ -26,6 +26,7 @@ const DeviceGroupSchema = new Schema({
   deviceids:[{ type: Schema.Types.ObjectId, ref: 'device', default: [] }],
   organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
   systemflag:{ type: Schema.Types.Number,default: 0 },
+  updatetime: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
 }, { strict: false });
 DeviceGroupSchema.plugin(mongoosePaginate);
 const DeviceGroupModel =mongoose.model('devicegroup',  DeviceGroupSchema);

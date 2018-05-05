@@ -945,6 +945,9 @@
     -webkit-align-items: flex-start;
 }
 
+.wrapping2date{
+  padding-top: 10px;
+}
 .amap-overlays .amap-ui-smp-ifwn-def-tr-close{
     display: none;
 }

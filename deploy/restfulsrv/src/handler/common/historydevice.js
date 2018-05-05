@@ -72,23 +72,23 @@ const bridge_historydeviceinfo = (item)=>{
   itemnew[`车辆ID`] = get(item,'DeviceId','');
   itemnew[`采集时间`] = get(item,'DataTime','');
   itemnew[`保存时间`] = get(item,'UpdateTime','');
-  itemnew[`箱体测量电压(V)`] = get(item,'ChargeACVoltage','');
+  itemnew[`箱体测量电压(V)`] = get(item,'CHARGEACVOLTAGE','');
   itemnew[`箱体累加电压(V)`] = get(item,'BAT_U_TOT_HVS','');
   itemnew[`箱体电流(A)`] = get(item,'BAT_I_HVS','');
   itemnew[`真实SOC(%)`] = get(item,'BAT_SOC_HVS','');
-  itemnew[`最高单体电压(V)`] = get(item,'BAT_Ucell_Max','');
-  itemnew[`最低单体电压(V)`] = get(item,'BAT_Ucell_Min','');
-  itemnew[`最高单体电压CSC号`] = get(item,'BAT_Ucell_Max_CSC','');
-  itemnew[`最高单体电芯位置`] = get(item,'BAT_Ucell_Max_CELL','');
-  itemnew[`最低单体电压CSC号`] = get(item,'BAT_Ucell_Min_CSC','');
-  itemnew[`最低单体电压电芯位置`] = get(item,'BAT_Ucell_Min_CELL','');
-  itemnew[`最高单体温度`] = get(item,'BAT_T_Max','');
-  itemnew[`最低单体温度`] = get(item,'BAT_T_Min','');
-  itemnew[`平均单体温度`] = get(item,'BAT_T_Avg','');
-  itemnew[`最高温度CSC号`] = get(item,'BAT_T_Max_CSC','');
-  itemnew[`最低温度CSC号`] = get(item,'BAT_T_Min_CSC','');
-  itemnew[`显示用SOC`] = get(item,'BAT_User_SOC_HVS','');
-  itemnew[`平均单体电压`] = get(item,'BAT_Ucell_Avg','');
+  itemnew[`最高单体电压(V)`] = get(item,'BAT_UCELL_MAX','');
+  itemnew[`最低单体电压(V)`] = get(item,'BAT_UCELL_MIN','');
+  itemnew[`最高单体电压CSC号`] = get(item,'BAT_UCELL_MAX_CSC','');
+  itemnew[`最高单体电芯位置`] = get(item,'BAT_UCELL_MAX_CELL','');
+  itemnew[`最低单体电压CSC号`] = get(item,'BAT_UCELL_MIN_CSC','');
+  itemnew[`最低单体电压电芯位置`] = get(item,'BAT_UCELL_MIN_CELL','');
+  itemnew[`最高单体温度`] = get(item,'BAT_T_MAX','');
+  itemnew[`最低单体温度`] = get(item,'BAT_T_MIN','');
+  itemnew[`平均单体温度`] = get(item,'BAT_T_AVG','');
+  itemnew[`最高温度CSC号`] = get(item,'BAT_T_MAX_CSC','');
+  itemnew[`最低温度CSC号`] = get(item,'BAT_T_MIN_CSC','');
+  itemnew[`显示用SOC`] = get(item,'BAT_USER_SOC_HVS','');
+  itemnew[`平均单体电压`] = get(item,'BAT_UCELL_AVG','');
   itemnew[`报警信息`] = get(item,'alarmtxtstat','');
   return itemnew;
 };
@@ -99,57 +99,57 @@ const bridge_historydeviceinfo_export = (item)=>{
   itemnew[`RDBID`] = get(item,'DeviceId','');
   itemnew[`采集时间`] = get(item,'DataTime','');
   itemnew[`保存时间`] = get(item,'UpdateTime','');
-  itemnew[`箱体测量电压(V)`] = get(item,'ChargeACVoltage','');
+  itemnew[`箱体测量电压(V)`] = get(item,'CHARGEACVOLTAGE','');
   itemnew[`箱体累加电压(V)`] = get(item,'BAT_U_TOT_HVS','');
   itemnew[`箱体电流(A)`] = get(item,'BAT_I_HVS','');
   itemnew[`真实SOC(%)`] = get(item,'BAT_SOC_HVS','');
   itemnew[`SOH(%)`] = get(item,'BAT_SOH_HVS','');
-  itemnew[`最高单体电压(V)`] = get(item,'BAT_Ucell_Max','');
-  itemnew[`最低单体电压(V)`] = get(item,'BAT_Ucell_Min','');
-  itemnew[`最高单体电压CSC号`] = get(item,'BAT_Ucell_Max_CSC','');
-  itemnew[`最高单体电压电芯位置`] = get(item,'BAT_Ucell_Max_CELL','');
-  itemnew[`最低单体电压CSC号`] = get(item,'BAT_Ucell_Min_CSC','');
-  itemnew[`最低单体电压电芯位置`] = get(item,'BAT_Ucell_Min_CELL','');
-  itemnew[`最高单体温度(℃)`] = get(item,'BAT_T_Max','');
-  itemnew[`最低单体温度(℃)`] = get(item,'BAT_T_Min','');
-  itemnew[`平均单体温度(℃)`] = get(item,'BAT_T_Avg','');
-  itemnew[`最高温度CSC号`] = get(item,'BAT_T_Max_CSC','');
-  itemnew[`最低温度CSC号`] = get(item,'BAT_T_Min_CSC','');
-  itemnew[`显示用SOC`] = get(item,'BAT_User_SOC_HVS','');
-  itemnew[`平均单体电压`] = get(item,'BAT_Ucell_Avg','');
-  itemnew[`报警状态`] = get(item,'alarmtxtstat','');
+  itemnew[`最高单体电压(V)`] = get(item,'BAT_UCELL_MAX','');
+  itemnew[`最低单体电压(V)`] = get(item,'BAT_UCELL_MIN','');
+  itemnew[`最高单体电压CSC号`] = get(item,'BAT_UCELL_MAX_CSC','');
+  itemnew[`最高单体电压电芯位置`] = get(item,'BAT_UCELL_MAX_CELL','');
+  itemnew[`最低单体电压CSC号`] = get(item,'BAT_UCELL_MIN_CSC','');
+  itemnew[`最低单体电压电芯位置`] = get(item,'BAT_UCELL_MIN_CELL','');
+  itemnew[`最高单体温度(℃)`] = get(item,'BAT_T_MAX','');
+  itemnew[`最低单体温度(℃)`] = get(item,'BAT_T_MIN','');
+  itemnew[`平均单体温度(℃)`] = get(item,'BAT_T_AVG','');
+  itemnew[`最高温度CSC号`] = get(item,'BAT_T_MAX_CSC','');
+  itemnew[`最低温度CSC号`] = get(item,'BAT_T_MIN_CSC','');
+  itemnew[`显示用SOC`] = get(item,'BAT_USER_SOC_HVS','');
+  itemnew[`平均单体电压`] = get(item,'BAT_UCELL_AVG','');
   itemnew[`生命信号`] = get(item,'ALIV_ST_SW_HVS','');
   itemnew[`空调继电器状态`] = get(item,'ST_AC_SW_HVS','');
-  itemnew[`附件继电器状态`] = get(item,'ST_Aux_SW_HVS','');
-  itemnew[`主负继电器状态`] = get(item,'ST_Main_Neg_SW_HVS','');
-  itemnew[`预充电继电器状态`] = get(item,'ST_Pre_SW_HVS','');
-  itemnew[`主正继电器状态`] = get(item,'ST_Main_Pos_SW_HVS','');
-  itemnew[`充电继电器状态`] = get(item,'ST_Chg_SW_HVS','');
-  itemnew[`风扇控制继电器状态`] = get(item,'ST_Fan_SW_HVS','');
-  itemnew[`加热继电器状态`] = get(item,'ST_Heater_SW_HVS','');
+  itemnew[`附件继电器状态`] = get(item,'ST_AUX_SW_HVS','');
+  itemnew[`主负继电器状态`] = get(item,'ST_MAIN_NEG_SW_HVS','');
+  itemnew[`预充电继电器状态`] = get(item,'ST_PRE_SW_HVS','');
+  itemnew[`主正继电器状态`] = get(item,'ST_MAIN_POS_SW_HVS','');
+  itemnew[`充电继电器状态`] = get(item,'ST_CHG_SW_HVS','');
+  itemnew[`风扇控制继电器状态`] = get(item,'ST_FAN_SW_HVS','');
+  itemnew[`加热继电器状态`] = get(item,'ST_HEATER_SW_HVS','');
   itemnew[`继电器内侧电压(V)`] = get(item,'BAT_U_HVS','');
-  itemnew[`允许放电电流(A)`] = get(item,'BAT_Allow_DisCharge_I','');
-  itemnew[`允许充电电流(A)`] = get(item,'BAT_Allow_Charge_I','');
-  itemnew[`正极绝缘阻抗(kohm)`] = get(item,'BAT_ISO_R_Pos','');
-  itemnew[`负极绝缘阻抗(kohm)`] = get(item,'BAT_ISO_R_Neg','');
-  itemnew[`KeyOn信号电压(V)`] = get(item,'KeyOnVoltage','');
-  itemnew[`BMU供电电压(V)`] = get(item,'PowerVoltage','');
-  itemnew[`交流充电供电电压(V)`] = get(item,'ChargeACVoltage','');
-  itemnew[`直流充电供电电压(V)`] = get(item,'ChargeDCVoltage','');
-  itemnew[`CC2检测电压(V)`] = get(item,'CC2Voltage','');
-  itemnew[`本次充电容量(Ah)`] = get(item,'ChargedCapacity','');
-  itemnew[`总充放电循环次数`] = get(item,'TotalWorkCycle','');
-  itemnew[`BMU采的CSC功耗电流(mA)`] = get(item,'CSC_Power_Current','');
+  itemnew[`允许放电电流(A)`] = get(item,'BAT_ALLOW_DISCHARGE_I','');
+  itemnew[`允许充电电流(A)`] = get(item,'BAT_ALLOW_CHARGE_I','');
+  itemnew[`正极绝缘阻抗(KOHM)`] = get(item,'BAT_ISO_R_POS','');
+  itemnew[`负极绝缘阻抗(KOHM)`] = get(item,'BAT_ISO_R_NEG','');
+  itemnew[`KEYON信号电压(V)`] = get(item,'KEYONVOLTAGE','');
+  itemnew[`BMU供电电压(V)`] = get(item,'POWERVOLTAGE','');
+  itemnew[`交流充电供电电压(V)`] = get(item,'CHARGEACVOLTAGE','');
+  itemnew[`直流充电供电电压(V)`] = get(item,'CHARGEDCVOLTAGE','');
+  itemnew[`CC2检测电压(V)`] = get(item,'CC2VOLTAGE','');
+  itemnew[`本次充电容量(AH)`] = get(item,'CHARGEDCAPACITY','');
+  itemnew[`总充放电循环次数`] = get(item,'TOTALWORKCYCLE','');
+  itemnew[`BMU采的CSC功耗电流(MA)`] = get(item,'CSC_POWER_CURRENT','');
   itemnew[`单体最大SOC(%)`] = get(item,'BAT_MAX_SOC_HVS','');
   itemnew[`单体最小SOC(%)`] = get(item,'BAT_MIN_SOC_HVS','');
   itemnew[`系统权重SOC(%)`] = get(item,'BAT_WEI_SOC_HVS','');
-  itemnew[`充电需求电流(A)`] = get(item,'BAT_Chg_AmperReq_eBus60','');
-  itemnew[`BPM24V Uout电压采样(V)`] = get(item,'BPM_24V_Uout','');
-  itemnew[`加热2继电器状态`] = get(item,'ST_NegHeater_SW_HVS','');
-  itemnew[`无线充电继电器状态`] = get(item,'ST_WirelessChg_SW','');
-  itemnew[`双枪充电继电器2`] = get(item,'ST_SpearChg_SW_2','');
-  itemnew[`集电网充电继电器`] = get(item,'ST_PowerGridChg_SW','');
-  itemnew[`CC2检测电压2(V)`] = get(item,'CC2Voltage_2','');
+  itemnew[`充电需求电流(A)`] = get(item,'BAT_CHG_AMPERREQ_EBUS60','');
+  itemnew[`BPM24V UOUT电压采样(V)`] = get(item,'BPM_24V_UOUT','');
+  itemnew[`加热2继电器状态`] = get(item,'ST_NEGHEATER_SW_HVS','');
+  itemnew[`无线充电继电器状态`] = get(item,'ST_WIRELESSCHG_SW','');
+  itemnew[`双枪充电继电器2`] = get(item,'ST_SPEARCHG_SW_2','');
+  itemnew[`集电网充电继电器`] = get(item,'ST_POWERGRIDCHG_SW','');
+  itemnew[`CC2检测电压2(V)`] = get(item,'CC2VOLTAGE_2','');
+  itemnew[`报警状态`] = get(item,'alarmtxtstat','');
   return itemnew;
 };
 
@@ -170,18 +170,44 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
     });
   }
 
+const gettimekey =(timestart,timeend)=> {
+    const timekeysz = [];
+    const momentstart = moment(timestart);
+    const momentend = moment(timeend);
+    let momenti;
+    for(momenti =momentstart ;momenti <= momentend;  ){
+      const timekey = momenti.format('YYMMDD');
+      timekeysz.push(timekey);
+      momenti = momenti.add(1, 'days');
+    }
+    console.log(`timekeysz--->${JSON.stringify(timekeysz)}`);
+    return timekeysz;
+  }
+
+
   const getdeviceinfoquerychartresult = ({DeviceId,DataTime},callbackfn)=>{
     const momentmin = moment(DataTime).subtract(10,'hours').format('YYYY-MM-DD HH:mm:ss');
+    const momentmax = moment(DataTime).format('YYYY-MM-DD HH:mm:ss');
+    const timekeysz = gettimekey(momentmin,momentmax);
+    let query = {
+        DeviceId:DeviceId,
+        DataTime:{
+          $gte: momentmin
+        }
+    };
+    if(timekeysz.length === 1){
+      query['TimeKey'] = timekeysz[0];
+    }
+    else if(timekeysz.length > 1){
+      query['TimeKey'] = { $in:timekeysz};
+    }
+
+    debug(`getdeviceinfoquerychartresult--->${JSON.stringify(query)}`);
+
     const historydeviceModel = DBModels.HistoryDeviceModel;
     historydeviceModel.aggregate([
         {
-            $match:
-            {
-                DeviceId:DeviceId,
-                DataTime:{
-                  $gte: momentmin
-                }
-            }
+            $match:query
         },
         {
             $group:
@@ -190,7 +216,7 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
                 {
                     ticktime:
                     {
-                        $substrBytes: [ "$DataTime", 0, 13 ]
+                        $substrBytes: [ "$DataTime", 0, 16 ]
                     }
                 },
                 tickv:
@@ -203,7 +229,7 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
                 },
                 ticks:
                 {
-                    $avg: "$BAT_User_SOC_HVS"
+                    $avg: "$BAT_USER_SOC_HVS"
                 },
 
             }
@@ -221,6 +247,7 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
         ticks:[],
       };
       if(!err && !!result){
+         debug(`getdeviceinfoquerychartresult[获取到数据]--->${result.length}`);
           _.map(result,(v)=>{
             listret.ticktime.push(v._id.ticktime);
             listret.tickv.push(v.tickv);

@@ -3,7 +3,8 @@ const winston = require('./src/log/log.js');
 const DBModels = require('./src/handler/models.js');
 const _ = require('lodash');
 const mongoose     = require('mongoose');
-const startsrv = require('./src/srvsys');
+const job = require('./src/srvsys');
+const schedule = require('node-schedule');
 // const startsrv = require('./src/test');//《------
 const moment = require('moment');
 const debug = require('debug')('srvinterval:start');
@@ -48,5 +49,29 @@ dbdictModel.find({
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
-  startsrv();
+winston.getlog().info(`==程序启动${config.version}===`);
+
+  schedule.scheduleJob('0 0 * * *', ()=>{
+      //每天0点开始工作
+      job.start_cron0();
+  });
+
+  schedule.scheduleJob('0 18 * * *', ()=>{
+    //每天18点开始工作
+    job.start_cron18();
+  });
 });
+
+
+process.on('unhandledRejection', (err) => {
+  winston.getlog().info(`unhandledRejection:${JSON.stringify(err)}`);
+})
+
+process.on('unhandledException', (err) => {
+  winston.getlog().info(`unhandledException:${JSON.stringify(err)}`);
+})
+
+
+
+
+winston.getlog().info(`===执行到末尾===`);

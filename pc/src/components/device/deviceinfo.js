@@ -10,8 +10,14 @@ import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
 import { deviceinfoquerychart_request } from '../../actions';
-import { Chart1, Chart2, Chart3, Chart4 } from "./swiperchart";
+import { Chart3 } from "./swiperchart";
+import Chart2 from './chart_rechart';
 import moment from 'moment';
+import { Tabs,Spin } from 'antd';
+import './deviceinfo.css';
+
+const TabPane = Tabs.TabPane;
+
 class Page extends React.Component {
 
     componentWillMount() {
@@ -38,10 +44,22 @@ class Page extends React.Component {
         let data_ticks = [];
         let data_temperature = 0;
         map(props_ticktime,(v, i)=>{
-            const moments = parseInt(moment(v).format('HH'),10);
-            const vv = parseFloat(props_tickv[i].toFixed(2));
-            const va = parseFloat(props_ticka[i].toFixed(2));
-            const vs = parseFloat(props_ticks[i].toFixed(2));
+            const moments = moment(v).format('HH:mm')//parseInt(moment(v).format('HH'),10);
+            let vv = 0;
+            if(!!props_tickv[i]){
+              vv = parseFloat(props_tickv[i].toFixed(2));
+            }
+
+            let va = 0;
+            if(!!props_ticka[i]){
+              va = parseFloat(props_ticka[i].toFixed(2));
+            }
+
+            let vs = 0;
+            if(!!props_ticks[i]){
+               vs = parseFloat(props_ticks[i].toFixed(2));
+            }
+
             let item = { time: moments, value: vv };
             let item2 = { time: moments, value: va };
             let item3 = { time: moments, value: vs };
@@ -78,84 +96,99 @@ class Page extends React.Component {
 
             datadevice.push(record);
         });
-            // console.log(datadevice);
+        const isloading = props_ticktime.length === 0 && this.props.isloading;
+        let chartC;
+        if(isloading){
+          chartC = (<div className="deviceinfospin"><Spin size="large" tip="正在加载图表,请稍后..."/></div>);
+        }
+        else {
+
+          // let data_ticks_labeltime = [];
+          // let data_tickv_labeltime = [];
+          // let data_ticks_labeltime = [];
+          // let data_ticks_labeltime = [];
+          const convert_addlabeltime = (data_ticks)=>{
+            let dataret = [];
+            let maptimevalue = {};
+            map(data_ticks,(v,k)=>{
+              maptimevalue[v.time] = v.value;
+            });
+            if(props_ticktime.length > 0){
+              //<----加10小时time时间---
+              const momentmin = moment(props_ticktime[props_ticktime.length-1].ticktime).subtract(10,'hours');//.format('YYYY-MM-DD HH:mm:ss');
+              const momentmax = moment();//.format('YYYY-MM-DD HH:mm:ss');
+              for(let m = momentmin ;m < momentmax ;){
+                 const curv = m.format('HH:mm');
+                 let v = {};
+                 v.time = curv;
+                 if(!!maptimevalue[curv]){
+                   v.timev = curv;
+                   v.value = maptimevalue[curv];
+                 }
+                 dataret.push(v);
+                 m = m.add(1,'minutes');
+              }
+            }
+            return dataret;
+          }
+
+          const ret_data_ticks = convert_addlabeltime(data_ticks);
+          console.log(`--->\n${JSON.stringify(ret_data_ticks)}`);
+          const ret_data_tickv = convert_addlabeltime(data_tickv);
+          const ret_data_ticka = convert_addlabeltime(data_ticka);
+
+          chartC = (
+            <div className="listsdevicechartlists">
+                <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 chartdata={ret_data_ticks}  unit={'%'}/></div>
+                <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 chartdata={ret_data_tickv} unit={'V'}/></div>
+                <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
+                <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 chartdata={ret_data_ticka} unit={'A'}/></div>
+            </div>
+          );
+        }
         return (
 
             <div className="warningPage devicePage deviceinfoPage">
                 <div className="appbar">
-
                     <div className="title">车辆详情</div>
                     <div className="devicebtnlist">
-                      {/*   <Button type="primary" icon="play-circle-o" onClick={
-                          ()=>
-                          {
-                            this.props.dispatch(ui_clickplayback(this.props.match.params.deviceid));
-                          }
-
-                        }>车辆轨迹监控</Button>
-                        <Button type="primary" icon="area-chart" onClick={
-                          ()=>
-                          {
-                            // this.props.dispatch(ui_clickplayback(mapseldeviceid));
-                            const id = this.props.match.params.deviceid;
-                            this.props.history.push(`/devicedata/${id}`);// ./devicedata.js
-                          }
-
-                        }>车辆历史数据</Button>
-                        <Button type="primary" icon="clock-circle-o" onClick={()=>{
-                          const id = this.props.match.params.deviceid;
-                          this.props.dispatch(ui_btnclick_devicemessage({DeviceId:id}));
-                          //this.props.history.push(`/devicemessage/${mapseldeviceid}`)
-                        }}>历史警告</Button> */}
-                      <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
+                    <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.goBack()}}></i>
                     </div>
                 </div>
 
-                <div className="deviceinfoPage">
-                <div className="lists deviceinfolist"
-                    style={{
-                        flexGrow: 0,
-                    }}
-                    >
-                    {
-                      map(datadevice,(item,index)=>{
-                        return (
-                            <div key={index} className="li">
-                            <div>
-                                <div className="tit">{item.groupname}</div>
-                                {
-                                    map(item.kv,(i,k)=>{
-                                        let value = i.value;
-                                        if(i.unit !== ''){
-                                          value = `${value}${i.unit}`;
-                                        }
-                                        return (<div key={k} ><span>{`${i.name}`}</span><span>{`${value}`}</span></div>);
-                                    })
-                                }
-                                </div>
-                            </div>
-                        );
-                      })
-                    }
-                    {
-                        // map(datadevice,(item,i)=>{
-                        //     return (
-                        //         <div className="li" key={i}>
-                        //             <div>
-                        //             <div className="name">{item.name}</div><div className="text">{item.value}</div>
-                        //             </div>
-                        //         </div>
-                        //     )
-                        // })
-                    }
-                </div>
-                <div className="lists devicechartlists">
-                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks}  unit={'%'}/></div>
-                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
-                    <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
-                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
-                </div>
-                </div>
+                <div className="deviceinfodetail">
+                  <Tabs type="card">
+                    <TabPane tab="基本信息" key="1">
+                      <div  className="listsdeviceinfolist">
+                          {
+                            map(datadevice,(item,index)=>{
+                              return (
+                                  <div key={index} className="li">
+                                  <div>
+                                      <div className="tit">{item.groupname}</div>
+                                      {
+                                          map(item.kv,(i,k)=>{
+                                              let value = i.value;
+                                              if(i.unit !== ''){
+                                                value = `${value}${i.unit}`;
+                                              }
+                                              return (<div key={k} >
+                                                <span>{`${i.name}`}</span>
+                                                <span>{`${value}`}</span></div>);
+                                          })
+                                      }
+                                      </div>
+                                  </div>
+                              );
+                            })
+                          }
+                      </div>
+                    </TabPane>
+                    <TabPane tab="图表信息" key="2">
+                      {chartC}
+                    </TabPane>
+                  </Tabs>
+                  </div>
             </div>
         );
     }
@@ -165,9 +198,9 @@ class Page extends React.Component {
 const mapStateToProps = ({device,app,deviceinfoquerychart}) => {
     const {  g_devicesdb } = device;
     const { mapdetailfields, mapdict } = app;
-    const {alarmchart} = deviceinfoquerychart;
+    const {alarmchart,isloading} = deviceinfoquerychart;
 
-    return { g_devicesdb, mapdetailfields, mapdict,alarmchart };
+    return { g_devicesdb, mapdetailfields, mapdict,alarmchart,isloading };
 }
 const DeviceComponentWithPProps = translate('showdevice')(Page);
 export default connect(mapStateToProps)(DeviceComponentWithPProps);

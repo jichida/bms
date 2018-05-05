@@ -26,7 +26,7 @@ const getDevice = (callbackfn)=>{
     rlst = [];
     if(!err && !!result){
       _.map(result,(item)=>{
-        const cor = [last_Longitude,last_Latitude];
+        const cor = [item.last_Longitude,item.last_Latitude];
         const wgs84togcj02 = coordtransform.wgs84togcj02(cor[0],cor[1]);
         rlst.push({
           _id:item._id,

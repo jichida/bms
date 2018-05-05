@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import map from 'lodash.map';
 import filter from 'lodash.filter';
 import lodashget from 'lodash.get';
-
+import {getPackNo_BMU} from '../../util';
 import { Select } from 'antd';
 const Option = Select.Option;
 
@@ -36,7 +36,7 @@ class SelectDevice extends React.Component {
                    return true;
                  };
               }
-              const PackNo_BMU = lodashget(deviceItem,'PackNo_BMU','');
+              const PackNo_BMU = getPackNo_BMU(deviceItem);
               if(PackNo_BMU !== ''){
                  if(PackNo_BMU.indexOf(value)!==-1){
                    return true;
@@ -51,7 +51,7 @@ class SelectDevice extends React.Component {
             options = map(optionsarr,(deviceid,index)=>{
                 let value = deviceid;
                 const deviceItem = g_devicesdb[deviceid];
-                const PackNo_BMU = lodashget(deviceItem,'PackNo_BMU','');
+                const PackNo_BMU = getPackNo_BMU(deviceItem);
                 if(PackNo_BMU !== ''){
                   value = `${deviceid}(${PackNo_BMU})`;
                 }
@@ -66,14 +66,14 @@ class SelectDevice extends React.Component {
     const {g_devicesdb,initdeviceid,placeholder} = this.props;
     let initvalue = initdeviceid;
     const deviceItem = g_devicesdb[initdeviceid];
-    const PackNo_BMU = lodashget(deviceItem,'PackNo_BMU','');
+    const PackNo_BMU = getPackNo_BMU(deviceItem);
     if(PackNo_BMU !== ''){
       initvalue = `${initdeviceid}(${PackNo_BMU})`;
     }
     return (
       <Select
         mode="combobox"
-        style={{ width: 160 }}
+        style={{ width: 250 }}
         onChange={this.onChange}
         filterOption={false}
         placeholder={placeholder}

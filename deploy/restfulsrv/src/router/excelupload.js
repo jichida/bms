@@ -61,7 +61,7 @@ const startuploader = (app)=>{
                });
          }
          else{
-           importexcel(targetfile,req.userid,(resultjson)=>{
+           importexcel(targetfile,req,(resultjson)=>{
               res.status(200)
                   .json({
                     result:'OK',

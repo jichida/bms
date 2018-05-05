@@ -6,6 +6,7 @@ const async = require('async');
 const pwd = require('../../util/pwd.js');
 const PubSub = require('pubsub-js');
 const moment = require('moment');
+const requestIp = require('request-ip');
 //<----导入乘客功能待测试
 const getusers = (listusers)=>{
   let newlistusers = [];
@@ -26,8 +27,9 @@ const getusers = (listusers)=>{
 }
 
 
-const importexcel = (excelfilepath,userid,callbackfn)=>{
+const importexcel = (excelfilepath,req,callbackfn)=>{
   //console.log(`开始导入excel:${excelfilepath}`);
+  const userid = req.userid;
   const obj = xlsx.parse(excelfilepath);
   //console.log(JSON.stringify(obj));
   let listusers = [];
@@ -76,6 +78,7 @@ const importexcel = (excelfilepath,userid,callbackfn)=>{
     if(!err){
       const resultstring = `成功导入${resultlist.length}条`;
       const userlog = {
+        remoteip:requestIp.getClientIp(req) || '',
         creator:userid,
         created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
         logtxt:`导入用户,结果${resultstring}`

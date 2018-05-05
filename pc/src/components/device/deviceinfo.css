@@ -1,0 +1,251 @@
+.deviceinfospin {
+  padding-top: 15px;
+  height: 600px;
+  -webkit-display:flex;
+  display:flex;
+  -webkit-align-items:center;
+  align-items:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+}
+.deviceinfodetail {
+  padding-top: 10px;
+}
+.deviceinfodetail .listsdeviceinfolist{
+    padding-top: 15px;
+    width: 50%;
+    min-width: 600px;
+    padding-bottom:10px;
+}
+.deviceinfodetail .listsdeviceinfolist .l{
+    height: 260px;
+    margin-bottom: 20px;
+    border: 1px solid #EEE;
+    margin-right: 20px;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+.deviceinfodetail .listsdeviceinfolist .li{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    margin: 20px 0;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    border-bottom: none;
+    flex-grow: 0;
+    align-self: stretch;
+    width: 100%;
+    padding-right: 20px;
+}
+.deviceinfodetail .listsdeviceinfolist .li >div{
+    margin: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    border-bottom: none;
+    position: relative;
+    padding-top: 30px;
+    border: 1px solid #60beaa;
+    padding: 20px;
+    margin-top: 20px;
+}
+.deviceinfodetail .listsdeviceinfolist .li >div >div.tit{
+    position: absolute;
+    left: -1px;
+    top: -30px;
+    border: none;
+    background: #60beaa;
+    color: #FFF;
+    padding: 0 15px;
+    display: block;
+}
+.deviceinfodetail .listsdeviceinfolist .li >div>div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    border-bottom:1px solid #EEE;
+    line-height: 30px;
+}
+
+.deviceinfodetail .listsdevicechartlists{
+    padding-top: 15px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.deviceinfodetail .listsdevicechartlists .l{
+    height: 260px;
+    margin-bottom: 20px;
+    border: 1px solid #EEE;
+    margin-right: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+
+
+
+.deviceinfodetail .listsdevicechartlists .l{
+    height: 260px;
+    margin-bottom: 20px;
+    border: 1px solid #EEE;
+    margin-right: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: flex-start;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+}
+.deviceinfodetail .listsdevicechartlists .li{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    margin: 20px 0;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    border-bottom: none;
+    flex-grow: 0;
+    align-self: stretch;
+    width: 100%;
+    padding-right: 20px;
+}
+.deviceinfodetail .listsdevicechartlists .li >div{
+    margin: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+    border-bottom: none;
+    position: relative;
+    padding-top: 30px;
+    border: 1px solid #60beaa;
+    padding: 20px;
+    margin-top: 20px;
+}
+.deviceinfodetail .listsdevicechartlists .li >div >div.tit{
+    position: absolute;
+    left: -1px;
+    top: -30px;
+    border: none;
+    background: #60beaa;
+    color: #FFF;
+    padding: 0 15px;
+    display: block;
+}
+.deviceinfodetail .listsdevicechartlists .li >div>div{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -moz-justify-content: space-between;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    border-bottom:1px solid #EEE;
+    line-height: 30px;
+}
+
+.listsdevicechartlists .lli{
+    border: 1px solid #EEE;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    background: #f8fafe;
+}
+.listsdevicechartlists .lli.Chart1li >div{
+    margin-top: -10px;
+    padding-bottom: 30px;
+}
+.listsdevicechartlists .lli.Chart1li .tt{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: -28px;
+    margin-top: 10px;
+    padding: 0;
+}
+.listsdevicechartlists .lli.Chart2li .tt{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.listsdevicechartlists .lli.Chart3li .tt,
+.listsdevicechartlists .lli.Chart4li .tt{
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.listsdevicechartlists .lli.Chart3li {
+    height: 260px;
+    flex-shrink: 0;
+}
+.listsdevicechartlists .lli.Chart3li .wenduchart{
+    height: 223px;
+    margin: 0;
+    padding-bottom: 25px;
+}
+.listsdevicechartlists .lli.Chart3li .wenduchart .data{
+    position: absolute;
+    bottom: 10px;
+    font-size: 30px;
+    padding-right: 10px;
+}
+.listsdevicechartlists .lli.Chart3li .wenduchart .dataline{
+    position: absolute;
+    bottom: 105px;
+    z-index: 1000;
+}
+.listsdevicechartlists .lli.Chart3li .wenduchart .dataline >span{
+    width: 8px;
+    display: block;
+    background: #2090e7;
+    margin-right: 20px;
+}

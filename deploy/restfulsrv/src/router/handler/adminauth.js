@@ -2,7 +2,7 @@ const mongoose     = require('mongoose');
 const _  = require('lodash');
 const jwt = require('jsonwebtoken');
 const moment  = require('moment');
-
+const requestIp = require('request-ip');
 const config = require('../../config.js');
 const pwd = require('../../util/pwd.js');
 const DBModels = require('../../db/models.js');
@@ -78,6 +78,7 @@ const adminauth = (req,res)=>{
             },config.secretkey, {});
 
         const userlog = {
+          remoteip:requestIp.getClientIp(req) || '',
           creator:user._id,
           created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
           logtxt:`用户登录`

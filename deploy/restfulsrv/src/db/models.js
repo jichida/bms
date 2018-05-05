@@ -134,6 +134,7 @@ const HistoryDeviceModel =mongoose.model('historydevice',  HistoryDeviceSchema);
 //登录日志
 const UserLogSchema = new Schema({
     creator:{ type: Schema.Types.ObjectId, ref: 'user' },
+    remoteip:{ type: String },
     organizationid:{ type: Schema.Types.ObjectId, ref: 'organization' },
     created_at:{ type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
     logtxt:{type:String,default:'login'}

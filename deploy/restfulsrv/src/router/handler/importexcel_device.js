@@ -5,9 +5,11 @@ const xlsx = require('node-xlsx');
 const async = require('async');
 const PubSub = require('pubsub-js');
 const moment = require('moment');
+const requestIp = require('request-ip');
 
-const importexcel = (excelfilepath,userid,callbackfn)=>{
+const importexcel = (excelfilepath,req,callbackfn)=>{
   //console.log(`开始导入excel:${excelfilepath}`);
+  const userid = req.userid;
   const obj = xlsx.parse(excelfilepath);
   //console.log(JSON.stringify(obj));
   let listdeviceextra = [];
@@ -57,6 +59,7 @@ const importexcel = (excelfilepath,userid,callbackfn)=>{
     if(!err){
       const resultstring = `成功导入${deviceids_success.length}条,${deviceids_notfound.length}条记录未找到设备ID`;
       const userlog = {
+        remoteip:requestIp.getClientIp(req) || '',
         creator:userid,
         created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
         logtxt:`导入设备,结果${resultstring}`

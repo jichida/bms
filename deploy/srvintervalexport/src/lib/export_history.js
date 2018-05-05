@@ -15,17 +15,19 @@ const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
   const dbModel = DBModels.HistoryDeviceModel;
   const filename = `${exportdir}/${curdays}_${DeviceId}.csv`;
   const fields = null;
-  const csvfields = 'DeviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,\
-  BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,\
-  BAT_Ucell_Max_CELL,BAT_Ucell_Min_CSC,BAT_Ucell_Min_CELL,BAT_T_Max,BAT_T_Min,\
-  BAT_T_Avg,BAT_T_Max_CSC,BAT_T_Min_CSC,BAT_User_SOC_HVS,BAT_Ucell_Avg,ALARM,ALIV_ST_SW_HVS,\
-  ST_AC_SW_HVS,ST_Aux_SW_HVS,ST_Main_Neg_SW_HVS,ST_Pre_SW_HVS,ST_Main_Pos_SW_HVS,ST_Chg_SW_HVS,\
-  ST_Fan_SW_HVS,ST_Heater_SW_HVS,BAT_U_HVS,BAT_Allow_Discharge_I,BAT_Allow_Charge_I,BAT_ISO_R_Pos,\
-  BAT_ISO_R_Neg,KeyOnVoltage,PowerVoltage,ChargeACVoltage,ChargeDCVoltage,CC2Voltage,ChargedCapacity,\
-  TotalWorkCycle,CSC_Power_Current,BAT_MAX_SOC_HVS,BAT_MIN_SOC_HVS,BAT_WEI_SOC_HVS,BAT_Chg_AmperReq,\
-  BPM_24V_Uout,ST_NegHeater_SW_HVS,ST_WirelessChg_SW,ST_SpearChg_SW_2,ST_PowerGridChg_SW,CC2Voltage_2,DIAG_H,DIAG_L';
+  const csvfields = 'DeviceId,DataTime,SaveTime,BAT_U_OUT_HVS,BAT_U_TOT_HVS,BAT_I_HVS,\
+BAT_SOC_HVS,BAT_SOH_HVS,BAT_UCELL_MAX,BAT_UCELL_MIN,BAT_UCELL_MAX_CSC,\
+BAT_UCELL_MAX_CELL,BAT_UCELL_MIN_CSC,BAT_UCELL_MIN_CELL,BAT_T_MAX,BAT_T_MIN,\
+BAT_T_AVG,BAT_T_MAX_CSC,BAT_T_MIN_CSC,BAT_USER_SOC_HVS,BAT_UCELL_AVG,ALARM,ALIV_ST_SW_HVS,\
+ST_AC_SW_HVS,ST_AUX_SW_HVS,ST_MAIN_NEG_SW_HVS,ST_PRE_SW_HVS,ST_MAIN_POS_SW_HVS,ST_CHG_SW_HVS,\
+ST_FAN_SW_HVS,ST_HEATER_SW_HVS,BAT_U_HVS,BAT_ALLOW_DISCHARGE_I,BAT_ALLOW_CHARGE_I,BAT_ISO_R_POS,\
+BAT_ISO_R_NEG,KEYONVOLTAGE,POWERVOLTAGE,CHARGEACVOLTAGE,CHARGEDCVOLTAGE,CC2VOLTAGE,CHARGEDCAPACITY,\
+TOTALWORKCYCLE,CSC_POWER_CURRENT,BAT_MAX_SOC_HVS,BAT_MIN_SOC_HVS,BAT_WEI_SOC_HVS,BAT_CHG_AMPERREQ,\
+BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRIDCHG_SW,CC2VOLTAGE_2,DIAG_H,DIAG_L';
 
   const fn_convert = (doc,callbackfn)=>{
+    doc['ALARM'] = doc['alarmtxtstat'];
+    doc['SaveTime'] = doc['UpdateTime'];
     callbackfn(doc);
   }
   const query = {
@@ -55,7 +57,13 @@ const startexport_export = (devicelist,callbackfn)=>{
   const moments = moment().subtract(1, 'days');
   const curday = moments.format('YYYY-MM-DD');
   const exportdir = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
-  fs.mkdirSync(exportdir);
+  try{
+    fs.mkdirSync(exportdir);
+  }
+  catch(e){
+
+  }
+
   winston.getlog().info(`新建一个目录${exportdir}`);
 
   let success_list = [];
@@ -75,7 +83,7 @@ const startexport_export = (devicelist,callbackfn)=>{
 
   async.series(fnsz,(err,result)=>{
     winston.getlog().info(`导出结果【历史数据】,成功【${success_list.length}】`);
-    callback(success_list);
+    callbackfn(exportdir);
   });
 }
 

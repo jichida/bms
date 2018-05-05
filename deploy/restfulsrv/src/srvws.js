@@ -14,7 +14,8 @@ const startwebsocketsrv = (http)=>{
     ////console.log('a user connected');
 
     let ctx = {
-      connectid:uuid.v4()
+      connectid:uuid.v4(),
+      remoteip:socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address
     };//for each connection
     usersubfn(socket,ctx);
     //ctx.tokensubscribe = PubSub.subscribe('allmsg', ctx.userSubscriber);

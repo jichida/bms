@@ -134,6 +134,7 @@ const DeviceEdit = (props) => {
           <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
         </FormTab>
         <FormTab label="设备基本信息">
+          <TextInput label="PackNo" source="PackNo_BMU" />
           <TextField label="设备ID" source="DeviceId"  validate={required} />
           <TextField label="创建时间" source="created_at"  />
           <TextField label="插入数据库时间" source="updated_at"  />
@@ -274,7 +275,7 @@ const DeviceList = (props) => (
       <TextField label="报警信息" source="alarmtxtstat" />
       <TextField label="最后数据时间" source="LastRealtimeAlarm.DataTime" />
       <TextField label="最后定位时间" source="last_GPSTime" />
-      <TextField label="更新时间" source="UpdateTime"  sortable={false} />
+      <TextField label="更新时间" source="UpdateTime"   />
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>
   }

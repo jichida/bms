@@ -59,7 +59,7 @@ const bridge_alarmrawinfo = (alarmrawinfo)=>{
     '无','低','中','高'
   ];
   _.map(rest,(v,alarmfield)=>{
-    if(alarmfield === 'AL_Trouble_Code'){
+    if(alarmfield === 'AL_TROUBLE_CODE'){
       alarmtxt += `F[${v}]`;
     }
     if(_.startsWith(alarmfield, 'AL_')){

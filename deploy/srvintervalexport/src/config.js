@@ -8,8 +8,15 @@ const config =  {
   DeviceId:process.env.DeviceId,
   exportFlag:process.env.exportFlag || 'all',
   exportdir:process.env.exportdir ||'../../dist/exportdir',
-  version:'1.0.3',
+  version:'1.0.4',
   mapdict:{},
+  srvsftp:{
+      host: process.env.srvsftp_host||'192.168.2.14',
+      port: process.env.srvsftp_port||'22',
+      username: process.env.srvsftp_username||'catlftp',
+      password: process.env.srvsftp_password||'%c?D:8Bv'
+  },
+
 };
 
 
