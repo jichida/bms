@@ -196,8 +196,6 @@ class TreeSearchBattery extends React.Component {
                       />
                     </div>
 
-                </div>
-                <div className="i">
                     <MultiSelect
                         closeOnSelect={true}
                         multi
@@ -207,6 +205,7 @@ class TreeSearchBattery extends React.Component {
                         simpleValue
                         value={this.state.selectedvalue}
                       />
+
                 </div>
                 <div className="b">
                     <Button type="primary" icon="environment-o" onClick={this.onClickLoc}>定位</Button>

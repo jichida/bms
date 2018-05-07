@@ -156,7 +156,7 @@ class Page extends React.Component {
                     </div>
                 </div>
 
-                <div className="deviceinfodetail">
+                <div className="deviceinfodetail mydeviceinfodetail">
                   <Tabs type="card">
                     <TabPane tab="基本信息" key="1">
                       <div  className="listsdeviceinfolist">

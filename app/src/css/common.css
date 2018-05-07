@@ -1105,8 +1105,8 @@ div.mydevicebtn >div{
     width: 50%;
     font-size: 16px;
     white-space: nowrap;
-    text-overflow:ellipsis;
-    overflow: hidden;
+    /* text-overflow:ellipsis; */
+    overflow-x: scroll;
 }
 .Window_pop_info_app .info-middle ul li span.t{
     text-align: right;

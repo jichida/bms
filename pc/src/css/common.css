@@ -742,21 +742,23 @@
     display: flex;
     display: -webkit-flex;
     -webkit-flex-wrap: wrap;
-
+    flex-grow: 1;
+    align-items: center;
 }
 .searchreport >div.b{
     justify-content: flex-end;
     -moz-justify-content: flex-end;
     -webkit-justify-content: flex-end;
     justify-content: flex-end;
+    flex-shrink: 0;
 }
 .searchreport >div.b >button{
     margin-left: 10px;
 }
 .searchreport{
-    -moz-box-direction:normal;
+    /* -moz-box-direction:normal;
     flex-direction:column;
-    -webkit-flex-direction:column;
+    -webkit-flex-direction:column; */
 }
 .searchreport{
     -webkit-flex-wrap: nowrap;
@@ -883,6 +885,8 @@
     -moz-justify-content: center;
     -webkit-justify-content: center;
     justify-content: center;
+
+    margin-right: 15px;
 }
 .searchreport >div >div.Selectalarmlevel{
     margin: 0;
@@ -920,7 +924,6 @@
 
 .searchreport >div.i >span >span{
     height: 40px;
-    margin-top: 10px;
     margin-right: 10px;
 }
 
@@ -937,13 +940,13 @@
     height: 40px;
 }
 .searchreport >div.i{
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-align-items: center;
+    -webkit-box-align: flex-start;
+    align-items: flex-start;
+    -webkit-align-items: flex-start;
 }
 
 .wrapping2date{
-  padding-top: 10px;
+  padding-top: 0px;
 }
 .amap-overlays .amap-ui-smp-ifwn-def-tr-close{
     display: none;
@@ -1904,10 +1907,14 @@
     text-align: left;
 }
 .TreeSearchBattery .Select.Select--multi{
-    margin-left: 5px;
     padding-left: 0;
 }
-
+.TreeSearchBattery .Select.Select--multi{
+    padding-top: 0;
+}
 .mydatapicker .ant-input{
     height: 40px;
+}
+.mydeviceinfodetail{
+    margin: 0 15px;
 }
