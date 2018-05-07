@@ -40,7 +40,7 @@ import WeuiTool from './tools/weuitool';
 
 class AppMap extends React.Component {
     componentWillMount() {
-        this.props.dispatch(ui_setmapstyle({height : (window.innerHeight-98-66) + "px", top: "98px"}))
+        this.props.dispatch(ui_setmapstyle({height : (window.innerHeight-118-66) + "px", top: "118px"}))
     }
     render (){
         return (
