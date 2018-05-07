@@ -10,7 +10,7 @@ import get from 'lodash.get';
 import translate from 'redux-polyglot/translate';
 import { bridge_deviceinfo } from '../../sagas/datapiple/bridgedb';
 import { deviceinfoquerychart_request } from '../../actions';
-import { Chart3 } from "./swiperchart";
+import { Chart3 } from "./chart_antd";
 import Chart2 from './chart_rechart';
 import moment from 'moment';
 import { Tabs,Spin } from 'antd';

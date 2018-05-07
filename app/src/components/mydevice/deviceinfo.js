@@ -75,7 +75,7 @@ class Page extends React.Component {
                 }}>
                 <div className="navhead">
                     <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
-                    <span className="title" style={{paddingRight : "30px"}}>车辆详情</span>
+                    <span className="title" style={{paddingRight : "30px"}}>{`${deviceid}`}车辆详情</span>
                     <div className="moresetting"></div>
                 </div>
                 <Swiperchart deviceid={this.props.match.params.deviceid} />
