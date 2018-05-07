@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
 // import DataSet from '@antv/data-set';
 import { Swiper, Slide } from 'react-dynamic-swiper';
-import { Tabs,Spin } from 'antd';
+import { Spin } from 'antd';
 // import translate from 'redux-polyglot/translate';
 import 'react-dynamic-swiper/lib/styles.css';
 
@@ -15,8 +15,9 @@ import Sky from '../../img/1.jpg';
 import map from 'lodash.map';
 import get from 'lodash.get';
 import moment from 'moment';
-import { Chart3 } from "./chart_antd";
-import Chart2 from './chart_rechart';
+import { Chart2,Chart3 } from "./chart_antd";
+import './swiperchart.css';
+// import Chart2 from './chart_rechart';
 // const { Arc, Html, Line } = Guide;
 
 let swiperOptions = {
@@ -57,10 +58,12 @@ class Page extends React.Component {
         const isloading = props_ticktime.length === 0 && this.props.isloading;
         let chartCz = [];
         if(isloading){
-          chartCz.push(<div className="deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
-          chartCz.push(<div className="deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
-          chartCz.push(<div className="deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
-          chartCz.push(<div className="deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin">
+            <Spin size="small" tip="正在加载图表,请稍后..."/>
+          </div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
         }
         else {
 
@@ -70,31 +73,37 @@ class Page extends React.Component {
           // let data_ticks_labeltime = [];
           const convert_addlabeltime = (data_ticks)=>{
             let dataret = [];
-            let maptimevalue = {};
-            map(data_ticks,(v,k)=>{
-              maptimevalue[v.time] = v.value;
-            });
-            if(props_ticktime.length > 0){
-              //<----加10小时time时间---
-              const momentmin = moment(props_ticktime[props_ticktime.length-1].ticktime).subtract(10,'hours');//.format('YYYY-MM-DD HH:mm:ss');
-              const momentmax = moment();//.format('YYYY-MM-DD HH:mm:ss');
-              for(let m = momentmin ;m < momentmax ;){
-                 const curv = m.format('HH:mm');
-                 let v = {};
-                 v.time = curv;
-                 if(!!maptimevalue[curv]){
-                   v.timev = curv;
-                   v.value = maptimevalue[curv];
-                 }
-                 dataret.push(v);
-                 m = m.add(1,'minutes');
-              }
+            for(let i = 0 ;i < data_ticks.length ; i++){
+              dataret.push({
+                time:data_ticks[i].time,
+                timev:data_ticks[i].time,
+                value:data_ticks[i].value,
+              });
             }
+            // let maptimevalue = {};
+            // map(data_ticks,(v,k)=>{
+            //   maptimevalue[v.time] = v.value;
+            // });
+            // if(props_ticktime.length > 0){
+            //   //<----加10小时time时间---
+            //   const momentmin = moment(props_ticktime[props_ticktime.length-1].ticktime).subtract(10,'hours');//.format('YYYY-MM-DD HH:mm:ss');
+            //   const momentmax = moment();//.format('YYYY-MM-DD HH:mm:ss');
+            //   for(let m = momentmin ;m < momentmax ;){
+            //      const curv = m.format('HH:mm');
+            //      let v = {};
+            //      v.time = curv;
+            //      if(!!maptimevalue[curv]){
+            //        v.timev = curv;
+            //        v.value = maptimevalue[curv];
+            //      }
+            //      dataret.push(v);
+            //      m = m.add(1,'minutes');
+            //   }
+            // }
             return dataret;
           }
 
           const ret_data_ticks = convert_addlabeltime(data_ticks);
-          console.log(`--->\n${JSON.stringify(ret_data_ticks)}`);
           const ret_data_tickv = convert_addlabeltime(data_tickv);
           const ret_data_ticka = convert_addlabeltime(data_ticka);
 

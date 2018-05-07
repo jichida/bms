@@ -4,7 +4,8 @@ import Wendu from '../../img/28.png';
 
 export class Chart2 extends React.Component {
     render() {
-        const {data,unit} = this.props;
+        const {chartdata:data,unit} = this.props;
+
         const scale = {
           'sales': {
             type: 'time', // 指定数据类型

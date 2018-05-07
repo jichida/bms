@@ -1,0 +1,9 @@
+.deviceinfospin {
+  padding-top: 15px;
+  -webkit-display:flex;
+  display:flex;
+  -webkit-align-items:center;
+  align-items:center;
+  -webkit-justify-content:center;
+  justify-content:center;
+}
