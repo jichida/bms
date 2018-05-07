@@ -138,6 +138,11 @@ export function* wsrecvsagaflow() {
             const addr = yield call(getgeodata,deviceinfo);
             deviceinfo = {...deviceinfo,...addr};
           }
+
+          const {Ext,...rest} = deviceinfo;
+          if(!!Ext){
+            deviceinfo = {...rest,...Ext};
+          }
         }
          g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
          yield put(querydeviceinfo_result(deviceinfo));

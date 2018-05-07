@@ -31,4 +31,16 @@ const getdevicestatus_alaramlevel = (deviceitem)=>{
   return warninglevel;
 }
 
-export {getdevicestatus_isonline,getdevicestatus_alaramlevel};
+const getwarningleveltext = (warninglevel)=>{
+  const warninglevelmap = {
+    '高':'三级',
+    '中':'二级',
+    '低':'一级'
+  };
+  if(!!warninglevelmap[warninglevel]){
+    return warninglevelmap[warninglevel];
+  }
+  return warninglevel;
+}
+
+export {getdevicestatus_isonline,getdevicestatus_alaramlevel,getwarningleveltext};
