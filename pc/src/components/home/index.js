@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
-import AppBar from 'material-ui/AppBar';
+// import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 
 import AdminContent from "./admincontent";
@@ -12,14 +12,14 @@ import Tree from "./tree";
 import Warningtips from "./warningtips";
 // import Prompt from "./prompt";
 
-import Logo from "../../img/logo.png";
 import {
     ui_showmenu,
     ui_showhistoryplay,
     ui_changemodeview
 } from '../../actions';
 import translate from 'redux-polyglot/translate';
-
+import TitleBar from './titlebar';
+import TitleBar4Full from './titlebar4full';
 // let resizetime = null;
 let resizetimecontent = null;
 // this.props.dispatch(ui_showmenu(menuitemstring));
@@ -32,17 +32,6 @@ class Page extends React.Component {
             innerHeight : window.innerHeight,
             openaddress : false,
         };
-    }
-    componentWillMount() {
-        // window.onresize = ()=>{
-        //     window.clearTimeout(resizetime);
-        //     resizetime = window.setTimeout(()=>{
-        //         this.setState({
-        //             innerWidth: window.innerWidth,
-        //             innerHeight: window.innerHeight,
-        //         });
-        //     }, 10)
-        // }
     }
 
     componentDidMount() {
@@ -107,33 +96,15 @@ class Page extends React.Component {
     render() {
         const {showmenu,modeview} = this.props;
         const treestyle = this.getdrawstyle("350px");
-
+        const is4full = modeview !== 'device';
         return (
             <div className="AppPage" id="AppPage" style={{height : `${this.state.innerHeight}px`}}>
                 <div className="content">
-                    <div className="headcontent">
-                        <AppBar
-                            title={
-                                <div className="titlenav">
-                                    <span className={modeview==='device'?"":""} onClick={this.titleNavClick.bind(this, 0)}>监控平台</span>
-                                </div>
-                            }
-                            onLeftIconButtonTouchTap={this.menuevent}
-                            style={{
-                                backgroundColor: "#FFF",
-                                paddingLeft:"0",
-                                height : "64px",
-                                paddingRight:"0",
-                            }}
-                            iconStyleLeft={{
-                                marginTop: "0",
-                                marginLeft: "0"
-                            }}
-                            iconElementLeft={<div className="logo" onClick={()=>{this.props.dispatch(ui_showmenu("addressbox"))}}>
-                              <img src={Logo} alt=""/></div>}
-                            className="appbar"
-                        />
-                    </div>
+
+                    {
+                      is4full?<TitleBar4Full titleNavClick={this.titleNavClick} menuevent={this.menuevent} dispatch={this.dispatch} />:
+                      <TitleBar titleNavClick={this.titleNavClick} menuevent={this.menuevent} dispatch={this.dispatch} />
+                    }
 
                     <div className="bodycontainer" style={{height: `${this.state.innerHeight-64}px`}}>
 
@@ -163,9 +134,12 @@ class Page extends React.Component {
                             <AdminContent />
                         </div>
 
-                        <div className="warningtips">
-                            <Warningtips/>
-                        </div>
+                        {
+                          !is4full &&   (<div className="warningtips">
+                                <Warningtips/>
+                            </div>)
+                        }
+
 
                         <Menu lesswidth={showmenu==="addressbox"?350:100} />
 

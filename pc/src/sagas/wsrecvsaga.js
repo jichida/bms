@@ -2,7 +2,7 @@ import { put,call,takeLatest,take,} from 'redux-saga/effects';
 // import {delay} from 'redux-saga';
 import {
   common_err,
-
+  ui_changemodeview,
   md_login_result,
   login_result,
 
@@ -69,12 +69,16 @@ export function* wsrecvsagaflow() {
   yield takeLatest(`${md_login_result}`, function*(action) {
       try{
       let {payload:result} = action;
-        //console.log(`md_login_result==>${JSON.stringify(result)}`);
+        console.log(`md_login_result==>${JSON.stringify(result)}`);
         if(!!result){
             yield put(login_result(result));
             if(result.loginsuccess){
               localStorage.setItem(`bms_${config.softmode}_token`,result.token);
               yield put(querydevicegroup_request({}));
+
+              if(result.username === 'pc'){
+                yield put(ui_changemodeview('ui4full'));
+              }
             }
         }
 
