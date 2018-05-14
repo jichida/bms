@@ -238,6 +238,18 @@ UserMenu = withRouter(UserMenu);
 UserMenu = connect(mapStateToProps)(UserMenu);
 
 class Page extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showmenu: false,
+    };
+  }
+
+  showmenuclick=()=>{
+    this.setState({showmenu: !this.state.showmenu})
+  }
     onClickMenu(tiptype){
         if(tiptype === 'online'){
             this.props.dispatch(ui_btnclick_deviceonline({}));
@@ -290,147 +302,158 @@ class Page extends React.Component {
         // if(modeview === 'device'){
             return (
               <div className="BadgeStyle">
-                  <Tooltip title="在线车辆">
-                    <Badge
-                        badgeContent={`(${count_online})`}
-                        className="Badge"
-                        secondary={true}
-                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                        badgeStyle={{
-                            top : "auto",
-                            bottom: "-4px",
-                            right: "-4px",
-                            backgroundColor: "none",
-                          //  color : "#111",
-                            position: "relative",
-                            // bottom: "-8px",
-                            fontSize: "18px",
-                            width : "auto",
-                            color : "#5cbeaa"
-                        }}
-                        onClick={this.onClickMenu.bind(this,'online')}
-                        >
-                        <img alt="" src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
-                    </Badge>
-                </Tooltip>
-                <Tooltip title="离线车辆">
-                    <Badge
-                        badgeContent={`(${count_offline})`}
-                        className="Badge"
-                        secondary={true}
-                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                        badgeStyle={{
-                            top : "auto",
-                            bottom: "-4px",
-                            right: "-4px",
-                            backgroundColor: "none",
-                          //  color : "#111",
-                            position: "relative",
-                            // bottom: "-8px",
-                            fontSize: "18px",
-                            width : "auto",
-                            color : "#999"
-                        }}
-                        onClick={this.onClickMenu.bind(this,'offline')}
-                        >
-                        <img alt=""  src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
-                    </Badge>
-                  </Tooltip>
-                  <Tooltip title="三级报警车辆总数">
-                    <Badge
-                        badgeContent={`(${count_red})`}
-                        className="Badge"
-                        secondary={true}
-                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                        badgeStyle={{
-                            top : "auto",
-                            bottom: "-4px",
-                            right: "-4px",
-                            backgroundColor: "none",
-                          //  color : "#111",
-                            position: "relative",
-                            // bottom: "-8px",
-                            fontSize: "18px",
-                            width : "auto",
-                            color : "#d21d24"
-                        }}
-                        onClick={this.onClickMenu.bind(this,'red')}
-                        >
-                        <img alt="" style={{ width: "40px", height: "40px"}} src={D1} />
-                    </Badge>
-                  </Tooltip>
-                  <Tooltip title="二级报警车辆总数">
-                    <Badge
-                        badgeContent={`(${count_orange})`}
-                        className="Badge"
-                        secondary={true}
-                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                        badgeStyle={{
-                            top : "auto",
-                            bottom: "-4px",
-                            right: "-4px",
-                            backgroundColor: "none",
-                            // color : "#111",
-                            position: "relative",
-                            // bottom: "-8px",
-                            fontSize: "18px",
-                            width : "auto",
-                            color : "#ed942f"
-                        }}
-                        onClick={this.onClickMenu.bind(this,'orange')}
-                        >
-                        <img alt="" style={{ width: "40px", height: "40px"}} src={D2} />
-                    </Badge>
-                  </Tooltip>
-                  <Tooltip title="一级报警车辆总数">
-                    <Badge
-                        badgeContent={`(${count_yellow})`}
-                        className="Badge"
-                        secondary={true}
-                        style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
-                        badgeStyle={{
-                            top : "auto",
-                            bottom: "-4px",
-                            right: "-4px",
-                            backgroundColor: "none",
-                            // color : "#111",
-                            position: "relative",
-                            // bottom: "-8px",
-                            fontSize: "18px",
-                            width : "auto",
-                            color : "#f6d06b"
-                        }}
-                        onClick={this.onClickMenu.bind(this,'yellow')}
-                        >
-                        <img alt="" style={{ width: "40px", height: "40px"}} src={D3} />
-                    </Badge>
-                  </Tooltip>
-                  <Tooltip title="报警车辆总数">
-                    <Badge
-                        badgeContent={`${count_all}`}
-                        className="Badge"
-                        secondary={true}
-                        style={{
-                            padding:"0",width:"36px",height:"36px",display: "flex",marginRight: "10px"}}
-                        badgeStyle={{
-                            top: "-4px", right: "-4px",
-                            backgroundColor : "#FFF",
-                            color : "#C00",
-                            border : "2px solid #C00",
-                            width : "28px",
-                            height : "28px",
-                            lineHeight : "28px",
-                            fontSize : "11px"
-                        }}
-                        onClick={this.onClickMenu.bind(this,'all')}
-                        >
-                        <i className="fa fa-envelope-o" aria-hidden="true" style={iconstyle1} />
+                  <div className="toprightnav">
+                    <Tooltip title="在线车辆">
+                      <Badge
+                          badgeContent={`(${count_online})`}
+                          className="Badge"
+                          secondary={true}
+                          style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                          badgeStyle={{
+                              top : "auto",
+                              bottom: "-4px",
+                              right: "-4px",
+                              backgroundColor: "none",
+                            //  color : "#111",
+                              position: "relative",
+                              // bottom: "-8px",
+                              fontSize: "18px",
+                              width : "auto",
+                              color : "#5cbeaa"
+                          }}
+                          onClick={this.onClickMenu.bind(this,'online')}
+                          >
+                          <img alt="" src={CarOnline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'online')} />
                       </Badge>
                     </Tooltip>
-
-                    <UserMenu />
-
-                </div>
+                    <Tooltip title="离线车辆">
+                      <Badge
+                          badgeContent={`(${count_offline})`}
+                          className="Badge"
+                          secondary={true}
+                          style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                          badgeStyle={{
+                              top : "auto",
+                              bottom: "-4px",
+                              right: "-4px",
+                              backgroundColor: "none",
+                            //  color : "#111",
+                              position: "relative",
+                              // bottom: "-8px",
+                              fontSize: "18px",
+                              width : "auto",
+                              color : "#999"
+                          }}
+                          onClick={this.onClickMenu.bind(this,'offline')}
+                          >
+                          <img alt=""  src={CarOutline} style={{marginBottom: "-6px", width:"32px", height:"32px"}} onClick={this.onClickMenu.bind(this,'offline')} />
+                      </Badge>
+                    </Tooltip>
+                    <Tooltip title="三级报警车辆总数">
+                      <Badge
+                          badgeContent={`(${count_red})`}
+                          className="Badge"
+                          secondary={true}
+                          style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                          badgeStyle={{
+                              top : "auto",
+                              bottom: "-4px",
+                              right: "-4px",
+                              backgroundColor: "none",
+                            //  color : "#111",
+                              position: "relative",
+                              // bottom: "-8px",
+                              fontSize: "18px",
+                              width : "auto",
+                              color : "#d21d24"
+                          }}
+                          onClick={this.onClickMenu.bind(this,'red')}
+                          >
+                          <img alt="" style={{ width: "40px", height: "40px"}} src={D1} />
+                      </Badge>
+                    </Tooltip>
+                    <Tooltip title="二级报警车辆总数">
+                      <Badge
+                          badgeContent={`(${count_orange})`}
+                          className="Badge"
+                          secondary={true}
+                          style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                          badgeStyle={{
+                              top : "auto",
+                              bottom: "-4px",
+                              right: "-4px",
+                              backgroundColor: "none",
+                              // color : "#111",
+                              position: "relative",
+                              // bottom: "-8px",
+                              fontSize: "18px",
+                              width : "auto",
+                              color : "#ed942f"
+                          }}
+                          onClick={this.onClickMenu.bind(this,'orange')}
+                          >
+                          <img alt="" style={{ width: "40px", height: "40px"}} src={D2} />
+                      </Badge>
+                    </Tooltip>
+                    <Tooltip title="一级报警车辆总数">
+                      <Badge
+                          badgeContent={`(${count_yellow})`}
+                          className="Badge"
+                          secondary={true}
+                          style={{padding:"0",width:"auto",height:"36px",display: "flex", marginRight : "15px"}}
+                          badgeStyle={{
+                              top : "auto",
+                              bottom: "-4px",
+                              right: "-4px",
+                              backgroundColor: "none",
+                              // color : "#111",
+                              position: "relative",
+                              // bottom: "-8px",
+                              fontSize: "18px",
+                              width : "auto",
+                              color : "#f6d06b"
+                          }}
+                          onClick={this.onClickMenu.bind(this,'yellow')}
+                          >
+                          <img alt="" style={{ width: "40px", height: "40px"}} src={D3} />
+                      </Badge>
+                    </Tooltip>
+                    <Tooltip title="报警车辆总数">
+                      <Badge
+                          badgeContent={`${count_all}`}
+                          className="Badge"
+                          secondary={true}
+                          style={{
+                              padding:"0",width:"36px",height:"36px",display: "flex",marginRight: "10px"}}
+                          badgeStyle={{
+                              top: "-4px", right: "-4px",
+                              backgroundColor : "#FFF",
+                              color : "#C00",
+                              border : "2px solid #C00",
+                              width : "28px",
+                              height : "28px",
+                              lineHeight : "28px",
+                              fontSize : "11px"
+                          }}
+                          onClick={this.onClickMenu.bind(this,'all')}
+                          >
+                          <i className="fa fa-envelope-o" aria-hidden="true" style={iconstyle1} />
+                        </Badge>
+                      </Tooltip>
+                  </div>
+                  { !!this.state.showmenu &&
+                    <div className="toprightnav2">
+                      <div><img alt="" src={CarOnline} onClick={this.onClickMenu.bind(this,'online')} /><span>在线车辆</span><span>({count_online})</span></div>
+                      <div><img alt=""  src={CarOutline} onClick={this.onClickMenu.bind(this,'offline')} /><span>离线车辆</span><span>({count_online})</span></div>
+                      <div onClick={this.onClickMenu.bind(this,'red')}><img alt="" src={D1} /><span>三级报警车辆总数</span><span>({count_red})</span></div>
+                      <div onClick={this.onClickMenu.bind(this,'orange')}><img alt="" src={D2} /><span>二级报警车辆总数</span><span>({count_orange})</span></div>
+                      <div onClick={this.onClickMenu.bind(this,'yellow')}><img alt="" src={D3} /><span>一级报警车辆总数</span><span>({count_yellow})</span></div>
+                      <div onClick={this.onClickMenu.bind(this,'all')}><i className="fa fa-envelope-o" aria-hidden="true" /><span>报警车辆总数</span><span>({count_all})</span></div>
+                    </div>
+                  }
+                  <div className="rightnavbtn" onClick={this.showmenuclick}><i className="fa fa-bars" aria-hidden="true" /></div>
+                  <UserMenu />
+              </div>
             );
         // }
         // let count_0 = countBy(jsondata_bms_chargingpile,(item)=>{
