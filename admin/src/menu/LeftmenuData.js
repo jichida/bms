@@ -18,6 +18,7 @@ import CanrowDataIcon from 'material-ui/svg-icons/action/timeline';//原始数�
 export default [
         { name: 'systemconfig', icon: <SystemconfigIcon /> ,adminonly:true},
         { name: 'device', icon: <DeviceIcon />,adminonly:false },
+        { name: 'deviceext', icon: <DeviceIcon />,adminonly:false },
         { name: 'devicegroup', icon: <DeviceGroupIcon /> ,adminonly:false},
         { name: 'user', icon: <UserIcon /> ,adminonly:true},
         { name: 'role', icon: <UserGroupIcon /> ,adminonly:true},

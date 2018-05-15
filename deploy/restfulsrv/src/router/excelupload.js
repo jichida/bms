@@ -8,9 +8,33 @@ const formidable = require('formidable');
 const util = require('util');
 const importexcel_device = require('./handler/importexcel_device.js');
 const importexcel_user = require('./handler/importexcel_user.js');
+const importexcel_device_data = require('./handler/importexcel_device_data.js');
 const debug = require('debug')('srvapp:uploadexcel');
 
 const startuploader = (app)=>{
+  app.post('/uploadexceljson/:resourcename',middlewareauth,(req,res)=>{
+    const resourcename = req.params.resourcename;
+    const exceljson = req.body;
+    let importexcel;
+    if(resourcename === 'device'){
+      importexcel = importexcel_device_data;
+    }
+    else{
+      res.status(200)
+          .json({
+            result:'Error',
+          });
+      return;
+    }
+    importexcel(exceljson,req,(resultjson)=>{
+       res.status(200)
+           .json({
+             result:'OK',
+             data:resultjson
+           });
+    });
+  });
+
   app.get('/uploadexcel/:resourcename',(req,res)=>{
     const resourcename = req.params.resourcename;
     debug(`请使用Post方式上传${resourcename}`);

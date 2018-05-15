@@ -17,7 +17,7 @@ import moment from 'moment';
 import ResestPassword from './resetpassword';
 import {getOptions} from '../controls/getselect.js';
 import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
-import ImportExcelButton from '../devices/importexcelbtn';
+import ImportExcelButton from '../deviceext/importexcelbtn';
 import {CreateActions,EditActions} from '../controls/createeditactions';
 import config from '../../env/config';
 
