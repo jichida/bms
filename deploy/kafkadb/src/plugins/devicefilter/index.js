@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const getFieldname = require('./mapalarmtroublecode');
+const debug = require("debug")("alarmpush");
 /*
 1、从kafka中获取的数据，预先转换：
 1>将AL_TROUBLE_CODE_2转成
@@ -18,6 +19,7 @@ const devicedatapile = (data)=>{
       newAlarm[fieldname] = 1;
     });
     _.set(newdata,'BMSData.Alarm',newAlarm);
+    debug(`newdata--->${JSON.stringify(newAlarm)}`);
   }
   return newdata;
 }

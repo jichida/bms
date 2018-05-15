@@ -14,7 +14,7 @@ import Button  from 'antd/lib/button';
 import { ui_index_addcollection, ui_index_unaddcollection } from '../../actions';
 import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
 import Swiperchart from "./swiperchart";
-
+import "./deviceinfo.css";
 
 import {
     deviceinfoquerychart_request,
@@ -75,7 +75,7 @@ class Page extends React.Component {
                 }}>
                 <div className="navhead">
                     <div onClick={()=>{this.props.history.goBack()}} className="back"></div>
-                    <span className="title" style={{paddingRight : "30px"}}>车辆详情</span>
+                    <span className="title" style={{paddingRight : "30px"}}>{`${deviceid}`}车辆详情</span>
                     <div className="moresetting"></div>
                 </div>
                 <Swiperchart deviceid={this.props.match.params.deviceid} />
@@ -92,7 +92,10 @@ class Page extends React.Component {
                                         if(unit !== ''){
                                           showvalue = `${showvalue}${unit}`;
                                         }
-                                        return (<div key={k} className="li"><span>{`${i.name}`}</span><span>{`${showvalue}`}</span></div>);
+                                        /*注意：最后报警信息  和  详细信息地址 特殊处理【原因，右边太长】*/
+                                        return (<div key={k} className="li">
+                                          <span>{`${i.name}`}</span><span>{`${showvalue}`}
+                                          </span></div>);
                                     })
                                 }
                             </div>

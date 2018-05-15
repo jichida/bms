@@ -1,0 +1,6 @@
+.deviceinfocontent >div >div.li > span:first-child{
+    flex-shrink: 0;
+}
+.deviceinfocontent >div >div.li > span:last-child{
+    margin-left: 10px
+}

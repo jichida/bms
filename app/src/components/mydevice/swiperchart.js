@@ -4,17 +4,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 // import {bridge_deviceinfo} from '../../sagas/datapiple/bridgedb';
-import { Chart, Geom, Axis, Tooltip, } from "bizcharts";
 // import DataSet from '@antv/data-set';
 import { Swiper, Slide } from 'react-dynamic-swiper';
+import { Spin } from 'antd';
 // import translate from 'redux-polyglot/translate';
 import 'react-dynamic-swiper/lib/styles.css';
-import Wendu from '../../img/28.png';
+
 // import Config from '../../env/config';
 import Sky from '../../img/1.jpg';
 import map from 'lodash.map';
 import get from 'lodash.get';
 import moment from 'moment';
+import { Chart2,Chart3 } from "./chart_antd";
+import './swiperchart.css';
+// import Chart2 from './chart_rechart';
 // const { Arc, Html, Line } = Guide;
 
 let swiperOptions = {
@@ -23,218 +26,13 @@ let swiperOptions = {
     scrollBar: false
 };
 
-//
-// export class Chart1 extends React.Component {
-//     componentWillMount () {
-//
-//     }
-//     render() {
-//         const datav = this.props.data || 65;
-//         const { Html, Arc } = Guide;
-//         const data = [{ value: datav }];
-//         const cols = {
-//             'value': {
-//                 min: 0,
-//                 max: 100,
-//                 tickInterval: 20,
-//                 nice: false
-//             }
-//         }
-//         Shape.registerShape('point', 'pointer', {
-//             drawShape(cfg, group) {
-//                 let point = cfg.points[0]; // 获取第一个标记点
-//                 point = this.parsePoint(point);
-//                 const center = this.parsePoint({ // 获取极坐标系下画布中心点
-//                     x: 0,
-//                     y: 0
-//                 });
-//                 // 绘制指针
-//                 group.addShape('line', {
-//                     attrs:  {
-//                         x1: center.x,
-//                         y1: center.y,
-//                         x2: point.x,
-//                         y2: point.y - 20,
-//                         stroke: cfg.color,
-//                         lineWidth: 5,
-//                         lineCap: 'round'
-//                     }
-//                 });
-//                 return group.addShape('circle', {
-//                     attrs: {
-//                         x: center.x,
-//                         y: center.y,
-//                         r: 12,
-//                         stroke: cfg.color,
-//                         lineWidth: 4.5,
-//                         fill: '#fff'
-//                     }
-//                 });
-//             }
-//         });
-//
-//
-//         return (
-//             <Chart height={300} width={200} data={data} scale={cols} padding={[ -20, 0, 0, 0 ]} forceFit>
-//                 <Coord type='polar' startAngle={-9 / 8 * Math.PI} endAngle={1 / 8 * Math.PI} radius={0.75} />
-//                 <Axis
-//                     name='value'
-//                     zIndex={2}
-//                     line={null}
-//                     label={{
-//                         offset: -16,
-//                         textStyle: {
-//                             fontSize: 18,
-//                             fill: 'rgba(0, 0, 0, 0.25)',
-//                             textAlign: 'center',
-//                             textBaseline: 'middle'
-//                         }
-//                     }}
-//                     subTickCount={4}
-//                     subTickLine={{
-//                         length: -8,
-//                         stroke: '#fff',
-//                         strokeOpacity: 1
-//                     }}
-//                     tickLine={{
-//                         length: -18,
-//                         stroke: '#fff',
-//                         strokeOpacity: 1
-//                     }}
-//                 />
-//                 <Axis name="1" visible ={false} />
-//                 <Guide>
-//                     <Arc
-//                         zIndex={0}
-//                         start={[ 0, 0.965 ]}
-//                         end={[ 100, 0.965 ]}
-//                         style={{ // 底灰色
-//                             stroke: '#000',
-//                             lineWidth: 18,
-//                             opacity: 0.09
-//                         }}
-//                         />
-//                     <Arc
-//                         zIndex={1}
-//                         start={[ 0, 0.965 ]}
-//                         end={[ data[0].value, 0.965 ]}
-//                         style={{ // 底灰色
-//                             stroke: '#1890FF',
-//                             lineWidth: 18,
-//                         }}
-//                         />
-//                     <Html
-//                         position={[ '50%', '95%' ]}
-//                         html={
-//                             () => {
-//                                 return ('<div style="width: 300px;text-align: center;font-size: 12px!important;"><p style="font-size: 3em;color: rgba(0,0,0,0.85);margin: 0;">'+ data[0].value +'%</p></div>')
-//                             }
-//                         }
-//                         />
-//                 </Guide>
-//                 <Geom
-//                     type="point"
-//                     position="value*1"
-//                     shape='pointer'
-//                     color='#1890FF'
-//                     active={false}
-//                     style={{stroke: '#fff',lineWidth: 1}}
-//                 />
-//             </Chart>
-//         )
-//     }
-// }
-
-export class Chart2 extends React.Component {
-    render() {
-        const {data,unit} = this.props;
-        const scale = {
-          'sales': {
-            type: 'time', // 指定数据类型
-            //alias: string, // 数据字段的别名
-            formatter: () => {}, // 格式化文本内容
-            range: [0,1], // 输出数据的范围，默认[0, 1]，格式为 [min, max]，min 和 max 均为 0 至 1 范围的数据。
-            tickCount: data.length, // 设置坐标轴上刻度点的个数
-            //ticks: array, // 用于指定坐标轴上刻度点的文本信息，当用户设置了 ticks 就会按照 ticks 的个数和文本来显示
-            //sync: boolean // 当 chart 存在不同数据源的 view 时，用于统一相同数据属性的值域范围
-          }
-        };
-        let sizemod = data.length/8;
-        sizemod = parseInt(sizemod,10);
-        if(sizemod === 0){
-          sizemod = 1;
-        }
-        return (
-          <Chart height={260} data={data} scale={scale} padding={[20, 40, 40, 60]} forceFit>
-              <Axis name="time" label={{
-                  formatter: (text, item, index) => {
-                    if(index%sizemod===0){
-                      return `${text}`;
-                    }
-                  }
-              }} />
-              <Axis name="value" line={{stroke: '#EEEEEE'}}  label={{
-                  formatter: val => {
-                    return `${val}${unit}`;
-                  }
-              }} />
-              <Tooltip crosshairs={{type : "y"}}/>
-              <Geom type="line" position="time*value" size={2} />
-              <Geom type='point' position="time*value" size={4} shape={'circle'} style={{ stroke: '#fff', lineWidth: 1}} />
-          </Chart>
-        )
-    }
-}
-
-export class Chart3 extends React.Component {
-    render() {
-        const data = this.props.data;
-        let showdata = data;
-        if(parseInt(data,10)>80){showdata = 80}
-        if(parseInt(data,10)<0){showdata = 0}
-        return (
-            <div className="wenduchart">
-                <img src={Wendu} alt=""/>
-                <div className="dataline"><span style={{height: `${showdata}px`}}></span></div>
-                <div className="data"><span>{data}℃</span></div>
-            </div>
-        )
-    }
-}
-//
-// export class Chart4 extends React.Component {
-//
-//     render() {
-//         const data = this.props.data;
-//         const cols={
-//             'value': {
-//                 tickCount: 10,
-//             },
-//             'time': { range: [ 0 , 1 ] }
-//         };
-//         return (
-//             <Chart height={300} data={data} scale={cols} padding={[20, 40, 40, 60]} forceFit>
-//                 <Axis name="time" label={{
-//                     formatter: val => {
-//                     return val.substr(5, val.length);
-//                     }
-//                 }} />
-//                 <Axis name="value" />
-//                 <Tooltip crosshairs={{type:'line'}}/>
-//                 <Geom type="area" position="time*value" />
-//                 <Geom type="line" position="time*value" size={2} />
-//             </Chart>
-//         )
-//     }
-// }
-
 
 class Page extends React.Component {
     render() {
         const {alarmchart} = this.props;
         let deviceid = this.props.deviceid;
         const alarmchartdata = alarmchart[deviceid];
-        const data_soc = get(alarmchartdata,'soc','');
+        // const data_soc = get(alarmchartdata,'soc','');
         const props_tickv = get(alarmchartdata,'tickv',[]);
         const props_ticka = get(alarmchartdata,'ticka',[]);
         const props_ticks = get(alarmchartdata,'ticks',[]);
@@ -257,7 +55,63 @@ class Page extends React.Component {
           data_ticks.push(item3);
         })
         data_temperature = get(alarmchartdata,'temperature',0);
+        const isloading = props_ticktime.length === 0 && this.props.isloading;
+        let chartCz = [];
+        if(isloading){
+          chartCz.push(<div className="lli Chart3li deviceinfospin">
+            <Spin size="small" tip="正在加载图表,请稍后..."/>
+          </div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
+          chartCz.push(<div className="lli Chart3li deviceinfospin"><Spin size="small" tip="正在加载图表,请稍后..."/></div>);
+        }
+        else {
 
+          // let data_ticks_labeltime = [];
+          // let data_tickv_labeltime = [];
+          // let data_ticks_labeltime = [];
+          // let data_ticks_labeltime = [];
+          const convert_addlabeltime = (data_ticks)=>{
+            let dataret = [];
+            for(let i = 0 ;i < data_ticks.length ; i++){
+              dataret.push({
+                time:data_ticks[i].time,
+                timev:data_ticks[i].time,
+                value:data_ticks[i].value,
+              });
+            }
+            // let maptimevalue = {};
+            // map(data_ticks,(v,k)=>{
+            //   maptimevalue[v.time] = v.value;
+            // });
+            // if(props_ticktime.length > 0){
+            //   //<----加10小时time时间---
+            //   const momentmin = moment(props_ticktime[props_ticktime.length-1].ticktime).subtract(10,'hours');//.format('YYYY-MM-DD HH:mm:ss');
+            //   const momentmax = moment();//.format('YYYY-MM-DD HH:mm:ss');
+            //   for(let m = momentmin ;m < momentmax ;){
+            //      const curv = m.format('HH:mm');
+            //      let v = {};
+            //      v.time = curv;
+            //      if(!!maptimevalue[curv]){
+            //        v.timev = curv;
+            //        v.value = maptimevalue[curv];
+            //      }
+            //      dataret.push(v);
+            //      m = m.add(1,'minutes');
+            //   }
+            // }
+            return dataret;
+          }
+
+          const ret_data_ticks = convert_addlabeltime(data_ticks);
+          const ret_data_tickv = convert_addlabeltime(data_tickv);
+          const ret_data_ticka = convert_addlabeltime(data_ticka);
+
+          chartCz.push(<div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 chartdata={ret_data_ticks}  unit={'%'}/></div>);
+          chartCz.push(<div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 chartdata={ret_data_tickv} unit={'V'}/></div>);
+          chartCz.push(<div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>);
+          chartCz.push(<div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 chartdata={ret_data_ticka} unit={'A'}/></div>);
+        }
         return (
             <Swiper
                 swiperOptions={{
@@ -269,23 +123,23 @@ class Page extends React.Component {
                 className="lists devicechartlists"
                 >
                 <Slide className="Demo-swiper__slide ">
-                    <div className="lli Chart1li"><div className="tt">SOC实时图</div><Chart2 data={data_ticks} unit={'%'}/></div>
+                  {chartCz[0]}
                 </Slide>
                 <Slide className="Demo-swiper__slide ">
-                    <div className="lli Chart2li"><div className="tt">电压趋势图</div><Chart2 data={data_tickv} unit={'V'}/></div>
+                  {chartCz[1]}
                 </Slide>
                 <Slide className="Demo-swiper__slide ">
-                    <div className="lli Chart3li"><div className="tt">温度仪</div><Chart3 data={data_temperature} /></div>
+                  {chartCz[2]}
                 </Slide>
                 <Slide className="Demo-swiper__slide ">
-                    <div className="lli Chart4li"><div className="tt">电流趋势图</div><Chart2 data={data_ticka} unit={'A'}/></div>
+                  {chartCz[3]}
                 </Slide>
             </Swiper>
         )
     }
 }
 const mapStateToProps = ({deviceinfoquerychart}) => {
-    const {alarmchart} = deviceinfoquerychart;
-    return { alarmchart };
+    const {alarmchart,isloading} = deviceinfoquerychart;
+    return { alarmchart,isloading };
 }
 export default connect(mapStateToProps)(Page);

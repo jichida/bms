@@ -8,7 +8,7 @@ import map from 'lodash.map';
 // import Moresetting from "../../img/17.png";
 // import Footer from "../index/footer.js";
 
-import {ui_viewdevicedetail} from '../../actions';
+import {ui_viewdevicedetail,ui_alarm_selcurdevice} from '../../actions';
 // import Searchimg from "../../img/22.png";
 import SelectDevice from '../mydevice/selectdevice.js';
 import Daohang from '../../img/daohang.png';
@@ -37,6 +37,9 @@ class Page extends React.Component {
     rowClick = (id)=>{
       this.props.dispatch(ui_viewdevicedetail({DeviceId:id}));
         // this.props.history.push(`/deviceinfo/${id}`);
+    }
+    onClickPos = (id)=>{
+      this.props.dispatch(ui_alarm_selcurdevice(id));
     }
     render() {
         let deviceidlist = [];

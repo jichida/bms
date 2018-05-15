@@ -46,6 +46,11 @@ dbdictModel.find({
         unit:v.unit
       }
     });
+    //每天0点开始工作
+    job.start_cron0();
+    //每天18点开始工作
+    job.start_cron18();
+
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 

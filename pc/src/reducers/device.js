@@ -23,7 +23,7 @@ import{
 import map from 'lodash.map';
 import get from 'lodash.get';
 import lodashsortby from 'lodash.sortby';
-import lodashreverse from 'lodash.reverse';
+// import lodashreverse from 'lodash.reverse';
 // import groupBy from 'lodash.groupby';
 // import {getadcodeinfo} from '../util/addressutil';
 import {get_initgeotree} from '../util/treedata';
@@ -33,16 +33,36 @@ import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 const {datatree,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = get_initgeotree();
 
 
-const getsorteddevicelist = (devicedb,g_devicesdb)=>{
-  const listdevices = lodashsortby(devicedb, [(deviceid)=>{
-    const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
-    return datatime;
+const getsorteddevicelist = (devicedb,g_devicesdb,SettingOfflineMinutes)=>{
+  let device_online = [];
+  let device_offline = [];
+  map(devicedb,(deviceid)=>{
+    const isonline = getdevicestatus_isonline(g_devicesdb[deviceid],SettingOfflineMinutes);
+    if(isonline){
+      device_online.push(deviceid);
+    }
+    else{
+      device_offline.push(deviceid);
+    }
+  });
+  device_online = lodashsortby(device_online, [(deviceid)=>{
+    // const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    return deviceid;
   }]);
+  device_offline = lodashsortby(device_offline, [(deviceid)=>{
+    // const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    return deviceid;
+  }]);
+
+  let listdevices = device_online;
+  map(device_offline,(deviceid)=>{
+    listdevices.push(deviceid);
+  })
   // map(listdevices,(deviceid)=>{
   //   const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
   //   console.log(`${deviceid}=>${datatime}`);
   // });
-  return lodashreverse(listdevices);
+  return listdevices;//lodashreverse(listdevices);
 }
 
 const initial = {
@@ -232,7 +252,7 @@ const device = createReducer({
       gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
   },
   [mapmain_areamountdevices_result]:(state,payload)=>{
-    const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
+    const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes} = payload;
     let datatreeloc = state.datatreeloc;
     if(adcode !== 2){
       const findandsettreenodedevice = (node)=>{
@@ -247,7 +267,7 @@ const device = createReducer({
              if(!!tmpnode){
                //<---
                let children = [];
-               const deviceresullist = getsorteddevicelist(gmap_acode_devices[tmpnode.adcode],state.g_devicesdb);
+               const deviceresullist = getsorteddevicelist(gmap_acode_devices[tmpnode.adcode],state.g_devicesdb,SettingOfflineMinutes);
                map(deviceresullist,(deviceid)=>{
                  children.push({
                    type:'device',

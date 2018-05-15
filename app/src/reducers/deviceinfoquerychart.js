@@ -9,6 +9,7 @@ import {
 const initial = {
     deviceinfoquerychart: {
         //全局提示
+        isloading:true,
         alarmchart:{
 
         }
@@ -17,13 +18,15 @@ const initial = {
 
 const deviceinfoquerychart = createReducer({
     [deviceinfoquerychart_request]:(state,payload)=>{
-      return {...initial.deviceinfoquerychart};
+      return {...initial.deviceinfoquerychart,isloading:true};
     },
     [deviceinfoquerychart_result]:(state,payload)=>{
         const {DeviceId,resultdata} = payload;
         let alarmchart = {...state.alarmchart};
+        if(!!DeviceId && !!resultdata){
         alarmchart[DeviceId] = resultdata;
-        return {...state, alarmchart};
+        }
+        return {...state, alarmchart,isloading:false};
     },
     [logout_result]:(state,payload)=>{
       return {...initial.deviceinfoquerychart};

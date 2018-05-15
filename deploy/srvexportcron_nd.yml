@@ -9,8 +9,8 @@ services:
       - /root/.ssh:/root/.ssh
       - /etc/localtime:/etc/localtime:ro
       - ./srvintervalexport:/app
-      - ./dist/log:/log
-      - ./dist/exportdir:/exportdir
+      - /catlcluster/log:/log
+      - /catlcluster/exportdir:/exportdir
     environment:
       - DEBUG=srvinterval:*
       - DEBUG_COLORS=1

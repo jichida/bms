@@ -11,7 +11,7 @@ const schedule = require('node-schedule');
 
 debug(`start=====>version:${config.version},groupid:${config.kafka_cconfig1['group.id']}\
   clientid:${config.kafka_cconfig1['client.id']} \
-  kafkaHost:${config.kafka_cconfig1['metadata.broker.list']},partitionnumber:${config.partitionnumber}`);
+  kafkaHost:${config.kafka_cconfig1['metadata.broker.list']}`);
 
 debug(`==========`);
 
@@ -57,7 +57,7 @@ dbdictModel.find({
 });
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-winston.getlog().info(`start kafkadb ok`);
+winston.getlog().info(`start kafkadb ok-->${config.NodeID}`);
 
 const getInitAlarm = (callback)=>{
   const deviceModel = DBModels.DeviceModel;
