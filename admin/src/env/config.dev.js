@@ -1,4 +1,4 @@
-let islocalhost = false;
+let islocalhost = true;
 let serverurl = islocalhost?'http://localhost:5011':'http://bmstest.i2u.top:81/apisrv';
 const organizationid = '599af5dc5f943819f10509e6';
 export default {

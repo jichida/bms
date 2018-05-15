@@ -1,7 +1,7 @@
 // import Ajv from 'ajv';
 import _ from 'lodash';
 import {convertjson,isvaildjson} from './deviceextutil';
-
+import {requestpostwithtoken} from '../../util/util.js';
 // const ajv = new Ajv();
 // //
 // const schemadeviceext =
@@ -72,6 +72,17 @@ const fetchimportfile = (jsondata)=>{
 			});
 			return;
 		}
+		const token = localStorage.getItem('admintoken');
+		requestpostwithtoken('/deviceextimport',token,listdeviceext,(issuccess,errmsg)=>{
+			if(!issuccess){
+				resolve({
+					issuccess:false,
+					errmsg
+				});
+				return;
+			}
+			resolve(errmsg);
+		});
 		//<<----开始POST到服务器
 			// const validation = validate(listdeviceext);
 			// validation.then((validdata)=>{
