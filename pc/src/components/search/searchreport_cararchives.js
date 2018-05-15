@@ -95,12 +95,12 @@ class TreeSearchBattery extends React.Component {
           deviceidlist.push(item.DeviceId);
       });
         return (
-            <div className="searchreport_cararchives" style={{textAlign: "center"}}>
-            <div className="f">
-              <Input placeholder="项目" onChange={this.onChange_ExtProject} value={this.state.ExtProject}/>
-              <Input placeholder="地区" onChange={this.onChange_ExtArea} value={this.state.ExtArea}/>
-              <Input placeholder="车工号" onChange={this.onChange_ExtNo} value={this.state.ExtNo}/>
-              <div className="i">
+            <div className="searchreport" style={{textAlign: "center"}}>
+            <div className="i">
+              <div><Input placeholder="项目" onChange={this.onChange_ExtProject} value={this.state.ExtProject}/></div>
+              <div><Input placeholder="地区" onChange={this.onChange_ExtArea} value={this.state.ExtArea}/></div>
+              <div><Input placeholder="车工号" onChange={this.onChange_ExtNo} value={this.state.ExtNo}/></div>
+              <div className="danganselectcarid">
                      <div className="selcar setsearchid">
                        <span className="t">车辆ID：</span>
                        <SelectDevice
