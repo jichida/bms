@@ -191,7 +191,11 @@ exports.querydeviceinfo =  (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   let fields = actiondata.fields || {};
   ////console.log(`fields-->${JSON.stringify(fields)}`);
-  let queryexec = deviceModel.findOne(query).select(fields).lean();
+  let queryexec = deviceModel.findOne(query,fields).populate([
+    {
+      path: 'deviceextid',
+      model: 'deviceext',
+    }]).lean();
   queryexec.exec((err,result)=>{
     if(!err && !!result){
       callback({

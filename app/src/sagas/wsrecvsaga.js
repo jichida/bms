@@ -139,9 +139,9 @@ export function* wsrecvsagaflow() {
             deviceinfo = {...deviceinfo,...addr};
           }
 
-          const {Ext,...rest} = deviceinfo;
-          if(!!Ext){
-            deviceinfo = {...rest,...Ext};
+          const {deviceextid,...rest} = deviceinfo;
+          if(!!deviceextid){
+            deviceinfo = {...rest,...deviceextid};
           }
         }
          g_devicesdb[deviceinfo.DeviceId] = deviceinfo;

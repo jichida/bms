@@ -243,6 +243,9 @@ const DeviceList = (props) => (
       <TextField label="最后数据时间" source="LastRealtimeAlarm.DataTime" />
       <TextField label="最后定位时间" source="last_GPSTime" />
       <TextField label="更新时间" source="UpdateTime"   />
+      <ReferenceField label="客户信息" source="deviceextid" reference="deviceext" allowEmpty>
+        <TextField source="customername" />
+      </ReferenceField>
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>
   }

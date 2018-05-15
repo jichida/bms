@@ -13,21 +13,35 @@ const startuploader = (app)=>{
     const userid = req.userid;
     let deviceids_success = [];
     let deviceids_notfound = [];
-  
+
     let asyncfnsz = [];
     _.map(exceljson,(devicedata)=>{
       const DeviceId = devicedata[`DeviceId`];
+      const batterysystemflownumber = devicedata[`batterysystemflownumber`];
       const fn = (callbackfn)=>{
-        const dbDevice = DBModels.DeviceExtModel;
-        dbDevice.findOneAndUpdate({DeviceId},{$set:devicedata},{new:true,upsert:true}).lean().exec((err,result)=>{
-          deviceids_success.push(DeviceId);
-          callbackfn(err,result);
-        });
+        const dbDeviceExt = DBModels.DeviceExtModel;
+        if(!!DeviceId && DeviceId !== ''){
+          dbDeviceExt.findOneAndUpdate({DeviceId},{$set:devicedata},{new:true,upsert:true}).lean().exec((err,result)=>{
+            deviceids_success.push(DeviceId);
+
+            const dbDevice = DBModels.DeviceModel;
+            dbDevice.findOneAndUpdate({DeviceId},{$set:{deviceextid:result._id}},{new:true,upsert:true}).lean().exec((err,result)=>{
+              callbackfn(err,result);
+            });
+
+          });
+        }
+        else{
+          dbDeviceExt.findOneAndUpdate({batterysystemflownumber},{$set:devicedata},{new:true,upsert:true}).lean().exec((err,result)=>{
+            deviceids_success.push(batterysystemflownumber);
+            callbackfn(err,result);
+          });
+        }
       }
       asyncfnsz.push(fn);
     });
-  
-  
+
+
     async.parallel(asyncfnsz,(err,resultlist)=>{
       if(!err){
         const resultstring = `成功导入${deviceids_success.length}条`;
@@ -38,7 +52,7 @@ const startuploader = (app)=>{
           logtxt:`导入客档信息,结果${resultstring}`
         };
         PubSub.publish('userlog_data',userlog);
-  
+
         res.status(200)
                .json({
           result:'OK',
