@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -8,7 +9,7 @@ import { required,NumberInput,Create, Edit, SimpleForm, DisabledInput, TextInput
    CreateButton,
  Filter,Filters, ReferenceInput,SelectInput } from 'admin-on-rest/lib/mui';
 
-
+ import { refreshView } from 'admin-on-rest';
 import { Field,FieldArray } from 'redux-form';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -84,15 +85,17 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const UserActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+let UserActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh,dispatch }) => (
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
-        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+        <FlatButton primary label="刷新" onClick={()=>{
+          dispatch(refreshView());
+        }} icon={<NavigationRefresh />} />
         <ImportExcelButton resource={resource}/>
     </CardActions>
 );
-
+UserActions = connect()(UserActions);
 
 const UserList = (props) => (
   <List title="用户管理" filters={<UserFilter />} {...props} sort={{ field: 'created_at', order: 'DESC'}}

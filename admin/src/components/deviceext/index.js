@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -35,8 +36,10 @@ import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import config from '../../env/config';
+import { refreshView } from 'admin-on-rest';
 import {CreateActions,EditActions} from '../controls/createeditactions';
 import ImportExcelButton from './importexcelbtn';
+
 // RDB编号
 // 车工号
 // 类型
@@ -144,15 +147,22 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const DeviceExtActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+let DeviceExtActions = (props) =>{
+  console.log(props);
+  const { resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh,dispatch } = props;
+  return (
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
-        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+        <FlatButton primary label="刷新" onClick={()=>{
+          dispatch(refreshView());
+        }} icon={<NavigationRefresh />} />
         <ImportExcelButton resource={resource}/>
     </CardActions>
 );
+} 
 
+DeviceExtActions = connect()(DeviceExtActions);
 
 
 const DeviceExtList = (props) => (

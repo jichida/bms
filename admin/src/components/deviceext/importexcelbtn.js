@@ -11,7 +11,7 @@ import _ from 'lodash';
 import config from '../../env/config.js';
 import { Modal, Button } from 'antd';
 import ImportExcel from '../../components/importexcel';
-
+import { refreshView } from 'admin-on-rest';
 import {uploadExcelAction} from './action';
 
 import { ListButton, DeleteButton } from 'admin-on-rest';
@@ -33,6 +33,7 @@ class App extends Component {
     this.setState({
       visible: false,
     });
+    this.props.dispatch(refreshView({}));
   }
   render() {
     // const data = [
@@ -69,6 +70,7 @@ class App extends Component {
   }
 }
 
+App = connect()(App);
 export default App;
 //
 // let ImportExcelButton = (props) => {

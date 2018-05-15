@@ -22,6 +22,8 @@ const DeviceModel =mongoose.model('device',  DeviceSchema);
 
 //设备客档信息
 const DeviceExtSchema = new Schema({
+  created_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+  updated_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
 }, { strict: false });
 DeviceExtSchema.plugin(mongoosePaginate);
 const DeviceExtModel =mongoose.model('deviceext',  DeviceExtSchema);
