@@ -364,7 +364,7 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
 
 exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
-  const deviceModel = DBModels.DeviceModel;
+  const deviceModel = DBModels.DeviceExtModel;
   const query = actiondata.query || {};
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query.DeviceId && !isall){

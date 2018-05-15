@@ -5,7 +5,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import map from 'lodash.map';
-
+import { Tooltip } from 'antd';
 import "../../css/message.css";
 import AntdTable from "../controls/antdtable.js";
 
@@ -77,26 +77,22 @@ class TablePosition extends React.Component {
       let itemnew = {};
       itemnew[`key`] = get(item,'_id','');
       itemnew[`RDB编号`] = get(item,'DeviceId','');
-      itemnew[`项目`] = get(item,'Ext.项目','');
-      itemnew[`系统Barcode`] = get(item,'Ext.系统Barcode','');
-      itemnew[`省份`] = get(item,'Ext.省份','');
-      itemnew[`地区`] = get(item,'Ext.地区','');
-      itemnew[`生产日期`] = get(item,'Ext.生产日期','');
-      itemnew[`出厂日期`] = get(item,'Ext.出厂日期','');
-      itemnew[`标称容量`] = get(item,'Ext.标称容量','');
-      itemnew[`串联数`] = get(item,'Ext.串联数','');
-      itemnew[`并联数`] = get(item,'Ext.并联数','');
-      itemnew[`客户名称`] = get(item,'Ext.客户名称','');
-      itemnew[`线路`] = get(item,'Ext.线路','');
-      itemnew[`电池剩余容量`] = get(item,'Ext.电池剩余容量','');
-      itemnew[`历史报警次数`] = get(item,'Ext.历史报警次数','');
+      itemnew[`项目`] = get(item,'catlprojectname','');
+      itemnew[`系统Barcode`] = get(item,'batterysystemflownumber','');
+      itemnew[`省份`] = get(item,'provice','');
+      itemnew[`地区`] = get(item,'area','');
+      itemnew[`生产日期`] = get(item,'datebatterydelivery','');
+      itemnew[`出厂日期`] = get(item,'datevehiclefactory','');
+      itemnew[`标称容量`] = get(item,'capacity','');
+      itemnew[`串联数`] = get(item,'serialnumber','');
+      itemnew[`并联数`] = get(item,'parallelnumber','');
+      itemnew[`客户名称`] = get(item,'customername','');
       return itemnew;
     }
     render(){
 
       const column_data = ['RDB编号','项目','系统Barcode','省份',
-      '地区','生产日期','出厂日期','标称容量','串联数','并联数','客户名称',
-      '线路','电池剩余容量','历史报警次数'];
+      '地区','生产日期','出厂日期','标称容量','串联数','并联数','客户名称'];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
@@ -104,7 +100,7 @@ class TablePosition extends React.Component {
               dataIndex: data,
               key: index,
               render: (text, row, index) => {
-                  return <span>{text}</span>;
+                return <Tooltip title={`${text}`}><span>{text}</span> </Tooltip>;
               },
               sorter:(a,b)=>{
                 return a[data] > b[data] ? 1:-1;
@@ -153,7 +149,7 @@ class TablePosition extends React.Component {
                       columns={columns}
                       pagenumber={30}
                       query={this.state.query}
-                      sort={{'LastRealtimeAlarm.DataTime': -1}}
+                      sort={{'DeviceId': 1}}
                       queryfun={(payload)=>{
                         return callthen(uireport_searchcararchives_request,uireport_searchcararchives_result,payload);
                       }}
