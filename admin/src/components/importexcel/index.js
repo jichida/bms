@@ -152,7 +152,7 @@ class App extends React.Component {
 			icon:<Icon type="file-excel" />,
       content: <DataInput handleFile={this.handleFile} selectfile={selectfile}/>,
     }, {
-      title: '编辑数据',
+      title: '显示数据',
 			icon:<Icon type="edit" />,
       content: <OutTable excel_dataSource={excel_dataSource} excel_columns={excel_columns} onChangeExcelDataSource={this.onChangeExcelDataSource}/>,
     }, {
