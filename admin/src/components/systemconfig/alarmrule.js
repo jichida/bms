@@ -61,13 +61,13 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
   }
   let rows = [];
   let headers = [
-     {value: '字段名', type: 'TextField', width: 200},
-     {value: '操作符', type: 'Select', width: 200,multi:false,options:[
+     {value: '字段名', type: 'TextField', width: 450},
+     {value: '操作符', type: 'Select', width: 150,multi:false,options:[
        { value: '>', label: '大于' },
        { value: '=', label: '等于' },
        { value: '<', label: '小于' },
      ]},
-     {value: '值', type: 'TextField', width: 200},
+     {value: '值', type: 'TextField', width: 150},
     //  {value: '报警信息', type: 'TextField', width: 'auto'},
   ];
 
