@@ -11,6 +11,7 @@ import map from 'lodash.map';
 import {ui_viewdevicedetail} from '../../actions';
 // import Searchimg from "../../img/22.png";
 import SelectDevice from '../mydevice/selectdevice.js';
+import Daohang from '../../img/daohang.png';
 
 const innerHeight = window.innerHeight;
 
@@ -102,7 +103,7 @@ class Page extends React.Component {
                         {  !!groups[groupid].deviceids && groups[groupid].deviceids.length >0 &&
                             map(groups[groupid].deviceids,(data)=>{
                                 return <div key={data.DeviceId}
-                                   onClick={()=>{this.rowClick(data.DeviceId)}} style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>{data.DeviceId}</div>
+                                    style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}><span id="deviceid_1" onClick={()=>{this.rowClick(data.DeviceId)}}>{data.DeviceId}</span><span id="device_2"><img src={Daohang} /></span></div>
                             })
                         }
                     </div>
