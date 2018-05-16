@@ -33,6 +33,7 @@ const mapkeydeviceext1 = {
   "新车上牌日期": "datenewcar",
   "车牌号":"licenseplatenumber",
   "售后外服姓名": "nameaftersaleservice",
+  "开始使用年份":"usedyear",
 };
 const mapkeydeviceext2 = {
   "DeviceId": "RDB编号",
@@ -67,16 +68,17 @@ const mapkeydeviceext2 = {
   "datenewcar":"新车上牌日期" ,
   "licenseplatenumber":"车牌号",
   "nameaftersaleservice": "售后外服姓名",
+  "usedyear":"开始使用年份"
 };
 
-const requiredlistfield = [ 
+const requiredlistfield = [
   "DeviceId","buscarvin","type","capacity","serialnumber",
   "parallelnumber",	"typeelectriccore","catlprojectname","projectpn","batterysystemflownumber",
   "BMUhardwareversion",	"CSChardwareversion","BMUsoftwareversion","CSCsoftwareversion","datebatterystorage",
   "datebatterydelivery","vehicleproductionplant","vehiclemodel","dateloading","datevehiclefactory",
   "provice","area","mileage","customername","customercontactaddress",
   "customercontact","customercontactphone","purpose","datepurchase","datenewcar",
-  "licenseplatenumber","nameaftersaleservice",
+  "licenseplatenumber","nameaftersaleservice","usedyear"
 ];
 
 const getfieldname = (key)=>{
