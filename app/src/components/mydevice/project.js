@@ -106,7 +106,9 @@ class Page extends React.Component {
                         {  !!groups[groupid].deviceids && groups[groupid].deviceids.length >0 &&
                             map(groups[groupid].deviceids,(data)=>{
                                 return <div key={data.DeviceId}
-                                    style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}><span id="deviceid_1" onClick={()=>{this.rowClick(data.DeviceId)}}>{data.DeviceId}</span><span id="device_2"><img src={Daohang} /></span></div>
+                                    style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>
+                                    <span id="deviceid_1" onClick={()=>{this.rowClick(data.DeviceId)}}>{data.DeviceId}</span>
+                                    <span id="device_2" onClick={()=>{this.onClickPos(data.DeviceId)}}><img src={Daohang} alt=""/></span></div>
                             })
                         }
                     </div>
