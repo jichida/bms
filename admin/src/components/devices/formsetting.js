@@ -31,41 +31,84 @@ import { NumberInput,
   ReferenceInput,
   ReferenceField } from 'admin-on-rest/lib/mui';
   import FlatButton from 'material-ui/FlatButton';
+  import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import IconSetBtn from 'material-ui/svg-icons/navigation/refresh';
-import { Input, Icon } from 'antd';
+import _ from 'lodash';
 
 class PageForm extends React.Component {
   render() {
     const { handleSubmit,onClickSubmit } = this.props;
+    const optionsvalue = [
+      {
+        title:'1秒',
+        value:1,
+      },
+      {
+        title:'10秒',
+        value:10,
+      },
+      {
+        title:'20秒',
+        value:20,
+      },
+      {
+        title:'30秒',
+        value:30,
+      },
+      {
+        title:'1分钟',
+        value:60
+      },
+      {
+        title:'5分钟',
+        value:300,
+      },
+      {
+        title:'10分钟',
+        value:600,
+      },
+      {
+        title:'30分钟',
+        value:1800,
+      },
+      {
+        title:'1个小时',
+        value:3600,
+      },
+      {
+        title:'10个小时',
+        value:36000,
+      },
+      {
+        title:'24小时',
+        value:86400,
+      }
+    ];
+    let options = [];
+    _.map(optionsvalue,(v,index)=>{
+      options.push( <option value={`${v.value}`} key={`${index}`}>{v.title}</option>);
+    });
+
     return (
       <Form
           onSubmit={handleSubmit(onClickSubmit)}
           >
-            <Field name="ServerIP" component={Input} placeholder="连接服务器IP或域名"/>
-            {/* <TextInput label="连接服务器IP或域名" source="ServerIP" />
-            <TextInput label="连接服务器端口" source="ServerPort"  />
-            <TextInput label="更新服务器IP或域名" source="UpdateServerIP"  />
-            <TextInput label="更新服务器端口" source="UpdateServerPort"  />
-            <TextField label="SIM号码" source="SIMNumber"  />
-            <TextField label="设备编号" source="DeviceSN"  />
-            <TextField label="固件应用标识" source="ApplicationID"  />
-            <TextField label="固件主版本号" source="MajorVersion_FW"  />
-            <TextField label="固件小版本号" source="MinorVersion_FW"  />
-            <TextField label="硬件主版本号" source="MajorVersion_HW"  />
-            <TextField label="硬件小版本号" source="MinorVersion_HW"  />
-            <TextField label="SIM卡CCID号" source="SIMCCID"  />
-            <TextField label="通信模块IMEI号" source="GSM_SN"  />
-            <TextInput label="位置数据采样间隔，单位:秒" source="PositionInterval"  />
-            <TextInput label="BMS数据采样间隔，单位:秒" source="DataInterval"  />
-            <TextInput label="数据发送间隔，单位:秒" source="SendInterval"  />
-            <TextInput label="PN类型" source="PNType"  />
-            <TextField label="RDB二维码" source="FullNumber_RDB"  />
-            <TextField label="电池包PACK号" source="PackNo_BMU"  />
-            <TextField label="电池包软件版本" source="Version_BMU"  />
-            <TextField label="电池包VIN号" source="VIN_BMU"  />
-            <TextField label="电池包硬件版本" source="HWVersion_BMU"  /> */} */}
-            {/* <FlatButton primary label="设置" /> */}
-            <button >ok</button>
+          <div>
+        <label>数据采样频率</label>
+        <div>
+          <Field name="DataInterval" component="select">
+             {options}
+          </Field>
+        </div>
+        </div>
+        <label> 数据回报频率</label>
+        <div>
+          <Field name="SendInterval" component="select">
+           {options}
+          </Field>
+        </div>
+            <button >确定设置</button>
           </Form>);
         }
     }

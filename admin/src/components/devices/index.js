@@ -100,6 +100,7 @@ const DeviceEdit = (props) => {
   return (<Edit title="设备信息" {...props}  actions={<EditActions />}>
       <TabbedForm>
         <FormTab label="网关参数设置">
+          <TextField label="RDB编号" source="GWSetting.DeviceId" />
           <TextField label="连接服务器IP或域名" source="GWSetting.ServerIP" />
           <TextField label="连接服务器端口" source="GWSetting.ServerPort"  />
           <TextField label="更新服务器IP或域名" source="GWSetting.UpdateServerIP"  />
@@ -112,12 +113,12 @@ const DeviceEdit = (props) => {
           <TextField label="硬件主版本号" source="GWSetting.MajorVersion_HW"  />
           <TextField label="硬件小版本号" source="GWSetting.MinorVersion_HW"  />
           <TextField label="SIM卡CCID号" source="GWSetting.SIMCCID"  />
-          <TextField label="通信模块IMEI号" source="GWSetting.GSM_SN"  />
+          <TextField label="通信模块IMEI号" source="GWSetting.GSMSN"  />
           <TextField label="位置数据采样间隔，单位:秒" source="GWSetting.PositionInterval"  />
           <TextField label="BMS数据采样间隔，单位:秒" source="GWSetting.DataInterval"  />
           <TextField label="数据发送间隔，单位:秒" source="GWSetting.SendInterval"  />
           <TextField label="PN类型" source="GWSetting.PNType"  />
-          <TextField label="RDB二维码" source="GWSetting.FullNumber_RDB"  />
+          <TextField label="RDB二维码" source="GWSetting.DeviceFullNumber"  />
           <TextField label="电池包PACK号" source="GWSetting.PackNo_BMU"  />
           <TextField label="电池包软件版本" source="GWSetting.Version_BMU"  />
           <TextField label="电池包VIN号" source="GWSetting.VIN_BMU"  />
