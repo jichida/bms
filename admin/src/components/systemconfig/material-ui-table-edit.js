@@ -59,7 +59,6 @@ class MaterialUITableEdit extends React.Component {
     const textFieldStyle = {
       width: width
     }
-
     const onTextFieldChange = (e) => {
       const target = e.target
       const value = target.value
@@ -110,6 +109,7 @@ class MaterialUITableEdit extends React.Component {
       if (selected) {
         if (type === 'TextField') {
           return <TextField
+            fullWidth={true}
             id={textFieldId}
             onChange={onTextFieldChange}
             style={textFieldStyle}
@@ -213,6 +213,7 @@ class MaterialUITableEdit extends React.Component {
     }
 
     return <TextField
+      fullWidth={true}
       id={textFieldId}
       style={textFieldStyle}
       disabled
@@ -223,7 +224,7 @@ class MaterialUITableEdit extends React.Component {
   renderHeader() {
     const headerColumns = this.props.headerColumns
     const columns = headerColumns.map((column, id) => {
-      return {value: column.value}
+      return {value: column.value,width:column.width}
     })
     const row = {columns: columns, header: true}
 
@@ -324,7 +325,7 @@ class MaterialUITableEdit extends React.Component {
             flexGrow: 1,
             flexBasis: 'content',
             alignItems: 'center',
-            width: 150,
+            width: width || 163,
             flexShrink : 0
           }
 

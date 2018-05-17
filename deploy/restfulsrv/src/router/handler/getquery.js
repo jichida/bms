@@ -7,7 +7,8 @@ const getquery = (userid,collectionname,query,callbackfn)=>{
       collectionname === 'devicegroup'||
       collectionname === 'realtimealarm'||
       collectionname === 'realtimealarmraw'||
-      collectionname === 'historytrack'
+      collectionname === 'historytrack'||
+      collectionname === 'deviceext'
     ){
       getdevicesids(userid,({adminflag,devicegroupIds,deviceIds,isall})=>{
         if(adminflag === 0){

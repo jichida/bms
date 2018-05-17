@@ -22,6 +22,9 @@ export default {
     device:{
       name: '设备管理 |||| 设备管理',
     },
+    deviceext:{
+      name: '客档信息 |||| 客档信息',
+    },
     devicegroup:{
       name: '设备分组管理 |||| 设备分组管理',
       fields:{

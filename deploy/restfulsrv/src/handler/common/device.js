@@ -191,7 +191,11 @@ exports.querydeviceinfo =  (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   let fields = actiondata.fields || {};
   ////console.log(`fields-->${JSON.stringify(fields)}`);
-  let queryexec = deviceModel.findOne(query).select(fields).lean();
+  let queryexec = deviceModel.findOne(query,fields).populate([
+    {
+      path: 'deviceextid',
+      model: 'deviceext',
+    }]).lean();
   queryexec.exec((err,result)=>{
     if(!err && !!result){
       callback({
@@ -360,7 +364,7 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
 
 exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
   // PC端获取数据--->{"cmd":"searchbatteryalarm","data":{"query":{"queryalarm":{"warninglevel":0}}}}
-  const deviceModel = DBModels.DeviceModel;
+  const deviceModel = DBModels.DeviceExtModel;
   const query = actiondata.query || {};
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query.DeviceId && !isall){

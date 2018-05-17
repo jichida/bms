@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import NavigationRefresh from 'material-ui/svg-icons/navigation/refresh';
@@ -7,6 +8,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import ActionBack from 'material-ui/svg-icons/navigation/arrow-back';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
+import { refreshView } from 'admin-on-rest';
 
 import { ListButton, DeleteButton } from 'admin-on-rest';
 const cardActionStyle = {
@@ -26,7 +28,7 @@ const CreateActions = ({ basePath, data, refresh }) => (
     </CardActions>
 );
 
-const EditActions = ({ basePath, data, refresh }) => (
+let EditActions = ({ basePath, data, refresh,dispatch }) => (
     <CardActions style={cardActionStyle}>
       <FlatButton
         primary
@@ -35,11 +37,14 @@ const EditActions = ({ basePath, data, refresh }) => (
         containerElement={<Link to={basePath} />}
         style={{ overflow: 'inherit' }} />
         {_.get(data,'systemflag',0) === 0 ?<DeleteButton basePath={basePath} record={data} />:null}
-        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+        <FlatButton primary label="刷新" onClick={()=>{
+          dispatch(refreshView());
+        }} icon={<NavigationRefresh />} />
     </CardActions>
 );
+EditActions = connect()(EditActions);
 
-const ShowActions = ({ basePath, data, refresh }) => (
+let ShowActions = ({ basePath, data, refresh,dispatch }) => (
     <CardActions style={cardActionStyle}>
       <FlatButton
         primary
@@ -47,8 +52,10 @@ const ShowActions = ({ basePath, data, refresh }) => (
         icon={<ActionBack />}
         containerElement={<Link to={basePath} />}
         style={{ overflow: 'inherit' }} />
-        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
+               <FlatButton primary label="刷新" onClick={()=>{
+          dispatch(refreshView());
+        }} icon={<NavigationRefresh />} />
     </CardActions>
 );
-
+ShowActions = connect()(ShowActions);
 export {CreateActions,EditActions,ShowActions};

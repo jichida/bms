@@ -15,9 +15,18 @@ const SystemConfigModel =mongoose.model('systemconfig',  SystemConfigSchema);
 
 //设备
 const DeviceSchema = new Schema({
+  deviceextid:{ type: Schema.Types.ObjectId, ref: 'deviceext' },
 }, { strict: false });
 DeviceSchema.plugin(mongoosePaginate);
 const DeviceModel =mongoose.model('device',  DeviceSchema);
+
+//设备客档信息
+const DeviceExtSchema = new Schema({
+  created_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+  updated_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+}, { strict: false });
+DeviceExtSchema.plugin(mongoosePaginate);
+const DeviceExtModel =mongoose.model('deviceext',  DeviceExtSchema);
 
 //设备分组
 const DeviceGroupSchema = new Schema({
@@ -178,6 +187,7 @@ const ExportTokenModel =mongoose.model('exporttoken',  ExportTokenSchema);
 exports.UserAdminSchema = UserAdminSchema;
 exports.SystemConfigSchema = SystemConfigSchema;
 exports.DeviceSchema = DeviceSchema;
+exports.DeviceExtSchema = DeviceExtSchema;
 exports.DeviceGroupSchema = DeviceGroupSchema;
 exports.OrganizationSchema = OrganizationSchema;
 exports.UserSchema = UserSchema;
@@ -195,6 +205,7 @@ exports.ExportTokenSchema = ExportTokenSchema;
 exports.UserAdminModel = UserAdmin;
 exports.SystemConfigModel = SystemConfigModel;
 exports.DeviceModel = DeviceModel;
+exports.DeviceExtModel = DeviceExtModel;
 exports.DeviceGroupModel = DeviceGroupModel;
 exports.OrganizationModel = OrganizationModel;
 exports.UserModel = UserModel;

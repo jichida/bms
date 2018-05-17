@@ -8,9 +8,10 @@ import map from 'lodash.map';
 // import Moresetting from "../../img/17.png";
 // import Footer from "../index/footer.js";
 
-import {ui_viewdevicedetail} from '../../actions';
+import {ui_viewdevicedetail,ui_alarm_selcurdevice} from '../../actions';
 // import Searchimg from "../../img/22.png";
 import SelectDevice from '../mydevice/selectdevice.js';
+import Daohang from '../../img/daohang.png';
 
 const innerHeight = window.innerHeight;
 
@@ -36,6 +37,9 @@ class Page extends React.Component {
     rowClick = (id)=>{
       this.props.dispatch(ui_viewdevicedetail({DeviceId:id}));
         // this.props.history.push(`/deviceinfo/${id}`);
+    }
+    onClickPos = (id)=>{
+      this.props.dispatch(ui_alarm_selcurdevice(id));
     }
     render() {
         let deviceidlist = [];
@@ -102,7 +106,9 @@ class Page extends React.Component {
                         {  !!groups[groupid].deviceids && groups[groupid].deviceids.length >0 &&
                             map(groups[groupid].deviceids,(data)=>{
                                 return <div key={data.DeviceId}
-                                   onClick={()=>{this.rowClick(data.DeviceId)}} style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>{data.DeviceId}</div>
+                                    style={{textAlign: "center",lineHeight : "46px", borderBottom:"1px solid #EEE",fontSize: "16px"}}>
+                                    <span id="deviceid_1" onClick={()=>{this.rowClick(data.DeviceId)}}>{data.DeviceId}</span>
+                                    <span id="device_2" onClick={()=>{this.onClickPos(data.DeviceId)}}><img src={Daohang} alt=""/></span></div>
                             })
                         }
                     </div>

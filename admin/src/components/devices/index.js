@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { List, EmailField,RichTextInput } from 'admin-on-rest/lib/mui';
 import { CardActions } from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -32,12 +33,12 @@ import { NumberInput,
   ImageField,
   ReferenceInput,
   ReferenceField } from 'admin-on-rest/lib/mui';
-
+  import { refreshView } from 'admin-on-rest';
 import { Field,FieldArray } from 'redux-form';
 import TimePicker from 'material-ui/TimePicker';
 import moment from 'moment';
 import {CreateActions,EditActions} from '../controls/createeditactions';
-import ImportExcelButton from './importexcelbtn';
+
 import config from '../../env/config';
 import {getwarningleveltext} from '../../util/getdeviceitemstatus';
 const deviceDefaultValue = {created_at:moment().format('YYYY-MM-DD HH:mm:ss'),updated_at:moment().format('YYYY-MM-DD HH:mm:ss')};
@@ -49,46 +50,46 @@ const AlarmLevel = ({record,source}) => {
     </span>
   )
 }
-
-const DeviceCreate = (props) => (
-  <Create title="创建设备"  {...props} actions={<CreateActions />}>
-    <SimpleForm defaultValue={deviceDefaultValue}>
-      <TextInput label="设备" source="DeviceId" validate={required} />
-      <TextInput label="车工号" source="Ext.车工号"  />
-      <TextInput label="VIN" source="Ext.VIN"  />
-      <TextInput label="类型" source="Ext.类型"  />
-      <TextInput label="容量" source="Ext.容量"  />
-      <TextInput label="串联数" source="Ext.串联数"  />
-      <TextInput label="并联数" source="Ext.并联数"  />
-      <TextInput label="电芯类型" source="Ext.电芯类型" />
-      <TextInput label="CATL项目名称" source="Ext.CATL项目名称"  />
-      <TextInput label="电池系统流水号" source="Ext.电池系统流水号"  />
-      <TextInput label="BMU硬件版本" source="Ext.BMU硬件版本"  />
-      <TextInput label="CSC硬件版本" source="Ext.CSC硬件版本"  />
-      <TextInput label="BMU软件版本" source="Ext.BMU软件版本"  />
-      <TextInput label="CSC软件版本" source="ExtCSC软件版本"  />
-      <TextInput label="电池入库日期" source="Ext.电池入库日期"  />
-      <TextInput label="电池出货日期" source="Ext.电池出货日期"  />
-      <TextInput label="车辆生产厂" source="Ext.车辆生产厂"  />
-      <TextInput label="车辆型号" source="Ext.车辆型号"  />
-      <TextInput label="装车日期" source="Ext.装车日期"  />
-      <TextInput label="整车出厂日期" source="Ext.整车出厂日期"  />
-      <TextInput label="省份" source="Ext.省份"  />
-      <TextInput label="地区" source="Ext.地区"  />
-      <TextInput label="里程" source="Ext.里程"  />
-      <TextInput label="客户名称" source="Ext.客户名称"  />
-      <TextInput label="客户联系地址" source="Ext.客户联系地址"  />
-      <TextInput label="客户联系人" source="Ext.客户联系人"  />
-      <TextInput label="客户联系电话" source="Ext.客户联系电话"  />
-      <TextInput label="客户移动电话" source="Ext.客户移动电话"  />
-      <TextInput label="用途" source="Ext.用途"  />
-      <TextInput label="购买日期" source="Ext.购买日期"  />
-      <TextInput label="新车上牌日期" source="Ext.新车上牌日期"  />
-      <TextInput label="车牌号" source="Ext.车牌号"  />
-      <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
-    </SimpleForm>
-  </Create>
-);
+//
+// const DeviceCreate = (props) => (
+//   <Create title="创建设备"  {...props} actions={<CreateActions />}>
+//     <SimpleForm defaultValue={deviceDefaultValue}>
+//       <TextInput label="设备" source="DeviceId" validate={required} />
+//       <TextInput label="车工号" source="Ext.车工号"  />
+//       <TextInput label="VIN" source="Ext.VIN"  />
+//       <TextInput label="类型" source="Ext.类型"  />
+//       <TextInput label="容量" source="Ext.容量"  />
+//       <TextInput label="串联数" source="Ext.串联数"  />
+//       <TextInput label="并联数" source="Ext.并联数"  />
+//       <TextInput label="电芯类型" source="Ext.电芯类型" />
+//       <TextInput label="CATL项目名称" source="Ext.CATL项目名称"  />
+//       <TextInput label="电池系统流水号" source="Ext.电池系统流水号"  />
+//       <TextInput label="BMU硬件版本" source="Ext.BMU硬件版本"  />
+//       <TextInput label="CSC硬件版本" source="Ext.CSC硬件版本"  />
+//       <TextInput label="BMU软件版本" source="Ext.BMU软件版本"  />
+//       <TextInput label="CSC软件版本" source="ExtCSC软件版本"  />
+//       <TextInput label="电池入库日期" source="Ext.电池入库日期"  />
+//       <TextInput label="电池出货日期" source="Ext.电池出货日期"  />
+//       <TextInput label="车辆生产厂" source="Ext.车辆生产厂"  />
+//       <TextInput label="车辆型号" source="Ext.车辆型号"  />
+//       <TextInput label="装车日期" source="Ext.装车日期"  />
+//       <TextInput label="整车出厂日期" source="Ext.整车出厂日期"  />
+//       <TextInput label="省份" source="Ext.省份"  />
+//       <TextInput label="地区" source="Ext.地区"  />
+//       <TextInput label="里程" source="Ext.里程"  />
+//       <TextInput label="客户名称" source="Ext.客户名称"  />
+//       <TextInput label="客户联系地址" source="Ext.客户联系地址"  />
+//       <TextInput label="客户联系人" source="Ext.客户联系人"  />
+//       <TextInput label="客户联系电话" source="Ext.客户联系电话"  />
+//       <TextInput label="客户移动电话" source="Ext.客户移动电话"  />
+//       <TextInput label="用途" source="Ext.用途"  />
+//       <TextInput label="购买日期" source="Ext.购买日期"  />
+//       <TextInput label="新车上牌日期" source="Ext.新车上牌日期"  />
+//       <TextInput label="车牌号" source="Ext.车牌号"  />
+//       <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
+//     </SimpleForm>
+//   </Create>
+// );
 
 const choices = [
   {_id:'A',status:'定位'},
@@ -98,41 +99,6 @@ const choices = [
 const DeviceEdit = (props) => {
   return (<Edit title="设备信息" {...props}  actions={<EditActions />}>
       <TabbedForm>
-        <FormTab label="扩展信息">
-          <TextInput label="RDB编号" source="Ext.RDB编号"  />
-          <TextInput label="车工号" source="Ext.车工号"  />
-          <TextInput label="VIN" source="Ext.VIN"  />
-          <TextInput label="类型" source="Ext.类型"  />
-          <TextInput label="容量" source="Ext.容量"  />
-          <TextInput label="串联数" source="Ext.串联数"  />
-          <TextInput label="并联数" source="Ext.并联数"  />
-          <TextInput label="电芯类型" source="Ext.电芯类型" />
-          <TextInput label="CATL项目名称" source="Ext.CATL项目名称"  />
-          <TextInput label="电池系统流水号" source="Ext.电池系统流水号"  />
-          <TextInput label="BMU硬件版本" source="Ext.BMU硬件版本"  />
-          <TextInput label="CSC硬件版本" source="Ext.CSC硬件版本"  />
-          <TextInput label="BMU软件版本" source="Ext.BMU软件版本"  />
-          <TextInput label="CSC软件版本" source="ExtCSC软件版本"  />
-          <TextInput label="电池入库日期" source="Ext.电池入库日期"  />
-          <TextInput label="电池出货日期" source="Ext.电池出货日期"  />
-          <TextInput label="车辆生产厂" source="Ext.车辆生产厂"  />
-          <TextInput label="车辆型号" source="Ext.车辆型号"  />
-          <TextInput label="装车日期" source="Ext.装车日期"  />
-          <TextInput label="整车出厂日期" source="Ext.整车出厂日期"  />
-          <TextInput label="省份" source="Ext.省份"  />
-          <TextInput label="地区" source="Ext.地区"  />
-          <TextInput label="里程" source="Ext.里程"  />
-          <TextInput label="客户名称" source="Ext.客户名称"  />
-          <TextInput label="客户联系地址" source="Ext.客户联系地址"  />
-          <TextInput label="客户联系人" source="Ext.客户联系人"  />
-          <TextInput label="客户联系电话" source="Ext.客户联系电话"  />
-          <TextInput label="客户移动电话" source="Ext.客户移动电话"  />
-          <TextInput label="用途" source="Ext.用途"  />
-          <TextInput label="购买日期" source="Ext.购买日期"  />
-          <TextInput label="新车上牌日期" source="Ext.新车上牌日期"  />
-          <TextInput label="车牌号" source="Ext.车牌号"  />
-          <TextInput label="售后外服姓名" source="Ext.售后外服姓名"  />
-        </FormTab>
         <FormTab label="设备基本信息">
           <TextInput label="PackNo" source="PackNo_BMU" />
           <TextField label="设备ID" source="DeviceId"  validate={required} />
@@ -233,13 +199,13 @@ const DeviceEdit = (props) => {
     );
 };
 
-const DeviceShowActions = ({basePath,data,refresh}) => (
-  <CardActions>
-    <ListButton basePath={basePath} />
-    <EditButton basePath={basePath} record={data} />
-    <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
-  </CardActions>
-);
+// const DeviceShowActions = ({basePath,data,refresh}) => (
+//   <CardActions>
+//     <ListButton basePath={basePath} />
+//     <EditButton basePath={basePath} record={data} />
+//     <FlatButton primary label="Refresh" onClick={refresh} icon={<NavigationRefresh />} />
+//   </CardActions>
+// );
 
 const DeviceFilter = (props) => (
   <Filter {...props}>
@@ -253,16 +219,17 @@ const cardActionStyle = {
     float: 'right',
 };
 
-const DeviceActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh }) => (
+let DeviceActions = ({ resource, filters, displayedFilters, filterValues, basePath, showFilter, refresh,dispatch }) => (
     <CardActions style={cardActionStyle}>
         {filters && React.cloneElement(filters, { resource, showFilter, displayedFilters, filterValues, context: 'button' }) }
         <CreateButton basePath={basePath} />
-        <FlatButton primary label="刷新" onClick={refresh} icon={<NavigationRefresh />} />
-        <ImportExcelButton resource={resource}/>
+        <FlatButton primary label="刷新" onClick={()=>{
+          dispatch(refreshView());
+        }} icon={<NavigationRefresh />} />
     </CardActions>
 );
 
-
+DeviceActions = connect()(DeviceActions);
 
 const DeviceList = (props) => (
   <List title="设备管理" filters={<DeviceFilter />} sort={{field:'last_GPSTime',order:'DESC'}} {...props}
@@ -276,10 +243,13 @@ const DeviceList = (props) => (
       <TextField label="最后数据时间" source="LastRealtimeAlarm.DataTime" />
       <TextField label="最后定位时间" source="last_GPSTime" />
       <TextField label="更新时间" source="UpdateTime"   />
+      <ReferenceField label="客户信息" source="deviceextid" reference="deviceext" allowEmpty>
+        <TextField source="customername" />
+      </ReferenceField>
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>
   }
   </List>
 );
 
-export {DeviceCreate,DeviceList,DeviceEdit}
+export {DeviceList,DeviceEdit}

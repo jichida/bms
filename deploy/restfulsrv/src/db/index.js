@@ -5,6 +5,11 @@ const dbs ={
     schema:db.DataDictSchema,
     collectionname:'datadict',
   },
+  'deviceext':{
+    urlname:'/deviceext',
+    schema:db.DeviceExtSchema,
+    collectionname:'deviceext',
+  },
   'systemconfig':{
     urlname:'/systemconfig',
     schema:db.SystemConfigSchema,

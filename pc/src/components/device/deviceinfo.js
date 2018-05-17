@@ -125,6 +125,8 @@ class Page extends React.Component {
                    v.timev = curv;
                    v.value = maptimevalue[curv];
                  }
+
+                 v['值'] = v.value;
                  dataret.push(v);
                  m = m.add(1,'minutes');
               }

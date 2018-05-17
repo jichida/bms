@@ -16,12 +16,12 @@ import translations from './i18n';
 import restClient from './restClient';
 import singledocumentpage from './components/singledocumentpage/reducer';
 import menu from './menu/reducer';
-
+import 'antd/dist/antd.css';
 import {SystemconfigList} from './components/systemconfig/index.js';
 import {CanRawDataList,CanRawDataShow} from './components/canrowdatas/index.js';
 import {DataDictCreate,DataDictList,DataDictEdit} from './components/datadict/index.js';
 import {DeviceGroupCreate,DeviceGroupList,DeviceGroupEdit} from './components/devicegroups/index.js';
-import {DeviceCreate,DeviceList,DeviceEdit} from './components/devices/index.js';
+import {DeviceList,DeviceEdit} from './components/devices/index.js';
 import {HistoryTrackList,HistoryTrackShow} from './components/historytracks/index.js';
 import {RealtimeAlarmList,RealtimeAlarmShow} from './components/realtimealarms/index.js';
 import {RealtimeAlarmRawList,RealtimeAlarmRawShow} from './components/realtimealarmraws/index.js';
@@ -32,6 +32,8 @@ import {UserAdminCreate,UserAdminList,UserAdminEdit} from './components/useradmi
 import {RoleCreate,RoleList,RoleEdit} from './components/roles/index.js';
 import {OrganizationCreate,OrganizationEdit,OrganizationList} from './components/organization/index.js';
 import {HistoryDeviceList,HistoryDeviceShow} from './components/historydevices/index.js';
+import {DeviceExtCreate,DeviceExtEdit,DeviceExtList} from './components/deviceext/index.js';
+
 import systemconfigreducer from './components/systemconfig/reducer';
 
 class App extends Component {
@@ -64,7 +66,8 @@ class App extends Component {
                   return [
                     <Resource name="systemconfig" list={SystemconfigList} />,
                     <Resource name="devicegroup" list={DeviceGroupList} edit={DeviceGroupEdit} create={DeviceGroupCreate}  remove={Delete} />,
-                    <Resource name="device" list={DeviceList} edit={DeviceEdit} create={DeviceCreate}  remove={Delete} />,
+                    <Resource name="device" list={DeviceList} edit={DeviceEdit} remove={Delete} />,
+                    <Resource name="deviceext" list={DeviceExtList} edit={DeviceExtEdit}  create={DeviceExtCreate}  remove={Delete} />,
                     <Resource name="user" list={UserList} edit={UserEdit} create={UserCreate} remove={Delete} />,
                     <Resource name="role" list={RoleList} edit={RoleEdit} create={RoleCreate}  remove={Delete} />,
                     <Resource name="permission" list={PermissionList} edit={PermissionEdit} create={PermissionCreate}  remove={Delete} />,
@@ -81,10 +84,7 @@ class App extends Component {
                   // <Resource name="systemconfig" list={SystemconfigList} />,
                   <Resource name="devicegroup" list={DeviceGroupList} edit={null} create={null}  remove={null} />,
                   <Resource name="device" list={DeviceList} edit={null} create={null}  remove={null} />,
-                  // <Resource name="user" list={UserList} edit={null} create={null} remove={null} />,
-                  // <Resource name="role" list={RoleList} edit={null} create={null}  remove={null} />,
-                  // <Resource name="permission" list={PermissionList} edit={null} create={null}  remove={null} />,
-                  // <Resource name="datadict" list={DataDictList} edit={null} create={null}  remove={null} />,
+                  <Resource name="deviceext" list={DeviceExtList} edit={DeviceExtEdit} remove={Delete} />,
                   <Resource name="historydevice" list={HistoryDeviceList} show={HistoryDeviceShow} />,
                   <Resource name="historytrack" list={HistoryTrackList} show={HistoryTrackShow} />,
                   <Resource name="realtimealarm" list={RealtimeAlarmList} show={RealtimeAlarmShow} />,

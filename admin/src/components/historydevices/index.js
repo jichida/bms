@@ -132,6 +132,8 @@ const HistoryDeviceList = (props)=> (
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="设备ID" source="DeviceId" />
       <TextField label="采集时间" source="DataTime"  />
+      <TextField label="分区号" source="recvpartition"  />
+      <TextField label="偏移量" source="recvoffset"  />
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <ShowButton />
     </Datagrid>

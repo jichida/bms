@@ -333,6 +333,7 @@ input,textarea {
     flex-grow: 1;
     pointer-events: auto;
 }
+
 .mydevicecontentlist .devicenum{
     margin: auto;
     display: flex;
@@ -1397,6 +1398,45 @@ div.mydevicebtn >div{
     min-width: 26px;
     text-align: center;
 }
+#deviceid_1{
+    display: inline-block;
+    line-height: 40px;
+    flex-grow: 1;
+}
+#device_2{
+    border: 1px solid #1296db;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin-right: 20px;
+}
+#device_2 img{
+    height: 14px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
 
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;}
+.mydevicecontentlist >div{
+    display: flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
 
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-justify-content: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.mydevicecontentlist >div.ant-table-wrapper >div{
+    flex-grow: 1;
+}
 

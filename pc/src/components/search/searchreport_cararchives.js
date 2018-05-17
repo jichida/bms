@@ -22,9 +22,9 @@ class TreeSearchBattery extends React.Component {
         let DeviceId = get(props.query,'DeviceId','');
         this.state = {
             DeviceId,
-            ExtProject:'',
-            ExtArea:'',
-            ExtNo:''
+            catlprojectname:'',
+            area:'',
+            buscarvin:''
         };
     }
 
@@ -35,17 +35,17 @@ class TreeSearchBattery extends React.Component {
     }
     onChange_ExtProject =(e)=>{
       this.setState({
-          ExtProject:e.target.value
+          catlprojectname:e.target.value
       });
     }
     onChange_ExtArea =(e)=>{
       this.setState({
-          ExtArea:e.target.value
+          area:e.target.value
       });
     }
     onChange_ExtNo =(e)=>{
       this.setState({
-          ExtNo:e.target.value
+          buscarvin:e.target.value
       });
     }
 
@@ -59,23 +59,14 @@ class TreeSearchBattery extends React.Component {
       if(this.state.DeviceId !== ''){
         query['DeviceId'] = this.state.DeviceId;
       }
-      if(this.state.ExtProject !== ''){
-        if(!query.Ext){
-          query.Ext = {};
-        }
-        query['Ext']['项目'] = this.state.ExtProject;
+      if(this.state.catlprojectname !== ''){
+        query['catlprojectname'] = this.state.catlprojectname;
       }
-      if(this.state.ExtArea !== ''){
-        if(!query.Ext){
-          query.Ext = {};
-        }
-        query['Ext']['地区'] = this.state.ExtArea;
+      if(this.state.area !== ''){
+        query['area'] = this.state.area;
       }
-      if(this.state.ExtNo !== ''){
-        if(!query.Ext){
-          query.Ext = {};
-        }
-        query['Ext']['车工号'] = this.state.ExtNo;
+      if(this.state.buscarvin !== ''){
+        query['buscarvin'] = this.state.buscarvin;
       }
       console.log(query);
       return query;
@@ -95,12 +86,12 @@ class TreeSearchBattery extends React.Component {
           deviceidlist.push(item.DeviceId);
       });
         return (
-            <div className="searchreport_cararchives" style={{textAlign: "center"}}>
-            <div className="f">
-              <Input placeholder="项目" onChange={this.onChange_ExtProject} value={this.state.ExtProject}/>
-              <Input placeholder="地区" onChange={this.onChange_ExtArea} value={this.state.ExtArea}/>
-              <Input placeholder="车工号" onChange={this.onChange_ExtNo} value={this.state.ExtNo}/>
-              <div className="i">
+            <div className="searchreport" style={{textAlign: "center"}}>
+            <div className="i">
+              <div><Input placeholder="项目" onChange={this.onChange_ExtProject} value={this.state.catlprojectname}/></div>
+              <div><Input placeholder="地区" onChange={this.onChange_ExtArea} value={this.state.area}/></div>
+              <div><Input placeholder="车工号" onChange={this.onChange_ExtNo} value={this.state.buscarvin}/></div>
+              <div className="danganselectcarid">
                      <div className="selcar setsearchid">
                        <span className="t">车辆ID：</span>
                        <SelectDevice

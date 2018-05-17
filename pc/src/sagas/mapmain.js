@@ -1166,7 +1166,7 @@ export function* createmapmainflow(){
                     yield delay(0);
                     if(isarea){
                       //如果返回车辆,则将车辆加载到树中
-                      yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+                      yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
                     }
                     else{
                       //刷新树中的数据
@@ -1207,7 +1207,7 @@ export function* createmapmainflow(){
               count_total:data.length,
               count_online:deviceidonlines.length,
             }
-            yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+            yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
           }
         }
         catch(e){
@@ -1460,7 +1460,7 @@ export function* createmapmainflow(){
 
           //如果停留在区域,则重新装载车辆结点
           if(!!curareaid){
-            yield put(mapmain_areamountdevices_result({adcode:curareaid,gmap_acode_devices,g_devicesdb}));
+            yield put(mapmain_areamountdevices_result({adcode:curareaid,gmap_acode_devices,g_devicesdb,SettingOfflineMinutes}));
           }
           //刷新树中数据
           //《----未定位的数据个数也要刷
