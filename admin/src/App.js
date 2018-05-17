@@ -36,7 +36,7 @@ import {DeviceExtCreate,DeviceExtEdit,DeviceExtList} from './components/deviceex
 
 import systemconfigreducer from './components/systemconfig/reducer';
 
-import { reducer as formReducer } from 'redux-form';
+// import { reducer as formReducer } from 'redux-form';
 class App extends Component {
 
     render() {
@@ -48,7 +48,6 @@ class App extends Component {
                   theme:themeReducer,
                   systemconfig:systemconfigreducer,
                   singledocumentpage,
-                  form: formReducer,
                   menu
                  }}
                 customSagas={sagas}
