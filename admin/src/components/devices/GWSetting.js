@@ -42,6 +42,7 @@ class GetSetButton extends React.Component {
     this.showModal();
   }
   onClick_SetOK = (values)=>{
+    console.log(`onClick_SetOK===>${JSON.stringify(values)}`);
     const {record} = this.props;
     fetchgwsetting(`/gwset`,{DeviceId:record['DeviceId'],GWSetting:values}).then((result)=>{
       this.props.dispatch(refreshView({}));
@@ -51,30 +52,11 @@ class GetSetButton extends React.Component {
 
   render() {
     const {record} = this.props;
-    const gwset = record.GWSetting || {
-      ServerIP:'',
-      ServerPort:0,
-      UpdateServerIP:'',
-      UpdateServerPort:'',
-      SIMNumber:'',
-      DeviceSN:'',
-      ApplicationID:'',
-      MajorVersion_FW:'',
-      MinorVersion_FW:'',
-      MajorVersion_HW:'',
-      MinorVersion_HW:'',
-      SIMCCID:'',
-      GSM_SN:'',
-      PositionInterval:'',
-      DataInterval:'',
-      SendInterval:'',
-      PNType:'',
-      FullNumber_RDB:'',
-      PackNo_BMU:'',
-      Version_BMU:'',
-      VIN_BMU:'',
-      HWVersion_BMU:''
+    const gwset = {
+      DataInterval:_.get(record,'GWSetting.DataInterval',1),
+      SendInterval:_.get(record,'GWSetting.SendInterval',1),
     }
+ 
     let formname = 'GWSettingForm';
     let formvalues = gwset;
     return (
@@ -103,6 +85,7 @@ class GetSetButton extends React.Component {
             />
         </Modal>
       </FlatButton>
+      <div></div>
       </div>
     );
   }
