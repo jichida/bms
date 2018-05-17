@@ -4,6 +4,7 @@ const startrouter = (app)=>{
   require('./useradmincustom.js')(app);
   require('./m2mgw.js')(app);
   require('./deviceextimport.js')(app);
+  require('./gw.js')(app);
 };
 
 
