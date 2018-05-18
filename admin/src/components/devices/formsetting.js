@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm, Form  } from 'redux-form';
 import { connect } from 'react-redux';
-
+import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -56,7 +56,7 @@ const optionsvalue = [
 ];
 let options = [];
 _.map(optionsvalue,(v,index)=>{
-  options.push( 
+  options.push(
     <MenuItem value={v.value} primaryText={v.title}  key={`${index}`}/>
   );
 });
@@ -76,7 +76,7 @@ const renderSel = (props)=>{
 class PageForm extends React.Component {
   render() {
     const { handleSubmit,onClickSubmit } = this.props;
-   
+
 
     return (
       <Form
@@ -90,7 +90,12 @@ class PageForm extends React.Component {
             <Field name="SendInterval" component={renderSel} floatingLabelText="数据回报频率">
             </Field>
           </div>
-            <button >确定设置</button>
+          <RaisedButton
+           primary
+           type="submit"
+           label="确定"
+           style={{marginTop: 12}}
+         />
           </Form>);
         }
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Field } from 'redux-form';
 import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import config from '../../env/config.js';
 import IconGetBtn from 'material-ui/svg-icons/navigation/refresh';
 import IconSetBtn from 'material-ui/svg-icons/navigation/refresh';
@@ -44,7 +45,12 @@ class GetSetButton extends React.Component {
   onClick_SetOK = (values)=>{
     console.log(`onClick_SetOK===>${JSON.stringify(values)}`);
     const {record} = this.props;
-    fetchgwsetting(`/gwset`,{DeviceId:record['DeviceId'],GWSetting:values}).then((result)=>{
+    const postdata = {
+      DeviceId:record['DeviceId'],
+      DataInterval:values.DataInterval,
+      SendInterval:values.SendInterval,
+    }
+    fetchgwsetting(`/gwset`,postdata).then((result)=>{
       this.props.dispatch(refreshView({}));
     });
     this.hideModal();
@@ -56,18 +62,18 @@ class GetSetButton extends React.Component {
       DataInterval:_.get(record,'GWSetting.DataInterval',1),
       SendInterval:_.get(record,'GWSetting.SendInterval',1),
     }
- 
+
     let formname = 'GWSettingForm';
     let formvalues = gwset;
     return (
       <div className="clearfix">
-        <FlatButton primary label="获取" onClick={()=>{
+        <RaisedButton primary={true} label="获取" onClick={()=>{
           this.onClick_Get();
-        }} icon={<IconGetBtn />} />
+        }} style={{margin: 12}}/>
 
-        <FlatButton primary label="设置" onClick={()=>{
+        <RaisedButton secondary={true} label="设置" onClick={()=>{
           this.onClick_Set();
-        }} icon={<IconSetBtn />} >
+        }} style={{margin: 12}}>
         <Modal
           destroyOnClose={true}
           title="配置网关参数"
@@ -84,7 +90,7 @@ class GetSetButton extends React.Component {
                 formvalues={formvalues}
             />
         </Modal>
-      </FlatButton>
+      </RaisedButton>
       <div></div>
       </div>
     );

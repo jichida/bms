@@ -96,6 +96,31 @@ const choices = [
   {_id:'V',status:'不定位'},
 ];
 
+// DeviceId	string	R	设备标识
+// ServerIP	string	R/W	连接服务器IP或域名
+// ServerPort	uint16	R/W	连接服务器端口
+// UpdateServerIP	string	R/W	更新服务器IP或域名
+// UpdateServerPort	uint16	R/W	更新服务器端口
+// SIMNumber	string	R	SIM号码
+// DeviceSN	uint32	R	设备编号
+// ApplicationID	string	R	固件应用标识
+// Version_FW	string	R	固件版本
+// Version_HW	string	R	硬件版本
+// SIMCCID	string	R	SIM卡CCID号
+// GSMSN	string	R	通信模块IMEI号
+// PositionInterval	uint32	R/W	位置数据采样间隔，单位:秒。
+// DataInterval	uint32	R/W	BMS数据采样间隔，单位:秒。
+// SendInterval	uint32	R/W	数据发送间隔，单位:秒。
+// PNType	uint8	R/W	PN类型：
+// 0:380220-00007
+// 1:380220-00010
+// 2:380220-00012
+// DeviceFullNumber	string	R	RDB二维码
+// PackNo_BMU	string	R	电池包PACK号
+// FWVersion_BMU	string	R	电池包软件版本
+// VIN_BMU	string	R	电池包VIN号
+// HWVersion_BMU	string	R	电池包硬件版本
+
 const DeviceEdit = (props) => {
   return (<Edit title="设备信息" {...props}  actions={<EditActions />}>
       <TabbedForm>
@@ -108,10 +133,8 @@ const DeviceEdit = (props) => {
           <TextField label="SIM号码" source="GWSetting.SIMNumber"  />
           <TextField label="设备编号" source="GWSetting.DeviceSN"  />
           <TextField label="固件应用标识" source="GWSetting.ApplicationID"  />
-          <TextField label="固件主版本号" source="GWSetting.MajorVersion_FW"  />
-          <TextField label="固件小版本号" source="GWSetting.MinorVersion_FW"  />
-          <TextField label="硬件主版本号" source="GWSetting.MajorVersion_HW"  />
-          <TextField label="硬件小版本号" source="GWSetting.MinorVersion_HW"  />
+          <TextField label="固件版本" source="GWSetting.Version_FW"  />
+          <TextField label="硬件版本" source="GWSetting.Version_HW"  />
           <TextField label="SIM卡CCID号" source="GWSetting.SIMCCID"  />
           <TextField label="通信模块IMEI号" source="GWSetting.GSMSN"  />
           <TextField label="位置数据采样间隔，单位:秒" source="GWSetting.PositionInterval"  />
@@ -120,7 +143,7 @@ const DeviceEdit = (props) => {
           <TextField label="PN类型" source="GWSetting.PNType"  />
           <TextField label="RDB二维码" source="GWSetting.DeviceFullNumber"  />
           <TextField label="电池包PACK号" source="GWSetting.PackNo_BMU"  />
-          <TextField label="电池包软件版本" source="GWSetting.Version_BMU"  />
+          <TextField label="电池包软件版本" source="GWSetting.FWVersion_BMU"  />
           <TextField label="电池包VIN号" source="GWSetting.VIN_BMU"  />
           <TextField label="电池包硬件版本" source="GWSetting.HWVersion_BMU"  />
           <GetSetBtn source="DeviceId"/>

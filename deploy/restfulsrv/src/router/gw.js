@@ -12,7 +12,7 @@ require('isomorphic-fetch');
 const startuploader = (app)=>{
   const gwget = (req,res)=>{
       const jsonbody = req.body;
-      debug(`gwget===>${JSON.stringify(jsonbody)}`);
+      debug(`gwget===>DeviceId==>${jsonbody.DeviceId}`);
 
       const url = `http://222.66.141.6:8000/DemoService/DeviceConfigQuery/${jsonbody.DeviceId}`;
       return fetch(url).then((res)=>{
@@ -53,9 +53,28 @@ const startuploader = (app)=>{
 
   app.post('/gwset',middlewareauth,(req,res)=>{
       const jsonbody = req.body;
-      debug(`gwset===>${JSON.stringify(jsonbody)}`);
-      const url = `http://222.66.141.6:8000/DemoService/DeviceConfigQuery/${jsonbody.DeviceId}`;
-      return fetch(url).then((res)=>{
+      const DeviceId = _.get(jsonbody,'DeviceId');
+      const DataInterval  = _.get(jsonbody,'DataInterval');
+      const SendInterval  = _.get(jsonbody,'SendInterval');
+      debug(`gwset===>${DeviceId}===>${DataInterval}===>${SendInterval}`);
+      if(!DeviceId || !DataInterval || !SendInterval){
+        res.status(200)
+               .json({
+          result:'error',
+        });
+        return;
+      }
+      const postdata = {
+        DeviceId,
+        DataInterval,
+        SendInterval
+      }
+      debug(`gwset===>postdata===>${JSON.stringify(postdata)}`);
+      const url = `http://222.66.141.6:8000/DemoService/DeviceConfigSet/${jsonbody.DeviceId}`;
+      return fetch(url,{
+        method: 'post',
+        body: JSON.stringify(postdata)
+      }).then((res)=>{
         return res.json();
       }).then((json)=> {
         gwget(req,res);
