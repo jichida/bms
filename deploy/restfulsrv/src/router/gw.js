@@ -70,15 +70,17 @@ const startuploader = (app)=>{
         SendInterval
       }
       debug(`gwset===>postdata===>${JSON.stringify(postdata)}`);
-      const url = `http://222.66.141.6:8000/DemoService/DeviceConfigSet/${jsonbody.DeviceId}`;
-      return fetch(url,{
-        method: 'post',
-        body: JSON.stringify(postdata)
-      }).then((res)=>{
+      const url = `http://222.66.141.6:8000/DemoService/DeviceConfigSet/"DeviceId":"${postdata.DeviceId}","DataInterval":${postdata.DataInterval},"SendInterval":${postdata.SendInterval}`;
+      debug(`url===>${url}`);
+      return fetch(url).then((res)=>{
+        console.log(res);
+        console.log(res);
         return res.json();
       }).then((json)=> {
+        console.log(json);
         gwget(req,res);
       }).catch((e)=>{
+        console.log(e);
         res.status(200)
                .json({
           result:'error',
