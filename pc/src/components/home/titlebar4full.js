@@ -9,7 +9,7 @@ const TitleBar = (props)=>{
   const {count_online,count_offline,count_all} = props;
   return  (
     <div className="xjl_call">
-      <h2 className="tit"><img src={Logo} alt=""/><span>宁德时代新能源远程监控系统</span></h2>
+      <h2 className="tit"><span>宁德时代新能源远程监控系统</span></h2>
       <ul className="call_ul">
         <li>市场保有量：{`${count_online+count_offline}`}辆</li>
         <li>已联网：{`${count_online}`}辆</li>
