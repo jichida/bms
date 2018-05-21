@@ -19,7 +19,7 @@ const devicedatapile = (data)=>{
       newAlarm[fieldname] = 1;
     });
     _.set(newdata,'BMSData.Alarm',newAlarm);
-    newdata.TROUBLE_CODE_LIST = AL_TROUBLE_CODE_2;//新增一个字段TROUBLE_CODE_LIST
+    _.set(newdata,'BMSData.Alarm.TROUBLE_CODE_LIST',AL_TROUBLE_CODE_2);//新增一个字段TROUBLE_CODE_LIST
     debug(`newdata--->${JSON.stringify(newAlarm)}`);
   }
   return newdata;
