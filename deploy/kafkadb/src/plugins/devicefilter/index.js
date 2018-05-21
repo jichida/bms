@@ -10,7 +10,12 @@ const devicedatapile = (data)=>{
   const Alarm = _.get(data,'BMSData.Alarm');
   if(!!Alarm){
     //含有报警
-    const AL_TROUBLE_CODE_2 = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE_2',[]);
+    let AL_TROUBLE_CODE_2 = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE_2',[]);
+    const AL_TROUBLE_CODE = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE');
+    if(!!AL_TROUBLE_CODE){
+      _.pull(AL_TROUBLE_CODE_2, AL_TROUBLE_CODE);
+      AL_TROUBLE_CODE_2.push(AL_TROUBLE_CODE);
+    }
     const CANType = _.get(data,'BMSData.CANType',-1);
     let newAlarm = _.clone(Alarm);
     newAlarm = _.omit(newAlarm,['AL_TROUBLE_CODE_2']);
