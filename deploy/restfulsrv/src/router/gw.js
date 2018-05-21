@@ -73,11 +73,9 @@ const startuploader = (app)=>{
       const url = `http://222.66.141.6:8000/DemoService/DeviceConfigSet/"DeviceId":"${postdata.DeviceId}","DataInterval":${postdata.DataInterval},"SendInterval":${postdata.SendInterval}`;
       debug(`url===>${url}`);
       return fetch(url).then((res)=>{
-        console.log(res);
-        console.log(res);
-        return res.json();
-      }).then((json)=> {
-        console.log(json);
+        return res.text();
+      }).then((xml)=> {
+        console.log(xml);
         gwget(req,res);
       }).catch((e)=>{
         console.log(e);
