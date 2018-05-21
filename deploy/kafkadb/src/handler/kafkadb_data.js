@@ -152,7 +152,7 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
         }
         //{ $addToSet: { tags: { $each: [ "camera", "electronics", "accessories" ] } } }
         const TROUBLE_CODE_LIST = _.get(LastRealtimeAlarm,'TROUBLE_CODE_LIST',[]);
-        updated_data["$addToSet"] = { TROUBLE_CODE_LIST: { $each: TROUBLE_CODE_LIST} } };
+        updated_data["$addToSet"] = { TROUBLE_CODE_LIST: { $each: TROUBLE_CODE_LIST} } ;
 
         callbackfn(updated_data);
         return;
