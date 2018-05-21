@@ -21,7 +21,7 @@ const getalarmfieldtotxt = (alarmfield)=>{
 const getalarmtxt = (alarminfo)=>{
   let alarmtxt = '';
   let alarminfotmp = _.clone(alarminfo);
-  let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude']);
+  let rest = _.omit(alarminfotmp,['_id','CurDay','DeviceId','__v','DataTime','warninglevel','Longitude','Latitude','TROUBLE_CODE_LIST']);
   // //console.log(`rest===>${JSON.stringify(rest)}`);
   _.map(rest,(v,key)=>{
     let keytxt = getalarmfieldtotxt(key);

@@ -22,17 +22,17 @@ class NodeRenderChildren extends React.Component {
 
     getsplitarray =(children)=>{
       let retchildren = [];
-      let splitsz = chunk(children,80);
+      let splitsz = chunk(children,100);
       if(splitsz.length > 1){
         let firstsz = flattenDeep(splitsz[0]);
-        let lastsz = [];
+        // let lastsz = [];
         retchildren = [...firstsz];
         if(splitsz.length > 2){
-           lastsz = flattenDeep(splitsz[splitsz.length-1]);
-           for(let i=1;i<splitsz.length-2;i++){
+          //  lastsz = flattenDeep(splitsz[splitsz.length-1]);
+           for(let i = 1;i < splitsz.length; i++){
              retchildren.push(splitsz[i]);
            }
-           retchildren = [...retchildren,...lastsz];
+           retchildren = [...retchildren];
         }
         else{
           retchildren = [...retchildren,splitsz[1]];

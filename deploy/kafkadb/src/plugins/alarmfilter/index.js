@@ -183,12 +183,14 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
   if(!!alarmdata){
     let inc_data = {};
     _.map(alarmdata,(v,key)=>{
-      if(key === 'AL_TROUBLE_CODE'){
-        inc_data[`F[${v}]`] = 1;
-      }
-      else{
-        if(v !== 0){
-          inc_data[key] = 1;
+      if(key !== 'TROUBLE_CODE_LIST'){
+        if(key === 'AL_TROUBLE_CODE'){
+          inc_data[`F[${v}]`] = 1;
+        }
+        else{
+          if(v !== 0){
+            inc_data[key] = 1;
+          }
         }
       }
     });
