@@ -51,7 +51,7 @@ class NodeRenderChildren extends React.Component {
       return retchildren;
     }
     render() {
-        const {animations, decorators: propDecorators, node, style,
+        const {animations, decorators: propDecorators, node, style,onToggle,
           _eventBubbles,treeviewstyle} = this.props;
         if (node.loading) {
             return this.renderLoading(propDecorators);
@@ -71,6 +71,7 @@ class NodeRenderChildren extends React.Component {
                     if(isArray(child)){
                       //
                       return (<NodeArray subnodes={child}
+                          onToggle={onToggle}
                           treeviewstyle={treeviewstyle}
                           {..._eventBubbles}
                           animations={animations}
