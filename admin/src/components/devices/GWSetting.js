@@ -46,6 +46,10 @@ class GetSetButton extends React.Component {
   }
   onClick_SetOK = (values)=>{
     const {record} = this.props;
+    if(values.DataInterval > values.SendInterval){
+      this.props.dispatch(showNotification(`数据回报频率必须大于或等于数据采样频率`));
+      return;
+    }
     const postdata = {
       DeviceId:record['DeviceId'],
       DataInterval:values.DataInterval,
