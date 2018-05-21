@@ -29,7 +29,7 @@ class NodeRenderChildren extends React.Component {
         retchildren = [...firstsz];
         if(splitsz.length > 2){
           //  lastsz = flattenDeep(splitsz[splitsz.length-1]);
-           for(let i=1;i<splitsz.length-1;i++){
+           for(let i = 1;i < splitsz.length; i++){
              retchildren.push(splitsz[i]);
            }
            retchildren = [...retchildren];
