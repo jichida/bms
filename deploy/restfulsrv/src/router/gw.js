@@ -61,6 +61,7 @@ const startuploader = (app)=>{
         res.status(200)
                .json({
           result:'error',
+          errmsg:'参数不对'
         });
         return;
       }
@@ -76,12 +77,22 @@ const startuploader = (app)=>{
         return res.text();
       }).then((xml)=> {
         console.log(xml);
-        gwget(req,res);
+        if(xml.indexOf(">success<") != -1 ){
+          gwget(req,res);
+        }
+        else{
+          res.status(200)
+                 .json({
+            result:'error',
+            errmsg:'配置网关返回错误'
+          });
+        }
       }).catch((e)=>{
         console.log(e);
         res.status(200)
                .json({
           result:'error',
+          errmsg:'网关参数错误'
         });
       });
   });

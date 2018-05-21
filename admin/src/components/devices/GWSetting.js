@@ -11,12 +11,11 @@ import _ from 'lodash';
 import { refreshView } from 'admin-on-rest';
 import { Modal } from 'antd';
 import fetchgwsetting from './fetchgwsetting';
+import { showNotification } from 'admin-on-rest';
 
 class GetSetButton extends React.Component {
   constructor(props) {
       super(props);
-      console.log('PicturesWall===>' + JSON.stringify(props));
-
   }
   state = { visible: false }
   showModal = () => {
@@ -33,27 +32,35 @@ class GetSetButton extends React.Component {
 
   onClick_Get = ()=>{
     const {record} = this.props;
-    console.log(`Click Btn Get :${record['DeviceId']},${JSON.stringify(record['GWSetting'])}`)
-    fetchgwsetting(`/gwget`,{DeviceId:record['DeviceId']}).then((result)=>{
-      this.props.dispatch(refreshView({}));
-      console.log(`refresh------>`)
+    fetchgwsetting(`/gwget`,{DeviceId:record['DeviceId']}).then(({issuccess,errmsg})=>{
+      if(issuccess){
+        this.props.dispatch(refreshView({}));
+      }
+      else{
+        this.props.dispatch(showNotification(errmsg));
+      }
     });
   }
   onClick_Set = ()=>{
     this.showModal();
   }
   onClick_SetOK = (values)=>{
-    console.log(`onClick_SetOK===>${JSON.stringify(values)}`);
     const {record} = this.props;
     const postdata = {
       DeviceId:record['DeviceId'],
       DataInterval:values.DataInterval,
       SendInterval:values.SendInterval,
     }
-    fetchgwsetting(`/gwset`,postdata).then((result)=>{
-      this.props.dispatch(refreshView({}));
+    fetchgwsetting(`/gwset`,postdata).then(({issuccess,errmsg})=>{
+      if(issuccess){
+        this.props.dispatch(refreshView({}));
+        this.hideModal();
+      }
+      else{
+        this.props.dispatch(showNotification(errmsg));
+      }
     });
-    this.hideModal();
+
   }
 
   render() {
