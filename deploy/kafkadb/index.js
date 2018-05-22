@@ -60,7 +60,7 @@ debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 winston.getlog().info(`start kafkadb ok-->${config.NodeID}`);
 
 const getInitAlarm = (callback)=>{
-  const deviceModel = DBModels.DeviceModel;
+  const deviceModel = DBModels.DeviceModel;//确实是设备表
   const fields = {'DeviceId':1,'warninglevel':1,'alarmtxtstat':1,'CurDay':1};
   const queryexec = deviceModel.find({CurDay:alarmplugin.getCurDay()}).select(fields).lean();
   debug(`device start exec`);
@@ -81,7 +81,7 @@ const getInitAlarm = (callback)=>{
 
 
 const everydayjob = (callback)=>{
-  const deviceModel = DBModels.DeviceModel;
+  const deviceModel = DBModels.DeviceModel;//确实是设备表
   deviceModel.update({
     CurDay:{
       $ne:alarmplugin.getCurDay()

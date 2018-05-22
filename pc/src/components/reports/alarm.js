@@ -107,49 +107,55 @@ class TableAlarm extends React.Component {
         if(warninglevel === 'all'){
           warninglevel = "-1";
         }
+
+        const viewrow = (DeviceId)=>{
+            g_querysaved = this.state.query;
+            this.props.history.push(`/reports/alarmdetail/${DeviceId}`);
+        }
+
         const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
         let columnx = 0;
-        const column_width = [100,200,150,0];
+        const column_width = [200,300,100,0];
 
         let columns = map(column_data, (data, index)=>{
           let column_item = {
               title: data,
               dataIndex: data,
               key: index,
-              render: (text, row, index) => {
-                  return <Tooltip title={`${text}`}><span>{text}</span> </Tooltip>;
+              render: (text, row, index2) => {
+                if(index === 0){
+                  return <Tooltip title={`${text}`}><span onClick={
+                    ()=>{viewrow(text)}
+                  }>{text}</span> </Tooltip>;
+                }
+                if(column_width[index] > 0){
+                  return <Tooltip title={`${text}`}><span style={{width:`${column_width[index]}px`}}>{text}</span></Tooltip>;
+                }
+                return <Tooltip title={`${text}`}><span>{text}</span> </Tooltip>;
               },
               sorter:(a,b)=>{
                 return a[data] > b[data] ? 1:-1;
               }
           };
-
           columnx += column_width[index];
           if(column_width[index] > 0){
-            column_item = {...column_item,fixed: 'left',width:`${column_width[index]}px`,};
+            column_item = {...column_item,width:`${column_width[index]}px`};
           }
           return column_item;
         });
 
-        columnx = 200;
-        let viewrow = (row)=>{
-            //console.log(row);
-            const DeviceId = row['车辆ID'];
-            g_querysaved = this.state.query;
-            this.props.history.push(`/reports/alarmdetail/${DeviceId}`);
-        }
 
-        let columns_action ={
-            title: "操作",
-            width:`100px`,
-            fixed: 'right',
-            dataIndex: '',
-            key: 'x',
-            render: (text, row, index) => {
-                return (<a onClick={()=>{viewrow(row)}}>查看</a>);
-            }
-        }
-        columns.push(columns_action);
+        // let columns_action ={
+        //     title: "操作",
+        //     width:`100px`,
+        //     fixed: 'right',
+        //     dataIndex: '',
+        //     key: 'x',
+        //     render: (text, row, index) => {
+        //         return (<a onClick={()=>{viewrow(row)}}>查看</a>);
+        //     }
+        // }
+        // columns.push(columns_action);
         return (
             <div className="warningPage" style={{height : this.state.innerHeight+"px"}}>
 
