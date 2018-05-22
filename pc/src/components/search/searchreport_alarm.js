@@ -91,7 +91,11 @@ class TreeSearchBattery extends React.Component {
         query['DeviceId'] = this.state.DeviceId;
       }
       if(this.state.errorcode !== ''){
-        query['TROUBLE_CODE_LIST'] = parseInt(this.state.errorcode,10);
+        query['TROUBLE_CODE_LIST'] = {
+          $elemMatch:{
+            $eq:parseInt(this.state.errorcode,10)
+          }
+        }
       }
       return query;
     }

@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import Seltime from './seltimerange_antd2.js';
-import { Select,Button} from 'antd';
+import { Select,Button,Input} from 'antd';
 import {getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
 import MultiSelect from 'react-select';
 import moment from 'moment';
@@ -48,6 +48,7 @@ class TreeSearchBattery extends React.Component {
         let DeviceId = get(props.query,'DeviceId','');
         this.state = {
             alarmlevel: warninglevel,
+            errorcode:'',
             startDate,
             endDate,
             DeviceId,
@@ -55,7 +56,11 @@ class TreeSearchBattery extends React.Component {
             columndata_extra:[]
           };
     }
-
+    onChangeErrorCode (value) {
+      this.setState({
+        errorcode:value
+      });
+   }
 
     onSelDeviceid(DeviceId){
         this.setState({
@@ -109,7 +114,13 @@ class TreeSearchBattery extends React.Component {
          if(this.state.DeviceId !== ''){
            query1['DeviceId'] = this.state.DeviceId;
          }
-
+         if(this.state.errorcode !== ''){
+           query1['TROUBLE_CODE_LIST'] = {
+             $elemMatch:{
+               $eq:parseInt(this.state.errorcode,10)
+             }
+           }
+         }
 
          //新建timekey
          const timekeysz = gettimekey(this.state.startDate.format('YYYY-MM-DD HH:mm:ss'),this.state.endDate.format('YYYY-MM-DD HH:mm:ss'));
@@ -199,7 +210,12 @@ class TreeSearchBattery extends React.Component {
                         deviceidlist={deviceidlist}
                       />
                     </div>
-
+                    <div>
+                      <Input placeholder="输入故障码" size='large' value={this.state.errorcode} type="number"
+                        onChange={
+                        (e)=>{this.onChangeErrorCode(e.target.value)}
+                      }/>
+                    </div>
 
                     <MultiSelect
                         closeOnSelect={true}
