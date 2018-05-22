@@ -130,7 +130,8 @@ class TreeSearchBattery extends React.Component {
                       />
                     </div>
                     <div>
-                      <Input placeholder="输入故障码" size='large' value={this.state.errorcode} onChange={
+                      <Input placeholder="输入故障码" size='large' value={this.state.errorcode} type="number"
+                        onChange={
                         (e)=>{this.onChangeErrorCode(e.target.value)}
                       }/>
                     </div>
