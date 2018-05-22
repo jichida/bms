@@ -113,6 +113,17 @@ const DeviceFilter = (props) => (
   </Filter>
 )
 
+const ErrorCode = ({ record = {} }) => {
+  console.log(record);
+  const TROUBLE_CODE_LIST = _.get(record,'TROUBLE_CODE_LIST',[]);
+  let text = '';
+  _.map(TROUBLE_CODE_LIST,(code)=>{
+    text = `${text},${code}`;
+  });
+  return (<span>{text}</span>);
+}
+
+
 const RealtimeAlarmList = (props) => (
   <List title={<RealtimeAlamTitle />} filters={<DeviceFilter />} {...props} sort={{field:'DataTime',order:'DESC'}} perPage={config.listperpage}>
     <Datagrid  bodyOptions={{ showRowHover: true }} >
@@ -121,6 +132,7 @@ const RealtimeAlarmList = (props) => (
       <TextField label="采集时间" source="DataTime"  />
       <AlarmLevel label="报警等级" source="warninglevel" />
       <AlarmField label="报警信息" />
+      <ErrorCode label="故障代码" />
       <TextField label="更新时间" source="UpdateTime"  sortable={false} />
       <ShowButton />
     </Datagrid>

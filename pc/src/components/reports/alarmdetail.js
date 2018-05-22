@@ -67,9 +67,12 @@ class TableAlarmDetail extends React.Component {
     }
     onClickLoc = (query)=>{
       let DeviceId = query.DeviceId;
+
       if(!DeviceId && !!query['$and']){
         DeviceId = query['$and'][0].DeviceId;
       }
+
+
       if(!!DeviceId){
         this.props.dispatch(ui_alarm_selcurdevice(DeviceId));
       }
@@ -89,9 +92,10 @@ class TableAlarmDetail extends React.Component {
       let hasDeviceId = !!query.DeviceId;
       if(!hasDeviceId && !!query['$and']){
         if(query['$and'].length > 0){
-          hasDeviceId = query['$and'][0].DeviceId;
+          hasDeviceId = !!(query['$and'][0].DeviceId);
         }
       }
+
       if(hasDeviceId){
         window.setTimeout(()=>{
           //console.log(this.refs);
@@ -101,7 +105,7 @@ class TableAlarmDetail extends React.Component {
       else{
         this.props.dispatch(set_weui({
           toast:{
-          text:'设备ID必选',
+          text:'设备ID或故障码必须选一个',
           show: true,
           type:'warning'
         }}));

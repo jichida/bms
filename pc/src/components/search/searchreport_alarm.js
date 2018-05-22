@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 // import Seltime from './seltimerange_antd.js';
-import { Select,Button,DatePicker } from 'antd';
+import { Select,Button,DatePicker,Input } from 'antd';
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
@@ -40,10 +40,18 @@ class TreeSearchBattery extends React.Component {
         let DeviceId = get(props.query,'DeviceId','');
         this.state = {
             alarmlevel: warninglevel,
+            errorcode:'',
             CurDay,
             DeviceId
         };
     }
+
+    onChangeErrorCode (value) {
+      this.setState({
+        errorcode:value
+      });
+   }
+
     onSelDeviceid(DeviceId){
         this.setState({
             DeviceId
@@ -82,6 +90,9 @@ class TreeSearchBattery extends React.Component {
       if(this.state.DeviceId !== ''){
         query['DeviceId'] = this.state.DeviceId;
       }
+      if(this.state.errorcode !== ''){
+        query['TROUBLE_CODE_LIST'] = parseInt(this.state.errorcode,10);
+      }
       return query;
     }
 
@@ -117,6 +128,11 @@ class TreeSearchBattery extends React.Component {
                         onSelDeviceid={this.onSelDeviceid.bind(this)}
                         deviceidlist={deviceidlist}
                       />
+                    </div>
+                    <div>
+                      <Input placeholder="输入故障码" size='large' value={this.state.errorcode} onChange={
+                        (e)=>{this.onChangeErrorCode(e.target.value)}
+                      }/>
                     </div>
                 </div>
                 <div className="b">

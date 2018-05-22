@@ -6,7 +6,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import Seltime from './seltimerange_antd2.js';
-import { Select,Button } from 'antd';
+import { Select,Button} from 'antd';
 import {getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
 import MultiSelect from 'react-select';
 import moment from 'moment';
@@ -55,6 +55,8 @@ class TreeSearchBattery extends React.Component {
             columndata_extra:[]
           };
     }
+
+
     onSelDeviceid(DeviceId){
         this.setState({
             DeviceId
@@ -107,6 +109,8 @@ class TreeSearchBattery extends React.Component {
          if(this.state.DeviceId !== ''){
            query1['DeviceId'] = this.state.DeviceId;
          }
+
+
          //新建timekey
          const timekeysz = gettimekey(this.state.startDate.format('YYYY-MM-DD HH:mm:ss'),this.state.endDate.format('YYYY-MM-DD HH:mm:ss'));
          if(timekeysz.length === 1){
@@ -195,6 +199,7 @@ class TreeSearchBattery extends React.Component {
                         deviceidlist={deviceidlist}
                       />
                     </div>
+
 
                     <MultiSelect
                         closeOnSelect={true}
