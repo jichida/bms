@@ -11,7 +11,7 @@ import AntdTable from "../controls/antdtable.js";
 import {download_excel,ui_alarm_selcurdevice} from '../../actions';
 
 import TreeSearchreport from '../search/searchreport_alarmdetail';
-
+import {gettimekey} from '../../util/getshardkey';
 import {
   callthen,uireport_searchalarmdetail_request,uireport_searchalarmdetail_result
 } from '../../sagas/pagination';
@@ -87,7 +87,7 @@ class TableAlarmDetail extends React.Component {
     }
     // ReviceId,DataTime,SaveTime,BAT_U_Out_HVS,BAT_U_TOT_HVS,BAT_I_HVS,BAT_SOC_HVS,BAT_SOH_HVS,BAT_Ucell_Max,BAT_Ucell_Min,BAT_Ucell_Max_CSC,BAT_Ucell_Max_CELL,BAT_Ucell_Min_CSC,BAT_Ucell_Min_CELL,BAT_T_Max,BAT_T_Min,BAT_T_Avg,BAT_T_Max_CSC,BAT_T_Min_CSC,BAT_User_SOC_HVS,BAT_Ucell_Avg,ALARM,ALIV_ST_SW_HVS,ST_AC_SW_HVS,ST_Aux_SW_HVS,ST_Main_Neg_SW_HVS,ST_Pre_SW_HVS,ST_Main_Pos_SW_HVS,ST_Chg_SW_HVS,ST_Fan_SW_HVS,ST_Heater_SW_HVS,BAT_U_HVS,BAT_Allow_Discharge_I,BAT_Allow_Charge_I,BAT_ISO_R_Pos,BAT_ISO_R_Neg,KeyOnVoltage,PowerVoltage,ChargeACVoltage,ChargeDCVoltage,CC2Voltage,ChargedCapacity,TotalWorkCycle,CSC_Power_Current,BAT_MAX_SOC_HVS,BAT_MIN_SOC_HVS,BAT_WEI_SOC_HVS,BAT_Chg_AmperReq,BPM_24V_Uout,ST_NegHeater_SW_HVS,ST_WirelessChg_SW,ST_SpearChg_SW_2,ST_PowerGridChg_SW,CC2Voltage_2,DIAG_H,DIAG_L
     onClickQuery(query){
-      //console.log(query);
+      console.log(query);
       this.setState({query,querydo:query});
       let hasDeviceId = !!query.DeviceId;
       if(!hasDeviceId && !!query['$and']){
@@ -129,6 +129,22 @@ class TableAlarmDetail extends React.Component {
     componentDidMount() {
         g_querysaved = null;
         window.addEventListener('resize', this.onWindowResize);
+
+        const DeviceId =  this.props.match.params.deviceid;
+        if(DeviceId !== '0'){
+          let query = this.state.query;
+          //新建timekey
+          const startDate = moment(this.state.query.DataTime['$gte']);
+          const endDate = moment(this.state.query.DataTime['$lte']);
+          const timekeysz = gettimekey(startDate.format('YYYY-MM-DD HH:mm:ss'),endDate.format('YYYY-MM-DD HH:mm:ss'));
+          if(timekeysz.length === 1){
+            query['TimeKey'] = timekeysz[0];
+          }
+          else if(timekeysz.length > 1){
+            query['TimeKey'] = { $in:timekeysz};
+          }
+          this.onClickQuery(query);
+        }
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.onWindowResize);
