@@ -126,7 +126,16 @@ class AntdTable extends React.Component {
 
     // In the fifth row, other columns are merged into first column
     // by setting it's colSpan to be 0
-
+    onRow(record){
+      return {
+        onClick: () => {
+          if(!!this.props.onClickRow){
+            this.props.onClickRow(record);
+          }
+        },       // 点击行
+        onMouseEnter: () => {},  // 鼠标移入行
+      };
+    }
     render() {
 
         const { columns,tableprops } = this.props;
@@ -142,6 +151,7 @@ class AntdTable extends React.Component {
             pagination={this.state.pagination}
             loading={this.state.refreshing}
             onChange={this.handleTableChange}
+            onRow={this.onRow.bind(this)}
           />
         );
     }

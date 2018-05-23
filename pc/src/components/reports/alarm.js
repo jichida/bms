@@ -102,15 +102,17 @@ class TableAlarm extends React.Component {
       }
       return item;
     }
+
+    onClickRow =(record)=>{
+      const DeviceId = record[`车辆ID`];
+      g_querysaved = this.state.query;
+      this.props.history.push(`/reports/alarmdetail/${DeviceId}`);
+
+    }
     render(){
         let warninglevel = this.props.match.params.warninglevel;
         if(warninglevel === 'all'){
           warninglevel = "-1";
-        }
-
-        const viewrow = (DeviceId)=>{
-            g_querysaved = this.state.query;
-            this.props.history.push(`/reports/alarmdetail/${DeviceId}`);
         }
 
         const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
@@ -124,9 +126,7 @@ class TableAlarm extends React.Component {
               key: index,
               render: (text, row, index2) => {
                 if(index === 0){
-                  return <Tooltip title={`${text}`}><span onClick={
-                    ()=>{viewrow(text)}
-                  }>{text}</span> </Tooltip>;
+                  return <Tooltip title={`${text}`}><span>{text}</span> </Tooltip>;
                 }
                 if(column_width[index] > 0){
                   return <Tooltip title={`${text}`}><span style={{width:`${column_width[index]}px`}}>{text}</span></Tooltip>;
@@ -173,6 +173,7 @@ class TableAlarm extends React.Component {
                 </div>
                 <div className="tablelist" >
                     <AntdTable
+                      onClickRow={this.onClickRow}
                       tableprops={{
                         scroll:{x: `${columnx+500}px`},
                         bordered:true,
