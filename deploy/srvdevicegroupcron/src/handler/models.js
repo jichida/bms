@@ -36,7 +36,7 @@ const GeoSchema = new Schema({
 const GeoModel = mongoose.model('amapdistrict',  GeoSchema);
 
 
-//设备
+//设备城市映射表【每天一次】
 const DeviceCitySchema = new Schema({
   deviceid:{ type: Schema.Types.ObjectId, ref: 'device'},
   updatetime: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
