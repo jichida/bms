@@ -1,9 +1,20 @@
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 const _ = require('lodash');
+const PubSub = require('pubsub-js');
+const moment = require('moment');
 
 const key = 'dadfa0897bd9c8cff9cffdf330974b55';
 
+const getAddress = (adcode)=>{
+  let address = adcode;
+  if(typeof address === 'string'){
+    address = parseInt(address);
+  }
+  const addressnew = Math.floor(address/100);
+  const retv = addressnew*100;
+  return parseInt(retv);
+}
 //http://restapi.amap.com/v3/geocode/geo?parameters
 const getareasz = (devicelist,callbackfn)=>{
   let alllocations = '';
@@ -25,7 +36,18 @@ const getareasz = (devicelist,callbackfn)=>{
     if(regeocodes.length === devicelist.length){
       _.map(devicelist,(v,index)=>{
         const citycode = _.get(regeocodes[index],'addressComponent.citycode');
-        retlist.push({_id:v._id,citycode,getflag:'fromamap'});
+        const adcode = _.get(regeocodes[index],'addressComponent.adcode');
+        const targetadcode = getAddress(adcode);
+
+        retlist.push({_id:v._id,citycode,adcode,targetadcode,getflag:'fromamap'});
+
+        PubSub.publish('getdevicecity',{
+          deviceid:v._id,
+          citycode,
+          adcode,
+          targetadcode,
+          updatetime:moment().format('YYYY-MM-DD HH:mm:ss')
+        })
       });
     }
     callbackfn(retlist);

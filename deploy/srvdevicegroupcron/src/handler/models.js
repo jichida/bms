@@ -35,12 +35,24 @@ const GeoSchema = new Schema({
 }, { strict: false });
 const GeoModel = mongoose.model('amapdistrict',  GeoSchema);
 
+
+//设备
+const DeviceCitySchema = new Schema({
+  deviceid:{ type: Schema.Types.ObjectId, ref: 'device'},
+  updatetime: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+}, { strict: false });
+DeviceCitySchema.plugin(mongoosePaginate);
+const DeviceCityModel =mongoose.model('devicecity',  DeviceCitySchema);
+
+
 exports.SystemConfigSchema = SystemConfigSchema;
 exports.DeviceSchema = DeviceSchema;
 exports.DeviceGroupSchema = DeviceGroupSchema;
 exports.GeoSchema = GeoSchema;
+exports.DeviceCitySchema = DeviceCitySchema;
 
 exports.SystemConfigModel = SystemConfigModel;
 exports.DeviceModel = DeviceModel;
 exports.DeviceGroupModel = DeviceGroupModel;
 exports.GeoModel = GeoModel;
+exports.DeviceCityModel = DeviceCityModel;

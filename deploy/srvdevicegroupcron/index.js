@@ -3,7 +3,7 @@ const winston = require('./src/log/log.js');
 const startjob = require('./src/srvsys');
 const mongoose     = require('mongoose');
 const debug = require('debug')('srvdevicegroupcron:app');
-
+const getdevicecitycode = require('./src/getdevicecitycode');
 debug(`start=====>version:${config.version}`);
 
 debug(`==========`);
@@ -23,3 +23,4 @@ mongoose.connect(config.mongodburl,{
 debug(`startjob==========`);
 winston.getlog().info(`开始执行`);
 startjob();
+getdevicecitycode();
