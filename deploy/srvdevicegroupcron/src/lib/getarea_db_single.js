@@ -27,7 +27,7 @@ const getarea_db_single = (GeoModel,v,callback)=>{
        const province = _.get(ret,'provincename');
        const city = _.get(ret,'name');
        const citycode = _.get(ret,'citycode');
-       const adcode = _.get(citycode,'adcode');
+       const adcode = _.get(ret,'adcode');
        const targetadcode = getAddress(adcode);
        PubSub.publish('getdevicecity',{
          deviceid:v._id,
