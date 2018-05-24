@@ -6,7 +6,7 @@ const getFieldname = (cantype,errorcode)=>{
 		//0/1-->51
 		return `AL_TROUBLE_CODE_51_${errorcode}`;
 	}
-	else if(cantype === 2){
+	else if(cantype === 1){
 		//2-->6.0
 		return `AL_TROUBLE_CODE_60_${errorcode}`;
 	}
