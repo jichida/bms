@@ -14,6 +14,7 @@ import {
   querydevice_result,
   ui_selcurdevice_request,
   ui_selcurdevice_result,
+  md_querydeviceinfo_result,
   querydeviceinfo_request,
   querydeviceinfo_result,
   querydeviceinfo_list_request,
@@ -87,6 +88,10 @@ let distCluster,markCluster;
 
 //=====数据部分=====
 let g_devicesdb = {};
+let g_devicesdb_detailcached = {};
+let cur_adcode_cache;
+let cur_DeviceId_cache;
+
 let gmap_acode_treecount = {};
 let gmap_acode_devices = {};
 
@@ -483,6 +488,7 @@ const showinfowindow = (deviceitem)=>{
         reject();
         return;
       }
+      cur_DeviceId_cache = deviceitem.DeviceId;
       let locz = deviceitem.locz;
       infoWindow = new window.AMap.InfoWindow(getpopinfowindowstyle(deviceitem));
       if(!!locz){
@@ -816,6 +822,7 @@ export function* createmapmainflow(){
               if(!!infoWindow){
                 infoWindow.close();
                 infoWindow = null;
+                // cur_DeviceId_cache = null;
               }
             }
           },'click');//'click'
@@ -887,7 +894,7 @@ export function* createmapmainflow(){
           if(!deviceitem && !!DeviceId){
             deviceitem = g_devicesdb[DeviceId];
           }
-          if(!!deviceitem){//？？？？
+          if(!!deviceitem && cur_DeviceId_cache!== DeviceId){//？？？？
             if(!deviceitem.locz){
               deviceitem = yield call(getdeviceinfo,deviceitem,true);
             }
@@ -896,7 +903,8 @@ export function* createmapmainflow(){
             if(!!deviceitem.locz){
               const result = yield call(getgeodata,deviceitem);
               //调用一次citycode，防止加载不到AreaNode
-              if(!!result.adcode){
+              if(!!result.adcode && cur_adcode_cache!== result.adcode){
+                cur_adcode_cache = result.adcode;
                 try{
                   const SettingOfflineMinutes = g_SettingOfflineMinutes;
                   let adcodeinfo = getadcodeinfo(result.adcode);
@@ -932,6 +940,47 @@ export function* createmapmainflow(){
         }
     });
 
+    yield takeLatest(`${md_querydeviceinfo_result}`, function*(action) {
+      let {payload:deviceinfo} = action;
+      //console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
+      try{
+          if(!!deviceinfo){
+            let isget = true;
+            const LastHistoryTrack = deviceinfo.LastHistoryTrack;
+            if (!LastHistoryTrack) {
+                isget = false;
+            }
+            else{
+              if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+                isget = false;
+              }
+            }
+            if(isget){
+              let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+              const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+              deviceinfo.locz = wgs84togcj02;
+            }
+
+            if(!!deviceinfo.locz){
+              const addr = yield call(getgeodata,deviceinfo);
+              deviceinfo = {...deviceinfo,...addr};
+            }
+
+            const {deviceextid,...rest} = deviceinfo;
+            if(!!deviceextid){
+              deviceinfo = {...rest,...deviceextid};
+            }
+          }
+           g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+           g_devicesdb_detailcached[deviceinfo.DeviceId] = deviceinfo;
+           yield put(querydeviceinfo_result(deviceinfo));
+         }
+         catch(e){
+           console.log(e);
+         }
+
+    });
+
     //单个设备弹框
     yield takeLatest(`${mapmain_showpopinfo}`, function*(actiondevice) {
       //显示弹框
@@ -939,9 +988,12 @@ export function* createmapmainflow(){
         const {payload:{DeviceId}} = actiondevice;
         //获取该车辆信息
         yield put(querydeviceinfo_request({query:{DeviceId}}));
-        const {payload} = yield take(`${querydeviceinfo_result}`);
+        if(!g_devicesdb_detailcached[DeviceId]){
+          yield take(`${querydeviceinfo_result}`);
+        }
+
         let list = [];
-        list.push(payload);
+        list.push(g_devicesdb_detailcached[DeviceId]);
         const listitem = yield call(getdevicelist,list);
         if(listitem.length === 1){
           //1

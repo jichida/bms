@@ -117,44 +117,6 @@ export function* wsrecvsagaflow() {
 
   });
 
-  yield takeLatest(`${md_querydeviceinfo_result}`, function*(action) {
-    let {payload:deviceinfo} = action;
-    //console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
-    try{
-        if(!!deviceinfo){
-          let isget = true;
-          const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-          if (!LastHistoryTrack) {
-              isget = false;
-          }
-          else{
-            if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
-              isget = false;
-            }
-          }
-          if(isget){
-            let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
-            const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
-            deviceinfo.locz = wgs84togcj02;
-          }
 
-          if(!!deviceinfo.locz){
-            const addr = yield call(getgeodata,deviceinfo);
-            deviceinfo = {...deviceinfo,...addr};
-          }
-
-          const {deviceextid,...rest} = deviceinfo;
-          if(!!deviceextid){
-            deviceinfo = {...rest,...deviceextid};
-          }
-        }
-         g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
-         yield put(querydeviceinfo_result(deviceinfo));
-       }
-       catch(e){
-         console.log(e);
-       }
-
-  });
 
 }
