@@ -15,19 +15,26 @@ const getallarea_all = (devicelist,callback)=>{
     /*
     _id,Longitude,Latitude
     */
-    fnsz.push((callbackfn)=>{
+    const asyncfn = async.ensureAsync((callbackfn)=>{
+      failed_list.push(v);
+      callbackfn(null,true);
+    });//<-----
+    fnsz.push(asyncfn);
+
+    // (callbackfn)=>{
+
       // debug(`getarea_db_single-->${JSON.stringify(v)}`)
-      getarea_db_single(DBModels.GeoModel,v,({_id,citycode,getflag})=>{
-        if(!!citycode){
-          success_list.push({_id,citycode,getflag});
-        }
-        else{
-          failed_list.push(v);
-        }
-        debug(`【根据设备ID获取城市(数据库)】数据库中获取到数据-->${_id}->${citycode}->成功${success_list.length},失败:${failed_list.length},一共${devicelist.length}`)
-        callbackfn(null,true);
-      });
-    });
+      // getarea_db_single(DBModels.GeoModel,v,({_id,citycode,getflag})=>{
+      //   if(!!citycode){
+      //     success_list.push({_id,citycode,getflag});
+      //   }
+      //   else{
+      //     failed_list.push(v);
+      //   }
+      //   debug(`【根据设备ID获取城市(数据库)】数据库中获取到数据-->${_id}->${citycode}->成功${success_list.length},失败:${failed_list.length},一共${devicelist.length}`)
+      //   callbackfn(null,true);
+      // });
+    // });
   });
 
   debug(`getallarea_all-->${fnsz.length}`)
