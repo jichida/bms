@@ -35,6 +35,9 @@ const getareasz = (devicelist,callbackfn)=>{
     const regeocodes = json.regeocodes;
     if(regeocodes.length === devicelist.length){
       _.map(devicelist,(v,index)=>{
+        const province = _.get(regeocodes[index],'addressComponent.province');
+        const city = _.get(regeocodes[index],'addressComponent.city');
+        const district = _.get(regeocodes[index],'addressComponent.district');
         const citycode = _.get(regeocodes[index],'addressComponent.citycode');
         const adcode = _.get(regeocodes[index],'addressComponent.adcode');
         const targetadcode = getAddress(adcode);
@@ -43,9 +46,12 @@ const getareasz = (devicelist,callbackfn)=>{
 
         PubSub.publish('getdevicecity',{
           deviceid:v._id,
+          province,
+          city,
+          district,
           citycode,
           adcode,
-          targetadcode,
+          targetadcode:`${targetadcode}`,
           updatetime:moment().format('YYYY-MM-DD HH:mm:ss')
         })
       });

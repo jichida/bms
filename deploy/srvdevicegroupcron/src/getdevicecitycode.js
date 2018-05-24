@@ -9,6 +9,9 @@ const userDeviceSubscriber = ( msg, data )=>{
     const {
       deviceid,
       citycode,
+      province,
+      city,
+      district,
       adcode,
       targetadcode,
       updatetime
