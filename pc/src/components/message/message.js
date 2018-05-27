@@ -97,13 +97,21 @@ class MessageAllDevice extends React.Component {
     }
     render(){
         const column_data = ['车辆ID','报警时间','报警等级','报警信息'];
-
+        const viewinmap = (DeviceId)=>{
+            this.props.dispatch(ui_alarm_selcurdevice(DeviceId));
+        }
         let columns = map(column_data, (data, index)=>{
           let column_item = {
               title: data,
               dataIndex: data,
               key: index,
-              render: (text, row, index) => {
+              render: (text, row, indexrow) => {
+                  if(index === 0){
+                     return (<Tooltip title={`点击车辆${text}可以定位到地图`}><span onClick={
+                      ()=>{viewinmap(text)}
+                    }>{text}</span> </Tooltip>);
+                  }
+
                   return <Tooltip title={`${text}`}><span>{text}</span></Tooltip>;
               },
               sorter:(a,b)=>{
@@ -112,22 +120,18 @@ class MessageAllDevice extends React.Component {
           };
           return column_item;
         });
-        const viewinmap = (row)=>{
-            console.log(row);//DeviceId
-            // this.props.history.push(`/alarminfo/${row._id}`);
-            this.props.dispatch(ui_alarm_selcurdevice(row.DeviceId));
-        }
-        let columns_action ={
-            title: "操作",
-            width:100,
-            fixed: 'right',
-            dataIndex: column_data.length,
-            key: column_data.length,
-            render: (text, row, index) => {
-                return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
-            }
-        }
-        columns.push(columns_action);
+
+        // let columns_action ={
+        //     title: "操作",
+        //     width:100,
+        //     fixed: 'right',
+        //     dataIndex: column_data.length,
+        //     key: column_data.length,
+        //     render: (text, row, index) => {
+        //         return (<a onClick={()=>{viewinmap(row)}}>定位</a>);
+        //     }
+        // }
+        // columns.push(columns_action);
         const {g_devicesdb} = this.props;
         const {warninglevel,DeviceId} = this.state.query;
         let data = [];
