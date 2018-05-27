@@ -2,7 +2,7 @@ require('es6-promise').polyfill();
 require('isomorphic-fetch');
 const _ = require('lodash');
 
-const key = 'dadfa0897bd9c8cff9cffdf330974b55';
+const key = 'a3cafd2a27c606877bc0c058c03e8e39';
 
 //http://restapi.amap.com/v3/geocode/geo?parameters
 const getarea = ({_id,Longitude,Latitude},callbackfn)=>{
