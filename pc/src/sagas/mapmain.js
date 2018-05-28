@@ -1344,8 +1344,10 @@ export function* createmapmainflow(){
               }
             }
             //<---------已经有详情了
-            const {LastHistoryTrack1,LastRealtimeAlarm1,locz1,...rest1} = deviceinfoold;
-            const {LastHistoryTrack2,LastRealtimeAlarm2,locz2,...rest2} = deviceinfo;
+            const {LastHistoryTrack:LastHistoryTrack1,LastRealtimeAlarm:LastRealtimeAlarm1,
+              locz:locz1,...rest1} = deviceinfoold;
+            const {LastHistoryTrack:LastHistoryTrack2,LastRealtimeAlarm:LastRealtimeAlarm2,
+              locz:locz2,...rest2} = deviceinfo;
             // {
             //   'DeviceId':1,
             //   'LastHistoryTrack.Latitude':1,
