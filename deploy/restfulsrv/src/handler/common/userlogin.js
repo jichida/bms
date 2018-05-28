@@ -69,14 +69,15 @@ let setloginsuccess = (ctx,user,callback)=>{
         },config.secretkey, {});
     userdata.loginsuccess =  true;
 
+    subscriberuser(user,ctx);
+
     callback({
       cmd:'login_result',
       payload:userdata
     });
 
-    userloginsuccess(user,callback,ctx);
 
-    subscriberuser(user,ctx);
+
 
 };
 
@@ -144,6 +145,7 @@ exports.loginuser = (actiondata,ctx,callback)=>{
             return false;
           });
           if(!!findresult){
+            userloginsuccess(user,callback,ctx);
             setloginsuccess(ctx,user,callback);
             return;
           }
