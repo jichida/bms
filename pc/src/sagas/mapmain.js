@@ -890,6 +890,8 @@ export function* createmapmainflow(){
     //选择一个车辆请求
     yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       let {payload:{DeviceId,deviceitem,src}} = actioncurdevice;
+      let result;
+      let adcodetop;
       try{
           if(!deviceitem && !!DeviceId){
             deviceitem = g_devicesdb[DeviceId];
@@ -901,10 +903,10 @@ export function* createmapmainflow(){
             //console.log(`ui_selcurdevice_request==>${JSON.stringify(deviceitem)}`);
             //获取该车辆所在经纬度
             if(!!deviceitem.locz){
-              const result = yield call(getgeodata,deviceitem);
+              result = yield call(getgeodata,deviceitem);
               //调用一次citycode，防止加载不到AreaNode
               if(!!get(result,'adcode') && cur_adcode_cache !== get(result,'adcode')){
-                cur_adcode_cache = result.adcode;
+                cur_adcode_cache = get(result,'adcode');
                 try{
                   const SettingOfflineMinutes = g_SettingOfflineMinutes;
                   let adcodeinfo = getadcodeinfo(result.adcode);
@@ -913,7 +915,7 @@ export function* createmapmainflow(){
                 catch(e){
                   console.log(e);
                 }
-                const adcodetop = parseInt(result.adcode,10);
+                adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
                 yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src}));
                 if(config.softmode === 'pc'){//pc端才有树啊
@@ -1358,7 +1360,7 @@ export function* createmapmainflow(){
             //   'alarmtxtstat':1
             // };
             const LastRealtimeAlarm = {...LastRealtimeAlarm1,...LastRealtimeAlarm2};
-            const locz = {...locz1,...locz2};
+            const locz = locz2 || locz1;
             const rest = {...rest1,...rest2};
             const deviceinfonew = {
               LastRealtimeAlarm,
