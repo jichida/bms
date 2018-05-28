@@ -187,23 +187,24 @@ const getMarkCluster_createMarks = (SettingOfflineMinutes)=>{
     }
 }
 
-const getMarkCluster_updateMarks = (g_devicesdb_updated,SettingOfflineMinutes)=>{
+const getMarkCluster_updateMarks = (deviceupdated,SettingOfflineMinutes)=>{
     if(!!markCluster.getMap()){
         //如果有地图对象,才能重新新建
         const allmarks = markCluster.getMarkers();
         lodashmap(allmarks,(mark)=>{
           const deviceitem = g_devicesdb[mark.getExtData()];
-          const deviceitemnew = g_devicesdb_updated[deviceitem.DeviceId];
+          const deviceitemnew = deviceupdated[deviceitem.DeviceId];
           if(!!deviceitemnew){
             if(!!deviceitemnew.locz){
               const pos = new window.AMap.LngLat(deviceitemnew.locz[0],deviceitemnew.locz[1]);
-              mark.setPosition(pos);
               const newIcon = new window.AMap.Icon({
                   size: new window.AMap.Size(34, 34),  //图标大小
                   image: getimageicon(deviceitemnew,SettingOfflineMinutes),
                   imageOffset: new window.AMap.Pixel(0, 0)
               });
               mark.setIcon(newIcon);
+              mark.setPosition(pos);
+              console.log(`mark${deviceitem.DeviceId}-->setPosition-->${JSON.stringify(deviceitemnew.locz)}`)
             }
             else{
               markCluster.removeMarker(mark);
@@ -1015,9 +1016,9 @@ export function* createmapmainflow(){
 
           //更新弹框图标
           const SettingOfflineMinutes = g_SettingOfflineMinutes;
-          let g_devicesdb_updated = {};
-          g_devicesdb_updated[DeviceId] = g_devicesdb[DeviceId];
-          getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
+          let devicesdb_updated = {};
+          devicesdb_updated[DeviceId] = g_devicesdb[DeviceId];
+          getMarkCluster_updateMarks(devicesdb_updated,SettingOfflineMinutes);
 
           yield fork(function*(eventname){
            //while(true){//关闭时触发的事件
