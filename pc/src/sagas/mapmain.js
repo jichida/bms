@@ -946,8 +946,9 @@ export function* createmapmainflow(){
       try{
           if(!!deviceinfo){
             let isget = true;
-            const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-            if (!LastHistoryTrack) {
+            const last_Latitude = deviceinfo.last_Latitude;
+            const last_Longitude = deviceinfo.last_Longitude;
+            if (!last_Longitude) {
                 isget = false;
             }
             else{
@@ -1315,8 +1316,9 @@ export function* createmapmainflow(){
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
             let isget = true;
-            const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-            if (!LastHistoryTrack) {
+            const last_Latitude = deviceinfo.last_Latitude;
+            const last_Longitude = deviceinfo.last_Longitude;
+            if (!last_Longitude) {
                 isget = false;
             }
             else{
@@ -1344,8 +1346,8 @@ export function* createmapmainflow(){
               }
             }
             //<---------已经有详情了
-            const {LastHistoryTrack1,LastRealtimeAlarm1,locz1,...rest1} = deviceinfoold;
-            const {LastHistoryTrack2,LastRealtimeAlarm2,locz2,...rest2} = deviceinfo;
+            const {LastRealtimeAlarm:LastRealtimeAlarm1,locz:locz1,...rest1} = deviceinfoold;
+            const {LastRealtimeAlarm:LastRealtimeAlarm2,locz:locz2,...rest2} = deviceinfo;
             // {
             //   'DeviceId':1,
             //   'last_Latitude':1,
@@ -1355,12 +1357,10 @@ export function* createmapmainflow(){
             //   'LastRealtimeAlarm.DataTime':1,
             //   'alarmtxtstat':1
             // };
-            const LastHistoryTrack = {...LastHistoryTrack1,...LastHistoryTrack2};
             const LastRealtimeAlarm = {...LastRealtimeAlarm1,...LastRealtimeAlarm2};
             const locz = {...locz1,...locz2};
             const rest = {...rest1,...rest2};
             const deviceinfonew = {
-              LastHistoryTrack,
               LastRealtimeAlarm,
               locz,
               ...rest

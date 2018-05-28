@@ -8,8 +8,9 @@ export function* getdeviceinfo(deviceinfo_org,isgetaddr){
   let deviceinfo = {...deviceinfo_org};
   if(!!deviceinfo){
     let isget = true;
-    const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-    if (!LastHistoryTrack) {
+    const last_Latitude = deviceinfo.last_Latitude;
+    const last_Longitude = deviceinfo.last_Longitude;
+    if (!last_Latitude) {
         isget = false;
     }
     else{

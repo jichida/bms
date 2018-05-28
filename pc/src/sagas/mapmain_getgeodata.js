@@ -8,8 +8,9 @@ import clone from 'lodash.clone';
     let resultdevicelist = [];
     map(devicelist,(deviceitem)=>{
       let isget = true;
-      const LastHistoryTrack = deviceitem.LastHistoryTrack;
-      if (!LastHistoryTrack) {
+      const last_Latitude = deviceitem.last_Latitude;
+      const last_Longitude = deviceitem.last_Longitude;
+      if (!last_Longitude) {
           isget = false;
       }
       else{
@@ -80,8 +81,9 @@ import clone from 'lodash.clone';
     //每20个获取一个坐标数组
     map(devicelist,(deviceitem)=>{
       let isget = true;
-      const LastHistoryTrack = deviceitem.LastHistoryTrack;
-      if (!LastHistoryTrack) {
+      const last_Latitude = deviceitem.last_Latitude;
+      const last_Longitude = deviceitem.last_Longitude;
+      if (!last_Longitude) {
           isget = false;
       }
       else{
@@ -141,8 +143,9 @@ import clone from 'lodash.clone';
     async.parallel(parallelfunsz,(err,result)=>{
       map(devicelist,(deviceitem)=>{
         let isget = true;
-        const LastHistoryTrack = deviceitem.LastHistoryTrack;
-        if (!LastHistoryTrack) {
+        const last_Longitude = deviceitem.last_Longitude;
+        const last_Latitude = deviceitem.last_Latitude;
+        if (!last_Latitude) {
             isget = false;
         }
         else{

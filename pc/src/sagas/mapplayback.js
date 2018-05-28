@@ -158,8 +158,9 @@ const getmapstate_curdevice = (state) => {
   const {device:{g_devicesdb,mapseldeviceid}} = state;
   let deviceitem = g_devicesdb[mapseldeviceid];
   if(!!deviceitem){
-    const LastHistoryTrack = deviceitem.LastHistoryTrack;
-    if(!!LastHistoryTrack){
+    const last_Latitude = deviceitem.last_Latitude;
+    const last_Longitude = deviceitem.last_Longitude;
+    if(!!last_Longitude){
       const locz = L.latLng(last_Latitude,last_Longitude);
       return locz;
     }
