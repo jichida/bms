@@ -903,7 +903,7 @@ export function* createmapmainflow(){
             if(!!deviceitem.locz){
               const result = yield call(getgeodata,deviceitem);
               //调用一次citycode，防止加载不到AreaNode
-              if(!!result.adcode && cur_adcode_cache!== result.adcode){
+              if(!!get(result,'adcode') && cur_adcode_cache !== get(result,'adcode')){
                 cur_adcode_cache = result.adcode;
                 try{
                   const SettingOfflineMinutes = g_SettingOfflineMinutes;
@@ -1393,8 +1393,13 @@ export function* createmapmainflow(){
             deviceitem = {...deviceitem,...payload};
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
             g_devicesdb_updated[deviceitem.DeviceId] = deviceitem;
-
-            infoWindow.setPosition(deviceitem.locz);
+            //<--这里要更新啊1！
+            if(!deviceitem.locz){
+              console.log(`怎么会没有定位信息呢....${JSON.stringify(deviceitem)}`)
+            }
+            else{
+              infoWindow.setPosition(deviceitem.locz);
+            }
             const {content} = getpopinfowindowstyle(deviceitem);
             infoWindow.setContent(content);
             //setPosition
