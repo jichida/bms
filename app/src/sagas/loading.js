@@ -61,7 +61,7 @@ export function* createloadingflow(){
         const {resultdata:alarmchart} = result.payload;
         const props_ticktime = get(alarmchart,'ticktime',[]);
         if(props_ticktime.length === 0){
-        yield put(set_weui({
+          yield put(set_weui({
             toast:{
             text:'未找到数据',
             show: true,
@@ -72,7 +72,7 @@ export function* createloadingflow(){
       }
       else if(!!err){
         //有错误
-    }
+      }
     }
   });
 

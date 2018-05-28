@@ -35,7 +35,7 @@ const {datatree,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = get_
 
 const getsorteddevicelist = (devicedb,g_devicesdb)=>{
   const listdevices = lodashsortby(devicedb, [(deviceid)=>{
-    const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
     return datatime;
   }]);
   // map(listdevices,(deviceid)=>{

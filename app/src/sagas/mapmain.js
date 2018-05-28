@@ -14,6 +14,7 @@ import {
   querydevice_result,
   ui_selcurdevice_request,
   ui_selcurdevice_result,
+  md_querydeviceinfo_result,
   querydeviceinfo_request,
   querydeviceinfo_result,
   querydeviceinfo_list_request,
@@ -87,6 +88,10 @@ let distCluster,markCluster;
 
 //=====数据部分=====
 let g_devicesdb = {};
+let g_devicesdb_detailcached = {};
+let cur_adcode_cache;
+let cur_DeviceId_cache;
+
 let gmap_acode_treecount = {};
 let gmap_acode_devices = {};
 
@@ -483,6 +488,7 @@ const showinfowindow = (deviceitem)=>{
         reject();
         return;
       }
+      cur_DeviceId_cache = deviceitem.DeviceId;
       let locz = deviceitem.locz;
       infoWindow = new window.AMap.InfoWindow(getpopinfowindowstyle(deviceitem));
       if(!!locz){
@@ -816,6 +822,7 @@ export function* createmapmainflow(){
               if(!!infoWindow){
                 infoWindow.close();
                 infoWindow = null;
+                // cur_DeviceId_cache = null;
               }
             }
           },'click');//'click'
@@ -883,20 +890,23 @@ export function* createmapmainflow(){
     //选择一个车辆请求
     yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
       let {payload:{DeviceId,deviceitem,src}} = actioncurdevice;
+      let result;
+      let adcodetop;
       try{
           if(!deviceitem && !!DeviceId){
             deviceitem = g_devicesdb[DeviceId];
           }
-          if(!!deviceitem){//？？？？
+          if(!!deviceitem && cur_DeviceId_cache!== DeviceId){//？？？？
             if(!deviceitem.locz){
               deviceitem = yield call(getdeviceinfo,deviceitem,true);
             }
             //console.log(`ui_selcurdevice_request==>${JSON.stringify(deviceitem)}`);
             //获取该车辆所在经纬度
             if(!!deviceitem.locz){
-              const result = yield call(getgeodata,deviceitem);
+              result = yield call(getgeodata,deviceitem);
               //调用一次citycode，防止加载不到AreaNode
-              if(!!result.adcode){
+              if(!!get(result,'adcode') && cur_adcode_cache !== get(result,'adcode')){
+                cur_adcode_cache = get(result,'adcode');
                 try{
                   const SettingOfflineMinutes = g_SettingOfflineMinutes;
                   let adcodeinfo = getadcodeinfo(result.adcode);
@@ -905,7 +915,7 @@ export function* createmapmainflow(){
                 catch(e){
                   console.log(e);
                 }
-                const adcodetop = parseInt(result.adcode,10);
+                adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
                 yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src}));
                 if(config.softmode === 'pc'){//pc端才有树啊
@@ -932,6 +942,48 @@ export function* createmapmainflow(){
         }
     });
 
+    yield takeLatest(`${md_querydeviceinfo_result}`, function*(action) {
+      let {payload:deviceinfo} = action;
+      //console.log(`deviceinfo==>${JSON.stringify(deviceinfo)}`);
+      try{
+          if(!!deviceinfo){
+            let isget = true;
+            const last_Latitude = deviceinfo.last_Latitude;
+            const last_Longitude = deviceinfo.last_Longitude;
+            if (!last_Longitude) {
+                isget = false;
+            }
+            else{
+              if(last_Latitude === 0 || last_Longitude === 0){
+                isget = false;
+              }
+            }
+            if(isget){
+              let cor = [last_Longitude,last_Latitude];
+              const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
+              deviceinfo.locz = wgs84togcj02;
+            }
+
+            if(!!deviceinfo.locz){
+              const addr = yield call(getgeodata,deviceinfo);
+              deviceinfo = {...deviceinfo,...addr};
+            }
+
+            const {deviceextid,...rest} = deviceinfo;
+            if(!!deviceextid){
+              deviceinfo = {...rest,...deviceextid};
+            }
+          }
+           g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
+           g_devicesdb_detailcached[deviceinfo.DeviceId] = deviceinfo;
+           yield put(querydeviceinfo_result(deviceinfo));
+         }
+         catch(e){
+           console.log(e);
+         }
+
+    });
+
     //单个设备弹框
     yield takeLatest(`${mapmain_showpopinfo}`, function*(actiondevice) {
       //显示弹框
@@ -939,9 +991,12 @@ export function* createmapmainflow(){
         const {payload:{DeviceId}} = actiondevice;
         //获取该车辆信息
         yield put(querydeviceinfo_request({query:{DeviceId}}));
-        const {payload} = yield take(`${querydeviceinfo_result}`);
+        if(!g_devicesdb_detailcached[DeviceId]){
+          yield take(`${querydeviceinfo_result}`);
+        }
+
         let list = [];
-        list.push(payload);
+        list.push(g_devicesdb_detailcached[DeviceId]);
         const listitem = yield call(getdevicelist,list);
         if(listitem.length === 1){
           //1
@@ -957,6 +1012,12 @@ export function* createmapmainflow(){
           console.log(`call弹框`);
           //弹框
           yield call(showinfowindow,listitem[0]);
+
+          //更新弹框图标
+          const SettingOfflineMinutes = g_SettingOfflineMinutes;
+          let g_devicesdb_updated = {};
+          g_devicesdb_updated[DeviceId] = g_devicesdb[DeviceId];
+          getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
 
           yield fork(function*(eventname){
            //while(true){//关闭时触发的事件
@@ -1166,7 +1227,7 @@ export function* createmapmainflow(){
                     yield delay(0);
                     if(isarea){
                       //如果返回车辆,则将车辆加载到树中
-                      yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+                      yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
                     }
                     else{
                       //刷新树中的数据
@@ -1207,7 +1268,7 @@ export function* createmapmainflow(){
               count_total:data.length,
               count_online:deviceidonlines.length,
             }
-            yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount}));
+            yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
           }
         }
         catch(e){
@@ -1263,17 +1324,18 @@ export function* createmapmainflow(){
         lodashmap(deviceinfolist,(deviceinfo)=>{
           if(!!deviceinfo){
             let isget = true;
-            const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-            if (!LastHistoryTrack) {
+            const last_Latitude = deviceinfo.last_Latitude;
+            const last_Longitude = deviceinfo.last_Longitude;
+            if (!last_Longitude) {
                 isget = false;
             }
             else{
-              if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+              if(last_Latitude === 0 || last_Longitude === 0){
                 isget = false;
               }
             }
             if(isget){
-              let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+              let cor = [last_Longitude,last_Latitude];
               const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
               deviceinfo.locz = wgs84togcj02;
             }
@@ -1292,23 +1354,21 @@ export function* createmapmainflow(){
               }
             }
             //<---------已经有详情了
-            const {LastHistoryTrack1,LastRealtimeAlarm1,locz1,...rest1} = deviceinfoold;
-            const {LastHistoryTrack2,LastRealtimeAlarm2,locz2,...rest2} = deviceinfo;
+            const {LastRealtimeAlarm:LastRealtimeAlarm1,locz:locz1,...rest1} = deviceinfoold;
+            const {LastRealtimeAlarm:LastRealtimeAlarm2,locz:locz2,...rest2} = deviceinfo;
             // {
             //   'DeviceId':1,
-            //   'LastHistoryTrack.Latitude':1,
-            //   'LastHistoryTrack.Longitude':1,
-            //   'LastHistoryTrack.GPSTime':1,
+            //   'last_Latitude':1,
+            //   'last_Longitude':1,
+            //   'last_GPSTime':1,
             //   'warninglevel':1,
             //   'LastRealtimeAlarm.DataTime':1,
             //   'alarmtxtstat':1
             // };
-            const LastHistoryTrack = {...LastHistoryTrack1,...LastHistoryTrack2};
             const LastRealtimeAlarm = {...LastRealtimeAlarm1,...LastRealtimeAlarm2};
-            const locz = {...locz1,...locz2};
+            const locz = locz2 || locz1;
             const rest = {...rest1,...rest2};
             const deviceinfonew = {
-              LastHistoryTrack,
               LastRealtimeAlarm,
               locz,
               ...rest
@@ -1321,7 +1381,7 @@ export function* createmapmainflow(){
             g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
           }
           g_devicesdb_updated[deviceinfo.DeviceId] = deviceinfo;
-          // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
+          // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'last_GPSTime','offline')}`)
         });
         console.log(`serverpush1-->devicelistgeochange_distcluster`);
         yield put(devicelistgeochange_distcluster({}));
@@ -1341,8 +1401,13 @@ export function* createmapmainflow(){
             deviceitem = {...deviceitem,...payload};
             g_devicesdb[deviceitem.DeviceId] = deviceitem;
             g_devicesdb_updated[deviceitem.DeviceId] = deviceitem;
-
-            infoWindow.setPosition(deviceitem.locz);
+            //<--这里要更新啊1！
+            if(!deviceitem.locz){
+              console.log(`怎么会没有定位信息呢....${JSON.stringify(deviceitem)}`)
+            }
+            else{
+              infoWindow.setPosition(deviceitem.locz);
+            }
             const {content} = getpopinfowindowstyle(deviceitem);
             infoWindow.setContent(content);
             //setPosition
@@ -1460,7 +1525,7 @@ export function* createmapmainflow(){
 
           //如果停留在区域,则重新装载车辆结点
           if(!!curareaid){
-            yield put(mapmain_areamountdevices_result({adcode:curareaid,gmap_acode_devices,g_devicesdb}));
+            yield put(mapmain_areamountdevices_result({adcode:curareaid,gmap_acode_devices,g_devicesdb,SettingOfflineMinutes}));
           }
           //刷新树中数据
           //《----未定位的数据个数也要刷

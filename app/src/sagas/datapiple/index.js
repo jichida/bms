@@ -8,17 +8,18 @@ export function* getdeviceinfo(deviceinfo_org,isgetaddr){
   let deviceinfo = {...deviceinfo_org};
   if(!!deviceinfo){
     let isget = true;
-    const LastHistoryTrack = deviceinfo.LastHistoryTrack;
-    if (!LastHistoryTrack) {
+    const last_Latitude = deviceinfo.last_Latitude;
+    const last_Longitude = deviceinfo.last_Longitude;
+    if (!last_Latitude) {
         isget = false;
     }
     else{
-      if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+      if(last_Latitude === 0 || last_Longitude === 0){
         isget = false;
       }
     }
     if(isget){
-      let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+      let cor = [last_Longitude,last_Latitude];
       const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
       deviceinfo.locz = wgs84togcj02;
     }

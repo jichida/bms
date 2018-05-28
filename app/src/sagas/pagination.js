@@ -69,9 +69,9 @@ export function* createsagacallbackflow(){
       lodashmap(g_devicesdb,(deviceinfo)=>{
         if(!!payload.query.DeviceId){
           if(lodashincludes(deviceinfo.DeviceId,payload.query.DeviceId)){
-                 deviceall.push(deviceinfo);
-               }
-            }
+            deviceall.push(deviceinfo);
+          }
+        }
         else{
           deviceall.push(deviceinfo);
         }
