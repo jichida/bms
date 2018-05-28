@@ -57,9 +57,9 @@ const checkDevice = (lasttime,callbackfn)=>{
   const deviceModel = DBModels.DeviceModel;
   const fields = {
     'DeviceId':1,
-    'LastHistoryTrack.Latitude':1,
-    'LastHistoryTrack.Longitude':1,
-    'LastHistoryTrack.GPSTime':1,
+    'last_Latitude':1,
+    'last_Longitude':1,
+    'last_GPSTime':1,
     'warninglevel':1,
     'LastRealtimeAlarm.DataTime':1,
     'alarmtxtstat':1,

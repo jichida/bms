@@ -105,11 +105,12 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
   let devicegroupModel = DBModels.DeviceGroupModel;
   let query = actiondata.query || {};
   debug(`querydevicegroup start getdevicesids`);
-  const devicesfields =   actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude LastHistoryTrack.GPSTime warninglevel LastRealtimeAlarm.DataTime alarmtxtstat';
+  const devicesfields =   actiondata.devicesfields ||
+  'DeviceId last_Latitude last_Longitude last_GPSTime warninglevel LastRealtimeAlarm.DataTime alarmtxtstat';
   //   'DeviceId':1,
-  //   'LastHistoryTrack.Latitude':1,
-  //   'LastHistoryTrack.Longitude':1,
-  //   'LastHistoryTrack.GPSTime':1,
+  //   'last_Latitude':1,
+  //   'last_Longitude':1,
+  //   'last_GPSTime':1,
   //   'warninglevel':1,
   //   'LastRealtimeAlarm.DataTime':1,
   //   'alarmtxtstat':1
@@ -150,9 +151,9 @@ exports.querydevice = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   const fields = actiondata.fields || {
     'DeviceId':1,
-    'LastHistoryTrack.Latitude':1,
-    'LastHistoryTrack.Longitude':1,
-    'LastHistoryTrack.GPSTime':1,
+    'last_Latitude':1,
+    'last_Longitude':1,
+    'last_GPSTime':1,
     'warninglevel':1,
     'LastRealtimeAlarm.DataTime':1,
     'alarmtxtstat':1,
@@ -238,9 +239,9 @@ exports.querydeviceinfo_list = (actiondata,ctx,callback)=>{
 //   let query = actiondata.query || {};
 //   let fields = actiondata.fields || {
 //     'DeviceId':1,
-//     'LastHistoryTrack.Latitude':1,
-//     'LastHistoryTrack.Longitude':1,
-//     'LastHistoryTrack.GPSTime':1,
+//     'last_Latitude':1,
+//     'last_Longitude':1,
+//     'last_GPSTime':1,
 //     'LastRealtimeAlarm.warninglevel':1,
 //   };
 //
@@ -292,9 +293,9 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   let fields = actiondata.fields || {
     'DeviceId':1,
-    'LastHistoryTrack.Latitude':1,
-    'LastHistoryTrack.Longitude':1,
-    'LastHistoryTrack.GPSTime':1,
+    'last_Latitude':1,
+    'last_Longitude':1,
+    'last_GPSTime':1,
     'warninglevel':1
   };
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
@@ -311,9 +312,9 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
         {
           "$project": {
             'DeviceId':1,
-            'LastHistoryTrack.Latitude':1,
-            'LastHistoryTrack.Longitude':1,
-            'LastHistoryTrack.GPSTime':1,
+            'last_Latitude':1,
+            'last_Longitude':1,
+            'last_GPSTime':1,
             'warninglevel':1
           }
         },]
@@ -323,20 +324,20 @@ exports.serverpush_devicegeo_sz  = (actiondata,ctx,callback)=>{
           for(let i = 0;i < list.length; i++){
             let item = list[i];
             if(!!item.LastHistoryTrack){
-              if(item.LastHistoryTrack.Latitude !== 0){
-                // let locationsz = getRandomLocation(item.LastHistoryTrack.Latitude,item.LastHistoryTrack.Longitude,10*1000);
-                // item.LastHistoryTrack.Latitude = locationsz[1];
-                // item.LastHistoryTrack.Longitude  =  locationsz[0];
-                let cor = [item.LastHistoryTrack.Longitude,item.LastHistoryTrack.Latitude];
+              if(item.last_Latitude !== 0){
+                // let locationsz = getRandomLocation(item.last_Latitude,item.last_Longitude,10*1000);
+                // item.last_Latitude = locationsz[1];
+                // item.last_Longitude  =  locationsz[0];
+                let cor = [item.last_Longitude,item.last_Latitude];
                 const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
                 item.locz = wgs84togcj02;
                 items.push({
                   'DeviceId':item.DeviceId,
                   'warninglevel':item.warninglevel || '',
                   'LastHistoryTrack':{
-                    Latitude:item.LastHistoryTrack.Latitude,
-                    Longitude:item.LastHistoryTrack.Longitude,
-                    GPSTime:item.LastHistoryTrack.GPSTime,
+                    Latitude:item.last_Latitude,
+                    Longitude:item.last_Longitude,
+                    GPSTime:item.last_GPSTime,
                   },
                   'locz':wgs84togcj02,
                 });
@@ -417,7 +418,7 @@ exports.uireport_searchcararchives = (actiondata,ctx,callback)=>{
 //   });
 //
 //   actiondata.LastHistoryTrack.updated_at= new Date();
-//   actiondata.LastHistoryTrack.GPSTime = curdatatime;
+//   actiondata.last_GPSTime = curdatatime;
 //   actiondata.LastHistoryTrack.DeviceId = actiondata.DeviceId;
 //   //插入历史记录
 //   const historyTrackModel = DBModels.HistoryTrackModel;

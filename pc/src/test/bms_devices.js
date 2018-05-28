@@ -13,8 +13,8 @@ const getrandom=(min,max)=>{
 let jsondataexport = filter(jsondatareadonly_device,(item) => {
   let thisdata = false;
   if(!!item.LastHistoryTrack){
-    if(!!item.LastHistoryTrack.Latitude){
-      if(item.LastHistoryTrack.Latitude > 0){
+    if(!!item.last_Latitude){
+      if(item.last_Latitude > 0){
         thisdata = !!item.LastHistoryTrack.Province;
       }
     }
@@ -66,8 +66,8 @@ const gettest_item = (item,index)=>{
   item['定位状态'] ='有效定位';
   item['纬度信息'] ='北纬';
   item['经度信息'] ='东经';
-  item['经度'] =item.LastHistoryTrack.Longitude;
-  item['纬度'] =item.LastHistoryTrack.Latitude;
+  item['经度'] =item.last_Longitude;
+  item['纬度'] =item.last_Latitude;
   item['GPS速度(km/h)'] =getrandom(0,120);
   item['方向'] =`西偏北 76.0°`;
   item['动力系统就绪'] ='活跃亮灯';

@@ -70,8 +70,8 @@ map(jsondata_chargingpile,(item,index)=>{
     item['定位状态'] ='有效定位';
     item['纬度信息'] ='北纬';
     item['经度信息'] ='东经';
-    item['经度'] =item.LastHistoryTrack.Longitude;
-    item['纬度'] =item.LastHistoryTrack.Latitude;
+    item['经度'] =item.last_Longitude;
+    item['纬度'] =item.last_Latitude;
     item = {...item,...sample};
 
     gmap_chargingpile[item.DeviceId] = item;

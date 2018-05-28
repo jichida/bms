@@ -951,12 +951,12 @@ export function* createmapmainflow(){
                 isget = false;
             }
             else{
-              if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+              if(last_Latitude === 0 || last_Longitude === 0){
                 isget = false;
               }
             }
             if(isget){
-              let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+              let cor = [last_Longitude,last_Latitude];
               const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
               deviceinfo.locz = wgs84togcj02;
             }
@@ -1320,12 +1320,12 @@ export function* createmapmainflow(){
                 isget = false;
             }
             else{
-              if(LastHistoryTrack.Latitude === 0 || LastHistoryTrack.Longitude === 0){
+              if(last_Latitude === 0 || last_Longitude === 0){
                 isget = false;
               }
             }
             if(isget){
-              let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+              let cor = [last_Longitude,last_Latitude];
               const wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
               deviceinfo.locz = wgs84togcj02;
             }
@@ -1348,9 +1348,9 @@ export function* createmapmainflow(){
             const {LastHistoryTrack2,LastRealtimeAlarm2,locz2,...rest2} = deviceinfo;
             // {
             //   'DeviceId':1,
-            //   'LastHistoryTrack.Latitude':1,
-            //   'LastHistoryTrack.Longitude':1,
-            //   'LastHistoryTrack.GPSTime':1,
+            //   'last_Latitude':1,
+            //   'last_Longitude':1,
+            //   'last_GPSTime':1,
             //   'warninglevel':1,
             //   'LastRealtimeAlarm.DataTime':1,
             //   'alarmtxtstat':1
@@ -1373,7 +1373,7 @@ export function* createmapmainflow(){
             g_devicesdb[deviceinfo.DeviceId] = deviceinfo;
           }
           g_devicesdb_updated[deviceinfo.DeviceId] = deviceinfo;
-          // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'LastHistoryTrack.GPSTime','offline')}`)
+          // console.log(`serverpush-->${deviceinfo.DeviceId}-->${get(deviceinfo,'last_GPSTime','offline')}`)
         });
         console.log(`serverpush1-->devicelistgeochange_distcluster`);
         yield put(devicelistgeochange_distcluster({}));

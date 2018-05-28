@@ -160,7 +160,7 @@ const getmapstate_curdevice = (state) => {
   if(!!deviceitem){
     const LastHistoryTrack = deviceitem.LastHistoryTrack;
     if(!!LastHistoryTrack){
-      const locz = L.latLng(LastHistoryTrack.Latitude,LastHistoryTrack.Longitude);
+      const locz = L.latLng(last_Latitude,last_Longitude);
       return locz;
     }
   }
@@ -238,8 +238,8 @@ export function* createmaptrackhistoryplaybackflow(){
     //           if(!!deviceitem){
     //             const LastHistoryTrack = deviceitem.LastHistoryTrack;
     //             if(!!LastHistoryTrack){
-    //               if(LastHistoryTrack.Latitude !== 0 && LastHistoryTrack.Longitude !== 0){
-    //                 let cor = [LastHistoryTrack.Longitude,LastHistoryTrack.Latitude];
+    //               if(last_Latitude !== 0 && last_Longitude !== 0){
+    //                 let cor = [last_Longitude,last_Latitude];
     //                 let wgs84togcj02=coordtransform.wgs84togcj02(cor[0],cor[1]);
     //                 window.amaptrackhistoryplayback.setCenter(wgs84togcj02);
     //               }

@@ -2,7 +2,7 @@ import get from 'lodash.get';
 import moment from 'moment';
 const getdevicestatus_isonline = (deviceitem,SettingOfflineMinutes=20)=>{
   let isonline = false;
-  let gpstime = get(deviceitem,'LastHistoryTrack.GPSTime');
+  let gpstime = get(deviceitem,'last_GPSTime');
   if(!!gpstime){
     // a.diff(b, 'days')
     const diffmin = moment().diff(moment(gpstime),'minutes');

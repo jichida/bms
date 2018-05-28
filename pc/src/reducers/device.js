@@ -46,11 +46,11 @@ const getsorteddevicelist = (devicedb,g_devicesdb,SettingOfflineMinutes)=>{
     }
   });
   device_online = lodashsortby(device_online, [(deviceid)=>{
-    // const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    // const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
     return deviceid;
   }]);
   device_offline = lodashsortby(device_offline, [(deviceid)=>{
-    // const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+    // const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
     return deviceid;
   }]);
 
@@ -59,7 +59,7 @@ const getsorteddevicelist = (devicedb,g_devicesdb,SettingOfflineMinutes)=>{
     listdevices.push(deviceid);
   })
   // map(listdevices,(deviceid)=>{
-  //   const datatime = get(g_devicesdb,`${deviceid}.LastHistoryTrack.GPSTime`,'');
+  //   const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
   //   console.log(`${deviceid}=>${datatime}`);
   // });
   return listdevices;//lodashreverse(listdevices);

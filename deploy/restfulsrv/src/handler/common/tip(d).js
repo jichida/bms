@@ -29,8 +29,8 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
            const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
           //  //console.log(`curtimebefore:${curtimebefore}`);
            let query = {
-             'LastHistoryTrack.Latitude': {$ne:0},
-             'LastHistoryTrack.GPSTime': {$gt: curtimebefore,$exists:true}
+             'last_Latitude': {$ne:0},
+             'last_GPSTime': {$gt: curtimebefore,$exists:true}
            };
            if(!query.DeviceId && !isall){
              query.DeviceId = {'$in':deviceIds};
@@ -119,7 +119,7 @@ exports.gettipcount = (actiondata,ctx,callback)=>{
   //统计报警／高／中／低 个数
 
   // let query = actiondata.query || {};
-  // const devicesfields = actiondata.devicesfields || 'DeviceId LastHistoryTrack.Latitude LastHistoryTrack.Longitude';
+  // const devicesfields = actiondata.devicesfields || 'DeviceId last_Latitude last_Longitude';
   //
   // ////console.log(`devicesfields-->${JSON.stringify(devicesfields)}`);
   // let queryexec = devicegroupModel.find(query).populate([
