@@ -1013,6 +1013,12 @@ export function* createmapmainflow(){
           //弹框
           yield call(showinfowindow,listitem[0]);
 
+          //更新弹框图标
+          const SettingOfflineMinutes = g_SettingOfflineMinutes;
+          let g_devicesdb_updated = {};
+          g_devicesdb_updated[DeviceId] = g_devicesdb[DeviceId];
+          getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
+
           yield fork(function*(eventname){
            //while(true){//关闭时触发的事件
             yield call(listenwindowinfoevent,eventname);//触发一次
