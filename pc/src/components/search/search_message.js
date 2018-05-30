@@ -4,10 +4,11 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-
+import {getalarmfieldallfields} from '../../sagas/datapiple/bridgedb';
 // import Seltime from './seltimerange_antd.js';
 import { Select,  Button } from 'antd';
-
+import MultiSelect from 'react-select';
+import { Input } from 'antd';
 import SelectDevice from '../historytrackplayback/selectdevice.js';
 import get from 'lodash.get';
 import map from 'lodash.map';
@@ -43,11 +44,19 @@ class SearchMessage extends React.Component {
 
         this.state = {
             alarmlevel: warninglevel,
+            errorcode:'',
             startDate,
             endDate,
-            DeviceId
+            DeviceId,
+            selectedvalue: [],
+            columndata_extra:[]
         };
     }
+    onChangeErrorCode (value) {
+      this.setState({
+        errorcode:value
+      });
+   }
 
     onSelDeviceid(DeviceId){
         this.setState({
@@ -60,7 +69,31 @@ class SearchMessage extends React.Component {
         endDate
       });
     }
+    onSelectChange (value) {
+      let sz = value.split(',');
+      //console.log(`${JSON.stringify(sz)}`);
+      this.setState({ selectedvalue:sz });
+      this.setListColumnFields(sz);
+   }
 
+   setListColumnFields =(values)=>{
+     const {mapdict} = this.props;
+     let columndata_extra = [];
+     map(values,(fname,i)=>{
+       if(!!mapdict[fname]){
+         columndata_extra.push({
+           key:fname,
+           title:mapdict[fname].showname || fname,
+           dataIndex:i
+         });
+       }
+       else{
+         //console.log(values);
+       }
+
+     });
+     this.setState({columndata_extra});
+   }
     onChange_alarmlevel(alarmlevel){
       this.setState({alarmlevel});
     }
@@ -92,6 +125,14 @@ class SearchMessage extends React.Component {
       else{
         query['warninglevel'] = {$in:['高','中','低']};
       }
+
+      if(this.state.errorcode !== ''){
+        query['errorcode'] = this.state.errorcode;
+      }
+      if(this.state.columndata_extra.length > 0){
+        query[`columndata_extra`] = this.state.columndata_extra;
+      }
+
       return query;
     }
 
@@ -128,6 +169,21 @@ class SearchMessage extends React.Component {
                         deviceidlist={deviceidlist}
                       />
                     </div>
+                    <div>
+                      <Input placeholder="输入故障码" size='large' value={this.state.errorcode} type="number"
+                        onChange={
+                        (e)=>{this.onChangeErrorCode(e.target.value)}
+                      }/>
+                    </div>
+                    <MultiSelect
+                        closeOnSelect={true}
+                        multi
+                        onChange={this.onSelectChange.bind(this)}
+                        options={getalarmfieldallfields(this.props.mapdict)}
+                        placeholder="选择报警字段"
+                        simpleValue
+                        value={this.state.selectedvalue}
+                      />
                 </div>
                 <div className="b">
                     <Button type="primary" icon="search" onClick={this.onClickQuery}>查询</Button>

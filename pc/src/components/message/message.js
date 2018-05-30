@@ -133,11 +133,15 @@ class MessageAllDevice extends React.Component {
         // }
         // columns.push(columns_action);
         const {g_devicesdb} = this.props;
-        const {warninglevel,DeviceId} = this.state.query;
+        let {warninglevel,DeviceId,errorcode,columndata_extra} = this.state.query;
+        columndata_extra = columndata_extra || [];
         let data = [];
         map(g_devicesdb,(deviceitem)=>{
+          const alarmtxtstat =  get(deviceitem,'alarmtxtstat','');
           let matcheddevice = false;
           let matchedwarninglevel = false;
+          let matchederrorcode = false;
+          let matchedcolumndata_extra = false;
           if(!!DeviceId){
             if(deviceitem.DeviceId === DeviceId){
               matcheddevice = true;
@@ -160,7 +164,36 @@ class MessageAllDevice extends React.Component {
             }
           }
 
-          if(matcheddevice && matchedwarninglevel){
+          if(!!errorcode && errorcode !== ''){
+            let matchedf = `F[${errorcode}] `;
+            let matchedal1 = `AL_TROUBLE_CODE_51_${errorcode} `;
+            let matchedal2 = `AL_TROUBLE_CODE_60_${errorcode} `;
+            matchederrorcode = alarmtxtstat.indexOf(matchedf) >= 0;
+            if(!matchederrorcode){
+              matchederrorcode = alarmtxtstat.indexOf(matchedal1) >= 0;
+            }
+            if(!matchederrorcode){
+              matchederrorcode = alarmtxtstat.indexOf(matchedal2) >= 0;
+            }
+          }
+          else{
+            matchederrorcode = true;
+          }
+
+          if( columndata_extra.length > 0){
+            matchedcolumndata_extra = true;
+            for(let i = 0 ;i < columndata_extra.length; i++){
+              if(alarmtxtstat.indexOf(`${columndata_extra[i].title} `) < 0){
+                matchedcolumndata_extra = false;
+                break;
+              }
+            }
+          }
+          else{
+            matchedcolumndata_extra = true;
+          }
+
+          if(matcheddevice && matchedwarninglevel && matchedcolumndata_extra && matchederrorcode) {
             data.push(this.onItemConvert(deviceitem));
           }
         });
@@ -190,7 +223,10 @@ class MessageAllDevice extends React.Component {
                     <i className="fa fa-times-circle-o back" aria-hidden="true" onClick={()=>{this.props.history.push("./")}}></i>
                 </div>
                 <div className="TreeSearchBattery">
-                    <TreeSearchreport onClickQuery={this.onClickQuery.bind(this)} query={this.state.query}/>
+                    <TreeSearchreport
+                      mapdict={this.props.mapdict}
+                      onClickQuery={this.onClickQuery.bind(this)}
+                      query={this.state.query}/>
                 </div>
                 <div className="tablelist">
                     <AntdTable
@@ -204,7 +240,7 @@ class MessageAllDevice extends React.Component {
     }
 }
 
-const mapStateToProps = ({device:{g_devicesdb}}) => {
-  return {g_devicesdb};
+const mapStateToProps = ({device:{g_devicesdb},app:{mapdict}}) => {
+  return {g_devicesdb,mapdict};
 }
 export default connect(mapStateToProps)(MessageAllDevice);
