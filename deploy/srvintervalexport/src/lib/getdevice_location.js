@@ -5,7 +5,7 @@ const _ = require('lodash');
 const async = require('async');
 const debug = require('debug')('srvinterval:location');
 
-const batchcount = 2000;
+const batchcount = 500;
 
 
 
