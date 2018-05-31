@@ -32,7 +32,7 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
   }
   const query = {
     DeviceId,
-    //TimeKey,//
+    TimeKey,//
     DataTime:{
       $gte:`${curday} 00:00:00`,
       $lte:`${curday} 23:59:59`,
