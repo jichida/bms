@@ -33,6 +33,7 @@ import {requireAuthentication} from './requireauthentication';
 
 import "../css/common.css";
 
+
 class AppRoot extends React.Component {
     componentWillMount() {
         const script = document.createElement("script");

@@ -166,6 +166,7 @@ class TableAlarm extends React.Component {
                 </div>
                 <div className="TreeSearchBattery">
                     <TreeSearchreport
+                      mapdict={this.props.mapdict}
                       onClickQuery={this.onClickQuery.bind(this)}
                       query={this.state.query}
                       onClickExport={this.onClickExport.bind(this)}
@@ -196,5 +197,7 @@ class TableAlarm extends React.Component {
         );
     }
 }
-
-export default connect()(TableAlarm);
+const mapStateToProps = ({app:{mapdict}}) => {
+    return {mapdict};
+}
+export default connect(mapStateToProps)(TableAlarm);
