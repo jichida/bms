@@ -57,6 +57,7 @@ const DeviceExtCreate = (props) => {
     <Create title="创建设备"  {...props} actions={<CreateActions />}>
       <SimpleForm >
         <TextInput label="RDB编号" source="DeviceId" />
+        <TextInput label="客服packno" source="packnocs"  />
         <TextInput label="车工号" source="buscarvin"  />
         <TextInput label="类型" source="type" />
         <TextInput label="容量" source="capacity" />
@@ -98,6 +99,7 @@ const DeviceExtEdit = (props) => {
   return (<Edit title="客档信息" {...props}>
       <SimpleForm>
         <TextField label="RDB编号" source="DeviceId" />
+        <TextField label="客服packno" source="packnocs"  />
         <TextField label="车工号" source="buscarvin"  />
         <TextField label="类型" source="type" />
         <TextField label="容量" source="capacity" />
@@ -160,7 +162,7 @@ let DeviceExtActions = (props) =>{
         <ImportExcelButton resource={resource}/>
     </CardActions>
 );
-} 
+}
 
 DeviceExtActions = connect()(DeviceExtActions);
 

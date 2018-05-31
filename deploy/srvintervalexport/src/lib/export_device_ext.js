@@ -15,7 +15,7 @@ const startexport_do = (filename,callbackfn) =>{
 
   const dbModel = DBModels.DeviceExtModel;
   const fields = null;
-  const csvfields = 'RDB编号,车工号（BUS）/VIN（CAR）,类型,容量,串联数,并联数,电芯类型,CATL项目名称,\
+  const csvfields = 'RDB编号,客服packno,车工号（BUS）/VIN（CAR）,类型,容量,串联数,并联数,电芯类型,CATL项目名称,\
 项目PN,电池系统流水号,BMU硬件版本,CSC硬件版本,BMU软件版本,CSC软件版本,电池入库日期,电池出货日期,车辆生产厂,\
 车辆型号,装车日期,整车出厂日期,省份,地区,里程(暂无，保留),客户名称,客户联系地址,客户联系人,客户联系电话,客户移动电话,\
 用途,购买日期,新车上牌日期,车牌号,售后外服姓名,开始使用年份';
@@ -23,6 +23,7 @@ const startexport_do = (filename,callbackfn) =>{
   const fn_convert = (doc,callbackfn)=>{
     const newdoc = {
       "RDB编号": _.get(doc,"DeviceId",''),
+      "客服packno": _.get(doc,"packnocs",''),
       "车工号（BUS）/VIN（CAR）": _.get(doc,"buscarvin",''),
       "类型":_.get(doc,"type",''),
       "容量": _.get(doc,"capacity",''),

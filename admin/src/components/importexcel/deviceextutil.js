@@ -1,6 +1,7 @@
 import _ from 'lodash';
 const mapkeydeviceext1 = {
   "RDB编号": "DeviceId",
+  "客服packno": "packnocs",
   "车工号（BUS）/VIN（CAR）": "buscarvin",
   "类型":"type",
   "容量": "capacity",
@@ -38,6 +39,7 @@ const mapkeydeviceext1 = {
 const mapkeydeviceext2 = {
   "DeviceId": "RDB编号",
   "buscarvin":"车工号（BUS）/VIN（CAR）",
+  "packnocs":"客服packno",
   "type":"类型",
   "capacity":"容量" ,
   "serialnumber":"串联数" ,
@@ -72,7 +74,7 @@ const mapkeydeviceext2 = {
 };
 
 const requiredlistfield = [
-  "DeviceId","buscarvin","type","capacity","serialnumber",
+  "DeviceId","packnocs","buscarvin","type","capacity","serialnumber",
   "parallelnumber",	"typeelectriccore","catlprojectname","projectpn","batterysystemflownumber",
   "BMUhardwareversion",	"CSChardwareversion","BMUsoftwareversion","CSCsoftwareversion","datebatterystorage",
   "datebatterydelivery","vehicleproductionplant","vehiclemodel","dateloading","datevehiclefactory",
