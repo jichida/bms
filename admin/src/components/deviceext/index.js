@@ -90,6 +90,7 @@ const DeviceExtCreate = (props) => {
         <TextInput label="新车上牌日期" source="datenewcar"  />
         <TextInput label="车牌号" source="licenseplatenumber"  />
         <TextInput label="售后外服姓名" source="nameaftersaleservice"  />
+        <TextInput label="开始使用年份" source="usedyear"  />
       </SimpleForm>
     </Create>
     );
@@ -132,6 +133,7 @@ const DeviceExtEdit = (props) => {
         <TextField label="新车上牌日期" source="datenewcar"  />
         <TextField label="车牌号" source="licenseplatenumber"  />
         <TextField label="售后外服姓名" source="nameaftersaleservice"  />
+        <TextField label="开始使用年份" source="usedyear"  />
       </SimpleForm>
     </Edit>
     );
@@ -176,6 +178,8 @@ const DeviceExtList = (props) => (
       <TextField label="车工号" source="buscarvin"  />
       <TextField label="类型" source="type" />
       <TextField label="容量" source="capacity" />
+      <TextField label="客服packno" source="packnocs"  />
+      <TextField label="开始使用年份" source="usedyear"  />
       <TextField label="新建时间" source="created_at"  />
       {permissions==='admin'?<EditButton />:null}
     </Datagrid>

@@ -87,6 +87,8 @@ class TablePosition extends React.Component {
       itemnew[`串联数`] = get(item,'serialnumber','');
       itemnew[`并联数`] = get(item,'parallelnumber','');
       itemnew[`客户名称`] = get(item,'customername','');
+      itemnew[`开始使用年份`] = get(item,'usedyear','');
+      itemnew[`客服packno`] = get(item,'packnocs','');
       return itemnew;
     }
     render(){
