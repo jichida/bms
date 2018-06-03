@@ -7,7 +7,7 @@ const alarmplugin = require('../plugins/alarmfilter/index');
 const deviceplugin = require('../plugins/devicefilter/index');
 const utilposition = require('./util_position');
 const debug = require('debug')('dbdata');
-
+const winston = require('../log/log.js');
 
 const getdbdata_device = (devicedata)=>{
   devicedata.NodeID = config.NodeID;
@@ -228,9 +228,17 @@ const getkafkamsg = (msg)=>{
     catch(e){
       //console.log(`parse json eror ${JSON.stringify(e)}`);
     }
+
   }
   payload.recvpartition = msg.partition;
   payload.recvoffset = msg.offset;
+  //<----log====【注意：这段代码仅供查找问题用，过后删掉】
+  const DeviceId = _.get(payload,'DeviceId','');
+  if(DeviceId === '1624100001' || DeviceId === '1624100004' || DeviceId === '1624100006' || DeviceId === '1624100008' || DeviceId==='1624100010'){
+    winston.getlog().error(`${JSON.stringify(payload)}`);
+  }
+ //<----log====注意：这段代码仅供查找问题用，过后删掉】
+
   return payload;
 }
 
