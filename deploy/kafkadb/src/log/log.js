@@ -4,7 +4,7 @@ const path = require('path');
 const config = require('../config');
 let logger;
 exports.initLog =  ()=>{
-   const filename = "kafkadb";//"bms_"+moment().format('YYYY-MM-DD-HHmmss');
+   const filename = `kafkadb_${config.NodeID}`;//"bms_"+moment().format('YYYY-MM-DD-HHmmss');
 
   const logfile = filename+".log";
   const logdir = config.logdir || path.resolve(__dirname,'../../../log');
