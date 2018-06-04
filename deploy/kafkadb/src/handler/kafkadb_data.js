@@ -184,15 +184,15 @@ const getindexmsgs = (data,callbackfn)=>{
   let LastRealtimeAlarm = _.clone(data.BMSData);
   let LastHistoryTrack = _.clone(data.Position);
 
-  LastRealtimeAlarm.BMSFlag = _.get(data,'BMSFlag',1);
-  LastHistoryTrack.POSFlag = _.get(data,'POSFlag',1);
 
   const devicedata = _.omit(data,['BMSData','Position']);
   devicedata.GUID = data.GUID;
   if(!!LastRealtimeAlarm){
+    LastRealtimeAlarm.BMSFlag = _.get(data,'BMSFlag',1);
     devicedata.LastRealtimeAlarm = LastRealtimeAlarm;
   }
   if(!!LastHistoryTrack){
+    LastHistoryTrack.POSFlag = _.get(data,'POSFlag',1);
     if(!!LastHistoryTrack.GPSTime){
       LastHistoryTrack.GPSTime = moment(LastHistoryTrack.GPSTime).add(8,'hours').format('YYYY-MM-DD HH:mm:ss');
     }
