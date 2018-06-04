@@ -19,36 +19,38 @@ const getdbdata_device = (devicedata)=>{
 const getdbdata_historydevice = (devicedata)=>{
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   if(!!LastRealtimeAlarm){
-    let result_device = _.clone(LastRealtimeAlarm);
-    // result_device = _.omit(result_device,['Alarm']);保留报警便于定位问题
-    // if(!!alarmtxt && alarmtxt!==''){
-    //   result_device.alarmtxt = alarmtxt;
-    // }
-    result_device.DeviceId = devicedata.DeviceId;
-    result_device.TimeKey = moment(result_device.DataTime).format('YYMMDD');
-    // result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
-    result_device.NodeID = config.NodeID;
-    result_device.SN64 = devicedata.SN64;
-    result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    if(!!devicedata.Provice){
-      result_device.Provice = devicedata.Provice;
-      result_device.City = devicedata.City;
-      result_device.Area = devicedata.Area;
+    if(_.get(devicedata,'LastRealtimeAlarm.BMSFlag',1) === 1){
+      let result_device = _.clone(LastRealtimeAlarm);
+      // result_device = _.omit(result_device,['Alarm']);保留报警便于定位问题
+      // if(!!alarmtxt && alarmtxt!==''){
+      //   result_device.alarmtxt = alarmtxt;
+      // }
+      result_device.DeviceId = devicedata.DeviceId;
+      result_device.TimeKey = moment(result_device.DataTime).format('YYMMDD');
+      // result_device.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+      result_device.NodeID = config.NodeID;
+      result_device.SN64 = devicedata.SN64;
+      result_device.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+      if(!!devicedata.Provice){
+        result_device.Provice = devicedata.Provice;
+        result_device.City = devicedata.City;
+        result_device.Area = devicedata.Area;
+      }
+
+      result_device.GUID = devicedata.GUID;
+      //+以下语句便于调试
+      result_device.recvpartition = devicedata.recvpartition;
+      result_device.recvoffset = devicedata.recvoffset;
+
+      result_device.warninglevel = devicedata.warninglevel;
+
+      if(!!devicedata.LastHistoryTrack){
+        result_device.Longitude = devicedata.LastHistoryTrack.Longitude;
+        result_device.Latitude = devicedata.LastHistoryTrack.Latitude;
+        result_device.GPSTime = devicedata.LastHistoryTrack.GPSTime;
+      }
+      return result_device;
     }
-
-    result_device.GUID = devicedata.GUID;
-    //+以下语句便于调试
-    result_device.recvpartition = devicedata.recvpartition;
-    result_device.recvoffset = devicedata.recvoffset;
-
-    result_device.warninglevel = devicedata.warninglevel;
-
-    if(!!devicedata.LastHistoryTrack){
-      result_device.Longitude = devicedata.LastHistoryTrack.Longitude;
-      result_device.Latitude = devicedata.LastHistoryTrack.Latitude;
-      result_device.GPSTime = devicedata.LastHistoryTrack.GPSTime;
-    }
-    return result_device;
   }
 }
 
@@ -56,26 +58,28 @@ const getdbdata_historydevice = (devicedata)=>{
 const getdbdata_historytrack = (devicedata)=>{
   const LastHistoryTrack = devicedata.LastHistoryTrack;
   if(!!LastHistoryTrack){
-    let result_historytrack = _.clone(LastHistoryTrack);
-    result_historytrack.DeviceId = devicedata.DeviceId;
-    result_historytrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
-    result_historytrack.NodeID = config.NodeID;
-    result_historytrack.SN64 = devicedata.SN64;
-    result_historytrack.GUID = devicedata.GUID;
-    if(!!devicedata.Provice){
-      result_historytrack.Provice = devicedata.Provice;
-      result_historytrack.City = devicedata.City;
-      result_historytrack.Area = devicedata.Area;
-    }
+    if(_.get(devicedata,'LastHistoryTrack.POSFlag',1) === 1){
+      let result_historytrack = _.clone(LastHistoryTrack);
+      result_historytrack.DeviceId = devicedata.DeviceId;
+      result_historytrack.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+      result_historytrack.NodeID = config.NodeID;
+      result_historytrack.SN64 = devicedata.SN64;
+      result_historytrack.GUID = devicedata.GUID;
+      if(!!devicedata.Provice){
+        result_historytrack.Provice = devicedata.Provice;
+        result_historytrack.City = devicedata.City;
+        result_historytrack.Area = devicedata.Area;
+      }
 
-    //+以下语句便于调试
-    result_historytrack.recvpartition = devicedata.recvpartition;
-    result_historytrack.recvoffset = devicedata.recvoffset;
+      //+以下语句便于调试
+      result_historytrack.recvpartition = devicedata.recvpartition;
+      result_historytrack.recvoffset = devicedata.recvoffset;
 
-    result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    if(!!result_historytrack.GPSTime){
-      result_historytrack.TimeKey = moment(result_historytrack.GPSTime).format('YYMMDD');
-      return result_historytrack;
+      result_historytrack.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+      if(!!result_historytrack.GPSTime){
+        result_historytrack.TimeKey = moment(result_historytrack.GPSTime).format('YYMMDD');
+        return result_historytrack;
+      }
     }
   }
 }
@@ -86,33 +90,35 @@ const getdbdata_alarmraw = (devicedata)=>{
   // }
   let  LastRealtimeAlarmRaw = _.get(devicedata,'LastRealtimeAlarm.Alarm');
   if(!!LastRealtimeAlarmRaw){
-    //含有报警信息
-    let result_alarm_raw = _.clone(LastRealtimeAlarmRaw);
-    result_alarm_raw.DeviceId = devicedata.DeviceId;
-    result_alarm_raw.DataTime = devicedata.LastRealtimeAlarm.DataTime;
-    result_alarm_raw.GUID = devicedata.GUID;
-    if(!!devicedata.LastHistoryTrack){
-      result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
-      result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
-      result_alarm_raw.GPSTime = devicedata.LastHistoryTrack.GPSTime;
-    }
-    result_alarm_raw.TimeKey = moment(result_alarm_raw.DataTime).format('YYMMDD');
-    // result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
-    result_alarm_raw.NodeID = config.NodeID;
-    result_alarm_raw.SN64 = devicedata.SN64;
-    result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
-    if(!!devicedata.Provice){
-      result_alarm_raw.Provice = devicedata.Provice;
-      result_alarm_raw.City = devicedata.City;
-      result_alarm_raw.Area = devicedata.Area;
-    }
+    if(_.get(devicedata,'LastRealtimeAlarm.BMSFlag',1) === 1){
+      //含有报警信息
+      let result_alarm_raw = _.clone(LastRealtimeAlarmRaw);
+      result_alarm_raw.DeviceId = devicedata.DeviceId;
+      result_alarm_raw.DataTime = devicedata.LastRealtimeAlarm.DataTime;
+      result_alarm_raw.GUID = devicedata.GUID;
+      if(!!devicedata.LastHistoryTrack){
+        result_alarm_raw.Longitude = devicedata.LastHistoryTrack.Longitude;
+        result_alarm_raw.Latitude = devicedata.LastHistoryTrack.Latitude;
+        result_alarm_raw.GPSTime = devicedata.LastHistoryTrack.GPSTime;
+      }
+      result_alarm_raw.TimeKey = moment(result_alarm_raw.DataTime).format('YYMMDD');
+      // result_alarm_raw.organizationid = mongoose.Types.ObjectId("599af5dc5f943819f10509e6");
+      result_alarm_raw.NodeID = config.NodeID;
+      result_alarm_raw.SN64 = devicedata.SN64;
+      result_alarm_raw.UpdateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+      if(!!devicedata.Provice){
+        result_alarm_raw.Provice = devicedata.Provice;
+        result_alarm_raw.City = devicedata.City;
+        result_alarm_raw.Area = devicedata.Area;
+      }
 
-    result_alarm_raw.warninglevel = devicedata.warninglevel;
-    //+以下语句便于调试
-    result_alarm_raw.recvpartition = devicedata.recvpartition;
-    result_alarm_raw.recvoffset = devicedata.recvoffset;
+      result_alarm_raw.warninglevel = devicedata.warninglevel;
+      //+以下语句便于调试
+      result_alarm_raw.recvpartition = devicedata.recvpartition;
+      result_alarm_raw.recvoffset = devicedata.recvoffset;
 
-    return result_alarm_raw;
+      return result_alarm_raw;
+    }
   }
 }
 
@@ -120,50 +126,53 @@ const getdbdata_alarm = (devicedata,callbackfn)=>{
   const LastRealtimeAlarm = _.get(devicedata,'LastRealtimeAlarm');
   const LastHistoryTrack = _.get(devicedata,'LastHistoryTrack');
   if(!!LastRealtimeAlarm){//含有历史设备数据
-    LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
-    alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
-      // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
-      if(!err && !!result_alarm){
-        //含有报警信息
-        let updatedset = {
-          CurDay:result_alarm.CurDay,
-          DeviceId:result_alarm.DeviceId,
-          DataTime:LastRealtimeAlarm.DataTime,
-          warninglevel:devicedata.warninglevel,//<---------注意！！！
-          NodeID:config.NodeID,
-          SN64:devicedata.SN64,
-          UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
-          organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
-        };
-        if(!!devicedata.Provice){
-          updatedset.Provice = devicedata.Provice;
-          updatedset.City = devicedata.City;
-          updatedset.Area = devicedata.Area;
-        }
+    if(_.get(devicedata,'LastRealtimeAlarm.BMSFlag',1) === 1){
+      LastRealtimeAlarm.DeviceId = devicedata.DeviceId;
+      alarmplugin.dofilter(devicedata.DeviceId,LastRealtimeAlarm,(err,result_alarm)=>{
+        // console.log(`result_alarm==>${JSON.stringify(result_alarm)}`);
+        if(!err && !!result_alarm){
+          //含有报警信息
+          let updatedset = {
+            CurDay:result_alarm.CurDay,
+            DeviceId:result_alarm.DeviceId,
+            DataTime:LastRealtimeAlarm.DataTime,
+            warninglevel:devicedata.warninglevel,//<---------注意！！！
+            NodeID:config.NodeID,
+            SN64:devicedata.SN64,
+            UpdateTime:moment().format('YYYY-MM-DD HH:mm:ss'),
+            organizationid:mongoose.Types.ObjectId("599af5dc5f943819f10509e6"),
+          };
+          if(!!devicedata.Provice){
+            updatedset.Provice = devicedata.Provice;
+            updatedset.City = devicedata.City;
+            updatedset.Area = devicedata.Area;
+          }
 
-        if(!!LastHistoryTrack){
-          updatedset.Longitude = LastHistoryTrack.Longitude;
-          updatedset.Latitude = LastHistoryTrack.Latitude;
-          updatedset.GPSTime = LastHistoryTrack.GPSTime;
-        }
-        let updated_data = {"$set":updatedset};
-        if(!!result_alarm.inc_data){
-          updated_data["$inc"] = result_alarm.inc_data;
-        }
-        //{ $addToSet: { tags: { $each: [ "camera", "electronics", "accessories" ] } } }
-        const TROUBLE_CODE_LIST = _.get(LastRealtimeAlarm,'Alarm.TROUBLE_CODE_LIST',[]);
-        updated_data["$addToSet"] = { TROUBLE_CODE_LIST: { $each: TROUBLE_CODE_LIST} } ;
+          if(!!LastHistoryTrack){
+            updatedset.Longitude = LastHistoryTrack.Longitude;
+            updatedset.Latitude = LastHistoryTrack.Latitude;
+            updatedset.GPSTime = LastHistoryTrack.GPSTime;
+          }
+          let updated_data = {"$set":updatedset};
+          if(!!result_alarm.inc_data){
+            updated_data["$inc"] = result_alarm.inc_data;
+          }
+          //{ $addToSet: { tags: { $each: [ "camera", "electronics", "accessories" ] } } }
+          const TROUBLE_CODE_LIST = _.get(LastRealtimeAlarm,'Alarm.TROUBLE_CODE_LIST',[]);
+          updated_data["$addToSet"] = { TROUBLE_CODE_LIST: { $each: TROUBLE_CODE_LIST} } ;
 
-        callbackfn(updated_data);
-        return;
-      }
-      callbackfn();
-    });
-    return;
+          callbackfn(updated_data);
+          return;
+        }
+        callbackfn();
+      });
+      return;
+    }
   }
   callbackfn();
 }
 
+//这里转移两个标志"BMSFlag":0,"POSFlag":0
 const getindexmsgs = (data,callbackfn)=>{
   // const getpoint = (v)=>{
   //   if(!v){
@@ -172,8 +181,11 @@ const getindexmsgs = (data,callbackfn)=>{
   //   return [v.Longitude,v.Latitude];
   // }
 
-  const LastRealtimeAlarm = _.clone(data.BMSData);
-  const LastHistoryTrack = _.clone(data.Position);
+  let LastRealtimeAlarm = _.clone(data.BMSData);
+  let LastHistoryTrack = _.clone(data.Position);
+
+  LastRealtimeAlarm.BMSFlag = _.get(data,'BMSFlag',1);
+  LastHistoryTrack.POSFlag = _.get(data,'POSFlag',1);
 
   const devicedata = _.omit(data,['BMSData','Position']);
   devicedata.GUID = data.GUID;
