@@ -7,6 +7,7 @@ const moment = require('moment');
 const historytrack = require('../common/historytrack');
 const userrelate = require('../common/userrelate');
 const catlworking = require('../fullcommon/catlworking');
+const deviceext = require('../fullcommon/deviceext');
 
 const debug = require('debug')('srvapp:handler');
 //司机端
@@ -19,6 +20,14 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'getcountcar':deviceext.getcountcar,
+  'getcountbus':deviceext.getcountbus,
+  'getusedyearcar':deviceext.getusedyearcar,
+  'getusedyearbus':deviceext.getusedyearbus,
+  'getstatprovince':deviceext.getstatprovince,
+  'getstatcatlproject':deviceext.getstatcatlproject,
+
+
   'catl_working':catlworking.catl_working,
   'catl_cycle':catlworking.catl_cycle,
   'catl_celltemperature':catlworking.catl_celltemperature,
@@ -70,7 +79,7 @@ module.exports = (socket,actiondata,ctx)=>{
           }
           else{
             authhandler[actiondata.cmd](actiondata.data,ctx,(result)=>{
-              debug(`服务端回复${actiondata.cmd}`);
+              // debug(`服务端回复--->${JSON.stringify(result)}`);
               ////console.log(`${actiondata.cmd}回复时间:${moment().format("YYYY-MM-DD HH:mm:ss")}`);
               socket.emit(result.cmd,result.payload);
             });
