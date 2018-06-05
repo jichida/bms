@@ -71,53 +71,134 @@ const getusedyear = (type,callbackfn)=>{
 
 
 
-const getstat_province = (type,callbackfn)=>{
+const getstat_province = (maxcount,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-  const query = {type};
-
-  deviceextModel.aggregate([
-       {$match:query},
-       {$group: {
-           _id: '$provice',
-           count: { $sum: 1 },
-       }
-     }]).exec((err, list)=> {
-
+  deviceextModel.aggregate([{
+  		$project: {
+  			_id: 0,
+  			provice: 1,
+  			bustype: {
+  				$cond: [{
+  					$eq: ["$type", 'BUS']
+  				}, 1, 0]
+  			},
+  			cartype: {
+  				$cond: [{
+  					$eq: ["$type", 'CAR']
+  				}, 1, 0]
+  			}
+  		}
+  	},
+  	{
+  		$group: {
+  			_id:'$provice',
+  			buscount: {
+  				$sum: '$bustype'
+  			},
+  			carcount: {
+  				$sum: '$cartype'
+  			},
+  			count: {
+  				$sum: 1
+  			}
+  		}
+  	},
+  	{
+  		$sort: {
+  			count: -1
+  		}
+  	}
+  ]).exec((err, list)=> {
          let retarray = [];
          if(!err && !!list){
-           _.map(list,(v)=>{
-             retarray.push({
-                "type":type,
-                "name":`${v._id}`,
-                "value":`${v.count}`,
-             });
-           });
+        //    {
+        //      "_id" : "北京市",
+        //      "buscount" : 7.0,
+        //      "carcount" : 0.0,
+        //      "count" : 7.0
+        //  }
+          let maxcountlist = list.length > maxcount?maxcount:list.length;
+          for(let i = 0 ;i < maxcountlist; i++){
+            const v = list[i];
+            retarray.push({
+               "type":'BUS',
+               "name":`${v._id}`,
+               "value":`${v.buscount}`,
+            });
+            retarray.push({
+               "type":'CAR',
+               "name":`${v._id}`,
+               "value":`${v.carcount}`,
+            });
+          }
+
          }
 
          callbackfn(null,retarray);
        });
 }
 
-const getstat_catlproject = (type,callbackfn)=>{
+const getstat_catlproject = (maxcount,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-  const query = {type};
 
-  deviceextModel.aggregate([
-       {$match:query},
-       {$group: {
-           _id: '$catlprojectname',
-           count: { $sum: 1 },
-       }
-     }]).exec((err, list)=> {
+  deviceextModel.aggregate([{
+  		$project: {
+  			_id: 0,
+  			catlprojectname: 1,
+  			bustype: {
+  				$cond: [{
+  					$eq: ["$type", 'BUS']
+  				}, 1, 0]
+  			},
+  			cartype: {
+  				$cond: [{
+  					$eq: ["$type", 'CAR']
+  				}, 1, 0]
+  			}
+  		}
+  	},
+  	{
+  		$group: {
+  			_id:'$catlprojectname',
+  			buscount: {
+  				$sum: '$bustype'
+  			},
+  			carcount: {
+  				$sum: '$cartype'
+  			},
+  			count: {
+  				$sum: 1
+  			}
+  		}
+  	},
+  	{
+  		$sort: {
+  			count: -1
+  		}
+  	}
+  ]).exec((err, list)=> {
          let retarray = [];
          if(!err && !!list){
-           _.map(list,(v)=>{
-             retarray.push({
-                "type":type,
-                "name":`${v._id}`,
-                "value":`${v.count}`,
-             });
-           });
+          //  {
+          //       "_id" : "ZZZ-123",
+          //       "buscount" : 24.0,
+          //       "carcount" : 1.0,
+          //       "count" : 25.0
+          //   }
+          let maxcountlist = list.length > maxcount?maxcount:list.length;
+          for(let i = 0 ;i < maxcountlist; i++){
+            const v = list[i];
+            retarray.push({
+               "type":'BUS',
+               "name":`${v._id}`,
+               "value":`${v.buscount}`,
+            });
+            retarray.push({
+               "type":'CAR',
+               "name":`${v._id}`,
+               "value":`${v.carcount}`,
+            });
+          }
          }
 
          callbackfn(null,retarray);
@@ -144,7 +225,7 @@ exports.getcountbus =  (actiondata,ctx,callback)=>{
 
 exports.getusedyearcar =  (actiondata,ctx,callback)=>{
   getusedyear('CAR',(err,result)=>{
-    debug(`getusedyearcar--->${JSON.stringify(result)}`)
+
     callback({
       cmd:'getusedyearcar_result',
       payload:result
@@ -168,55 +249,90 @@ exports.getusedyearbus =  (actiondata,ctx,callback)=>{
 }
 
 exports.getstatprovince =  (actiondata,ctx,callback)=>{
-  let fnsz = [];
-  fnsz.push((callbackfn)=>{
-    getstat_province('BUS',(err,result)=>{
-      callbackfn(err,result);
-    });
-  });
-  fnsz.push((callbackfn)=>{
-    getstat_province('CAR',(err,result)=>{
-      callbackfn(err,result);
-    });
-  });
-
-  async.parallel(fnsz,(err,result2)=>{
-    let result = result2[0];
-    _.map(result2[1],(v)=>{
-      result.push(v);
-    });
+  const maxcount = _.get(actiondata,'maxcount',20);
+  getstat_province(maxcount,(err,result)=>{
     debug(`getstatprovince--->${JSON.stringify(result)}`)
     callback({
       cmd:'getstatprovince_result',
       payload:result
     });
   });
+  // let fnsz = [];
+  // fnsz.push((callbackfn)=>{
+  //   getstat_province('BUS',(err,result)=>{
+  //     callbackfn(err,result);
+  //   });
+  // });
+  // fnsz.push((callbackfn)=>{
+  //   getstat_province('CAR',(err,result)=>{
+  //     callbackfn(err,result);
+  //   });
+  // });
+  //
+  // async.parallel(fnsz,(err,result2)=>{
+  //   let result = result2[0];
+  //   _.map(result2[1],(v)=>{
+  //     result.push(v);
+  //   });
+  //   debug(`getstatprovince--->${JSON.stringify(result)}`)
+  //   callback({
+  //     cmd:'getstatprovince_result',
+  //     payload:result
+  //   });
+  // });
 
 }
 
 exports.getstatcatlproject =  (actiondata,ctx,callback)=>{
-  let fnsz = [];
-  fnsz.push((callbackfn)=>{
-    getstat_catlproject('BUS',(err,result)=>{
-      callbackfn(err,result);
-    });
-  });
-  fnsz.push((callbackfn)=>{
-    getstat_catlproject('CAR',(err,result)=>{
-      callbackfn(err,result);
-    });
-  });
-
-  async.parallel(fnsz,(err,result2)=>{
-    let result = result2[0];
-    _.map(result2[1],(v)=>{
-      result.push(v);
-    });
-    debug(`getstatcatlproject--->${JSON.stringify(result)}`)
+  const maxcount = _.get(actiondata,'maxcount',20);
+  getstat_catlproject(maxcount,(err,result)=>{
     callback({
       cmd:'getstatcatlproject_result',
       payload:result
     });
   });
-
 }
+
+/**
+
+
+db.getCollection('deviceexts').aggregate([{
+		$project: {
+			_id: 0,
+			catlprojectname: 1,
+			bustype: {
+				$cond: [{
+					$eq: ["$type", 'BUS']
+				}, 1, 0]
+			},
+			cartype: {
+				$cond: [{
+					$eq: ["$type", 'CAR']
+				}, 1, 0]
+			}
+		}
+	},
+	{
+		$group: {
+			_id: {
+				catlprojectname: '$catlprojectname',
+			},
+			buscount: {
+				$sum: '$bustype'
+			},
+			carcount: {
+				$sum: '$cartype'
+			},
+			count: {
+				$sum: 1
+			}
+		}
+	},
+	{
+		$sort: {
+			count: -1
+		}
+	}
+])
+
+*/
