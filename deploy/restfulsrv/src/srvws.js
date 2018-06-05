@@ -2,6 +2,9 @@ const winston = require('./log/log.js');
 const config = require('./config.js');
 const handleuserpc = require('./handler/pc/index.js');
 const handleuserapp = require('./handler/app/index.js');
+const handlefullpc = require('./handler/fullpc/index.js');
+const handlefullapp = require('./handler/fullapp/index.js');
+
 const PubSub = require('pubsub-js');
 const usersubfn = require('./handler/socketsubscribe');
 const uuid = require('uuid');
@@ -36,6 +39,24 @@ const startwebsocketsrv = (http)=>{
       // ////console.log('\napp get message:' + JSON.stringify(payload));
       winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserapp(socket,payload,ctx);
+    });
+
+    socket.on('fullpc',(payload)=>{
+      if(!ctx.usertype){
+        ctx.usertype = 'fullpc';
+      }
+      // ////console.log('\npc get message:' + JSON.stringify(payload));
+      winston.getlog().info('ctx:', JSON.stringify(ctx));
+      handlefullpc(socket,payload,ctx);
+    });
+
+    socket.on('fullapp',(payload)=>{
+      if(!ctx.usertype){
+        ctx.usertype = 'fullapp';
+      }
+      // ////console.log('\napp get message:' + JSON.stringify(payload));
+      winston.getlog().info('ctx:', JSON.stringify(ctx));
+      handlefullapp(socket,payload,ctx);
     });
 
 

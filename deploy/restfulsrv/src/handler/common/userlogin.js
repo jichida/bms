@@ -142,6 +142,13 @@ exports.loginuser = (actiondata,ctx,callback)=>{
             if(ctx.usertype === 'app' && p._id.toString() === '5a03b66e13e7410cd0ef3094'){
               return true;
             }
+            //<<--------这里有改动，需特别注意============
+            if(ctx.usertype === 'fullpc' && p._id.toString() === '5a03b66013e7410cd0ef3093'){
+              return true;
+            }
+            if(ctx.usertype === 'fullapp' && p._id.toString() === '5a03b66e13e7410cd0ef3094'){
+              return true;
+            }
             return false;
           });
           if(!!findresult){

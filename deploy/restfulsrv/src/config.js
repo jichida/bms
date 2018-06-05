@@ -21,6 +21,12 @@ const config =  {
   loginuserexptime_pc:60*60*2,//用户登录有效期,2小时
   loginuserexptime_app:60*60*24*30,//用户登录有效期,30天
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
+  mysqlconfig:{
+    host: process.env.mysqlhost || '121.204.135.87',
+    user: process.env.mysqluser || 'root',
+    password: process.env.mysqlpassword || '%c?D:8Bv',
+    database: process.env.mysqldb || 'catltest'
+  },
   mapdict:{},
   pushdevicetopic:'pushdevice',
   defaultmappopclusterfields:[
