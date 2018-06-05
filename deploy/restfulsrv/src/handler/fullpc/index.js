@@ -8,6 +8,7 @@ const historytrack = require('../common/historytrack');
 const userrelate = require('../common/userrelate');
 const catlworking = require('../fullcommon/catlworking');
 const deviceext = require('../fullcommon/deviceext');
+const warningf = require('../fullcommon/warningf');
 
 const debug = require('debug')('srvapp:handler');
 //司机端
@@ -20,6 +21,8 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'catl_warningf':warningf.catl_warningf,
+
   'getcountcar':deviceext.getcountcar,
   'getcountbus':deviceext.getcountbus,
   'getusedyearcar':deviceext.getusedyearcar,
@@ -92,7 +95,7 @@ module.exports = (socket,actiondata,ctx)=>{
       }
     }
     catch(e){
-      ////console.log("服务端内部错误--->" + e);
-      socket.emit('common_err',{errmsg:`服务端内部错误:${JSON.stringify(e)}`});
+      console.log(e);
+      socket.emit('common_err',{errmsg:`服务端内部错误`});
     }
 }
