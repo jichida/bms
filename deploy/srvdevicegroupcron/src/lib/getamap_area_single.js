@@ -63,7 +63,10 @@ const getareasz = (devicelist,callback)=>{
   const fnsz = [];
   let success_list = [];
   let failed_list = [];
-
+  if(devicelist.length === 0){
+    callback([],[]);
+    return;
+  }
   _.map(devicelist,(deviceinfo)=>{
     fnsz.push((callbackfn)=>{
       getarea(deviceinfo,(info)=>{

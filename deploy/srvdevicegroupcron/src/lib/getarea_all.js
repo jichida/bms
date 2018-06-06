@@ -53,7 +53,7 @@ const getallarea_all_fromamap_batch = (devicelist,callback)=>{
   let success_list = [];
   let failed_list = [];
   if(devicelist.length === 0){
-    callback([]);
+    callback([],[]);
     return;
   }
   const fnsz = [];
@@ -80,7 +80,7 @@ const getallarea_all_fromamap_batch = (devicelist,callback)=>{
 
   debug(`getallarea_all_fromamap-->${fnsz.length}`)
   async.series(fnsz,(err,result)=>{
-    winston.getlog().info(`getallarea_all_fromamap_batch【根据设备ID获取城市(地图API)】,成功【${success_list.length}】`);
+    winston.getlog().info(`getallarea_all_fromamap_batch【根据设备ID获取城市(地图API)】,成功【${success_list.length}】,失败:【${failed_list.length}】`);
     callback(success_list,failed_list);
   });
 };
@@ -117,7 +117,7 @@ const getallarea_all_fromamap_batch_single = (devicelist,callback)=>{
 
   debug(`getallarea_all_fromamap-->${fnsz.length}`)
   async.series(fnsz,(err,result)=>{
-    winston.getlog().info(`getallarea_all_fromamap_batch_single-【根据设备ID获取城市(地图API)】,成功【${success_list.length}】`);
+    winston.getlog().info(`getallarea_all_fromamap_batch_single-【根据设备ID获取城市(地图API)】,成功【${success_list.length}】,失败:【${failed_list.length}】`);
     callback(success_list,failed_list);
   });
 };
@@ -125,7 +125,8 @@ const getallarea_all_fromamap_batch_single = (devicelist,callback)=>{
 
 
 const getallarea_start = (devicelist,callback)=>{
-  debug(`getallarea_start-->${devicelist.length}`)
+  winston.getlog().info(`getallarea_start->【${devicelist.length}】`);
+
   let success_list = [];
   getallarea_all_fromamap_batch(devicelist,(ret,retfailed)=>{
     success_list = _.concat(success_list, ret);
