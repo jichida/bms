@@ -64,7 +64,7 @@ const getallarea_all_fromamap = (devicelist,callback)=>{
     fnsz.push((callbackfn)=>{
       getamap_area_batch(target_devicelist,(retlist)=>{
         success_list = _.concat(success_list, retlist);
-        debug(`所有设备结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
+        debug(`************所有设备结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
         callbackfn();
       });
     });
@@ -82,6 +82,7 @@ const getallarea_all_fromamap = (devicelist,callback)=>{
 const getallarea_start = (devicelist,callback)=>{
   debug(`getallarea_start-->${devicelist.length}`)
   getallarea_all(devicelist,({success_list,failed_list})=>{
+    debug(`**********getallarea_all_fromamap-->${failed_list.length}`)
     getallarea_all_fromamap(failed_list,(ret)=>{
       let retlist = _.concat(success_list, ret);
       debug(`retlist-->${retlist.length}`)

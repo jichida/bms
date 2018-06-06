@@ -22,5 +22,6 @@ mongoose.connect(config.mongodburl,{
 
 debug(`startjob==========`);
 winston.getlog().info(`开始执行`);
-startjob();
 getdevicecitycode();
+
+startjob();
