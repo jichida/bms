@@ -4,7 +4,7 @@ const path = require('path');
 const config = require('../config');
 let logger;
 exports.initLog =  ()=>{
-   const filename = "srvdevicegroupcron";//"bms_"+moment().format('YYYY-MM-DD-HHmmss');
+   const filename = `devicegroupcron${moment().format('YYYYMMDD')}`;
 
   const logfile = filename+".log";
   const logdir = config.logdir || path.resolve(__dirname,'../../../log');

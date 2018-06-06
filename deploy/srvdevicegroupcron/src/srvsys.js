@@ -43,7 +43,7 @@ const getDevice = (callbackfn)=>{
 
 const startsrv =()=>{
   debug(`开始执行...`);
-  getDevice((devicelist)=>{
+  getDevice((devicelist)=>{//找到所有有坐标的DeviceId
     // debug(`getDevice-->${JSON.stringify(devicelist)}`);
     startcron(devicelist,(err,result)=>{
       debug(`全部执行完毕...`);
