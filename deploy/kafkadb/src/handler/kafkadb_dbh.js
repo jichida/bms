@@ -55,7 +55,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
 
       //注：listalarm 只有一条记录,但allresult['historydevice']有多条,why????
       _.map(allresult['historydevice'],(o)=>{
-        if(!!o.warninglevel && o.warninglevel !== ''){
+        // if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           const iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
           if(iorder >= 0 ){
@@ -69,10 +69,10 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
             // debug(`allresult:${JSON.stringify(allresult['alarm'])}`);
             // winston.getlog().error(`historydevice错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
-        }
+        // }
       });
       _.map(allresult['alarmraw'],(o)=>{
-        if(!!o.warninglevel && o.warninglevel !== ''){
+        // if(!!o.warninglevel && o.warninglevel !== ''){
           o.alarmtxtstat = getrealtime_devicealarmstat(o.DeviceId,o.DataTime,devicealarmstat);
           const iorder = iordermap[`${o.DeviceId}_${o.DataTime}`];
           if(iorder >= 0 ){
@@ -82,7 +82,7 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
             debug(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`);
             // winston.getlog().error(`alarmraw错误,为何无法获得iorder:${JSON.stringify(o)},listalarm:${JSON.stringify(listalarm)}`)
           }
-        }
+        // }
       });
     }
     else{
