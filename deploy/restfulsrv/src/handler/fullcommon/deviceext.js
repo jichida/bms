@@ -9,26 +9,23 @@ const oldyears = moment().subtract(10,'years').format('YYYY');
 const async = require('async');
 debug(`10年以前是:${oldyears}`);
 
-const getcount_car = (callbackfn)=>{
+const getcount_car = (query,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-  const query = {"type" : "CAR"};
+
   deviceextModel.count(query,(err, list)=> {
       callbackfn(err,list);
   });
 }
 
-const getcount_bus = (callbackfn)=>{
+const getcount_bus = (query,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-  const query = {"type" : "BUS"};
   deviceextModel.count(query,(err, list)=> {
       callbackfn(err,list);
   });
 }
 
-const getusedyear = (type,callbackfn)=>{
+const getusedyear = (query,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-  const query = {type};
-
   deviceextModel.aggregate([
        {$match:query},
        {$group: {
@@ -59,7 +56,7 @@ const getusedyear = (type,callbackfn)=>{
          let retarray = [];
          _.map(result,(v,k)=>{
            retarray.push({
-              "type":type,
+              "type":query['type'],
               "name":`${k}`,
               "value":`${v}`,
            });
@@ -71,9 +68,11 @@ const getusedyear = (type,callbackfn)=>{
 
 
 
-const getstat_province = (maxcount,callbackfn)=>{
+const getstat_province = (query,maxcount,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-  deviceextModel.aggregate([{
+  deviceextModel.aggregate([
+    {$match:query},
+    {
   		$project: {
   			_id: 0,
   			provice: 1,
@@ -138,10 +137,12 @@ const getstat_province = (maxcount,callbackfn)=>{
        });
 }
 
-const getstat_catlproject = (maxcount,callbackfn)=>{
+const getstat_catlproject = (query,maxcount,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
 
-  deviceextModel.aggregate([{
+  deviceextModel.aggregate([
+    {$match:query},
+    {
   		$project: {
   			_id: 0,
   			catlprojectname: 1,
@@ -206,7 +207,9 @@ const getstat_catlproject = (maxcount,callbackfn)=>{
 }
 
 exports.getcountcar =  (actiondata,ctx,callback)=>{
-  getcount_car((err,result)=>{
+  let query = actiondata.query || {};
+  query["type"] = "CAR";
+  getcount_car(query,(err,result)=>{
     callback({
       cmd:'getcountcar_result',
       payload:result
@@ -215,7 +218,10 @@ exports.getcountcar =  (actiondata,ctx,callback)=>{
 }
 
 exports.getcountbus =  (actiondata,ctx,callback)=>{
-  getcount_bus((err,result)=>{
+  let query = actiondata.query || {};
+  query["type"] = "BUS";
+  console.log(`getcountbus-->${JSON.stringify(query)}`)
+  getcount_bus(query,(err,result)=>{
     callback({
       cmd:'getcountbus_result',
       payload:result
@@ -224,8 +230,10 @@ exports.getcountbus =  (actiondata,ctx,callback)=>{
 }
 
 exports.getusedyearcar =  (actiondata,ctx,callback)=>{
-  getusedyear('CAR',(err,result)=>{
-
+  let query = actiondata.query || {};
+  query["type"] = "CAR";
+  console.log(`getusedyearcar-->${JSON.stringify(query)}`)
+  getusedyear(query,(err,result)=>{
     callback({
       cmd:'getusedyearcar_result',
       payload:result
@@ -239,7 +247,10 @@ exports.getusedyearcar =  (actiondata,ctx,callback)=>{
 }
 
 exports.getusedyearbus =  (actiondata,ctx,callback)=>{
-  getusedyear('BUS',(err,result)=>{
+  let query = actiondata.query || {};
+  query["type"] = "BUS";
+  console.log(`getusedyearbus-->${JSON.stringify(query)}`)
+  getusedyear(query,(err,result)=>{
     debug(`getusedyearbus--->${JSON.stringify(result)}`)
     callback({
       cmd:'getusedyearbus_result',
@@ -250,7 +261,8 @@ exports.getusedyearbus =  (actiondata,ctx,callback)=>{
 
 exports.getstatprovince =  (actiondata,ctx,callback)=>{
   const maxcount = _.get(actiondata,'maxcount',20);
-  getstat_province(maxcount,(err,result)=>{
+  let query = actiondata.query || {};
+  getstat_province(query,maxcount,(err,result)=>{
     debug(`getstatprovince--->${JSON.stringify(result)}`)
     callback({
       cmd:'getstatprovince_result',
@@ -285,7 +297,8 @@ exports.getstatprovince =  (actiondata,ctx,callback)=>{
 
 exports.getstatcatlproject =  (actiondata,ctx,callback)=>{
   const maxcount = _.get(actiondata,'maxcount',20);
-  getstat_catlproject(maxcount,(err,result)=>{
+  let query = actiondata.query || {};
+  getstat_catlproject(query,maxcount,(err,result)=>{
     callback({
       cmd:'getstatcatlproject_result',
       payload:result
