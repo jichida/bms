@@ -44,9 +44,9 @@ const addlocationstring= (devicelist,config_mapdevicecity,callbackfn)=>{
   for(let i = 0 ;i < devicelist.length; i ++){
     let info = devicelist[i];
 
-    info.Province = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
+    info.Provice = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
     info.City = _.get(config_mapdevicecity,`${info.DeviceId}.city`,'未知');
-    info.County = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
+    info.Area = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
     retdevicelist.push(info);
   }
   callbackfn(retdevicelist);

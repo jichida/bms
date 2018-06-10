@@ -81,9 +81,9 @@ const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{
   let retalarmlist = [];
   for(let i = 0 ;i < alarmlist.length; i ++){
     let info = alarmlist[i];
-    info.Province = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
+    info.Provice = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
     info.City = _.get(config_mapdevicecity,`${info.DeviceId}.city`,'未知');
-    info.County = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
+    info.Area = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
     retalarmlist.push(info);
   }
   callbackfn(retalarmlist);
