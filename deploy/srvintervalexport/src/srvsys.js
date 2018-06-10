@@ -34,7 +34,8 @@ const cron_0 = (callbackfn)=>{
         callbackfn(null,positionfilepath);
       });
     });
-
+  });
+  
   fnsz.push((callbackfn)=>{
     export_device_ext((deviceextfilepath)=>{
       winston.getlog().info(`导出客档信息完毕:${deviceextfilepath}`);
@@ -50,7 +51,7 @@ const cron_0 = (callbackfn)=>{
       callbackfn(null,exportdir);
     });
   });
-  });
+
 
 
 
