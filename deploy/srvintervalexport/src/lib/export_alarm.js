@@ -2,8 +2,8 @@ const config = require('../config');
 const DBModels = require('../handler/models.js');
 const mongoose = require('mongoose');
 const moment = require('moment');
-const Iconv = require('iconv').Iconv;
-const iconv = new Iconv('UTF-8', 'GBK');
+// const Iconv = require('iconv').Iconv;
+// const iconv = new Iconv('UTF-8', 'GBK');
 const csvwriter = require('csvwriter');
 const fs = require('fs');
 const _ = require('lodash');
@@ -53,12 +53,11 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
 
   debug(`start filepath--->${filepath}`);
   const res = fs.createWriteStream(filepath,{
-    encoding:'ascii',
     autoClose: false
   });
   const csvfields = 'DeviceId,ALARM,Province,City,County';
-  res.write(iconv.convert(csvfields));
-  res.write(iconv.convert('\n'));
+  // res.write(iconv.convert(csvfields));
+  // res.write(iconv.convert('\n'));
 
   _.map(retlist,(item)=>{
     const newdoc = {
@@ -70,7 +69,7 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
     };
     csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
      if (!err && !!csv ) {
-         res.write(iconv.convert(csv));
+         res.write(csv);
        }
      });
   });
@@ -85,6 +84,7 @@ const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{
     info.Province = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
     info.City = _.get(config_mapdevicecity,`${info.DeviceId}.city`,'未知');
     info.County = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
+    retalarmlist.push(info);
   }
   callbackfn(retalarmlist);
 }

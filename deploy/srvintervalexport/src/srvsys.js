@@ -72,6 +72,7 @@ const cron_18 = (callbackfn)=>{
 
   const start_cron0 = ()=>{
     cron_0((err,result)=>{
+      debug(`start_cron0 result====>:${JSON.stringify(result)}`);
       const positionfilepath = result[0];
       const deviceextfilepath = result[1];
       const exportdir = result[2];
