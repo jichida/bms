@@ -91,7 +91,7 @@ const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{
 
 
 
-const startexport_export = (callbackfn)=>{
+const startexport_export = (config_mapdevicecity,callbackfn)=>{
   const momentprev = moment();//今日
   const curday = momentprev.format('YYYYMMDD');
   const CurDay = momentprev.format('YYYY-MM-DD');
