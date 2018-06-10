@@ -9,7 +9,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const async = require('async');
 const debug = require('debug')('srvinterval:alarm');
-const getdevice_location = require('../lib/getdevice_location');
+
 
 const getalarmfieldtotxt = (alarmfield)=>{
     const mapdict = config.mapdict;
@@ -78,6 +78,18 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   callbackfn(filepath);
 }
 
+const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{
+  let retalarmlist = [];
+  for(let i = 0 ;i < alarmlist.length; i ++){
+    let info = alarmlist[i];
+    info.Province = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
+    info.City = _.get(config_mapdevicecity,`${info.DeviceId}.city`,'未知');
+    info.County = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
+  }
+  callbackfn(retalarmlist);
+}
+
+
 
 const startexport_export = (callbackfn)=>{
   const momentprev = moment();//今日
@@ -102,15 +114,8 @@ const startexport_export = (callbackfn)=>{
     });
   }
 
-  const getpoint = (v)=>{
-    if(!v.Longitude){
-      return [0,0];
-    }
-    return [v.Longitude,v.Latitude];
-  }
-
   getAlarmlist((alarmlist)=>{
-    getdevice_location(alarmlist,getpoint,(retlist)=>{
+    addlocationstring(alarmlist,config_mapdevicecity,(retlist)=>{
       startexport_do(exportdir,curday,retlist,callbackfn);
     });
   });

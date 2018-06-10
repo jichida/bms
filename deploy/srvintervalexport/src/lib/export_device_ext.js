@@ -60,7 +60,7 @@ const startexport_do = (filename,callbackfn) =>{
     };
     callbackfn(newdoc);
   }
-  const query = {Ext:{$exists:true}};
+  const query = {};
   startexport({filename,dbModel,sort:{DeviceId:1},fields:null,csvfields,fn_convert,query},callbackfn);
 }
 const startexport_export = (callbackfn)=>{

@@ -9,7 +9,7 @@ const fs = require('fs');
 const _ = require('lodash');
 const async = require('async');
 const debug = require('debug')('srvinterval:position');
-const getdevice_location = require('../lib/getdevice_location');
+
 
 const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   const filepath = `${exportdir}/Position_${curday}.csv`;
@@ -40,8 +40,20 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   callbackfn(filepath);
 }
 
+const addlocationstring= (devicelist,config_mapdevicecity,callbackfn)=>{
+  let retdevicelist = [];
+  for(let i = 0 ;i < devicelist.length; i ++){
+    let info = devicelist[i];
 
-const startexport_export = (callbackfn)=>{
+    info.Province = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
+    info.City = _.get(config_mapdevicecity,`${info.DeviceId}.city`,'未知');
+    info.County = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
+  }
+  callbackfn(retdevicelist);
+}
+
+
+const startexport_export = (config_mapdevicecity,callbackfn)=>{
   const curday = moment().subtract(1, 'days').format('YYYYMMDD');
   const exportdir = config.exportdir;
 
@@ -57,29 +69,21 @@ const startexport_export = (callbackfn)=>{
       'LastHistoryTrack.GPSTime':1,
       'alarmtxtstat':1
     }).lean().exec((err,result)=>{
-      debug(err)
-      debug(result)
+      // debug(err)
+      // debug(result)
       rlst = [];
       if(!err && !!result){
         _.map(result,(item)=>{
           rlst.push(item);
         });
-
       }
       debug(`[获取所有设备个数]===>${rlst.length}`)
       callbackfn(rlst);
     });
   }
 
-  const getpoint = (v)=>{
-    if(!v.LastHistoryTrack){
-      return [0,0];
-    }
-    return [v.LastHistoryTrack.Longitude,v.LastHistoryTrack.Latitude];
-  }
-
   getDevicelist((devicelist)=>{
-    getdevice_location(devicelist,getpoint,(retlist)=>{
+    addlocationstring(devicelist,config_mapdevicecity,(retlist)=>{
       startexport_do(exportdir,curday,retlist,callbackfn);
     });
   });
