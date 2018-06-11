@@ -58,7 +58,7 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   const csvfields = 'DeviceId,ALARM,Province,City,County';
   // res.write(iconv.convert(csvfields));
   // res.write(iconv.convert('\n'));
-
+  let fnsz = [];
   _.map(retlist,(item)=>{
     const newdoc = {
       DeviceId:item.DeviceId,
@@ -67,14 +67,20 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
       City:item.City,
       County:item.Area
     };
-    csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-     if (!err && !!csv ) {
-         res.write(csv);
-       }
+    fnsz.push((callbackfn)=>{
+      csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+       if (!err && !!csv ) {
+           res.write(csv);
+         }
+       });
+       callbackfn(null,true);
      });
   });
-  res.end('');
-  callbackfn(filepath);
+  async.series(fnsz,(err,result)=>{
+    res.end('');
+    callbackfn(filepath);
+  });
+  
 }
 
 const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{
