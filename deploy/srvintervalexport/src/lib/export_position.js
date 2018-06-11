@@ -39,7 +39,6 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
            res.write(csv);
          }
          result = result+1;
-         callbackfn(null,true);
        });
 
   });
