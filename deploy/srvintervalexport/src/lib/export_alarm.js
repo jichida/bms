@@ -69,6 +69,7 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
 
   let result = 0;
   for(let i = 0 ;i < retlist.length ; i ++){
+    const item = retlist[i];
     const newdoc = {
       DeviceId:item.DeviceId,
       ALARM:item.alarmtxtstat,
