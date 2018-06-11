@@ -63,31 +63,33 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
 
   if(retlist.length === 0){
     res.end('');
+  }
+  else{
+    for(let i = 0 ;i < retlist.length ; i ++){
+      const item = retlist[i];
+      const newdoc = {
+        DeviceId:item.DeviceId,
+        ALARM:item.alarmtxtstat,
+        Province:item.Provice,
+        City:item.City,
+        County:item.Area
+      };
+      csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+        if (!err && !!csv ) {
+           res.write(csv);
+         }
+         if(i === retlist.length - 1){
+           debug(`alarm finsihed end`)
+           res.end('');
+         }
+       });
+    }
+  }
+
+  res.on('finish', () => {
+    debug(`finsihed alarm`)
     callbackfn(filepath);
-    return;
-  }
-
-  let result = 0;
-  for(let i = 0 ;i < retlist.length ; i ++){
-    const item = retlist[i];
-    const newdoc = {
-      DeviceId:item.DeviceId,
-      ALARM:item.alarmtxtstat,
-      Province:item.Provice,
-      City:item.City,
-      County:item.Area
-    };
-    csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-      if (!err && !!csv ) {
-         res.write(csv);
-       }
-       if(i === retlist.length - 1){
-         res.end('');
-         callbackfn(filepath);
-       }
-     });
-  }
-
+  });
 }
 
 const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{

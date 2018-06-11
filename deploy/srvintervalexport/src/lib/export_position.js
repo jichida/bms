@@ -26,30 +26,36 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
 
   if(retlist.length === 0){
     res.end('');
-    callbackfn(filepath);
-    return;
   }
-  for(let i = 0 ;i < retlist.length; i++){
-      const item = retlist[i];
-      const newdoc = {
-        DeviceId:item.DeviceId,
-        Province:item.Provice,
-        City:item.City,
-        County:item.Area
-      };
+  else{
+    for(let i = 0 ;i < retlist.length; i++){
+        const item = retlist[i];
+        const newdoc = {
+          DeviceId:item.DeviceId,
+          Province:item.Provice,
+          City:item.City,
+          County:item.Area
+        };
 
-      csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-        if (!err && !!csv ) {
-           res.write(csv);
-         }
-        //  result = result+1;
-        if(i === retlist.length - 1){
-          //last one
-          res.end('');
-          callbackfn(filepath);
-        }
-      });
+        csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+          if (!err && !!csv ) {
+             res.write(csv);
+           }
+          //  result = result+1;
+          if(i === retlist.length - 1){
+            //last one
+            debug(`position finsihed end`)
+            res.end('');
+          }
+        });
+    }
   }
+
+
+  res.on('finish', () => {
+    debug(`finsihed position`)
+    callbackfn(filepath);
+  });
 
 }
 
