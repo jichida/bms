@@ -28,6 +28,8 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   const res = fs.createWriteStream(filepath,{
     autoClose: false
   });
+  res.write(csvfields);
+  res.write('\n');
   const cursor = dbModel.find(query,fields).sort(sort).lean().cursor();
   cursor.on('error', (err)=> {
     // console.log(`算结束了啊..............`);
