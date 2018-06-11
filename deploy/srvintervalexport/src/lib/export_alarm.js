@@ -61,37 +61,32 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   res.write(csvfields);
   res.write('\n');
 
-  let fnsz = [];
-  let result = 0;
-  _.map(retlist,(item)=>{
-      const newdoc = {
-        DeviceId:item.DeviceId,
-        ALARM:item.alarmtxtstat,
-        Province:item.Provice,
-        City:item.City,
-        County:item.Area
-      };
-      csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-        if (!err && !!csv ) {
-           res.write(csv);
-         }
-         result = result + 1;
-       });
-
-  });
-
-
-  const checkiffinished = ()=>{
-    debug(`alarm checkiffinished-->${result},total:${retlist.length}`);
-
-    if(retlist.length === result){
-      res.end('');
-      callbackfn(filepath);
-      return;
-    }
-    setTimeout(checkiffinished, 1000 );
+  if(retlist.length === 0){
+    res.end('');
+    callbackfn(filepath);
+    return;
   }
-  checkiffinished();
+
+  let result = 0;
+  for(let i = 0 ;i < retlist.length ; i ++){
+    const newdoc = {
+      DeviceId:item.DeviceId,
+      ALARM:item.alarmtxtstat,
+      Province:item.Provice,
+      City:item.City,
+      County:item.Area
+    };
+    csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
+      if (!err && !!csv ) {
+         res.write(csv);
+       }
+       if(i === retlist.length - 1){
+         res.end('');
+         callbackfn(filepath);
+       }
+     });
+  }
+
 }
 
 const addlocationstring= (alarmlist,config_mapdevicecity,callbackfn)=>{

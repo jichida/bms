@@ -24,9 +24,13 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
   res.write(csvfields);
   res.write('\n');
 
-  let result = 0;
-  _.map(retlist,(item)=>{
-
+  if(retlist.length === 0){
+    res.end('');
+    callbackfn(filepath);
+    return;
+  }
+  for(let i = 0 ;i < retlist.length; i++){
+      const item = retlist[i];
       const newdoc = {
         DeviceId:item.DeviceId,
         Province:item.Provice,
@@ -38,22 +42,14 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
         if (!err && !!csv ) {
            res.write(csv);
          }
-         result = result+1;
-       });
-
-  });
-
-  const checkiffinished = ()=>{
-    debug(`position checkiffinished-->${result},total:${retlist.length}`);
-
-    if(retlist.length === result){
-      res.end('');
-      callbackfn(filepath);
-      return;
-    }
-    setTimeout(checkiffinished, 1000 );
+        //  result = result+1;
+        if(i === retlist.length - 1){
+          //last one
+          res.end('');
+          callbackfn(filepath);
+        }
+      });
   }
-  checkiffinished();
 
 }
 
