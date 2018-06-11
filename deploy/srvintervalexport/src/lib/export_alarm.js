@@ -72,12 +72,12 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
         County:item.Area
       };
       csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
-       if (!err && !!csv ) {
+        if (!err && !!csv ) {
            res.write(csv);
          }
+         result = result + 1;
        });
-       result = result + 1;
-     });
+
   });
 
 
