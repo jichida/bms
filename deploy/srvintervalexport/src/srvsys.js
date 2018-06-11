@@ -117,7 +117,7 @@ const cron_18 = (callbackfn)=>{
 
       const alarmfilename =  path.basename(alarmfilepath);
       winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${alarmfilename}`);
-      sftptosrv(`${config.exportdir}`,alarmfilename,(err,result)=>{w
+      sftptosrv(`${config.exportdir}`,alarmfilename,(err,result)=>{
         debug(`上传文件:${config.exportdir}/${alarmfilename}到ftp服务器`);
         winston.getlog().info(`上传文件:${config.exportdir}/${alarmfilename}到ftp服务器`);
       });
