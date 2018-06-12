@@ -1,8 +1,8 @@
 const _ = require('lodash');
 const csvwriter = require('csvwriter');
 const DBModels = require('./models.js');
-// const Iconv = require('iconv').Iconv;
-// const iconv = new Iconv('UTF-8', 'GBK');
+const Iconv = require('iconv').Iconv;
+const iconv = new Iconv('UTF-8', 'GBK');
 const moment  = require('moment');
 const config = require('../config');
 const fs = require('fs');
@@ -18,18 +18,18 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   const filepath = `${filename}`;
 
   debug(`start filepath--->${filepath}`);
-  // const res = fs.createWriteStream(filepath,{
-  //   encoding:'ascii',
-  //   autoClose: false
-  // });
-  // // console.log(iconv.convert(csvfields));
-  // res.write(iconv.convert(csvfields));
-  // res.write(iconv.convert('\n'));
   const res = fs.createWriteStream(filepath,{
+    encoding:'ascii',
     autoClose: false
   });
-  res.write(csvfields);
-  res.write('\n');
+  // console.log(iconv.convert(csvfields));
+  res.write(iconv.convert(csvfields));
+  res.write(iconv.convert('\n'));
+  // const res = fs.createWriteStream(filepath,{
+  //   autoClose: false
+  // });
+  // res.write(csvfields);
+  // res.write('\n');
   const cursor = dbModel.find(query,fields).sort(sort).lean().cursor();
   cursor.on('error', (err)=> {
     // console.log(`算结束了啊..............`);
@@ -45,7 +45,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
       fn_convert(doc,(newdoc)=>{
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
          if (!err && !!csv ) {
-             res.write(csv);
+             res.write(iconv.convert(csv));
            }
          });
       });
