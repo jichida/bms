@@ -117,6 +117,7 @@ const startexport_export = (config_mapdevicecity,callbackfn)=>{
     debug(`start getDevicelist===>`)
     const alarmModel = DBModels.RealtimeAlarmModel;
     alarmModel.find({
+      'warninglevel': {$in:['高','中','低']},
       CurDay,
     }).lean().exec((err,result)=>{
       rlst = [];
