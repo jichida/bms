@@ -77,7 +77,9 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
       };
       csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
         if (!err && !!csv ) {
-           res.write(iconv.convert(csv));
+          if(item.alarmtxtstat !== ''){
+            res.write(iconv.convert(csv));
+          }
          }
          if(i === retlist.length - 1){
            debug(`alarm finsihed end`)
@@ -117,11 +119,7 @@ const startexport_export = (config_mapdevicecity,callbackfn)=>{
     debug(`start getDevicelist===>`)
     const alarmModel = DBModels.RealtimeAlarmModel;
     alarmModel.find({
-      'alarmtxtstat': {
-        '$exists':true,
-        '$ne':''
-      },
-      CurDay,
+      CurDay
     }).lean().exec((err,result)=>{
       rlst = [];
       if(!err && !!result){
