@@ -11,7 +11,7 @@ const OsmgeoModel = mongoose.model('geo_osm',  OsmgeoSchema );
 const getpostion_frompos = (point,callback)=>{
   if(point[0] === 0 || !point){
     callback({
-      'Provice':'未知',
+      'Province':'未知',
       'City':'未知',
       'Area':'未知',
     });
@@ -54,7 +54,7 @@ const getpostion_frompos = (point,callback)=>{
   ],
   (err, result)=> {
     let resultobj = {
-      'Provice':'未知',
+      'Province':'未知',
       'City':'未知',
       'Area':'未知',
     };
@@ -63,7 +63,7 @@ const getpostion_frompos = (point,callback)=>{
       // ////console.log(`result=>${JSON.stringify(result)}`);
       _.map(result,(v)=>{
         if(_.get(v,'admin_level','') === '4'){
-          resultobj['Provice'] = _.get(v,'_id','未知');
+          resultobj['Province'] = _.get(v,'_id','未知');
         }
         else if(_.get(v,'admin_level','') === '5'){
           resultobj['City'] = _.get(v,'_id','未知');
@@ -82,7 +82,7 @@ const getlist_pos = (list,fngetpoint,callback)=>{
   let asyncfnsz = [];
   _.map(list,(v)=>{
     const fn = (callback)=>{
-      if(!v.Provice){
+      if(!v.Province){
         const point = fngetpoint(v);
         ////console.log(`call:${JSON.stringify(point)}`)
         getpostion_frompos(point,(retobj)=>{

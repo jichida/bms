@@ -75,7 +75,7 @@ const getstat_province = (query,maxcount,callbackfn)=>{
     {
   		$project: {
   			_id: 0,
-  			provice: 1,
+  			province: 1,
   			bustype: {
   				$cond: [{
   					$eq: ["$type", 'BUS']
@@ -90,7 +90,7 @@ const getstat_province = (query,maxcount,callbackfn)=>{
   	},
   	{
   		$group: {
-  			_id:'$provice',
+  			_id:'$province',
   			buscount: {
   				$sum: '$bustype'
   			},

@@ -21,7 +21,7 @@ const mapkeydeviceext1 = {
   "车辆型号": "vehiclemodel",
   "装车日期":"dateloading",
   "整车出厂日期":"datevehiclefactory",
-  "省份": "provice",
+  "省份": "province",
   "地区": "area",
   "里程(暂无，保留)": "mileage",
   "客户名称": "customername",
@@ -58,7 +58,7 @@ const mapkeydeviceext2 = {
   "vehiclemodel":"车辆型号",
   "dateloading": "装车日期",
   "datevehiclefactory":"整车出厂日期",
-  "provice": "省份",
+  "province": "省份",
   "area": "地区",
   "mileage": "里程(暂无，保留)",
   "customername": "客户名称",
@@ -78,7 +78,7 @@ const requiredlistfield = [
   "parallelnumber",	"typeelectriccore","catlprojectname","projectpn","batterysystemflownumber",
   "BMUhardwareversion",	"CSChardwareversion","BMUsoftwareversion","CSCsoftwareversion","datebatterystorage",
   "datebatterydelivery","vehicleproductionplant","vehiclemodel","dateloading","datevehiclefactory",
-  "provice","area","mileage","customername","customercontactaddress",
+  "province","area","mileage","customername","customercontactaddress",
   "customercontact","customercontactphone","purpose","datepurchase","datenewcar",
   "licenseplatenumber","nameaftersaleservice","usedyear"
 ];

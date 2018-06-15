@@ -24,12 +24,12 @@ let startmodule = (app)=>{
     const csvfields = `设备编号,定位时间,省,市,区`;
     const dbfields = 'DeviceId Latitude Longitude GPSTime';
     const fn_convert = (doc,callbackfn)=>{
-      if(!!doc.Provice){
+      if(!!doc.Province){
         //如果已经存在省市区
         callbackfn({
           '设备编号':doc.DeviceId,
           '定位时间':doc.GPSTime,
-          '省':doc.Provice,
+          '省':doc.Province,
           '市':doc.City,
           '区':doc.Area,
         });
@@ -40,7 +40,7 @@ let startmodule = (app)=>{
           callbackfn({
             '设备编号':newdoc.DeviceId,
             '定位时间':newdoc.GPSTime,
-            '省':newdoc.Provice,
+            '省':newdoc.Province,
             '市':newdoc.City,
             '区':newdoc.Area,
           });
@@ -119,7 +119,7 @@ BMU供电电压(V),交流充电供电电压(V),直流充电供电电压(V),CC2�
         "车辆型号": _.get(doc,"vehiclemodel",''),
         "装车日期":_.get(doc,"dateloading",''),
         "整车出厂日期":_.get(doc,"datevehiclefactory",''),
-        "省份": _.get(doc,"provice",''),
+        "省份": _.get(doc,"province",''),
         "地区": _.get(doc,"area",''),
         "里程(暂无，保留)": _.get(doc,"mileage",''),
         "客户名称": _.get(doc,"customername",''),

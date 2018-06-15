@@ -43,7 +43,7 @@ const startexport_do = (filename,callbackfn) =>{
       "车辆型号": _.get(doc,"vehiclemodel",''),
       "装车日期":_.get(doc,"dateloading",''),
       "整车出厂日期":_.get(doc,"datevehiclefactory",''),
-      "省份": _.get(doc,"provice",''),
+      "省份": _.get(doc,"province",''),
       "地区": _.get(doc,"area",''),
       "里程(暂无，保留)": _.get(doc,"mileage",''),
       "客户名称": _.get(doc,"customername",''),

@@ -79,7 +79,7 @@ class TablePosition extends React.Component {
       itemnew[`RDB编号`] = get(item,'DeviceId','');
       itemnew[`项目`] = get(item,'catlprojectname','');
       itemnew[`系统Barcode`] = get(item,'batterysystemflownumber','');
-      itemnew[`省份`] = get(item,'provice','');
+      itemnew[`省份`] = get(item,'province','');
       itemnew[`地区`] = get(item,'area','');
       itemnew[`生产日期`] = get(item,'datebatterydelivery','');
       itemnew[`出厂日期`] = get(item,'datevehiclefactory','');
