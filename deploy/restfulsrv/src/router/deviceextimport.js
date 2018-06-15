@@ -110,10 +110,12 @@ const startuploader = (app)=>{
         const devicedata = exceljson[i];
         const DeviceId = devicedata[`DeviceId`];
         const province = devicedata[`province`];
-        if(_.indexOf(deviceids, DeviceId) === -1){
-          errmessage = `${DeviceId}不存在`;
-          issuccess = false;
-          break;
+        if(!!DeviceId && DeviceId !== ''){
+          if(_.indexOf(deviceids, DeviceId) === -1){
+            errmessage = `${DeviceId}不存在`;
+            issuccess = false;
+            break;
+          }
         }
         if(_.indexOf(provincenames, province) === -1){
           issuccess = false;
