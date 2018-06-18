@@ -80,9 +80,7 @@ const getDevice = (callbackfn)=>{
     rlst = [];
     if(!err && !!result){
       _.map(result,(item)=>{
-        rlst.push({
-          DeviceId:item.DeviceId,
-        });
+        rlst.push(item.DeviceId);
       });
     }
     callbackfn(rlst);
@@ -112,7 +110,7 @@ const startuploader = (app)=>{
         const province = devicedata[`province`];
         if(!!DeviceId && DeviceId !== ''){
           if(_.indexOf(deviceids, DeviceId) === -1){
-            errmessage = `${DeviceId}不存在`;
+            errmessage = `${DeviceId}不存在,${i}条记录`;
             issuccess = false;
             break;
           }
