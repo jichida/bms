@@ -138,7 +138,7 @@ exports.catl =  (actiondata,ctx,callback)=>{
   });
 
   async.parallel(fnsz,(err,result)=>{
-    debug(`catl--->${JSON.stringify(result)}`)
+    // debug(`catl--->${JSON.stringify(result)}`)
     callback({
       cmd:'catl_result',
       payload:{
