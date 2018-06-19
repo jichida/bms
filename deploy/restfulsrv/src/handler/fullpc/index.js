@@ -8,7 +8,7 @@ const historytrack = require('../common/historytrack');
 const userrelate = require('../common/userrelate');
 const catlworking = require('../fullcommon/catlworking');
 const deviceext = require('../fullcommon/deviceext');
-const warningf = require('../fullcommon/warningf');
+
 
 const debug = require('debug')('srvapp:handler');
 //司机端
@@ -21,8 +21,7 @@ const actiondatahandler = {
 };
 
 const authhandler = {
-  'catl_warningf':warningf.catl_warningf,
-
+  'deviceext':deviceext.deviceext,
   'getcountcar':deviceext.getcountcar,
   'getcountbus':deviceext.getcountbus,
   'getusedyearcar':deviceext.getusedyearcar,
@@ -30,8 +29,8 @@ const authhandler = {
   'getstatprovince':deviceext.getstatprovince,
   'getstatcatlproject':deviceext.getstatcatlproject,
 
-
-  'catl_working':catlworking.catl_working,
+  'catl':catlworking.catl,
+  'catl_warningf':catlworking.catl_warningf,
   'catl_cycle':catlworking.catl_cycle,
   'catl_celltemperature':catlworking.catl_celltemperature,
   'catl_cyclecount':catlworking.catl_cyclecount,
