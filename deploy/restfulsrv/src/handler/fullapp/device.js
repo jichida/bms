@@ -22,7 +22,7 @@ const async = require('async');
     'alarmtxtstat':1,
   })
 */
-exports.querydevice = (actiondata,ctx,callback)=>{
+exports.querydevicealarm = (actiondata,ctx,callback)=>{
 
   debug(`start querydevice ----> `);
 
@@ -77,12 +77,13 @@ exports.querydevice = (actiondata,ctx,callback)=>{
 
     async.parallel(fnsz,(err,result)=>{
         srvsystem.loginuser_add(ctx.userid,ctx.connectid);//开始监听
-        let list = [];
-        list = list.concat(result[0],result[1],result[2]);
-        debug(`device query result ----> ${JSON.stringify(list)}`);
+        const alarm3 = result[0];
+        const alarm2 = result[1];
+        const alarm1 = result[2];
+
         callback({
-          cmd:'querydevice_result',
-          payload:{list}
+          cmd:'querydevicealarm_result',
+          payload:{alarm3,alarm2,alarm1}
         });
     });
     // debug(`device query ${JSON.stringify(query)}`);

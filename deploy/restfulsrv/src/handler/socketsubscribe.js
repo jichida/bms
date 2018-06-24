@@ -3,7 +3,7 @@ const _ =  require('lodash');
 const config = require('../config.js');
 const realtimealarm = require('./common/realtimealarm');
 const debug = require('debug')('srvapp:pcpush');
-
+const fullappdevice = require('./fullapp/device');
 
 const pushusermessage = (socket,ctx,data)=>{
   if(data.length > 0){
@@ -21,7 +21,15 @@ const usersubfn  = (socket,ctx)=>{
 
       if(_.startsWith(msg,config.pushdevicetopic) && topicsz[1] === `${ctx.userid}`){
           // const DeviceId = topicsz[1];
-          pushusermessage(socket,ctx,data);
+          if(ctx.usertype !== 'fullapp'){
+            pushusermessage(socket,ctx,data);
+          }
+          else{
+            fullappdevice.querydevicealarm({},ctx,(result)=>{
+              socket.emit(result.cmd,result.payload);
+            });
+          }
+
       }
 
   };//for eachuser

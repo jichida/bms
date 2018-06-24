@@ -37,7 +37,7 @@ const authhandler = {
   'catl_cyclecount':catlworking.catl_cyclecount,
   'catl_dxtemperature':catlworking.catl_dxtemperature,
 
-  'querydevice':deviceapp.querydevice,
+  'querydevicealarm':deviceapp.querydevicealarm,
   'querydevicegroup':device.querydevicegroup,
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,
   'deviceinfoquerychart':historydevice.deviceinfoquerychart,
