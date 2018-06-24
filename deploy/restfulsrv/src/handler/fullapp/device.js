@@ -22,6 +22,10 @@ const async = require('async');
     'alarmtxtstat':1,
   })
 */
+const getmoment =()=>{
+  return moment();
+}
+
 exports.querydevicealarm = (actiondata,ctx,callback)=>{
 
   debug(`start querydevice ----> `);
@@ -75,15 +79,109 @@ exports.querydevicealarm = (actiondata,ctx,callback)=>{
       });
     });
 
+    const fn_online = (callbackfn)=>{
+      const dbModel = DBModels.SystemConfigModel;
+      dbModel.findOne({}).lean().exec((err,systemconfig)=>{
+          let SettingOfflineMinutes = 20;
+          if(!err && !!systemconfig){
+              // systemconfig = systemconfig.toJSON();
+              SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',SettingOfflineMinutes);
+           }
+           const curtimebefore = getmoment().subtract(SettingOfflineMinutes, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+          //  //console.log(`curtimebefore:${curtimebefore}`);
+           let query = {
+             'last_Latitude': {$ne:0},
+             'last_GPSTime': {$gt: curtimebefore,$exists:true}
+           };
+           if(!query.DeviceId && !isall){
+             query.DeviceId = {'$in':deviceIds};
+           }
+           const deviceModel = DBModels.DeviceModel;
+           deviceModel.count(query,(err, list)=> {
+               callbackfn(err,list);
+           });
+       });
+    };
+
+
+    const fn_total = (callbackfn)=>{
+        const deviceModel = DBModels.DeviceModel;
+        let query = {};
+        if(!query.DeviceId && !isall){
+          query.DeviceId = {'$in':deviceIds};
+        }
+        deviceModel.count(query,(err, list)=> {
+            callbackfn(err,list);
+        });
+    };
+
+    const fn_alarm0 = (callbackfn)=>{
+        const realtimealarmModel = DBModels.DeviceModel;
+        let query = {
+           'warninglevel':'高',
+         };
+         if(!query.DeviceId && !isall){
+           query.DeviceId = {'$in':deviceIds};
+         }
+        realtimealarmModel.count(query,(err, list)=> {
+            callbackfn(err,list);
+        });
+    };
+
+    const fn_alarm1 = (callbackfn)=>{
+        const realtimealarmModel = DBModels.DeviceModel;
+        let query = {
+           'warninglevel':'中',
+         };
+         if(!query.DeviceId && !isall){
+           query.DeviceId = {'$in':deviceIds};
+         }
+        realtimealarmModel.count(query,(err, list)=> {
+            callbackfn(err,list);
+        });
+    };
+
+    const fn_alarm2 = (callbackfn)=>{
+        const realtimealarmModel = DBModels.DeviceModel;
+        let query = {
+           'warninglevel':'低',
+         };
+         if(!query.DeviceId && !isall){
+           query.DeviceId = {'$in':deviceIds};
+         }
+        realtimealarmModel.count(query,(err, list)=> {
+            callbackfn(err,list);
+        });
+    };
+
+    fnsz.push(fn_online);
+    fnsz.push(fn_total);
+    fnsz.push(fn_alarm0);
+    fnsz.push(fn_alarm1);
+    fnsz.push(fn_alarm2);
+
     async.parallel(fnsz,(err,result)=>{
         srvsystem.loginuser_add(ctx.userid,ctx.connectid);//开始监听
         const alarm3 = result[0];
         const alarm2 = result[1];
         const alarm1 = result[2];
-
+        const countonline = result[3];
+        const counttotal = result[4];
+        const countalarm3 = result[5];
+        const countalarm2 = result[6];
+        const countalarm1 = result[7];
         callback({
           cmd:'querydevicealarm_result',
-          payload:{alarm3,alarm2,alarm1}
+          payload:{
+            alarm3,
+            alarm2,
+            alarm1,
+            countonline,
+            counttotal,
+            countalarm3,
+            countalarm2,
+            countalarm1
+          }
         });
     });
     // debug(`device query ${JSON.stringify(query)}`);
