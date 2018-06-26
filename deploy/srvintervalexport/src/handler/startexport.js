@@ -30,12 +30,13 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   // });
   // res.write(csvfields);
   // res.write('\n');
+  let icount = 0;
   const cursor = dbModel.find(query,fields).sort(sort).lean().cursor();
   cursor.on('error', (err)=> {
     // console.log(`算结束了啊..............`);
     res.end('',()=>{
       debug(`end file--->${filename}`);
-      if(cursor.count() === 0){
+      if(icount === 0){
         //delete file
         fs.unlinkSync(filename);
       }
@@ -46,6 +47,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
 
   cursor.on('data', (doc)=>
   {
+      icount++;
       // doc = JSON.parse(JSON.stringify(doc));
       // debug(`get record->${doc.DataTime}`)
       fn_convert(doc,(newdoc)=>{
@@ -59,7 +61,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   on('end', ()=> {
       res.end('',()=>{
         debug(`end file--->${filename}`);
-        if(cursor.count() === 0){
+        if(icount === 0){
           //delete file
           fs.unlinkSync(filename);
         }
