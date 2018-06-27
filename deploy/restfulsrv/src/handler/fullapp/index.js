@@ -22,6 +22,8 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'changepwd':userlogin.changepwd,
+  
   'deviceext':deviceext.deviceext,
   'getcountcar':deviceext.getcountcar,
   'getcountbus':deviceext.getcountbus,
