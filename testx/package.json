@@ -13,11 +13,12 @@
     "convert-excel-to-json": "^1.2.1",
     "csvtojson": "^1.1.9",
     "expr-eval": "^1.2.0",
-    "node-rdkafka":"^2.2.2",
     "kafka-node": "^2.3.0",
     "lodash": "^4.17.4",
+    "mathjs": "^5.0.0",
     "moment": "^2.18.1",
     "mongoose": "^4.13.4",
+    "node-rdkafka": "^2.2.2",
     "node-rules": "^3.1.0",
     "uuid": "^3.1.0"
   }
