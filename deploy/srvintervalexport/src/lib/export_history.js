@@ -48,7 +48,7 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
       startexport_do(item.DeviceId,exportdir,curday,callbackfn);
     });
   });
-  async.parallel(fnsz,(err,result)=>{
+  async.parallelLimit(fnsz,config.batchcount,(err,result)=>{
     callbackfn(devicelist);
   });
 }
@@ -64,27 +64,32 @@ const startexport_export = (devicelist,callbackfn)=>{
 
   }
 
-  winston.getlog().info(`新建一个目录${exportdir}`);
-
-  let success_list = [];
-  const fnsz = [];
-  for(let i = 0 ;i < devicelist.length; i += config.batchcount){
-    const lend = i+config.batchcount > devicelist.length?devicelist.length:i+config.batchcount;
-    const target_devicelist = devicelist.slice(i, lend);
-    fnsz.push((callbackfn)=>{
-      startexport_batch(target_devicelist,exportdir,curday,(retlist)=>{
-        success_list = _.concat(success_list, retlist);
-        debug(`导出历史数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
-        callbackfn(null,true);
-      });
-    });
-
-  }
-
-  async.series(fnsz,(err,result)=>{
-    winston.getlog().info(`导出结果【历史数据】,成功【${success_list.length}】`);
+   let success_list = [];
+   winston.getlog().info(`新建一个目录${exportdir}`);
+   startexport_batch(devicelist,exportdir,curday,(retlist)=>{
+    success_list = _.concat(success_list, retlist);
+    debug(`导出历史数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
     callbackfn(exportdir);
   });
+  // let success_list = [];
+  // const fnsz = [];
+  // for(let i = 0 ;i < devicelist.length; i += config.batchcount){
+  //   const lend = i+config.batchcount > devicelist.length?devicelist.length:i+config.batchcount;
+  //   const target_devicelist = devicelist.slice(i, lend);
+  //   fnsz.push((callbackfn)=>{
+  //     startexport_batch(target_devicelist,exportdir,curday,(retlist)=>{
+  //       success_list = _.concat(success_list, retlist);
+  //       debug(`导出历史数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
+  //       callbackfn(null,true);
+  //     });
+  //   });
+  //
+  // }
+  //
+  // async.series(fnsz,(err,result)=>{
+  //   winston.getlog().info(`导出结果【历史数据】,成功【${success_list.length}】`);
+  //   callbackfn(exportdir);
+  // });
 }
 
 const start = (callbackfn)=>{
