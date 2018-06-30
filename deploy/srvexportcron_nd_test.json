@@ -1,9 +1,9 @@
-module.exports = {
-  apps : [
+{
+  "apps" : [
       {
-        name: "srvexport",
-        script: "/root/bms/deploy/srvintervalexport/index.js",
-        env: {
+        "name": "srvexport",
+        "script": "/root/bms/deploy/srvintervalexport/index.js",
+        "env": {
           "NODE_ENV": "production",
           "DEBUG":"srvinterval:*",
           "DEBUG_COLORS":"1",
