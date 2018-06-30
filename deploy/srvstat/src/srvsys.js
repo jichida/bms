@@ -10,7 +10,7 @@ let idmap = {};
 const getDBCount = (dbModel,idstring,callbackfn)=>{
   dbModel.count({},(err,result)=>{
     if(!!idmap[idstring]){
-      const inccount = idmap[idstring].totalcount - result;
+      const inccount = result - idmap[idstring].totalcount;
       idmap[idstring]={
         curhour:moment().format('YYYY-MM-DD HH:mm'),
         totalcount:result,

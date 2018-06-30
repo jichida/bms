@@ -11,9 +11,6 @@ const debug = require('debug')('srvinterval:start');
 
 debug(`start=====>version:${config.version}`);
 
-debug(`==========>isnow:${config.isnow},curday:${config.curday}`);
-debug(`==========>exportFlag:${config.exportFlag},DeviceId:${config.DeviceId}`);
-
 winston.initLog();
 process.setMaxListeners(0);
 
@@ -46,10 +43,14 @@ dbdictModel.find({
         unit:v.unit
       }
     });
-    //每天0点开始工作
-    job.start_cron0();
-    //每天18点开始工作
-    job.start_cron18();
+
+    winston.getlog().info(`==TEST模式？${config.istest},batchcount:${config.batchcount}===`);
+    if(config.istest){
+      //每天0点开始工作
+      job.start_cron0();
+      //每天18点开始工作
+      job.start_cron18();
+    }
 
   }
   config.mapdict = _.merge(config.mapdict,mapdict);

@@ -8,7 +8,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const async = require('async');
 const debug = require('debug')('srvinterval:history');
-const batchcount = 500;
+
 const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
   const curdays = moment(curday).format('YYYYMMDD');
   const TimeKey = moment(curday).format('YYMMDD');
@@ -68,8 +68,8 @@ const startexport_export = (devicelist,callbackfn)=>{
 
   let success_list = [];
   const fnsz = [];
-  for(let i = 0 ;i < devicelist.length; i += batchcount){
-    const lend = i+batchcount > devicelist.length?devicelist.length:i+batchcount;
+  for(let i = 0 ;i < devicelist.length; i += config.batchcount){
+    const lend = i+config.batchcount > devicelist.length?devicelist.length:i+config.batchcount;
     const target_devicelist = devicelist.slice(i, lend);
     fnsz.push((callbackfn)=>{
       startexport_batch(target_devicelist,exportdir,curday,(retlist)=>{
