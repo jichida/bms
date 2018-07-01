@@ -10,7 +10,7 @@ const config =  {
   exportFlag:process.env.exportFlag || 'all',
   exportdir:process.env.exportdir ||'../../dist/exportdir',
   istest:process.env.istest==='true'?true:false,
-  batchcount:parseInt(_.get(process.env,'batchcount','800')),
+  batchcount:parseInt(_.get(process.env,'batchcount','500')),
   version:'1.1.0',
   mapdict:{},
   srvsftp:{

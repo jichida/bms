@@ -33,10 +33,10 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
   const query = {
     DeviceId,
     TimeKey,//
-    DataTime:{
-      $gte:`${curday} 00:00:00`,
-      $lte:`${curday} 23:59:59`,
-    }
+    // DataTime:{
+    //   $gte:`${curday} 00:00:00`,
+    //   $lte:`${curday} 23:59:59`,
+    // }
   };
   startexport({filename,dbModel,sort:{DataTime:1},fields:null,csvfields,fn_convert,query},callbackfn);
 }
