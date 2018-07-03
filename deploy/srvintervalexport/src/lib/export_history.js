@@ -56,9 +56,16 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
 const startexport_export = (devicelist,callbackfn)=>{
   const moments = moment().subtract(1, 'days');
   const curday = moments.format('YYYY-MM-DD');
-  const exportdir = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
+  const exportdirbase = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
+  let exportdir = exportdirbase;
   try{
+    let i = 0;
+    while(fs.existsSync(exportdir)){
+      exportdir = `${exportdirbase}(${i})`;
+      i++;
+    }
     fs.mkdirSync(exportdir);
+
   }
   catch(e){
 
