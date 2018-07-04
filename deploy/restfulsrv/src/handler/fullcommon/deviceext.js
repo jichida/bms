@@ -360,6 +360,31 @@ exports.deviceext=  (actiondataorg,ctx,callback)=>{
     });
   });
 }
+
+
+exports.pushdeviceext = (actiondataorg,ctx,callback)=>{
+  const deviceextModel = DBModels.DeviceExtModel;
+  deviceextModel.find({},{
+    DeviceId:1,
+    usedyear:1,
+    type:1,
+    province:1,
+    catlprojectname:1
+  }).lean().exec((err,list)=>{
+    if(!err){
+      callback({
+        cmd:'pushdeviceext',
+        payload:{list}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'pushdeviceext'}
+      });
+    }
+  });
+}
 /**
 
 

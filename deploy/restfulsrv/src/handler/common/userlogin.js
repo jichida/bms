@@ -9,7 +9,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
 const srvsystem = require('../../srvsystem.js');
-
+const fulldeviceext = require('../fullcommon/deviceext');
 const debug = require('debug')('srvapp:userlogin');
 
 const userloginsuccess =(user,callback,ctx)=>{
@@ -76,9 +76,14 @@ let setloginsuccess = (ctx,user,callback)=>{
       payload:userdata
     });
 
-
-
-
+    if(ctx.usertype === 'fullpc' || ctx.usertype === 'fullapp'){
+      setImmediate(()=>{
+        fulldeviceext.pushdeviceext({},ctx,(result)=>{
+          debug(`----send push deviceext----`);
+          ctx.socket.emit(result.cmd,result.payload);
+        });
+      });
+    }
 };
 
 

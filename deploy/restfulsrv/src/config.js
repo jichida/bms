@@ -20,7 +20,7 @@ const config =  {
   loginuserexptime_admin:60*60*1,//用户登录有效期,1小时
   loginuserexptime_pc:60*60*2,//用户登录有效期,2小时
   loginuserexptime_app:60*60*24*30,//用户登录有效期,30天
-  mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
+  mongodburl:process.env.MONGO_URL || 'mongodb://bms.com28.cn:27018/bmscatl',
   mysqlconfig:{
     host: process.env.mysqlhost || '121.204.135.87',
     user: process.env.mysqluser || 'root',
@@ -29,6 +29,7 @@ const config =  {
   },
   mapdict:{},
   pushdevicetopic:'pushdevice',
+  pushdeviceexttopic:'pushdeviceext',
   defaultmappopclusterfields:[
     'TotalWorkCycle','ChargeACVoltage','BAT_I_HVS',
   ],

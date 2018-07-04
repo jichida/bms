@@ -42,7 +42,6 @@ const authhandler = {
 
 module.exports = (socket,actiondata,ctx)=>{
   debug("app端获取数据--->" + JSON.stringify(actiondata));
-  debug("app端获取上下文--->" + JSON.stringify(ctx));
   try{
       if(ctx.usertype !== 'app'){
         debug("不是正确的客户端--->" + actiondata.cmd);

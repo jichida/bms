@@ -17,6 +17,7 @@ const startwebsocketsrv = (http)=>{
     ////console.log('a user connected');
 
     let ctx = {
+      socket:socket,
       connectid:uuid.v4(),
       remoteip:socket.handshake.headers['x-forwarded-for'] || socket.handshake.address.address
     };//for each connection
@@ -27,8 +28,6 @@ const startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'pc';
       }
-      // ////console.log('\npc get message:' + JSON.stringify(payload));
-      winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserpc(socket,payload,ctx);
     });
 
@@ -36,8 +35,6 @@ const startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'app';
       }
-      // ////console.log('\napp get message:' + JSON.stringify(payload));
-      winston.getlog().info('ctx:', JSON.stringify(ctx));
       handleuserapp(socket,payload,ctx);
     });
 
@@ -45,8 +42,6 @@ const startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'fullpc';
       }
-      // ////console.log('\npc get message:' + JSON.stringify(payload));
-      winston.getlog().info('ctx:', JSON.stringify(ctx));
       handlefullpc(socket,payload,ctx);
     });
 
@@ -54,8 +49,6 @@ const startwebsocketsrv = (http)=>{
       if(!ctx.usertype){
         ctx.usertype = 'fullapp';
       }
-      // ////console.log('\napp get message:' + JSON.stringify(payload));
-      winston.getlog().info('ctx:', JSON.stringify(ctx));
       handlefullapp(socket,payload,ctx);
     });
 
