@@ -7,7 +7,8 @@ const job = require('./src/srvsys');
 const schedule = require('node-schedule');
 // const startsrv = require('./src/test');//《------
 const moment = require('moment');
-const debug = require('debug')('srvinterval:start');
+const debug = require('debug')('srvstat:start');
+
 
 debug(`start=====>version:${config.version}`);
 
@@ -27,46 +28,18 @@ mongoose.connect(config.mongodburl,{
   });
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-// winston.getlog().info(`start kafkadb ok`);
-const alname = 'AL_';
-//还应该包括所有AL开头字母的信息
-const dbdictModel = DBModels.DataDictModel;
-dbdictModel.find({
-    name:{'$regex':alname, $options: "i"}
-  },(err,dictlist)=>{
-  let mapdict = {};
-  if(!err && dictlist.length > 0){
-    _.map(dictlist,(v)=>{
-      mapdict[v.name] = {
-        name:v.name,
-        showname:v.showname,
-        unit:v.unit
-      }
-    });
-    const curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-    winston.getlog().info(`==TEST模式？${config.istest},batchcount:${config.batchcount}===${curtime}`);
-    if(config.istest){
-      //每天0点开始工作
-      job.start_cron0();
-      //每天18点开始工作
-      job.start_cron18();
-    }
 
-  }
-  config.mapdict = _.merge(config.mapdict,mapdict);
 
 winston.getlog().info(`==程序启动${config.version}===`);
+job.start_cron0();
 
-  schedule.scheduleJob('0 0 * * *', ()=>{
-      //每天0点开始工作
-      job.start_cron0();
-  });
 
-  schedule.scheduleJob('0 18 * * *', ()=>{
-    //每天18点开始工作
-    job.start_cron18();
-  });
+schedule.scheduleJob('0 * * * *', ()=>{
+    //每天0点开始工作
+    job.start_cron0();
 });
+
+
 
 
 process.on('unhandledRejection', (err) => {
@@ -76,8 +49,5 @@ process.on('unhandledRejection', (err) => {
 process.on('unhandledException', (err) => {
   winston.getlog().info(`unhandledException:${JSON.stringify(err)}`);
 })
-
-
-
 
 winston.getlog().info(`===执行到末尾===`);

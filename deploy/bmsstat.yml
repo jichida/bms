@@ -1,0 +1,18 @@
+version: '2'
+services:
+    bmsserver:
+      image: node:6.11.2
+      restart: always
+      command: node --max-old-space-size=8192 ./index.js
+      working_dir: /app
+      volumes:
+        - /etc/localtime:/etc/localtime:ro
+        - /root/bms/deploy/srvstat:/app
+        - /root/bms/deploy/dist/log:/log
+      environment:
+        - DEBUG=srvapp:*,-mquery
+        - DEBUG_COLORS=1
+        - MONGO_URL=mongodb://192.168.2.17:27007,192.168.2.18:27007/bmscatl?readPreference=secondaryPreferred
+        - mongos=true
+        - logdir=/log
+      network_mode: "host"
