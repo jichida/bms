@@ -56,16 +56,22 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
 const startexport_export = (devicelist,callbackfn)=>{
   const moments = moment().subtract(1, 'days');
   const curday = moments.format('YYYY-MM-DD');
-  const exportdir = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
+  const exportdirbase = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
+  let exportdir = exportdirbase;
+  let i = 1;
   try{
+    while(fs.existsSync(exportdir)){
+      exportdir = `${exportdirbase}(${i})`;
+      i++;
+    }
     fs.mkdirSync(exportdir);
   }
   catch(e){
-
+    winston.getlog().info(`--->${JSON.stringify(e)}`);
   }
 
    let success_list = [];
-   winston.getlog().info(`新建一个目录${exportdir}`);
+   winston.getlog().info(`新建一个目录${exportdir},${i}`);
    startexport_batch(devicelist,exportdir,curday,(retlist)=>{
     success_list = _.concat(success_list, retlist);
     debug(`导出历史数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
