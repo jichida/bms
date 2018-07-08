@@ -9,7 +9,7 @@
           "DEBUG_COLORS":"1",
           "MONGO_URL":"mongodb://192.168.2.17:27007,192.168.2.18:27007/bmscatl",
           "mongos":"true",
-          "batchcount":"5000",
+          "batchcount":"1000",
           "logdir":"/catlcluster/log",
           "exportdir":"/catlcluster/exportdir"
         },
