@@ -7,6 +7,7 @@ const moment  = require('moment');
 const config = require('../config');
 const fs = require('fs');
 const debug = require('debug')('srvinterval:export');
+const winston = require('../log/log.js');
 
 const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},callbackfn)=>{
   // const filename = 'db-data-' + new Date().getTime() + '.csv';
@@ -31,9 +32,13 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   // res.write(csvfields);
   // res.write('\n');
   let icount = 0;
-  const cursor = dbModel.find(query,fields).sort(sort).lean().cursor();
+  // 'timeout: true' gets translated by the mongodb driver into a `noCursorTimeout` http://mongodb.github.io/node-mongodb-native/2.0/api/Cursor.html#addCursorFlag
+  const cursor = dbModel.find(query,fields,{ timeout: true }).sort(sort).lean().cursor();
   cursor.on('error', (err)=> {
-    // console.log(`算结束了啊..............`);
+    winston.getlog().info(`${filename}游标关闭`);
+    if(!!err){
+      winston.getlog().info(`${filename}游标关闭,ERR:${JSON.Stringify(err)}`);
+    }
     res.end('',()=>{
       debug(`end file--->${filename}`);
       if(icount === 0){
