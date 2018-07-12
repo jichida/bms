@@ -245,10 +245,10 @@ const getkafkamsg = (msg)=>{
   payload.recvpartition = msg.partition;
   payload.recvoffset = msg.offset;
   //<----log====【注意：这段代码仅供查找问题用，过后删掉】
-  const DeviceId = _.get(payload,'DeviceId','');
-  if(DeviceId === '1624100001' || DeviceId === '1624100004' || DeviceId === '1624100006' || DeviceId === '1624100008' || DeviceId==='1624100010'){
-    winston.getlog().error(`${JSON.stringify(payload)}`);
-  }
+  // const DeviceId = _.get(payload,'DeviceId','');
+  // if(DeviceId === '1627100566 ' || DeviceId === '1728101625' || DeviceId === '1728100906'){
+  //   winston.getlog().error(`${JSON.stringify(payload)}`);
+  // }
  //<----log====注意：这段代码仅供查找问题用，过后删掉】
 
   return payload;

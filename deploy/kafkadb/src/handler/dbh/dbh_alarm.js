@@ -11,52 +11,56 @@ const dbh_alarm =(datasin,callbackfn)=>{
     callbackfn(null,[]);
     return;
   }
-
-  debug_alarm(`dbh_alarm->count:${datasin.length}`);
-  //先排序,后去重
-  datasin = _.sortBy(datasin, [(o)=>{
-    const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
-    return key;
-  }]);
-  debug_alarm(`after sortBy dbh_alarm->count:${datasin.length}`);
-
-  datasin = _.sortedUniqBy(datasin,(o)=>{
-    const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
-    return key;
-  });
-  debug_alarm(`after sortedUniqBy dbh_alarm->count:${datasin.length}`);
-
-  // debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
-  //去重
-  let datas = [];
-  _.map(datasin,(o)=>{
-    const DeviceId_cur = o["$set"].DeviceId;
-    const DataTime_cur = o["$set"].DataTime;
-    if(!config.globalalarmdevicetable[DeviceId_cur]){
-      //找不到
-      datas.push(o);
-      config.globalalarmdevicetable[DeviceId_cur] = DataTime_cur;
-    }
-    else{
-      if(config.globalalarmdevicetable[DeviceId_cur] !== DataTime_cur){
-        datas.push(o);
-        config.globalalarmdevicetable[DeviceId_cur] = DataTime_cur;
-      }
-    }
-  });
-  debug_alarm(`cur end,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
-
-  if(datas.length < datasin.length){
-    // debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);
-    debug_alarm(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
-  }
-
-  if(datas.length === 0){
-    debug_alarm(`dbh_alarm data is empty`);
-    callbackfn(null,[]);
-    return;
-  }
+  let datas = datasin;
+  // debug_alarm(`dbh_alarm->count:${datasin.length}`);
+  // //先排序,后去重
+  // datasin = _.sortBy(datasin, [(o)=>{
+  //   const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+  //   return key;
+  // }]);
+  // debug_alarm(`after sortBy dbh_alarm->count:${datasin.length}`);
   //
+  // datasin = _.sortedUniqBy(datasin,(o)=>{
+  //   const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+  //   return key;
+  // });
+  // debug_alarm(`after sortedUniqBy dbh_alarm->count:${datasin.length}`);
+  //
+  // // debug_alarm(`cur start,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
+  // //去重
+  // let datas = [];
+  // _.map(datasin,(o)=>{
+  //   const DeviceId_cur = o["$set"].DeviceId;
+  //   const DataTime_cur = o["$set"].DataTime;
+  //   if(!config.globalalarmdevicetable[DeviceId_cur]){
+  //     //找不到
+  //     datas.push(o);
+  //     config.globalalarmdevicetable[DeviceId_cur] = DataTime_cur;
+  //   }
+  //   else{
+  //     if(config.globalalarmdevicetable[DeviceId_cur] !== DataTime_cur){
+  //       datas.push(o);
+  //       config.globalalarmdevicetable[DeviceId_cur] = DataTime_cur;
+  //     }
+  //   }
+  // });
+  // debug_alarm(`cur end,globalalarmdevicetable:${JSON.stringify(config.globalalarmdevicetable)}`);
+  //
+  // if(datas.length < datasin.length){
+  //   // debug_alarm(`去重有效,datas:${JSON.stringify(datas)},datasin:${JSON.stringify(datasin)}`);
+  //   debug_alarm(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  // }
+  //
+  // if(datas.length === 0){
+  //   debug_alarm(`dbh_alarm data is empty`);
+  //   callbackfn(null,[]);
+  //   return;
+  // }
+  //
+  if(config.istest){
+    winston.getlog().error(`开始插入报警统计:${datas.length}`);
+  }
+
   const dbModel = DBModels.RealtimeAlarmModel;
   debug_alarm(`start dbh_alarm,datas:${datas.length}`);
   const asyncfnsz = [];
@@ -73,8 +77,8 @@ const dbh_alarm =(datasin,callbackfn)=>{
          },devicedata,{upsert:true,new:true}).lean().exec((err,result)=>{
            result.iorder = devicedata.iorder;
            if(!!err){
-             winston.getlog().error(`alarm insert error,${JSON.stringify(devicedata)}`)
-             winston.getlog().error(err);
+             winston.getlog().warn(`alarm insert error,${JSON.stringify(devicedata)}`)
+             winston.getlog().warn(err);
            }
            callbackfn(err,result);
          });
@@ -82,10 +86,9 @@ const dbh_alarm =(datasin,callbackfn)=>{
     );
   });
   async.series(asyncfnsz,(err,result)=>{
-
       if(!!err){
         winston.getlog().error(`async.series error,${JSON.stringify(datas)}`)
-        winston.getlog().error(err);
+        winston.getlog().warn(err);
         debug(`async.series error,${JSON.stringify(datas)}`);
         debug(err);
       }
@@ -100,10 +103,15 @@ const dbh_alarm =(datasin,callbackfn)=>{
         if(datas.length !== result.length){
           debug(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`);
           debug(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`);
-          winston.getlog().error(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`)
-          winston.getlog().error(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`)
+          winston.getlog().warn(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`)
+          winston.getlog().warn(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`)
+        }
+
+        if(config.istest){
+          winston.getlog().error(`报警统计插入完毕:${result.length}`);
         }
       }
+
 
       // debug_alarm(`stop dbh_alarm,result:${JSON.stringify(result)}`);
       callbackfn(err,result);

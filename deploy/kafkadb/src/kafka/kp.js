@@ -16,8 +16,8 @@ const pconfig = config.kafka_pconfig2 || {
 const startproducer = (callbackfn)=>{
   //console.log(`startproducer>>>>>>>>`);
   getProducer(globalconfig,pconfig,(err)=> {
-    winston.getlog().error(`getProducer err`);
-    winston.getlog().error(err);
+    winston.getlog().warn(`getProducer err`);
+    winston.getlog().warn(err);
   }).then((producer)=>{
     const sendtokafka = (payload,topic,callbackfn)=>{
       const stringdata = JSON.stringify(payload);

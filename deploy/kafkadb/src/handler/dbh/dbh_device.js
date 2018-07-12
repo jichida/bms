@@ -3,6 +3,7 @@ const _ = require('lodash');
 const debug_device = require('debug')('dbh:device');
 const async = require('async');
 const config = require('../../config.js');
+const winston = require('../../log/log.js');
 
 const dbh_device =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -10,57 +11,59 @@ const dbh_device =(datasin,callbackfn)=>{
     callbackfn(null,true);
     return;
   }
-
-  //先排序,后去重
-  datasin = _.sortBy(datasin, [(o)=>{
-    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-    const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
-    return key;
-  }]);
-
-  datasin = _.sortedUniqBy(datasin,(o)=>{
-    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-    const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
-    return key;
-  });
-
-  let datas = [];
-  _.map(datasin,(o)=>{
-    const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
-    const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-    if(!config.globaldevicetable[o.DeviceId]){
-      //找不到
-      datas.push(o);
-      config.globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
-    }
-    else{
-      if(config.globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
-        datas.push(o);
-        config.globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
-      }
-    }
-  });
-
-  // datas = _.uniqBy(datas, (o)=>{
+  let datas = datasin;
+  // //先排序,后去重
+  // datasin = _.sortBy(datasin, [(o)=>{
   //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
   //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
-  //   return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  //   const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  //   return key;
+  // }]);
+  //
+  // datasin = _.sortedUniqBy(datasin,(o)=>{
+  //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+  //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+  //   const key = `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  //   return key;
   // });
-
-  if(datas.length < datasin.length){
-    debug_device(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  //
+  // let datas = [];
+  // _.map(datasin,(o)=>{
+  //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+  //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+  //   if(!config.globaldevicetable[o.DeviceId]){
+  //     //找不到
+  //     datas.push(o);
+  //     config.globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  //   }
+  //   else{
+  //     if(config.globaldevicetable[o.DeviceId] !== `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`){
+  //       datas.push(o);
+  //       config.globaldevicetable[o.DeviceId] = `${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  //     }
+  //   }
+  // });
+  //
+  // // datas = _.uniqBy(datas, (o)=>{
+  // //   const LastRealtimeAlarm_DataTime = _.get(o,'LastRealtimeAlarm.DataTime','');
+  // //   const LastHistoryTrack_GPSTime = _.get(o,'LastHistoryTrack.GPSTime','');
+  // //   return `${o.DeviceId}_${LastRealtimeAlarm_DataTime}_${LastHistoryTrack_GPSTime}`;
+  // // });
+  //
+  // if(datas.length < datasin.length){
+  //   debug_device(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  // }
+  // if(datas.length === 0){
+  //   if(datasin.length > 0){
+  //     debug_device(`--->${JSON.stringify(datasin[0])}`);
+  //   }
+  //   debug_device(`dbh_device data is empty`);
+  //   callbackfn(null,true);
+  //   return;
+  // }
+  if(config.istest){
+    winston.getlog().error(`开始更新设备:${datas.length}`);
   }
-  if(datas.length === 0){
-    if(datasin.length > 0){
-      debug_device(`--->${JSON.stringify(datasin[0])}`);
-    }
-    debug_device(`dbh_device data is empty`);
-    callbackfn(null,true);
-    return;
-  }
-
   const dbModel = DBModels.DeviceModel;
   // debug_device(`start dbh_device,datas:${datas.length}`);
   // const asyncfnsz = [];
@@ -107,6 +110,9 @@ const dbh_device =(datasin,callbackfn)=>{
         console.error(`dbh_device err`);
         console.error(err);
         console.error(err.stack);
+      }
+      if(config.istest){
+        winston.getlog().error(`更新设备完毕:${datas.length}`);
       }
       debug_device(`stop dbh_device`);
       callbackfn(null,true);

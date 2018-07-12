@@ -17,6 +17,7 @@ let config =  {
   },
   kafka_pconfig2:{
   },
+  istest:process.env.istest==='true'?true:false,
   mapdict:{},
   SpecialCurDayTime:process.env.SpecialCurDayTime || '18:00:00',//默认是23:59:59
   NodeID:nodeid,
@@ -32,7 +33,7 @@ let config =  {
   kafka_dbtopic_realtimealarmraws:'bmsdb.realtimealarmraws',
   kafka_dbtopic_index:process.env.IndexTopic ||'bmsindex',
   kafka_dbtopic_current:process.env.CurrentTopic ||'bmsindex',
-  version:'4.1.0',
+  version:'5.1.0',
   globalhistorydevicetable:{},
   globalalarmdevicetable:{},
   globalalarmrawdevicetable:{},

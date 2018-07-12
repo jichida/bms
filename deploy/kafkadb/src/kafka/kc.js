@@ -46,8 +46,8 @@ const startsrv = (config)=>{
     getConsumer(globalconfig,cconfig,topics,
     (err,consumer)=> {
       if(debug.enabled){
-        winston.getlog().error(`getConsumer err`);
-        winston.getlog().error(err);
+        winston.getlog().warn(`getConsumer err`);
+        winston.getlog().warn(err);
       }
       // consumer.disconnect();
       // throw err;
@@ -74,8 +74,8 @@ const startsrv = (config)=>{
             if(debug.enabled){
               console.error(err);
             }
-            winston.getlog().error(`consume err`);
-            winston.getlog().error(err);
+            winston.getlog().warn(`consume err`);
+            winston.getlog().warn(err);
             return;
           }
 
