@@ -5,7 +5,7 @@ const config = require('../config.js');
 const moment = require('moment');
 const alarmplugin = require('../plugins/alarmfilter/index');
 const deviceplugin = require('../plugins/devicefilter/index');
-const utilposition = require('./util_position');
+// const utilposition = require('./util_position');
 const debug = require('debug')('dbdata');
 const winston = require('../log/log.js');
 
