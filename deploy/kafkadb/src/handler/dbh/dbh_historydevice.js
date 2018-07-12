@@ -3,6 +3,7 @@ const _ = require('lodash');
 const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
 const config = require('../../config.js');
+const winston = require('../../log/log.js');
 
 const dbh_historydevice =(datasin,callbackfn)=>{
   if(datasin.length === 0){
@@ -12,49 +13,52 @@ const dbh_historydevice =(datasin,callbackfn)=>{
   }
 
   debug_historydevice(`datas start:${datasin.length}`);
+  let datas = datasin;
   //先排序,后去重
-  datasin = _.sortBy(datasin, [(o)=>{
-    const key = `${o.DeviceId}_${o.DataTime}`;
-    return key;
-  }]);
-
-  datasin = _.sortedUniqBy(datasin,(o)=>{
-    const key = `${o.DeviceId}_${o.DataTime}`;
-    return key;
-  });
-
-  debug_historydevice(`${datasin.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
-
-  let datas = [];
-  _.map(datasin,(o)=>{
-    if(!config.globalhistorydevicetable[o.DeviceId]){
-      //找不到
-      datas.push(o);
-      config.globalhistorydevicetable[o.DeviceId] = o.DataTime;
-    }
-    else{
-      if(config.globalhistorydevicetable[o.DeviceId] !== o.DataTime){
-        datas.push(o);
-        config.globalhistorydevicetable[o.DeviceId] = o.DataTime;
-      }
-    }
-  });
-
-  debug_historydevice(`cur end,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
-
-  // datas = _.uniqBy(datas, (o)=>{
-  //   return `${o.DeviceId}_${o.DataTime}`;
+  // datasin = _.sortBy(datasin, [(o)=>{
+  //   const key = `${o.DeviceId}_${o.DataTime}`;
+  //   return key;
+  // }]);
+  //
+  // datasin = _.sortedUniqBy(datasin,(o)=>{
+  //   const key = `${o.DeviceId}_${o.DataTime}`;
+  //   return key;
   // });
-
-  if(datas.length < datasin.length){
-    debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  //
+  // debug_historydevice(`${datasin.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
+  //
+  // let datas = [];
+  // _.map(datasin,(o)=>{
+  //   if(!config.globalhistorydevicetable[o.DeviceId]){
+  //     //找不到
+  //     datas.push(o);
+  //     config.globalhistorydevicetable[o.DeviceId] = o.DataTime;
+  //   }
+  //   else{
+  //     if(config.globalhistorydevicetable[o.DeviceId] !== o.DataTime){
+  //       datas.push(o);
+  //       config.globalhistorydevicetable[o.DeviceId] = o.DataTime;
+  //     }
+  //   }
+  // });
+  //
+  // debug_historydevice(`cur end,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
+  //
+  // // datas = _.uniqBy(datas, (o)=>{
+  // //   return `${o.DeviceId}_${o.DataTime}`;
+  // // });
+  //
+  // if(datas.length < datasin.length){
+  //   debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  // }
+  // if(datas.length === 0){
+  //   debug_historydevice(`debug_historydevice data is empty`);
+  //   callbackfn(null,true);
+  //   return;
+  // }
+  if(config.istest){
+    winston.getlog().error(`开始更新历史设备:${datas.length}`);
   }
-  if(datas.length === 0){
-    debug_historydevice(`debug_historydevice data is empty`);
-    callbackfn(null,true);
-    return;
-  }
-
   const dbModel = DBModels.HistoryDeviceModel;
   debug_historydevice(`start dbh_historydevice,datas:${datas.length}`);
   // const asyncfnsz = [];
@@ -105,6 +109,9 @@ const dbh_historydevice =(datasin,callbackfn)=>{
         console.error(err.stack);
       }
       debug_historydevice(`stop dbh_historydevice`);
+      if(config.istest){
+        winston.getlog().error(`历史设备更新完毕:${datas.length}`);
+      }
       callbackfn(null,true);
     });
   }

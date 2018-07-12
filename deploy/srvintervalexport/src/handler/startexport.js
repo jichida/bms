@@ -35,7 +35,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   // 'timeout: true' gets translated by the mongodb driver into a `noCursorTimeout` http://mongodb.github.io/node-mongodb-native/2.0/api/Cursor.html#addCursorFlag
   const cursor = dbModel.find(query,fields,{ timeout: true }).sort(sort).lean().cursor();
   cursor.on('error', (err)=> {
-    winston.getlog().info(`${filename}游标关闭`);
+    winston.getlog().info(`${filename}游标关闭,iserr:${!!err}`);
     if(!!err){
       winston.getlog().info(`${filename}游标关闭,ERR:${JSON.Stringify(err)}`);
     }
