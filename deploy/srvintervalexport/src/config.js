@@ -1,4 +1,5 @@
 const moment = require('moment');
+const _ = require('lodash');
 const config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mongos:process.env.mongos==='true'?true:false,
@@ -8,7 +9,9 @@ const config =  {
   DeviceId:process.env.DeviceId,
   exportFlag:process.env.exportFlag || 'all',
   exportdir:process.env.exportdir ||'../../dist/exportdir',
-  version:'1.0.6',
+  istest:process.env.istest==='true'?true:false,
+  batchcount:parseInt(_.get(process.env,'batchcount','500')),
+  version:'1.1.2(build0711)',
   mapdict:{},
   srvsftp:{
       host: process.env.srvsftp_host||'192.168.2.14',

@@ -9,7 +9,7 @@ const _ = require('lodash');
 const moment = require('moment');
 const PubSub = require('pubsub-js');
 const srvsystem = require('../../srvsystem.js');
-
+const fulldeviceext = require('../fullcommon/deviceext');
 const debug = require('debug')('srvapp:userlogin');
 
 const userloginsuccess =(user,callback,ctx)=>{
@@ -76,9 +76,14 @@ let setloginsuccess = (ctx,user,callback)=>{
       payload:userdata
     });
 
-
-
-
+    if(ctx.usertype === 'fullpc' || ctx.usertype === 'fullapp'){
+      setImmediate(()=>{
+        fulldeviceext.pushdeviceext({},ctx,(result)=>{
+          debug(`----send push deviceext----`);
+          ctx.socket.emit(result.cmd,result.payload);
+        });
+      });
+    }
 };
 
 
@@ -143,10 +148,10 @@ exports.loginuser = (actiondata,ctx,callback)=>{
               return true;
             }
             //<<--------这里有改动，需特别注意============
-            if(ctx.usertype === 'fullpc' && p._id.toString() === '5a03b66013e7410cd0ef3093'){
+            if(ctx.usertype === 'fullpc' && p._id.toString() === '5a03b61f13e7410cd0ef3091'){
               return true;
             }
-            if(ctx.usertype === 'fullapp' && p._id.toString() === '5a03b66e13e7410cd0ef3094'){
+            if(ctx.usertype === 'fullapp' && p._id.toString() === '5a03b65113e7410cd0ef3092'){
               return true;
             }
             return false;

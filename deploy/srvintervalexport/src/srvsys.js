@@ -11,7 +11,8 @@ const fse = require('fs-extra');
 const path = require('path');
 const sftptosrv =  require('./ftps/index.js');
 const config = require('./config');
-const getDeviceCities = require('./lib/getdevicecities')
+const getDeviceCities = require('./lib/getdevicecities');
+const moment = require('moment');
 
 // *    *    *    *    *    *
 // ┬    ┬    ┬    ┬    ┬    ┬
@@ -24,12 +25,14 @@ const getDeviceCities = require('./lib/getdevicecities')
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
 const cron_0 = (callbackfn)=>{
-  winston.getlog().info(`零点开始执行`);
+  let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+  winston.getlog().info(`零点开始执行-->${curtime}`);
   let fnsz = [];
   fnsz.push((callbackfn)=>{
     getDeviceCities((config_mapdevicecity)=>{
       export_position(config_mapdevicecity,(positionfilepath)=>{
-        winston.getlog().info(`导出位置记录完毕:${positionfilepath}`);
+        curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+        winston.getlog().info(`导出位置记录完毕:${positionfilepath}-->${curtime}`);
         // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
         callbackfn(null,positionfilepath);
       });
@@ -38,7 +41,8 @@ const cron_0 = (callbackfn)=>{
 
   fnsz.push((callbackfn)=>{
     export_device_ext((deviceextfilepath)=>{
-      winston.getlog().info(`导出客档信息完毕:${deviceextfilepath}`);
+      curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+      winston.getlog().info(`导出客档信息完毕:${deviceextfilepath}-->${curtime}`);
       // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
       callbackfn(null,deviceextfilepath);
     });
@@ -46,7 +50,8 @@ const cron_0 = (callbackfn)=>{
 
   fnsz.push((callbackfn)=>{
     export_history((exportdir)=>{
-      winston.getlog().info(`导出历史记录完毕:${exportdir}`);
+      curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+      winston.getlog().info(`导出历史记录完毕:${exportdir}-->${curtime}`);
       // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
       callbackfn(null,exportdir);
     });
@@ -79,17 +84,20 @@ const cron_18 = (callbackfn)=>{
       const exportdir = result[2];
 
       debug(`开始压缩文件夹:${exportdir}`);
-      winston.getlog().info(`开始压缩文件夹:${exportdir}`);
+      let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+      winston.getlog().info(`开始压缩文件夹:${exportdir}-->${curtime}`);
 
       zipdir(exportdir, { saveTo: `${exportdir}.zip` }, function (err, buffer) {
         debug(`压缩完毕:${exportdir}.zip`);
-        winston.getlog().info(`压缩完毕:${exportdir}.zip`);
+        curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+        winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
 
         const filename3 = path.basename(`${exportdir}.zip`);
         winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
 
         sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
-          winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+          curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+          winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
           debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
         });
       });
@@ -97,15 +105,17 @@ const cron_18 = (callbackfn)=>{
       const filename1 = path.basename(positionfilepath);
       winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename1}`);
       sftptosrv(`${config.exportdir}`,filename1,(err,result)=>{
+        curtime = moment().format('YYYY-MM-DD HH:mm:ss');
         debug(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
-        winston.getlog().info(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
+        winston.getlog().info(`上传文件:${config.exportdir}/${filename1}到ftp服务器-->${curtime}`);
       });
 
       const filename2 = path.basename(deviceextfilepath);
       winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename2}`);
       sftptosrv(`${config.exportdir}`,filename2 ,(err,result)=>{
+        curtime = moment().format('YYYY-MM-DD HH:mm:ss');
         debug(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
-        winston.getlog().info(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
+        winston.getlog().info(`上传文件:${config.exportdir}/${filename2}到ftp服务器-->${curtime}`);
       });
     });
   }

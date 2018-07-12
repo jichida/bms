@@ -7,6 +7,7 @@ const moment  = require('moment');
 const config = require('../config');
 const fs = require('fs');
 const debug = require('debug')('srvinterval:export');
+const winston = require('../log/log.js');
 
 const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},callbackfn)=>{
   // const filename = 'db-data-' + new Date().getTime() + '.csv';
@@ -30,16 +31,28 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   // });
   // res.write(csvfields);
   // res.write('\n');
-  const cursor = dbModel.find(query,fields).sort(sort).lean().cursor();
+  let icount = 0;
+  // 'timeout: true' gets translated by the mongodb driver into a `noCursorTimeout` http://mongodb.github.io/node-mongodb-native/2.0/api/Cursor.html#addCursorFlag
+  const cursor = dbModel.find(query,fields,{ timeout: true }).sort(sort).lean().cursor();
   cursor.on('error', (err)=> {
-    // console.log(`算结束了啊..............`);
-    res.end('');
-    debug(`end file--->${filename}`);
-    callbackfn(null,true);
+    winston.getlog().info(`${filename}游标关闭`);
+    if(!!err){
+      winston.getlog().info(`${filename}游标关闭,ERR:${JSON.Stringify(err)}`);
+    }
+    res.end('',()=>{
+      debug(`end file--->${filename}`);
+      if(icount === 0){
+        //delete file
+        fs.unlinkSync(filename);
+      }
+      debug(`end file--->${filename}`);
+      callbackfn(null,true);
+    });
   });
 
   cursor.on('data', (doc)=>
   {
+      icount++;
       // doc = JSON.parse(JSON.stringify(doc));
       // debug(`get record->${doc.DataTime}`)
       fn_convert(doc,(newdoc)=>{
@@ -51,11 +64,14 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
       });
   }).
   on('end', ()=> {
-    setTimeout(()=> {
-      res.end('');
-      debug(`end file--->${filename}`);
-      callbackfn(null,true);
-    }, 2000);
+      res.end('',()=>{
+        debug(`end file--->${filename}`);
+        if(icount === 0){
+          //delete file
+          fs.unlinkSync(filename);
+        }
+        callbackfn(null,true);
+      });
   });
 };
 

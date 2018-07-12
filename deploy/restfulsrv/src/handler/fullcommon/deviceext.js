@@ -11,7 +11,6 @@ debug(`10年以前是:${oldyears}`);
 
 const getcount_car = (query,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
-
   deviceextModel.count(query,(err, list)=> {
       callbackfn(err,list);
   });
@@ -24,7 +23,9 @@ const getcount_bus = (query,callbackfn)=>{
   });
 }
 
-const getusedyear = (query,callbackfn)=>{
+const getusedyear = (queryorg,callbackfn)=>{
+  const query = _.clone(queryorg);
+  // debug(`---->getusedyear--->${JSON.stringify(query)}`)
   const deviceextModel = DBModels.DeviceExtModel;
   deviceextModel.aggregate([
        {$match:query},
@@ -33,7 +34,6 @@ const getusedyear = (query,callbackfn)=>{
            count: { $sum: 1 },
        }
      }]).exec((err, list)=> {
-
          let result = {};
          if(!err && !!list){
            _.map(list,(v)=>{
@@ -61,6 +61,7 @@ const getusedyear = (query,callbackfn)=>{
               "value":`${v}`,
            });
          });
+        //  debug(`getusedyear===>${JSON.stringify(query)}---->:${JSON.stringify(retarray)}`);
 
          callbackfn(null,retarray);
        });
@@ -206,7 +207,7 @@ const getstat_catlproject = (query,maxcount,callbackfn)=>{
        });
 }
 
-exports.getcountcar =  (actiondata,ctx,callback)=>{
+exports.getcountcar =  getcountcar = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   query["type"] = "CAR";
   getcount_car(query,(err,result)=>{
@@ -217,10 +218,9 @@ exports.getcountcar =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.getcountbus =  (actiondata,ctx,callback)=>{
+exports.getcountbus =  getcountbus = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   query["type"] = "BUS";
-  console.log(`getcountbus-->${JSON.stringify(query)}`)
   getcount_bus(query,(err,result)=>{
     callback({
       cmd:'getcountbus_result',
@@ -229,10 +229,10 @@ exports.getcountbus =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.getusedyearcar =  (actiondata,ctx,callback)=>{
+exports.getusedyearcar = getusedyearcar = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   query["type"] = "CAR";
-  console.log(`getusedyearcar-->${JSON.stringify(query)}`)
+  // debug(`getusedyearcar--->${JSON.stringify(query)}`)
   getusedyear(query,(err,result)=>{
     callback({
       cmd:'getusedyearcar_result',
@@ -246,12 +246,11 @@ exports.getusedyearcar =  (actiondata,ctx,callback)=>{
   // {"type":"CAR","name":"2014","value":"1842"},
 }
 
-exports.getusedyearbus =  (actiondata,ctx,callback)=>{
+exports.getusedyearbus =  getusedyearbus = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   query["type"] = "BUS";
-  console.log(`getusedyearbus-->${JSON.stringify(query)}`)
+  // debug(`getusedyearbus--->${JSON.stringify(query)}`)
   getusedyear(query,(err,result)=>{
-    debug(`getusedyearbus--->${JSON.stringify(result)}`)
     callback({
       cmd:'getusedyearbus_result',
       payload:result
@@ -259,11 +258,10 @@ exports.getusedyearbus =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.getstatprovince =  (actiondata,ctx,callback)=>{
+exports.getstatprovince =  getstatprovince = (actiondata,ctx,callback)=>{
   const maxcount = _.get(actiondata,'maxcount',20);
   let query = actiondata.query || {};
   getstat_province(query,maxcount,(err,result)=>{
-    debug(`getstatprovince--->${JSON.stringify(result)}`)
     callback({
       cmd:'getstatprovince_result',
       payload:result
@@ -295,7 +293,7 @@ exports.getstatprovince =  (actiondata,ctx,callback)=>{
 
 }
 
-exports.getstatcatlproject =  (actiondata,ctx,callback)=>{
+exports.getstatcatlproject = getstatcatlproject = (actiondata,ctx,callback)=>{
   const maxcount = _.get(actiondata,'maxcount',20);
   let query = actiondata.query || {};
   getstat_catlproject(query,maxcount,(err,result)=>{
@@ -306,6 +304,87 @@ exports.getstatcatlproject =  (actiondata,ctx,callback)=>{
   });
 }
 
+exports.deviceext=  (actiondataorg,ctx,callback)=>{
+  const maxcount = _.get(actiondataorg,'maxcount',20);
+  const query = actiondataorg.query || {};
+
+  let fnsz = [];
+  fnsz.push((callbackfn)=>{//getcountcar
+    const actiondata = _.clone(actiondataorg);
+    getcountcar(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getcountbus
+    const actiondata = _.clone(actiondataorg);
+    getcountbus(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getusedyearcar
+    const actiondata = _.clone(actiondataorg);
+    getusedyearcar(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getusedyearbus
+    const actiondata = _.clone(actiondataorg);
+    getusedyearbus(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getstatprovince
+    const querydo = !!query.catlprojectname?query:{};
+    getstatprovince({query:querydo},ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getstatcatlproject
+    const querydo = !!query.province?query:{};
+    getstatcatlproject({query:querydo},ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+
+  async.parallel(fnsz,(err,result)=>{
+    callback({
+      cmd:'deviceext_result',
+      payload:{
+        getcountcar:result[0],
+        getcountbus:result[1],
+        getusedyearcar:result[2],
+        getusedyearbus:result[3],
+        getstatprovince:result[4],
+        getstatcatlproject:result[5],
+      }
+    });
+  });
+}
+
+
+exports.pushdeviceext = (actiondataorg,ctx,callback)=>{
+  const deviceextModel = DBModels.DeviceExtModel;
+  deviceextModel.find({},{
+    DeviceId:1,
+    usedyear:1,
+    type:1,
+    province:1,
+    catlprojectname:1
+  }).lean().exec((err,list)=>{
+    if(!err){
+      callback({
+        cmd:'pushdeviceext',
+        payload:{list}
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:err.message,type:'pushdeviceext'}
+      });
+    }
+  });
+}
 /**
 
 

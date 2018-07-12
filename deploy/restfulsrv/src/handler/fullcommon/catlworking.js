@@ -1,4 +1,25 @@
 const mysqldb = require('./dbconnection');
+const _ = require('lodash');
+const async = require('async');
+const debug = require('debug')('srvapp:device');
+
+const getcatl_warningf = (maxcount,callback)=>{
+  const sql = `SELECT DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%S') AS update_time,deviceid AS DeviceId,type FROM MA_WARNING_F ORDER BY update_time DESC LIMIT ${maxcount}`;
+  mysqldb.load(sql).then((rows)=>{
+    callback(null,rows);
+  });
+};
+
+
+exports.catl_warningf =  catl_warningf = (actiondata,ctx,callback)=>{
+  const maxcount = _.get(actiondata,'maxcount',8);
+  getcatl_warningf(maxcount,(err,result)=>{
+    callback({
+      cmd:'catl_warningf_result',
+      payload:result
+    });
+  });
+}
 
 const getcatl_working = (callback)=>{
   const sql = `SELECT RDB,日期,cycle数,CATL项目名称,电芯最高温度,电芯最低温度,运行等效温差,充电次数 FROM MA_CATL_WORKING`;
@@ -35,7 +56,7 @@ const getcatl_dxtemperature = (callback)=>{//运行等效温差
   });
 };
 
-exports.catl_working =  (actiondata,ctx,callback)=>{
+exports.catl_working = catl_working = (actiondata,ctx,callback)=>{
   getcatl_working((err,result)=>{
     callback({
       cmd:'catl_working_result',
@@ -44,7 +65,7 @@ exports.catl_working =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.catl_cycle =  (actiondata,ctx,callback)=>{
+exports.catl_cycle = catl_cycle = (actiondata,ctx,callback)=>{
   getcatl_cycle((err,result)=>{
     callback({
       cmd:'catl_cycle_result',
@@ -53,7 +74,7 @@ exports.catl_cycle =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.catl_celltemperature =  (actiondata,ctx,callback)=>{
+exports.catl_celltemperature = catl_celltemperature = (actiondata,ctx,callback)=>{
   getcatl_celltemperature((err,result)=>{
     callback({
       cmd:'catl_celltemperature_result',
@@ -62,7 +83,7 @@ exports.catl_celltemperature =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.catl_cyclecount =  (actiondata,ctx,callback)=>{
+exports.catl_cyclecount = catl_cyclecount = (actiondata,ctx,callback)=>{
   getcatl_cyclecount((err,result)=>{
     callback({
       cmd:'catl_cyclecount_result',
@@ -71,7 +92,7 @@ exports.catl_cyclecount =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.catl_dxtemperature =  (actiondata,ctx,callback)=>{
+exports.catl_dxtemperature = catl_dxtemperature = (actiondata,ctx,callback)=>{
   getcatl_dxtemperature((err,result)=>{
     callback({
       cmd:'catl_dxtemperature_result',
@@ -80,8 +101,59 @@ exports.catl_dxtemperature =  (actiondata,ctx,callback)=>{
   });
 }
 
-exports.getcatl_working =  getcatl_working;
-exports.getcatl_cycle =  getcatl_cycle;
-exports.getcatl_celltemperature =  getcatl_celltemperature;
-exports.getcatl_cyclecount =  getcatl_cyclecount;
-exports.getcatl_dxtemperature =  getcatl_dxtemperature;
+exports.catl =  (actiondata,ctx,callback)=>{
+  const maxcount = _.get(actiondata,'maxcount',20);
+  const query = actiondata.query || {};
+
+  let fnsz = [];
+  // fnsz.push((callbackfn)=>{//catl_working_request
+  //   catl_working(actiondata,ctx,(result)=>{
+  //     callbackfn(null,result.payload);
+  //   });
+  // });
+  fnsz.push((callbackfn)=>{//catl_cycle_request
+    catl_cycle(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//catl_celltemperature_request
+    catl_celltemperature(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//catl_cyclecount_request
+    catl_cyclecount(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//catl_dxtemperature
+    catl_dxtemperature(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//catl_warningf
+    catl_warningf(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+
+  async.parallel(fnsz,(err,result)=>{
+    // debug(`catl--->${JSON.stringify(result)}`)
+    callback({
+      cmd:'catl_result',
+      payload:{
+        catl_cycle:result[0],
+        catl_celltemperature:result[1],
+        catl_cyclecount:result[2],
+        catl_dxtemperature:result[3],
+        catl_warningf:result[4],
+      }
+    });
+  });
+}
+
+// exports.getcatl_working =  getcatl_working;
+// exports.getcatl_cycle =  getcatl_cycle;
+// exports.getcatl_celltemperature =  getcatl_celltemperature;
+// exports.getcatl_cyclecount =  getcatl_cyclecount;
+// exports.getcatl_dxtemperature =  getcatl_dxtemperature;

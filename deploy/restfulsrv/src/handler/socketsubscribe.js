@@ -3,7 +3,8 @@ const _ =  require('lodash');
 const config = require('../config.js');
 const realtimealarm = require('./common/realtimealarm');
 const debug = require('debug')('srvapp:pcpush');
-
+const fullappdevice = require('./fullapp/device');
+const fulldeviceext = require('./fullcommon/deviceext');
 
 const pushusermessage = (socket,ctx,data)=>{
   if(data.length > 0){
@@ -14,14 +15,26 @@ const pushusermessage = (socket,ctx,data)=>{
 
 const usersubfn  = (socket,ctx)=>{
   ctx.userDeviceSubscriber = ( msg, data )=>{
-      debug('->用户订阅请求,用户信息:'+JSON.stringify(ctx));
-      debug('->用户订阅消息:'+msg);
 
       const topicsz = msg.split('.');
 
       if(_.startsWith(msg,config.pushdevicetopic) && topicsz[1] === `${ctx.userid}`){
           // const DeviceId = topicsz[1];
-          pushusermessage(socket,ctx,data);
+          if(ctx.usertype !== 'fullapp'){
+            pushusermessage(socket,ctx,data);
+          }
+          else{
+            fullappdevice.querydevicealarm({},ctx,(result)=>{
+              socket.emit(result.cmd,result.payload);
+            });
+          }
+      }
+
+      if(_.startsWith(msg,config.pushdeviceexttopic) && (ctx.usertype === 'fullpc' || ctx.usertype === 'fullapp')){
+          // const DeviceId = topicsz[1];
+          fulldeviceext.pushdeviceext({},ctx,(result)=>{
+            socket.emit(result.cmd,result.payload);
+          });
       }
 
   };//for eachuser
