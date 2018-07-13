@@ -37,7 +37,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
   cursor.on('error', (err)=> {
     winston.getlog().info(`${filename}游标关闭,iserr:${!!err}`);
     if(!!err){
-      winston.getlog().info(`${filename}游标关闭,ERR:${JSON.Stringify(err)}`);
+      winston.getlog().info(`${filename}游标关闭,ERR:${JSON.stringify(err)}`);
     }
     res.end('',()=>{
       debug(`end file--->${filename}`);
