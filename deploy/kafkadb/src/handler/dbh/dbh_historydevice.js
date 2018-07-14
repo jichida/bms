@@ -1,5 +1,6 @@
 const DBModels = require('../models.js');
 const _ = require('lodash');
+const PubSub = require('pubsub-js');
 const debug_historydevice = require('debug')('dbh:historydevice');
 const async = require('async');
 const config = require('../../config.js');
@@ -112,6 +113,11 @@ const dbh_historydevice =(datasin,callbackfn)=>{
       if(config.istest){
         winston.getlog().error(`历史设备更新完毕:${datas.length}`);
       }
+
+      PubSub.publish(`redismsgpush`,{
+        'historydevice',
+         payload:datas
+      });
       callbackfn(null,true);
     });
   }

@@ -7,6 +7,7 @@ const mongoose     = require('mongoose');
 const alarmplugin = require('./src/plugins/alarmfilter/index');
 const moment = require('moment');
 const debug = require('debug')('start');
+const sendredis = require('./src/redis/sendredis');
 const schedule = require('node-schedule');
 
 debug(`start=====>version:${config.version},groupid:${config.kafka_cconfig1['group.id']}\
@@ -58,6 +59,9 @@ dbdictModel.find({
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 winston.getlog().info(`start kafkadb ok-->${config.NodeID}`);
+sendredis(()=>{
+  debug(`sendredis success!`);
+});
 
 const getInitAlarm = (callback)=>{
   const deviceModel = DBModels.DeviceModel;//确实是设备表
