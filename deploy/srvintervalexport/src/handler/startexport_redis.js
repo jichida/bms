@@ -30,7 +30,9 @@ const startexport = ({filename,csvfields,messages,fn_convert},callbackfn)=>{
           if (!err && !!csv ) {
              res.write(iconv.convert(csv));
            }
-           callbackfn2(null,true);
+           process.nextTick(()=>{
+             callbackfn2(null,true);//这里可能是同步方法，导致async RangeError: Maximum call stack size exceeded
+           });
          });
       });
     });

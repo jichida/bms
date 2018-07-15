@@ -17,7 +17,7 @@ const config =  {
   exportdir:process.env.exportdir ||'../../dist/exportdir',
   istest:process.env.istest==='true'?true:false,
   batchcount:parseInt(_.get(process.env,'batchcount','500')),
-  version:'1.2.0(build0716)',
+  version:'1.2.1(build0716)',
   mapdict:{},
   srvsftp:{
       host: process.env.srvsftp_host||'192.168.2.14',
