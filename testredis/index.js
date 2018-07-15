@@ -1,3 +1,3 @@
-const startsender = require('./src/redis/sender');
+const startsender = require('./src/redis/index');
 
 startsender();
