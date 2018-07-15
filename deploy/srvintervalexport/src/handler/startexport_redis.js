@@ -12,7 +12,7 @@ const winston = require('../log/log.js');
 
 const startexport = ({filename,csvfields,messages,fn_convert},callbackfn)=>{
   const filepath = `${filename}`;
-  debug(`start filepath--->${filepath}`);
+  // debug(`start filepath--->${filepath}`);
   const res = fs.createWriteStream(filepath,{
     encoding:'ascii',
     autoClose: false
@@ -37,6 +37,7 @@ const startexport = ({filename,csvfields,messages,fn_convert},callbackfn)=>{
   }
   async.series(fnsz,(err,result)=>{
     res.end('',()=>{
+      debug(`close filepath--->${filepath}`);
       callbackfn(null,true);
     });
   });
