@@ -35,7 +35,7 @@ const startexport = ({filename,csvfields,messages,fn_convert},callbackfn)=>{
       });
     });
   }
-  async.parallelLimit(fnsz,1,(err,result)=>{
+  async.series(fnsz,(err,result)=>{
     callbackfn(null,true);
   });
 };

@@ -62,6 +62,7 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
       startexport_do(DeviceId,exportdir,curday,callbackfn);
     });
   });
+  debug(`startexport_batch--->${fnsz.length},batchcount-->${config.batchcount}`);
   async.parallelLimit(fnsz,config.batchcount,(err,result)=>{
     callbackfn(devicelist);
   });
