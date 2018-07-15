@@ -1,5 +1,4 @@
 const redis = require("redis");
-const moment = require('moment');
 const config = require('../config.js');
 const  client = redis.createClient(config.srvredis);
 
