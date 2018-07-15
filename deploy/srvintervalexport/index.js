@@ -44,6 +44,7 @@ dbdictModel.find({
       }
     });
     const curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+    debug(`==TEST模式？${config.istest},batchcount:${config.batchcount}===${curtime}`);
     winston.getlog().info(`==TEST模式？${config.istest},batchcount:${config.batchcount}===${curtime}`);
     if(config.istest){
       //每天0点开始工作

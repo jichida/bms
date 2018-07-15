@@ -2,6 +2,12 @@ const nodeid = process.env.NodeID || 1;
 let config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mongos:process.env.mongos==='true'?true:false,
+  redisdevicesetname:process.env.redisdevicesetname||`bmsrdbset`,
+  redisdevicequeuename:process.env.redisdevicequeuename||`bmsrdbq`,
+  srvredis:{
+    host:process.env.srvredis_host||'afn.i2u.top',
+    port: process.env.srvredis_port|| 6379,
+  },
   kafka_cconfig1:{
       'group.id': process.env.GroupId ||'bmsgroup',
       'metadata.broker.list': process.env.KAFKA_HOST || '192.168.1.20:9092,192.168.1.114:9092,192.168.1.136:9092',
