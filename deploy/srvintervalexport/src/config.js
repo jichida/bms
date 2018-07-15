@@ -6,7 +6,7 @@ const config =  {
   redisdevicesetname:process.env.redisdevicesetname||`bmsrdbset`,
   redisdevicequeuename:process.env.redisdevicequeuename||`bmsrdbq`,
   srvredis:{
-    host:process.env.srvredis_host||'afn.i2u.top',
+    host:process.env.srvredis_host||'192.168.2.19',
     port: process.env.srvredis_port|| 6379,
   },
   logdir:process.env.logdir ||'../../dist/log',

@@ -18,15 +18,23 @@ const pushtoredis = (topicname,HistoryDeviceDataList,callbackfn)=>{
     _.map(HistoryDeviceDataList,(info)=>{
       fnsz.push((callbackfn)=>{
         const curday = moment(info.DataTime).format('YYYYMMDD');
-        debug(`setkey->${config.redisdevicesetname}${curday}-->lpushkey${curday}${info.DeviceId}`);
+        debug(`setkey->【${config.redisdevicesetname}.${curday}】-->lpushkey【${config.redisdevicequeuename}.${curday}.${info.DeviceId}】`);
         client.sadd(`${config.redisdevicesetname}.${curday}`, `${info.DeviceId}`,(err, result)=> {
+          if(!!err){
+            debug(`redis client sadd error`);
+            callbackfn(null,true);
+            return;
+          }
           client.rpush(`${config.redisdevicequeuename}.${curday}.${info.DeviceId}`,JSON.stringify(info),(err,result)=>{
+            if(!!err){
+              debug(`redis client rpush error`);
+            }
             callbackfn(null,true);
           });//add lpush
         });//end sadd
       });//end push
     });//end map
-    async.parallelLimit(fnsz,10,(err,result)=>{
+    async.parallelLimit(fnsz,100,(err,result)=>{
       callbackfn();
     });
 }
