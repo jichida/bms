@@ -115,7 +115,7 @@ const dbh_historydevice =(datasin,callbackfn)=>{
       }
 
       PubSub.publish(`redismsgpush`,{
-        'historydevice',
+          topic:'historydevice',
          payload:datas
       });
       callbackfn(null,true);
