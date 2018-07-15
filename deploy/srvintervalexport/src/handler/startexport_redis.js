@@ -38,7 +38,7 @@ const startexport = ({filename,csvfields,messages,fn_convert},callbackfn)=>{
   async.series(fnsz,(err,result)=>{
     res.end('',()=>{
       callbackfn(null,true);
-    }
+    });
   });
 };
 
