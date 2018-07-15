@@ -117,8 +117,8 @@ const start = (callbackfn)=>{
   }
 
   getDevicelist((devicelist)=>{
-    startexport_export(curday,devicelist,()=>{
-      callbackfn(null,true)
+    startexport_export(curday,devicelist,(exportdir)=>{
+      callbackfn(exportdir)
     });
   });
 }
