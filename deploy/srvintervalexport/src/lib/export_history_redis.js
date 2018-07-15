@@ -47,7 +47,9 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
       });
 
       if(!error && !!messages){
-        startexport({fn_convert,messages,filename,csvfields},callbackfn);
+        startexport({fn_convert,messages,filename,csvfields},()=>{
+          callbackfn(null,true);
+        });
       }
       else{
         debug(error);
@@ -60,7 +62,9 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
   const fnsz = [];
   _.map(devicelist,(DeviceId)=>{
     fnsz.push((callbackfn)=>{
-      startexport_do(DeviceId,exportdir,curday,callbackfn);
+      startexport_do(DeviceId,exportdir,curday,()=>{
+        callbackfn(null,true);
+      });
     });
   });
   debug(`startexport_batch--->${fnsz.length},batchcount-->${config.batchcount}`);
@@ -113,7 +117,9 @@ const start = (callbackfn)=>{
   }
 
   getDevicelist((devicelist)=>{
-    startexport_export(curday,devicelist,callbackfn);
+    startexport_export(curday,devicelist,()=>{
+      callbackfn(null,true)
+    });
   });
 }
 

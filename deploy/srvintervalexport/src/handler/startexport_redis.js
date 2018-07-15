@@ -23,14 +23,14 @@ const startexport = ({filename,csvfields,messages,fn_convert},callbackfn)=>{
 
   let fnsz = [];
   for(let i = 0 ;i < messages.length ;i ++){
-    fnsz.push((callbackfn)=>{
+    fnsz.push((callbackfn2)=>{
       const doc = messages[i];
       fn_convert(doc,(newdoc)=>{
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
           if (!err && !!csv ) {
              res.write(iconv.convert(csv));
            }
-           callbackfn(null,true);
+           callbackfn2(null,true);
          });
       });
     });
