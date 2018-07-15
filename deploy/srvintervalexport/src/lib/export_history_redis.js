@@ -49,6 +49,9 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
       if(!error && !!messages){
         startexport({fn_convert,messages,filename,csvfields},callbackfn);
       }
+      else{
+        callbackfn(null,true);
+      }
   });
 }
 
