@@ -1,6 +1,6 @@
 const export_position = require('./lib/export_position');
 const export_alarm = require('./lib/export_alarm');
-const export_history = require('./lib/export_history');
+const export_history = require('./lib/export_history_redis');
 const export_device_ext = require('./lib/export_device_ext');
 const _ = require('lodash');
 const debug = require('debug')('srvinterval:test');
