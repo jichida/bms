@@ -58,7 +58,7 @@ dbdictModel.find({
 });
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-winston.getlog().info(`start kafkadb ok-->${config.NodeID}`);
+winston.getlog().info(`start kafkadb ok-->${config.NodeID}-->${config.version}`);
 sendredis(()=>{
   debug(`sendredis success!`);
 });
