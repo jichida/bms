@@ -20,7 +20,8 @@ const pushtoredis = (topicname,HistoryDeviceDataList,callbackfn)=>{
     _.map(HistoryDeviceDataList,(info)=>{
       fnsz.push((callbackfn)=>{
         const curday = moment(info.DataTime).format('YYYYMMDD');
-        debug(`setkey->【${config.redisdevicesetname}.${curday}】-->lpushkey【${config.redisdevicequeuename}.${curday}.${info.DeviceId}】`);
+        const recvDay = moment().format('YYYYMMDD');
+        debug(`${recvDay}->${curday}->setkey->【${config.redisdevicesetname}.${curday}】-->lpushkey【${config.redisdevicequeuename}.${curday}.${info.DeviceId}】`);
         client.sadd(`${config.redisdevicesetname}.${curday}`, `${info.DeviceId}`,(err, result)=> {
           if(!!err){
             debug(`redis client sadd error`);
