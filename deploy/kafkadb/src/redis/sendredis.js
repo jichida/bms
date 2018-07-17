@@ -10,6 +10,8 @@ const async = require('async');
 const  client = redis.createClient(config.srvredis);
 client.on("error", (err)=> {
     debug("Error " + err);
+    winston.getlog().error(`redis on error`);
+    winston.getlog().error(err);
 });
 
 
@@ -18,16 +20,21 @@ const pushtoredis = (topicname,HistoryDeviceDataList,callbackfn)=>{
     _.map(HistoryDeviceDataList,(info)=>{
       fnsz.push((callbackfn)=>{
         const curday = moment(info.DataTime).format('YYYYMMDD');
-        debug(`setkey->【${config.redisdevicesetname}.${curday}】-->lpushkey【${config.redisdevicequeuename}.${curday}.${info.DeviceId}】`);
+        const recvDay = moment().format('YYYYMMDD');
+        debug(`${recvDay}->${curday}->setkey->【${config.redisdevicesetname}.${curday}】-->lpushkey【${config.redisdevicequeuename}.${curday}.${info.DeviceId}】`);
         client.sadd(`${config.redisdevicesetname}.${curday}`, `${info.DeviceId}`,(err, result)=> {
           if(!!err){
             debug(`redis client sadd error`);
+            winston.getlog().error(`redis client sadd error`);
+            winston.getlog().error(err);
             callbackfn(null,true);
             return;
           }
           client.rpush(`${config.redisdevicequeuename}.${curday}.${info.DeviceId}`,JSON.stringify(info),(err,result)=>{
             if(!!err){
               debug(`redis client rpush error`);
+              winston.getlog().error(`redis client rpush error`);
+              winston.getlog().error(err);
             }
             callbackfn(null,true);
           });//add lpush
