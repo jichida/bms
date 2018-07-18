@@ -82,7 +82,7 @@ const start = (getDevicelist,getdevicedatalist,callbackfn)=>{
   const curday = moments.format('YYYYMMDD');
   debug(`start export file:${curday}`);
 
-  getDevicelist((devicelist)=>{
+  getDevicelist(curday,(devicelist)=>{
     startexport_export(curday,devicelist,(exportdir)=>{
       callbackfn(exportdir)
     });
