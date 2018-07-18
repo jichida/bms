@@ -71,9 +71,14 @@ const startexport_export = (curday,devicelist,getdevicedatalist,callbackfn)=>{
   }
 
    winston.getlog().info(`新建一个目录${exportdir},${i}`);
-   startexport_batch(devicelist,exportdir,curday,(retlist)=>{
-    callbackfn(exportdir);
-  });
+   if(devicelist.length > 0){
+     startexport_batch(devicelist,exportdir,curday,(retlist)=>{
+      callbackfn(exportdir);
+    });
+   }
+   else{
+     callbackfn(exportdir);
+   }
 }
 
 const start = (getDevicelist,getdevicedatalist,callbackfn)=>{
@@ -84,7 +89,7 @@ const start = (getDevicelist,getdevicedatalist,callbackfn)=>{
 
   getDevicelist(curday,(devicelist)=>{
     startexport_export(curday,devicelist,getdevicedatalist,(exportdir)=>{
-      callbackfn(exportdir)
+      callbackfn(exportdir);
     });
   });
 }
