@@ -83,7 +83,7 @@ const start = (getDevicelist,getdevicedatalist,callbackfn)=>{
   debug(`start export file:${curday}`);
 
   getDevicelist(curday,(devicelist)=>{
-    startexport_export(curday,devicelist,(exportdir)=>{
+    startexport_export(curday,devicelist,getdevicedatalist,(exportdir)=>{
       callbackfn(exportdir)
     });
   });
