@@ -9,7 +9,7 @@ const schedule = require('node-schedule');
 const moment = require('moment');
 const debug = require('debug')('srvinterval:start');
 
-debug(`start=====>version:${config.version}`);
+debug(`start=====>version:${config.version},mongodburl:${config.mongodburl}`);
 
 winston.initLog();
 process.setMaxListeners(0);
