@@ -33,7 +33,7 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
       });
     }
     else{
-      debug(error);
+      //debug(error);
       callbackfn(null,true);
     }
   });
