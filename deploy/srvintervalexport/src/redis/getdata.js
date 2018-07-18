@@ -1,5 +1,7 @@
 const redis = require("redis");
 const config = require('../config.js');
+const debug = require('debug')('srvinterval:redis');
+
 const client = redis.createClient(config.srvredis);
 
 client.on("error", (err)=> {
