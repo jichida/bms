@@ -72,7 +72,7 @@ const startexport_export = (curday,devicelist,getdevicedatalist,callbackfn)=>{
 
    winston.getlog().info(`新建一个目录${exportdir},${i}`);
    if(devicelist.length > 0){
-     startexport_batch(devicelist,exportdir,curday,(retlist)=>{
+     startexport_batch(devicelist,exportdir,curday,getdevicedatalist,(retlist)=>{
       callbackfn(exportdir);
     });
    }
@@ -88,6 +88,7 @@ const start = (getDevicelist,getdevicedatalist,callbackfn)=>{
   debug(`start export file:${curday}`);
 
   getDevicelist(curday,(devicelist)=>{
+    debug(`startexport_export:${devicelist.length}`);
     startexport_export(curday,devicelist,getdevicedatalist,(exportdir)=>{
       callbackfn(exportdir);
     });
