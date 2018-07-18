@@ -1,6 +1,8 @@
 const redis = require("redis");
 const config = require('../config.js');
 const debug = require('debug')('srvinterval:redis');
+const winston = require('../log/log.js');
+const _ = require('lodash');
 
 const client = redis.createClient(config.srvredis);
 
