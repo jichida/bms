@@ -51,12 +51,21 @@ dbdictModel.find({
       job.start_cron0();
       //每天18点开始工作
       job.start_cron18();
+      //立即开始工作
     }
-
+    job.start_croneveryhours((dir)=>{
+      debug(`job.start_croneveryhours-->${dir}`);
+    });
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
 winston.getlog().info(`==程序启动${config.version}===`);
+  schedule.scheduleJob('30 * * * *', ()=>{
+      //每小时30分开始工作
+      job.start_croneveryhours((dir)=>{
+        debug(`job.start_croneveryhours-->${dir}`);
+      });
+  });
 
   schedule.scheduleJob('0 0 * * *', ()=>{
       //每天0点开始工作
