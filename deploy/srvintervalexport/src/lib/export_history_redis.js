@@ -33,7 +33,7 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
       });
     }
     else{
-      //debug(error);
+      // debug(error);
       callbackfn(null,true);
     }
   });
@@ -58,35 +58,33 @@ const startexport_batch = (devicelist,exportdir,curday,getdevicedatalist,callbac
 const startexport_export = (curday,devicelist,getdevicedatalist,callbackfn)=>{
   const exportdirbase = `${config.exportdir}/${curday}`;
   let exportdir = exportdirbase;
-  let i = 1;
+  // let i = 1;
   try{
-    while(fs.existsSync(exportdir)){
-      exportdir = `${exportdirbase}_${i}`;
-      i++;
+    if(!fs.existsSync(exportdir)){
+      fs.mkdirSync(exportdir);
+      winston.getlog().info(`新建一个目录${exportdir}`);
     }
-    fs.mkdirSync(exportdir);
+    // while(fs.existsSync(exportdir)){
+    //   exportdir = `${exportdirbase}_${i}`;
+    //   i++;
+    // }
+    // fs.mkdirSync(exportdir);
   }
   catch(e){
     winston.getlog().info(`--->${JSON.stringify(e)}`);
   }
-
-   winston.getlog().info(`新建一个目录${exportdir},${i}`);
-   if(devicelist.length > 0){
+  winston.getlog().info(`开始导出数据,个数:${devicelist.length}`);
+  if(devicelist.length > 0){
      startexport_batch(devicelist,exportdir,curday,getdevicedatalist,(retlist)=>{
       callbackfn(exportdir);
     });
-   }
-   else{
-     callbackfn(exportdir);
-   }
+  }
+  else{
+   callbackfn(exportdir);
+  }
 }
 
-const start = (getDevicelist,getdevicedatalist,callbackfn)=>{
-
-  const moments = moment().subtract(1, 'days');
-  const curday = moments.format('YYYYMMDD');
-  debug(`start export file:${curday}`);
-
+const start = (curday,getDevicelist,getdevicedatalist,callbackfn)=>{
   getDevicelist(curday,(devicelist)=>{
     debug(`startexport_export:${devicelist.length}`);
     startexport_export(curday,devicelist,getdevicedatalist,(exportdir)=>{
