@@ -50,7 +50,7 @@ dbdictModel.find({
       //每天0点开始工作
       job.start_cron0();
       //每天18点开始工作
-      job.start_cron18();
+      // job.start_cron18();
       //立即开始工作
     }
     job.start_croneveryhours((dir)=>{
@@ -67,8 +67,8 @@ winston.getlog().info(`==程序启动${config.version}===`);
       });
   });
 
-  schedule.scheduleJob('0 0 * * *', ()=>{
-      //每天0点开始工作
+  schedule.scheduleJob('0 3 * * *', ()=>{
+      //每天3点开始工作<---改为3点开始工作
       job.start_cron0();
   });
 
