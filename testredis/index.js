@@ -1,3 +1,3 @@
-const startsender = require('./src/redis/index');
+const startsender = require('./src/influxdb/index');
 
 startsender();
