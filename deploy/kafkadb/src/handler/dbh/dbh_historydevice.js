@@ -16,18 +16,18 @@ const dbh_historydevice =(datasin,callbackfn)=>{
   debug_historydevice(`datas start:${datasin.length}`);
   let datas = datasin;
   //先排序,后去重
-  // datasin = _.sortBy(datasin, [(o)=>{
-  //   const key = `${o.DeviceId}_${o.DataTime}`;
-  //   return key;
-  // }]);
-  //
-  // datasin = _.sortedUniqBy(datasin,(o)=>{
-  //   const key = `${o.DeviceId}_${o.DataTime}`;
-  //   return key;
-  // });
-  //
+  datas = _.sortBy(datas, [(o)=>{
+    const key = `${o.DeviceId}_${o.DataTime}`;
+    return key;
+  }]);
+
+  datas = _.sortedUniqBy(datas,(o)=>{
+    const key = `${o.DeviceId}_${o.DataTime}`;
+    return key;
+  });
+
   // debug_historydevice(`${datasin.length} cur start,globalhistorydevicetable:${JSON.stringify(config.globalhistorydevicetable)}`);
-  //
+
   // let datas = [];
   // _.map(datasin,(o)=>{
   //   if(!config.globalhistorydevicetable[o.DeviceId]){
@@ -49,14 +49,15 @@ const dbh_historydevice =(datasin,callbackfn)=>{
   // //   return `${o.DeviceId}_${o.DataTime}`;
   // // });
   //
-  // if(datas.length < datasin.length){
-  //   debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
-  // }
+  if(datas.length < datasin.length){
+    debug_historydevice(`去重有效,datas:${datas.length},datasin:${datasin.length}`);
+  }
   // if(datas.length === 0){
   //   debug_historydevice(`debug_historydevice data is empty`);
   //   callbackfn(null,true);
   //   return;
   // }
+
   if(config.istest){
     winston.getlog().error(`开始更新历史设备:${datas.length}`);
   }

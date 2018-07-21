@@ -9,7 +9,7 @@ const schedule = require('node-schedule');
 const moment = require('moment');
 const debug = require('debug')('srvinterval:start');
 
-debug(`start=====>version:${config.version}`);
+debug(`start=====>version:${config.version},mongodburl:${config.mongodburl}`);
 
 winston.initLog();
 process.setMaxListeners(0);
@@ -50,16 +50,25 @@ dbdictModel.find({
       //每天0点开始工作
       job.start_cron0();
       //每天18点开始工作
-      job.start_cron18();
+      // job.start_cron18();
+      //立即开始工作
     }
-
+    job.start_croneveryhours((dir)=>{
+      debug(`job.start_croneveryhours-->${dir}`);
+    });
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
 winston.getlog().info(`==程序启动${config.version}===`);
+  schedule.scheduleJob('30 * * * *', ()=>{
+      //每小时30分开始工作
+      job.start_croneveryhours((dir)=>{
+        debug(`job.start_croneveryhours-->${dir}`);
+      });
+  });
 
-  schedule.scheduleJob('0 0 * * *', ()=>{
-      //每天0点开始工作
+  schedule.scheduleJob('0 3 * * *', ()=>{
+      //每天3点开始工作<---改为3点开始工作
       job.start_cron0();
   });
 

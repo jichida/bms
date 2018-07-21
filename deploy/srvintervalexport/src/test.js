@@ -1,10 +1,17 @@
-const sftptosrv =  require('./ftps/index.js');
-const debug = require('debug')('srvinterval:test');
-const config = require('./config.js');
+// const sftptosrv =  require('./ftps/index.js');
+// const debug = require('debug')('srvinterval:test');
+// const config = require('./config.js');
+//
+// const job=()=>{
+//   sftptosrv(`/root/bms/deploy/dist/exportdir`,`Alarm20180425.csv`,(err,result)=>{
+//   });
+// };
+//
+// job();
+const job = require('../src/srvsys');
+const winston = require('../src/log/log.js');
 
-const job=()=>{
-  sftptosrv(`/root/bms/deploy/dist/exportdir`,`Alarm20180425.csv`,(err,result)=>{
-  });
-};
-
-job();
+winston.initLog();
+job.start_croneveryhours((dir)=>{
+  console.log(`job.start_croneveryhours-->${dir}`)
+});
