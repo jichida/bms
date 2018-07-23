@@ -157,7 +157,7 @@ const start_croneveryhours = (callbackfn)=>{
   const curday = moments.format('YYYYMMDD');
   debug(`开始导出当天数据:${curday}`);
   export_history(curday,redisdata.getDevicelist,redisdata.getdata_lpop,(exportdir)=>{
-    callbackfn(null,exportdir);
+    callbackfn(exportdir);
   });
 }
 

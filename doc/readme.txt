@@ -1,3 +1,5 @@
+ config set maxmemory 30837462880
+
 ====检查数据====
 #执行数据库
 sudo docker run -it -v /root:/root mongo:3.4 bash

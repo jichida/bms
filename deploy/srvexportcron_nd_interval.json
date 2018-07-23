@@ -1,8 +1,8 @@
 {
   "apps" : [
       {
-        "name": "srvexport",
-        "script": "/root/bms/deploy/srvintervalexport/index.js",
+        "name": "srvexportinterval",
+        "script": "/root/bms/deploy/srvintervalexport/indexinterval.js",
         "env": {
           "NODE_ENV": "production",
           "DEBUG":"srvinterval:*",
@@ -11,13 +11,13 @@
           "mongos":"true",
           "batchcount":"50",
           "logdir":"/catlcluster/log",
-          "exportFlag":"all",
+          "exportFlag":"interval",
           "exportdir":"/catlcluster/exportdir",
           "redisdevicesetname":"bmsrdbset",
           "redisdevicequeuename":"bmsrdbq",
           "srvredis_host":"192.168.2.19"
         },
-        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=40960 --max-new-space-size=40960"
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
       }
   ]
 }
