@@ -5,6 +5,7 @@ const _ = require('lodash');
 const mongoose     = require('mongoose');
 const job = require('./src/srvsys');
 const schedule = require('node-schedule');
+const startinfluxdb = require('./src/influxdb/index');
 // const startsrv = require('./src/test');//《------
 const moment = require('moment');
 const debug = require('debug')('srvstat:start');
@@ -31,11 +32,14 @@ debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
 
 winston.getlog().info(`==程序启动${config.version}===`);
+startinfluxdb(()=>{
+  
+});
 job.start_cron0();
 
 
-schedule.scheduleJob('0 * * * *', ()=>{
-    //每天0点开始工作
+schedule.scheduleJob('0 * * * * *', ()=>{
+    //每天0分开始工作
     job.start_cron0();
 });
 

@@ -2,6 +2,7 @@ const _ = require('lodash');
 const DBModels = require('../src/handler/models.js');
 const debug = require('debug')('srvstat:test');
 const winston = require('./log/log.js');
+const PubSub = require('pubsub-js');
 const async = require('async');
 const config = require('./config');
 const moment = require('moment');
@@ -10,7 +11,7 @@ let idmap = {};
 const getDBCount = (dbModel,idstring,callbackfn)=>{
   dbModel.count({},(err,result)=>{
     if(!!idmap[idstring]){
-      const inccount = result - idmap[idstring].totalcount;
+      const inccount =result - idmap[idstring].totalcount;
       idmap[idstring]={
         curhour:moment().format('YYYY-MM-DD HH:mm'),
         totalcount:result,
@@ -24,7 +25,13 @@ const getDBCount = (dbModel,idstring,callbackfn)=>{
         inccount:0
       }
     }
-    const perseccond = idmap[idstring].inccount / 3600;
+    const perseccond = idmap[idstring].inccount / 60;
+    let payload = _.clone(idmap[idstring]);
+    payload[`perseccond`] = perseccond;
+    PubSub.publish(`mongodbstat`,{
+        topic:`${idstring}`,
+        payload
+    });
     winston.getlog().info(`【${idmap[idstring].curhour}】【${idstring}】,新增:【${idmap[idstring].inccount}】,每秒入库【${perseccond.toFixed(1)}】,总个数【${result}】`);
     callbackfn(null,{
       idstring,
