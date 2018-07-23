@@ -18,7 +18,7 @@
           "redisdevicequeuename":"bmsrdbq",
           "srvredis_host":"192.168.2.19"
         },
-        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=40960 --max-new-space-size=40960"
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
       }
   ]
 }
