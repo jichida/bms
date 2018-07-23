@@ -23,7 +23,9 @@ const getnextjob = (callbackfn)=>{
 
 const intervaljob = ()=>{
   getnextjob((dir)=>{
-    intervaljob();
+    process.nextTick(()=>{
+      intervaljob();
+    });
   });
 }
 
