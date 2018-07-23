@@ -53,8 +53,8 @@ const cron_0 = (callbackfn)=>{
     const moments = moment().subtract(1, 'days');
     const curday = moments.format('YYYYMMDD');
     debug(`start export file:${curday}`);
-
-    export_history(curday,redisdata.getDevicelist,redisdata.getdata_lrange,(exportdir)=>{
+    //使用getdata_lpop导出数据，这样可以清空redis中数据缓存
+    export_history(curday,redisdata.getDevicelist,redisdata.getdata_lpop,(exportdir)=>{
       curtime = moment().format('YYYY-MM-DD HH:mm:ss');
       winston.getlog().info(`导出历史记录完毕:${exportdir}-->${curtime}`);
       // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
