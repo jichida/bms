@@ -78,7 +78,7 @@ const cron_18 = (callbackfn)=>{
 }
 
 
-const start_cron0 = ()=>{
+const start_cron0 = (callbackfnall)=>{
   cron_0((err,result)=>{
     debug(`start_cron0 result====>:${JSON.stringify(result)}`);
     const positionfilepath = result[0];
@@ -89,36 +89,54 @@ const start_cron0 = ()=>{
     let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
     winston.getlog().info(`开始压缩文件夹:${exportdir}-->${curtime}`);
 
-    zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
-      debug(`压缩完毕:${exportdir}.zip`);
-      curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-      winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
+    let fnsz = [];
+    fnsz.push((callbackfn)=>{
+        zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
+          debug(`压缩完毕:${exportdir}.zip`);
+          curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+          winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
 
-      const filename3 = path.basename(`${exportdir}.zip`);
-      winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
+          const filename3 = path.basename(`${exportdir}.zip`);
+          winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
 
-      sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
+          sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
+            curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+            winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
+            debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+            callbackfn(null,true);
+          });
+        });
+    });
+
+    fnsz.push((callbackfn)=>{
+      const filename1 = path.basename(positionfilepath);
+      winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename1}`);
+      sftptosrv(`${config.exportdir}`,filename1,(err,result)=>{
         curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-        winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
-        debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+        debug(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
+        winston.getlog().info(`上传文件:${config.exportdir}/${filename1}到ftp服务器-->${curtime}`);
+        callbackfn(null,true);
       });
     });
 
-    const filename1 = path.basename(positionfilepath);
-    winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename1}`);
-    sftptosrv(`${config.exportdir}`,filename1,(err,result)=>{
-      curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-      debug(`上传文件:${config.exportdir}/${filename1}到ftp服务器`);
-      winston.getlog().info(`上传文件:${config.exportdir}/${filename1}到ftp服务器-->${curtime}`);
+    fnsz.push((callbackfn)=>{
+        const filename2 = path.basename(deviceextfilepath);
+        winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename2}`);
+        sftptosrv(`${config.exportdir}`,filename2 ,(err,result)=>{
+          curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+          debug(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
+          winston.getlog().info(`上传文件:${config.exportdir}/${filename2}到ftp服务器-->${curtime}`);
+          callbackfn(null,true);
+        });
+      });
+
+    async.parallelLimit(fnsz,3,(err,result)=>{
+      winston.getlog().info(`全部上传完毕!!`);
+      if(!!callbackfnall){
+        callbackfnall(err,result);
+      }
     });
 
-    const filename2 = path.basename(deviceextfilepath);
-    winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename2}`);
-    sftptosrv(`${config.exportdir}`,filename2 ,(err,result)=>{
-      curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-      debug(`上传文件:${config.exportdir}/${filename2}到ftp服务器`);
-      winston.getlog().info(`上传文件:${config.exportdir}/${filename2}到ftp服务器-->${curtime}`);
-    });
   });
 }
 
