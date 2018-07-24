@@ -48,7 +48,9 @@ dbdictModel.find({
     winston.getlog().info(`==TEST模式？${config.istest},batchcount:${config.batchcount}===${curtime}`);
     if(config.istest){
       //每天0点开始工作
-      job.start_cron0();
+      job.start_cron0(()=>{
+
+      });
       //每天18点开始工作
       // job.start_cron18();
       //立即开始工作
@@ -69,7 +71,9 @@ winston.getlog().info(`==程序启动${config.version}===`);
 
   schedule.scheduleJob('0 3 * * *', ()=>{
       //每天3点开始工作<---改为3点开始工作
-      job.start_cron0();
+      job.start_cron0(()=>{
+
+      });
   });
 
   schedule.scheduleJob('0 18 * * *', ()=>{
