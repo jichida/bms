@@ -89,7 +89,7 @@ const start_cron0 = ()=>{
     let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
     winston.getlog().info(`开始压缩文件夹:${exportdir}-->${curtime}`);
 
-    zipdir(exportdir, { saveTo: `${exportdir}.zip` }, function (err, buffer) {
+    zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
       debug(`压缩完毕:${exportdir}.zip`);
       curtime = moment().format('YYYY-MM-DD HH:mm:ss');
       winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
