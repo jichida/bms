@@ -7,7 +7,7 @@ const _ = require('lodash');
 const debug = require('debug')('srvinterval:test');
 const winston = require('./log/log.js');
 const async = require('async');
-const zipdir = require('zip-dir');
+const shell = require('shelljs');
 const fse = require('fs-extra');
 const path = require('path');
 const sftptosrv =  require('./ftps/index.js');
@@ -91,7 +91,9 @@ const start_cron0 = (callbackfnall)=>{
 
     let fnsz = [];
     fnsz.push((callbackfn)=>{
-        zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
+        // zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
+        shell.exec(`zip -q -r ${exportdir}.zip ${exportdir}`,(code, stdout, stderr)=>{
+          winston.getlog().info(`命令行完毕:${code}-->${stdout}-->${stderr}`);
           debug(`压缩完毕:${exportdir}.zip`);
           curtime = moment().format('YYYY-MM-DD HH:mm:ss');
           winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
