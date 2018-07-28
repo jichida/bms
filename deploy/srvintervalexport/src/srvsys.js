@@ -92,11 +92,14 @@ const start_cron0 = (callbackfnall)=>{
     let fnsz = [];
     fnsz.push((callbackfn)=>{
         const exportdirname = path.dirname(`${exportdir}.zip`);
-        const filename3 = path.basename(`${exportdir}.zip`);
+        const zipdir = path.basename(`${exportdir}`);
         // zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
-        debug(`exportdirname:${exportdirname},filename3:${filename3}`);
+        const shellzipcmd = `zip -q -r ${zipdir}.zip ${zipdir}`;
+        debug(`exportdirname:${exportdirname},zipdir:${zipdir}`);
+        debug(`shellzipcmd:${shellzipcmd}`)
         shell.cd(`${exportdirname}`);
-        shell.exec(`zip -q -r ${exportdir}.zip ${filename3}`,(code, stdout, stderr)=>{
+        shell.exec(shellzipcmd,(code, stdout, stderr)=>{
+          const filename3 = path.basename(`${exportdir}.zip`);
           winston.getlog().info(`命令行完毕:${code}-->${stdout}-->${stderr}`);
           debug(`压缩完毕:${exportdir}.zip`);
           curtime = moment().format('YYYY-MM-DD HH:mm:ss');
