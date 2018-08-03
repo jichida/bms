@@ -75,7 +75,7 @@ const addlocationstring= (devicelist,config_mapdevicecity,callbackfn)=>{
 
 
 const startexport_export = (config_mapdevicecity,callbackfn)=>{
-  const curday = moment().subtract(1, 'days').format('YYYYMMDD');
+  const curday = moment().format('YYYYMMDD');
   const exportdir = config.exportdir;
 
   const getDevicelist = (callbackfn)=>{
