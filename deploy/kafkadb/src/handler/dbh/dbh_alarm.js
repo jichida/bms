@@ -65,7 +65,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
   debug_alarm(`start dbh_alarm,datas:${datas.length}`);
   const asyncfnsz = [];
   _.map(datas,(devicedata,index)=>{
-    devicedata.iorder = index;
+    // devicedata.iorder = index;
     asyncfnsz.push(
       (callbackfn)=>{
         const DeviceId = devicedata["$set"].DeviceId;
@@ -75,7 +75,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
         		DeviceId,
             CurDay,
          },devicedata,{upsert:true,new:true}).lean().exec((err,result)=>{
-           result.iorder = devicedata.iorder;
+           // result.iorder = devicedata.iorder;
            if(!!err){
              winston.getlog().warn(`alarm insert error,${JSON.stringify(devicedata)}`)
              winston.getlog().warn(err);

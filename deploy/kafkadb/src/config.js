@@ -2,6 +2,7 @@ const nodeid = process.env.NodeID || 1;
 let config =  {
   mongodburl:process.env.MONGO_URL || 'mongodb://localhost/bms',
   mongos:process.env.mongos==='true'?true:false,
+  issendtoredis:process.env.issendtoredis==='false'?false:true,
   redisdevicesetname:process.env.redisdevicesetname||`bmsrdbset`,
   redisdevicequeuename:process.env.redisdevicequeuename||`bmsrdbq`,
   srvredis:{

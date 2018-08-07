@@ -48,9 +48,11 @@ const pushtoredis = (topicname,HistoryDeviceDataList,callbackfn)=>{
 
 const startsrv = (callbackfn)=>{
   const userDeviceSubscriber = ( msg, data )=>{
+    if(config.issendtoredis){
       pushtoredis(data.topic,data.payload,()=>{
         debug('pushtoredis ok!');
       });
+    }
   };
   debug('redis is ready!');
   PubSub.subscribe(`redismsgpush`,userDeviceSubscriber);
