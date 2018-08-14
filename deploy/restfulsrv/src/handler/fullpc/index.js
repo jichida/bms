@@ -1,6 +1,7 @@
 const systemconfig = require('../common/systemconfig');
 const userlogin = require('../common/userlogin');
 const device = require('../common/device.js');
+const deviceapp = require('../fullapp/device.js');
 const historydevice = require('../common/historydevice.js');
 const realtimealarm = require('../common/realtimealarm.js');
 const moment = require('moment');
@@ -37,6 +38,7 @@ const authhandler = {
   'catl_dxtemperature':catlworking.catl_dxtemperature,
 
   'querydevice':device.querydevice,
+  'querydevicealarm':deviceapp.querydevicealarm,
   'querydevicegroup':device.querydevicegroup,
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,
   'deviceinfoquerychart':historydevice.deviceinfoquerychart,

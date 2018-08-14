@@ -1,11 +1,12 @@
 const srvhttp = require('./src/srvhttp.js');
 const srvwebsocket = require('./src/srvws.js');
 const srvsystem = require('./src/srvsystem.js');
-
+const winston = require('./src/log/log.js');
+const moment = require('moment');
 const config = require('./src/config');
 const mongoose     = require('mongoose');
 const debug = require('debug')('srvapp:index');
-// const utilposition = require('./src/handler/common/util_position');
+const mapcitystat = require('./src/handler/fullpc/mapcitystat');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodburl,{
@@ -22,6 +23,16 @@ mongoose.connect(config.mongodburl,{
 
   });
 
+winston.initLog();
+
+let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+winston.getlog().info(`${curtime}启动服务器:${config.version}`);
+
+mapcitystat.querymapcitystat({},{},(result)=>{
+  curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+  winston.getlog().info(`${curtime}获取到信息`);
+  winston.getlog().info(result);
+});
 debug(`version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
 debug(`issmsdebug:${config.issmsdebug}`);
 // const getpoint = (v)=>{

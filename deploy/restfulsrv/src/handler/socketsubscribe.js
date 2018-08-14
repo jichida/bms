@@ -20,7 +20,7 @@ const usersubfn  = (socket,ctx)=>{
 
       if(_.startsWith(msg,config.pushdevicetopic) && topicsz[1] === `${ctx.userid}`){
           // const DeviceId = topicsz[1];
-          if(ctx.usertype !== 'fullapp'){
+          if(ctx.usertype !== 'fullapp' && ctx.usertype !== 'fullpc'){
             pushusermessage(socket,ctx,data);
           }
           else{

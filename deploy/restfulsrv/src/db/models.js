@@ -184,6 +184,15 @@ const ExportTokenSchema = new Schema({
 ExportTokenSchema.plugin(mongoosePaginate);
 const ExportTokenModel =mongoose.model('exporttoken',  ExportTokenSchema);
 
+//设备城市映射表【每天一次】
+const DeviceCitySchema = new Schema({
+  deviceid:{ type: Schema.Types.ObjectId, ref: 'device'},
+  updatetime: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+}, { strict: false });
+DeviceCitySchema.plugin(mongoosePaginate);
+const DeviceCityModel =mongoose.model('devicecity',  DeviceCitySchema);
+
+
 exports.UserAdminSchema = UserAdminSchema;
 exports.SystemConfigSchema = SystemConfigSchema;
 exports.DeviceSchema = DeviceSchema;
@@ -201,6 +210,7 @@ exports.HistoryDeviceSchema = HistoryDeviceSchema;
 exports.UserLogSchema = UserLogSchema;
 exports.DataDictSchema = DataDictSchema;
 exports.ExportTokenSchema = ExportTokenSchema;
+exports.DeviceCitySchema = DeviceCitySchema;
 
 exports.UserAdminModel = UserAdmin;
 exports.SystemConfigModel = SystemConfigModel;
@@ -220,3 +230,4 @@ exports.HistoryDeviceModel = HistoryDeviceModel;
 exports.UserLogModel = UserLogModel;
 exports.DataDictModel = DataDictModel;
 exports.ExportTokenModel = ExportTokenModel;
+exports.DeviceCityModel = DeviceCityModel;
