@@ -28,12 +28,16 @@ winston.initLog();
 let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
 winston.getlog().info(`${curtime}启动服务器:${config.version}`);
 
+console.log(`${curtime},version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
 mapcitystat.querymapcitystat({},{},(result)=>{
   curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-  winston.getlog().info(`${curtime}获取到信息`);
-  winston.getlog().info(result);
+  console.log(`querymapcitystat:${curtime},result:${result.length}`);
+  winston.getlog().info(`${curtime}获取到信息,result:${result.length}`);
+  winston.getlog().info(`${JSON.stringify(result)}`);
+  curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+  console.log(`querymapcitystat end:${curtime}`);
 });
-debug(`version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
+
 debug(`issmsdebug:${config.issmsdebug}`);
 // const getpoint = (v)=>{
 //   return [v.Longitude,v.Latitude];
