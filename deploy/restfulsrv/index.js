@@ -29,13 +29,8 @@ let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
 winston.getlog().info(`${curtime}启动服务器:${config.version}`);
 
 console.log(`${curtime},version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
-mapcitystat.querymapcitystat({},{},(result)=>{
-  curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-  console.log(`querymapcitystat:${curtime},result:${result.length}`);
-  winston.getlog().info(`${curtime}获取到信息,result:${result.length}`);
-  winston.getlog().info(`${JSON.stringify(result)}`);
-  curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-  console.log(`querymapcitystat end:${curtime}`);
+mapcitystat.getmapstat((result)=>{
+  config.listresult_grouped = result;
 });
 
 debug(`issmsdebug:${config.issmsdebug}`);

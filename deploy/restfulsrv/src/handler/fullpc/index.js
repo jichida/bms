@@ -9,7 +9,7 @@ const historytrack = require('../common/historytrack');
 const userrelate = require('../common/userrelate');
 const catlworking = require('../fullcommon/catlworking');
 const deviceext = require('../fullcommon/deviceext');
-
+const mapstat  = require('./mapcitystat');
 
 const debug = require('debug')('srvapp:handler');
 //司机端
@@ -22,6 +22,7 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'querymapstat':mapstat.querymapstat,
   'deviceext':deviceext.deviceext,
   'getcountcar':deviceext.getcountcar,
   'getcountbus':deviceext.getcountbus,

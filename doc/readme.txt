@@ -71,3 +71,9 @@ db.historydevices.aggregate([
 
 docker run -it confluentinc/cp-kafka:4.0.0 bash
 kafka-console-consumer --bootstrap-server 192.168.1.114:9092 --topic bmsindex --offset 10000 --partition 1 --max-messages 100
+
+
+docker run -it confluentinc/cp-kafka:4.0.0 bash
+kafka-consumer-groups --bootstrap-server 192.168.10.3:9092  --group pbmsgid --describe
+
+kafka-consumer-groups --bootstrap-server 192.168.2.11:9092  --group pbmsgid --describe

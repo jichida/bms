@@ -261,7 +261,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                              body: 'marker-body-customer-body',
                              container: 'amap-ui-district-cluster-marker1'
               			};
-              			if (recycledMarker) {
+              			if (!!recycledMarker) {
               				container = recycledMarker.getContent();
               				title = domUtils.getElementsByClassName(nodeClassNames.title, 'span', container)[0];
               				body = domUtils.getElementsByClassName(nodeClassNames.body, 'span', container)[0];

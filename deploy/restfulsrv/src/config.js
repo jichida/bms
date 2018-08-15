@@ -12,6 +12,7 @@ const config =  {
   uploaddir:process.env.uploaddir ||'../../../uploader',
   uploadurl:'/uploader',
   version:'1.0.2(build0814)',
+  defaultTypeUnknow:process.env.defaultTypeUnknow || 'BUS',
   expRequestMinutes:200,//2分钟之内
   maxAge:86400000,
   maxDistance:3,
@@ -53,7 +54,8 @@ const config =  {
       groupname:'电池类信息',
       fieldslist:['BAT_Ucell_Max','BAT_Ucell_Min','BAT_Ucell_Avg','BAT_T_Max','BAT_T_Min','BAT_T_Min',]
     },
-  ]
+  ],
+  listresult_grouped:{}
 };
 
 
