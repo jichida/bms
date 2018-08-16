@@ -5,6 +5,7 @@ const realtimealarm = require('./common/realtimealarm');
 const debug = require('debug')('srvapp:pcpush');
 const fullappdevice = require('./fullapp/device');
 const fulldeviceext = require('./fullcommon/deviceext');
+const mapstat  = require('./fullpc/mapcitystat');
 
 const pushusermessage = (socket,ctx,data)=>{
   if(data.length > 0){
@@ -35,6 +36,13 @@ const usersubfn  = (socket,ctx)=>{
           fulldeviceext.pushdeviceext({},ctx,(result)=>{
             socket.emit(result.cmd,result.payload);
           });
+      }
+
+      if(ctx.usertype === 'fullpc' && msg === 'mapcitystat'){
+        mapstat.querymapstat({},ctx,(result)=>{
+          socket.emit(result.cmd,result.payload);
+          winston.getlog().info(`大屏推送数据成功!`);
+        });
       }
 
   };//for eachuser

@@ -188,7 +188,6 @@ const intervalCheckDevice =()=>{
 // │    └──────────────────── minute (0 - 59)
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
-
 const job=()=>{
 
     // createadmin();

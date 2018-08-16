@@ -26,6 +26,9 @@ const userloginsuccess =(user,callback,ctx)=>{
 const subscriberuser = (user,ctx)=>{
   PubSub.unsubscribe( ctx.userDeviceSubscriber );
   PubSub.subscribe(`${config.pushdevicetopic}.${ctx.userid}.${ctx.connectid}`,ctx.userDeviceSubscriber);
+  if(ctx.usertype === 'fullpc' ){
+    PubSub.subscribe(`mapcitystat`,ctx.userDeviceSubscriber);
+  }
 }
 
 let getdatafromuser =(user)=>{

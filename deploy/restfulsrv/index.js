@@ -7,6 +7,8 @@ const config = require('./src/config');
 const mongoose     = require('mongoose');
 const debug = require('debug')('srvapp:index');
 const mapcitystat = require('./src/handler/fullpc/mapcitystat');
+const schedule = require('node-schedule');
+const PubSub = require('pubsub-js');
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.mongodburl,{
@@ -28,9 +30,23 @@ winston.initLog();
 let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
 winston.getlog().info(`${curtime}启动服务器:${config.version}`);
 
-console.log(`${curtime},version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
-mapcitystat.getmapstat((result)=>{
-  config.listresult_grouped = result;
+const interval_loaddevicecities = (callbackfn)=>{
+  console.log(`${curtime},version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
+  mapcitystat.getmapstat((result)=>{
+    config.listresult_grouped = result;
+    callbackfn(null,true);
+  });
+}
+
+interval_loaddevicecities(()=>{
+  PubSub.publish('mapcitystat',{});
+});
+
+schedule.scheduleJob('0 3 * * *', ()=>{
+    //每天3点开始工作<---改为3点开始工作
+    interval_loaddevicecities(()=>{
+      PubSub.publish('mapcitystat',{});
+    });
 });
 
 debug(`issmsdebug:${config.issmsdebug}`);
