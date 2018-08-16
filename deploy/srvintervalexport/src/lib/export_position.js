@@ -19,7 +19,7 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
     encoding:'ascii',
     autoClose: false
   });
-  const csvfields = 'DeviceId,Province,City,County';
+  const csvfields = 'DeviceId,Province,City,County,GPSTime';
   res.write(iconv.convert(csvfields));
   res.write(iconv.convert('\n'));
   // res.write(csvfields);
@@ -35,7 +35,8 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
           DeviceId:item.DeviceId,
           Province:item.Provice,
           City:item.City,
-          County:item.Area
+          County:item.Area,
+          GPSTime:item.last_GPSTime
         };
 
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
@@ -64,7 +65,6 @@ const addlocationstring= (devicelist,config_mapdevicecity,callbackfn)=>{
   let retdevicelist = [];
   for(let i = 0 ;i < devicelist.length; i ++){
     let info = devicelist[i];
-
     info.Provice = _.get(config_mapdevicecity,`${info.DeviceId}.province`,'未知');
     info.City = _.get(config_mapdevicecity,`${info.DeviceId}.city`,'未知');
     info.Area = _.get(config_mapdevicecity,`${info.DeviceId}.district`,'未知');
@@ -84,11 +84,7 @@ const startexport_export = (config_mapdevicecity,callbackfn)=>{
     deviceModel.find({
     },{
       'DeviceId':1,
-      'LastRealtimeAlarm.DataTime':1,
-      'LastHistoryTrack.Latitude':1,
-      'LastHistoryTrack.Longitude':1,
-      'LastHistoryTrack.GPSTime':1,
-      'alarmtxtstat':1
+      'last_GPSTime':1,
     }).lean().exec((err,result)=>{
       // debug(err)
       // debug(result)
