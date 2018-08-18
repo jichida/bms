@@ -68,44 +68,52 @@ const getdevicecities = (callbackfn)=>{
         type:_.get(info,'deviceid.deviceextid.type','UNKNOW')
       });
     });
+    debug(`listresult-->${listresult.length}`)
     callbackfn(listresult);
   });
 
 };
 
 const getgroupedresult = (listresult,callbackfn)=>{
-  const groupedlist = _.groupBy(listresult,(o)=>{
+  const groupedmaplist = _.groupBy(listresult,(o)=>{
     return o.citycode;
   });
-
-  let listresult_grouped = [];
-  _.map(groupedlist,(v,k)=>{
-    let typelist = _.groupBy(v,(o)=>{
-      return o.type;
-    });
-    if(v.length > 0){
-      let resultinfo = {
-        citycode:_.get(v[0],'citycode',''),
-        adcode:_.get(v[0],'adcode',''),
-        province:_.get(v[0],'province',''),
-        city:_.get(v[0],'city',''),
+  // debug(`groupedlist-->${JSON.stringify(groupedmaplist)}`)
+  let listresult_grouped = [];//return ret list
+  _.map(groupedmaplist,(vlist,k)=>{
+    let resultinfo ;
+    if(vlist.length > 0){//v-->list
+       resultinfo = {
+        citycode:_.get(vlist[0],'citycode',''),
+        adcode:_.get(vlist[0],'adcode',''),
+        province:_.get(vlist[0],'province',''),
+        city:_.get(vlist[0],'city',''),
         BUS:0,
         CAR:0,
         ENERGYTRUCK:0,
         CONTAINERTRUCK:0
       };
-      _.map(typelist,(vtype,ktype)=>{
-        if(ktype === 'UNKNOW'){
-          resultinfo[config.defaultTypeUnknow] = resultinfo[config.defaultTypeUnknow]+vtype.length;
-        }
-        else{
-          resultinfo[ktype] = vtype.length;
-        }
-      });
-      listresult_grouped.push(resultinfo);
     }
-  });
 
+    // debug(`resultinfo->${JSON.stringify(resultinfo)}`)
+    let typedmaplist = _.groupBy(vlist,(o)=>{
+      return o.type;
+    });
+    // debug(`typedmaplist->${JSON.stringify(typedmaplist)}`)
+    _.map(typedmaplist,(vtypelist,ktype)=>{
+      if(ktype === 'UNKNOW'){
+        resultinfo[config.defaultTypeUnknow] = resultinfo[config.defaultTypeUnknow]+vtypelist.length;
+      }
+      else{
+        resultinfo[ktype] = resultinfo[ktype]+vtypelist.length;
+      }
+    });
+    // debug(`resultinfo->${JSON.stringify(resultinfo)}`)
+
+
+    listresult_grouped.push(resultinfo);
+  });
+  // debug(`listresult_grouped-->${JSON.stringify(listresult_grouped)}`)
   callbackfn(listresult_grouped);
 }
 
