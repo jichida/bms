@@ -21,8 +21,9 @@ debug(`----${config.version}`);
 const getdelaymsec = (numMsg)=>{
   const curtime = moment().format('YYYY-MM-DD HH:mm:ss');
   let delaymsec = 0;
+  let leftnum = numMessages;
   if(numMsg > 0){
-    let leftnum = numMessages - numMsg;//剩余个数
+    leftnum = numMessages - numMsg;//剩余个数
     delaymsec = leftnum > 0 ? leftnum*10:0;
   }
   debug(`当前时间:${curtime},剩余:${leftnum},延时:${delaymsec}毫秒`);
