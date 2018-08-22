@@ -2,6 +2,7 @@ const getConsumer = require('./rkafka/c.js');
 const config = require('../config');
 const winston = require('../log/log.js');
 const debug = require('debug')('dbh:kc');
+const moment = require('moment');
 const topicindex = require('../handler/pkafkamsg/topicindex');
 const tophistorydevices = require('../handler/pkafkamsg/tophistorydevices');
 const topichistorytracks = require('../handler/pkafkamsg/topichistorytracks');
@@ -14,6 +15,14 @@ handlermap[config.kafka_dbtopic_index] = topicindex;
 handlermap[config.kafka_dbtopic_realtimealarmraws] = topicrealtimealarmraws;
 handlermap[config.kafka_dbtopic_historydevices] = tophistorydevices;
 handlermap[config.kafka_dbtopic_historytracks] = topichistorytracks;
+
+const getdelaymsec = (numMsg)=>{
+  const curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+  let leftnum = numMessages - numMsg;//剩余个数
+  const delaymsec = leftnum > 0 ? leftnum*10:0;
+  debug(`当前时间:${curtime},剩余:${leftnum},延时:${delaymsec}毫秒`);
+  return delaymsec;
+}
 
 const processbatchmsgs = (data,callbackfn)=>{
   const handlemsg = handlermap[config.kafka_dbtopic_current];
@@ -80,7 +89,11 @@ const startsrv = (config)=>{
           }
 
           processRecords(data, () => {
-            consumeNum(numMsg);
+            const delaymsec = getdelaymsec(numMsg);
+            setTimeout(()=>{
+              consumeNum(numMsg);
+            },delaymsec);
+
           });
         });
       };
