@@ -16,6 +16,8 @@ handlermap[config.kafka_dbtopic_realtimealarmraws] = topicrealtimealarmraws;
 handlermap[config.kafka_dbtopic_historydevices] = tophistorydevices;
 handlermap[config.kafka_dbtopic_historytracks] = topichistorytracks;
 
+debug(`----${config.version}`);
+
 const getdelaymsec = (numMsg)=>{
   const curtime = moment().format('YYYY-MM-DD HH:mm:ss');
   let leftnum = numMessages - numMsg;//剩余个数
@@ -89,7 +91,7 @@ const startsrv = (config)=>{
           }
 
           processRecords(data, () => {
-            const delaymsec = getdelaymsec(numMsg);
+            const delaymsec = getdelaymsec(data.length);
             setTimeout(()=>{
               consumeNum(numMsg);
             },delaymsec);
