@@ -31,7 +31,9 @@ let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
 winston.getlog().info(`${curtime}启动服务器:${config.version}`);
 
 const interval_loaddevicecities = (callbackfn)=>{
-  console.log(`${curtime},version:${config.version},rooturl:${config.rooturl},mongodburl:${config.mongodburl}`);
+  debug(`${curtime},version:${config.version},
+    rooturl:${config.rooturl},mongodburl:${config.mongodburl},
+    config.defaultTypeUnknow:${config.defaultTypeUnknow}`);
   mapcitystat.getmapstat((result)=>{
     config.listresult_grouped = result;
     callbackfn(null,true);

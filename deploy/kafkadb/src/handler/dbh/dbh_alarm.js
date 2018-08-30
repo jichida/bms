@@ -87,6 +87,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
   });
   async.series(asyncfnsz,(err,result)=>{
       if(!!err){
+
         if(datas.length > 0){
           winston.getlog().error(`插入报警统计错误:${JSON.stringify(datas[0])}`);
         }
@@ -100,8 +101,8 @@ const dbh_alarm =(datasin,callbackfn)=>{
         }]);
 
         if(datas.length !== result.length){
-          debug(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`);
-          debug(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`);
+          debug_alarm(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`);
+          debug_alarm(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`);
           winston.getlog().warn(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`)
           winston.getlog().warn(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`)
         }
