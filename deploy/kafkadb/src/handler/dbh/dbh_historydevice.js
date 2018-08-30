@@ -106,14 +106,11 @@ const dbh_historydevice =(datasin,callbackfn)=>{
     });
     bulk.execute((err,result)=>{
       if(!!err){
-        console.error(`dbh_historydevice err`);
-        console.error(err);
-        console.error(err.stack);
+        if(datas.length > 0){
+          winston.getlog().error(`历史设备更新错误:${JSON.stringify(datas[0])}`);
+        }
       }
       debug_historydevice(`stop dbh_historydevice`);
-      if(config.istest){
-        winston.getlog().error(`历史设备更新完毕:${datas.length}`);
-      }
 
       PubSub.publish(`redismsgpush`,{
           topic:'historydevice',

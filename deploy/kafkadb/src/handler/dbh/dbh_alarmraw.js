@@ -93,14 +93,12 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
     });
     bulk.execute((err,result)=>{
       if(!!err){
-        console.error(`dbh_alarmraw err`);
-        console.error(err);
-        console.error(err.stack);
+        if(datas.length > 0){
+          winston.getlog().error(`插入报警明细错误:${JSON.stringify(datas[0])}`);
+        }
       }
       debug_alarmraw(`stop dbh_alarmraw`);
-      if(config.istest){
-        winston.getlog().error(`插入报警明细完毕:${datas.length}`);
-      }
+
       callbackfn(null,true);
     });
   }

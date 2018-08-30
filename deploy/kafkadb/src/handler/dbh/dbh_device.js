@@ -107,12 +107,9 @@ const dbh_device =(datasin,callbackfn)=>{
     });
     bulk.execute((err,result)=>{
       if(!!err){
-        console.error(`dbh_device err`);
-        console.error(err);
-        console.error(err.stack);
-      }
-      if(config.istest){
-        winston.getlog().error(`更新设备完毕:${datas.length}`);
+        if(datas.length > 0){
+          winston.getlog().error(`更新设备错误:${JSON.stringify(datas[0])}`);
+        }
       }
       debug_device(`stop dbh_device`);
       callbackfn(null,true);

@@ -88,9 +88,9 @@ const dbh_historytrack =(datasin,callbackfn)=>{
     });
     bulk.execute((err,result)=>{
       if(!!err){
-        console.error(`dbh_historytrack err`);
-        console.error(err);
-        console.error(err.stack);
+        if(datas.length > 0){
+          winston.getlog().error(`更新历史轨迹错误:${JSON.stringify(datas[0])}`);
+        }
       }
       debug_historytrack(`stop dbh_historytrack`);
       if(config.istest){

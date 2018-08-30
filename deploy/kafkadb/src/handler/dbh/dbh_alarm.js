@@ -77,7 +77,7 @@ const dbh_alarm =(datasin,callbackfn)=>{
          },devicedata,{upsert:true,new:true}).lean().exec((err,result)=>{
            // result.iorder = devicedata.iorder;
            if(!!err){
-             winston.getlog().warn(`alarm insert error,${JSON.stringify(devicedata)}`)
+             winston.getlog().warn(`插入报警统计错误${DeviceId},${JSON.stringify(devicedata)}`)
              winston.getlog().warn(err);
            }
            callbackfn(err,result);
@@ -87,10 +87,9 @@ const dbh_alarm =(datasin,callbackfn)=>{
   });
   async.series(asyncfnsz,(err,result)=>{
       if(!!err){
-        winston.getlog().error(`async.series error,${JSON.stringify(datas)}`)
-        winston.getlog().warn(err);
-        debug(`async.series error,${JSON.stringify(datas)}`);
-        debug(err);
+        if(datas.length > 0){
+          winston.getlog().error(`插入报警统计错误:${JSON.stringify(datas[0])}`);
+        }
       }
 
       if(!err && !!result){
@@ -107,9 +106,6 @@ const dbh_alarm =(datasin,callbackfn)=>{
           winston.getlog().warn(`dbh_alarm输入输出数据不符,${JSON.stringify(result)}`)
         }
 
-        if(config.istest){
-          winston.getlog().error(`报警统计插入完毕:${result.length}`);
-        }
       }
 
 
