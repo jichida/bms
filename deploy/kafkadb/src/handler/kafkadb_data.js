@@ -237,8 +237,10 @@ const getkafkamsg = (msg)=>{
     try{
       payload = JSON.parse(payload);
     }
-    catch(e){
+    catch(err){
       //console.log(`parse json eror ${JSON.stringify(e)}`);
+      console.error(err);
+      console.error(err.stack);
       console.log(`在:${msg.partition},offset:${msg.offset} 存在非法数据:${payload}`);
       winston.getlog().error(`在:${msg.partition},offset:${msg.offset} 存在非法数据:${payload}`);
       return;
