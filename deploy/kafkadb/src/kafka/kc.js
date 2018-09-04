@@ -103,7 +103,7 @@ const startsrv = (config)=>{
       }
 
       const consumeNum =(numMsg)=>{
-        debug(`consumeNum--->${numMsg}----->`);
+        // debug(`consumeNum--->${numMsg}----->`);
         consumer.consume(numMsg, (err, data) => {
           if (!!err) {
             if(debug.enabled){
