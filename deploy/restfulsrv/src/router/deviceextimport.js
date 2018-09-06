@@ -60,6 +60,7 @@ const dodeviceextimport = (req,res)=>{
               failedlist:deviceids_notfound,
           }
       });
+      console.log(`--->导入成功`)
     }
     else{
       res.status(200)
@@ -67,6 +68,7 @@ const dodeviceextimport = (req,res)=>{
         result:'error',
         message:'导入错误'
       });
+      console.log(`--->导入错误`)
     }
   });
 
