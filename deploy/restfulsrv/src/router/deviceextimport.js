@@ -40,7 +40,7 @@ const dodeviceextimport = (req,res)=>{
   });
 
 
-  async.parallel(asyncfnsz,(err,resultlist)=>{
+  async.parallelLimit(asyncfnsz,100,(err,resultlist)=>{
     if(!err){
       const resultstring = `成功导入${deviceids_success.length}条`;
       const userlog = {
