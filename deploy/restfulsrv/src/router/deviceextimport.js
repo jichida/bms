@@ -40,7 +40,7 @@ const dodeviceextimport = (req,res)=>{
   });
 
 
-  async.parallel(asyncfnsz,(err,resultlist)=>{
+  async.parallelLimit(asyncfnsz,100,(err,resultlist)=>{
     if(!err){
       const resultstring = `成功导入${deviceids_success.length}条`;
       const userlog = {
@@ -60,6 +60,7 @@ const dodeviceextimport = (req,res)=>{
               failedlist:deviceids_notfound,
           }
       });
+      console.log(`--->导入成功`)
     }
     else{
       res.status(200)
@@ -67,6 +68,7 @@ const dodeviceextimport = (req,res)=>{
         result:'error',
         message:'导入错误'
       });
+      console.log(`--->导入错误`)
     }
   });
 
@@ -108,13 +110,13 @@ const startuploader = (app)=>{
         const devicedata = exceljson[i];
         const DeviceId = devicedata[`DeviceId`];
         const province = devicedata[`province`];
-        if(!!DeviceId && DeviceId !== ''){
-          if(_.indexOf(deviceids, DeviceId) === -1){
-            errmessage = `${DeviceId}不存在,${i}条记录`;
-            issuccess = false;
-            break;
-          }
-        }
+        // if(!!DeviceId && DeviceId !== ''){
+        //   if(_.indexOf(deviceids, DeviceId) === -1){
+        //     errmessage = `${DeviceId}不存在,${i}条记录`;
+        //     issuccess = false;
+        //     break;
+        //   }
+        // }
         if(_.indexOf(provincenames, province) === -1){
           issuccess = false;
           errmessage = `【${province}】非法,只能是:'北京','上海','天津','重庆','河北',\

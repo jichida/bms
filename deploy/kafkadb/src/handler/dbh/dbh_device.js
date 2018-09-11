@@ -96,14 +96,19 @@ const dbh_device =(datasin,callbackfn)=>{
         devicedata.last_Latitude = _.get(devicedata,'LastHistoryTrack.Latitude',0);
       }
 
-
-      bulk.find({
-          DeviceId:devicedata.DeviceId
-        })
-        .upsert()
-        .updateOne({
-          $set:devicedata
-        });
+      if(!devicedata.DeviceId){
+        console.log(`这是一个无效的设备,这条数据会导致数据库报错:${JSON.stringify(devicedata)}`);
+        winston.getlog().error(`这是一个无效的设备,这条数据会导致数据库报错:${JSON.stringify(devicedata)}`);
+      }
+      else{
+        bulk.find({
+            DeviceId:devicedata.DeviceId
+          })
+          .upsert()
+          .updateOne({
+            $set:devicedata
+          });
+      }
     });
     bulk.execute((err,result)=>{
       if(!!err){

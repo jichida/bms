@@ -74,13 +74,14 @@ const mapkeydeviceext2 = {
 };
 
 const requiredlistfield = [
-  "DeviceId","packnocs","buscarvin","type","capacity","serialnumber",
-  "parallelnumber",	"typeelectriccore","catlprojectname","projectpn","batterysystemflownumber",
-  "BMUhardwareversion",	"CSChardwareversion","BMUsoftwareversion","CSCsoftwareversion","datebatterystorage",
-  "datebatterydelivery","vehicleproductionplant","vehiclemodel","dateloading","datevehiclefactory",
-  "province","area","mileage","customername","customercontactaddress",
-  "customercontact","customercontactphone","purpose","datepurchase","datenewcar",
-  "licenseplatenumber","nameaftersaleservice","usedyear"
+  "batterysystemflownumber",
+  // "packnocs","buscarvin","type","capacity","serialnumber",
+  // "parallelnumber",	"typeelectriccore","catlprojectname","projectpn","batterysystemflownumber",
+  // "BMUhardwareversion",	"CSChardwareversion","BMUsoftwareversion","CSCsoftwareversion","datebatterystorage",
+  // "datebatterydelivery","vehicleproductionplant","vehiclemodel","dateloading","datevehiclefactory",
+  // "province","area","mileage","customername","customercontactaddress",
+  // "customercontact","customercontactphone","purpose","datepurchase","datenewcar",
+  // "licenseplatenumber","nameaftersaleservice","usedyear"
 ];
 
 const getfieldname = (key)=>{

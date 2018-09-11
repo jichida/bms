@@ -237,10 +237,14 @@ const getkafkamsg = (msg)=>{
     try{
       payload = JSON.parse(payload);
     }
-    catch(e){
+    catch(err){
       //console.log(`parse json eror ${JSON.stringify(e)}`);
+      console.error(err);
+      console.error(err.stack);
+      console.log(`在:${msg.partition},offset:${msg.offset} 存在非法数据:${payload}`);
+      winston.getlog().error(`在:${msg.partition},offset:${msg.offset} 存在非法数据:${payload}`);
+      return;
     }
-
   }
   payload.recvpartition = msg.partition;
   payload.recvoffset = msg.offset;
@@ -259,8 +263,10 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   const msgs = [];
   _.map(kafkamsgs,(msg)=>{
     let newmsg = getkafkamsg(msg);
-    newmsg = deviceplugin(newmsg);
-    msgs.push(newmsg);
+    if(!!newmsg){
+      newmsg = deviceplugin(newmsg);
+      msgs.push(newmsg);
+    }
   });
   const resultmsglist = {
     'device':[],
@@ -273,28 +279,30 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   _.map(msgs,(msg)=>{
     fnsz.push((callbackfn)=>{
       getindexmsgs(msg,(newdevicedata)=>{//获得warninglevel
-        const data_device = getdbdata_device(newdevicedata);
-        const data_historydevice = getdbdata_historydevice(newdevicedata);
-        const data_historytrack = getdbdata_historytrack(newdevicedata);
-        const data_alarmraw = getdbdata_alarmraw(newdevicedata);//含有Alarm即有报警
-        getdbdata_alarm(newdevicedata,(data_alarm)=>{//准备数据updatedset
-             if(!!data_device){
-               resultmsglist['device'].push(data_device);
-             }
-             if(!!data_historydevice){
-               resultmsglist['historydevice'].push(data_historydevice);
-             }
-             if(!!data_historytrack){
-               resultmsglist['historytrack'].push(data_historytrack);
-             }
-             if(!!data_alarmraw){
-               resultmsglist['alarmraw'].push(data_alarmraw);
-             }
-             if(!!data_alarm){
-               resultmsglist['alarm'].push(data_alarm);
-             }
-             callbackfn();
-        });
+        if(!!newdevicedata){
+          const data_device = getdbdata_device(newdevicedata);
+          const data_historydevice = getdbdata_historydevice(newdevicedata);
+          const data_historytrack = getdbdata_historytrack(newdevicedata);
+          const data_alarmraw = getdbdata_alarmraw(newdevicedata);//含有Alarm即有报警
+          getdbdata_alarm(newdevicedata,(data_alarm)=>{//准备数据updatedset
+               if(!!data_device){
+                 resultmsglist['device'].push(data_device);
+               }
+               if(!!data_historydevice){
+                 resultmsglist['historydevice'].push(data_historydevice);
+               }
+               if(!!data_historytrack){
+                 resultmsglist['historytrack'].push(data_historytrack);
+               }
+               if(!!data_alarmraw){
+                 resultmsglist['alarmraw'].push(data_alarmraw);
+               }
+               if(!!data_alarm){
+                 resultmsglist['alarm'].push(data_alarm);
+               }
+               callbackfn();
+          });
+        }
       });
     });
   });

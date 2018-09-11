@@ -3,6 +3,8 @@ const config = require('../config');
 const winston = require('../log/log.js');
 const debug = require('debug')('dbh:kc');
 const moment = require('moment');
+const schedule = require('node-schedule');
+
 const topicindex = require('../handler/pkafkamsg/topicindex');
 const tophistorydevices = require('../handler/pkafkamsg/tophistorydevices');
 const topichistorytracks = require('../handler/pkafkamsg/topichistorytracks');
@@ -16,6 +18,7 @@ handlermap[config.kafka_dbtopic_realtimealarmraws] = topicrealtimealarmraws;
 handlermap[config.kafka_dbtopic_historydevices] = tophistorydevices;
 handlermap[config.kafka_dbtopic_historytracks] = topichistorytracks;
 
+let lastkafkacommittime = moment().format('YYYY-MM-DD HH:mm:ss');
 debug(`----${config.version}`);
 
 const getdelaymsec = (numMsg)=>{
@@ -26,9 +29,26 @@ const getdelaymsec = (numMsg)=>{
     leftnum = numMessages - numMsg;//剩余个数
     delaymsec = leftnum > 0 ? leftnum*10:0;
   }
-  debug(`当前时间:${curtime},剩余:${leftnum},延时:${delaymsec}毫秒`);
+  lastkafkacommittime = curtime;
+  // debug(`当前时间:${curtime},剩余:${leftnum},延时:${delaymsec}毫秒`);
   return delaymsec;
 }
+
+let checktime;
+schedule.scheduleJob('*/10 * * * *', ()=>{
+  //每10分钟检查一次
+  debug(`10分钟到了,上次递交时间:${lastkafkacommittime}`);
+  if(!!checktime){
+    if(checktime === lastkafkacommittime){
+      debug(`上次检查时间:${checktime},上次递交时间:${lastkafkacommittime},相同则退出`);
+      winston.getlog().warn(`10分钟不动了,可能出错,强制退出,${lastkafkacommittime}`);
+      process.exit(1);
+    }
+  }
+  checktime = lastkafkacommittime;
+
+});
+
 
 const processbatchmsgs = (data,callbackfn)=>{
   const handlemsg = handlermap[config.kafka_dbtopic_current];
@@ -68,7 +88,7 @@ const startsrv = (config)=>{
       // throw err;
     }).then((consumer)=>{
       const processRecords =(data, cb)=> {
-        debug(`processRecords--->${data.length}`);
+        // debug(`processRecords--->${data.length}`);
         if (data.length === 0) {
            setImmediate(cb);
         }
@@ -83,7 +103,7 @@ const startsrv = (config)=>{
       }
 
       const consumeNum =(numMsg)=>{
-        debug(`consumeNum--->${numMsg}----->`);
+        // debug(`consumeNum--->${numMsg}----->`);
         consumer.consume(numMsg, (err, data) => {
           if (!!err) {
             if(debug.enabled){
