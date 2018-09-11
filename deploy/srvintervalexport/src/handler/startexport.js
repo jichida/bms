@@ -24,7 +24,13 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
     autoClose: false
   });
   // console.log(iconv.convert(csvfields));
-  res.write(iconv.convert(csvfields));
+  try{
+    res.write(iconv.convert(csvfields));
+  }
+  catch(e){
+    res.write(csvfields);
+    winston.getlog().info(`${filename}非法:${csvfields}`);
+  }
   res.write(iconv.convert('\n'));
   // const res = fs.createWriteStream(filepath,{
   //   autoClose: false
