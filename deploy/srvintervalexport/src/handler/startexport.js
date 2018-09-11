@@ -71,6 +71,7 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
              res.write(csv);
              winston.getlog().info(`${filename}非法:${csv}`);
            }
+         }
          });
       });
   }).
