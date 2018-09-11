@@ -64,7 +64,12 @@ const startexport = ({filename,dbModel,sort,fields,csvfields,fn_convert,query},c
       fn_convert(doc,(newdoc)=>{
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
          if (!err && !!csv ) {
+           try{
              res.write(iconv.convert(csv));
+           }
+           catch(e){
+             res.write(csv);
+             winston.getlog().info(`${filename}非法:${csv}`);
            }
          });
       });
