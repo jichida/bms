@@ -11,7 +11,7 @@ const config =  {
   logdir:process.env.logdir ||'../../dist/log',
   uploaddir:process.env.uploaddir ||'../../../uploader',
   uploadurl:'/uploader',
-  version:'1.0.2(build0814)',
+  version:'1.0.3(build0921)',
   defaultTypeUnknow:process.env.defaultTypeUnknow || 'BUS',
   expRequestMinutes:200,//2分钟之内
   maxAge:86400000,

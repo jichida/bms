@@ -31,7 +31,30 @@ db.getCollection('devicecities').find({},{
   }
 ])
 */
-const getdevicecities = (callbackfn)=>{
+const getdevicewarnings = (callbackfn)=>{
+  const deviceModel = DBModels.DeviceModel;
+  const fields = {
+    'DeviceId':1,
+    'warninglevel':1
+  };
+  let query = {
+    "warninglevel" :
+    {
+      $in:['高','中','低']
+    }
+  };
+  // query = {"citycode" : "0831"};
+  deviceModel.find(query).select(fields).lean().exec((err,result)=>{
+      let map_device2warninglevel = {};
+      if(!err && !!result){
+        _.map(result,(v)=>{
+          map_device2warninglevel[v.DeviceId] = v.warninglevel;
+        });
+      }
+      callbackfn(map_device2warninglevel);
+  });
+}
+const getdevicecities = (map_device2warninglevel,callbackfn)=>{
   console.log(`start getdevicecities`)
   const deviceModel = DBModels.DeviceCityModel;
   const fields = {
@@ -59,8 +82,10 @@ const getdevicecities = (callbackfn)=>{
   ]).lean().exec((err,result)=>{
     let listresult = [];
     _.map(result,(info)=>{
+      const DeviceId = _.get(info,'deviceid.DeviceId','');
       listresult.push({
-        DeviceId:_.get(info,'deviceid.DeviceId',''),
+        warninglevel:_.get(map_device2warninglevel,`${DeviceId}`,''),
+        DeviceId,
         citycode:_.get(info,'citycode',''),
         adcode:_.get(info,'adcode',''),
         province:_.get(info,'province',''),
@@ -80,7 +105,7 @@ const getgroupedresult = (listresult,callbackfn)=>{
   });
   // debug(`groupedlist-->${JSON.stringify(groupedmaplist)}`)
   let listresult_grouped = [];//return ret list
-  _.map(groupedmaplist,(vlist,k)=>{
+  _.map(groupedmaplist,(vlist,k)=>{//k:citycode
     let resultinfo ;
     if(vlist.length > 0){//v-->list
        resultinfo = {
@@ -91,7 +116,27 @@ const getgroupedresult = (listresult,callbackfn)=>{
         BUS:0,
         CAR:0,
         ENERGYTRUCK:0,
-        CONTAINERTRUCK:0
+        CONTAINERTRUCK:0,
+        BUS_Warning:{
+          '三级':0,
+          '二级':0,
+          '一级':0
+        },
+        CAR_Warning:{
+          '三级':0,
+          '二级':0,
+          '一级':0
+        },
+        ENERGYTRUCK_Warning:{
+          '三级':0,
+          '二级':0,
+          '一级':0
+        },
+        CONTAINERTRUCK_Warning:{
+          '三级':0,
+          '二级':0,
+          '一级':0
+        }
       };
     }
 
@@ -100,15 +145,28 @@ const getgroupedresult = (listresult,callbackfn)=>{
       return o.type;
     });
     // debug(`typedmaplist->${JSON.stringify(typedmaplist)}`)
-    _.map(typedmaplist,(vtypelist,ktype)=>{
+    _.map(typedmaplist,(vtypelist,ktype)=>{//ktype:'bus','car',.....
+      let ktype_ok = ktype;
       if(ktype === 'UNKNOW'){
-        resultinfo[config.defaultTypeUnknow] = resultinfo[config.defaultTypeUnknow]+vtypelist.length;
+        ktype_ok = config.defaultTypeUnknow;
       }
-      else{
-        resultinfo[ktype] = resultinfo[ktype]+vtypelist.length;
+
+      resultinfo[ktype_ok] = resultinfo[ktype_ok]+vtypelist.length;
+
+      for(let i =0 ;i < vtypelist.length ;i ++){
+        const tyv = vtypelist[i];
+        if(tyv.warninglevel === '高' || tyv.warninglevel === '中' || tyv.warninglevel === '低'){
+          let mapwarninglevel = {
+            '高':'三级',
+            '中':'二级',
+            '低':'一级'
+          };
+          const wl = mapwarninglevel[tyv.warninglevel];
+          resultinfo[`${ktype_ok}_Warning`][`${wl}`] = resultinfo[`${ktype_ok}_Warning`][`${wl}`]+1;
+        }
       }
     });
-    // debug(`resultinfo->${JSON.stringify(resultinfo)}`)
+    debug(resultinfo)
 
 
     listresult_grouped.push(resultinfo);
@@ -125,9 +183,12 @@ exports.querymapstat = (actiondata,ctx,callback)=>{
 }
 
 exports.getmapstat = (callback)=>{
-    getdevicecities((listresult)=>{
+  getdevicewarnings((map_device2warninglevel)=>{
+    getdevicecities(map_device2warninglevel,(listresult)=>{
       getgroupedresult(listresult,(listresult_grouped)=>{
         callback(listresult_grouped);
       });
     });
+  })
+
 };
