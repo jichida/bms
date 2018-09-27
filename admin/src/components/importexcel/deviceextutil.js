@@ -74,7 +74,7 @@ const mapkeydeviceext2 = {
 };
 
 const requiredlistfield = [
-  "batterysystemflownumber",
+  "batterysystemflownumber","type","usedyear","province"
   // "packnocs","buscarvin","type","capacity","serialnumber",
   // "parallelnumber",	"typeelectriccore","catlprojectname","projectpn","batterysystemflownumber",
   // "BMUhardwareversion",	"CSChardwareversion","BMUsoftwareversion","CSCsoftwareversion","datebatterystorage",

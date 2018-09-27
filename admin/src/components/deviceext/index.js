@@ -211,6 +211,7 @@ const DeviceExtList = (props) => (
     <Datagrid  bodyOptions={{ showRowHover: true }}>
       <TextField label="RDB编号" source="DeviceId" />
       <TextField label="车工号" source="buscarvin"  />
+      <TextField label="类型" source="type"  />
       <TextField label="省份" source="province"  />
       <TextField label="CATL项目名称" source="catlprojectname"  />
       <TextField label="客服packno" source="packnocs"  />
