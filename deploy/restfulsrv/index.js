@@ -44,8 +44,8 @@ interval_loaddevicecities(()=>{
   PubSub.publish('mapcitystat',{});
 });
 
-schedule.scheduleJob('0 3 * * *', ()=>{
-    //每天3点开始工作<---改为3点开始工作
+schedule.scheduleJob('0 * * * *', ()=>{
+    //每小时0点开始工作
     interval_loaddevicecities(()=>{
       PubSub.publish('mapcitystat',{});
     });
