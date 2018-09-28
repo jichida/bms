@@ -9,19 +9,13 @@ const oldyears = moment().subtract(10,'years').format('YYYY');
 const async = require('async');
 debug(`10年以前是:${oldyears}`);
 
-const getcount_car = (query,callbackfn)=>{
+const getcount_type = (query,callbackfn)=>{
   const deviceextModel = DBModels.DeviceExtModel;
   deviceextModel.count(query,(err, list)=> {
       callbackfn(err,list);
   });
 }
 
-const getcount_bus = (query,callbackfn)=>{
-  const deviceextModel = DBModels.DeviceExtModel;
-  deviceextModel.count(query,(err, list)=> {
-      callbackfn(err,list);
-  });
-}
 
 const getusedyear = (queryorg,callbackfn)=>{
   const query = _.clone(queryorg);
@@ -210,7 +204,7 @@ const getstat_catlproject = (query,maxcount,callbackfn)=>{
 exports.getcountcar =  getcountcar = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   query["type"] = "CAR";
-  getcount_car(query,(err,result)=>{
+  getcount_type(query,(err,result)=>{
     callback({
       cmd:'getcountcar_result',
       payload:result
@@ -221,13 +215,38 @@ exports.getcountcar =  getcountcar = (actiondata,ctx,callback)=>{
 exports.getcountbus =  getcountbus = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
   query["type"] = "BUS";
-  getcount_bus(query,(err,result)=>{
+  getcount_type(query,(err,result)=>{
     callback({
       cmd:'getcountbus_result',
       payload:result
     });
   });
 }
+
+
+exports.getcountcontainertrunk =  getcountcontainertrunk = (actiondata,ctx,callback)=>{
+  let query = actiondata.query || {};
+  query["type"] = "CONTAINERTRUCK";
+  getcount_type(query,(err,result)=>{
+    callback({
+      cmd:'getcountcontainertrunk_result',
+      payload:result
+    });
+  });
+}
+
+
+exports.getcountenergytruck =  getcountenergytruck = (actiondata,ctx,callback)=>{
+  let query = actiondata.query || {};
+  query["type"] = "ENERGYTRUCK";
+  getcount_type(query,(err,result)=>{
+    callback({
+      cmd:'getcountenergytruck_result',
+      payload:result
+    });
+  });
+}
+
 
 exports.getusedyearcar = getusedyearcar = (actiondata,ctx,callback)=>{
   let query = actiondata.query || {};
@@ -239,11 +258,6 @@ exports.getusedyearcar = getusedyearcar = (actiondata,ctx,callback)=>{
       payload:result
     });
   });
-  // {"type":"CAR","name":"2018","value":"1241"},
-  // {"type":"CAR","name":"2017","value":"1141"},
-  // {"type":"CAR","name":"2016","value":"1842"},
-  // {"type":"CAR","name":"2015","value":"2242"},
-  // {"type":"CAR","name":"2014","value":"1842"},
 }
 
 exports.getusedyearbus =  getusedyearbus = (actiondata,ctx,callback)=>{
@@ -257,6 +271,33 @@ exports.getusedyearbus =  getusedyearbus = (actiondata,ctx,callback)=>{
     });
   });
 }
+
+exports.getusedyearcontainertrunk =  getusedyearcontainertrunk = (actiondata,ctx,callback)=>{
+  let query = actiondata.query || {};
+  query["type"] = "CONTAINERTRUCK";
+  // debug(`getusedyearbus--->${JSON.stringify(query)}`)
+  getusedyear(query,(err,result)=>{
+    callback({
+      cmd:'containertrunk_result',
+      payload:result
+    });
+  });
+}
+
+exports.getusedyearenergytruck = getusedyearenergytruck = (actiondata,ctx,callback)=>{
+  let query = actiondata.query || {};
+  query["type"] = "ENERGYTRUCK";
+  // debug(`getusedyearcar--->${JSON.stringify(query)}`)
+  getusedyear(query,(err,result)=>{
+    callback({
+      cmd:'getusedyearenergytruck_result',
+      payload:result
+    });
+  });
+}
+
+
+
 
 exports.getstatprovince =  getstatprovince = (actiondata,ctx,callback)=>{
   const maxcount = _.get(actiondata,'maxcount',20);
@@ -321,6 +362,18 @@ exports.deviceext=  (actiondataorg,ctx,callback)=>{
       callbackfn(null,result.payload);
     });
   });
+  fnsz.push((callbackfn)=>{//getcountcontainertrunk
+    const actiondata = _.clone(actiondataorg);
+    getcountcontainertrunk(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getcountenergytruck
+    const actiondata = _.clone(actiondataorg);
+    getcountenergytruck(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
   fnsz.push((callbackfn)=>{//getusedyearcar
     const actiondata = _.clone(actiondataorg);
     getusedyearcar(actiondata,ctx,(result)=>{
@@ -330,6 +383,18 @@ exports.deviceext=  (actiondataorg,ctx,callback)=>{
   fnsz.push((callbackfn)=>{//getusedyearbus
     const actiondata = _.clone(actiondataorg);
     getusedyearbus(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getusedyearcontainertrunk
+    const actiondata = _.clone(actiondataorg);
+    getusedyearcontainertrunk(actiondata,ctx,(result)=>{
+      callbackfn(null,result.payload);
+    });
+  });
+  fnsz.push((callbackfn)=>{//getusedyearenergytruck
+    const actiondata = _.clone(actiondataorg);
+    getusedyearenergytruck(actiondata,ctx,(result)=>{
       callbackfn(null,result.payload);
     });
   });
@@ -352,10 +417,14 @@ exports.deviceext=  (actiondataorg,ctx,callback)=>{
       payload:{
         getcountcar:result[0],
         getcountbus:result[1],
-        getusedyearcar:result[2],
-        getusedyearbus:result[3],
-        getstatprovince:result[4],
-        getstatcatlproject:result[5],
+        getcountcontainertrunk:result[2],
+        getcountenergytruck:result[3],
+        getusedyearcar:result[4],
+        getusedyearbus:result[5],
+        getusedyearcontainertrunk:result[5],
+        getusedyearenergytruck:result[6],
+        getstatprovince:result[7],
+        getstatcatlproject:result[8],
       }
     });
   });
