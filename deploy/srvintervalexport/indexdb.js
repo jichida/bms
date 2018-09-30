@@ -68,7 +68,7 @@ dbdictModel.find({
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
-winston.getlog().info(`==程序启动${config.version}===`);
+winston.getlog().info(`==程序启动${config.version},mongodburl:${config.mongodburl}===`);
   // schedule.scheduleJob('30 * * * *', ()=>{
   //     //每小时30分开始工作
   //     job.start_croneveryhours((dir)=>{
