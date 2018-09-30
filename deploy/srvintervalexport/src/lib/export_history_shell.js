@@ -48,7 +48,7 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
   };
   const sort = {DataTime:1};
   let exportcmd = `mongoexport --uri=${config.mongodburl} --type=csv -c historydevices --out "${filename}" `
-  exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}' --sort='${JSON.stringify(sort)}`;
+  exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}' --sort='${JSON.stringify(sort)}'`;
 
   debug(`exportcmd:\n${exportcmd}`)
 
