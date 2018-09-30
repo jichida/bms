@@ -46,14 +46,14 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
     TimeKey,//
   };
 
-  let exportcmd = `mongoexport --uri=${config.mongodburl} --type=csv -c historydevices --out ${filename} `
+  let exportcmd = `mongoexport --uri=${config.mongodburl} --type=csv -c historydevices --out "${filename}" `
   exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}'`;
 
   debug(`exportcmd:\n${exportcmd}`)
   shell.exec(exportcmd,(code, stdout, stderr)=>{
     winston.getlog().info(`导出${filename}成功!`);
 
-    const replacecmd = `sed -i "1s/.*/${csvfields}/" ${filename}`;
+    const replacecmd = `sed -i "1s/.*/${csvfields}/" "${filename}"`;
     shell.exec(replacecmd,(code, stdout, stderr)=>{
       debug(`replacecmd:\n${replacecmd}`)
       winston.getlog().info(`重命名头部${filename}成功!`);
