@@ -8,10 +8,12 @@
 // };
 //
 // job();
-const job = require('../src/srvsys');
-const winston = require('../src/log/log.js');
-
-winston.initLog();
-job.start_croneveryhours((dir)=>{
-  console.log(`job.start_croneveryhours-->${dir}`)
-});
+// const job = require('../src/srvsys');
+// const winston = require('../src/log/log.js');
+//
+// winston.initLog();
+// job.start_croneveryhours((dir)=>{
+//   console.log(`job.start_croneveryhours-->${dir}`)
+// });
+const shelldelcmd = `for file in \`ls ./\`; do size=\`du $file | awk '{print \$1}'\`; [ $size -lt 1 ] && rm $file; done`;
+console.log(shelldelcmd);

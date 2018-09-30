@@ -51,22 +51,30 @@ const start_cron0 = (callbackfnall)=>{
         debug(`exportdirname:${exportdirname},zipdir:${zipdir}`);
         debug(`shellzipcmd:${shellzipcmd}`)
         shell.cd(`${exportdirname}`);
-        shell.exec(shellzipcmd,(code, stdout, stderr)=>{
-          const filename3 = path.basename(`${exportdir}.zip`);
-          winston.getlog().info(`命令行完毕:${code}-->${stdout}-->${stderr}`);
-          debug(`压缩完毕:${exportdir}.zip`);
-          curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+        //删除指定文件《-----for file in `ls ./`; do size=`du $file | awk '{print \$1}'`; [ $size -lt 1 ] && rm $file; done
+        const shelldelcmd = `for file in \`ls ./\`; do size=\`du $file | awk '{print \$1}'\`; [ $size -lt 1 ] && rm $file; done`;
+        shell.exec(shelldelcmd,(code, stdout, stderr)=>{
           winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
-
-          winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
-
-          sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
+          shell.exec(shellzipcmd,(code, stdout, stderr)=>{
+            const filename3 = path.basename(`${exportdir}.zip`);
+            winston.getlog().info(`命令行完毕:${code}-->${stdout}-->${stderr}`);
+            debug(`压缩完毕:${exportdir}.zip`);
             curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-            winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
-            debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
-            callbackfn(null,true);
+            winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
+
+            winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
+
+            sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
+              curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+              winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
+              debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+              callbackfn(null,true);
+            });
           });
         });
+
+
     });
 
     async.parallelLimit(fnsz,3,(err,result)=>{
