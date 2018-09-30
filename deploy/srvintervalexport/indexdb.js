@@ -34,6 +34,13 @@ const dbdictModel = DBModels.DataDictModel;
 dbdictModel.find({
     name:{'$regex':alname, $options: "i"}
   },(err,dictlist)=>{
+    if(!!dictlist){
+      debug(`dictlist->${dictlist.length}`)
+    }
+    if(!!err){
+      debug(err);
+    }
+
   let mapdict = {};
   if(!err && dictlist.length > 0){
     _.map(dictlist,(v)=>{
@@ -51,9 +58,9 @@ dbdictModel.find({
       job.start_cron0(()=>{
 
       });
-      //每天18点开始工作
-      // job.start_cron18();
-      //立即开始工作
+      // 每天18点开始工作
+      job.start_cron18();
+      // 立即开始工作
     }
     // job.start_croneveryhours((dir)=>{
     //   debug(`job.start_croneveryhours-->${dir}`);
