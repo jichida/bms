@@ -12,4 +12,7 @@ mongoexport --uri=mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:1
 
 
 db.users.aggregate([{$project:{id:"$user_id"}}])
+
+
+sed -i '1itask goes here' todo.txt
 */
