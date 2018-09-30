@@ -2,6 +2,7 @@ const config = require('./src/config');
 const winston = require('./src/log/log.js');
 const _ = require('lodash');
 const job = require('./src/srvsysshelldb');
+const mongoose     = require('mongoose');
 const schedule = require('node-schedule');
 const DBModels = require('./src/handler/models.js');
 const moment = require('moment');

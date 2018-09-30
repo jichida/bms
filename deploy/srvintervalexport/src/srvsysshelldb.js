@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const debug = require('debug')('srvinterval:test');
+const export_history = require('./lib/export_history_shell');
 const winston = require('./log/log.js');
 const async = require('async');
 const shell = require('shelljs');
