@@ -53,9 +53,9 @@ const start_cron0 = (callbackfnall)=>{
         shell.cd(`${exportdirname}`);
 
         //删除指定文件《-----for file in `ls ./`; do size=`du $file | awk '{print \$1}'`; [ $size -lt 1 ] && rm $file; done
-        const shelldelcmd = `for file in \`ls ./\`; do size=\`du $file | awk '{print \$1}'\`; [ $size -lt 1 ] && rm $file; done`;
-        shell.exec(shelldelcmd,(code, stdout, stderr)=>{
-          winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
+        // const shelldelcmd = `for file in \`ls ./\`; do size=\`du $file | awk '{print \$1}'\`; [ $size -lt 1 ] && rm $file; done`;
+        // shell.exec(shelldelcmd,(code, stdout, stderr)=>{
+        //   winston.getlog().info(`删除完毕:${exportdir}.zip-->${curtime}`);
           shell.exec(shellzipcmd,(code, stdout, stderr)=>{
             const filename3 = path.basename(`${exportdir}.zip`);
             winston.getlog().info(`命令行完毕:${code}-->${stdout}-->${stderr}`);
@@ -72,7 +72,7 @@ const start_cron0 = (callbackfnall)=>{
               callbackfn(null,true);
             });
           });
-        });
+        // });
 
 
     });

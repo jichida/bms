@@ -10,6 +10,7 @@ const async = require('async');
 const shell = require('shelljs');
 const debug = require('debug')('srvinterval:history');
 
+
 const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
   const curdays = moment(curday).format('YYYYMMDD');
   const TimeKey = moment(curday).format('YYMMDD');
@@ -45,18 +46,30 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
     DeviceId,
     TimeKey,//
   };
-
+  const sort = {DataTime:1};
   let exportcmd = `mongoexport --uri=${config.mongodburl} --type=csv -c historydevices --out "${filename}" `
-  exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}'`;
+  exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}' --sort='${JSON.stringify(sort)}`;
 
-  debug(`exportcmd:\n${exportcmd}`)
+  // debug(`exportcmd:\n${exportcmd}`)
   shell.exec(exportcmd,(code, stdout, stderr)=>{
     winston.getlog().info(`导出${filename}成功!`);
 
     const replacecmd = `sed -i "1s/.*/${csvfields}/" "${filename}"`;
     shell.exec(replacecmd,(code, stdout, stderr)=>{
-      debug(`replacecmd:\n${replacecmd}`)
-      winston.getlog().info(`重命名头部${filename}成功!`);
+      // debug(`replacecmd:\n${replacecmd}`)
+
+      const stats = fs.statSync(`${filename}`);
+      const fileSizeInBytes = stats.size
+      if(fileSizeInBytes < 1000){
+        //小于1k 删除
+        //delete file
+        debug(`文件${filename}小于1k(${fileSizeInBytes})删除!`);
+        fs.unlinkSync(filename);
+        winston.getlog().info(`文件${filename}小于1k(${fileSizeInBytes})删除!`);
+
+      }
+
+
       callbackfn(null,true);
     });
 
