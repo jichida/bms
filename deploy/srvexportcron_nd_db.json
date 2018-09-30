@@ -1,18 +1,19 @@
 {
   "apps" : [
       {
-        "name": "srvexporttestdb",
-        "script": "/root/bms/deploy/srvintervalexport/indexdb.js",
+        "name": "srvexporttestshelldb",
+        "script": "/root/bms/deploy/srvintervalexport/indexshelldb.js",
         "env": {
           "NODE_ENV": "production",
           "DEBUG_COLORS":"1",
           "DEBUG":"srvinterval:*",
-          "MONGO_URL":"mongodb://192.168.2.17:12017,192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl?readPreference=secondaryPreferred",
+          "MONGO_URL":"mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl",
           "mongos":"true",
           "batchcount":"50",
           "istest":"true",
+          "curday":"2018-09-29",
           "logdir":"/catlcluster/log2",
-          "exportFlag":"all",
+          "exportFlag":"once",
           "exportdir":"/catlcluster/exportdir2",
           "redisdevicesetname":"bmsrdbset",
           "redisdevicequeuename":"bmsrdbq",
