@@ -50,13 +50,14 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
   let exportcmd = `mongoexport --uri=${config.mongodburl} --type=csv -c historydevices --out "${filename}" `
   exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}' --sort='${JSON.stringify(sort)}`;
 
-  // debug(`exportcmd:\n${exportcmd}`)
+  debug(`exportcmd:\n${exportcmd}`)
+
   shell.exec(exportcmd,(code, stdout, stderr)=>{
     winston.getlog().info(`导出${filename}成功!`);
 
     const replacecmd = `sed -i "1s/.*/${csvfields}/" "${filename}"`;
     shell.exec(replacecmd,(code, stdout, stderr)=>{
-      // debug(`replacecmd:\n${replacecmd}`)
+      debug(`replacecmd:\n${replacecmd}`)
 
       const stats = fs.statSync(`${filename}`);
       const fileSizeInBytes = stats.size
