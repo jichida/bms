@@ -7,6 +7,7 @@ const winston = require('../log/log.js');
 const _ = require('lodash');
 const fs = require('fs');
 const async = require('async');
+const shell = require('shelljs');
 const debug = require('debug')('srvinterval:history');
 
 const startexport_do = (DeviceId,exportdir,curday,callbackfn) =>{
