@@ -104,13 +104,15 @@ const dbh_alarm =(datasin,callbackfn)=>{
         }]);
 
         //add iorder & iorder2
-        if(config.istest){
+        // if(config.istest){
           _.map(result,(o,index)=>{
             o.iorder = map_alarm_order[`${o.DeviceId}_${o.DataTime}`];
             o.iorder2 = index;
-            winston.getlog().warn(`[dbh_alarm]${o.DeviceId}->${o.DataTime}->iorder:${o.iorder}->iorder2:->${o.iorder2}`);
+            if(config.istest){
+              winston.getlog().warn(`[dbh_alarm]${o.DeviceId}->${o.DataTime}->iorder:${o.iorder}->iorder2:->${o.iorder2}`);
+            }
           });
-        }
+        // }
 
         if(datas.length !== result.length){
           debug_alarm(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`);
