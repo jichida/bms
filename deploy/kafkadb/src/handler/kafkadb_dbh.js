@@ -37,12 +37,16 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
       const listalarm = result;
       _.map(listalarm,(alarm)=>{
         //alarm数据库中返回的记录
+        const alarmtext = alarmutil.getalarmtxt(alarm);
         config.gloabaldevicealarmstat_realtime[alarm.DeviceId] = {
           warninglevel:alarm.warninglevel,
-          devicealarmstat:alarmutil.getalarmtxt(alarm)
+          devicealarmstat:alarmtext
         };
 
-        devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmutil.getalarmtxt(alarm);
+        devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmtext;
+        if(config.istest){
+          winston.getlog().warn(`${alarm.DeviceId}_${alarm.DataTime}->${alarmtext}`);
+        }
         iordermap[`${alarm.DeviceId}_${alarm.DataTime}`] = alarm.iorder;
       });
       //<-------处理所有的allresult

@@ -40,7 +40,7 @@ let config =  {
   kafka_dbtopic_realtimealarmraws:'bmsdb.realtimealarmraws',
   kafka_dbtopic_index:process.env.IndexTopic ||'bmsindex',
   kafka_dbtopic_current:process.env.CurrentTopic ||'bmsindex',
-  version:'5.3.4(build0905)',
+  version:'5.3.6(build1015)',
   globalhistorydevicetable:{},
   globalalarmdevicetable:{},
   globalalarmrawdevicetable:{},
