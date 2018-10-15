@@ -11,13 +11,14 @@ const dbh_alarm =(datasin,callbackfn)=>{
     callbackfn(null,[]);
     return;
   }
-  let datas = datasin;
+
   // debug_alarm(`dbh_alarm->count:${datasin.length}`);
   // //先排序,后去重
-  // datasin = _.sortBy(datasin, [(o)=>{
-  //   const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
-  //   return key;
-  // }]);
+  datasin = _.sortBy(datasin, [(o)=>{
+    const key = `${o["$set"].DeviceId}_${o["$set"].DataTime}`;
+    return key;
+  }]);
+  let datas = datasin;
   // debug_alarm(`after sortBy dbh_alarm->count:${datasin.length}`);
   //
   // datasin = _.sortedUniqBy(datasin,(o)=>{
@@ -60,12 +61,14 @@ const dbh_alarm =(datasin,callbackfn)=>{
   if(config.istest){
     winston.getlog().error(`开始插入报警统计:${datas.length}`);
   }
-
+  let map_alarm_order = {};
   const dbModel = DBModels.RealtimeAlarmModel;
   debug_alarm(`start dbh_alarm,datas:${datas.length}`);
   const asyncfnsz = [];
   _.map(datas,(devicedata,index)=>{
     // devicedata.iorder = index;
+    map_alarm_order[`${devicedata["$set"].DeviceId}_${devicedata["$set"].DataTime}`] = index;
+
     asyncfnsz.push(
       (callbackfn)=>{
         const DeviceId = devicedata["$set"].DeviceId;
@@ -99,6 +102,15 @@ const dbh_alarm =(datasin,callbackfn)=>{
           const key = `${o.DeviceId}_${o.DataTime}`;
           return key;
         }]);
+
+        //add iorder & iorder2
+        if(config.istest){
+          _.map(result,(o,index)=>{
+            o.iorder = map_alarm_order[`${o.DeviceId}_${o.DataTime}`];
+            o.iorder2 = index;
+            winston.getlog().warn(`[dbh_alarm]${o.DeviceId}->${o.DataTime}->iorder:${o.iorder}->iorder2:->${o.iorder2}`);
+          });
+        }
 
         if(datas.length !== result.length){
           debug_alarm(`dbh_alarm输入输出数据不符,${JSON.stringify(datas)}`);
