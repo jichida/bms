@@ -3,9 +3,8 @@ exportcmd += `--fields=${csvfields_query} --query='${JSON.stringify(query)}' --s
 
 mongoexport --uri=mongodb://192.168.2.17/bmscatl --type=csv -c=realtimealarmraws --out 1834206689_180924.csv --fields='DeviceId,DataTime,UpdateTime,recvpartition,recvoffset,iorder,alarmtxtstat' --query='{TimeKey:"180924",DeviceId:"1834206689"}' --sort='{DataTime:-1}'
 
-mongoexport --host=192.168.2.17 --port=27007 --db=bmscatl --type=csv -c=realtimealarmraws --out 1834206689_181015.csv --fields='DeviceId,DataTime,UpdateTime,recvpartition,recvoffset,iorder,alarmtxtstat' --query='{TimeKey:"181015",DeviceId:"1834206689"}' --sort='{DataTime:1}'
-
-mongoexport --host=192.168.2.17 --port=27007 --db=bmscatl --type=csv -c=realtimealarmraws --out 1834205752_181015.csv --fields='DeviceId,DataTime,UpdateTime,recvpartition,recvoffset,iorder,alarmtxtstat' --query='{TimeKey:"181015",DeviceId:"1834205752"}' --sort='{DataTime:1}'
+mongoexport --host=192.168.2.17 --port=27007 --db=bmscatl --type=csv -c=realtimealarmraws --out 1834206689_181016.csv --fields='DeviceId,DataTime,UpdateTime,recvpartition,recvoffset,iorder,alarmtxtstat' --query='{TimeKey:"181016",DeviceId:"1834206689"}' --sort='{DataTime:1}'
+mongoexport --host=192.168.2.17 --port=27007 --db=bmscatl --type=csv -c=realtimealarmraws --out 1834205752_181016.csv --fields='DeviceId,DataTime,UpdateTime,recvpartition,recvoffset,iorder,alarmtxtstat' --query='{TimeKey:"181016",DeviceId:"1834205752"}' --sort='{DataTime:1}'
 
 
 db.realtimealarmraws.find({TimeKey:"180924",DeviceId:'1834206689'},{
@@ -30,3 +29,8 @@ recvoffset:1,
 iorder:1,
 alarmtxtstat:1
 }).sort({DateTime:-1})
+
+
+db.historydevices.findOne({TimeKey:"181015",DeviceId:'1702100383'},{
+  U2P_SUMDATA17:1
+});

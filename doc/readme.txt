@@ -77,3 +77,8 @@ docker run -it confluentinc/cp-kafka:4.0.0 bash
 kafka-consumer-groups --bootstrap-server 192.168.10.3:9092  --group pbmsgid --describe
 
 kafka-consumer-groups --bootstrap-server 192.168.2.11:9092  --group pbmsgid --describe
+
+db.realtimealarms.getIndexes();
+db.realtimealarms.findOne({'TimeKey':'2018-10-15'})
+
+db.realtimealarmraws.getIndexes();
