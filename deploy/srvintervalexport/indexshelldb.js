@@ -32,8 +32,8 @@ job.start_cron0(config.curday,()=>{
   winston.getlog().info(`==${config.curday}导出完毕了==`);
 });
 
-schedule.scheduleJob('0 3 * * *', ()=>{
-    //每天3点开始工作<---改为3点开始工作
+schedule.scheduleJob('30 2 * * *', ()=>{
+    //每天2:30开始工作<---改为2:30点开始工作
     const moments = moment().subtract(1, 'days');
     const curday = moments.format('YYYYMMDD');
     job.start_cron0(curday,()=>{
