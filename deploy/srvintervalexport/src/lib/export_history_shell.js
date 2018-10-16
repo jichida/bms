@@ -94,8 +94,8 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
   });
 }
 
-const startexport_export = (curday,devicelist,callbackfn)=>{
-  const moments = moment(curday);
+const startexport_export = (curdays,devicelist,callbackfn)=>{
+  const moments = moment(curdays);
   const curday = moments.format('YYYY-MM-DD');
   const exportdirbase = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
   let exportdir = exportdirbase;
