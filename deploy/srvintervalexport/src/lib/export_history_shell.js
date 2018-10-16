@@ -94,8 +94,8 @@ const startexport_batch = (devicelist,exportdir,curday,callbackfn)=>{
   });
 }
 
-const startexport_export = (devicelist,callbackfn)=>{
-  const moments = moment(config.curday);
+const startexport_export = (curday,devicelist,callbackfn)=>{
+  const moments = moment(curday);
   const curday = moments.format('YYYY-MM-DD');
   const exportdirbase = `${config.exportdir}/${moments.format('YYYYMMDD')}`;
   let exportdir = exportdirbase;
@@ -120,7 +120,7 @@ const startexport_export = (devicelist,callbackfn)=>{
   });
 }
 
-const start = (callbackfn)=>{
+const start = (curday,callbackfn)=>{
   const getDevicelist = (callbackfn)=>{
     debug(`start getDevicelist===>`)
     const deviceModel = DBModels.DeviceModel;
@@ -141,7 +141,7 @@ const start = (callbackfn)=>{
   }
 
   getDevicelist((devicelist)=>{
-    startexport_export(devicelist,callbackfn);
+    startexport_export(curday,devicelist,callbackfn);
   });
 }
 

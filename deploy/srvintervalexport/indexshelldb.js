@@ -28,17 +28,25 @@ mongoose.connect(config.mongodburl,{
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
-job.start_cron0(()=>{
-  winston.getlog().info(`==导出完毕了==`);
+job.start_cron0(config.curday,()=>{
+  winston.getlog().info(`==${config.curday}导出完毕了==`);
 });
 
-process.on('unhandledRejection', (err) => {
-  winston.getlog().info(`unhandledRejection:${JSON.stringify(err)}`);
-})
-
-process.on('unhandledException', (err) => {
-  winston.getlog().info(`unhandledException:${JSON.stringify(err)}`);
-})
+schedule.scheduleJob('0 3 * * *', ()=>{
+    //每天3点开始工作<---改为3点开始工作
+    const moments = moment().subtract(1, 'days');
+    const curday = moments.format('YYYYMMDD');
+    job.start_cron0(curday,()=>{
+      winston.getlog().info(`==${curday}导出完毕了==`);
+    });
+});
+// process.on('unhandledRejection', (err) => {
+//   winston.getlog().info(`unhandledRejection:${JSON.stringify(err)}`);
+// })
+//
+// process.on('unhandledException', (err) => {
+//   winston.getlog().info(`unhandledException:${JSON.stringify(err)}`);
+// })
 
 
 

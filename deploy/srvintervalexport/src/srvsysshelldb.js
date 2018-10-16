@@ -20,12 +20,12 @@ const moment = require('moment');
 // │    └──────────────────── minute (0 - 59)
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
-const cron_0 = (callbackfn)=>{
+const cron_0 = (curday,callbackfn)=>{
   let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
   winston.getlog().info(`零点开始执行-->${curtime}`);
   let fnsz = [];
 
-  export_history((exportdir)=>{
+  export_history(curday,(exportdir)=>{
     curtime = moment().format('YYYY-MM-DD HH:mm:ss');
     winston.getlog().info(`导出历史记录完毕:${exportdir}-->${curtime}`);
     // {"_id":"5aab1f84b8495bf6d0bc893a","DeviceId":"1602010031","LastRealtimeAlarm":{"DataTime":"2018-03-27 05:37:40"},"LastHistoryTrack":{"GPSTime":"2018-03-27 05:39:09","Longitude":121.59474,"Latitude":31.266263},"alarmtxtstat":"F[104] 252次|加热继电器故障 614次|F[155] 282次|F[118] 16次|F[140] 33次|F[166] 27次|F[164] 1次|F[167] 3次|","Provice":"上海市","City":"未知","Area":"浦东新区"}
@@ -35,8 +35,8 @@ const cron_0 = (callbackfn)=>{
 
 
 
-const start_cron0 = (callbackfnall)=>{
-  cron_0((err,result)=>{
+const start_cron0 = (curday,callbackfnall)=>{
+  cron_0(curday,(err,result)=>{
     const exportdir = result;
     debug(`开始压缩文件夹:${exportdir}`);
     let curtime = moment().format('YYYY-MM-DD HH:mm:ss');
