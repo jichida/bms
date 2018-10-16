@@ -1,0 +1,25 @@
+{
+  "apps" : [
+      {
+        "name": "srvexport_shelldb_alarm",
+        "script": "/root/bms/deploy/srvintervalexport/indexshelldb_alarm.js",
+        "env": {
+          "NODE_ENV": "production",
+          "DEBUG_COLORS":"1",
+          "DEBUG":"srvinterval:*",
+          "MONGO_URL":"mongodb://192.168.2.17:27007,192.168.2.18:27007/bmscatl",
+          "mongos":"true",
+          "batchcount":"50",
+          "istest":"true",
+          "curday":"2018-10-14",
+          "logdir":"/catlcluster/log2",
+          "exportFlag":"oncealarm",
+          "exportdir":"/catlcluster/exportdiralarm",
+          "redisdevicesetname":"bmsrdbset",
+          "redisdevicequeuename":"bmsrdbq",
+          "srvredis_host":"192.168.2.19"
+        },
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
+      }
+  ]
+}
