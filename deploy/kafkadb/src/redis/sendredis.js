@@ -7,12 +7,16 @@ const config = require('../config');
 const winston = require('../log/log.js');
 const async = require('async');
 
-const  client = redis.createClient(config.srvredis);
-client.on("error", (err)=> {
-    debug("Error " + err);
-    winston.getlog().error(`redis on error`);
-    winston.getlog().error(err);
-});
+let client;
+
+if(config.issendtoredis){
+  client = redis.createClient(config.srvredis);
+  client.on("error", (err)=> {
+      debug("Error " + err);
+      winston.getlog().error(`redis on error`);
+      winston.getlog().error(err);
+  });
+}
 
 
 const pushtoredis = (topicname,HistoryDeviceDataList,callbackfn)=>{
