@@ -32,7 +32,7 @@ const startexport_do = (DeviceId,exportdir,startDay,endDay,callbackfn) =>{
   const dbModel = DBModels.HistoryDeviceModel;
   const filename = `${exportdir}/${startDay}_${endDay}_${DeviceId}.csv`;
   const fields = null;
-  const csvfields_query = 'DeviceId,DataTime,UpdateTime,BAT_I_Branch1,BAT_I_Branch2,BAT_I_Branch3,BAT_I_Branch4';
+  const csvfields_query = 'DeviceId,DataTime,UpdateTime,BAT_I_BRANCH1,BAT_I_BRANCH2,BAT_I_BRANCH3,BAT_I_BRANCH4';
 
  const csvfields = 'DeviceId,DataTime,SaveTime,BAT_I_Branch1,BAT_I_Branch2,BAT_I_Branch3,BAT_I_Branch4';
 
