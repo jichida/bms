@@ -8,7 +8,7 @@ const DBModels = require('./src/handler/models.js');
 const moment = require('moment');
 const debug = require('debug')('srvinterval:start');
 
-debug(`indexdb--->start=====>version:${config.version},mongodburl:${config.mongodburl},仅导一次:${config.curday}`);
+debug(`indexdb--->start=====>version:${config.version},mongodburl:${config.mongodburl},仅导一次:${config.startday}-${config.endday}`);
 
 
 winston.initLog();
@@ -28,8 +28,8 @@ mongoose.connect(config.mongodburl,{
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
 
-job.start_cron0(config.startDay,config.endDay,()=>{
-  winston.getlog().info(`==${config.curday}导出完毕了==`);
+job.start_cron0(config.startday,config.endday,()=>{
+  winston.getlog().info(`==${config.startday}-${config.endday}导出完毕了==`);
 });
 
 

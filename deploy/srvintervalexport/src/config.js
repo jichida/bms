@@ -11,6 +11,8 @@ const config =  {
   },
   logdir:process.env.logdir ||'../../dist/log',
   curday:process.env.curday || moment().subtract(1, 'days').format('YYYY-MM-DD'),
+  startday:process.env.startday || moment().subtract(1, 'days').format('YYYY-MM-DD'),
+  endday:process.env.endday || moment().subtract(1, 'days').format('YYYY-MM-DD'),
   isnow:process.env.isnow || true,
   DeviceId:process.env.DeviceId,
   exportFlag:process.env.exportFlag || 'all',

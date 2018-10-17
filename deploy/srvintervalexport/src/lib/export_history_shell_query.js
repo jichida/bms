@@ -30,7 +30,7 @@ const startexport_do = (DeviceId,exportdir,startDay,endDay,callbackfn) =>{
   // const curdays = moment(curday).format('YYYYMMDD');
   const TimeKeyArray = gettimekey(startDay,endDay);
   const dbModel = DBModels.HistoryDeviceModel;
-  const filename = `${exportdir}/${curdays}_${DeviceId}.csv`;
+  const filename = `${exportdir}/${startDay}_${endDay}_${DeviceId}.csv`;
   const fields = null;
   const csvfields_query = 'DeviceId,DataTime,UpdateTime,BAT_I_Branch1,BAT_I_Branch2,BAT_I_Branch3,BAT_I_Branch4';
 
