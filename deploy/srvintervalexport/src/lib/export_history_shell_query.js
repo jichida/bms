@@ -26,11 +26,10 @@ const gettimekey =(timestart,timeend)=> {
 }
 
 
-const startexport_do = (DeviceId,exportdir,startDay,endDay,callbackfn) =>{
+const startexport_do = (DeviceId,exportdir,TimeKey,callbackfn) =>{
   // const curdays = moment(curday).format('YYYYMMDD');
-  const TimeKeyArray = gettimekey(startDay,endDay);
   const dbModel = DBModels.HistoryDeviceModel;
-  const filename = `${exportdir}/${startDay}_${endDay}_${DeviceId}.csv`;
+  const filename = `${exportdir}/${TimeKey}_${DeviceId}.csv`;
   const fields = null;
   const csvfields_query = 'DeviceId,DataTime,UpdateTime,BAT_I_BRANCH1,BAT_I_BRANCH2,BAT_I_BRANCH3,BAT_I_BRANCH4';
 
@@ -43,9 +42,7 @@ const startexport_do = (DeviceId,exportdir,startDay,endDay,callbackfn) =>{
   // }
   const query = {
     DeviceId,
-    TimeKey:{
-      $in:TimeKeyArray
-    },//
+    TimeKey
   };
   const sort = {DataTime:1};
   let exportcmd = `mongoexport --uri=${config.mongodburl} --type=csv -c historydevices --out "${filename}" `
@@ -85,9 +82,12 @@ const startexport_do = (DeviceId,exportdir,startDay,endDay,callbackfn) =>{
 
 const startexport_batch = (devicelist,exportdir,startDay,endDay,callbackfn)=>{
   const fnsz = [];
+  const TimeKeyArray = gettimekey(startDay,endDay);
   _.map(devicelist,(DeviceId)=>{
-    fnsz.push((callbackfn)=>{
-      startexport_do(DeviceId,exportdir,startDay,endDay,callbackfn);
+    _.map(TimeKeyArray,(timekey)=>{
+      fnsz.push((callbackfn)=>{
+        startexport_do(DeviceId,exportdir,timekey,callbackfn);
+      });
     });
   });
   async.parallelLimit(fnsz,config.batchcount,(err,result)=>{

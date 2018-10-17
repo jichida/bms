@@ -26,7 +26,7 @@ let config =  {
   },
   istest:process.env.istest==='true'?true:false,
   mapdict:{},
-  SpecialCurDayTime:process.env.SpecialCurDayTime || '18:00:00',//默认是23:59:59
+  SpecialCurDayTime:process.env.SpecialCurDayTime || '23:59:59',//默认是23:59:59
   NodeID:nodeid,
   logdir:process.env.logdir ||'../../dist/log',
   kcmsg:!!process.env.kcmsg?parseInt(process.env.kcmsg):10,
@@ -40,7 +40,7 @@ let config =  {
   kafka_dbtopic_realtimealarmraws:'bmsdb.realtimealarmraws',
   kafka_dbtopic_index:process.env.IndexTopic ||'bmsindex',
   kafka_dbtopic_current:process.env.CurrentTopic ||'bmsindex',
-  version:'5.3.6(build1016)',
+  version:'5.3.7(build1018)',
   globalhistorydevicetable:{},
   globalalarmdevicetable:{},
   globalalarmrawdevicetable:{},

@@ -9,7 +9,7 @@
           "DEBUG":"srvinterval:*",
           "MONGO_URL":"mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl",
           "mongos":"true",
-          "batchcount":"50",
+          "batchcount":"5",
           "istest":"true",
           "startday":"2018-09-10",
           "endday":"2018-10-17",
