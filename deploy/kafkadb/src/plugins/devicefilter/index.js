@@ -20,12 +20,12 @@ const devicedatapile = (data)=>{
     }
     if(CANType === 0 || CANType === 1 || CANType === 2 || CANType === 4){
       //只解析AL_TROUBLE_CODE_2数组字段
-      // const AL_TROUBLE_CODE = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE');
-      // if(!!AL_TROUBLE_CODE){
-      //   _.pull(AL_TROUBLE_CODE_2, AL_TROUBLE_CODE);
-      //   AL_TROUBLE_CODE_2.push(AL_TROUBLE_CODE);
-      // }
       newAlarm = {};//_.omit(newAlarm,['AL_TROUBLE_CODE_2']);
+      const AL_TROUBLE_CODE = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE');
+      if(!!AL_TROUBLE_CODE){
+        _.pull(AL_TROUBLE_CODE_2, AL_TROUBLE_CODE);
+        AL_TROUBLE_CODE_2.push(AL_TROUBLE_CODE);
+      }
       _.map(AL_TROUBLE_CODE_2,(errcode)=>{
         const fieldname = getFieldname(CANType,errcode);
         newAlarm[fieldname] = 1;
