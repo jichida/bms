@@ -1,0 +1,26 @@
+{
+  "apps" : [
+      {
+        "name": "srvexport_shelldb_query",
+        "script": "/root/bms/deploy/srvintervalexport/indexshelldb_query.js",
+        "env": {
+          "NODE_ENV": "production",
+          "DEBUG_COLORS":"1",
+          "DEBUG":"srvinterval:*",
+          "MONGO_URL":"mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl",
+          "mongos":"true",
+          "batchcount":"5",
+          "istest":"true",
+          "startday":"2018-09-10",
+          "endday":"2018-10-17",
+          "logdir":"/catlcluster/log2",
+          "exportFlag":"timequeryonce",
+          "exportdir":"/catlcluster/exportdir2",
+          "redisdevicesetname":"bmsrdbset",
+          "redisdevicequeuename":"bmsrdbq",
+          "srvredis_host":"192.168.2.19"
+        },
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
+      }
+  ]
+}
