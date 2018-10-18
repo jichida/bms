@@ -270,11 +270,11 @@ const parseKafkaMsgs = (kafkamsgs,callbackfn)=>{
   });
 
 //<------可能本身顺序不对
-if(config.istest){
-  _.map(msgs,(o,index)=>{
-    winston.getlog().warn(`[parseKafkaMsgs]在:${o.recvpartition},offset:${o.recvoffset} ->${index}`);
-  });
-}
+// if(config.istest){
+//   _.map(msgs,(o,index)=>{
+//     winston.getlog().warn(`[parseKafkaMsgs]在:${o.recvpartition},offset:${o.recvoffset} ->${index}`);
+//   });
+// }
 //<------可能本身顺序不对
 
   const resultmsglist = {

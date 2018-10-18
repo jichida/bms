@@ -58,9 +58,9 @@ const dbh_historydevice =(datasin,callbackfn)=>{
   //   return;
   // }
 
-  if(config.istest){
-    winston.getlog().error(`开始更新历史设备:${datas.length}`);
-  }
+  // if(config.istest){
+  //   winston.getlog().error(`开始更新历史设备:${datas.length}`);
+  // }
   const dbModel = DBModels.HistoryDeviceModel;
   debug_historydevice(`start dbh_historydevice,datas:${datas.length}`);
   // const asyncfnsz = [];

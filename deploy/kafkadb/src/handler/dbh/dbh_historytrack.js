@@ -13,9 +13,9 @@ const dbh_historytrack =(datasin,callbackfn)=>{
   }
   let datas = datasin;
   debug_historytrack(`datas start:${datasin.length}`);
-  if(config.istest){
-    winston.getlog().error(`开始更新历史轨迹:${datas.length}`);
-  }
+  // if(config.istest){
+  //   winston.getlog().error(`开始更新历史轨迹:${datas.length}`);
+  // }
   //先排序,后去重
   // datasin = _.sortBy(datasin, [(o)=>{
   //   const key = `${o.DeviceId}_${o.GPSTime}`;
@@ -93,9 +93,9 @@ const dbh_historytrack =(datasin,callbackfn)=>{
         }
       }
       debug_historytrack(`stop dbh_historytrack`);
-      if(config.istest){
-        winston.getlog().error(`历史轨迹更新完毕:${datas.length}`);
-      }
+      // if(config.istest){
+      //   winston.getlog().error(`历史轨迹更新完毕:${datas.length}`);
+      // }
       callbackfn(null,true);
     });
   }

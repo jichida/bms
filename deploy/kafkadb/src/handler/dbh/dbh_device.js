@@ -61,9 +61,9 @@ const dbh_device =(datasin,callbackfn)=>{
   //   callbackfn(null,true);
   //   return;
   // }
-  if(config.istest){
-    winston.getlog().error(`开始更新设备:${datas.length}`);
-  }
+  // if(config.istest){
+  //   winston.getlog().error(`开始更新设备:${datas.length}`);
+  // }
   const dbModel = DBModels.DeviceModel;
   // debug_device(`start dbh_device,datas:${datas.length}`);
   // const asyncfnsz = [];

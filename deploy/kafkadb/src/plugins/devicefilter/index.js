@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const getFieldname = require('./mapalarmtroublecode');
 const debug = require("debug")("alarmpush");
+const config = require('../../config.js');
+const winston = require('../../log/log.js');
 /*
 1、从kafka中获取的数据，预先转换：
 1>将AL_TROUBLE_CODE_2转成
@@ -10,22 +12,50 @@ const devicedatapile = (data)=>{
   const Alarm = _.get(data,'BMSData.Alarm');
   if(!!Alarm){
     //含有报警
-    let AL_TROUBLE_CODE_2 = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE_2',[]);
-    const AL_TROUBLE_CODE = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE');
-    if(!!AL_TROUBLE_CODE){
-      _.pull(AL_TROUBLE_CODE_2, AL_TROUBLE_CODE);
-      AL_TROUBLE_CODE_2.push(AL_TROUBLE_CODE);
-    }
     const CANType = _.get(data,'BMSData.CANType',-1);
     let newAlarm = _.clone(Alarm);
-    newAlarm = _.omit(newAlarm,['AL_TROUBLE_CODE_2']);
-    _.map(AL_TROUBLE_CODE_2,(errcode)=>{
-      const fieldname = getFieldname(CANType,errcode);
-      newAlarm[fieldname] = 1;
-    });
+    let AL_TROUBLE_CODE_2 = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE_2',[]);
+    if(config.istest){
+      winston.getlog().error(`DeviceId:${data.DeviceId},消息CANType:${CANType},处理前:${JSON.stringify(newAlarm)}`);
+    }
+    if(CANType === 0 || CANType === 1 || CANType === 2 || CANType === 4){
+      //只解析AL_TROUBLE_CODE_2数组字段
+      // const AL_TROUBLE_CODE = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE');
+      // if(!!AL_TROUBLE_CODE){
+      //   _.pull(AL_TROUBLE_CODE_2, AL_TROUBLE_CODE);
+      //   AL_TROUBLE_CODE_2.push(AL_TROUBLE_CODE);
+      // }
+      newAlarm = {};//_.omit(newAlarm,['AL_TROUBLE_CODE_2']);
+      _.map(AL_TROUBLE_CODE_2,(errcode)=>{
+        const fieldname = getFieldname(CANType,errcode);
+        newAlarm[fieldname] = 1;
+      });
+    }
+    else{
+      if(CANType === 3){//不解析数组字段
+        newAlarm = _.omit(newAlarm,['AL_TROUBLE_CODE_2']);
+      }
+      else{
+        //不知道怎么处理,都取??
+        const AL_TROUBLE_CODE = _.get(data,'BMSData.Alarm.AL_TROUBLE_CODE');
+        if(!!AL_TROUBLE_CODE){
+          _.pull(AL_TROUBLE_CODE_2, AL_TROUBLE_CODE);
+          AL_TROUBLE_CODE_2.push(AL_TROUBLE_CODE);
+        }
+        newAlarm = _.omit(newAlarm,['AL_TROUBLE_CODE_2']);
+        _.map(AL_TROUBLE_CODE_2,(errcode)=>{
+          const fieldname = getFieldname(CANType,errcode);
+          newAlarm[fieldname] = 1;
+        });
+      }
+    }
+
     _.set(newdata,'BMSData.Alarm',newAlarm);
     _.set(newdata,'BMSData.Alarm.TROUBLE_CODE_LIST',AL_TROUBLE_CODE_2);//新增一个字段TROUBLE_CODE_LIST
-    debug(`newdata--->${JSON.stringify(newAlarm)}`);
+
+    if(config.istest){
+      winston.getlog().error(`DeviceId:${data.DeviceId},消息CANType:${CANType},处理后:${JSON.stringify(newAlarm)}`);
+    }
   }
   return newdata;
 }

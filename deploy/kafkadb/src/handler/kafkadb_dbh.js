@@ -44,9 +44,9 @@ const onHandleToDB_alarm = (allresult,callbackfn)=>{
         };
 
         devicealarmstat[`${alarm.DeviceId}_${alarm.DataTime}`] = alarmtext;
-        if(config.istest){
-          winston.getlog().warn(`${alarm.DeviceId}_${alarm.DataTime}->${alarmtext}`);
-        }
+        // if(config.istest){
+        //   winston.getlog().warn(`${alarm.DeviceId}_${alarm.DataTime}->${alarmtext}`);
+        // }
         iordermap[`${alarm.DeviceId}_${alarm.DataTime}`] = alarm.iorder;
       });
       //<-------处理所有的allresult

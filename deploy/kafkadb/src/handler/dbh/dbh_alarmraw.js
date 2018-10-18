@@ -54,9 +54,9 @@ const dbh_alarmraw =(datasin,callbackfn)=>{
   //   return;
   // }
   //
-  if(config.istest){
-    winston.getlog().error(`开始插入报警明细:${datas.length}`);
-  }
+  // if(config.istest){
+  //   winston.getlog().error(`开始插入报警明细:${datas.length}`);
+  // }
 
   const dbModel = DBModels.RealtimeAlarmRawModel;
   debug_alarmraw(`start dbh_alarmraw,datas:${datas.length}`);
