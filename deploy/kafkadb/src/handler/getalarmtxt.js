@@ -3,7 +3,7 @@ const config = require('../config.js');
 const debug = require("debug")("alarmpush");
 
 const getalarmfieldtotxt = (alarmfield)=>{
-    const mapdict = config.mapdict;
+    const mapdict = {};//empty dict --->config.mapdict;
     if(_.startsWith(alarmfield, 'AL_') || _.startsWith(alarmfield, 'F[')){
       if(_.startsWith(alarmfield, 'AL_')){
         if(!!mapdict[alarmfield]){
