@@ -76,7 +76,7 @@ winston.getlog().info(`==程序启动${config.version}===`);
       });
   });
 
-  schedule.scheduleJob('0 18 * * *', ()=>{
+  schedule.scheduleJob('0 0 * * *', ()=>{
     //每天18点开始工作
     job.start_cron18();
   });
