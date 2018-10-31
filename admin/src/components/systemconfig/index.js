@@ -26,6 +26,7 @@ import {required} from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 import ShowPageOne from '../singledocumentpage/index.js';
 import {CfSelectArrayInputDetail,CfAlaramRuleInput} from './cf.js';
+import {CfAlaramRuleItInput} from './cfit.js';
 import {CfSelectArrayInput} from '../controls/selectarrayinput.js';
 import "./style.css";
 
@@ -51,7 +52,10 @@ const SystemconfigCreateTitle = ({ record }) => {
        <CfAlaramRuleInput label="报警规则设置(高)" source="warningrulelevel0" />
        <CfAlaramRuleInput label="报警规则设置(中)" source="warningrulelevel1" />
        <CfAlaramRuleInput label="报警规则设置(低)" source="warningrulelevel2" />
-         </FormTab>
+       </FormTab>
+       <FormTab label="IT报警派单规则">
+         <CfAlaramRuleItInput label="IT报警派单规则" source="warningrulelevelit" />
+       </FormTab>
        </TabbedForm>
        </Create>
 );
@@ -72,7 +76,10 @@ const SystemconfigCreateTitle = ({ record }) => {
           <CfAlaramRuleInput label="报警规则设置(中)" source="warningrulelevel1" />
           <CfAlaramRuleInput label="报警规则设置(低)" source="warningrulelevel2" />
         </FormTab>
-          </TabbedForm>
+        <FormTab label="IT报警派单规则">
+          <CfAlaramRuleItInput label="IT报警派单规则" source="warningrulelevelit" />
+        </FormTab>
+        </TabbedForm>
     </EditPage>
 );
 
