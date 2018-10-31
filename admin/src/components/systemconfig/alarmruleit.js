@@ -67,7 +67,7 @@ const renderAlaramRuleEdit = ({ meta: { touched, error } = {}, input: { ...input
   let headers = [
      {value: '故障码', type: 'TextField', width: 150},
      {value: '字段名', type: 'TextField', width: 450},
-     {value: '派单级别', type: 'Select', width: 150,multi:false,options:[
+     {value: '处理级别', type: 'Select', width: 150,multi:false,options:[
        { value: 1, label: '1' },
        { value: 2, label: '2' },
        { value: 3, label: '3' },
