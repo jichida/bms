@@ -80,7 +80,8 @@ const dbh_alarm =(datasin,callbackfn)=>{
          },devicedata,{upsert:true,new:true}).lean().exec((err,result)=>{
            // result.iorder = devicedata.iorder;
            if(!!err){
-             winston.getlog().warn(`插入报警统计错误${DeviceId},${JSON.stringify(devicedata)}`)
+             winston.getlog().warn(`插入报警统计错误${DeviceId}--->`)
+             winston.getlog().warn(devicedata)
              winston.getlog().warn(err);
            }
            callbackfn(err,result);
@@ -92,7 +93,8 @@ const dbh_alarm =(datasin,callbackfn)=>{
       if(!!err){
 
         if(datas.length > 0){
-          winston.getlog().error(`插入报警统计错误:${JSON.stringify(datas[0])}`);
+          winston.getlog().error(`插入报警统计错误`)
+          winston.getlog().error(datas[0]);
         }
       }
 
