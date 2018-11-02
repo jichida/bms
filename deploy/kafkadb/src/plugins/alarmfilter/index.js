@@ -195,13 +195,14 @@ const dofilter= (DeviceId,LastRealtimeAlarm,callback)=>{
       }
     });
     // //console.log(`alarmdata.DataTime-->${LastRealtimeAlarm.DataTime}`);
-
-    callback(null,{
-      DeviceId,
-      CurDay,
-      inc_data,
-    });
-    return;
+    if(JSON.stringify(inc_data) !== '{}'){
+      callback(null,{
+        DeviceId,
+        CurDay,
+        inc_data,
+      });
+      return;
+    }
   }
   callback(null,{
     DeviceId,
