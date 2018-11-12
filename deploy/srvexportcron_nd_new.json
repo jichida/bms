@@ -1,0 +1,23 @@
+{
+  "apps" : [
+      {
+        "name": "srvexportnew",
+        "script": "/root/bms/deploy/srvintervalexport/index.js",
+        "env": {
+          "NODE_ENV": "production",
+          "DEBUG_COLORS":"1",
+          "MONGO_URL":"mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl",
+          "mongos":"true",
+          "batchcount":"50",
+          "istest":"true",
+          "logdir":"/catlcluster/log",
+          "exportFlag":"all",
+          "exportdir":"/catlcluster/exportdir",
+          "redisdevicesetname":"bmsrdbset",
+          "redisdevicequeuename":"bmsrdbq",
+          "srvredis_host":"192.168.2.19"
+        },
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
+      }
+  ]
+}
