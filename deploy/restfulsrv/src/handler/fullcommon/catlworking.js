@@ -36,7 +36,7 @@ const getcatl_cycle = (callback)=>{
 };
 
 const getcatl_celltemperature = (callback)=>{//电芯最高温度,电芯最低温度
-  const sql = `SELECT 电芯最高温度-电芯最低温度 as name,sum(电芯最高温度-电芯最低温度) as value FROM MA_CATL_WORKING  group by (电芯最高温度-电芯最低温度)`;
+  const sql = `SELECT 电芯最高温度-电芯最低温度 as name,count(电芯最高温度-电芯最低温度) as value FROM MA_CATL_WORKING  group by (电芯最高温度-电芯最低温度)`;
   mysqldb.load(sql).then((rows)=>{
     callback(null,rows);
   });
