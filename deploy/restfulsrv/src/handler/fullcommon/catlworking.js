@@ -36,7 +36,7 @@ const getcatl_cycle = (callback)=>{
 };
 
 const getcatl_celltemperature = (callback)=>{//电芯最高温度,电芯最低温度
-  const sql = `SELECT 电芯最高温度-电芯最低温度 as name,count(电芯最高温度-电芯最低温度) as value FROM MA_CATL_WORKING  group by (电芯最高温度-电芯最低温度)`;
+  const sql = `SELECT 运行等效温差 as name,count(运行等效温差) as value FROM MA_CATL_WORKING  group by 运行等效温差`;
   mysqldb.load(sql).then((rows)=>{
     callback(null,rows);
   });
@@ -49,8 +49,8 @@ const getcatl_cyclecount = (callback)=>{//充电次数
   });
 };
 
-const getcatl_dxtemperature = (callback)=>{//运行等效温差
-  const sql = `SELECT 运行等效温差 as name,count(运行等效温差) as value FROM MA_CATL_WORKING  group by 运行等效温差`;
+const getcatl_dxtemperature = (callback)=>{//最高等效温度
+  const sql = `SELECT 最高等效温度 as name,count(最高等效温度) as value FROM MA_CATL_WORKING  group by 最高等效温度`;
   mysqldb.load(sql).then((rows)=>{
     callback(null,rows);
   });
