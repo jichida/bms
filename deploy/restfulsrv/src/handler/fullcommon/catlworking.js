@@ -2,6 +2,7 @@ const mysqldb = require('./dbconnection');
 const _ = require('lodash');
 const async = require('async');
 const debug = require('debug')('srvapp:device');
+const config = require('../../config');
 
 const getcatl_warningf = (maxcount,callback)=>{
   const sql = `SELECT DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%S') AS update_time,deviceid AS DeviceId,type FROM MA_WARNING_F ORDER BY update_time DESC LIMIT ${maxcount}`;
@@ -101,10 +102,11 @@ exports.catl_dxtemperature = catl_dxtemperature = (actiondata,ctx,callback)=>{
   });
 }
 
-exports.catl =  (actiondata,ctx,callback)=>{
-  const maxcount = _.get(actiondata,'maxcount',20);
-  const query = actiondata.query || {};
-
+const getcatlmysql = (callback)=>{
+  debug(`start getcatlmysql`)
+  const query = {};
+  const actiondata = {};
+  const ctx = {};
   let fnsz = [];
   // fnsz.push((callbackfn)=>{//catl_working_request
   //   catl_working(actiondata,ctx,(result)=>{
@@ -138,7 +140,7 @@ exports.catl =  (actiondata,ctx,callback)=>{
   });
 
   async.parallel(fnsz,(err,result)=>{
-    // debug(`catl--->${JSON.stringify(result)}`)
+    debug(`end  getcatlmysql`);
     callback({
       cmd:'catl_result',
       payload:{
@@ -150,6 +152,18 @@ exports.catl =  (actiondata,ctx,callback)=>{
       }
     });
   });
+}
+
+exports.getcatlmysql = getcatlmysql;
+exports.catl =  (actiondata,ctx,callback)=>{
+  if(!!config.catlmysqldata.cmd){
+    callback(config.catlmysqldata);
+  }
+  else{
+    getcatlmysql((data)=>{
+      callback(data);
+    })
+  }
 }
 
 // exports.getcatl_working =  getcatl_working;

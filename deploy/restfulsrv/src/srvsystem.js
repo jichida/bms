@@ -10,8 +10,8 @@ const moment = require('moment');
 const _ = require('lodash');
 const debug = require('debug')('srvapp:pcpush');
 const getdevicesids = require('./handler/getdevicesids');
-
-
+const catlworking = require('./handler/fullcommon/catlworking');
+const schedule = require('node-schedule');
 const userset = {};
 let lasttime = moment().format('YYYY-MM-DD HH:mm:ss');
 let lastdeviceid = '';
@@ -195,13 +195,22 @@ const job=()=>{
 
     getSystemLog();
 
+    debug(`start get catlmysql data.....`);
+    catlworking.getcatlmysql((data)=>{
+      debug(data);
+      config.catlmysqldata = data;
+      debug(`start get catlmysql data.....end`);
+    });
+
     intervalCheckDevice();
 
-    // schedule.scheduleJob('0 0 * * *', ()=>{
-      //每天0点更新优惠券过期信息
-    //   setmycouponsexpired();
-    // });
-    //
+    schedule.scheduleJob('0 0 * * *', ()=>{
+      // 每天0点更新优惠券过期信息
+      catlworking.getcatlmysql((data)=>{
+        config.catlmysqldata = data;
+      });
+    });
+
     // schedule.scheduleJob('*/5 * * * *', ()=>{
     //   //////console.log('每隔5分钟执行这里!');
     //   updatesystemconfig();
