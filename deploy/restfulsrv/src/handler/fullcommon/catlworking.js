@@ -156,11 +156,13 @@ const getcatlmysql = (callback)=>{
 
 exports.getcatlmysql = getcatlmysql;
 exports.catl =  (actiondata,ctx,callback)=>{
-  if(!!config.catlmysqldata.cmd){
+  if(_.get(config,'catlmysqldata.cmd','') === 'catl_result'){
+    debug(`load data from config =====`);
     callback(config.catlmysqldata);
   }
   else{
     getcatlmysql((data)=>{
+      config.catlmysqldata = data;
       callback(data);
     })
   }
