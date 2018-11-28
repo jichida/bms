@@ -4,6 +4,7 @@
 const dbinit = require('./db/dbinit');
 const config = require('./config');
 const DBModels = require('./db/models.js');
+const winston = require('./log/log.js');
 const PubSub = require('pubsub-js');
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -196,17 +197,20 @@ const job=()=>{
     getSystemLog();
 
     debug(`start get catlmysql data.....`);
+    winston.getlog().info(`开始读取mysql信息`);
     catlworking.getcatlmysql((data)=>{
       debug(data);
       config.catlmysqldata = data;
-      debug(`start get catlmysql data.....end`);
+      winston.getlog().info(`读取mysql信息成功`);
     });
 
     intervalCheckDevice();
 
     schedule.scheduleJob('0 0 * * *', ()=>{
       // 每天0点更新优惠券过期信息
+      winston.getlog().info(`开始读取mysql信息`);
       catlworking.getcatlmysql((data)=>{
+        winston.getlog().info(`读取mysql信息成功`);
         config.catlmysqldata = data;
       });
     });
