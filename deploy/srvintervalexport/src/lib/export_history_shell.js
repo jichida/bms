@@ -53,7 +53,7 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
   debug(`exportcmd:\n${exportcmd}`)
 
   shell.exec(exportcmd,(code, stdout, stderr)=>{
-    winston.getlog().info(`导出${filename}成功!`);
+    // winston.getlog().info(`导出${filename}成功!`);
 
     const replacecmd = `sed -i "1s/.*/${csvfields}/" "${filename}"`;
     shell.exec(replacecmd,(code, stdout, stderr)=>{
