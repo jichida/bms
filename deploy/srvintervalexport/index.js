@@ -47,8 +47,8 @@ dbdictModel.find({
     debug(`==TEST模式？${config.istest},batchcount:${config.batchcount}===${curtime}`);
     winston.getlog().info(`==TEST模式？${config.istest},batchcount:${config.batchcount}===${curtime}`);
     if(config.istest){
-      //每天0点开始工作
-      job.start_cron0(()=>{
+      //仅导出报警数据
+      job.start_cron18(()=>{
 
       });
       //每天18点开始工作
