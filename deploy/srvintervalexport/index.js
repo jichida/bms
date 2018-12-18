@@ -27,6 +27,7 @@ mongoose.connect(config.mongodburl,{
   });
 
 debug(`connected success!${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+winston.getlog().info(`==程序启动${config.version}===`);
 // winston.getlog().info(`start kafkadb ok`);
 const alname = 'AL_';
 //还应该包括所有AL开头字母的信息
@@ -64,7 +65,7 @@ dbdictModel.find({
   }
   config.mapdict = _.merge(config.mapdict,mapdict);
 
-winston.getlog().info(`==程序启动${config.version}===`);
+
   // schedule.scheduleJob('30 * * * *', ()=>{
   //     //每小时30分开始工作
   //     job.start_croneveryhours((dir)=>{
@@ -74,6 +75,8 @@ winston.getlog().info(`==程序启动${config.version}===`);
 
   schedule.scheduleJob('0 2 * * *', ()=>{
       //每天3点开始工作<---改为2点开始工作
+      winston.getlog().info(`cron模式---`);
+
       job.start_cron0(()=>{
 
       });
