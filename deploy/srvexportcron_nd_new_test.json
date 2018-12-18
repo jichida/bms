@@ -6,8 +6,8 @@
         "env": {
           "NODE_ENV": "production",
           "DEBUG_COLORS":"1",
-          "MONGO_URL":"mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl",
           "mongos":"true",
+          "MONGO_URL":"mongodb://192.168.2.18:12017,192.168.2.13:12017,192.168.2.14:12017,192.168.2.15:12017/bmscatl",
           "batchcount":"50",
           "istest":"true",
           "logdir":"/catlcluster/log",
