@@ -66,7 +66,7 @@ BPM_24V_UOUT,ST_NEGHEATER_SW_HVS,ST_WIRELESSCHG_SW,ST_SPEARCHG_SW_2,ST_POWERGRID
         //delete file
         debug(`文件${filename}小于1k(${fileSizeInBytes})删除!`);
         fs.unlinkSync(filename);
-        winston.getlog().info(`文件${filename}小于1k(${fileSizeInBytes})删除!`);
+        // winston.getlog().info(`文件${filename}小于1k(${fileSizeInBytes})删除!`);
 
       }
 
