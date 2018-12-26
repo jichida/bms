@@ -17,15 +17,14 @@ const startcron = (devicelist,callbackfnindex)=>{
     });
   })
 
-
-  startcron_updateunlocateddevicegroup(()=>{
-    callbackfn(null,true);
+  fnsz.push((callbackfn)=>{
+    startcron_updateunlocateddevicegroup(()=>{
+      callbackfn(null,true);
+    });
   });
 
-  fnsz.push((callbackfn)=>{
-    async.series(fnsz,(err,result)=>{
-      callbackfnindex(err,result);
-    });
+  async.series(fnsz,(err,result)=>{
+    callbackfnindex(err,result);
   });
 }
 
