@@ -13,7 +13,9 @@ const startcron = (devicelist,callbackfnindex)=>{
   let fnsz = [];
   fnsz.push((callbackfn)=>{
     getallarea_start(devicelist,(allret)=>{
-      startcron_updatedevicegroup(callbackfn);
+      startcron_updatedevicegroup(()=>{
+        callbackfn(null,true);
+      });
     });
   })
 
