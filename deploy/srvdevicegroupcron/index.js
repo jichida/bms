@@ -4,6 +4,7 @@ const startjob = require('./src/srvsys');
 const mongoose     = require('mongoose');
 const debug = require('debug')('srvdevicegroupcron:app');
 const getdevicecitycode = require('./src/getdevicecitycode');
+const schedule = require('node-schedule');
 debug(`start=====>version:${config.version}`);
 
 debug(`==========`);
@@ -26,4 +27,14 @@ getdevicecitycode();
 
 startjob(()=>{
   winston.getlog().info(`执行完毕`);
+});
+
+
+
+schedule.scheduleJob('0 0 * * *', ()=>{
+  //每天0点开始工作
+  winston.getlog().info(`凌晨开始执行:${config.version}`);
+  startjob(()=>{
+    winston.getlog().info(`执行完毕`);
+  });
 });
