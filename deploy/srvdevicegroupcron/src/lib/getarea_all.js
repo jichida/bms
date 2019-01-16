@@ -135,7 +135,6 @@ const getallarea_start = (devicelist,callback)=>{
     getallarea_all_fromamap_batch_single(retfailed,(ret,failed_list)=>{
       success_list = _.concat(success_list, ret);
       winston.getlog().info(`注意:成功获取:${success_list.length}条数据,但仍然有${failed_list.length}找不到地理位置!!`);
-      winston.getlog().error(`他们是:${JSON.stringify(failed_list)}`);
       callback(success_list);
     })
 

@@ -26,27 +26,37 @@ const startcron_updatedevicegroup = (callback)=>{
   const updatetime = moment().format('YYYY-MM-DD HH:mm:ss');
   getdevicecites((err,citylist)=>{
     if(!err && !!citylist){
+      let fnsz = [];
       _.map(citylist,(v)=>{
           // console.log(v);
-          let ObjSet = {};
-          const citycode = _.get(v,'_id','');
-          const deviceidslist = _.get(v,'deviceids',[]);
-          const province = _.get(v,'province','');
-          const city = _.get(v,'city','');
-          let name = `${province}`;
-          if(city.length > 0){
-            name = `${name}${city}`;
-          }
-          ObjSet[`$setOnInsert`] = {name};
-          ObjSet[`$set`] ={
-              deviceids:deviceidslist,
-              updatetime
-            };
-          dbDeviceGroupModel.findOneAndUpdate({citycode},ObjSet,{new: true,upsert:true},(err,result)=>{
-              debug(`result-->${citycode}--->${result._id}-->${deviceidslist.length}`);
-              callback(null,true);
+          fnsz.push((callbackfn)=>{
+            let ObjSet = {};
+            const citycode = _.get(v,'_id','');
+            const deviceidslist = _.get(v,'deviceids',[]);
+            const province = _.get(v,'province','');
+            const city = _.get(v,'city','');
+            let name = `${province}`;
+            if(city.length > 0){
+              name = `${name}${city}`;
+            }
+            ObjSet[`$setOnInsert`] = {name};
+            ObjSet[`$set`] ={
+                deviceids:deviceidslist,
+                updatetime
+              };
+            dbDeviceGroupModel.findOneAndUpdate({citycode},ObjSet,{new: true,upsert:true},(err,result)=>{
+                callbackfn(null,true);
+            });
           });
+
         });//map
+        async.parallelLimit(fnsz,100,(err,result)=>{
+          winston.getlog().info(`注意:startcron_updatedevicegroup finished:${fnsz.length}`);
+          callback(null,true);
+        });
+    }
+    else{
+      callback(null,true);
     }
   })
   // const dbDeviceGroupModel = DBModels.DeviceGroupModel;

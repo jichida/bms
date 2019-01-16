@@ -14,6 +14,7 @@ const startcron = (devicelist,callbackfnindex)=>{
   fnsz.push((callbackfn)=>{
     getallarea_start(devicelist,(allret)=>{
       startcron_updatedevicegroup(()=>{
+        winston.getlog().info(`注意:startcron_updatedevicegroup finished`);
         callbackfn(null,true);
       });
     });
@@ -21,11 +22,13 @@ const startcron = (devicelist,callbackfnindex)=>{
 
   fnsz.push((callbackfn)=>{
     startcron_updateunlocateddevicegroup(()=>{
+      winston.getlog().info(`注意:startcron_updateunlocateddevicegroup finished`);
       callbackfn(null,true);
     });
   });
 
   async.series(fnsz,(err,result)=>{
+    winston.getlog().info(`注意:startcron finished`);
     callbackfnindex(err,result);
   });
 }
