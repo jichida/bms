@@ -24,4 +24,6 @@ debug(`startjob==========`);
 winston.getlog().info(`开始执行:${config.version}`);
 getdevicecitycode();
 
-startjob();
+startjob(()=>{
+  winston.getlog().info(`执行完毕`);
+});

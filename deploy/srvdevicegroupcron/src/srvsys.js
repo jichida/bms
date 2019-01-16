@@ -41,13 +41,14 @@ const getDevice = (callbackfn)=>{
 }
 
 
-const startsrv =()=>{
+const startsrv =(callbackfn)=>{
   debug(`开始执行...`);
   getDevice((devicelist)=>{//找到所有有坐标的DeviceId
     // debug(`getDevice-->${JSON.stringify(devicelist)}`);
     startcron(devicelist,(err,result)=>{
       debug(`全部执行完毕...`);
       winston.getlog().info(`全部执行完毕`);
+      callbackfn(null,true);
     });
   });
 }
@@ -64,13 +65,13 @@ const startsrv =()=>{
 // └───────────────────────── second (0 - 59, OPTIONAL)
 
 
-const job=()=>{
-    startsrv();
+const job=(callbackfn)=>{
+    startsrv(callbackfn);
 
-    schedule.scheduleJob('0 0 * * *', ()=>{
-      //每天0点开始工作
-      startsrv();
-    });
+    // schedule.scheduleJob('0 0 * * *', ()=>{
+    //   //每天0点开始工作
+    //   startsrv();
+    // });
 };
 
 module.exports = job;
