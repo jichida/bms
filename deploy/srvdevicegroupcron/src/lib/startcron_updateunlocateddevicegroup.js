@@ -4,6 +4,7 @@ const DBModels = require('../handler/models.js');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const debug = require('debug')('srvdevicegroupcron:startcron');
+const winston = require('../log/log.js');
 
 const getallunlocateddevice = (callbackfn)=>{
   const deviceModel = DBModels.DeviceModel;
@@ -37,6 +38,7 @@ const getallunlocateddevice = (callbackfn)=>{
 const startcron_updateunlocateddevicegroup = (callbackfn)=>{
 
   getallunlocateddevice((devicelist)=>{
+    winston.getlog().info(`注意:getallunlocateddevice result:${devicelist.length}`);
     const updatetime = moment().format('YYYY-MM-DD HH:mm:ss');
     const dbDeviceGroupModel = DBModels.DeviceGroupModel;
     const groupobj = {

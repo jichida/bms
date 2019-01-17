@@ -4,6 +4,7 @@ const DBModels = require('../handler/models.js');
 const mongoose = require('mongoose');
 const moment = require('moment');
 const debug = require('debug')('srvdevicegroupcron:startcron');
+const winston = require('../log/log.js');
 
 const getdevicecites = (callbackfn)=>{
   const dbModel =  DBModels.DeviceCityModel;
@@ -26,6 +27,7 @@ const startcron_updatedevicegroup = (callback)=>{
   const updatetime = moment().format('YYYY-MM-DD HH:mm:ss');
   getdevicecites((err,citylist)=>{
     if(!err && !!citylist){
+      winston.getlog().info(`注意:getdevicecites result:${citylist.length}`);
       let fnsz = [];
       _.map(citylist,(v)=>{
           // console.log(v);
@@ -50,7 +52,8 @@ const startcron_updatedevicegroup = (callback)=>{
           });
 
         });//map
-        async.parallelLimit(fnsz,100,(err,result)=>{
+        winston.getlog().info(`注意:startcron_updatedevicegroup start:${fnsz.length}`);
+        async.parallelLimit(fnsz,10,(err,result)=>{
           winston.getlog().info(`注意:startcron_updatedevicegroup finished:${fnsz.length}`);
           callback(null,true);
         });
