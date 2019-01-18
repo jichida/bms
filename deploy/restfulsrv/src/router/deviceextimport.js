@@ -15,7 +15,29 @@ const dodeviceextimport = (req,res)=>{
   let deviceids_success = [];
   let deviceids_notfound = [];
   let asyncfnsz = [];
-  _.map(exceljson,(devicedata)=>{
+  _.map(exceljson,(devicedata,index)=>{
+    //db.deviceexts.update({type:'ESV'},{$set:{type:'CONTAINERTRUCK'}},{multi:true});
+    //db.deviceexts.update({type:'ESS'},{$set:{type:'ENERGYTRUCK'}},{multi:true});
+    // EBUS->BUS
+    // ECAR->CAR
+    // ESV-> ??物流车 ->
+    // ESS-> ??储能柜 ->
+    //"type" : "BUS",
+    if(devicedata.type === 'EBUS'){
+      devicedata.type = 'BUS';
+    }
+    if(devicedata.type === 'ECAR'){
+      devicedata.type = 'CAR';
+    }
+    if(devicedata.type === 'ESV'){
+      devicedata.type = 'CONTAINERTRUCK';
+    }
+    if(devicedata.type === 'ESS'){
+      devicedata.type = 'ENERGYTRUCK';
+    }
+    if(index === 0){
+      winston.getlog().info(`获取一条数据,:${JSON.stringify(devicedata)}`)
+    }
     const DeviceId = devicedata[`DeviceId`];
     const batterysystemflownumber = devicedata[`batterysystemflownumber`];
     const fn = (callbackfn)=>{
