@@ -6,6 +6,8 @@ const moment  = require('moment');
 const async = require('async');
 const middlewareauth = require('./middlewareauth.js');
 const debug = require('debug')('srvapp:uploadexcel');
+const winston = require('../log/log.js');、
+
 
 const dodeviceextimport = (req,res)=>{
   const exceljson = req.body;
@@ -60,7 +62,7 @@ const dodeviceextimport = (req,res)=>{
               failedlist:deviceids_notfound,
           }
       });
-      console.log(`--->导入成功`)
+      winston.getlog().info(`--->导入成功,:${resultstring}`)
     }
     else{
       res.status(200)
@@ -68,7 +70,7 @@ const dodeviceextimport = (req,res)=>{
         result:'error',
         message:'导入错误'
       });
-      console.log(`--->导入错误`)
+      winston.getlog().info(`--->导入错误,${JSON.stringify(err)}`)
     }
   });
 
@@ -93,6 +95,7 @@ const startuploader = (app)=>{
   app.post('/deviceextimport',middlewareauth,(req,res)=>{
     //check deviceids
     debug(`start deviceextimport`)
+    winston.getlog().info(`--->deviceextimport 开始导入`)
     getDevice((deviceids)=>{
       debug(`getDevice--->${deviceids.length}`)
       //check provinces
@@ -138,6 +141,7 @@ const startuploader = (app)=>{
           result:'error',
           message:`导入错误,原因:${errmessage}`,
         });
+        winston.getlog().info(`导入错误,原因:${errmessage}`)
       }
     });
   });
