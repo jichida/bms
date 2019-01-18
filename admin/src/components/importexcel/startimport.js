@@ -9,7 +9,7 @@ class StartImport extends React.Component {
 
 	render() {
 		const {isimporting,result} = this.props;
-\		// if(isimporting){
+		// if(isimporting){
 		// 	// return (<Spin tip="正在导入请稍后...">
 		// 	// 			  </Spin>);
 		// }
