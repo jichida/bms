@@ -6,7 +6,7 @@ const moment  = require('moment');
 const async = require('async');
 const middlewareauth = require('./middlewareauth.js');
 const debug = require('debug')('srvapp:uploadexcel');
-const winston = require('../log/log.js');、
+const winston = require('../log/log.js');
 
 
 const dodeviceextimport = (req,res)=>{
