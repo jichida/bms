@@ -3,7 +3,7 @@ import { Steps, Button, message,Alert,Icon } from 'antd';
 import {DragDropFile,DataInput} from './draginputfile';
 import OutTable from './exceltable';
 import StartImport from './startimport';
-import fetchimportfile from './fetchimportexcel';
+import fetchimportfile, { fetchimportpercent } from './fetchimportexcel';
 import XLSX from 'xlsx';
 
 import './index.css';
@@ -30,9 +30,15 @@ class App extends React.Component {
 			excel_columns:[],
       excel_dataSource: [], /* Array of Arrays e.g. [["a","b"],[1,2]] */
 			isimporting:false,
+			importID: '',
 			isnextbtnenabled:false,
-			importresult:{},
+			importresult:{
+				textmsg: '',
+				percent: 0
+			},
 			selectfile:'',
+			percent: 0,
+			textmsg: ''
     };
     this.handleFile = this.handleFile.bind(this);
   }
@@ -83,6 +89,34 @@ class App extends React.Component {
     }
 	};
 
+	getPercent = () => {
+		this.interval = setInterval(()=>{
+			fetchimportpercent(this.state.importID).then(({percent, msg}) => {
+				this.setState({
+					importresult:{
+							percent,
+							textmsg:msg
+						},
+					isimporting: !(percent === 100)
+				})
+				
+				if(percent === 100){
+					this.clear();
+				}
+			}, 1000);
+			
+		})
+			
+	}
+
+	clear = () => {
+		clearInterval(this.interval);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.interval);
+  }
+
   next() {
     const current = this.state.current + 1;
 		if(current == 1){
@@ -97,32 +131,59 @@ class App extends React.Component {
 			// 	excel_columns.push(excel_dataSource[i]);
 			// }
 			fetchimportfile(excel_dataSource).then((result)=>{
-				if(result.issuccess){
-					this.setState({
-						isimporting:false,
-						importresult:{
-							issuccess:true,
-							textmsg:`成功导入${result.successlist.length},失败:${result.failedlist.length}条`
-						}
-					 });
-				}
-				else{
-					this.setState({
-						isimporting:false,
-						importresult:{
-							issuccess:false,
-							textmsg:result.errmsg
-						}
-					 });
-				}
-			}).catch((e)=>{
+			// 	if(result.issuccess){
+			// 		this.setState({
+			// 			isimporting:false,
+			// 			importresult:{
+			// 				issuccess:true,
+			// 				textmsg:`成功导入${result.successlist.length},失败:${result.failedlist.length}条`
+			// 			}
+			// 		 });
+			// 	}
+			// 	else{
+			// 		this.setState({
+			// 			isimporting:false,
+			// 			importresult:{
+			// 				issuccess:false,
+			// 				textmsg:result.errmsg
+			// 			}
+			// 		 });
+			// 	}
+			// }).catch((e)=>{
+			// 	this.setState({
+			// 		isimporting:false,
+			// 		importresult:{
+			// 			issuccess:false
+			// 		}
+			// 	 });
+			// });
+			if(result.issuccess){
 				this.setState({
-					isimporting:false,
+					isimporting: true,
+					importID: result.id,
 					importresult:{
-						issuccess:false
+						issuccess:true,
 					}
-				 });
-			});
+				})
+				this.getPercent();
+			}
+			else{
+						this.setState({
+							isimporting:false,
+							importresult:{
+								issuccess:false,
+								textmsg:result.msg
+							}
+						 });
+					}
+				}).catch((e)=>{
+					this.setState({
+						isimporting:false,
+						importresult:{
+							issuccess:false
+						}
+					 });
+				});
 
 		}
 
@@ -158,7 +219,7 @@ class App extends React.Component {
     }, {
       title: isimporting?'导入中':'导入完成',
 			icon:icon,
-      content: <StartImport isimporting={isimporting} result={importresult}/>,
+      content: <StartImport isimporting={isimporting} result={importresult} />,
     }];
 
 		let isshowprev = current > 0 && current < 2;

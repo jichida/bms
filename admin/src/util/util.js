@@ -6,6 +6,16 @@ const api = axios.create({
   baseURL: config.serverurl,
 });
 
+export const apiget = (uri, callback) => {
+  let baseUrl = uri;
+  api.get(baseUrl).then((response) => {
+    callback(response.data.data);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
 export const apipost = (uri,data)=>{
   let baseUrl = uri;
   return api.post(baseUrl, data);

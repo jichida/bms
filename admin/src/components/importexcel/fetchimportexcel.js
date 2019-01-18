@@ -1,7 +1,7 @@
 // import Ajv from 'ajv';
 import _ from 'lodash';
 import {convertjson,isvaildjson} from './deviceextutil';
-import {requestpostwithtoken} from '../../util/util.js';
+import {requestpostwithtoken, apiget} from '../../util/util.js';
 // const ajv = new Ajv();
 // //
 // const schemadeviceext =
@@ -73,15 +73,21 @@ const fetchimportfile = (jsondata)=>{
 			return;
 		}
 		const token = localStorage.getItem('admintoken');
-		requestpostwithtoken('/deviceextimport',token,listdeviceext,(issuccess,errmsg)=>{
+		requestpostwithtoken('/deviceextimport2',token,listdeviceext,(issuccess,msg)=>{
+			if(issuccess){
+				resolve({
+					issuccess,
+					id: msg.id
+				})
+			}
 			if(!issuccess){
 				resolve({
 					issuccess:false,
-					errmsg
+					msg
 				});
 				return;
 			}
-			resolve(errmsg);
+			resolve(msg);
 		});
 		//<<----开始POST到服务器
 			// const validation = validate(listdeviceext);
@@ -103,6 +109,35 @@ const fetchimportfile = (jsondata)=>{
 			// });
 		});
 
+}
+
+const getPercent = (current, total) => {
+    // Math.round(num / total * 10000) / 100.00
+	let percent = Math.round(current/total * 100) ;
+	let msg = current === total ? '数据导入成功' : `导⼊数据: ${current}/${total}`;
+
+    return {
+        percent,
+        msg
+    }
+}
+
+export const fetchimportpercent = (id) => {
+	return new Promise((resolve,reject) => {
+		apiget(`/getdeviceextimportstatus/${id}`, ({current, total, status})=>{
+			if(status === 'error'){
+				resolve({
+					msg: '网络连接错误！'
+				})
+				return;
+			}
+			let { percent, msg } = getPercent(current, total);
+			resolve({
+				percent,
+				msg
+			});
+		});
+	})
 }
 
 export default fetchimportfile;
