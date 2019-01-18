@@ -242,7 +242,7 @@ const startuploader = (app)=>{
   });
 
   const getimportstatus  = (req,res)=>{
-    const query = {_id:req.params.id;}
+    const query = {_id:req.params.id};
     const dbModel = DBModels.ImportStatusModel;
     dbModel.findOneAndUpdate(query,{'$inc':{access:1}},{new:true,upsert:true}).lean().exec((err,result)=>{
       if(!err){
