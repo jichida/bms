@@ -162,6 +162,9 @@ const getgroupedresult = (listresult,callbackfn)=>{
             '低':'一级'
           };
           const wl = mapwarninglevel[tyv.warninglevel];
+          debug(tyv.warninglevel)
+          debug(resultinfo)
+          debug(wl)
           resultinfo[`${ktype_ok}_Warning`][`${wl}`] = resultinfo[`${ktype_ok}_Warning`][`${wl}`]+1;
         }
       }

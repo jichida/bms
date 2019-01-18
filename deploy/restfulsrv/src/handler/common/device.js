@@ -164,7 +164,7 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
-    debug(`device query ${JSON.stringify(query)}`);
+    // debug(`device query ${JSON.stringify(query)}`);
     const queryexec = deviceModel.find(query).select(fields).lean();
     debug(`device start exec`);
     queryexec.exec((err,list)=>{

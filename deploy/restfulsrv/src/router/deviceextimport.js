@@ -119,11 +119,12 @@ const startuploader = (app)=>{
         // }
         if(_.indexOf(provincenames, province) === -1){
           issuccess = false;
-          errmessage = `【${province}】非法,只能是:'北京','上海','天津','重庆','河北',\
+          errmessage = `【${DeviceId}】【${province}】非法,只能是:'北京','上海','天津','重庆','河北',\
 '山西','内蒙古','黑龙江','吉林','辽宁','陕西','甘肃','青海',\
 '新疆','宁夏','山东','河南','江苏','浙江','安徽','江西','福建',\
 '台湾','湖北','湖南','广东','广西','海南','四川','云南','贵州',\
 '西藏','香港','澳门' 之一`;
+          errmessage+=JSON.stringify(devicedata)
           break;
         }
       }
