@@ -81,5 +81,5 @@ srvwebsocket.startsrv(srvhttp.startsrv());
 process.on('uncaughtException', (err)=> {
   debug(err);
   throw err;
-  winston.getlog().err(`发生异常了...${JSON.stringify(err)}`);
+  winston.getlog().error(`发生异常了...${JSON.stringify(err)}`);
 });
