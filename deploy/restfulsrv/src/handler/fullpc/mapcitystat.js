@@ -162,9 +162,9 @@ const getgroupedresult = (listresult,callbackfn)=>{
             '低':'一级'
           };
           const wl = mapwarninglevel[tyv.warninglevel];
-          debug(tyv.warninglevel)//低
-          debug(resultinfo)
-          debug(wl)//
+          // debug(tyv.warninglevel)//低
+          // debug(resultinfo)
+          // debug(wl)//
   //         { citycode: '1833',
   // srvapp:device   adcode: '511421',
   // srvapp:device   province: '四川省',
