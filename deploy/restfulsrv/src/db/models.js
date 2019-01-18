@@ -175,7 +175,7 @@ const DataDictSchema = new Schema({
 DataDictSchema.plugin(mongoosePaginate);
 const DataDictModel =mongoose.model('datadict',  DataDictSchema);
 
-//数据字典
+//
 const ExportTokenSchema = new Schema({
   userid:{ type: Schema.Types.ObjectId, ref: 'user' },
   queryobjstring:String,
@@ -183,6 +183,19 @@ const ExportTokenSchema = new Schema({
 });
 ExportTokenSchema.plugin(mongoosePaginate);
 const ExportTokenModel =mongoose.model('exporttoken',  ExportTokenSchema);
+
+//
+const ImportStatusSchema = new Schema({
+  total:Number,
+  current:Number,
+  success:Number,
+  access:Number,
+  emptyid:Number,
+  status:'',
+});
+ImportStatusSchema.plugin(mongoosePaginate);
+const ImportStatusModel =mongoose.model('importstatus',  ImportStatusSchema);
+
 
 //设备城市映射表【每天一次】
 const DeviceCitySchema = new Schema({
@@ -211,6 +224,7 @@ exports.UserLogSchema = UserLogSchema;
 exports.DataDictSchema = DataDictSchema;
 exports.ExportTokenSchema = ExportTokenSchema;
 exports.DeviceCitySchema = DeviceCitySchema;
+exports.ImportStatusSchema = ImportStatusSchema;
 
 exports.UserAdminModel = UserAdmin;
 exports.SystemConfigModel = SystemConfigModel;
@@ -231,3 +245,4 @@ exports.UserLogModel = UserLogModel;
 exports.DataDictModel = DataDictModel;
 exports.ExportTokenModel = ExportTokenModel;
 exports.DeviceCityModel = DeviceCityModel;
+exports.ImportStatusModel = ImportStatusModel;

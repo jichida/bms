@@ -4,7 +4,7 @@
         "name": "bms",
         "script": "/home/ubuntu/bms/deploy/restfulsrv/index.js",
         "env": {
-          "DEBUG":"srv:*",
+          "DEBUG":"srvapp:uploadexcel",
           "NODE_ENV": "production",
           "DEBUG_COLORS":"1",
 		      "rooturl":"http://yt.i2u.top:4101",

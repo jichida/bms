@@ -1,5 +1,6 @@
 const DBModels = require('../db/models.js');
 const PubSub = require('pubsub-js');
+const mongoose = require('mongoose');
 const _ = require('lodash');
 const requestIp = require('request-ip');
 const moment  = require('moment');
@@ -8,7 +9,17 @@ const middlewareauth = require('./middlewareauth.js');
 const debug = require('debug')('srvapp:uploadexcel');
 const winston = require('../log/log.js');
 
-const handle_deviceextimport = (exceljson,userid,remoteip,callbackfnresult)=>{
+ PubSub.subscribe('setimportstatus', ( msg, data )=>{
+   debug(data);
+   const query = data.query;
+   const updatedData = data.updatedData;
+   const dbModel = DBModels.ImportStatusModel;
+   dbModel.findOneAndUpdate(query,updatedData,{new:true,upsert:true}).lean().exec((err,result)=>{
+   });
+ });
+
+
+const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnresult)=>{
   let deviceids_success = [];
   let deviceids_notfound = [];
   let asyncfnsz = [];
@@ -45,6 +56,15 @@ const handle_deviceextimport = (exceljson,userid,remoteip,callbackfnresult)=>{
 
           const dbDevice = DBModels.DeviceModel;
           dbDevice.findOneAndUpdate({DeviceId},{$set:{deviceextid:result._id}},{new:true,upsert:true}).lean().exec((err,result)=>{
+            PubSub.publish('setimportstatus',{
+              query:{_id:importid},
+              updatedData : {
+                '$inc':{
+                  current:1,
+                  success:1,
+                }
+              }
+            });
             callbackfn(err,result);
           });
 
@@ -53,6 +73,16 @@ const handle_deviceextimport = (exceljson,userid,remoteip,callbackfnresult)=>{
       else{
         dbDeviceExt.findOneAndUpdate({batterysystemflownumber},{$set:devicedata},{new:true,upsert:true}).lean().exec((err,result)=>{
           deviceids_success.push(batterysystemflownumber);
+          PubSub.publish('setimportstatus',{
+            query:{_id:importid},
+            updatedData : {
+              '$inc':{
+                current:1,
+                success:1,
+                emptyid:1
+              }
+            }
+          });
           callbackfn(err,result);
         });
       }
@@ -71,7 +101,14 @@ const handle_deviceextimport = (exceljson,userid,remoteip,callbackfnresult)=>{
         logtxt:`导入客档信息,结果${resultstring}`
       };
       PubSub.publish('userlog_data',userlog);
-
+      PubSub.publish('setimportstatus',{
+        query:{_id:importid},
+        updatedData : {
+          '$set':{
+            status:'finished',
+          }
+        }
+      });
 
       winston.getlog().info(`--->导入成功,:${resultstring}`)
       callbackfnresult(null,{
@@ -84,6 +121,14 @@ const handle_deviceextimport = (exceljson,userid,remoteip,callbackfnresult)=>{
       });
     }
     else{
+      PubSub.publish('setimportstatus',{
+        query:{_id:importid},
+        updatedData : {
+          '$set':{
+            status:'error',
+          }
+        }
+      });
       winston.getlog().info(`--->导入错误,${JSON.stringify(err)}`);
       callbackfnresult(null,{
         result:'error',
@@ -99,10 +144,32 @@ const dodeviceextimport = (req,res)=>{
   const remoteip = requestIp.getClientIp(req) || '';
   // res.status(200)
   //        .json(上传成功);
-  handle_deviceextimport(exceljson,userid,remoteip,(err,jsonresult)=>{
-    res.status(200)
-           .json(jsonresult);
+  const importid = new mongoose.mongo.ObjectID();
+  debug(`importid-->${importid}`);
+  PubSub.publish('setimportstatus',{
+    query:{_id:importid},
+    updatedData : {
+      '$setOnInsert':{
+        status:'start',
+        total:exceljson.length,
+        current:0,
+        success:0,
+        access:0,
+      }
+    }
   });
+  handle_deviceextimport(importid,exceljson,userid,remoteip,(err,jsonresult)=>{
+    winston.getlog().info(`--->导入完毕`)
+  });
+
+  res.status(200)
+         .json({
+           result:'OK',
+           data:{
+                 issuccess:true,
+                 id:importid,
+             }
+         });
 }
 
 const getDevice = (callbackfn)=>{
@@ -121,7 +188,7 @@ const getDevice = (callbackfn)=>{
 }
 
 const startuploader = (app)=>{
-  app.post('/deviceextimport',middlewareauth,(req,res)=>{
+  app.post('/deviceextimport2',middlewareauth,(req,res)=>{
     //check deviceids
     debug(`start deviceextimport`)
     winston.getlog().info(`--->deviceextimport 开始导入`)
@@ -174,6 +241,31 @@ const startuploader = (app)=>{
       }
     });
   });
+
+  const getimportstatus  = (req,res)=>{
+    const query = {_id:req.params.id};
+    const dbModel = DBModels.ImportStatusModel;
+    dbModel.findOneAndUpdate(query,{'$inc':{access:1}},{new:true,upsert:true}).lean().exec((err,result)=>{
+      if(!err){
+        res.status(200)
+               .json({
+          result:'OK',
+          data:result
+        });
+      }
+      else{
+        debug(err);
+        res.status(200)
+               .json({
+           result:'error',
+           message:`获取状态错误`,
+        });
+      }
+    });
+  }
+
+  app.post('/getdeviceextimportstatus/:id',getimportstatus);
+  app.get('/getdeviceextimportstatus/:id',getimportstatus);
 
 };
 

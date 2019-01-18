@@ -1,7 +1,7 @@
 const mysqldb = require('./dbconnection');
 const _ = require('lodash');
 const async = require('async');
-const debug = require('debug')('srvapp:device');
+const debug = require('debug')('srvapp:catlworking');
 const config = require('../../config');
 
 const getcatl_warningf = (maxcount,callback)=>{

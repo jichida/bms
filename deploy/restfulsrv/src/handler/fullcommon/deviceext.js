@@ -4,7 +4,7 @@ const mongoose  = require('mongoose');
 const winston = require('../../log/log.js');
 const _ = require('lodash');
 const moment = require('moment');
-const debug = require('debug')('srvapp:device');
+const debug = require('debug')('srvapp:deviceext');
 const oldyears = moment().subtract(10,'years').format('YYYY');
 const async = require('async');
 debug(`10年以前是:${oldyears}`);
