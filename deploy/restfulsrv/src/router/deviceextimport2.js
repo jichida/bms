@@ -12,9 +12,9 @@ const winston = require('../log/log.js');
  PubSub.subscribe('setimportstatus', ( msg, data )=>{
    debug(data);
    const query = data.query;
-   const updatedata = data.updatedata;
+   const updatedData = data.updatedData;
    const dbModel = DBModels.ImportStatusModel;
-   dbModel.findOneAndUpdate(query,updatedata,{new:true,upsert:true}).lean().exec((err,result)=>{
+   dbModel.findOneAndUpdate(query,updatedData,{new:true,upsert:true}).lean().exec((err,result)=>{
      callbackfn(err,result);
    });
  });
