@@ -8,7 +8,7 @@ const middlewareauth = require('./middlewareauth.js');
 const debug = require('debug')('srvapp:uploadexcel');
 const winston = require('../log/log.js');
 
-const handle_deviceextimport = (exceljson,userid,callbackfnresult)=>{
+const handle_deviceextimport = (exceljson,userid,remoteip,callbackfnresult)=>{
   let deviceids_success = [];
   let deviceids_notfound = [];
   let asyncfnsz = [];
@@ -65,7 +65,7 @@ const handle_deviceextimport = (exceljson,userid,callbackfnresult)=>{
     if(!err){
       const resultstring = `成功导入${deviceids_success.length}条`;
       const userlog = {
-        remoteip:requestIp.getClientIp(req) || '',
+        remoteip,
         creator:userid,
         created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
         logtxt:`导入客档信息,结果${resultstring}`
@@ -96,9 +96,10 @@ const handle_deviceextimport = (exceljson,userid,callbackfnresult)=>{
 const dodeviceextimport = (req,res)=>{
   const exceljson = req.body;
   const userid = req.userid;
+  const remoteip = requestIp.getClientIp(req) || '';
   // res.status(200)
   //        .json(上传成功);
-  handle_deviceextimport(exceljson,userid,(err,jsonresult)=>{
+  handle_deviceextimport(exceljson,userid,remoteip,(err,jsonresult)=>{
     res.status(200)
            .json(jsonresult);
   });
