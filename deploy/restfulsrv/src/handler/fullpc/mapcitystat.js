@@ -162,10 +162,30 @@ const getgroupedresult = (listresult,callbackfn)=>{
             '低':'一级'
           };
           const wl = mapwarninglevel[tyv.warninglevel];
-          debug(tyv.warninglevel)
+          debug(tyv.warninglevel)//低
           debug(resultinfo)
-          debug(wl)
-          resultinfo[`${ktype_ok}_Warning`][`${wl}`] = resultinfo[`${ktype_ok}_Warning`][`${wl}`]+1;
+          debug(wl)//
+  //         { citycode: '1833',
+  // srvapp:device   adcode: '511421',
+  // srvapp:device   province: '四川省',
+  // srvapp:device   city: '眉山市',
+  // srvapp:device   BUS: 54,
+  // srvapp:device   CAR: 0,
+  // srvapp:device   ENERGYTRUCK: 0,
+  // srvapp:device   CONTAINERTRUCK: 47,
+  // srvapp:device   BUS_Warning: { '三级': 1, '二级': 0, '一级': 35 },
+  // srvapp:device   CAR_Warning: { '三级': 0, '二级': 0, '一级': 0 },
+  // srvapp:device   ENERGYTRUCK_Warning: { '三级': 0, '二级': 0, '一级': 0 },
+  // srvapp:device   CONTAINERTRUCK_Warning: { '三级': 3, '二级': 2, '一级': 3 },
+  // srvapp:device   ESV: NaN } +0ms
+//一级 +1ms
+          if(!!resultinfo[`${ktype_ok}_Warning`]){
+            resultinfo[`${ktype_ok}_Warning`][`${wl}`] = resultinfo[`${ktype_ok}_Warning`][`${wl}`]+1;
+          }
+          else{
+            debug(resultinfo[`${ktype_ok}_Warning`])//低
+          }
+
         }
       }
     });
