@@ -1,5 +1,6 @@
 const DBModels = require('../db/models.js');
 const PubSub = require('pubsub-js');
+const mongoose = require('mongoose');
 const _ = require('lodash');
 const requestIp = require('request-ip');
 const moment  = require('moment');
