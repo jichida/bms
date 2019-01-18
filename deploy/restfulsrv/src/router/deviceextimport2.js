@@ -15,7 +15,6 @@ const winston = require('../log/log.js');
    const updatedData = data.updatedData;
    const dbModel = DBModels.ImportStatusModel;
    dbModel.findOneAndUpdate(query,updatedData,{new:true,upsert:true}).lean().exec((err,result)=>{
-     callbackfn(err,result);
    });
  });
 
