@@ -184,6 +184,7 @@ const getgroupedresult = (listresult,callbackfn)=>{
           }
           else{
             debug(resultinfo[`${ktype_ok}_Warning`])//低
+            winston.getlog().err(`发生异常了...${ktype_ok}_Warning`);
           }
 
         }

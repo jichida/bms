@@ -78,7 +78,7 @@ debug(`issmsdebug:${config.issmsdebug}`);
 srvsystem.job();
 srvwebsocket.startsrv(srvhttp.startsrv());
 
-process.on('uncaughtException', (err)=> {
-  debug(err);
-  winston.getlog().info(`发生异常了...${JSON.stringify(err)}`);
-});
+// process.on('uncaughtException', (err)=> {
+//   debug(err);
+//   winston.getlog().err(`发生异常了...${JSON.stringify(err)}`);
+// });
