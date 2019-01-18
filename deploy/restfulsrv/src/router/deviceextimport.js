@@ -8,10 +8,7 @@ const middlewareauth = require('./middlewareauth.js');
 const debug = require('debug')('srvapp:uploadexcel');
 const winston = require('../log/log.js');
 
-
-const dodeviceextimport = (req,res)=>{
-  const exceljson = req.body;
-  const userid = req.userid;
+const handle_deviceextimport = (exceljson,userid,callbackfnresult)=>{
   let deviceids_success = [];
   let deviceids_notfound = [];
   let asyncfnsz = [];
@@ -75,8 +72,9 @@ const dodeviceextimport = (req,res)=>{
       };
       PubSub.publish('userlog_data',userlog);
 
-      res.status(200)
-             .json({
+
+      winston.getlog().info(`--->导入成功,:${resultstring}`)
+      callbackfnresult(null,{
         result:'OK',
         data:{
               issuccess:true,
@@ -84,18 +82,26 @@ const dodeviceextimport = (req,res)=>{
               failedlist:deviceids_notfound,
           }
       });
-      winston.getlog().info(`--->导入成功,:${resultstring}`)
     }
     else{
-      res.status(200)
-             .json({
+      winston.getlog().info(`--->导入错误,${JSON.stringify(err)}`);
+      callbackfnresult(null,{
         result:'error',
         message:'导入错误'
       });
-      winston.getlog().info(`--->导入错误,${JSON.stringify(err)}`)
     }
   });
+}
 
+const dodeviceextimport = (req,res)=>{
+  const exceljson = req.body;
+  const userid = req.userid;
+  // res.status(200)
+  //        .json(上传成功);
+  handle_deviceextimport(exceljson,userid,(err,jsonresult)=>{
+    res.status(200)
+           .json(jsonresult);
+  });
 }
 
 const getDevice = (callbackfn)=>{
