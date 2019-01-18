@@ -10,6 +10,7 @@ const debug = require('debug')('srvapp:uploadexcel');
 const winston = require('../log/log.js');
 
  PubSub.subscribe('setimportstatus', ( msg, data )=>{
+   debug(data);
    const query = data.query;
    const updatedata = data.updatedata;
    const dbModel = DBModels.ImportStatusModel;
@@ -145,7 +146,7 @@ const dodeviceextimport = (req,res)=>{
   // res.status(200)
   //        .json(上传成功);
   const importid = new mongoose.mongo.ObjectID();
-  //
+  debug(`importid-->${importid}`);
   PubSub.publish('setimportstatus',{
     query:{_id:importid},
     updatedData : {
