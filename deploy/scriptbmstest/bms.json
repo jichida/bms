@@ -1,0 +1,19 @@
+{
+  "apps" : [
+      {
+        "name": "bms",
+        "script": "/home/ubuntu/bms/deploy/restfulsrv/index.js",
+        "env": {
+          "DEBUG":"srv:*",
+          "NODE_ENV": "production",
+          "DEBUG_COLORS":"1",
+		      "rooturl":"http://yt.i2u.top:4101",
+          "MONGO_URL":"mongodb://yc.i2u.top/bmscatl",
+          "listenport":5012,
+          "logdir":"/home/ubuntu/bms/deploy/dist/log",
+          "uploaddir":"/home/ubuntu/bms/deploy/dist/upload",
+        },
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
+      }
+  ]
+}
