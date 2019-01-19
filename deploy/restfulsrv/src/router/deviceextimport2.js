@@ -60,6 +60,7 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
               query:{_id:importid},
               updatedData : {
                 '$inc':{
+                  updated_at:moment().format('YYYY-MM-DD HH:mm:ss'),
                   current:1,
                   success:1,
                 }
@@ -77,6 +78,7 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
             query:{_id:importid},
             updatedData : {
               '$inc':{
+                updated_at:moment().format('YYYY-MM-DD HH:mm:ss'),
                 current:1,
                 success:1,
                 emptyid:1
@@ -105,6 +107,7 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
         query:{_id:importid},
         updatedData : {
           '$set':{
+            finshed_at:moment().format('YYYY-MM-DD HH:mm:ss'),
             status:'finished',
           }
         }
@@ -125,6 +128,7 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
         query:{_id:importid},
         updatedData : {
           '$set':{
+            finshed_at:moment().format('YYYY-MM-DD HH:mm:ss'),
             status:'error',
           }
         }
@@ -150,6 +154,7 @@ const dodeviceextimport = (req,res)=>{
     query:{_id:importid},
     updatedData : {
       '$setOnInsert':{
+        created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
         status:'start',
         total:exceljson.length,
         current:0,
