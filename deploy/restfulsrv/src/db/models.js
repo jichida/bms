@@ -192,6 +192,9 @@ const ImportStatusSchema = new Schema({
   access:Number,
   emptyid:Number,
   status:'',
+  created_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+  updated_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
+  finshed_at: { type: String, default:moment().format('YYYY-MM-DD HH:mm:ss')},
 });
 ImportStatusSchema.plugin(mongoosePaginate);
 const ImportStatusModel =mongoose.model('importstatus',  ImportStatusSchema);
