@@ -109,6 +109,7 @@ class App extends React.Component {
 							textmsg:msg
 						},
 				});
+				this.clear();
 			})
 		}, 1000)
 	}
