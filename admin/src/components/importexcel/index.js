@@ -37,8 +37,6 @@ class App extends React.Component {
 				percent: 0
 			},
 			selectfile:'',
-			percent: 0,
-			textmsg: ''
     };
     this.handleFile = this.handleFile.bind(this);
   }
@@ -103,10 +101,16 @@ class App extends React.Component {
 				if(percent === 100){
 					this.clear();
 				}
-			}, 1000);
-			
-		})
-			
+			})
+			.catch(({msg}) =>{
+				this.setState({
+					importresult:{
+							percent: -1,
+							textmsg:msg
+						},
+				});
+			})
+		}, 1000)
 	}
 
 	clear = () => {
@@ -171,7 +175,8 @@ class App extends React.Component {
 						this.setState({
 							isimporting:false,
 							importresult:{
-								issuccess:false,
+								//issuccess:false,
+								percent: -1,
 								textmsg:result.msg
 							}
 						 });
@@ -180,6 +185,7 @@ class App extends React.Component {
 					this.setState({
 						isimporting:false,
 						importresult:{
+							percent: -1,
 							issuccess:false
 						}
 					 });

@@ -15,11 +15,11 @@ class StartImport extends React.Component {
 		// }
 		// if(result.issuccess){
 			return (
-				//<Alert message={`${result.textmsg}`} type="success" showIcon />
-				<div>
+				result.percent === -1 ? <Alert message={`${result.textmsg}`} type="error" showIcon style={{display:"inline-block"}}/> //<Alert message={`${result.textmsg}`} type="success" showIcon />
+				: (<div>
 					<div style={{textAlign: 'center'}}>{result.textmsg}</div>
 					<div><Progress percent = {result.percent} style={{margin: '0 auto'}} /></div>
-				</div>
+				</div>)
 				
 			);
 		// }
