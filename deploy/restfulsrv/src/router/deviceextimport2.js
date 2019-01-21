@@ -60,7 +60,6 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
               query:{_id:importid},
               updatedData : {
                 '$inc':{
-                  updated_at:moment().format('YYYY-MM-DD HH:mm:ss'),
                   current:1,
                   success:1,
                 },
@@ -81,7 +80,6 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
             query:{_id:importid},
             updatedData : {
               '$inc':{
-                updated_at:moment().format('YYYY-MM-DD HH:mm:ss'),
                 current:1,
                 success:1,
                 emptyid:1
