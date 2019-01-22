@@ -1,0 +1,28 @@
+.datatablePage .fa.back{
+    font-size:30px;
+    padding: 0 20px;
+    background-size: #FFF;
+    
+}
+.datatablePage .set{
+    border-bottom: 1px solid #EEE;
+    padding:20px;
+}
+.datatablePage{
+    padding-bottom: 15px;
+    -moz-box-direction:normal;
+    flex-direction:column;
+    -webkit-flex-direction:column;
+}
+.datatablePage .formlist{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+}
+.datatablePage .formlist{
+	
+}
+.SearchBar{
+    background: #369;
+}

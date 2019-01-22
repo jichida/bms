@@ -1,0 +1,6 @@
+ul,li{ list-style:none; margin:0px; padding:0px}
+.xjl_call{ background-color:#102655; color:#fff; text-align:center;height:180px}
+.xjl_call h2.tit{ padding:20px 0px; text-align:center;height:100px}
+.xjl_call h2.tit img{ display:inline-block; vertical-align:middle; width:200px; margin-right:20px;float: left; margin-left:20px; margin-top:15px}
+.xjl_call h2.tit span{display:inline-block; vertical-align:middle; font-size:40px; color:#fff}
+.call_ul li{ display:inline-block;padding:10px 20px; font-size:28px; font-weight:bold}
