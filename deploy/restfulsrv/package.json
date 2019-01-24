@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "DEBUG=srvapp:* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://bmscluster.com55.cn:27007/bmscatl node index",
-    "start2": "DEBUG=srvapp:* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://yc.i2u.top/bmscatl12017 mysqlpassword=%c?D:8Bv node index"
+    "start2": "DEBUG=srvapp:* logdir=/Users/wangxiaoqing/Downloads/work/bms/deploy/dist/log MONGO_URL=mongodb://yc.i2u.top/bmscatl mysqlpassword=%c?D:8Bv node index"
   },
   "author": "",
   "license": "ISC",

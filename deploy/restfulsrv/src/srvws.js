@@ -4,6 +4,7 @@ const handleuserpc = require('./handler/pc/index.js');
 const handleuserapp = require('./handler/app/index.js');
 const handlefullpc = require('./handler/fullpc/index.js');
 const handlefullapp = require('./handler/fullapp/index.js');
+const handleuserpcall = require('./handler/pcall/index.js');
 
 const PubSub = require('pubsub-js');
 const usersubfn = require('./handler/socketsubscribe');
@@ -15,7 +16,7 @@ const startwebsocketsrv = (http)=>{
 
   io.on('connection', (socket)=>{
     ////console.log('a user connected');
-
+    debug(`socket connected`)
     let ctx = {
       socket:socket,
       connectid:uuid.v4(),
@@ -30,6 +31,14 @@ const startwebsocketsrv = (http)=>{
       }
       handleuserpc(socket,payload,ctx);
     });
+
+    socket.on('pcall',(payload)=>{
+      if(!ctx.usertype){
+        ctx.usertype = 'pcall';
+      }
+      handleuserpcall(socket,payload,ctx);
+    });
+
 
     socket.on('app',(payload)=>{
       if(!ctx.usertype){

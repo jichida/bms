@@ -3,6 +3,7 @@ const _ = require('lodash');
 const async = require('async');
 const debug = require('debug')('srvapp:catlworking');
 const config = require('../../config');
+const winston = require('../../log/log.js');
 
 const getcatl_warningf = (maxcount,callback)=>{
   const sql = `SELECT DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%S') AS update_time,deviceid AS DeviceId,type FROM MA_WARNING_F ORDER BY update_time DESC LIMIT ${maxcount}`;
@@ -141,27 +142,39 @@ const getcatlmysql = (callback)=>{
 
   async.parallel(fnsz,(err,result)=>{
     debug(`end  getcatlmysql`);
-    callback({
-      cmd:'catl_result',
-      payload:{
-        catl_cycle:result[0],
-        catl_celltemperature:result[1],
-        catl_cyclecount:result[2],
-        catl_dxtemperature:result[3],
-        catl_warningf:result[4],
-      }
-    });
+    if(!!err){
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'catl_result'}
+      });
+    }
+    else{
+      callback({
+        cmd:'catl_result',
+        payload:{
+          catl_cycle:result[0],
+          catl_celltemperature:result[1],
+          catl_cyclecount:result[2],
+          catl_dxtemperature:result[3],
+          catl_warningf:result[4],
+        }
+      });
+    }
   });
 }
 
 exports.getcatlmysql = getcatlmysql;
 exports.catl =  (actiondata,ctx,callback)=>{
+  debug(`catl =====${_.get(config,'catlmysqldata.cmd','')}`);
   if(_.get(config,'catlmysqldata.cmd','') === 'catl_result'){
-    debug(`load data from config =====`);
     callback(config.catlmysqldata);
   }
   else{
-    getcatlmysql((data)=>{
+    debug(`load data from mysql??? =====`);
+    getcatlmysql((err,data)=>{
+      winston.getlog().info(`load data from mysql??? =====`);
+      winston.getlog().info(data);
+
       config.catlmysqldata = data;
       callback(data);
     })
