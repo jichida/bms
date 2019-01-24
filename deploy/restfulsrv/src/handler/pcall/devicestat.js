@@ -253,5 +253,82 @@ const getdevicestat_citylist = (provinceinfo)=>{
    });
 }
 
+// srvapp:devicestat   { citycode: '0931',
+// srvapp:devicestat     name: '兰州市',
+// srvapp:devicestat     adcode: '620100',
+// srvapp:devicestat     count_total: 312,
+// srvapp:devicestat     count_online: 219,
+// srvapp:devicestat     count_offline: 93 },
+
+const getdevicestat_cityinfo = (cityinfo)=>{
+  const query = {citycode:cityinfo.citycode};
+  const deviceModel = DBModels.DeviceCityModel;
+  const fields = {
+    'deviceid':1,
+    'citycode':1,
+    'adcode':1,
+    'province':1,
+    'city':1,
+  };
+  // query = {"citycode" : "0831"};
+  deviceModel.find(query).select(fields).populate([
+    {
+      path: 'deviceid',
+      model: 'device',
+      select: 'DeviceId last_Latitude last_Longitude last_GPSTime ',
+    }
+  ]).lean().exec((err,result)=>{
+    debug(result);
+  });
+  // deviceModel.aggregate([
+  //      {$match:query},
+  //      {$group: {
+  //        _id: '$citycode',
+  //        deviceids: { $addToSet: "$deviceid" },
+  //        adcode:{ $first: "$targetadcode" },
+  //        name:{ $first: "$city" },
+  //        count: { $sum: 1 },
+  //      }
+  //    }]).exec((err, list)=> {
+  //      debug(list);
+  //      //[ { _id: '0941', deviceids: [], count: 128264 } ]
+  //      let listnewrc = [];
+  //      if(!err && !!list){
+  //        let fnsz = [];
+  //        for(let i = 0 ;i < list.length;i++){
+  //          const newrc = list[i];
+  //          if(!!newrc){
+  //            listnewrc.push(newrc);
+  //          }
+  //        }
+  //
+  //        for(let i = 0 ;i < listnewrc.length;i++){
+  //          // debug(listnewrc);
+  //          const newrc = listnewrc[i];
+  //          fnsz.push((callbackfn)=>{
+  //             getdevicestat_online({_id:{$in:newrc.deviceids}},(err,{
+  //               count_online,count_offline})=>{
+  //               callbackfn(err,{
+  //                 citycode:newrc._id,
+  //                 name:newrc.name,
+  //                 adcode:`${newrc.adcode}`,
+  //                 count_total:newrc.deviceids.length,
+  //                 count_online,
+  //                 count_offline
+  //               });
+  //             })
+  //          });
+  //        }
+  //
+  //        debug(moment().format('YYYY-MM-DD HH:mm:ss'));
+  //        async.parallel(fnsz,(err,result)=>{
+  //          debug(moment().format('YYYY-MM-DD HH:mm:ss'));
+  //          debug(result);
+  //        });
+  //     }
+  //  });
+}
+
 exports.getdevicestat_provincelist = getdevicestat_provincelist;
 exports.getdevicestat_citylist = getdevicestat_citylist;
+exports.getdevicestat_cityinfo = getdevicestat_cityinfo;
