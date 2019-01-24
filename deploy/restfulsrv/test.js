@@ -104,7 +104,15 @@ process.on('uncaughtException', (err)=> {
   winston.getlog().error(`发生异常了...${JSON.stringify(err)}`);
 });
 
-
-// devicestat.getdevicestat_provincelist();
-// devicestat.getdevicestat_citylist({ name: '甘肃省', adcode: '620000'});
-// devicestat.getdevicestat_cityinfo({citycode: '0931'});
+// devicestat.getdevicestat({query:{}},{},(result)=>{
+//   debug(result);
+// });
+// devicestat.getdevicestatprovinces({query:{}},{},(result)=>{
+//   debug(result);
+// });
+// devicestat.getdevicestatcities({provinceinfo:{ name: '甘肃省', adcode: '620000'}},{},(result)=>{
+//   debug(result);
+// });
+// devicestat.getdevicestatcity({cityinfo:{citycode: '0931'}},{},(result)=>{
+//   debug(result);
+// });

@@ -26,7 +26,7 @@ db.getCollection('devices').aggregate([
 
 
 
-const getdevicestat_warninglevel = ()=>{
+const getdevicestat_warninglevel = (query,ctx,callbackfn)=>{
   const deviceModel = DBModels.DeviceModel;
   deviceModel.aggregate([
        {$match:query},
@@ -35,7 +35,26 @@ const getdevicestat_warninglevel = ()=>{
            count: { $sum: 1 },
        }
      }]).exec((err, list)=> {
-       debug(list);
+       let count_all = 0;
+       let count_yellow = 0;
+       let count_red = 0;
+       let count_orange = 0;
+
+       if(!err && !!list){
+         for(let i = 0;i < list.length ;i++){
+           if(list[i]._id === '高'){
+             count_red = list[i].count;
+           }
+           if(list[i]._id === '中'){
+             count_orange = list[i].count;
+           }
+           if(list[i]._id === '低'){
+             count_yellow = list[i].count;
+           }
+         }
+       }
+       count_all = count_red + count_orange + count_yellow;
+       callbackfn(err,{count_all,count_red,count_orange,count_yellow});
    });
 }
 
@@ -49,7 +68,7 @@ db.getCollection('devices').aggregate([
          {
            isonline:
              {
-               $cond: { if: { $gte: [ "$LastRealtimeAlarm.DataTime", "2019-01-23 09:00:00" ] }, then: true, else: false }
+               $cond: { if: { $gte: [ "$last_GPSTime", "2019-01-23 09:00:00" ] }, then: true, else: false }
              }
          }
      },
@@ -60,7 +79,10 @@ db.getCollection('devices').aggregate([
    }])
 */
 
-const getdevicestat_online = (query,callbackfn)=>{
+const getdevicestat_online = (query,ctx,callbackfn)=>{
+  const SettingOfflineMinutes = _.get(ctx,'SettingOfflineMinutes',20);
+  const oldMomentString = moment().subtract(SettingOfflineMinutes,'minutes').format('YYYY-MM-DD HH:mm:ss');
+
   const deviceModel = DBModels.DeviceModel;
   deviceModel.aggregate([
        {$match:query},
@@ -69,7 +91,7 @@ const getdevicestat_online = (query,callbackfn)=>{
            {
              isonline:
                {
-                 $cond: { if: { $gte: [ "$LastRealtimeAlarm.DataTime", "2019-01-23 09:00:00" ] }, then: true, else: false }
+                 $cond: { if: { $gte: [ "$last_GPSTime", oldMomentString ] }, then: true, else: false }
                }
            }
        },
@@ -78,7 +100,7 @@ const getdevicestat_online = (query,callbackfn)=>{
            count: { $sum: 1 },
        }
      }]).exec((err, list)=> {
-       // debug(list);
+       debug(list);
        if(!err && !!list){
          let count_online = 0;
          let count_offline = 0;
@@ -144,8 +166,7 @@ const convertRecord = (rc)=>{
 }
 
 //2s
-const getdevicestat_provincelist = ()=>{
-  const query = {};
+const getdevicestat_provincelist = (query,ctx,callbackfn)=>{
   const deviceModel = DBModels.DeviceCityModel;
   deviceModel.aggregate([
        {$match:query},
@@ -172,7 +193,7 @@ const getdevicestat_provincelist = ()=>{
            // debug(listnewrc);
            const newrc = listnewrc[i];
            fnsz.push((callbackfn)=>{
-              getdevicestat_online({_id:{$in:newrc.deviceids}},(err,{
+              getdevicestat_online({_id:{$in:newrc.deviceids}},ctx,(err,{
                 count_online,count_offline})=>{
                 callbackfn(err,{
                   name:newrc.name,
@@ -188,7 +209,7 @@ const getdevicestat_provincelist = ()=>{
          debug(moment().format('YYYY-MM-DD HH:mm:ss'));
          async.parallel(fnsz,(err,result)=>{
            debug(moment().format('YYYY-MM-DD HH:mm:ss'));
-           debug(result);
+           callbackfn(err,result);
          });
       }
    });
@@ -201,8 +222,7 @@ srvapp:devicestat     count_offline: 343 }
 */
 }
 
-const getdevicestat_citylist = (provinceinfo)=>{
-  const query = {province:provinceinfo.name};
+const getdevicestat_citylist = (query,ctx,callbackfn)=>{
   const deviceModel = DBModels.DeviceCityModel;
   deviceModel.aggregate([
        {$match:query},
@@ -230,7 +250,7 @@ const getdevicestat_citylist = (provinceinfo)=>{
            // debug(listnewrc);
            const newrc = listnewrc[i];
            fnsz.push((callbackfn)=>{
-              getdevicestat_online({_id:{$in:newrc.deviceids}},(err,{
+              getdevicestat_online({_id:{$in:newrc.deviceids}},ctx,(err,{
                 count_online,count_offline})=>{
                 callbackfn(err,{
                   citycode:newrc._id,
@@ -247,7 +267,7 @@ const getdevicestat_citylist = (provinceinfo)=>{
          debug(moment().format('YYYY-MM-DD HH:mm:ss'));
          async.parallel(fnsz,(err,result)=>{
            debug(moment().format('YYYY-MM-DD HH:mm:ss'));
-           debug(result);
+           callbackfn(err,result);
          });
       }
    });
@@ -260,8 +280,7 @@ const getdevicestat_citylist = (provinceinfo)=>{
 // srvapp:devicestat     count_online: 219,
 // srvapp:devicestat     count_offline: 93 },
 
-const getdevicestat_cityinfo = (cityinfo)=>{
-  const query = {citycode:cityinfo.citycode};
+const getdevicestat_cityinfo = (query,ctx,callbackfn)=>{
   const deviceModel = DBModels.DeviceCityModel;
   const fields = {
     'deviceid':1,
@@ -278,71 +297,101 @@ const getdevicestat_cityinfo = (cityinfo)=>{
       select: 'DeviceId last_Latitude last_Longitude last_GPSTime ',
     }
   ]).lean().exec((err,result)=>{
-    debug(result);
+    callbackfn(err,result);
   });
-  // deviceModel.aggregate([
-  //      {$match:query},
-  //      {$group: {
-  //        _id: '$citycode',
-  //        deviceids: { $addToSet: "$deviceid" },
-  //        adcode:{ $first: "$targetadcode" },
-  //        name:{ $first: "$city" },
-  //        count: { $sum: 1 },
-  //      }
-  //    }]).exec((err, list)=> {
-  //      debug(list);
-  //      //[ { _id: '0941', deviceids: [], count: 128264 } ]
-  //      let listnewrc = [];
-  //      if(!err && !!list){
-  //        let fnsz = [];
-  //        for(let i = 0 ;i < list.length;i++){
-  //          const newrc = list[i];
-  //          if(!!newrc){
-  //            listnewrc.push(newrc);
-  //          }
-  //        }
-  //
-  //        for(let i = 0 ;i < listnewrc.length;i++){
-  //          // debug(listnewrc);
-  //          const newrc = listnewrc[i];
-  //          fnsz.push((callbackfn)=>{
-  //             getdevicestat_online({_id:{$in:newrc.deviceids}},(err,{
-  //               count_online,count_offline})=>{
-  //               callbackfn(err,{
-  //                 citycode:newrc._id,
-  //                 name:newrc.name,
-  //                 adcode:`${newrc.adcode}`,
-  //                 count_total:newrc.deviceids.length,
-  //                 count_online,
-  //                 count_offline
-  //               });
-  //             })
-  //          });
-  //        }
-  //
-  //        debug(moment().format('YYYY-MM-DD HH:mm:ss'));
-  //        async.parallel(fnsz,(err,result)=>{
-  //          debug(moment().format('YYYY-MM-DD HH:mm:ss'));
-  //          debug(result);
-  //        });
-  //     }
-  //  });
 }
 
+const getdevicestat = (actiondata,ctx,callback)=>{
+  const query = actiondata.query || {};
+  let fnsz = [];
+  fnsz.push((callbackfn)=>{
+    getdevicestat_warninglevel(query,ctx,callbackfn);
+  });
+  fnsz.push((callbackfn)=>{
+    getdevicestat_online(query,ctx,callbackfn);
+  });
+  async.parallel(fnsz,(err,result)=>{
+    // debug(result);
+    if(!err && !!result){
+      const countwarninglevel = result[0];
+      const countonline = result[1];
+      let r = {
+        count_all:countwarninglevel.count_all,
+        count_red:countwarninglevel.count_red,
+        count_orange:countwarninglevel.count_orange,
+        count_yellow:countwarninglevel.count_yellow,
+        count_online:countonline.count_online,
+        count_offline:countonline.count_offline,
+      }
+      callback({
+        cmd:'getdevicestat_result',
+        payload:r
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestat'}
+      });
+    }
+  });
+}
 
-const getdevicestatprovices = (actiondata,ctx,callback)=>{
-
+const getdevicestatprovinces = (actiondata,ctx,callback)=>{
+  const query = actiondata.query || {};
+  getdevicestat_provincelist(query,ctx,(err,result)=>{
+    if(!err && !!result){
+      callback({
+        cmd:'getdevicestatprovinces_result',
+        payload:result
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestatprovinces'}
+      });
+    }
+  });
 }
 
 const getdevicestatcities = (actiondata,ctx,callback)=>{
-
+  const query = {province:actiondata.provinceinfo.name};
+  getdevicestat_citylist(query,ctx,(err,result)=>{
+    if(!err && !!result){
+      callback({
+        cmd:'getdevicestatcities_result',
+        payload:result
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestatcities'}
+      });
+    }
+  });
 }
 
 const getdevicestatcity = (actiondata,ctx,callback)=>{
-
+  const query = {citycode:actiondata.cityinfo.citycode};
+  getdevicestat_cityinfo(query,ctx,(err,result)=>{
+    if(!err && !!result){
+      callback({
+        cmd:'getdevicestatcity_result',
+        payload:result
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestatcity'}
+      });
+    }
+  });
 }
 
-
-exports.getdevicestat_provincelist = getdevicestat_provincelist;
-exports.getdevicestat_citylist = getdevicestat_citylist;
-exports.getdevicestat_cityinfo = getdevicestat_cityinfo;
+exports.getdevicestat = getdevicestat;
+exports.getdevicestatprovinces = getdevicestatprovinces;
+exports.getdevicestatcities = getdevicestatcities;
+exports.getdevicestatcity = getdevicestatcity;

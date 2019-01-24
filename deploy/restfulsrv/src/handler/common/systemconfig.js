@@ -44,21 +44,24 @@ exports.getsystemconfig = (actiondata,ctx,callbackfn)=>{
                 mappopclusterfields,
                 mapdict
               };
+              ctx.SettingOfflineMinutes = _.get(systemconfig,'SettingOfflineMinutes',20);
+              config.mapdict = _.merge(config.mapdict,mapdict);
+
               callbackfn({
                 cmd:'getsystemconfig_result',
                 payload
               });
 
-              config.mapdict = _.merge(config.mapdict,mapdict);
             });
 
         }
         else{
+          winston.getlog().error(`请联系管理员设置后台系统设置信息！`);
           callbackfn({
             cmd:'common_err',
             payload:{errmsg:`请联系管理员设置后台系统设置信息！`,type:'getsystemconfig'}
           });
-          winston.getlog().error(`请联系管理员设置后台系统设置信息！`);
+
         }
     });
 }
