@@ -190,7 +190,7 @@ const getgroupedresult = (listresult,callbackfn)=>{
         }
       }
     });
-    debug(resultinfo)
+    // debug(resultinfo)
 
 
     listresult_grouped.push(resultinfo);

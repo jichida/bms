@@ -1,0 +1,12 @@
+.ant-table td {
+   white-space: nowrap;
+ }
+.ant-table tr {
+  white-space: nowrap;
+}
+
+
+.ant-table-fixed {
+  font-size:20;
+  white-space: nowrap;
+}
