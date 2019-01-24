@@ -11,7 +11,7 @@ let config = {
     requesttimeout:5000,
     appversion:'1.5.1(build0615)',
     sendlocationinterval:20000,
-    softmode:'pc',
+    softmode:'pcall',
     wendu_max: 80,
     wendu_min: 0
 };

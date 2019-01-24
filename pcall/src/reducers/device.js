@@ -177,203 +177,203 @@ const device = createReducer({
     findandsettreenode(datatreegroup,devicenodeid);
     return {...state,datatreegroup,mapseldeviceid};
   },
-  [ui_selcurdevice_result]:(state,payload)=>{
-    const mapseldeviceid = payload.DeviceId;
-
-    let datatreeloc = {...state.datatreeloc};
-    let datatreesearchresult = {...state.datatreesearchresult};
-
-    let findandsettreenode = (node,mapseldeviceid)=>{
-      let retnode = node;
-      if(node.name === `${mapseldeviceid}`){
-        return retnode;
-      }
-      retnode = null;
-      if(!!node.children){
-        for(let i = 0; i<node.children.length ;i++){
-          const subnode = node.children[i];
-          let tmpnode = findandsettreenode(subnode,mapseldeviceid);
-          if(!!tmpnode){
-            if(tmpnode.name === `${mapseldeviceid}`){
-              subnode.active = true;
-              subnode.loading = false;
-            }
-            subnode.toggled = true;
-            retnode = node;
-          }
-        }
-      }
-      node.active = false;
-      return retnode;
-    }
-    findandsettreenode(datatreeloc,mapseldeviceid);
-    findandsettreenode(datatreesearchresult,mapseldeviceid);
-
-    return {...state,mapseldeviceid,datatreeloc,datatreesearchresult};
-  },
+  // [ui_selcurdevice_result]:(state,payload)=>{
+  //   const mapseldeviceid = payload.DeviceId;
+  //
+  //   let datatreeloc = {...state.datatreeloc};
+  //   let datatreesearchresult = {...state.datatreesearchresult};
+  //
+  //   let findandsettreenode = (node,mapseldeviceid)=>{
+  //     let retnode = node;
+  //     if(node.name === `${mapseldeviceid}`){
+  //       return retnode;
+  //     }
+  //     retnode = null;
+  //     if(!!node.children){
+  //       for(let i = 0; i<node.children.length ;i++){
+  //         const subnode = node.children[i];
+  //         let tmpnode = findandsettreenode(subnode,mapseldeviceid);
+  //         if(!!tmpnode){
+  //           if(tmpnode.name === `${mapseldeviceid}`){
+  //             subnode.active = true;
+  //             subnode.loading = false;
+  //           }
+  //           subnode.toggled = true;
+  //           retnode = node;
+  //         }
+  //       }
+  //     }
+  //     node.active = false;
+  //     return retnode;
+  //   }
+  //   findandsettreenode(datatreeloc,mapseldeviceid);
+  //   findandsettreenode(datatreesearchresult,mapseldeviceid);
+  //
+  //   return {...state,mapseldeviceid,datatreeloc,datatreesearchresult};
+  // },
   [querydeviceinfo_result]:(state,payload)=>{
     const devicerecord = payload;
     let g_devicesdb = {...state.g_devicesdb};
     g_devicesdb[devicerecord.DeviceId] = devicerecord;
     return {...state,g_devicesdb};
   },
-  [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
-    const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes} = payload;
-    const deviceids = [];
-    const deviceidonlines = [];
-
-    const alldeviceids = [];
-    const alldeviceidonlines = [];
-
-    map(g_devicesdb,(deviceitem)=>{
-      const isonline = getdevicestatus_isonline(deviceitem,SettingOfflineMinutes);
-      if(!deviceitem.locz){
-        deviceids.push(deviceitem.DeviceId);
-        if(isonline){
-          deviceidonlines.push(deviceitem.DeviceId);
-        }
-      }
-      alldeviceids.push(deviceitem.DeviceId);
-      if(isonline){
-        alldeviceidonlines.push(deviceitem.DeviceId);
-      }
-    });
-    gmap_acode_devices[2] = deviceids;
-    gmap_acode_treecount[1] = {
-      count_total:alldeviceids.length,
-      count_online:alldeviceidonlines.length,
-    }
-    gmap_acode_treecount[2] = {
-      count_total:deviceids.length,
-      count_online:deviceidonlines.length,
-    }
-    return {...state,
-      g_devicesdb:{...g_devicesdb},
-      gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
-  },
-  [mapmain_areamountdevices_result]:(state,payload)=>{
-    const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes} = payload;
-    let datatreeloc = state.datatreeloc;
-    if(adcode !== 2){
-      const findandsettreenodedevice = (node)=>{
-         let retnode = node;
-         if(node.adcode === adcode){
-           return retnode;
-         }
-         if(!!node.children){
-           for(let i = 0; i<node.children.length ;i++){
-             const subnode = node.children[i];
-             let tmpnode = findandsettreenodedevice(subnode);
-             if(!!tmpnode){
-               //<---
-               let children = [];
-               const deviceresullist = getsorteddevicelist(gmap_acode_devices[tmpnode.adcode],state.g_devicesdb,SettingOfflineMinutes);
-               map(deviceresullist,(deviceid)=>{
-                 children.push({
-                   type:'device',
-                   loading:false,
-                   name:deviceid,
-                   device:g_devicesdb[deviceid]
-                 });
-               });
-               tmpnode.children = [...children];
-
-             }
-           }
-         }
-         return null;
-       }
-       findandsettreenodedevice(datatreeloc);
-      //  const gmap_acode_node = state.gmap_acode_node;
-      //  if(gmap_acode_node[])
-      //  findandsettreenodedevice(gmap_acode_node[adcode]);
-    }
-    else{
-      let children1 = datatreeloc.children[1];
-      let children = [];
-      let nodevicelocdevicelist = [];
-      map(g_devicesdb,(deviceitem)=>{
-        if(!deviceitem.locz){
-          nodevicelocdevicelist.push(deviceitem.DeviceId);
-        }
-      });
-      const deviceresullist = getsorteddevicelist(nodevicelocdevicelist,state.g_devicesdb);
-      map(deviceresullist,(deviceid)=>{
-        children.push({
-          type:'device',
-          loading:false,
-          name:g_devicesdb[deviceid].DeviceId,
-          device:g_devicesdb[deviceid]
-        });
-      });
-      children1.children = children;
-      datatreeloc.children[1] = {...children1};
-    }
-    return {...state,g_devicesdb,datatreeloc,gmap_acode_devices,gmap_acode_treecount};
-  },
+  // [devicelistgeochange_geotreemenu_refreshtree]:(state,payload)=>{
+  //   const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes} = payload;
+  //   const deviceids = [];
+  //   const deviceidonlines = [];
+  //
+  //   const alldeviceids = [];
+  //   const alldeviceidonlines = [];
+  //
+  //   map(g_devicesdb,(deviceitem)=>{
+  //     const isonline = getdevicestatus_isonline(deviceitem,SettingOfflineMinutes);
+  //     if(!deviceitem.locz){
+  //       deviceids.push(deviceitem.DeviceId);
+  //       if(isonline){
+  //         deviceidonlines.push(deviceitem.DeviceId);
+  //       }
+  //     }
+  //     alldeviceids.push(deviceitem.DeviceId);
+  //     if(isonline){
+  //       alldeviceidonlines.push(deviceitem.DeviceId);
+  //     }
+  //   });
+  //   gmap_acode_devices[2] = deviceids;
+  //   gmap_acode_treecount[1] = {
+  //     count_total:alldeviceids.length,
+  //     count_online:alldeviceidonlines.length,
+  //   }
+  //   gmap_acode_treecount[2] = {
+  //     count_total:deviceids.length,
+  //     count_online:deviceidonlines.length,
+  //   }
+  //   return {...state,
+  //     g_devicesdb:{...g_devicesdb},
+  //     gmap_acode_devices:{...gmap_acode_devices},gmap_acode_treecount:{...gmap_acode_treecount}};
+  // },
+  // [mapmain_areamountdevices_result]:(state,payload)=>{
+  //   const {adcode,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes} = payload;
+  //   let datatreeloc = state.datatreeloc;
+  //   if(adcode !== 2){
+  //     const findandsettreenodedevice = (node)=>{
+  //        let retnode = node;
+  //        if(node.adcode === adcode){
+  //          return retnode;
+  //        }
+  //        if(!!node.children){
+  //          for(let i = 0; i<node.children.length ;i++){
+  //            const subnode = node.children[i];
+  //            let tmpnode = findandsettreenodedevice(subnode);
+  //            if(!!tmpnode){
+  //              //<---
+  //              let children = [];
+  //              const deviceresullist = getsorteddevicelist(gmap_acode_devices[tmpnode.adcode],state.g_devicesdb,SettingOfflineMinutes);
+  //              map(deviceresullist,(deviceid)=>{
+  //                children.push({
+  //                  type:'device',
+  //                  loading:false,
+  //                  name:deviceid,
+  //                  device:g_devicesdb[deviceid]
+  //                });
+  //              });
+  //              tmpnode.children = [...children];
+  //
+  //            }
+  //          }
+  //        }
+  //        return null;
+  //      }
+  //      findandsettreenodedevice(datatreeloc);
+  //     //  const gmap_acode_node = state.gmap_acode_node;
+  //     //  if(gmap_acode_node[])
+  //     //  findandsettreenodedevice(gmap_acode_node[adcode]);
+  //   }
+  //   else{
+  //     let children1 = datatreeloc.children[1];
+  //     let children = [];
+  //     let nodevicelocdevicelist = [];
+  //     map(g_devicesdb,(deviceitem)=>{
+  //       if(!deviceitem.locz){
+  //         nodevicelocdevicelist.push(deviceitem.DeviceId);
+  //       }
+  //     });
+  //     const deviceresullist = getsorteddevicelist(nodevicelocdevicelist,state.g_devicesdb);
+  //     map(deviceresullist,(deviceid)=>{
+  //       children.push({
+  //         type:'device',
+  //         loading:false,
+  //         name:g_devicesdb[deviceid].DeviceId,
+  //         device:g_devicesdb[deviceid]
+  //       });
+  //     });
+  //     children1.children = children;
+  //     datatreeloc.children[1] = {...children1};
+  //   }
+  //   return {...state,g_devicesdb,datatreeloc,gmap_acode_devices,gmap_acode_treecount};
+  // },
   [mapmain_init_device]:(state,payload)=>{
      const {g_devicesdb,gmap_acode_devices,gmap_acode_treecount} = payload;
      const {datatree,gmap_acode_node} = get_initgeotree();
      let datatreeloc = {...datatree};
      return {...state,g_devicesdb,gmap_acode_devices,gmap_acode_treecount,datatreeloc,gmap_acode_node};
   },
-  [mapmain_getdistrictresult]:(state,payload)=>{
-    let {adcode,forcetoggled} = payload;
-    //选中某个区域,只列选中的数据
-    let findandsettreenode = (node,adcode)=>{
-      if(node.adcode === adcode){
-        if(node.type !== 'group_root'){
-          return node;
-        }
-      }
-      let retnode = null;
-      if(!!node.children){
-        for(let i = 0; i<node.children.length ;i++){
-          const subnode = node.children[i];
-          let tmpnode = findandsettreenode(subnode,adcode);
-          if(!!tmpnode){//subnode为tmpnode,目标选中
-            if(tmpnode.adcode === adcode){
-              //选中／展开//equal
-              subnode.active = true;
-              subnode.loading = false;
-              if(forcetoggled){//强制展开结点
-                subnode.toggled = true;
-              }
-            }
-            retnode = node;
-          }//find ok
-          else{
-            //非自己所属
-            subnode.active = false;
-            subnode.toggled = false;
-          }
-        }
-      }
-      if(!retnode){
-        if(node.type !== 'group_root'){
-          node.active = false;
-          node.toggled = true;
-        }
-        node.loading = false;
-      }
-      return retnode;
-    };
-      // let treenode = payload;
-     let datatreeloc = {...state.datatreeloc};
-     findandsettreenode(datatreeloc,adcode);
-     //root保持不动
-     datatreeloc.toggled = true;
-     datatreeloc.active = false;
-     datatreeloc.loading = false;
-     datatreeloc.children[0].toggled = true;
-     datatreeloc.children[0].active = false;
-     datatreeloc.children[0].loading = false;
-    //  console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
-    //  datatreeloc.children[1].toggled = true;
-    //  datatreeloc.children[1].active = false;
-    //  datatreeloc.children[1].loading = false;
-     return {...state,datatreeloc};
-  },
+  // [mapmain_getdistrictresult]:(state,payload)=>{
+  //   let {adcode,forcetoggled} = payload;
+  //   //选中某个区域,只列选中的数据
+  //   let findandsettreenode = (node,adcode)=>{
+  //     if(node.adcode === adcode){
+  //       if(node.type !== 'group_root'){
+  //         return node;
+  //       }
+  //     }
+  //     let retnode = null;
+  //     if(!!node.children){
+  //       for(let i = 0; i<node.children.length ;i++){
+  //         const subnode = node.children[i];
+  //         let tmpnode = findandsettreenode(subnode,adcode);
+  //         if(!!tmpnode){//subnode为tmpnode,目标选中
+  //           if(tmpnode.adcode === adcode){
+  //             //选中／展开//equal
+  //             subnode.active = true;
+  //             subnode.loading = false;
+  //             if(forcetoggled){//强制展开结点
+  //               subnode.toggled = true;
+  //             }
+  //           }
+  //           retnode = node;
+  //         }//find ok
+  //         else{
+  //           //非自己所属
+  //           subnode.active = false;
+  //           subnode.toggled = false;
+  //         }
+  //       }
+  //     }
+  //     if(!retnode){
+  //       if(node.type !== 'group_root'){
+  //         node.active = false;
+  //         node.toggled = true;
+  //       }
+  //       node.loading = false;
+  //     }
+  //     return retnode;
+  //   };
+  //     // let treenode = payload;
+  //    let datatreeloc = {...state.datatreeloc};
+  //    findandsettreenode(datatreeloc,adcode);
+  //    //root保持不动
+  //    datatreeloc.toggled = true;
+  //    datatreeloc.active = false;
+  //    datatreeloc.loading = false;
+  //    datatreeloc.children[0].toggled = true;
+  //    datatreeloc.children[0].active = false;
+  //    datatreeloc.children[0].loading = false;
+  //   //  console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
+  //   //  datatreeloc.children[1].toggled = true;
+  //   //  datatreeloc.children[1].active = false;
+  //   //  datatreeloc.children[1].loading = false;
+  //    return {...state,datatreeloc};
+  // },
   [querydevicegroup_result]:(state,payload)=>{
     const {list} = payload;
     let groupidlist = [];

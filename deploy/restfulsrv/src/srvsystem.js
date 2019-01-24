@@ -199,7 +199,7 @@ const job=()=>{
     debug(`start get catlmysql data.....`);
     winston.getlog().info(`开始读取mysql信息`);
     catlworking.getcatlmysql((data)=>{
-      debug(data);
+      // debug(data);
       config.catlmysqldata = data;
       winston.getlog().info(`读取mysql信息成功`);
     });

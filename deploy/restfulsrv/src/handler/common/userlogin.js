@@ -147,6 +147,9 @@ exports.loginuser = (actiondata,ctx,callback)=>{
             if(ctx.usertype === 'pc' && p._id.toString() === '5a03b66013e7410cd0ef3093'){
               return true;
             }
+            if(ctx.usertype === 'pcall' && p._id.toString() === '5a03b66013e7410cd0ef3093'){
+              return true;
+            }
             if(ctx.usertype === 'app' && p._id.toString() === '5a03b66e13e7410cd0ef3094'){
               return true;
             }
