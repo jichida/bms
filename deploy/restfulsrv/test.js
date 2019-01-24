@@ -107,4 +107,4 @@ process.on('uncaughtException', (err)=> {
 
 // devicestat.getdevicestat_provincelist();
 // devicestat.getdevicestat_citylist({ name: '甘肃省', adcode: '620000'});
-devicestat.getdevicestat_cityinfo({citycode: '0931'});
+// devicestat.getdevicestat_cityinfo({citycode: '0931'});

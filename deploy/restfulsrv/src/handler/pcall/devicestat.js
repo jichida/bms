@@ -329,6 +329,20 @@ const getdevicestat_cityinfo = (cityinfo)=>{
   //  });
 }
 
+
+const getdevicestatprovices = (actiondata,ctx,callback)=>{
+
+}
+
+const getdevicestatcities = (actiondata,ctx,callback)=>{
+
+}
+
+const getdevicestatcity = (actiondata,ctx,callback)=>{
+
+}
+
+
 exports.getdevicestat_provincelist = getdevicestat_provincelist;
 exports.getdevicestat_citylist = getdevicestat_citylist;
 exports.getdevicestat_cityinfo = getdevicestat_cityinfo;
