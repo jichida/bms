@@ -207,12 +207,12 @@ const job=()=>{
 
     intervalCheckDevice();
 
-    schedule.scheduleJob('0 0 * * *', ()=>{
+    schedule.scheduleJob('0 * * * *', ()=>{
       // 每天0点更新优惠券过期信息
       winston.getlog().info(`开始读取mysql信息`);
       catlworking.getcatlmysql((data)=>{
         config.catlmysqldata = data;
-        winston.getlog().info(`load data from mysql(0) =====`);
+        winston.getlog().info(`load data from mysql(every hour) =====`);
         winston.getlog().info(_.get(data,'payload.catl_warningf',''));
         winston.getlog().info(`读取mysql信息成功`);
 
