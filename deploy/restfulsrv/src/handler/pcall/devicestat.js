@@ -383,7 +383,11 @@ const getdevicestatcity = (actiondata,ctx,callback)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatcity_result',
-        payload:result
+        payload:{
+          citycode:actiondata.cityinfo.citycode,
+          adcode:actiondata.cityinfo.adcode,
+          result
+        }
       });
     }
     else{

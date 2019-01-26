@@ -185,7 +185,7 @@ const device = createReducer({
         const jsondatacities = payload.result;
         map(jsondatacities,(city)=>{
             const citynode = {
-              citycode:parseInt(city.citycode,10),
+              citycode:city.citycode,
               adcode:parseInt(city.adcode,10),
               name:city.name,
               loading: false,
@@ -201,7 +201,7 @@ const device = createReducer({
             };
             //----------
             targetnode.children.push(citynode);
-            
+
             datatreeloc = {...datatreeloc};
             gmap_acode_treename = {...gmap_acode_treename};
             gmap_acode_treecount = {...gmap_acode_treecount};
