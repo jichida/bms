@@ -46,7 +46,17 @@ import {
     savealarmsettings_request,
     savealarmsettings_result,
 
-    serverpush_device
+    serverpush_device,
+
+    getdevicestat_request,
+    getdevicestat_result,
+    getdevicestatprovinces_request,
+    getdevicestatprovinces_result,
+    getdevicestatcities_request,
+    getdevicestatcities_result,
+    getdevicestatcity_request,
+    getdevicestatcity_result,
+
   } from '../actions';
 import {
   uireport_searchdevice_request,
@@ -65,6 +75,10 @@ import {
 
 //接收的对应关系
 let recvmessagetoresultpair = {
+  'getdevicestat_result':getdevicestat_result,
+  'getdevicestatprovinces_result':getdevicestatprovinces_result,
+  'getdevicestatcities_result':getdevicestatcities_result,
+  'getdevicestatcity_result':getdevicestatcity_result,
   'deviceinfoquerychart_result':deviceinfoquerychart_result,
   'savealarmsettings_result':savealarmsettings_result,
   'serverpush_device':serverpush_device,
@@ -110,6 +124,11 @@ let sendmessagefnsz = {
 
 //验证发送接口
 let sendmessageauthfnsz = {
+  'getdevicestat':`${getdevicestat_request}`,
+  'getdevicestatprovinces':`${getdevicestatprovinces_request}`,
+  'getdevicestatcities':`${getdevicestatcities_request}`,
+  'getdevicestatcity':`${getdevicestatcity_request}`,
+
   'savealarmsettings':`${savealarmsettings_request}`,
   'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,

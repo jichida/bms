@@ -1,5 +1,6 @@
 import { createReducer } from 'redux-act';
 import{
+  getdevicestatprovinces_result,
   querydevice_result,
   querydevicegroup_result,
   ui_selcurdevice_result,
@@ -29,48 +30,48 @@ import lodashsortby from 'lodash.sortby';
 import {get_initgeotree} from '../util/treedata';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 
-
+//
 const {datatree,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = get_initgeotree();
-
-
-const getsorteddevicelist = (devicedb,g_devicesdb,SettingOfflineMinutes)=>{
-  let device_online = [];
-  let device_offline = [];
-  map(devicedb,(deviceid)=>{
-    const isonline = getdevicestatus_isonline(g_devicesdb[deviceid],SettingOfflineMinutes);
-    if(isonline){
-      device_online.push(deviceid);
-    }
-    else{
-      device_offline.push(deviceid);
-    }
-  });
-  device_online = lodashsortby(device_online, [(deviceid)=>{
-    // const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
-    return deviceid;
-  }]);
-  device_offline = lodashsortby(device_offline, [(deviceid)=>{
-    // const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
-    return deviceid;
-  }]);
-
-  let listdevices = device_online;
-  map(device_offline,(deviceid)=>{
-    listdevices.push(deviceid);
-  })
-  // map(listdevices,(deviceid)=>{
-  //   const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
-  //   console.log(`${deviceid}=>${datatime}`);
-  // });
-  return listdevices;//lodashreverse(listdevices);
-}
+//
+//
+// const getsorteddevicelist = (devicedb,g_devicesdb,SettingOfflineMinutes)=>{
+//   let device_online = [];
+//   let device_offline = [];
+//   map(devicedb,(deviceid)=>{
+//     const isonline = getdevicestatus_isonline(g_devicesdb[deviceid],SettingOfflineMinutes);
+//     if(isonline){
+//       device_online.push(deviceid);
+//     }
+//     else{
+//       device_offline.push(deviceid);
+//     }
+//   });
+//   device_online = lodashsortby(device_online, [(deviceid)=>{
+//     // const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
+//     return deviceid;
+//   }]);
+//   device_offline = lodashsortby(device_offline, [(deviceid)=>{
+//     // const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
+//     return deviceid;
+//   }]);
+//
+//   let listdevices = device_online;
+//   map(device_offline,(deviceid)=>{
+//     listdevices.push(deviceid);
+//   })
+//   // map(listdevices,(deviceid)=>{
+//   //   const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
+//   //   console.log(`${deviceid}=>${datatime}`);
+//   // });
+//   return listdevices;//lodashreverse(listdevices);
+// }
 
 const initial = {
   device:{
     treefilter:undefined,
     carcollections:[],
     mapseldeviceid:undefined,//当前选中的车辆
-    // mapdeviceidlist:[],
+    mapdeviceidlist:[],
     gmap_acode_node,
     gmap_acode_treename,//key:acode/value:name
     gmap_acode_treecount,//key:acode/value:count
@@ -102,6 +103,35 @@ const initial = {
 };
 
 const device = createReducer({
+  [getdevicestatprovinces_result]:(state,payload)=>{
+    const provincelist = payload;
+    let datatreeloc = state.datatreeloc;
+    let {gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = state;
+    const datanodeproviceroot = datatreeloc.children[0];
+    if(datanodeproviceroot.children.length === 0){
+      map(provincelist,(province)=>{
+        let provincecode = parseInt(province.adcode,10);
+        let provincenode = {
+          adcode:provincecode,
+          name:province.name,
+          loading: false,
+          type:'group_province',
+          children:[]
+        };
+        gmap_acode_node[provincecode] = provincenode;
+        gmap_acode_treename[provincecode] = province.name;
+        gmap_acode_treecount[provincecode] = {
+          count_total:province.count_total,
+          count_online:province.count_online,
+          count_offline:province.count_offline,
+        };
+        datanodeproviceroot.children.push(provincenode);
+      });
+    }
+    // debugger;//[{name: "香港特別行政區", adcode: "810000", count_total: 1, count_online: 0, count_of]
+    console.log(datatreeloc);
+    return {...state,datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node};
+  },
   [set_treesearchlist]:(state, payload)=>{
     return {...state, treesearchlist: payload};
   },

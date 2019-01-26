@@ -7,6 +7,7 @@ const moment = require('moment');
 const historytrack = require('../common/historytrack');
 const userrelate = require('../common/userrelate');
 const debug = require('debug')('srvapp:handler');
+const devicestat = require('./devicestat');
 //司机端
 const actiondatahandler = {
   'getsystemconfig':systemconfig.getsystemconfig,
@@ -17,6 +18,11 @@ const actiondatahandler = {
 };
 
 const authhandler = {
+  'getdevicestat':devicestat.getdevicestat,
+  'getdevicestatprovinces':devicestat.getdevicestatprovinces,
+  'getdevicestatcities':devicestat.getdevicestatcities,
+  'getdevicestatcity':devicestat.getdevicestatcity,
+
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,

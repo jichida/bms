@@ -5,10 +5,10 @@
 树结点的title动态通过render获取
 定义数据结构,放入reducer,定时器动态更新之
 */
-import jsondataprovinces from './provinces.json';
-import jsondatacities from './cities.json';
-import jsondataareas from './areas.json';
-import map from 'lodash.map';
+// import jsondataprovinces from './provinces.json';
+// import jsondatacities from './cities.json';
+// import jsondataareas from './areas.json';
+// import map from 'lodash.map';
 
 
 export function get_initgeotree(){
@@ -21,7 +21,7 @@ export function get_initgeotree(){
       id:100000,
       adcode:100000,
       loading: false,
-      active : false,
+      active : true,
       toggled:true,
       type:'group_root',
       children:[]
@@ -34,76 +34,76 @@ export function get_initgeotree(){
     count_offline:0,
   };
 
-  map(jsondataprovinces,(province)=>{
-    let provincecode = parseInt(province.code,10);
-    let provincenode = {
-      adcode:provincecode,
-      name:province.name,
-      loading: false,
-      type:'group_province',
-      children:[]
-    };
-    gmap_acode_node[provincecode] = provincenode;
-    gmap_acode_treename[provincecode] = province.name;
-    gmap_acode_treecount[provincecode] = {
-      count_total:0,
-      count_online:0,
-      count_offline:0,
-    };
-
-    map(jsondatacities,(city)=>{
-      let citycode = parseInt(city.code,10);
-      let parent_code = parseInt(city.parent_code,10);
-      if(parent_code === provincecode){
-        let citynode = {
-          adcode:citycode,
-          name:city.name,
-          loading: false,
-          type:'group_city',
-          children:[]
-        };
-        gmap_acode_node[citycode] = citynode;
-        gmap_acode_treename[citycode] = city.name;
-        gmap_acode_treecount[citycode] = {
-          count_total:0,
-          count_online:0,
-          count_offline:0,
-        };
-
-        map(jsondataareas,(area)=>{
-          let areacode = parseInt(area.code,10);
-          parent_code = parseInt(area.parent_code,10);
-          if(parent_code === citycode){
-            let areanode = {
-              adcode:areacode,
-              name:area.name,
-              loading: false,
-              type:'group_area',
-              children:[]
-            };
-            gmap_acode_node[areacode] = areanode;
-            gmap_acode_treename[areacode] = area.name;
-            gmap_acode_treecount[areacode] = {
-              count_total:0,
-              count_online:0,
-              count_offline:0,
-            };
-            if(gmap_acode_treename[citycode] !== "市辖区"){
-              citynode.children.push(areanode);
-            }
-            else{
-
-              provincenode.children.push(areanode);
-            }
-          }
-        });
-        if(gmap_acode_treename[citycode] !== "市辖区"){
-          provincenode.children.push(citynode);
-        }
-      }
-    });
-    datatree.children.push(provincenode);
-  });
+  // map(jsondataprovinces,(province)=>{
+  //   let provincecode = parseInt(province.code,10);
+  //   let provincenode = {
+  //     adcode:provincecode,
+  //     name:province.name,
+  //     loading: false,
+  //     type:'group_province',
+  //     children:[]
+  //   };
+  //   gmap_acode_node[provincecode] = provincenode;
+  //   gmap_acode_treename[provincecode] = province.name;
+  //   gmap_acode_treecount[provincecode] = {
+  //     count_total:0,
+  //     count_online:0,
+  //     count_offline:0,
+  //   };
+  //
+  //   map(jsondatacities,(city)=>{
+  //     let citycode = parseInt(city.code,10);
+  //     let parent_code = parseInt(city.parent_code,10);
+  //     if(parent_code === provincecode){
+  //       let citynode = {
+  //         adcode:citycode,
+  //         name:city.name,
+  //         loading: false,
+  //         type:'group_city',
+  //         children:[]
+  //       };
+  //       gmap_acode_node[citycode] = citynode;
+  //       gmap_acode_treename[citycode] = city.name;
+  //       gmap_acode_treecount[citycode] = {
+  //         count_total:0,
+  //         count_online:0,
+  //         count_offline:0,
+  //       };
+  //
+  //       map(jsondataareas,(area)=>{
+  //         let areacode = parseInt(area.code,10);
+  //         parent_code = parseInt(area.parent_code,10);
+  //         if(parent_code === citycode){
+  //           let areanode = {
+  //             adcode:areacode,
+  //             name:area.name,
+  //             loading: false,
+  //             type:'group_area',
+  //             children:[]
+  //           };
+  //           gmap_acode_node[areacode] = areanode;
+  //           gmap_acode_treename[areacode] = area.name;
+  //           gmap_acode_treecount[areacode] = {
+  //             count_total:0,
+  //             count_online:0,
+  //             count_offline:0,
+  //           };
+  //           if(gmap_acode_treename[citycode] !== "市辖区"){
+  //             citynode.children.push(areanode);
+  //           }
+  //           else{
+  //
+  //             provincenode.children.push(areanode);
+  //           }
+  //         }
+  //       });
+  //       if(gmap_acode_treename[citycode] !== "市辖区"){
+  //         provincenode.children.push(citynode);
+  //       }
+  //     }
+  //   });
+  //   datatree.children.push(provincenode);
+  // });
 
   const node2 = {
     id:2,

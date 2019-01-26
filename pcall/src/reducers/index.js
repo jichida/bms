@@ -12,6 +12,7 @@ import searchresult from './searchresult';
 import workorder from './workorder';
 import pic from './pic';
 import deviceinfoquerychart from './deviceinfoquerychart';
+import devicestat from './devicestat';
 
 export default combineReducers({
   pic,
@@ -23,6 +24,7 @@ export default combineReducers({
   userlogin,
   workorder,
   weui,
+  devicestat,
   deviceinfoquerychart,
   form: formReducer,
   router: routerReducer,

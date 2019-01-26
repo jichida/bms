@@ -22,7 +22,10 @@ import {
 
   changepwd_result,
 
-  savealarmsettings_result
+  savealarmsettings_result,
+
+  getdevicestat_request,
+  getdevicestatprovinces_request
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
@@ -74,10 +77,11 @@ export function* wsrecvsagaflow() {
             yield put(login_result(result));
             if(result.loginsuccess){
               localStorage.setItem(`bms_${config.softmode}_token`,result.token);
-              yield put(querydevicegroup_request({}));
+              // yield put(querydevicegroup_request({}));
 
-              if(result.username === 'pc'){
-                yield put(ui_changemodeview('ui4full'));
+              if(config.softmode === 'pcall'){
+                yield put(getdevicestat_request({}));
+                yield put(getdevicestatprovinces_request({}));
               }
             }
         }

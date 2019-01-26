@@ -75,7 +75,7 @@ class TreeExample extends React.Component {
                         tabBarStyle={{width : "350px"}}
                         className="treetabs"
                         >
-                        <TabPane tab="地址位置" key="1">
+                        <TabPane tab="地理位置" key="1">
                             <TreeByloc />
                         </TabPane>
                         <TabPane tab="分组" key="2">
