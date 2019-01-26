@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-act';
 import{
   getdevicestatprovinces_result,
+  getdevicestatcities_result,
   querydevice_result,
   querydevicegroup_result,
   ui_selcurdevice_result,
@@ -105,9 +106,16 @@ const initial = {
 const device = createReducer({
   [getdevicestatprovinces_result]:(state,payload)=>{
     const provincelist = payload;
-    let datatreeloc = state.datatreeloc;
-    let {gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = state;
+    let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = state;
     const datanodeproviceroot = datatreeloc.children[0];
+    gmap_acode_treecount[1] = {//所有
+      count_total:0,
+      count_online:0,
+    };
+    gmap_acode_treecount[100000] = {//所有
+      count_total:0,
+      count_online:0,
+    };
     if(datanodeproviceroot.children.length === 0){
       map(provincelist,(province)=>{
         let provincecode = parseInt(province.adcode,10);
@@ -126,10 +134,85 @@ const device = createReducer({
           count_offline:province.count_offline,
         };
         datanodeproviceroot.children.push(provincenode);
+        gmap_acode_treecount[1].count_total += province.count_total;
+        gmap_acode_treecount[1].count_online += province.count_online;
+        gmap_acode_treecount[100000].count_total += province.count_total;
+        gmap_acode_treecount[100000].count_online += province.count_online;
       });
+      datatreeloc = {...datatreeloc};
+      gmap_acode_treecount = {...gmap_acode_treecount};
+    }
+    else{
+      map(provincelist,(province)=>{
+        let provincecode = parseInt(province.adcode,10);
+        gmap_acode_treename[provincecode] = province.name;
+        gmap_acode_treecount[provincecode] = {
+          count_total:province.count_total,
+          count_online:province.count_online,
+          count_offline:province.count_offline,
+        };
+        gmap_acode_treecount[1].count_total += province.count_total;
+        gmap_acode_treecount[1].count_online += province.count_online;
+        gmap_acode_treecount[100000].count_total += province.count_total;
+        gmap_acode_treecount[100000].count_online += province.count_online;
+      });
+      gmap_acode_treecount = {...gmap_acode_treecount};
     }
     // debugger;//[{name: "香港特別行政區", adcode: "810000", count_total: 1, count_online: 0, count_of]
     console.log(datatreeloc);
+    return {...state,datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node};
+  },
+  [getdevicestatcities_result]:(state,payload)=>{
+    console.log(payload);
+    let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = state;
+    const provinceadcode = payload.adcode;
+    const parentnode = datatreeloc.children[0];
+    let targetnode;
+    if(parentnode.children.length > 0){
+      //第一次加载
+      for(let i = 0; i< parentnode.children.length ;i++){
+        const subnode = parentnode.children[i];
+        if(subnode.adcode === provinceadcode){
+          console.log(`${subnode.adcode}`);
+          targetnode = subnode;
+          break;
+        }
+      }
+    }
+
+    if(!!targetnode){
+      if(targetnode.children.length === 0){
+        const jsondatacities = payload.result;
+        map(jsondatacities,(city)=>{
+            const citynode = {
+              citycode:parseInt(city.citycode,10),
+              adcode:parseInt(city.adcode,10),
+              name:city.name,
+              loading: false,
+              type:'group_city',
+              children:[]
+            };
+            gmap_acode_node[city.adcode] = citynode;
+            gmap_acode_treename[city.adcode] = city.name;
+            gmap_acode_treecount[city.adcode] = {
+              count_total:city.count_total,
+              count_online:city.count_online,
+              count_offline:city.count_offline,
+            };
+            //----------
+            targetnode.children.push(citynode);
+            
+            datatreeloc = {...datatreeloc};
+            gmap_acode_treename = {...gmap_acode_treename};
+            gmap_acode_treecount = {...gmap_acode_treecount};
+        });
+      }
+    }
+    // adcode: 421000
+    // name: "湖北省"
+    // result:
+    // {citycode: "0350", name: "忻州市", adcode: "140900", count_total: 55, count_online: 0, …}
+    // {citycode: "0349", name: "朔州市", adcode: "140600", count_total: 162, count_online
     return {...state,datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node};
   },
   [set_treesearchlist]:(state, payload)=>{

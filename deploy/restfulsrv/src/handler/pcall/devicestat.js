@@ -361,7 +361,11 @@ const getdevicestatcities = (actiondata,ctx,callback)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatcities_result',
-        payload:result
+        payload:{
+          name:actiondata.provinceinfo.name,
+          adcode:actiondata.provinceinfo.adcode,
+          result
+        }
       });
     }
     else{

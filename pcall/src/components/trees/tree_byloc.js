@@ -5,6 +5,7 @@ import treestyle from './treestyle.js';
 import HeaderCo from './treeheader';
 import {
     mapmain_seldistrict,
+    getdevicestatcities_request,
     ui_selcurdevice_request,
 } from '../../actions';
 
@@ -40,7 +41,17 @@ class Tree extends React.Component {
             if(typeof id === 'string'){
               id = parseInt(id,10);
             }
-            this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false,src:'tree_byloc'}));
+
+            if(node.type === "group_province"){
+              //<-----
+              this.props.dispatch(getdevicestatcities_request({provinceinfo:{name:node.name,adcode:id}}));
+            }
+            console.log(node);//{adcode: 640000, name: "宁夏回族自治区", loading: false, type: "group_province"
+            // this.props.dispatch(mapmain_seldistrict({adcodetop:id,forcetoggled:false,src:'tree_byloc'}));
+            //点击省份发送--->
+            // if(node.){
+            //
+            // }
 
         }else{
             // node.toggled = toggled;
