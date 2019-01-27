@@ -151,8 +151,8 @@ const convertRecord = (rc)=>{
     if(typeof address === 'string'){
       address = parseInt(address);
     }
-    const addressnew = Math.floor(address/1000);
-    const retv = addressnew*1000;
+    const addressnew = Math.floor(address/10000);
+    const retv = addressnew*10000;
     return parseInt(retv);
   }
 

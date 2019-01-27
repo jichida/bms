@@ -100,6 +100,10 @@ const zoollevel_showdistcluster = 12;
 
 let g_SettingOfflineMinutes = 20;
 //新建聚合点
+const datasample = [{
+	lnglat: [116.405285, 39.904989]
+}];
+
 const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
       if(!window.AMapUI){
@@ -251,6 +255,13 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                //行政区域
                try{
                  let container, title, body;
+                 const adcode = feature.properties.adcode;
+                 console.log(`====================${adcode}====================`);
+                 const {gmap_acode_treecount} = store.getState().device;
+                 console.log(gmap_acode_treecount);
+                 let defaultcount = !!dataItems?dataItems.length:0;
+                 let bodytitle = get(gmap_acode_treecount[adcode],`count_total`,defaultcount);
+
                  const nodeClassNames = {
               				title: 'amap-ui-district-cluster-marker-title',
               				body: 'amap-ui-district-cluster-marker-body',
@@ -296,7 +307,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                       title.innerHTML = utils.escapeHtml(props.name);
                     }
               			if(!!body){
-                      body.innerHTML = dataItems.length;
+                      body.innerHTML = bodytitle;
                     }
 
               			const resultMarker = recycledMarker || new window.AMap.Marker({
@@ -307,8 +318,9 @@ const CreateMapUI_DistrictCluster =  (map)=>{
               			return resultMarker;
                }
                catch(e){
-
+                 console.log(e)
                }
+               debugger;
           	   return null;
         		}
             //重写行政区域,避免来回刷新时的闪烁
@@ -333,11 +345,11 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                  map: map, //所属的地图实例
                  autoSetFitView:false,
                  getPosition: (deviceitem)=> {
-                     if(!!deviceitem.locz){
-                       return deviceitem.locz;
-                     }
-                     console.log(`err----->=====>======>${JSON.stringify(deviceitem)}`);
-                     return deviceitem.locz;
+                   if(!!deviceitem){
+                     return deviceitem.lnglat;
+                   }
+                   console.log(`err----->=====>======>${JSON.stringify(deviceitem)}`);
+                   return deviceitem;
                  },
                  renderOptions:{
                    featureStyleByLevel:{
@@ -358,13 +370,11 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                    clusterMarkerRecycleLimit:100000,
                    clusterMarkerKeepConsistent:true,
                    getClusterMarker : (feature, dataItems, recycledMarker)=> {
-                      if(dataItems.length > 0){
-                        return defaultgetClusterMarker(feature, dataItems, recycledMarker);
-                      }
-                      return null;
+                      return defaultgetClusterMarker(feature, dataItems, recycledMarker);
                     }
                  }
              });
+             distCluster.setData(datasample);
              resolve(distCluster);
        });
 
@@ -790,6 +800,11 @@ export function* createmapmainflow(){
           let task_zoomend =  yield fork(function*(eventname){
             while(true){
               yield call(listenmapevent,eventname);
+
+              if(!!distCluster){
+                distCluster.setData(datasample);
+                // distCluster.renderLater();
+              }
               // let centerlocation = window.amapmain.getCenter();
               // let centerlatlng = L.latLng(centerlocation.lat, centerlocation.lng);
               // yield put(md_mapmain_setzoomlevel(window.amapmain.getZoom()));

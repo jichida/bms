@@ -9,6 +9,7 @@ import {deviceinfoquerychartflow} from './deviceinfoquerychart';
 import {createloadingflow} from './loading';
 import {createmapmainflow} from './mapmain';
 import {createmaptrackhistoryplaybackflow} from './mapplayback';
+import {devicestatflow} from './devicestat';
 import {socketflow} from './socketflow';
 import {uiflow} from './ui';
 import {downloadexcel} from './downloadexcel';
@@ -19,6 +20,7 @@ export default function* rootSaga() {
     if(config.softmode === 'app'){
       yield fork(jpushflow);
     }
+    yield fork(devicestatflow);
     yield fork(deviceinfoquerychartflow);
     yield fork(downloadexcel);
     yield fork(socketflow);

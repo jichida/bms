@@ -99,6 +99,10 @@ const zoollevel_showhugepoints = 13;
 const zoollevel_showdistcluster = 12;
 
 let g_SettingOfflineMinutes = 20;
+
+const datasample = [{
+	lnglat: [116.405285, 39.904989]
+}];
 //新建聚合点
 const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
@@ -364,7 +368,9 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                       return null;
                     }
                  }
+
              });
+             distCluster.setData(datasample);
              resolve(distCluster);
        });
 
