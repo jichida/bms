@@ -91,7 +91,15 @@ export function* devicestatflow() {
           if(subnode.adcode === provinceadcode){
             console.log(`${subnode.adcode}`);
             targetnode = subnode;
-            break;
+            // break;
+          }
+          else{
+            if(subnode.children.length > 0){
+              subnode.children = [];
+              subnode.active = false;
+              subnode.toggled = false;
+              subnode.loading = false;
+            }
           }
         }
       }
