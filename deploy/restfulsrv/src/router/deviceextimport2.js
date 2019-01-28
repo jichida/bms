@@ -154,24 +154,42 @@ const dodeviceextimport = (req,res)=>{
   const remoteip = requestIp.getClientIp(req) || '';
   // res.status(200)
   //        .json(上传成功);
-  const importid = new mongoose.mongo.ObjectID();
-  debug(`importid-->${importid}`);
-  PubSub.publish('setimportstatus',{
-    query:{_id:importid},
-    updatedData : {
-      '$set':{
-        created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
-        status:'start',
-        total:exceljson.length,
-        current:0,
-        success:0,
-        access:0,
-      }
-    }
+  const createddata = {
+    created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
+    status:'start',
+    total:exceljson.length,
+    current:0,
+    success:0,
+    access:0,
+    emptyid:0
+  };
+  const dbModel = DBModels.ImportStatusModel;
+  const entity = new dbModel(createddata);
+  entity.save((err,result)=>{
+    winston.getlog().info(`--->插入进度:0/${exceljson.length}`)
+    const importid = result._id;
+    handle_deviceextimport(importid,exceljson,userid,remoteip,(err,jsonresult)=>{
+      winston.getlog().info(`--->导入完毕`)
+    });
   });
-  handle_deviceextimport(importid,exceljson,userid,remoteip,(err,jsonresult)=>{
-    winston.getlog().info(`--->导入完毕`)
-  });
+
+
+  // const importid = new mongoose.mongo.ObjectID();
+  // debug(`importid-->${importid}`);
+  // PubSub.publish('setimportstatus',{
+  //   query:{_id:importid},
+  //   updatedData : {
+  //     '$set':{
+  //       created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
+  //       status:'start',
+  //       total:exceljson.length,
+  //       current:0,
+  //       success:0,
+  //       access:0,
+  //     }
+  //   }
+  // });
+
 
   res.status(200)
          .json({
