@@ -3,6 +3,7 @@ import { select,put,takeLatest,} from 'redux-saga/effects';
 import {
   getdevicestatprovinces_result,
   getdevicestatcities_result,
+  getdevicestatareas_result,
   mapmain_set_devicestat,
   refreshdevice
 } from '../actions';
@@ -33,17 +34,18 @@ export function* devicestatflow() {
       };
       if(datanodeproviceroot.children.length === 0){
         map(provincelist,(province)=>{
-          let provincecode = parseInt(province.adcode,10);
+          let provinceadcode = parseInt(province.adcode,10);
           let provincenode = {
-            adcode:provincecode,
+            provinceadcode,
+            adcode:provinceadcode,
             name:province.name,
             loading: false,
             type:'group_province',
             children:[]
           };
-          gmap_acode_node[provincecode] = provincenode;
-          gmap_acode_treename[provincecode] = province.name;
-          gmap_acode_treecount[provincecode] = {
+          gmap_acode_node[provinceadcode] = provincenode;
+          gmap_acode_treename[provinceadcode] = province.name;
+          gmap_acode_treecount[provinceadcode] = {
             count_total:province.count_total,
             count_online:province.count_online,
             count_offline:province.count_offline,
@@ -59,9 +61,9 @@ export function* devicestatflow() {
       }
       else{
         map(provincelist,(province)=>{
-          let provincecode = parseInt(province.adcode,10);
-          gmap_acode_treename[provincecode] = province.name;
-          gmap_acode_treecount[provincecode] = {
+          let provinceadcode = parseInt(province.adcode,10);
+          gmap_acode_treename[provinceadcode] = province.name;
+          gmap_acode_treecount[provinceadcode] = {
             count_total:province.count_total,
             count_online:province.count_online,
             count_offline:province.count_offline,
@@ -112,6 +114,8 @@ export function* devicestatflow() {
           const jsondatacities = action.payload.result;
           map(jsondatacities,(city)=>{
               const citynode = {
+                provinceadcode:targetnode.adcode,
+                cityadcode:parseInt(city.adcode,10),
                 citycode:city.citycode,
                 adcode:parseInt(city.adcode,10),
                 name:city.name,
@@ -142,6 +146,83 @@ export function* devicestatflow() {
     }
   });
 
+  yield takeLatest(`${getdevicestatareas_result}`, function*(action) {
+    try{
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      const provinceadcode = action.payload.provinceadcode;
+      const cityadcode = action.payload.cityadcode;
+      const parentnode = datatreeloc.children[0];
+      let targetnode;
+      if(parentnode.children.length > 0){
+        //第一次加载
+        for(let i = 0; i< parentnode.children.length ;i++){
+          const subnode = parentnode.children[i];
+          if(subnode.adcode === provinceadcode){
+            console.log(`${subnode.adcode}`);
+            const provincetargetnode = subnode;
+            // break;
+            for(let j = 0; j< provincetargetnode.children.length ;j++){
+              const subnode = provincetargetnode.children[j];
+              if(subnode.adcode === cityadcode){
+                // debugger;
+                targetnode = subnode;
+              }
+              else{
+                if(subnode.children.length > 0){
+                  subnode.children = [];
+                  subnode.active = false;
+                  subnode.toggled = false;
+                  subnode.loading = false;
+                }
+              }
+            }
+          }
+          else{
+            if(subnode.children.length > 0){
+              subnode.children = [];
+              subnode.active = false;
+              subnode.toggled = false;
+              subnode.loading = false;
+            }
+          }
+        }
+      }
+
+      if(!!targetnode){
+        if(targetnode.children.length === 0){
+          const jsondareas = action.payload.result;
+          map(jsondareas,(area)=>{
+              const areanode = {
+                provinceadcode,
+                cityadcode,
+                adcode:parseInt(area.adcode,10),
+                name:area.name,
+                loading: false,
+                type:'group_area',
+                children:[]
+              };
+              gmap_acode_node[area.adcode] = areanode;
+              gmap_acode_treename[area.adcode] = area.name;
+              gmap_acode_treecount[area.adcode] = {
+                count_total:area.count_total,
+                count_online:area.count_online,
+                count_offline:area.count_offline,
+              };
+              //----------
+              targetnode.children.push(areanode);
+
+              datatreeloc = {...datatreeloc};
+              gmap_acode_treename = {...gmap_acode_treename};
+              gmap_acode_treecount = {...gmap_acode_treecount};
+          });
+        }
+      }
+      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
   yield takeLatest(`${refreshdevice}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);

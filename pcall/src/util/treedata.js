@@ -35,17 +35,17 @@ export function get_initgeotree(){
   };
 
   // map(jsondataprovinces,(province)=>{
-  //   let provincecode = parseInt(province.code,10);
+  //   let provinceadcode = parseInt(province.code,10);
   //   let provincenode = {
-  //     adcode:provincecode,
+  //     adcode:provinceadcode,
   //     name:province.name,
   //     loading: false,
   //     type:'group_province',
   //     children:[]
   //   };
-  //   gmap_acode_node[provincecode] = provincenode;
-  //   gmap_acode_treename[provincecode] = province.name;
-  //   gmap_acode_treecount[provincecode] = {
+  //   gmap_acode_node[provinceadcode] = provincenode;
+  //   gmap_acode_treename[provinceadcode] = province.name;
+  //   gmap_acode_treecount[provinceadcode] = {
   //     count_total:0,
   //     count_online:0,
   //     count_offline:0,
@@ -54,7 +54,7 @@ export function get_initgeotree(){
   //   map(jsondatacities,(city)=>{
   //     let citycode = parseInt(city.code,10);
   //     let parent_code = parseInt(city.parent_code,10);
-  //     if(parent_code === provincecode){
+  //     if(parent_code === provinceadcode){
   //       let citynode = {
   //         adcode:citycode,
   //         name:city.name,

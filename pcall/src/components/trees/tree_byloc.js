@@ -6,7 +6,7 @@ import HeaderCo from './treeheader';
 import {
     mapmain_seldistrict,
     getdevicestatcities_request,
-    getdevicestatcity_request,
+    getdevicestatareas_request,
     ui_selcurdevice_request,
 } from '../../actions';
 
@@ -48,8 +48,7 @@ class Tree extends React.Component {
               this.props.dispatch(getdevicestatcities_request({provinceinfo:{name:node.name,adcode:id}}));
             }
             else if(node.type === 'group_city'){
-              debugger;
-              this.props.dispatch(getdevicestatcity_request({cityinfo:{citycode:node.citycode,adcode:id}}));
+              this.props.dispatch(getdevicestatareas_request({cityinfo:{provinceadcode:node.provinceadcode,citycode:node.citycode,adcode:id}}));
             }
             console.log(node);
 
