@@ -1,4 +1,4 @@
-import { select,put,takeLatest,} from 'redux-saga/effects';
+import { select,put,takeLatest,takeEvery,call,fork,join} from 'redux-saga/effects';
 // import {delay} from 'redux-saga';
 import {
   getdevicestatprovinces_result,
@@ -10,7 +10,8 @@ import {
   getdevicestatcities_request,
   getdevicestatareas_request,
   getdevicestatareadevices_request,
-  refreshdevice
+  refreshdevice,
+  queryamaptree
 } from '../actions';
 import map from 'lodash.map';
 import get from 'lodash.get';
@@ -23,11 +24,157 @@ const getdevicestate = (state)=>{
   return {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} ;
 }
 
+const amapgettree = ()=>{
+  return new Promise((resolve,reject) => {
+    window.AMap.plugin('AMap.DistrictSearch',  ()=> {
+      const districtSearch = new window.AMap.DistrictSearch({
+        // 关键字对应的行政区级别，country表示国家
+        level: 'country',
+        //  显示下级行政区级数，1表示返回下一级行政区
+        subdistrict: 3
+      });
+      // 搜索所有省/直辖市信息
+     districtSearch.search('中国', (status, result)=> {
+       // 查询成功时，result即为对应的行政区信息
+       resolve(result);
+     });
+   });
+  });
+}
+
+
+
 export function* devicestatflow() {
-  yield takeLatest(`${getdevicestatprovinces_result}`, function*(action) {
+  yield takeLatest(`${queryamaptree}`, function*(action) {
+    try{
+      // debugger;
+      const result  = yield call(amapgettree);
+      console.log(result);
+      let forkhandles_province = [];
+      let forkhandles_city = [];
+      let forkhandles_area = [];
+
+      let provincelist = [];
+      const provincelist_districtList = get(result,`districtList[0].districtList`,[]);
+      for(let i = 0;i < provincelist_districtList.length; i++){
+        //所有省
+        if(provincelist_districtList[i].level === "province"){
+          provincelist.push({
+            adcode:provincelist_districtList[i].adcode,
+            name:provincelist_districtList[i].name,
+            count_total:0,
+            count_online:0,
+            count_offline:0
+          });
+        }
+
+        //所有市
+        let citylist = [];
+        const citylist_districtList = get(provincelist_districtList[i],`districtList`,[]);
+        for(let j=0;j<citylist_districtList.length;j++){
+          if(citylist_districtList[j].level === "city"){
+            citylist.push({
+              provinceadcode:provincelist_districtList[i].adcode,
+              cityadcode:citylist_districtList[j].adcode,
+              adcode:citylist_districtList[j].adcode,
+              name:citylist_districtList[j].name,
+              count_total:0,
+              count_online:0,
+              count_offline:0
+            });
+          }
+          let arealist = [];
+          const arealist_districtList = get(citylist_districtList[j],`districtList`,[]);
+          for(let k = 0; k< arealist_districtList.length;k++){
+            if(arealist_districtList[k].level === "district"){
+              arealist.push({
+                provinceadcode:provincelist_districtList[i].adcode,
+                cityadcode:citylist_districtList[j].adcode,
+                adcode:arealist_districtList[k].adcode,
+                name:arealist_districtList[k].name,
+                count_total:0,
+                count_online:0,
+                count_offline:0
+              });
+            }
+          }//end for
+          const handlefork = yield fork(function*({arealist,provinceadcode,cityadcode}){
+            // console.log(arealist);
+            // debugger;
+            if(arealist.length > 0){
+              yield put.resolve(getdevicestatareas_result({provinceadcode,cityadcode,result:arealist}));
+            }
+
+          },{arealist,provinceadcode:provincelist_districtList[i].adcode,
+          cityadcode:citylist_districtList[j].adcode});
+          forkhandles_area.push(handlefork);
+        }//end for
+        const handlefork = yield fork(function*({citylist,provinceadcode}){
+          // console.log(citylist);
+          // debugger;
+          if(citylist.length > 0){
+            yield put.resolve(getdevicestatcities_result({provinceadcode,result:citylist}));
+          }
+
+        },{citylist,provinceadcode:provincelist_districtList[i].adcode});
+        forkhandles_city.push(handlefork);
+      }//end for
+      const handlefork = yield fork(function*(provincelist){
+        // debugger;
+        // console.log(provincelist);
+        if(provincelist.length > 0){
+          yield put.resolve(getdevicestatprovinces_result(provincelist));
+        }
+      },provincelist);
+      forkhandles_province.push(handlefork);
+
+      if(forkhandles_province.length > 0){
+        yield join(...forkhandles_province);
+      }
+      if(forkhandles_city.length > 0){
+        yield join(...forkhandles_city);
+      }
+      if(forkhandles_area.length > 0){
+        yield join(...forkhandles_area);
+      }
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      console.log(datatreeloc);
+      console.log(gmap_acode_treename);
+      console.log(gmap_acode_treecount);
+      console.log(gmap_acode_node);
+//       districtList: Array(1)
+// 0:
+// adcode: "100000"
+// center: c {P: 39.915085, O: 116.3683244, lng: 116.368324, lat: 39.915085}
+// citycode: []
+// districtList: Array(34)
+// 0:
+// adcode: "410000"
+// center: c {P: 34.757975, O: 113.665412, lng: 113.665412, lat: 34.757975}
+// citycode: []
+// districtList: Array(18)
+// 0:
+// adcode: "410900"
+// center: c {P: 35.768234, O: 115.04129899999998, lng: 115.041299, lat: 35.768234}
+// citycode: "0393"
+// districtList: Array(6)
+// 0:
+// adcode: "410923"
+// center: c {P: 36.075204, O: 115.20433600000001, lng: 115.204336, lat: 36.075204}
+// citycode: "0393"
+// level: "district"
+// name: "南乐县"
+// __proto__: Obj
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
+  yield takeEvery(`${getdevicestatprovinces_result}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       const provincelist = action.payload;
+      console.log(provincelist);
       const datanodeproviceroot = datatreeloc.children[0];
       gmap_acode_treecount[1] = {//所有
         count_total:0,
@@ -80,7 +227,8 @@ export function* devicestatflow() {
         });
         gmap_acode_treecount = {...gmap_acode_treecount};
       }
-      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}))
+      yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}))
+      console.log(`load provincelist finished!`)
     }
     catch(e){
       console.log(e);
@@ -88,10 +236,11 @@ export function* devicestatflow() {
 
   });
 
-  yield takeLatest(`${getdevicestatcities_result}`, function*(action) {
+  yield takeEvery(`${getdevicestatcities_result}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-      const provinceadcode = action.payload.adcode;
+      const provinceadcode = action.payload.provinceadcode;
+      console.log(action.payload)
       const parentnode = datatreeloc.children[0];
       let targetnode;
       if(parentnode.children.length > 0){
@@ -105,7 +254,7 @@ export function* devicestatflow() {
           }
           else{
             if(subnode.children.length > 0){
-              subnode.children = [];
+              // subnode.children = [];
               subnode.active = false;
               subnode.toggled = false;
               subnode.loading = false;
@@ -143,16 +292,18 @@ export function* devicestatflow() {
           });
         }
       }
-      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+      yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+      console.log(`load citylist finished!,${provinceadcode}`)
     }
     catch(e){
       console.log(e);
     }
   });
 
-  yield takeLatest(`${getdevicestatareas_result}`, function*(action) {
+  yield takeEvery(`${getdevicestatareas_result}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      console.log(action.payload)
       const provinceadcode = action.payload.provinceadcode;
       const cityadcode = action.payload.cityadcode;
       const parentnode = datatreeloc.children[0];
@@ -173,7 +324,7 @@ export function* devicestatflow() {
               }
               else{
                 if(subnode.children.length > 0){
-                  subnode.children = [];
+                  // subnode.children = [];
                   subnode.active = false;
                   subnode.toggled = false;
                   subnode.loading = false;
@@ -183,7 +334,7 @@ export function* devicestatflow() {
           }
           else{
             if(subnode.children.length > 0){
-              subnode.children = [];
+              // subnode.children = [];
               subnode.active = false;
               subnode.toggled = false;
               subnode.loading = false;
@@ -221,7 +372,8 @@ export function* devicestatflow() {
           });
         }
       }
-      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+      yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+      console.log(`load arealist finished!,${cityadcode}`)
     }
     catch(e){
       console.log(e);
@@ -259,7 +411,7 @@ export function* devicestatflow() {
                   }
                   else{
                     if(subnode.children.length > 0){
-                      subnode.children = [];
+                      // subnode.children = [];
                       subnode.active = false;
                       subnode.toggled = false;
                       subnode.loading = false;
@@ -269,7 +421,7 @@ export function* devicestatflow() {
               }
               else{
                 if(subnode.children.length > 0){
-                  subnode.children = [];
+                  // subnode.children = [];
                   subnode.active = false;
                   subnode.toggled = false;
                   subnode.loading = false;
@@ -279,7 +431,7 @@ export function* devicestatflow() {
           }
           else{
             if(subnode.children.length > 0){
-              subnode.children = [];
+              // subnode.children = [];
               subnode.active = false;
               subnode.toggled = false;
               subnode.loading = false;

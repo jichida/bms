@@ -25,7 +25,8 @@ import {
   savealarmsettings_result,
 
   getdevicestat_request,
-  getdevicestatprovinces_request
+  getdevicestatprovinces_request,
+  queryamaptree
 } from '../actions';
 import { goBack } from 'react-router-redux';//https://github.com/reactjs/react-router-redux
 import map from 'lodash.map';
@@ -81,7 +82,7 @@ export function* wsrecvsagaflow() {
 
               if(config.softmode === 'pcall'){
                 yield put(getdevicestat_request({}));
-                yield put(getdevicestatprovinces_request({}));
+                // yield put(queryamaptree({}));
               }
             }
         }

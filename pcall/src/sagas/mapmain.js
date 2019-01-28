@@ -55,7 +55,8 @@ import {
   getsystemconfig_result_result,
   ui_viewdevicedetail,
   getdevicestatcity_result,
-  refreshdevice
+  refreshdevice,
+  queryamaptree
 } from '../actions';
 // import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -858,6 +859,8 @@ export function* createmapmainflow(){
               }
             }
           },'click');//'click'
+
+          yield put(queryamaptree({}));
 
           //如果已经登录,并且有数据了！，重新加载数据
           let deivcelist = [];
