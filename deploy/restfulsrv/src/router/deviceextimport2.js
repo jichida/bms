@@ -112,6 +112,8 @@ const handle_deviceextimport = (importid,exceljson,userid,remoteip,callbackfnres
         updatedData : {
           '$set':{
             finshed_at:moment().format('YYYY-MM-DD HH:mm:ss'),
+            total:exceljson.length,
+            current:exceljson.length,
             status:'finished',
           }
         }
@@ -157,7 +159,7 @@ const dodeviceextimport = (req,res)=>{
   PubSub.publish('setimportstatus',{
     query:{_id:importid},
     updatedData : {
-      '$setOnInsert':{
+      '$set':{
         created_at:moment().format('YYYY-MM-DD HH:mm:ss'),
         status:'start',
         total:exceljson.length,
