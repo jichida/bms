@@ -11,3 +11,5 @@ export const getdevicestatcities_result = createAction('getdevicestatcities_resu
 
 export const getdevicestatcity_request = createAction('getdevicestatcity_request');
 export const getdevicestatcity_result = createAction('getdevicestatcity_result');
+
+export const refreshdevice = createAction('refreshdevice');

@@ -3,9 +3,12 @@ import { select,put,takeLatest,} from 'redux-saga/effects';
 import {
   getdevicestatprovinces_result,
   getdevicestatcities_result,
-  mapmain_set_devicestat
+  mapmain_set_devicestat,
+  refreshdevice
 } from '../actions';
 import map from 'lodash.map';
+
+import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 // import  {
 //   getrandom
 // } from '../test/bmsdata.js';
@@ -139,4 +142,63 @@ export function* devicestatflow() {
     }
   });
 
+  yield takeLatest(`${refreshdevice}`, function*(action) {
+    try{
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      const {g_devicesdb,SettingOfflineMinutes} = action.payload;
+
+      let count_total_all = 0;
+      let count_total_all_online = 0;
+      let count_total_loc = 0;
+      let count_total_loc_online = 0;
+      let count_total_noloc = 0;
+      let count_total_noloc_online = 0;
+
+      map(g_devicesdb,(deviceitem)=>{
+        if(!!deviceitem.DeviceId){
+          if(!!deviceitem.locz){
+            count_total_all++;
+            count_total_loc++;
+            if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+              count_total_all_online++;
+              count_total_loc_online++;
+            }
+          }
+          else{
+            count_total_all++;
+            count_total_noloc++;
+            if(getdevicestatus_isonline(deviceitem,SettingOfflineMinutes)){
+              count_total_noloc_online++;
+              count_total_noloc_online++;
+            }
+          }
+        }
+      });
+
+      //<----
+      // const alllocnode = datatreeloc.children[0];//全国
+      // const allnolocnode = datatreeloc.children[1];//未定位
+
+      gmap_acode_treecount[1] = {//所有
+        count_total:count_total_all,
+        count_online:count_total_all_online,
+      };
+
+      gmap_acode_treecount[2] = {//未定位
+        count_total:count_total_noloc,
+        count_online:count_total_noloc_online,
+      }
+
+      gmap_acode_treecount[100000] = {
+        count_total:count_total_loc,
+        count_online:count_total_loc_online,
+      }
+      gmap_acode_treecount = {...gmap_acode_treecount};
+      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+    }
+    catch(e){
+      console.log(e);
+    }
+
+  });
 }
