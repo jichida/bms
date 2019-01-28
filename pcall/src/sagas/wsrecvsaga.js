@@ -77,7 +77,7 @@ export function* wsrecvsagaflow() {
             yield put(login_result(result));
             if(result.loginsuccess){
               localStorage.setItem(`bms_${config.softmode}_token`,result.token);
-              // yield put(querydevicegroup_request({}));
+              yield put(querydevicegroup_request({}));
 
               if(config.softmode === 'pcall'){
                 yield put(getdevicestat_request({}));

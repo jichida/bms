@@ -332,7 +332,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                catch(e){
                  console.log(e)
                }
-               debugger;
+               // debugger;
           	   return null;
         		}
             //重写行政区域,避免来回刷新时的闪烁
@@ -797,7 +797,7 @@ export function* createmapmainflow(){
             while(true){
               let result = yield call(listenclusterevent,eventname);
               if(!!result){
-                debugger;
+                // debugger;
                 yield put(mapmain_seldistrict(result));
               }
               // yield put(clusterMarkerClick(result));

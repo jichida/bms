@@ -234,7 +234,7 @@ export function* devicestatflow() {
       const provinceadcode = action.payload.provinceadcode;
       const cityadcode = action.payload.cityadcode;
       const adcode = action.payload.adcode;//
-      debugger;
+      // debugger;
       const parentnode = datatreeloc.children[0];
       let targetnode;
       if(parentnode.children.length > 0){
@@ -248,12 +248,12 @@ export function* devicestatflow() {
             for(let j = 0; j< provincetargetnode.children.length ;j++){
               const subnode = provincetargetnode.children[j];
               if(subnode.adcode === cityadcode){
-                debugger;
+                // debugger;
                 const citytargetnode = subnode;
                 for(let k = 0; k< citytargetnode.children.length ;k++){
                   const subnode = citytargetnode.children[k];
                   if(subnode.adcode === adcode){
-                    debugger;
+                    // debugger;
                     console.log(subnode)
                     targetnode = subnode;
                   }
@@ -292,7 +292,7 @@ export function* devicestatflow() {
         if(targetnode.children.length === 0){
           const jsonddevices = action.payload.result;
           map(jsonddevices,(device)=>{
-            debugger;
+            // debugger;
             // adcode: "640324"
             // city: "吴忠市"
             // citycode: "0953"
@@ -428,7 +428,7 @@ export function* devicestatflow() {
       else if(level === 'district'){
         //getdevicestatareadevices_result
         const provinceadcode = getAddress(adcodetop,'province');
-        debugger;
+        // debugger;
         const cityadcode= getAddress(adcodetop,'city');
         yield put(getdevicestatareadevices_request({provinceadcode,
           cityadcode,adcode:adcodetop}));
