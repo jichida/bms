@@ -589,26 +589,107 @@ export function* devicestatflow() {
   }
   //mapmain_getdistrictresult
   yield takeLatest(`${mapmain_getdistrictresult}`, function*(action) {
+    //仅选择树节点
     try{
       const {adcodetop,forcetoggled,src,name,level} = action.payload;
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+
+      let provinceadcode = '';
+      let cityadcode = '';
+      let areaadcode = '';
       if(level === "province"){
-        //<-----//{adcode: 640000, name: "宁夏回族自治区", loading: false, type: "group_province"
-        yield put(getdevicestatcities_request({name:name,adcode:adcodetop}));
+        provinceadcode = adcodetop;
       }
       else if(level === 'city'){
-        const provinceadcode = getAddress(adcodetop,'province');
-        const cityadcode= getAddress(adcodetop,'city');
-        yield put(getdevicestatareas_request({provinceadcode,cityadcode,adcode:adcodetop}));
+         provinceadcode = getAddress(adcodetop,'province');
+         cityadcode= getAddress(adcodetop,'city');
       }
       else if(level === 'district'){
         //getdevicestatareadevices_result
-        const provinceadcode = getAddress(adcodetop,'province');
-        // debugger;
-        const cityadcode= getAddress(adcodetop,'city');
-        yield put(getdevicestatareadevices_request({provinceadcode,
-          cityadcode,adcode:adcodetop}));
-
+         provinceadcode = getAddress(adcodetop,'province');
+         cityadcode= getAddress(adcodetop,'city');
+         areaadcode = adcodetop;
       }
+
+      const parentnode = datatreeloc.children[0];
+      if(parentnode.children.length > 0){
+        //第一次加载
+        for(let i = 0; i< parentnode.children.length ;i++){
+          const subnode = parentnode.children[i];
+          if(subnode.adcode === provinceadcode){
+            subnode.active = true;
+            subnode.toggled = true;
+            subnode.loading = false;
+            // console.log(`${subnode.adcode}`);
+            const provincetargetnode = subnode;
+            // break;
+            for(let j = 0; j< provincetargetnode.children.length ;j++){
+              const subnode = provincetargetnode.children[j];
+              if(subnode.adcode === cityadcode){
+                subnode.active = true;
+                subnode.toggled = true;
+                subnode.loading = false;
+
+                const citytargetnode = subnode;
+                for(let k = 0; k< citytargetnode.children.length ;k++){
+                  const subnode = citytargetnode.children[k];
+                  if(subnode.adcode === areaadcode){
+                    subnode.active = true;
+                    subnode.toggled = true;
+                    subnode.loading = false;
+                  }
+                  else{
+                    if(subnode.children.length > 0){
+                      // subnode.children = [];
+                      subnode.active = false;
+                      subnode.toggled = false;
+                      subnode.loading = false;
+                    }
+                  }
+                }
+              }
+              else{
+                if(subnode.children.length > 0){
+                  // subnode.children = [];
+                  subnode.active = false;
+                  subnode.toggled = false;
+                  subnode.loading = false;
+                }
+              }
+            }
+          }
+          else{
+            if(subnode.children.length > 0){
+              // subnode.children = [];
+              subnode.active = false;
+              subnode.toggled = false;
+              subnode.loading = false;
+            }
+          }
+        }
+      }
+
+      datatreeloc = {...datatreeloc};
+      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+
+      // if(level === "province"){
+      //   //<-----//{adcode: 640000, name: "宁夏回族自治区", loading: false, type: "group_province"
+      //   // yield put(getdevicestatcities_request({name:name,adcode:adcodetop}));
+      // }
+      // else if(level === 'city'){
+      //   // const provinceadcode = getAddress(adcodetop,'province');
+      //   // const cityadcode= getAddress(adcodetop,'city');
+      //   // yield put(getdevicestatareas_request({provinceadcode,cityadcode,adcode:adcodetop}));
+      // }
+      // else if(level === 'district'){
+      //   //getdevicestatareadevices_result
+      //   // const provinceadcode = getAddress(adcodetop,'province');
+      //   // // debugger;
+      //   // const cityadcode= getAddress(adcodetop,'city');
+      //   // yield put(getdevicestatareadevices_request({provinceadcode,
+      //   //   cityadcode,adcode:adcodetop}));
+      //   //
+      // }
     }
     catch(e){
 

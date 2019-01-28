@@ -1312,7 +1312,7 @@ export function* createmapmainflow(){
             //========================================================================================
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
-            yield put(refreshdevice_treecount({gmap_acode_treecount}));
+            yield put.resolve(refreshdevice_treecount({gmap_acode_treecount}));
             // if(!!result){
             //   isarea = result.type === 'device';
             //   if(config.softmode === 'pc'){//仅pc端才需要刷新树
