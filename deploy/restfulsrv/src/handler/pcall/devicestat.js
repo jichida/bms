@@ -433,7 +433,7 @@ const getdevicestatcities = (actiondata,ctx,callback)=>{
         cmd:'getdevicestatcities_result',
         payload:{
           name:actiondata.name,
-          adcode:actiondata.adcode,
+          provinceadcode:actiondata.adcode,
           result
         }
       });
