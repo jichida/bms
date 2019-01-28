@@ -171,6 +171,15 @@ const dodeviceextimport = (req,res)=>{
     handle_deviceextimport(importid,exceljson,userid,remoteip,(err,jsonresult)=>{
       winston.getlog().info(`--->导入完毕`)
     });
+
+    res.status(200)
+           .json({
+             result:'OK',
+             data:{
+                   issuccess:true,
+                   id:importid,
+               }
+           });
   });
 
 
@@ -191,14 +200,7 @@ const dodeviceextimport = (req,res)=>{
   // });
 
 
-  res.status(200)
-         .json({
-           result:'OK',
-           data:{
-                 issuccess:true,
-                 id:importid,
-             }
-         });
+
 }
 
 const getDevice = (callbackfn)=>{
