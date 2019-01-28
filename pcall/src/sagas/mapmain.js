@@ -53,7 +53,8 @@ import {
   mapmain_showpopinfo_list,
   getsystemconfig_result,
   getsystemconfig_result_result,
-  ui_viewdevicedetail
+  ui_viewdevicedetail,
+  getdevicestatcity_result
 } from '../actions';
 // import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -100,9 +101,15 @@ const zoollevel_showdistcluster = 12;
 
 let g_SettingOfflineMinutes = 20;
 //新建聚合点
-const datasample = [{
-	lnglat: [116.405285, 39.904989]
+// const datasample = [{
+// 	lnglat: [116.405285, 39.904989]
+// }];
+let datasample = [{
+    locz:[120.265649,31.546829],
+    last_Latitude: 31.546829,
+    last_Longitude: 120.265649
 }];
+
 
 const CreateMapUI_MarkCluster = (map)=>{
   return new Promise((resolve,reject) => {
@@ -345,11 +352,26 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                  map: map, //所属的地图实例
                  autoSetFitView:false,
                  getPosition: (deviceitem)=> {
-                   if(!!deviceitem){
-                     return deviceitem.lnglat;
+                   const last_Latitude = get(deviceitem,'last_Latitude');
+                   const last_Longitude = get(deviceitem,'last_Longitude');
+                   if(!!last_Latitude && !!last_Longitude){
+                     return [last_Longitude,last_Latitude];
                    }
-                   console.log(`err----->=====>======>${JSON.stringify(deviceitem)}`);
-                   return deviceitem;
+                   return null;
+                   // const datasample = [{
+                   // 	lnglat: [116.405285, 39.904989]
+                   // }];
+                   // const datasample = [{
+                   //     last_Latitude: 31.546829,
+                   //     last_Longitude: 120.265649
+                   // }];
+                   //
+                   //
+                   // if(!!deviceitem){
+                   //   return deviceitem.lnglat;
+                   // }
+                   // console.log(`err----->=====>======>${JSON.stringify(deviceitem)}`);
+                   // return deviceitem;
                  },
                  renderOptions:{
                    featureStyleByLevel:{
@@ -1094,6 +1116,53 @@ export function* createmapmainflow(){
       }
     });
 
+    yield takeLatest(`${getdevicestatcity_result}`, function*(deviceresult) {
+      let {payload:{citycode,adcode,result}} = deviceresult;
+      try{
+          while( !distCluster || !markCluster){
+            console.log(`wait for discluster ${!!distCluster} or markCluster ${!!markCluster}`);
+            yield call(delay,1000);
+          }
+          // const SettingOfflineMinutes = g_SettingOfflineMinutes;
+          //批量转换一次
+          // g_devicesdb = {};//清空，重新初始化
+          let data = [];//<--------
+          lodashmap(result,(v)=>{
+            let deviceitem = v.deviceid;
+            // adcode: "320211"
+            // city: "无锡市"
+            // citycode: "0510"
+            // deviceid:{
+            //   DeviceId: "1744201583"
+            //   last_GPSTime: "2019-01-23 09:31:43"
+            //   last_Latitude: 31.546829
+            //   last_Longitude: 120.265649
+            //   _id: "5aca26c71c52e8c4714bee66"
+            // }
+            deviceitem.locz = [deviceitem.last_Longitude,deviceitem.last_Latitude];
+            data.push(deviceitem);
+            g_devicesdb[deviceitem.DeviceId] = deviceitem;
+          });
+          datasample = data;
+          // console.log(`clear g_devicesdb...restart g_devicesdb...${data.length}`)
+          distCluster.setData(datasample);
+          //
+          //
+          // yield put(mapmain_init_device({g_devicesdb,gmap_acode_devices,gmap_acode_treecount}));
+          //
+          // getMarkCluster_recreateMarks(SettingOfflineMinutes);
+          const zoomlevel = window.amapmain.getZoom();
+          console.log(zoomlevel)
+          yield put(ui_showhugepoints(zoomlevel>=zoollevel_showhugepoints));
+          yield put(ui_showdistcluster(zoomlevel<=zoollevel_showdistcluster));
+
+        }
+        catch(e){
+          console.log(e.stack);
+          console.log(e);
+        }
+
+    });
     //查询所有车辆返回
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
       let {payload:{list:devicelist}} = deviceresult;
