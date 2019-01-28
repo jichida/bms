@@ -12,6 +12,9 @@ export const getdevicestatcities_result = createAction('getdevicestatcities_resu
 export const getdevicestatareas_request = createAction('getdevicestatareas_request');
 export const getdevicestatareas_result = createAction('getdevicestatareas_result');
 
+export const getdevicestatareadevices_request = createAction('getdevicestatareadevices_request');
+export const getdevicestatareadevices_result = createAction('getdevicestatareadevices_result');
+
 export const getdevicestatcity_request = createAction('getdevicestatcity_request');
 export const getdevicestatcity_result = createAction('getdevicestatcity_result');
 

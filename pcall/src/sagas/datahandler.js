@@ -57,7 +57,9 @@ import {
     getdevicestatcity_request,
     getdevicestatcity_result,
     getdevicestatareas_request,
-    getdevicestatareas_result
+    getdevicestatareas_result,
+    getdevicestatareadevices_request,
+    getdevicestatareadevices_result,
 
   } from '../actions';
 import {
@@ -82,6 +84,7 @@ let recvmessagetoresultpair = {
   'getdevicestatcities_result':getdevicestatcities_result,
   'getdevicestatcity_result':getdevicestatcity_result,
   'getdevicestatareas_result':getdevicestatareas_result,
+  'getdevicestatareadevices_result':getdevicestatareadevices_result,
   'deviceinfoquerychart_result':deviceinfoquerychart_result,
   'savealarmsettings_result':savealarmsettings_result,
   'serverpush_device':serverpush_device,
@@ -132,7 +135,7 @@ let sendmessageauthfnsz = {
   'getdevicestatcities':`${getdevicestatcities_request}`,
   'getdevicestatcity':`${getdevicestatcity_request}`,
   'getdevicestatareas':`${getdevicestatareas_request}`,
-
+  'getdevicestatareadevices':`${getdevicestatareadevices_request}`,
   'savealarmsettings':`${savealarmsettings_request}`,
   'changepwd':`${changepwd_request}`,
   'collectdevice':`${collectdevice_request}`,

@@ -7,6 +7,7 @@ import {
     mapmain_seldistrict,
     getdevicestatcities_request,
     getdevicestatareas_request,
+    getdevicestatareadevices_request,
     ui_selcurdevice_request,
 } from '../../actions';
 
@@ -49,6 +50,11 @@ class Tree extends React.Component {
             }
             else if(node.type === 'group_city'){
               this.props.dispatch(getdevicestatareas_request({cityinfo:{provinceadcode:node.provinceadcode,citycode:node.citycode,adcode:id}}));
+            }
+            else if(node.type === 'group_area'){
+              //getdevicestatareadevices_result
+              this.props.dispatch(getdevicestatareadevices_request({provinceadcode:node.provinceadcode,cityadcode:node.cityadcode,adcode:id}));
+
             }
             console.log(node);
 

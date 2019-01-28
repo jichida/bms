@@ -5,10 +5,11 @@ import {
   getdevicestatcities_result,
   getdevicestatareas_result,
   mapmain_set_devicestat,
+  getdevicestatareadevices_result,
   refreshdevice
 } from '../actions';
 import map from 'lodash.map';
-
+import get from 'lodash.get';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 // import  {
 //   getrandom
@@ -223,6 +224,115 @@ export function* devicestatflow() {
       console.log(e);
     }
   });
+  //getdevicestatareadevices_result
+  yield takeLatest(`${getdevicestatareadevices_result}`, function*(action) {
+    try{
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      const provinceadcode = action.payload.provinceadcode;
+      const cityadcode = action.payload.cityadcode;
+      const adcode = action.payload.adcode;//
+      debugger;
+      const parentnode = datatreeloc.children[0];
+      let targetnode;
+      if(parentnode.children.length > 0){
+        //第一次加载
+        for(let i = 0; i< parentnode.children.length ;i++){
+          const subnode = parentnode.children[i];
+          if(subnode.adcode === provinceadcode){
+            console.log(`${subnode.adcode}`);
+            const provincetargetnode = subnode;
+            // break;
+            for(let j = 0; j< provincetargetnode.children.length ;j++){
+              const subnode = provincetargetnode.children[j];
+              if(subnode.adcode === cityadcode){
+                debugger;
+                const citytargetnode = subnode;
+                for(let k = 0; k< citytargetnode.children.length ;k++){
+                  const subnode = citytargetnode.children[k];
+                  if(subnode.adcode === adcode){
+                    debugger;
+                    console.log(subnode)
+                    targetnode = subnode;
+                  }
+                  else{
+                    if(subnode.children.length > 0){
+                      subnode.children = [];
+                      subnode.active = false;
+                      subnode.toggled = false;
+                      subnode.loading = false;
+                    }
+                  }
+                }
+              }
+              else{
+                if(subnode.children.length > 0){
+                  subnode.children = [];
+                  subnode.active = false;
+                  subnode.toggled = false;
+                  subnode.loading = false;
+                }
+              }
+            }
+          }
+          else{
+            if(subnode.children.length > 0){
+              subnode.children = [];
+              subnode.active = false;
+              subnode.toggled = false;
+              subnode.loading = false;
+            }
+          }
+        }
+      }
+      console.log(targetnode);
+      if(!!targetnode){
+        if(targetnode.children.length === 0){
+          const jsonddevices = action.payload.result;
+          map(jsonddevices,(device)=>{
+            debugger;
+            // adcode: "640324"
+            // city: "吴忠市"
+            // citycode: "0953"
+            // deviceid:
+            // DeviceId: "1848230175"
+            // last_GPSTime: "2019-01-22 11:29:02"
+            // last_Latitude: 36.942943
+            // last_Longitude: 105.946309
+            // _id: "5c18b4844e5a37ed023949da"
+
+              const devicenode = {
+                provinceadcode,
+                cityadcode,
+                id:get(device,`deviceid._id`),
+                name:get(device,`deviceid.DeviceId`),
+                device:device.deviceid,
+                loading: false,
+                type:'device',
+                children:[]
+              };
+              // gmap_acode_node[area.adcode] = areanode;
+              // gmap_acode_treename[area.adcode] = area.name;
+              // gmap_acode_treecount[area.adcode] = {
+              //   count_total:area.count_total,
+              //   count_online:area.count_online,
+              //   count_offline:area.count_offline,
+              // };
+              // //----------
+              targetnode.children.push(devicenode);
+              //
+              datatreeloc = {...datatreeloc};
+              // gmap_acode_treename = {...gmap_acode_treename};
+              // gmap_acode_treecount = {...gmap_acode_treecount};
+          });
+        }
+      }
+      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
+
   yield takeLatest(`${refreshdevice}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);

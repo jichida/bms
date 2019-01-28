@@ -472,6 +472,31 @@ const getdevicestatareas = (actiondata,ctx,callback)=>{
   });
 }
 
+const getdevicestatareadevices =  (actiondata,ctx,callback)=>{
+  const query = {
+    adcode:`${actiondata.adcode}`
+  };
+  getdevicestat_cityinfo(query,ctx,(err,result)=>{
+    if(!err && !!result){
+      callback({
+        cmd:'getdevicestatareadevices_result',
+        payload:{
+          provinceadcode:actiondata.provinceadcode,
+          cityadcode:actiondata.cityadcode,
+          adcode:actiondata.adcode,
+          result
+        }
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestatareadevices'}
+      });
+    }
+  });
+}
+
 
 const getdevicestatcity = (actiondata,ctx,callback)=>{
   const query = {citycode:actiondata.cityinfo.citycode};
@@ -501,3 +526,4 @@ exports.getdevicestatprovinces = getdevicestatprovinces;
 exports.getdevicestatcities = getdevicestatcities;
 exports.getdevicestatareas = getdevicestatareas;
 exports.getdevicestatcity = getdevicestatcity;
+exports.getdevicestatareadevices = getdevicestatareadevices;
