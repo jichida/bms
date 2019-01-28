@@ -11,6 +11,7 @@ import {
   getdevicestatareas_request,
   getdevicestatareadevices_request,
   refreshdevice,
+  refreshdevice_treecount,
   queryamaptree
 } from '../actions';
 import map from 'lodash.map';
@@ -158,11 +159,12 @@ export function* devicestatflow() {
       if(forkhandles_area.length > 0){
         yield join(...forkhandles_area);
       }
-      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-      console.log(datatreeloc);
-      console.log(gmap_acode_treename);
-      console.log(gmap_acode_treecount);
-      console.log(gmap_acode_node);
+      console.log('load tree finished!!!')
+      // let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      // console.log(datatreeloc);
+      // console.log(gmap_acode_treename);
+      // console.log(gmap_acode_treecount);
+      // console.log(gmap_acode_node);
 //       districtList: Array(1)
 // 0:
 // adcode: "100000"
@@ -249,7 +251,7 @@ export function* devicestatflow() {
         gmap_acode_treecount = {...gmap_acode_treecount};
       }
       yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}))
-      console.log(`load provincelist finished!`)
+      // console.log(`load provincelist finished!`)
     }
     catch(e){
       console.log(e);
@@ -314,7 +316,7 @@ export function* devicestatflow() {
         }
       }
       yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
-      console.log(`load citylist finished!,${provinceadcode}`)
+      // console.log(`load citylist finished!,${provinceadcode}`)
     }
     catch(e){
       console.log(e);
@@ -394,7 +396,7 @@ export function* devicestatflow() {
         }
       }
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
-      console.log(`load arealist finished!,${cityadcode}`)
+      // console.log(`load arealist finished!,${cityadcode}`)
     }
     catch(e){
       console.log(e);
@@ -610,6 +612,20 @@ export function* devicestatflow() {
     }
     catch(e){
 
+    }
+  });
+
+  //refreshdevice_treecount
+  yield takeLatest(`${refreshdevice_treecount}`, function*(action) {
+    try{
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      const {gmap_acode_treecount:gmap_acode_treecount_new} = action.payload;
+      gmap_acode_treecount = {...gmap_acode_treecount,...gmap_acode_treecount_new};
+      console.log(gmap_acode_treecount);
+      yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+    }
+    catch(e){
+      console.log(e);
     }
   });
 }

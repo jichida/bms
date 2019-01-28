@@ -56,6 +56,7 @@ import {
   ui_viewdevicedetail,
   getdevicestatcity_result,
   refreshdevice,
+  refreshdevice_treecount,
   queryamaptree
 } from '../actions';
 // import async from 'async';
@@ -106,11 +107,11 @@ let g_SettingOfflineMinutes = 20;
 // const datasample = [{
 // 	lnglat: [116.405285, 39.904989]
 // }];
-let datasample = [{
-    locz:[120.265649,31.546829],
-    last_Latitude: 31.546829,
-    last_Longitude: 120.265649
-}];
+// let datasample = [{
+//     locz:[120.265649,31.546829],
+//     last_Latitude: 31.546829,
+//     last_Longitude: 120.265649
+// }];
 
 
 const CreateMapUI_MarkCluster = (map)=>{
@@ -268,12 +269,11 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                  // console.log(gmap_acode_treecount);
                  let defaultcount = !!dataItems?dataItems.length:0;
                  let bodytitle = defaultcount;
-                 if(defaultcount === 0){
-                   const adcode = feature.properties.adcode;
-                   const {gmap_acode_treecount} = store.getState().device;
-                   get(gmap_acode_treecount[adcode],`count_total`,defaultcount);
-
-                 }
+                 // if(defaultcount === 0){
+                 //   const adcode = feature.properties.adcode;
+                 //   const {gmap_acode_treecount} = store.getState().device;
+                 //   get(gmap_acode_treecount[adcode],`count_total`,defaultcount);
+                 // }
 
                  const nodeClassNames = {
               				title: 'amap-ui-district-cluster-marker-title',
@@ -383,11 +383,13 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                    clusterMarkerRecycleLimit:100000,
                    clusterMarkerKeepConsistent:true,
                    getClusterMarker : (feature, dataItems, recycledMarker)=> {
-                      return defaultgetClusterMarker(feature, dataItems, recycledMarker);
+                      if(dataItems.length > 0){
+                        return defaultgetClusterMarker(feature, dataItems, recycledMarker);
+                      }
                     }
                  }
              });
-             distCluster.setData(datasample);
+             // distCluster.setData(datasample);
              resolve(distCluster);
        });
 
@@ -1225,6 +1227,13 @@ export function* createmapmainflow(){
           yield put(ui_showhugepoints(zoomlevel>=zoollevel_showhugepoints));
           yield put(ui_showdistcluster(zoomlevel<=zoollevel_showdistcluster));
           yield put(refreshdevice({g_devicesdb,SettingOfflineMinutes}));
+
+          console.log(`all device loaded!!!`);
+          yield call(getclustertree_root,SettingOfflineMinutes);
+          yield put(refreshdevice_treecount({gmap_acode_treecount}));
+
+
+          //刷新树中节点
         }
         catch(e){
           console.log(e.stack);
@@ -1303,6 +1312,7 @@ export function* createmapmainflow(){
             //========================================================================================
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
+            yield put(refreshdevice_treecount({gmap_acode_treecount}));
             // if(!!result){
             //   isarea = result.type === 'device';
             //   if(config.softmode === 'pc'){//仅pc端才需要刷新树
@@ -1351,6 +1361,7 @@ export function* createmapmainflow(){
               count_total:data.length,
               count_online:deviceidonlines.length,
             }
+            yield put(refreshdevice_treecount({gmap_acode_treecount}));
             // yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
           }
         }

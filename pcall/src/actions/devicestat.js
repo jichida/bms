@@ -19,4 +19,5 @@ export const getdevicestatcity_request = createAction('getdevicestatcity_request
 export const getdevicestatcity_result = createAction('getdevicestatcity_result');
 
 export const refreshdevice = createAction('refreshdevice');
+export const refreshdevice_treecount = createAction('refreshdevice_treecount');
 export const queryamaptree = createAction('queryamaptree');
