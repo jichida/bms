@@ -423,16 +423,17 @@ const getdevicestatprovinces = (actiondata,ctx,callback)=>{
     }
   });
 }
-
+//{name:name,adcode:adcodetop}
 const getdevicestatcities = (actiondata,ctx,callback)=>{
-  const query = {province:actiondata.provinceinfo.name};
+  const query = {province:actiondata.name};
+  debug(query);
   getdevicestat_citylist(query,ctx,(err,result)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatcities_result',
         payload:{
-          name:actiondata.provinceinfo.name,
-          adcode:actiondata.provinceinfo.adcode,
+          name:actiondata.name,
+          adcode:actiondata.adcode,
           result
         }
       });
@@ -445,20 +446,20 @@ const getdevicestatcities = (actiondata,ctx,callback)=>{
     }
   });
 }
-
+//{provinceadcode:getAddress(adcodetop,'province'),adcode:adcodetop}
 const getdevicestatareas = (actiondata,ctx,callback)=>{
   const query = {
-    citycode:actiondata.cityinfo.citycode
+    targetadcode:`${actiondata.adcode}`
   };
+  debug(query);
   getdevicestat_arealist(query,ctx,(err,result)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatareas_result',
         payload:{
-          provinceadcode:actiondata.cityinfo.provinceadcode,
-          cityadcode:actiondata.cityinfo.adcode,
-          citycode:actiondata.cityinfo.citycode,
-          adcode:actiondata.cityinfo.adcode,
+          provinceadcode:actiondata.provinceadcode,
+          cityadcode:actiondata.adcode,
+          adcode:actiondata.adcode,
           result
         }
       });
@@ -471,11 +472,13 @@ const getdevicestatareas = (actiondata,ctx,callback)=>{
     }
   });
 }
-
+//{provinceadcode:getAddress(adcodetop,'province'),
+  // cityadcode:getAddress(adcodetop,'city'),adcode:adcodetop}
 const getdevicestatareadevices =  (actiondata,ctx,callback)=>{
   const query = {
     adcode:`${actiondata.adcode}`
   };
+  debug(query);
   getdevicestat_cityinfo(query,ctx,(err,result)=>{
     if(!err && !!result){
       callback({
@@ -499,15 +502,15 @@ const getdevicestatareadevices =  (actiondata,ctx,callback)=>{
 
 
 const getdevicestatcity = (actiondata,ctx,callback)=>{
-  const query = {citycode:actiondata.cityinfo.citycode};
+  const query = {targetadcode:actiondata.adcode};
   getdevicestat_cityinfo(query,ctx,(err,result)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatcity_result',
         payload:{
           provinceadcode:actiondata.provinceadcode,
-          citycode:actiondata.cityinfo.citycode,
-          cityadcode:actiondata.cityinfo.adcode,
+          adcode:actiondata.adcode,
+          cityadcode:actiondata.adcode,
           result
         }
       });

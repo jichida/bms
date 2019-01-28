@@ -105,11 +105,11 @@ let g_SettingOfflineMinutes = 20;
 // const datasample = [{
 // 	lnglat: [116.405285, 39.904989]
 // }];
-// let datasample = [{
-//     locz:[120.265649,31.546829],
-//     last_Latitude: 31.546829,
-//     last_Longitude: 120.265649
-// }];
+let datasample = [{
+    locz:[120.265649,31.546829],
+    last_Latitude: 31.546829,
+    last_Longitude: 120.265649
+}];
 
 
 const CreateMapUI_MarkCluster = (map)=>{
@@ -386,7 +386,7 @@ const CreateMapUI_DistrictCluster =  (map)=>{
                     }
                  }
              });
-             // distCluster.setData(datasample);
+             distCluster.setData(datasample);
              resolve(distCluster);
        });
 
@@ -484,12 +484,15 @@ const listenclusterevent = (eventname)=>{
       return;
     }
     distCluster.on(eventname, (e,record)=> {
+        console.log(record);
+        const level = get(record,'feature.properties.level');
+        const name = get(record,'feature.properties.name');
         distCluster.getClusterRecord(record.adcode,(err,result)=>{
           if(!err){
             const {dataItems} = result;
             if(!!dataItems){
               if(dataItems.length > 0){
-                  resolve({adcodetop:record.adcode,forcetoggled:true,src:'map'});
+                  resolve({adcodetop:record.adcode,forcetoggled:true,src:'map',level,name});
                   return;
               }
             }
@@ -794,6 +797,7 @@ export function* createmapmainflow(){
             while(true){
               let result = yield call(listenclusterevent,eventname);
               if(!!result){
+                debugger;
                 yield put(mapmain_seldistrict(result));
               }
               // yield put(clusterMarkerClick(result));
@@ -945,8 +949,8 @@ export function* createmapmainflow(){
                 }
                 adcodetop = parseInt(result.adcode,10);
                 //展开左侧树结构
-                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src}));
-                if(config.softmode === 'pc'){//pc端才有树啊
+                yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src,level:'district'}));
+                if(config.softmode === 'pcall'){//pc端才有树啊
                   yield take(`${mapmain_getdistrictresult}`);//等待数据完成
                 }
               }
@@ -1287,30 +1291,31 @@ export function* createmapmainflow(){
 
     //选中某个区域
     yield takeLatest(`${mapmain_seldistrict}`, function*(action_district) {
-        let {payload:{adcodetop,forcetoggled,src}} = action_district;
-        let isarea = false;
+        let {payload:{adcodetop,name,forcetoggled,src,level}} = action_district;
+        // let isarea = level === 'district';
+        let isarea = level === 'district';
         try{
           const SettingOfflineMinutes = g_SettingOfflineMinutes;
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
             //获取该区域的数据
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
-            if(!!result){
-              isarea = result.type === 'device';
-              if(config.softmode === 'pc'){//仅pc端才需要刷新树
-                yield fork(function*(){
-                    yield delay(0);
-                    if(isarea){
-                      //如果返回车辆,则将车辆加载到树中
-                      yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
-                    }
-                    else{
-                      //刷新树中的数据
-                      yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
-                    }
-                });
-              }
-            }
+            // if(!!result){
+            //   isarea = result.type === 'device';
+            //   if(config.softmode === 'pc'){//仅pc端才需要刷新树
+            //     yield fork(function*(){
+            //         yield delay(0);
+            //         if(isarea){
+            //           //如果返回车辆,则将车辆加载到树中
+            //           yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
+            //         }
+            //         else{
+            //           //刷新树中的数据
+            //           yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
+            //         }
+            //     });
+            //   }
+            // }
 
             if(!!distCluster){//放大到该区域
               if(isarea){
@@ -1343,22 +1348,22 @@ export function* createmapmainflow(){
               count_total:data.length,
               count_online:deviceidonlines.length,
             }
-            yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
+            // yield put(mapmain_areamountdevices_result({adcode:adcodetop,gmap_acode_devices,g_devicesdb,gmap_acode_treecount,SettingOfflineMinutes}));
           }
         }
         catch(e){
           console.log(e);
         }
 
-
-        if(config.softmode === 'pc'){//pc端才有树啊
-           console.log(`mapmain_seldistrict from ---->src:${src}`);
-           yield fork(function*(){
-            //在树中将其他结点搜索，该节点展开
-              yield delay(0);
-              yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
-            });
-        }
+        yield put(mapmain_getdistrictresult({adcodetop,name,forcetoggled,src,level}));
+        // if(config.softmode === 'pc'){//pc端才有树啊
+        //    console.log(`mapmain_seldistrict from ---->src:${src}`);
+        //    yield fork(function*(){
+        //     //在树中将其他结点搜索，该节点展开
+        //       yield delay(0);
+        //       yield put(mapmain_getdistrictresult({adcode:adcodetop,forcetoggled}));
+        //     });
+        // }
 
     });
 

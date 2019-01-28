@@ -6,6 +6,10 @@ import {
   getdevicestatareas_result,
   mapmain_set_devicestat,
   getdevicestatareadevices_result,
+  mapmain_getdistrictresult,
+  getdevicestatcities_request,
+  getdevicestatareas_request,
+  getdevicestatareadevices_request,
   refreshdevice
 } from '../actions';
 import map from 'lodash.map';
@@ -117,7 +121,6 @@ export function* devicestatflow() {
               const citynode = {
                 provinceadcode:targetnode.adcode,
                 cityadcode:parseInt(city.adcode,10),
-                citycode:city.citycode,
                 adcode:parseInt(city.adcode,10),
                 name:city.name,
                 loading: false,
@@ -391,5 +394,49 @@ export function* devicestatflow() {
       console.log(e);
     }
 
+  });
+
+  const getAddress = (adcode,type)=>{
+    let rate = 10000;
+    if(type==='province'){
+      rate = 10000;
+    }
+    if(type==='city'){
+       rate = 100;
+    }
+    let address = adcode;
+    if(typeof address === 'string'){
+      address = parseInt(address,10);
+    }
+    const addressnew = Math.floor(address/rate);
+    const retv = addressnew*rate;
+    return parseInt(retv,10);
+  }
+  //mapmain_getdistrictresult
+  yield takeLatest(`${mapmain_getdistrictresult}`, function*(action) {
+    try{
+      const {adcodetop,forcetoggled,src,name,level} = action.payload;
+      if(level === "province"){
+        //<-----//{adcode: 640000, name: "宁夏回族自治区", loading: false, type: "group_province"
+        yield put(getdevicestatcities_request({name:name,adcode:adcodetop}));
+      }
+      else if(level === 'city'){
+        const provinceadcode = getAddress(adcodetop,'province');
+        const cityadcode= getAddress(adcodetop,'city');
+        yield put(getdevicestatareas_request({provinceadcode,cityadcode,adcode:adcodetop}));
+      }
+      else if(level === 'district'){
+        //getdevicestatareadevices_result
+        const provinceadcode = getAddress(adcodetop,'province');
+        debugger;
+        const cityadcode= getAddress(adcodetop,'city');
+        yield put(getdevicestatareadevices_request({provinceadcode,
+          cityadcode,adcode:adcodetop}));
+
+      }
+    }
+    catch(e){
+
+    }
   });
 }

@@ -44,18 +44,32 @@ class Tree extends React.Component {
               id = parseInt(id,10);
             }
             console.log(node);
+            let adcodetop = id;
+            let name = node.name;
+            let level;
             if(node.type === "group_province"){
-              //<-----//{adcode: 640000, name: "宁夏回族自治区", loading: false, type: "group_province"
-              this.props.dispatch(getdevicestatcities_request({provinceinfo:{name:node.name,adcode:id}}));
+              level = "province";
             }
-            else if(node.type === 'group_city'){
-              this.props.dispatch(getdevicestatareas_request({cityinfo:{provinceadcode:node.provinceadcode,citycode:node.citycode,adcode:id}}));
+            if(node.type === "group_city"){
+              level = "city";
             }
-            else if(node.type === 'group_area'){
-              //getdevicestatareadevices_result
-              this.props.dispatch(getdevicestatareadevices_request({provinceadcode:node.provinceadcode,cityadcode:node.cityadcode,adcode:id}));
-
+            if(node.type === "group_area"){
+              level = "district";
             }
+            if(!!level){
+              this.props.dispatch(mapmain_seldistrict({adcodetop,name,forcetoggled:true,src:'tree',level}));
+            }
+            // if(node.type === "group_province"){
+            //   //<-----//{adcode: 640000, name: "宁夏回族自治区", loading: false, type: "group_province"
+            //   this.props.dispatch(getdevicestatcities_request({provinceinfo:{name:node.name,adcode:id}}));
+            // }
+            // else if(node.type === 'group_city'){
+            //   this.props.dispatch(getdevicestatareas_request({cityinfo:{provinceadcode:node.provinceadcode,citycode:node.citycode,adcode:id}}));
+            // }
+            // else if(node.type === 'group_area'){
+            //   //getdevicestatareadevices_result
+            //   this.props.dispatch(getdevicestatareadevices_request({provinceadcode:node.provinceadcode,cityadcode:node.cityadcode,adcode:id}));
+            // }
             console.log(node);
 
         }else{
