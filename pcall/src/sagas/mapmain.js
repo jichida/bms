@@ -556,6 +556,7 @@ const getclustertree_root =(SettingOfflineMinutes)=>{
       return;
     }
     distCluster.getClusterRecord(adcodetop,(err,result)=>{
+      // debugger;
       if(!err){
         const {children,dataItems} = result;
         if(!children || children.length === 0){
@@ -585,6 +586,7 @@ const getclustertree_root =(SettingOfflineMinutes)=>{
         lodashmap(children,(child)=>{
           if(child.dataItems.length > 0){
             childadcodelist.push(child.adcode);
+
             count_online = 0;
             count_offline = child.dataItems.length;
             lodashmap(child.dataItems,(deviceitem)=>{
@@ -597,6 +599,52 @@ const getclustertree_root =(SettingOfflineMinutes)=>{
               count_online,
               count_offline
             }
+            if(child.adcode === 110000){
+              gmap_acode_treecount[110100]= {
+                count_total:child.dataItems.length,
+                count_online,
+                count_offline
+              }
+            }
+            if(child.adcode === 120000){
+              gmap_acode_treecount[120100]= {
+                count_total:child.dataItems.length,
+                count_online,
+                count_offline
+              }
+            }
+            if(child.adcode === 310000){
+              gmap_acode_treecount[310100]= {
+                count_total:child.dataItems.length,
+                count_online,
+                count_offline
+              }
+            }
+            if(child.adcode === 500000){
+              gmap_acode_treecount[500100]= {
+                count_total:child.dataItems.length,
+                count_online,
+                count_offline
+              }
+            }
+            //注意：如果是直辖市，则自动设置下一级（否则不显示）
+            //{
+            // 	"code": "110100",
+            // 	"name": "市辖区",
+            // 	"parent_code": "110000"
+            // }, {
+            // 	"code": "120100",
+            // 	"name": "市辖区",
+            // 	"parent_code": "120000"
+            // }, {
+            // 	"code": "310100",
+            // 	"name": "市辖区",
+            // 	"parent_code": "310000"
+            // }, {
+            // 	"code": "500100",
+            // 	"name": "市辖区",
+            // 	"parent_code": "500000"
+            // },
           }
           else{
             gmap_acode_treecount[child.adcode]= {
@@ -727,9 +775,38 @@ const getclustertree_one =(adcode,SettingOfflineMinutes)=>{
                 gmap_acode_treecount[child.adcode]={
                   count_total:child.dataItems.length,
                   count_online:count_online,
-                  count_offline:child.dataItems.length,
+                  count_offline:child.dataItems.length - count_online,
                 }
                 childadcodelist.push(child.adcode);
+
+                if(child.adcode === 110000){
+                  gmap_acode_treecount[110100]= {
+                    count_total:child.dataItems.length,
+                    count_online,
+                    count_offline:child.dataItems.length - count_online,
+                  }
+                }
+                if(child.adcode === 120000){
+                  gmap_acode_treecount[120100]= {
+                    count_total:child.dataItems.length,
+                    count_online,
+                    count_offline:child.dataItems.length - count_online,
+                  }
+                }
+                if(child.adcode === 310000){
+                  gmap_acode_treecount[310100]= {
+                    count_total:child.dataItems.length,
+                    count_online,
+                    count_offline:child.dataItems.length - count_online,
+                  }
+                }
+                if(child.adcode === 500000){
+                  gmap_acode_treecount[500100]= {
+                    count_total:child.dataItems.length,
+                    count_online,
+                    count_offline:child.dataItems.length - count_online,
+                  }
+                }
               }
               else{
                 gmap_acode_treecount[child.adcode]={

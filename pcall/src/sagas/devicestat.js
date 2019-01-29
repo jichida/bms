@@ -50,7 +50,7 @@ export function* devicestatflow() {
     try{
       // debugger;
       const result  = yield call(amapgettree);
-      // console.log(result);
+      console.log(result);
       let forkhandles_province = [];
       let forkhandles_city = [];
       let forkhandles_area = [];
@@ -639,32 +639,32 @@ export function* devicestatflow() {
                     subnode.loading = false;
                   }
                   else{
-                    if(subnode.children.length > 0){
+
                       // subnode.children = [];
                       subnode.active = false;
                       subnode.toggled = false;
                       subnode.loading = false;
-                    }
+            
                   }
                 }
               }
               else{
-                if(subnode.children.length > 0){
+
                   // subnode.children = [];
                   subnode.active = false;
                   subnode.toggled = false;
                   subnode.loading = false;
-                }
+
               }
             }
           }
           else{
-            if(subnode.children.length > 0){
+
               // subnode.children = [];
               subnode.active = false;
               subnode.toggled = false;
               subnode.loading = false;
-            }
+
           }
         }
       }
