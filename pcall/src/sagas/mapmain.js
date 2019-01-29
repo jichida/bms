@@ -56,6 +56,7 @@ import {
   getsystemconfig_result_result,
   ui_viewdevicedetail,
   getdevicestatcity_result,
+  refreshdevice_seldevice,
   refreshdevice,
   refreshdevice_treecount,
   queryamaptree
@@ -1004,9 +1005,8 @@ export function* createmapmainflow(){
 
     //选择一个车辆请求
     yield takeLatest(`${ui_selcurdevice_request}`,function*(actioncurdevice){
-      let {payload:{DeviceId,deviceitem,src}} = actioncurdevice;
+      let {payload:{DeviceId,deviceitem,src,adcodetop}} = actioncurdevice;
       let result;
-      let adcodetop;
       try{
           if(!deviceitem && !!DeviceId){
             deviceitem = g_devicesdb[DeviceId];
@@ -1019,6 +1019,7 @@ export function* createmapmainflow(){
             //获取该车辆所在经纬度
             if(!!deviceitem.locz){
               result = yield call(getgeodata,deviceitem);
+              adcodetop = parseInt(result.adcode,10);
               //调用一次citycode，防止加载不到AreaNode
               if(!!get(result,'adcode') && cur_adcode_cache !== get(result,'adcode')){
                 cur_adcode_cache = get(result,'adcode');
@@ -1030,7 +1031,7 @@ export function* createmapmainflow(){
                 catch(e){
                   console.log(e);
                 }
-                adcodetop = parseInt(result.adcode,10);
+
                 //展开左侧树结构
                 yield put(mapmain_seldistrict({adcodetop,forcetoggled:true,src,level:'district'}));
                 if(config.softmode === 'pcall'){//pc端才有树啊
@@ -1044,6 +1045,7 @@ export function* createmapmainflow(){
         console.log(e);
       }
       yield put(ui_selcurdevice_result(actioncurdevice.payload));
+      yield put(refreshdevice_seldevice({adcodetop,DeviceId}));
     });
 
     //选择一个车辆

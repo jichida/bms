@@ -10,6 +10,7 @@ import {
   getdevicestatcities_request,
   getdevicestatareas_request,
   getdevicestatareadevices_request,
+  refreshdevice_seldevice,
   refreshdevice_mountdevice,
   refreshdevice,
   refreshdevice_treecount,
@@ -488,7 +489,7 @@ export function* devicestatflow() {
                 device:device,
                 loading: false,
                 type:'device',
-                children:[]
+                // children:[]
               };
               // gmap_acode_node[area.adcode] = areanode;
               // gmap_acode_treename[area.adcode] = area.name;
@@ -731,6 +732,87 @@ export function* devicestatflow() {
       //       const adcode = action.payload.adcode;//
       // let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       // const {deviceids,adcodetop} = action.payload;
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
+
+  //refreshdevice_seldevice
+  yield takeLatest(`${refreshdevice_seldevice}`, function*(action) {
+    try{
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      const {adcodetop,DeviceId} = action.payload;
+      //getdevicestatareadevices_result
+       const provinceadcode = getAddress(adcodetop,'province');
+       const cityadcode= getAddress(adcodetop,'city');
+       const areaadcode = adcodetop;
+
+      // debugger;
+      const parentnode = datatreeloc.children[0];
+      let targetnode;
+      if(parentnode.children.length > 0){
+        //第一次加载
+        for(let i = 0; i< parentnode.children.length ;i++){
+          const subnode = parentnode.children[i];
+          if(subnode.adcode === provinceadcode){
+            // console.log(`${subnode.adcode}`);
+            const provincetargetnode = subnode;
+            // break;
+            for(let j = 0; j< provincetargetnode.children.length ;j++){
+              const subnode2 = provincetargetnode.children[j];
+              if(subnode2.adcode === cityadcode){
+                // debugger;
+                const citytargetnode = subnode2;
+                for(let k = 0; k< citytargetnode.children.length ;k++){
+                  const subnode3 = citytargetnode.children[k];
+                  if(subnode3.adcode === areaadcode){
+                    targetnode = subnode3;
+                  }
+                  else{
+                    if(subnode3.children.length > 0){
+                      // subnode.children = [];
+                      subnode3.active = false;
+                      subnode3.toggled = false;
+                      subnode3.loading = false;
+                    }
+                  }
+                }
+              }
+              else{
+                if(subnode2.children.length > 0){
+                  // subnode.children = [];
+                  subnode2.active = false;
+                  subnode2.toggled = false;
+                  subnode2.loading = false;
+                }
+              }
+            }
+          }
+          else{
+            if(subnode.children.length > 0){
+              // subnode.children = [];
+              subnode.active = false;
+              subnode.toggled = false;
+              subnode.loading = false;
+            }
+          }
+        }
+      }
+      // console.log(targetnode);
+      if(!!targetnode){
+          for(let i = 0;  i < targetnode.children.length ; i++){
+            const subnode4 = targetnode.children[i];
+            if(subnode4.name === `${DeviceId}`){
+              subnode4.active = true;
+            }
+            else{
+              subnode4.active = false;
+            }
+        }
+        datatreeloc = {...datatreeloc};
+        yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+      }
     }
     catch(e){
       console.log(e);

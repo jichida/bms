@@ -22,3 +22,4 @@ export const refreshdevice = createAction('refreshdevice');
 export const refreshdevice_treecount = createAction('refreshdevice_treecount');
 export const refreshdevice_mountdevice = createAction('refreshdevice_mountdevice');
 export const queryamaptree = createAction('queryamaptree');
+export const refreshdevice_seldevice = createAction('refreshdevice_seldevice');
