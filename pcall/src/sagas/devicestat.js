@@ -10,6 +10,7 @@ import {
   getdevicestatcities_request,
   getdevicestatareas_request,
   getdevicestatareadevices_request,
+  refreshdevice_mountdevice,
   refreshdevice,
   refreshdevice_treecount,
   queryamaptree
@@ -464,6 +465,7 @@ export function* devicestatflow() {
       }
       // console.log(targetnode);
       if(!!targetnode){
+        targetnode.children = [];
         if(targetnode.children.length === 0){
           const jsonddevices = action.payload.result;
           map(jsonddevices,(device)=>{
@@ -481,9 +483,9 @@ export function* devicestatflow() {
               const devicenode = {
                 provinceadcode,
                 cityadcode,
-                id:get(device,`deviceid._id`),
-                name:get(device,`deviceid.DeviceId`),
-                device:device.deviceid,
+                id:get(device,`_id`),
+                name:get(device,`DeviceId`),
+                device:device,
                 loading: false,
                 type:'device',
                 children:[]
@@ -706,6 +708,29 @@ export function* devicestatflow() {
       gmap_acode_treecount = {...gmap_acode_treecount,...gmap_acode_treecount_new};
       console.log(gmap_acode_treecount);
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
+    }
+    catch(e){
+      console.log(e);
+    }
+  });
+
+  //refreshdevice_mountdevice
+  yield takeLatest(`${refreshdevice_mountdevice}`, function*(action) {
+    try{
+      const {g_devicesdb,deviceids,adcodetop} = action.payload;
+      const provinceadcode = getAddress(adcodetop,'province');
+      const cityadcode= getAddress(adcodetop,'city');
+      const adcode = adcodetop;
+      let result = [];
+      for(let i=0;i<deviceids.length;i++ ){
+        result.push(g_devicesdb[deviceids[i]]);
+      }
+      yield put(getdevicestatareadevices_result({provinceadcode,cityadcode,adcode,result}));
+      //      const provinceadcode = action.payload.provinceadcode;
+      //       const cityadcode = action.payload.cityadcode;
+      //       const adcode = action.payload.adcode;//
+      // let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      // const {deviceids,adcodetop} = action.payload;
     }
     catch(e){
       console.log(e);

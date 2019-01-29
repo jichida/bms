@@ -27,6 +27,7 @@ import {
   mapmain_seldistrict,
   // mapmain_seldistrict_init,
   mapmain_getdistrictresult,
+  refreshdevice_mountdevice,
   mapmain_init_device,
   ui_settreefilter,
   md_ui_settreefilter,
@@ -1388,8 +1389,16 @@ export function* createmapmainflow(){
           if(!!adcodetop && adcodetop !==1 && adcodetop!==2){
             //========================================================================================
             //获取该区域的数据
+            // console.log(adcodetop);
             const result = yield call(getclustertree_one,adcodetop,SettingOfflineMinutes);
+            console.log(result);
             yield put.resolve(refreshdevice_treecount({gmap_acode_treecount}));
+            if(result.type === 'device'){
+              //refreshdevice_mountdevice
+              // result.deviceids
+              // debugger;
+              yield put.resolve(refreshdevice_mountdevice({g_devicesdb,deviceids:result.deviceids,adcodetop}));
+            }
             // if(!!result){
             //   isarea = result.type === 'device';
             //   if(config.softmode === 'pc'){//仅pc端才需要刷新树
