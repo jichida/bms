@@ -50,7 +50,7 @@ export function* devicestatflow() {
     try{
       // debugger;
       const result  = yield call(amapgettree);
-      console.log(result);
+
       let forkhandles_province = [];
       let forkhandles_city = [];
       let forkhandles_area = [];
@@ -159,9 +159,9 @@ export function* devicestatflow() {
       if(forkhandles_area.length > 0){
         yield join(...forkhandles_area);
       }
-      console.log('load tree finished!!!')
-      // let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-      // console.log(datatreeloc);
+      console.log(`load tree finished!!!${forkhandles_province.length},${forkhandles_city.length},${forkhandles_area.length}`);
+      let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
+      console.log(datatreeloc);
       // console.log(gmap_acode_treename);
       // console.log(gmap_acode_treecount);
       // console.log(gmap_acode_node);
@@ -340,17 +340,17 @@ export function* devicestatflow() {
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
-              const subnode = provincetargetnode.children[j];
-              if(subnode.adcode === cityadcode){
+              const subnode2 = provincetargetnode.children[j];
+              if(subnode2.adcode === cityadcode){
                 // debugger;
-                targetnode = subnode;
+                targetnode = subnode2;
               }
               else{
-                if(subnode.children.length > 0){
+                if(subnode2.children.length > 0){
                   // subnode.children = [];
-                  subnode.active = false;
-                  subnode.toggled = false;
-                  subnode.loading = false;
+                  subnode2.active = false;
+                  subnode2.toggled = false;
+                  subnode2.loading = false;
                 }
               }
             }
@@ -421,33 +421,33 @@ export function* devicestatflow() {
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
-              const subnode = provincetargetnode.children[j];
-              if(subnode.adcode === cityadcode){
+              const subnode2 = provincetargetnode.children[j];
+              if(subnode2.adcode === cityadcode){
                 // debugger;
-                const citytargetnode = subnode;
+                const citytargetnode = subnode2;
                 for(let k = 0; k< citytargetnode.children.length ;k++){
-                  const subnode = citytargetnode.children[k];
-                  if(subnode.adcode === adcode){
+                  const subnode3 = citytargetnode.children[k];
+                  if(subnode3.adcode === adcode){
                     // debugger;
                     // console.log(subnode)
-                    targetnode = subnode;
+                    targetnode = subnode3;
                   }
                   else{
-                    if(subnode.children.length > 0){
+                    if(subnode3.children.length > 0){
                       // subnode.children = [];
-                      subnode.active = false;
-                      subnode.toggled = false;
-                      subnode.loading = false;
+                      subnode3.active = false;
+                      subnode3.toggled = false;
+                      subnode3.loading = false;
                     }
                   }
                 }
               }
               else{
-                if(subnode.children.length > 0){
+                if(subnode2.children.length > 0){
                   // subnode.children = [];
-                  subnode.active = false;
-                  subnode.toggled = false;
-                  subnode.loading = false;
+                  subnode2.active = false;
+                  subnode2.toggled = false;
+                  subnode2.loading = false;
                 }
               }
             }
@@ -593,7 +593,7 @@ export function* devicestatflow() {
     try{
       const {adcodetop,forcetoggled,src,name,level} = action.payload;
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-
+      console.log(datatreeloc);
       let provinceadcode = '';
       let cityadcode = '';
       let areaadcode = '';
@@ -624,46 +624,48 @@ export function* devicestatflow() {
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
-              const subnode = provincetargetnode.children[j];
-              if(subnode.adcode === cityadcode){
-                subnode.active = true;
-                subnode.toggled = true;
-                subnode.loading = false;
+              const subnode2 = provincetargetnode.children[j];
+              if(subnode2.adcode === cityadcode){
+                subnode2.active = true;
+                subnode2.toggled = true;
+                subnode2.loading = false;
 
-                const citytargetnode = subnode;
+                const citytargetnode = subnode2;
                 for(let k = 0; k< citytargetnode.children.length ;k++){
-                  const subnode = citytargetnode.children[k];
-                  if(subnode.adcode === areaadcode){
-                    subnode.active = true;
-                    subnode.toggled = true;
-                    subnode.loading = false;
+                  const subnode3 = citytargetnode.children[k];
+                  if(subnode3.adcode === areaadcode){
+                    subnode3.active = true;
+                    subnode3.toggled = true;
+                    subnode3.loading = false;
                   }
                   else{
 
                       // subnode.children = [];
-                      subnode.active = false;
-                      subnode.toggled = false;
-                      subnode.loading = false;
-            
+                      subnode3.active = false;
+                      subnode3.toggled = false;
+                      subnode3.loading = false;
+
                   }
                 }
               }
               else{
-
+                if(subnode2.children.length>0){
                   // subnode.children = [];
-                  subnode.active = false;
-                  subnode.toggled = false;
-                  subnode.loading = false;
+                  subnode2.active = false;
+                  subnode2.toggled = false;
+                  subnode2.loading = false;
+                }
 
               }
             }
           }
           else{
-
-              // subnode.children = [];
-              subnode.active = false;
-              subnode.toggled = false;
-              subnode.loading = false;
+              if(subnode.children.length>0){
+                // subnode.children = [];
+                subnode.active = false;
+                subnode.toggled = false;
+                subnode.loading = false;
+              }
 
           }
         }
