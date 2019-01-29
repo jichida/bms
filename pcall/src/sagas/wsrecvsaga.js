@@ -1,5 +1,5 @@
-import { put,call,takeLatest,take,} from 'redux-saga/effects';
-// import {delay} from 'redux-saga';
+import { put,call,takeLatest,take,fork,cancel} from 'redux-saga/effects';
+import {delay} from 'redux-saga';
 import {
   common_err,
   ui_changemodeview,
@@ -34,6 +34,7 @@ import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
 import config from '../env/config.js';
+let handletask;
 // import  {
 //   getrandom
 // } from '../test/bmsdata.js';
@@ -78,10 +79,22 @@ export function* wsrecvsagaflow() {
             yield put(login_result(result));
             if(result.loginsuccess){
               localStorage.setItem(`bms_${config.softmode}_token`,result.token);
+
+
               yield put(querydevicegroup_request({}));
 
               if(config.softmode === 'pcall'){
-                yield put(getdevicestat_request({}));
+                if(!!handletask){
+                  yield cancel(handletask);
+                }
+                handletask = yield fork(function*(){
+                  while(true){
+                    yield put(getdevicestat_request({}));
+                    yield call(delay,10000);
+                    console.log(`start getdevicestat_request`)
+                  }
+                });
+
                 // yield put(queryamaptree({}));
               }
             }
