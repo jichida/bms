@@ -1,5 +1,5 @@
 import { select,put,takeLatest,takeEvery,call,fork,join} from 'redux-saga/effects';
-// import {delay} from 'redux-saga';
+import {delay} from 'redux-saga';
 import {
   getdevicestatprovinces_result,
   getdevicestatcities_result,
@@ -22,6 +22,7 @@ import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 // import  {
 //   getrandom
 // } from '../test/bmsdata.js';
+
 const getdevicestate = (state)=>{
   const {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = state.device;
   return {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} ;
@@ -143,24 +144,32 @@ export function* devicestatflow() {
       },provincelist);
       forkhandles_province.push(handlefork);
 
+      console.log('load tree provice start');
       if(forkhandles_province.length > 0){
         yield join(...forkhandles_province);
       }
+      console.log('load tree provice end');
 
+      console.log('load tree city start');
       for(let i = 0 ;i < forkfn_city.length;i++){
         yield forkfn_city[i]();
+        // yield call(delay,100);
       }
       if(forkhandles_city.length > 0){
         yield join(...forkhandles_city);
       }
+      console.log('load tree city end');
 
+      console.log('load tree area start');
       for(let i = 0 ;i < forkfn_area.length;i++){
+        yield call(delay,0);
         yield forkfn_area[i]();
+        // yield call(delay,100);
       }
-
       if(forkhandles_area.length > 0){
         yield join(...forkhandles_area);
       }
+      console.log('load tree area end');
       console.log(`load tree finished!!!${forkhandles_province.length},${forkhandles_city.length},${forkhandles_area.length}`);
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       console.log(datatreeloc);
@@ -707,7 +716,7 @@ export function* devicestatflow() {
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       const {gmap_acode_treecount:gmap_acode_treecount_new} = action.payload;
       gmap_acode_treecount = {...gmap_acode_treecount,...gmap_acode_treecount_new};
-      console.log(gmap_acode_treecount);
+      // console.log(gmap_acode_treecount);
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
     }
     catch(e){
@@ -810,6 +819,7 @@ export function* devicestatflow() {
               subnode4.active = false;
             }
         }
+        // targetnode = {...targetnode};
         datatreeloc = {...datatreeloc};
         yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
       }

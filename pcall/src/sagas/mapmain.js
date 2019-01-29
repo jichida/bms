@@ -1600,7 +1600,11 @@ export function* createmapmainflow(){
 
         getMarkCluster_updateMarks(g_devicesdb_updated,SettingOfflineMinutes);
 
-        yield put(devicelistgeochange_geotreemenu_refreshtree({g_devicesdb,gmap_acode_devices,gmap_acode_treecount,SettingOfflineMinutes}));
+        yield put(refreshdevice({g_devicesdb,SettingOfflineMinutes}));
+
+        console.log(`all device reloaded!!!`);
+        yield call(getclustertree_root,SettingOfflineMinutes);
+        yield put(refreshdevice_treecount({gmap_acode_treecount}));
         console.log(`刷新树结构`)
       }
       catch(e){
