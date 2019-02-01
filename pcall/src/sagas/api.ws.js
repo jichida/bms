@@ -22,7 +22,7 @@ import {
 let issocketconnected = false;
 
 function connect() {
-    const socket = io(config.serverurl,{path:config.wspath});
+    const socket = io(config.serverurl,{path:config.wspath,timeout:120000});
     return new Promise(resolve => {
         socket.on('connect', () => {
             issocketconnected = true;

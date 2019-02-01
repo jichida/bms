@@ -301,6 +301,75 @@ const getdevicestat_cityinfo = (query,ctx,callbackfn)=>{
   });
 }
 
+/*
+0.099s
+0.153s
+统计各市的区的个数
+db.getCollection('devicecities').aggregate([
+     {$match:{"citycode" : "021"}},
+     {$group: {
+       _id: '$adcode',
+       adcode:{ $first: "$adcode" },
+       name:{ $first: "$district" },
+       count: { $sum: 1 },
+     }
+   }])
+*/
+const getdevicestat_arealist = (query,ctx,callbackfn)=>{
+  const deviceModel = DBModels.DeviceCityModel;
+  deviceModel.aggregate([
+       {$match:query},
+       {$group: {
+         _id: '$adcode',
+         deviceids: { $addToSet: "$deviceid" },
+         adcode:{ $first: "$adcode" },
+         name:{ $first: "$district" },
+         count: { $sum: 1 },
+       }
+     }]).exec((err, list)=> {
+       debug(list);
+       //[ {
+//     "_id" : "310109",
+//     "adcode" : "310109",
+//     "name" : "虹口区",
+//     "count" : 20.0
+// } ]
+       let listnewrc = [];
+       if(!err && !!list){
+         let fnsz = [];
+         for(let i = 0 ;i < list.length;i++){
+           const newrc = list[i];
+           if(!!newrc){
+             listnewrc.push(newrc);
+           }
+         }
+
+         for(let i = 0 ;i < listnewrc.length;i++){
+           // debug(listnewrc);
+           const newrc = listnewrc[i];
+           fnsz.push((callbackfn)=>{
+              getdevicestat_online({_id:{$in:newrc.deviceids}},ctx,(err,{
+                count_online,count_offline})=>{
+                callbackfn(err,{
+                  name:newrc.name,
+                  adcode:`${newrc.adcode}`,
+                  count_total:newrc.deviceids.length,
+                  count_online,
+                  count_offline
+                });
+              })
+           });
+         }
+
+         debug(moment().format('YYYY-MM-DD HH:mm:ss'));
+         async.parallel(fnsz,(err,result)=>{
+           debug(moment().format('YYYY-MM-DD HH:mm:ss'));
+           callbackfn(err,result);
+         });
+      }
+   });
+}
+
 const getdevicestat = (actiondata,ctx,callback)=>{
   const query = actiondata.query || {};
   let fnsz = [];
@@ -354,16 +423,17 @@ const getdevicestatprovinces = (actiondata,ctx,callback)=>{
     }
   });
 }
-
+//{name:name,adcode:adcodetop}
 const getdevicestatcities = (actiondata,ctx,callback)=>{
-  const query = {province:actiondata.provinceinfo.name};
+  const query = {province:actiondata.name};
+  debug(query);
   getdevicestat_citylist(query,ctx,(err,result)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatcities_result',
         payload:{
-          name:actiondata.provinceinfo.name,
-          adcode:actiondata.provinceinfo.adcode,
+          name:actiondata.name,
+          provinceadcode:actiondata.adcode,
           result
         }
       });
@@ -376,16 +446,71 @@ const getdevicestatcities = (actiondata,ctx,callback)=>{
     }
   });
 }
+//{provinceadcode:getAddress(adcodetop,'province'),adcode:adcodetop}
+const getdevicestatareas = (actiondata,ctx,callback)=>{
+  const query = {
+    targetadcode:`${actiondata.adcode}`
+  };
+  debug(query);
+  getdevicestat_arealist(query,ctx,(err,result)=>{
+    if(!err && !!result){
+      callback({
+        cmd:'getdevicestatareas_result',
+        payload:{
+          provinceadcode:actiondata.provinceadcode,
+          cityadcode:actiondata.adcode,
+          adcode:actiondata.adcode,
+          result
+        }
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestatareas'}
+      });
+    }
+  });
+}
+//{provinceadcode:getAddress(adcodetop,'province'),
+  // cityadcode:getAddress(adcodetop,'city'),adcode:adcodetop}
+const getdevicestatareadevices =  (actiondata,ctx,callback)=>{
+  const query = {
+    adcode:`${actiondata.adcode}`
+  };
+  debug(query);
+  getdevicestat_cityinfo(query,ctx,(err,result)=>{
+    if(!err && !!result){
+      callback({
+        cmd:'getdevicestatareadevices_result',
+        payload:{
+          provinceadcode:actiondata.provinceadcode,
+          cityadcode:actiondata.cityadcode,
+          adcode:actiondata.adcode,
+          result
+        }
+      });
+    }
+    else{
+      callback({
+        cmd:'common_err',
+        payload:{errmsg:'发生错误',type:'getdevicestatareadevices'}
+      });
+    }
+  });
+}
+
 
 const getdevicestatcity = (actiondata,ctx,callback)=>{
-  const query = {citycode:actiondata.cityinfo.citycode};
+  const query = {targetadcode:actiondata.adcode};
   getdevicestat_cityinfo(query,ctx,(err,result)=>{
     if(!err && !!result){
       callback({
         cmd:'getdevicestatcity_result',
         payload:{
-          citycode:actiondata.cityinfo.citycode,
-          adcode:actiondata.cityinfo.adcode,
+          provinceadcode:actiondata.provinceadcode,
+          adcode:actiondata.adcode,
+          cityadcode:actiondata.adcode,
           result
         }
       });
@@ -402,4 +527,6 @@ const getdevicestatcity = (actiondata,ctx,callback)=>{
 exports.getdevicestat = getdevicestat;
 exports.getdevicestatprovinces = getdevicestatprovinces;
 exports.getdevicestatcities = getdevicestatcities;
+exports.getdevicestatareas = getdevicestatareas;
 exports.getdevicestatcity = getdevicestatcity;
+exports.getdevicestatareadevices = getdevicestatareadevices;

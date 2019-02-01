@@ -22,7 +22,8 @@ const authhandler = {
   'getdevicestatprovinces':devicestat.getdevicestatprovinces,
   'getdevicestatcities':devicestat.getdevicestatcities,
   'getdevicestatcity':devicestat.getdevicestatcity,
-
+  'getdevicestatareas':devicestat.getdevicestatareas,
+  'getdevicestatareadevices':devicestat.getdevicestatareadevices,
   'querydevice':device.querydevice,
   'querydevicegroup':device.querydevicegroup,
   // 'queryrealtimealarm':realtimealarm.queryrealtimealarm,
