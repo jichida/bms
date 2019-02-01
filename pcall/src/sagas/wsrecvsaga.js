@@ -1,4 +1,4 @@
-import { put,call,takeLatest,take,fork,cancel} from 'redux-saga/effects';
+import { put,call,takeLatest,take,l} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
 import {
   common_err,
@@ -8,12 +8,10 @@ import {
 
   set_weui,
 
-  querydevicegroup_request,
-  querydevicegroup_result,
 
   querydevice_request,
   // querydevice_result,
-
+  querydevicegroup_result,
   md_querydeviceinfo_result,
   querydeviceinfo_result,
 
@@ -34,7 +32,7 @@ import coordtransform from 'coordtransform';
 import {getgeodata} from '../sagas/mapmain_getgeodata';
 import {g_devicesdb} from './mapmain';
 import config from '../env/config.js';
-let handletask;
+
 // import  {
 //   getrandom
 // } from '../test/bmsdata.js';
@@ -69,43 +67,6 @@ export function* wsrecvsagaflow() {
     yield put(goBack());
   });
 
-
-
-  yield takeLatest(`${md_login_result}`, function*(action) {
-      try{
-      let {payload:result} = action;
-        console.log(`md_login_result==>${JSON.stringify(result)}`);
-        if(!!result){
-            yield put(login_result(result));
-            if(result.loginsuccess){
-              localStorage.setItem(`bms_${config.softmode}_token`,result.token);
-
-
-              yield put(querydevicegroup_request({}));
-
-              if(config.softmode === 'pcall'){
-                if(!!handletask){
-                  yield cancel(handletask);
-                }
-                handletask = yield fork(function*(){
-                  while(true){
-                    yield put(getdevicestat_request({}));
-                    yield call(delay,10000);
-                    console.log(`start getdevicestat_request`)
-                  }
-                });
-
-                // yield put(queryamaptree({}));
-              }
-            }
-        }
-
-      }
-      catch(e){
-        console.log(e);
-      }
-
-  });
 
 
   yield takeLatest(`${common_err}`, function*(action) {
