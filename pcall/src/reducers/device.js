@@ -486,7 +486,15 @@ const device = createReducer({
      return {...state,datatreegroup};//这样reducer刷新才能刷新树！！！
   },
   [logout_result]:(state,payload)=>{
-    return {...initial.device};
+    let {gmap_acode_node,gmap_acode_treename,gmap_acode_treecount,datatreeloc} = state;
+    map(gmap_acode_treecount,(v,k)=>{
+      gmap_acode_treecount[k] = {
+        count_total:0,
+        count_online:0,
+        count_offline:0
+      }
+    });
+    return {...initial.device,gmap_acode_node,gmap_acode_treename,gmap_acode_treecount,datatreeloc:{...datatreeloc}};
   }
 }, initial.device);
 

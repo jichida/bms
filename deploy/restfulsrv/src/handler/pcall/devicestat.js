@@ -2,6 +2,7 @@ const config = require('../../config.js');
 const DBModels = require('../../db/models.js');
 const mongoose  = require('mongoose');
 const winston = require('../../log/log.js');
+const getdevicesids = require('../getdevicesids');
 const _ = require('lodash');
 const moment = require('moment');
 const debug = require('debug')('srvapp:devicestat');
@@ -28,33 +29,38 @@ db.getCollection('devices').aggregate([
 
 const getdevicestat_warninglevel = (query,ctx,callbackfn)=>{
   const deviceModel = DBModels.DeviceModel;
-  deviceModel.aggregate([
-       {$match:query},
-       {$group: {
-           _id: '$last_warninglevel',
-           count: { $sum: 1 },
-       }
-     }]).exec((err, list)=> {
-       let count_all = 0;
-       let count_yellow = 0;
-       let count_red = 0;
-       let count_orange = 0;
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
+      query.DeviceId = {'$in':deviceIds};
+    }
+    deviceModel.aggregate([
+         {$match:query},
+         {$group: {
+             _id: '$warninglevel',
+             count: { $sum: 1 },
+         }
+       }]).exec((err, list)=> {
+         let count_all = 0;
+         let count_yellow = 0;
+         let count_red = 0;
+         let count_orange = 0;
 
-       if(!err && !!list){
-         for(let i = 0;i < list.length ;i++){
-           if(list[i]._id === '高'){
-             count_red = list[i].count;
-           }
-           if(list[i]._id === '中'){
-             count_orange = list[i].count;
-           }
-           if(list[i]._id === '低'){
-             count_yellow = list[i].count;
+         if(!err && !!list){
+           for(let i = 0;i < list.length ;i++){
+             if(list[i]._id === '高'){
+               count_red = list[i].count;
+             }
+             if(list[i]._id === '中'){
+               count_orange = list[i].count;
+             }
+             if(list[i]._id === '低'){
+               count_yellow = list[i].count;
+             }
            }
          }
-       }
-       count_all = count_red + count_orange + count_yellow;
-       callbackfn(err,{count_all,count_red,count_orange,count_yellow});
+         count_all = count_red + count_orange + count_yellow;
+         callbackfn(err,{count_all,count_red,count_orange,count_yellow});
+     });
    });
 }
 
@@ -82,41 +88,45 @@ db.getCollection('devices').aggregate([
 const getdevicestat_online = (query,ctx,callbackfn)=>{
   const SettingOfflineMinutes = _.get(ctx,'SettingOfflineMinutes',20);
   const oldMomentString = moment().subtract(SettingOfflineMinutes,'minutes').format('YYYY-MM-DD HH:mm:ss');
-
-  const deviceModel = DBModels.DeviceModel;
-  deviceModel.aggregate([
-       {$match:query},
-       {
-         $project:
-           {
-             isonline:
-               {
-                 $cond: { if: { $gte: [ "$last_GPSTime", oldMomentString ] }, then: true, else: false }
-               }
-           }
-       },
-       {$group: {
-           _id: '$isonline',
-           count: { $sum: 1 },
-       }
-     }]).exec((err, list)=> {
-       debug(list);
-       if(!err && !!list){
-         let count_online = 0;
-         let count_offline = 0;
-         for(let i=0;i < list.length;i++){
-           if(list[i]._id === false){
-             count_offline = list[i].count;
-           }
-           if(list[i]._id === true){
-             count_online = list[i].count;
-           }
+  getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
+    if(!query.DeviceId && !isall){
+      query.DeviceId = {'$in':deviceIds};
+    }
+    const deviceModel = DBModels.DeviceModel;
+    deviceModel.aggregate([
+         {$match:query},
+         {
+           $project:
+             {
+               isonline:
+                 {
+                   $cond: { if: { $gte: [ "$last_GPSTime", oldMomentString ] }, then: true, else: false }
+                 }
+             }
+         },
+         {$group: {
+             _id: '$isonline',
+             count: { $sum: 1 },
          }
-         callbackfn(err,{
-           count_online,
-           count_offline
-         });
-       }
+       }]).exec((err, list)=> {
+         debug(list);
+         if(!err && !!list){
+           let count_online = 0;
+           let count_offline = 0;
+           for(let i=0;i < list.length;i++){
+             if(list[i]._id === false){
+               count_offline = list[i].count;
+             }
+             if(list[i]._id === true){
+               count_online = list[i].count;
+             }
+           }
+           callbackfn(err,{
+             count_online,
+             count_offline
+           });
+         }
+     });
    });
 }
 

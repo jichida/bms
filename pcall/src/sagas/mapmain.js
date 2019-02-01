@@ -59,7 +59,8 @@ import {
   refreshdevice_seldevice,
   refreshdevice,
   refreshdevice_treecount,
-  queryamaptree
+  queryamaptree,
+  logout_result
 } from '../actions';
 // import async from 'async';
 import {getgeodatabatch,getgeodata} from './mapmain_getgeodata';
@@ -1967,6 +1968,24 @@ export function* createmapmainflow(){
         catch(e){
           console.log(e);
         }
+    });
+
+    yield takeLatest(`${logout_result}`, function*(action) {
+      try{
+        g_devicesdb = {};
+        g_devicesdb_detailcached = {};
+        cur_adcode_cache = null;
+        cur_DeviceId_cache= null;
+
+        gmap_acode_treecount = {};
+        gmap_acode_devices = {};
+      }
+      catch(e){
+
+      }
+
+
+
     });
 }
 
