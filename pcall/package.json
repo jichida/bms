@@ -106,7 +106,7 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "buildcp": "node scripts/build.js && cp -r build/. ../deploy/dist/pc && rm -R build",
+    "buildcp": "node scripts/build.js && cp -r build/. ../deploy/dist/pcall && rm -R build",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
