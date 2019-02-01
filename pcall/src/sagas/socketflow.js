@@ -1,9 +1,8 @@
-import {takeLatest,put} from 'redux-saga/effects';
+import {takeLatest,put,select} from 'redux-saga/effects';
 import {
   notify_socket_connected,
   getsystemconfig_request,
   loginwithtoken_request,
-
   // querydevicegroup_request
 } from '../actions';
 import config from '../env/config';
@@ -13,10 +12,17 @@ export function* socketflow(){//仅执行一次
    yield takeLatest(`${notify_socket_connected}`, function*(action) {
       let {payload:issocketconnected} = action;
       if(issocketconnected){
-        yield put(getsystemconfig_request({}));
-        const token = localStorage.getItem(`bms_${config.softmode}_token`);
-        if (!!token) {
-          yield put(loginwithtoken_request({token}));
+        //如果已经登录成功就不发了
+        const {loginsuccess} = yield select((state)=>{
+          return {loginsuccess:state.userlogin.loginsuccess};
+        });
+
+        if(!loginsuccess){
+          yield put(getsystemconfig_request({}));
+          const token = localStorage.getItem(`bms_${config.softmode}_token`);
+          if (!!token) {
+            yield put(loginwithtoken_request({token}));
+          }
         }
       }
     });
