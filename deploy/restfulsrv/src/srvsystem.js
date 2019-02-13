@@ -198,7 +198,7 @@ const job=()=>{
 
     debug(`start get catlmysql data.....`);
     winston.getlog().info(`开始读取mysql信息`);
-    catlworking.getcatlmysql((data)=>{
+    catlworking.getcatlmysql({},{},(data)=>{
       config.catlmysqldata = data;
       winston.getlog().info(`load data from mysql(first) =====`);
       winston.getlog().info(_.get(data,'payload.catl_warningf',''));
@@ -210,7 +210,7 @@ const job=()=>{
     schedule.scheduleJob('0 * * * *', ()=>{
       // 每天0点更新优惠券过期信息
       winston.getlog().info(`开始读取mysql信息`);
-      catlworking.getcatlmysql((data)=>{
+      catlworking.getcatlmysql({},{},(data)=>{
         config.catlmysqldata = data;
         winston.getlog().info(`load data from mysql(every hour) =====`);
         winston.getlog().info(_.get(data,'payload.catl_warningf',''));

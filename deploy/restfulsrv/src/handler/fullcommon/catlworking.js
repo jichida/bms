@@ -4,7 +4,7 @@ const async = require('async');
 const debug = require('debug')('srvapp:catlworking');
 const config = require('../../config');
 const winston = require('../../log/log.js');
-
+let cur_catl_warningf = 8;
 const getcatl_warningf = (maxcount,callback)=>{
   const sql = `SELECT DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%S') AS update_time,deviceid AS DeviceId,type FROM MA_WARNING_F ORDER BY update_time DESC LIMIT ${maxcount}`;
   mysqldb.load(sql).then((rows)=>{
@@ -14,7 +14,8 @@ const getcatl_warningf = (maxcount,callback)=>{
 
 
 exports.catl_warningf =  catl_warningf = (actiondata,ctx,callback)=>{
-  const maxcount = _.get(actiondata,'maxcount',8);
+  const maxcount = _.get(actiondata,'maxcount',cur_catl_warningf);
+  debug(`load from db--->${maxcount}`)
   getcatl_warningf(maxcount,(err,result)=>{
     callback({
       cmd:'catl_warningf_result',
@@ -103,17 +104,10 @@ exports.catl_dxtemperature = catl_dxtemperature = (actiondata,ctx,callback)=>{
   });
 }
 
-const getcatlmysql = (callback)=>{
+const getcatlmysql = (actiondata,ctx,callback)=>{
   debug(`start getcatlmysql`)
-  const query = {};
-  const actiondata = {};
-  const ctx = {};
   let fnsz = [];
-  // fnsz.push((callbackfn)=>{//catl_working_request
-  //   catl_working(actiondata,ctx,(result)=>{
-  //     callbackfn(null,result.payload);
-  //   });
-  // });
+
   fnsz.push((callbackfn)=>{//catl_cycle_request
     catl_cycle(actiondata,ctx,(result)=>{
       callbackfn(null,result.payload);
@@ -141,6 +135,7 @@ const getcatlmysql = (callback)=>{
   });
 
   async.parallel(fnsz,(err,result)=>{
+    // debug(result);
     debug(`end  getcatlmysql`);
     if(!!err){
       callback({
@@ -166,12 +161,13 @@ const getcatlmysql = (callback)=>{
 exports.getcatlmysql = getcatlmysql;
 exports.catl =  (actiondata,ctx,callback)=>{
   debug(`catl =====${_.get(config,'catlmysqldata.cmd','')}`);
-  if(_.get(config,'catlmysqldata.cmd','') === 'catl_result'){
+  if(_.get(config,'catlmysqldata.cmd','') === 'catl_result' && cur_catl_warningf === _.get(actiondata,'maxcount',cur_catl_warningf)){
     callback(config.catlmysqldata);
   }
   else{
-    debug(`load data from mysql??? =====`);
-    getcatlmysql((err,data)=>{
+    cur_catl_warningf = _.get(actiondata,'maxcount',cur_catl_warningf);
+    debug(`load data from mysql??? =====>${cur_catl_warningf}`);
+    getcatlmysql(actiondata,ctx,(data)=>{
       winston.getlog().info(`load data from mysql??? =====`);
       winston.getlog().info(data);
 
