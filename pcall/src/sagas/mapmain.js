@@ -1790,7 +1790,7 @@ export function* createmapmainflow(){
           //选择第一个tab
           yield put(ui_index_selstatus(0));
         }
-        else if(config.softmode === 'pc'){
+        else if(config.softmode === 'pc' || config.softmode === 'pcall'){
           yield put(replace('/index'));
         }
         //选择车辆
