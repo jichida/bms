@@ -173,14 +173,15 @@ const deviceinfoquerychart =  (actiondata,ctx,callback)=>{
 const gettimekey =(timestart,timeend)=> {
     const timekeysz = [];
     const momentstart = moment(timestart);
-    const momentend = moment(timeend);
+    const timeendday = moment(timeend).format('YYYY-MM-DD 23:59:59');
+    const momentend = moment(timeendday);
     let momenti;
     for(momenti =momentstart ;momenti <= momentend;  ){
       const timekey = momenti.format('YYMMDD');
       timekeysz.push(timekey);
       momenti = momenti.add(1, 'days');
     }
-    console.log(`timekeysz--->${JSON.stringify(timekeysz)}`);
+    winston.getlog().info(`timestart:${timestart},timeend:${timeend},timekeysz--->${JSON.stringify(timekeysz)}`);
     return timekeysz;
   }
 
@@ -247,6 +248,12 @@ const gettimekey =(timestart,timeend)=> {
         ticks:[],
       };
       if(!err && !!result){
+        if(result.length > 0){
+          winston.getlog().info(`查询无数据,查询条件:query:${JSON.stringify(query)},数据个数:${result.length}`)
+        }
+        else{
+          winston.getlog().error(`查询无数据,查询条件:query:${JSON.stringify(query)}`)
+        }
          debug(`getdeviceinfoquerychartresult[获取到数据]--->${result.length}`);
           _.map(result,(v)=>{
             listret.ticktime.push(v._id.ticktime);
@@ -254,6 +261,9 @@ const gettimekey =(timestart,timeend)=> {
             listret.ticka.push(v.ticka);
             listret.ticks.push(v.ticks);
           });
+      }
+      else{
+        winston.getlog().error(`查询出错,查询条件:query:${JSON.stringify(query)},错误原因:${JSON.stringify(err)}`)
       }
       callbackfn(listret);
     });
@@ -266,8 +276,8 @@ const gettimekey =(timestart,timeend)=> {
         DeviceId:actiondata.query.DeviceId,
         DataTime:_.get(deviceinfo,'LastRealtimeAlarm.DataTime',moment().format('YYYY-MM-DD HH:mm:ss'))
       },(listret)=>{
-        const temperature = _.get(deviceinfo,'LastRealtimeAlarm.BAT_T_Avg',0);
-        const soc = _.get(deviceinfo,'LastRealtimeAlarm.BAT_User_SOC_HVS',0);
+        const temperature = _.get(deviceinfo,'LastRealtimeAlarm.BAT_T_AVG',0);
+        const soc = _.get(deviceinfo,'LastRealtimeAlarm.BAT_USER_SOC_HVS',0);
         const resultnew = _.merge({
           temperature,
           soc,
