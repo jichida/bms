@@ -15,8 +15,8 @@ const zipdir = (exportdir,callbackfn)=>{
   const zipdir = path.basename(`${exportdir}`);
   // zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
   const shellzipcmd = `zip -q -r ${zipdir}.zip ${zipdir}`;
-  debug(`exportdirname:${exportdirname},zipdir:${zipdir}`);
-  debug(`shellzipcmd:${shellzipcmd}`)
+  winston.getlog().info(`exportdirname:${exportdirname},zipdir:${zipdir}`);
+  winston.getlog().info(`shellzipcmd:${shellzipcmd}`)
   shell.cd(`${exportdirname}`);
   shell.exec(shellzipcmd,(code, stdout, stderr)=>{
     const filename3 = path.basename(`${exportdir}.zip`);
@@ -44,9 +44,9 @@ const start_cron = (callbackfn)=>{
   // const CurDay = momentprev.format('YYYY-MM-DD');
   const exportdir = `${config.exportdir}/${momentprev.format('YYYYMMDD')}`;
   const exportdirname = path.dirname(`${exportdir}.zip`);
-  const isexists = fs.existsSync(exportdirname);
+  const isexists = fs.existsSync(`${exportdir}.zip`);
 
-  winston.getlog().info(`判断文件是否存在:${exportdirname},isexists:${isexists}`);
+  winston.getlog().info(`判断文件是否存在:${exportdir}.zip,存在?:${isexists}`);
   if(!isexists){
     //继续压缩一次
     zipdir(exportdir,callbackfn);
