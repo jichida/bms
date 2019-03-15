@@ -93,6 +93,7 @@ const start_cron0 = (callbackfnall)=>{
     fnsz.push((callbackfn)=>{
         const exportdirname = path.dirname(`${exportdir}.zip`);
         const zipdir = path.basename(`${exportdir}`);
+        //zip -q -r 20190314.zip 20190314
         // zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
         const shellzipcmd = `zip -q -r ${zipdir}.zip ${zipdir}`;
         debug(`exportdirname:${exportdirname},zipdir:${zipdir}`);

@@ -1,0 +1,17 @@
+{
+  "apps" : [
+      {
+        "name": "srvexportfix",
+        "script": "/root/bms/deploy/srvintervalexport/indexexportfix.js",
+        "env": {
+          "NODE_ENV": "production",
+          "DEBUG_COLORS":"1",
+          "batchcount":"50",
+          "logdir":"/catlcluster/log",
+          "exportFlag":"fix",
+          "exportdir":"/catlcluster/exportdir",
+        },
+        "node-args": "--nouse-idle-notification --gc_global --max-old-space-size=80960 --max-new-space-size=80960"
+      }
+  ]
+}
