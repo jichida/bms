@@ -115,6 +115,7 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
   //   'LastRealtimeAlarm.DataTime':1,
   //   'alarmtxtstat':1
   // };
+  winston.getlog().info(`querydevicegroup====>`);
 
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query._id && !isall){
@@ -124,11 +125,16 @@ exports.querydevicegroup= (actiondata,ctx,callback)=>{
       query.systemflag = 0;
     }
     debug(`querydevicegroup start exec`);
+    winston.getlog().info(`querydevicegroup====>${JSON.stringify(query)}`);
+
     devicegroupModel.find(query).populate([
         {path:'deviceids', select:devicesfields, model: 'device'},
     ]).lean().exec((err,list)=>{
       if(!err){
-        debug(`querydevicegroup get list:${list.length}`);
+        winston.getlog().info(`querydevicegroup get list:${list.length}`);
+        if(list.length > 0){
+          winston.getlog().info(`${JSON.stringify(list[0])}`);
+        }
         //for test only
         callback({
           cmd:'querydevicegroup_result',
