@@ -165,17 +165,20 @@ exports.querydevice = (actiondata,ctx,callback)=>{
     'alarmtxtstat':1,
     'PackNo_BMU':1
   };
-  debug(`device start getdevicesids`);
+
   getdevicesids(ctx.userid,({devicegroupIds,deviceIds,isall})=>{
     if(!query.DeviceId && !isall){
       query.DeviceId = {'$in':deviceIds};
     }
     // debug(`device query ${JSON.stringify(query)}`);
+    winston.getlog().info(`querydevice:${JSON.stringify(query)}`);
     const queryexec = deviceModel.find(query).select(fields).lean();
     debug(`device start exec`);
     queryexec.exec((err,list)=>{
       if(!err){
         // debug(`device count:${list.length}`);
+        winston.getlog().info(`device count:${list.length}`);
+        
         debug(`querydevice loginuser_add:${ctx.userid},${ctx.connectid}`);
         srvsystem.loginuser_add(ctx.userid,ctx.connectid);//开始监听
         callback({
