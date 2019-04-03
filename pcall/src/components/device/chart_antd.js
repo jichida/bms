@@ -145,7 +145,7 @@ import Wendu from '../../img/28.png';
 export class Chart2 extends React.Component {
     render() {
         const {data,unit} = this.props;
-        // console.log(data);
+        // //console.log(data);
         const scale = {
           'sales': {
             type: 'time', // 指定数据类型
@@ -161,7 +161,7 @@ export class Chart2 extends React.Component {
             <Chart height={260} data={data} scale={scale} padding={[20, 40, 40, 60]} forceFit>
                 <Axis name="timev" label={{
                     formatter: (text, item, index) => {
-                      // console.log(text);
+                      // //console.log(text);
                       if(index%50===0){
                         return `${text}`;
                       }

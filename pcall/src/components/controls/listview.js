@@ -124,7 +124,7 @@ class Page extends React.Component {
         show: true,
         type:'warning'
       }}));
-      console.log(e);
+      //console.log(e);
     });
   }
   //到达底部事件
@@ -169,7 +169,7 @@ class Page extends React.Component {
               show: true,
               type:'warning'
             }}));
-            console.log(e);
+            //console.log(e);
           });
     }
     else{

@@ -29,7 +29,7 @@ export function* apiflow(){//
         yield put(push(`/historyplay/${payload}`));
      }
      catch(e){
-       console.log(e);
+       //console.log(e);
      }
     });
 
@@ -40,7 +40,7 @@ export function* apiflow(){//
         yield put(collectdevice_request({DeviceId:payload,collected:true}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
 
@@ -50,11 +50,11 @@ export function* apiflow(){//
         yield put(collectdevice_request({DeviceId:payload,collected:false}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
     });
   }
   catch(e){
-    console.log(e);
+    //console.log(e);
   }
 }

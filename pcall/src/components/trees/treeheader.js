@@ -66,7 +66,7 @@ const HeaderCo = (props) => {
     // }
 
     const {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
-    //console.log(deviceitem);
+    ////console.log(deviceitem);
     return (
         <div style={props.style.base}  className={treeseled}>
             <div style={props.style.title}>

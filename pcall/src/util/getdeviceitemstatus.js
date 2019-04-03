@@ -10,7 +10,7 @@ const getdevicestatus_isonline = (deviceitem,SettingOfflineMinutes=20)=>{
   }
 
   // if(isonline){
-  //   console.log(`${deviceitem.DeviceId}==>${isonline},${gpstime}`);
+  //   //console.log(`${deviceitem.DeviceId}==>${isonline},${gpstime}`);
   // }
 
   return isonline;

@@ -11,6 +11,6 @@ export const gettimekey =(timestart,timeend)=> {
     timekeysz.push(timekey);
     momenti = momenti.add(1, 'days');
   }
-  console.log(`timekeysz--->${JSON.stringify(timekeysz)}`);
+  //console.log(`timekeysz--->${JSON.stringify(timekeysz)}`);
   return timekeysz;
 }

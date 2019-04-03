@@ -58,16 +58,16 @@ class TablePosition extends React.Component {
           type:'report_cararchives',
           query
       };
-      //console.log(`导出excel:${JSON.stringify(payload)}`);
+      ////console.log(`导出excel:${JSON.stringify(payload)}`);
       this.props.dispatch(download_excel(payload));
     }
 
     onClickQuery(query){
-      //console.log(query);
+      ////console.log(query);
 
       this.setState({query});
       window.setTimeout(()=>{
-        //console.log(this.refs);
+        ////console.log(this.refs);
         this.refs.antdtablecarchives.getWrappedInstance().onRefresh();
       },0);
     }
@@ -111,7 +111,7 @@ class TablePosition extends React.Component {
           return column_item;
         });
         const viewinmap = (row)=>{
-            console.log(row);//DeviceId
+            //console.log(row);//DeviceId
             // this.props.history.push(`/alarminfo/${row._id}`);
             this.props.dispatch(ui_alarm_selcurdevice(row[`RDB编号`]));
         }

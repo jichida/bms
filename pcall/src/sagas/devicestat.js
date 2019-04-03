@@ -107,7 +107,7 @@ export function* devicestatflow() {
           }//end for
           const fnf = function*(){
               const handlefork = yield fork(function*({arealist,provinceadcode,cityadcode}){
-                // console.log(arealist);
+                // //console.log(arealist);
                 // debugger;
                 if(arealist.length > 0){
                   yield put(getdevicestatareas_result({provinceadcode,cityadcode,result:arealist}));
@@ -123,7 +123,7 @@ export function* devicestatflow() {
 
         const fnf = function*(){
           const handlefork = yield fork(function*({citylist,provinceadcode}){
-            // console.log(citylist);
+            // //console.log(citylist);
             // debugger;
             if(citylist.length > 0){
               yield put(getdevicestatcities_result({provinceadcode,result:citylist}));
@@ -137,20 +137,20 @@ export function* devicestatflow() {
 
       const handlefork = yield fork(function*(provincelist){
         // debugger;
-        // console.log(provincelist);
+        // //console.log(provincelist);
         if(provincelist.length > 0){
           yield put(getdevicestatprovinces_result(provincelist));
         }
       },provincelist);
       forkhandles_province.push(handlefork);
 
-      console.log('load tree provice start');
+      //console.log('load tree provice start');
       if(forkhandles_province.length > 0){
         yield join(...forkhandles_province);
       }
-      console.log('load tree provice end');
+      //console.log('load tree provice end');
 
-      console.log('load tree city start');
+      //console.log('load tree city start');
       for(let i = 0 ;i < forkfn_city.length;i++){
         yield forkfn_city[i]();
         // yield call(delay,100);
@@ -158,9 +158,9 @@ export function* devicestatflow() {
       if(forkhandles_city.length > 0){
         yield join(...forkhandles_city);
       }
-      console.log('load tree city end');
+      //console.log('load tree city end');
 
-      console.log('load tree area start');
+      //console.log('load tree area start');
       for(let i = 0 ;i < forkfn_area.length;i++){
         yield call(delay,0);
         yield forkfn_area[i]();
@@ -169,13 +169,13 @@ export function* devicestatflow() {
       if(forkhandles_area.length > 0){
         yield join(...forkhandles_area);
       }
-      console.log('load tree area end');
-      console.log(`load tree finished!!!${forkhandles_province.length},${forkhandles_city.length},${forkhandles_area.length}`);
+      //console.log('load tree area end');
+      //console.log(`load tree finished!!!${forkhandles_province.length},${forkhandles_city.length},${forkhandles_area.length}`);
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-      console.log(datatreeloc);
-      // console.log(gmap_acode_treename);
-      // console.log(gmap_acode_treecount);
-      // console.log(gmap_acode_node);
+      //console.log(datatreeloc);
+      // //console.log(gmap_acode_treename);
+      // //console.log(gmap_acode_treecount);
+      // //console.log(gmap_acode_node);
 //       districtList: Array(1)
 // 0:
 // adcode: "100000"
@@ -201,14 +201,14 @@ export function* devicestatflow() {
 // __proto__: Obj
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
   yield takeEvery(`${getdevicestatprovinces_result}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       const provincelist = action.payload;
-      // console.log(provincelist);
+      // //console.log(provincelist);
       const datanodeproviceroot = datatreeloc.children[0];
       gmap_acode_treecount[1] = {//所有
         count_total:0,
@@ -262,10 +262,10 @@ export function* devicestatflow() {
         gmap_acode_treecount = {...gmap_acode_treecount};
       }
       yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}))
-      // console.log(`load provincelist finished!`)
+      // //console.log(`load provincelist finished!`)
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
 
   });
@@ -274,7 +274,7 @@ export function* devicestatflow() {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       const provinceadcode = action.payload.provinceadcode;
-      // console.log(action.payload)
+      // //console.log(action.payload)
       const parentnode = datatreeloc.children[0];
       let targetnode;
       if(parentnode.children.length > 0){
@@ -282,7 +282,7 @@ export function* devicestatflow() {
         for(let i = 0; i< parentnode.children.length ;i++){
           const subnode = parentnode.children[i];
           if(subnode.adcode === provinceadcode){
-            // console.log(`${subnode.adcode}`);
+            // //console.log(`${subnode.adcode}`);
             targetnode = subnode;
             // break;
           }
@@ -327,17 +327,17 @@ export function* devicestatflow() {
         }
       }
       yield put.resolve(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
-      // console.log(`load citylist finished!,${provinceadcode}`)
+      // //console.log(`load citylist finished!,${provinceadcode}`)
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
 
   yield takeEvery(`${getdevicestatareas_result}`, function*(action) {
     try{
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-      // console.log(action.payload)
+      // //console.log(action.payload)
       const provinceadcode = action.payload.provinceadcode;
       const cityadcode = action.payload.cityadcode;
       const parentnode = datatreeloc.children[0];
@@ -347,7 +347,7 @@ export function* devicestatflow() {
         for(let i = 0; i< parentnode.children.length ;i++){
           const subnode = parentnode.children[i];
           if(subnode.adcode === provinceadcode){
-            // console.log(`${subnode.adcode}`);
+            // //console.log(`${subnode.adcode}`);
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
@@ -407,10 +407,10 @@ export function* devicestatflow() {
         }
       }
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
-      // console.log(`load arealist finished!,${cityadcode}`)
+      // //console.log(`load arealist finished!,${cityadcode}`)
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
   //getdevicestatareadevices_result
@@ -428,7 +428,7 @@ export function* devicestatflow() {
         for(let i = 0; i< parentnode.children.length ;i++){
           const subnode = parentnode.children[i];
           if(subnode.adcode === provinceadcode){
-            // console.log(`${subnode.adcode}`);
+            // //console.log(`${subnode.adcode}`);
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
@@ -440,7 +440,7 @@ export function* devicestatflow() {
                   const subnode3 = citytargetnode.children[k];
                   if(subnode3.adcode === adcode){
                     // debugger;
-                    // console.log(subnode)
+                    // //console.log(subnode)
                     targetnode = subnode3;
                   }
                   else{
@@ -473,7 +473,7 @@ export function* devicestatflow() {
           }
         }
       }
-      // console.log(targetnode);
+      // //console.log(targetnode);
       if(!!targetnode){
         targetnode.children = [];
         if(targetnode.children.length === 0){
@@ -519,7 +519,7 @@ export function* devicestatflow() {
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
 
@@ -578,7 +578,7 @@ export function* devicestatflow() {
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
 
   });
@@ -605,7 +605,7 @@ export function* devicestatflow() {
     try{
       const {adcodetop,forcetoggled,src,name,level} = action.payload;
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
-      console.log(datatreeloc);
+      //console.log(datatreeloc);
       let provinceadcode = '';
       let cityadcode = '';
       let areaadcode = '';
@@ -632,7 +632,7 @@ export function* devicestatflow() {
             subnode.active = true;
             subnode.toggled = true;
             subnode.loading = false;
-            // console.log(`${subnode.adcode}`);
+            // //console.log(`${subnode.adcode}`);
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
@@ -716,11 +716,11 @@ export function* devicestatflow() {
       let {datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = yield select(getdevicestate);
       const {gmap_acode_treecount:gmap_acode_treecount_new} = action.payload;
       gmap_acode_treecount = {...gmap_acode_treecount,...gmap_acode_treecount_new};
-      // console.log(gmap_acode_treecount);
+      // //console.log(gmap_acode_treecount);
       yield put(mapmain_set_devicestat({datatreeloc,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node}));
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
 
@@ -743,7 +743,7 @@ export function* devicestatflow() {
       // const {deviceids,adcodetop} = action.payload;
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
 
@@ -765,7 +765,7 @@ export function* devicestatflow() {
         for(let i = 0; i< parentnode.children.length ;i++){
           const subnode = parentnode.children[i];
           if(subnode.adcode === provinceadcode){
-            // console.log(`${subnode.adcode}`);
+            // //console.log(`${subnode.adcode}`);
             const provincetargetnode = subnode;
             // break;
             for(let j = 0; j< provincetargetnode.children.length ;j++){
@@ -808,7 +808,7 @@ export function* devicestatflow() {
           }
         }
       }
-      // console.log(targetnode);
+      // //console.log(targetnode);
       if(!!targetnode){
           for(let i = 0;  i < targetnode.children.length ; i++){
             const subnode4 = targetnode.children[i];
@@ -825,7 +825,7 @@ export function* devicestatflow() {
       }
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
   });
 }

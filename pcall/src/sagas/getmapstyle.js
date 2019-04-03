@@ -150,7 +150,7 @@ export const getlistpopinfowindowstyle = (deviceitemlist,SettingOfflineMinutes)=
             unit
           });
         });
-        // console.log(`deviceitem:${deviceitem.DeviceId},GPSTime:${}`)
+        // //console.log(`deviceitem:${deviceitem.DeviceId},GPSTime:${}`)
         const  {iconname,isonline} = getimageicon_isonline(deviceitem,SettingOfflineMinutes);
 
         data.push({

@@ -35,17 +35,17 @@ function subscribe(socket) {
     return eventChannel(emit => {
         wsrecvhandler(socket,emit);
         socket.on('connect',()=>{
-            console.log(`socket connected`);
+            //console.log(`socket connected`);
             issocketconnected = true;
             store.dispatch(notify_socket_connected(true));
         });
         socket.on('disconnect',(reason)=>{
             issocketconnected = false;
-            console.log(`socket disconnect:${reason}`);
+            //console.log(`socket disconnect:${reason}`);
             store.dispatch(notify_socket_connected(false));
         });
         socket.on('error',()=>{
-          console.log(`socket error`);
+          //console.log(`socket error`);
             //emit(disconnect());
         });
         return () => {};
@@ -56,7 +56,7 @@ function* read(socket) {
     const channel = yield call(subscribe, socket);
     while (true) {
         let action = yield take(channel);
-        console.log(action);
+        //console.log(action);
         yield put(action);
     }
 }
@@ -64,7 +64,7 @@ function* read(socket) {
 function* write(socket,fun,cmd) {
     while (true) {
         let { payload } = yield take(fun);
-        console.log(payload);
+        //console.log(payload);
         if(issocketconnected){
           socket.emit(`${config.softmode}`,{cmd:cmd,data:payload});
         }

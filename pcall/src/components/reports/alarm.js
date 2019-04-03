@@ -76,15 +76,15 @@ class TableAlarm extends React.Component {
           type:'report_alarm',
           query
       };
-      //console.log(`导出excel:${JSON.stringify(payload)}`);
+      ////console.log(`导出excel:${JSON.stringify(payload)}`);
       this.props.dispatch(download_excel(payload));
     }
 
     onClickQuery(query){
-      //console.log(`查询报警信息:${JSON.stringify(query)}`);
+      ////console.log(`查询报警信息:${JSON.stringify(query)}`);
       this.setState({query});
       window.setTimeout(()=>{
-        //console.log(this.refs);
+        ////console.log(this.refs);
         this.refs.antdtablealarm.getWrappedInstance().onRefresh();
           // this.refs.alarmdatalist.getWrappedInstance().onRefresh();
       },0);

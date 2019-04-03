@@ -79,7 +79,7 @@ const createInfoWindow_popinfo =(data)=> {
 
 //构建自定义信息窗体
 const createInfoWindow_poplistinfo =(data)=> {
-    // console.log(map);
+    // //console.log(map);
 
     //iscollection
     let title = "<span class='p'></span><span>聚合点车辆</span>";

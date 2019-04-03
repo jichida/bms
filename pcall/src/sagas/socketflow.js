@@ -43,12 +43,12 @@ export function* socketflow(){//仅执行一次
       yield takeLatest(`${md_login_result}`, function*(action) {
           try{
           let {payload:result} = action;
-            console.log(`md_login_result==>${JSON.stringify(result)}`);
+            //console.log(`md_login_result==>${JSON.stringify(result)}`);
             if(!!result){
                 yield put(login_result(result));
                 if(result.loginsuccess){
                   localStorage.setItem(`bms_${config.softmode}_token`,result.token);
-                  console.log(`sendreqafterlogin==>${sendreqafterlogin}`);
+                  //console.log(`sendreqafterlogin==>${sendreqafterlogin}`);
                   if(sendreqafterlogin){
                     yield put(querydevicegroup_request({}));
                   }
@@ -61,7 +61,7 @@ export function* socketflow(){//仅执行一次
                       while(true){
                         yield put(getdevicestat_request({}));
                         yield call(delay,10000);
-                        console.log(`start getdevicestat_request`)
+                        //console.log(`start getdevicestat_request`)
                       }
                     });
 
@@ -72,7 +72,7 @@ export function* socketflow(){//仅执行一次
 
           }
           catch(e){
-            console.log(e);
+            //console.log(e);
           }
 
       });

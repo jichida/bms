@@ -67,13 +67,13 @@ class Page extends React.Component {
             data_ticka.push(item2);
             data_ticks.push(item3);
         })
-        // console.log(data_tickv);
-        // console.log(data_ticka);
+        // //console.log(data_tickv);
+        // //console.log(data_ticka);
         data_temperature = get(alarmchartdata,'temperature',0);
 
 
         if(!!alarmchartdata){
-            console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
+            //console.log(`图表数据:${JSON.stringify(alarmchartdata)}`);
         }
         let deviceitem = bridge_deviceinfo(g_devicesdb[deviceid]);
         let datadevice = [];
@@ -135,7 +135,7 @@ class Page extends React.Component {
           }
 
           const ret_data_ticks = convert_addlabeltime(data_ticks);
-          console.log(`--->\n${JSON.stringify(ret_data_ticks)}`);
+          //console.log(`--->\n${JSON.stringify(ret_data_ticks)}`);
           const ret_data_tickv = convert_addlabeltime(data_tickv);
           const ret_data_ticka = convert_addlabeltime(data_ticka);
 

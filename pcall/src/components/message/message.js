@@ -73,7 +73,7 @@ class MessageAllDevice extends React.Component {
 
 
     onClickQuery(query){
-      //console.log(query);
+      ////console.log(query);
       this.setState({query});
     }
 
@@ -201,7 +201,7 @@ class MessageAllDevice extends React.Component {
         data = lodashsortby(data,['LastRealtimeAlarm.DataTime']);
         data = lodashreverse(data);
         // let viewrow = (row)=>{
-        //     //console.log(row);
+        //     ////console.log(row);
         //     g_querysaved = this.state.query;
         //     this.props.history.push(`/alarminfo/${row.key}`);
         // }

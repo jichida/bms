@@ -10,7 +10,7 @@ export function* deviceinfoquerychartflow(){//仅执行一次
   //  yield takeLatest(`${deviceinfoquerychart_request}`, function*(action) {
   //     try{
   //       const {payload:{DeviceId}} = action;
-  //       console.log(`recv ===> ${DeviceId}`);
+  //       //console.log(`recv ===> ${DeviceId}`);
    //
   //       const resultdata = {
   //         '电压':[1,1,2,2,3],
@@ -19,7 +19,7 @@ export function* deviceinfoquerychartflow(){//仅执行一次
   //       yield put(deviceinfoquerychart_result({DeviceId,resultdata}));
   //     }
   //     catch(e){
-  //       console.log(e);
+  //       //console.log(e);
   //     }
    //
   //   });

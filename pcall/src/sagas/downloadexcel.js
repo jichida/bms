@@ -11,15 +11,15 @@ export function* downloadexcel(){//仅执行一次
       try{
         const {payload:{type,query}} = action;
         const usertoken = localStorage.getItem(`bms_${config.softmode}_token`);
-        //console.log(`download_excel===>type:${JSON.stringify(type)},query:${JSON.stringify(query)}`);
+        ////console.log(`download_excel===>type:${JSON.stringify(type)},query:${JSON.stringify(query)}`);
         const json = yield call(restfulapi.getdownloadtoken,{query,usertoken});
-        console.log(json);
+        //console.log(json);
         if(!!json.tokenid){
           yield call(restfulapi.getexcelfile,{type,tokenid:json.tokenid});
         }
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
 
     });

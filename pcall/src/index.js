@@ -29,7 +29,7 @@ store.dispatch(setLanguage('cn', lan['cn']));
 // const alarmtxtstat = 'BPM故障 115次|F[250] 115次|支路内SOC差值过大报警三级 113次|F[46] 113次|AL_TROUBLE_CODE_51_181 104次|F[181] 104次|AL_TROUBLE_CODE_51_214 106次|F[214] 106次|AL_TROUBLE_CODE_51_228 97次|F[228] 97次|AL_TROUBLE_CODE_51_242 95次|F[242] 95次|AL_TROUBLE_CODE_51_225 102次|F[225] 102次|AL_TROUBLE_CODE_51_183 19次|F[183] 19次|AL_TROUBLE_CODE_51_216 1次|F[216] 1次|AL_TROUBLE_CODE_51_219 46次|F[219] 46次|AL_TROUBLE_CODE_51_109 20次|F[109] 20次|AL_TROUBLE_CODE_51_230 25次|F[230] 25次|AL_TROUBLE_CODE_51_154 次|F[154] 1次|';
 // const matchedstring = `BPM故障 `;
 // const index = alarmtxtstat.indexOf(matchedstring);
-// console.log(index)
+// //console.log(index)
 // registerandroid();
 // postNotifyFromJPush(store.dispatch);
 // registerServiceWorker();

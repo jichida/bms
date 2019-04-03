@@ -7,7 +7,7 @@ import {LineChart, Line, XAxis, YAxis,Tooltip} from 'recharts';
 //
 //   if (active) {
 //     const { payload, label } = props;
-//     console.log(`payload:${JSON.stringify(payload)},label:${label}`)
+//     //console.log(`payload:${JSON.stringify(payload)},label:${label}`)
 //     return (
 //       <div className="custom-tooltip">
 //         <p className="label">{`时间:${label}`}</p>
@@ -28,7 +28,7 @@ const Rechart = (props)=>{
      <YAxis/>
      {/* <Tooltip  content={<CustomTooltip/>}/> formatter={(value, name, props) => {
        name='值';
-       console.log(`name:${name},value:${value}`)
+       //console.log(`name:${name},value:${value}`)
        return `${value}`;
      }}*/}
      <Tooltip
@@ -37,7 +37,7 @@ const Rechart = (props)=>{
        }}
        labelFormatter={
        (label)=>{
-         console.log(`labelFormatter--->props:${JSON.stringify(props)}`)
+         //console.log(`labelFormatter--->props:${JSON.stringify(props)}`)
          return `时间 : ${label}`;
        }
      } />

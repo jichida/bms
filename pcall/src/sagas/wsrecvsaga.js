@@ -91,7 +91,7 @@ export function* wsrecvsagaflow() {
       yield put(querydevice_request({query:{},zipflag:1}));
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
 
   });

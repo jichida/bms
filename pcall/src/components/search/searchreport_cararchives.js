@@ -68,7 +68,7 @@ class TreeSearchBattery extends React.Component {
       if(this.state.buscarvin !== ''){
         query['buscarvin'] = this.state.buscarvin;
       }
-      console.log(query);
+      //console.log(query);
       return query;
     }
 

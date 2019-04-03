@@ -71,7 +71,7 @@ class SearchMessage extends React.Component {
     }
     onSelectChange (value) {
       let sz = value.split(',');
-      //console.log(`${JSON.stringify(sz)}`);
+      ////console.log(`${JSON.stringify(sz)}`);
       this.setState({ selectedvalue:sz });
       this.setListColumnFields(sz);
    }
@@ -88,7 +88,7 @@ class SearchMessage extends React.Component {
          });
        }
        else{
-         //console.log(values);
+         ////console.log(values);
        }
 
      });

@@ -62,7 +62,7 @@ class TablePosition extends React.Component {
           type:'report_historydevice',
           query
       };
-      //console.log(`导出excel:${JSON.stringify(payload)}`);
+      ////console.log(`导出excel:${JSON.stringify(payload)}`);
       this.props.dispatch(download_excel(payload));
     }
     onClickLoc = (query)=>{
@@ -83,7 +83,7 @@ class TablePosition extends React.Component {
       }
     }
     onClickQuery(query){
-      //console.log(query);
+      ////console.log(query);
       this.setState({query,querydo:query});
       let hasDeviceId = !!query.DeviceId;
       if(!hasDeviceId && !!query['$and']){
@@ -92,7 +92,7 @@ class TablePosition extends React.Component {
       // hasDeviceId = true;
       if(hasDeviceId){
         window.setTimeout(()=>{
-          //console.log(this.refs);
+          ////console.log(this.refs);
           this.refs.antdtabledevice.getWrappedInstance().onRefresh();
         },0);
       }
@@ -175,7 +175,7 @@ class TablePosition extends React.Component {
         });
 
         // const viewinmap = (row)=>{
-        //     console.log(row);//DeviceId
+        //     //console.log(row);//DeviceId
         //     // this.props.history.push(`/alarminfo/${row._id}`);
         //     this.props.dispatch(ui_alarm_selcurdevice(row[`车辆ID`]));
         // }
@@ -192,7 +192,7 @@ class TablePosition extends React.Component {
         // columnx += 300;
         // columns.push(columns_action);
         // const tableheight = `${this.state.innerHeight-129-60}px`;
-        // console.log(tableheight );
+        // //console.log(tableheight );
         return (
             <div className="warningPage" style={{height : `${this.state.innerHeight}px`}}>
 

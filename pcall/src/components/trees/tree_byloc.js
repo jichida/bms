@@ -43,7 +43,7 @@ class Tree extends React.Component {
             if(typeof id === 'string'){
               id = parseInt(id,10);
             }
-            console.log(node);
+            //console.log(node);
             let adcodetop = id;
             let name = node.name;
             let level;
@@ -70,7 +70,7 @@ class Tree extends React.Component {
             //   //getdevicestatareadevices_result
             //   this.props.dispatch(getdevicestatareadevices_request({provinceadcode:node.provinceadcode,cityadcode:node.cityadcode,adcode:id}));
             // }
-            console.log(node);
+            //console.log(node);
 
         }else{
             // node.toggled = toggled;

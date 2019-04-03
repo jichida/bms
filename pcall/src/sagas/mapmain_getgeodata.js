@@ -40,11 +40,11 @@ import clone from 'lodash.clone';
         });
     const lnglatXY = deviceitem.locz;//[116.396574, 39.992706];//地图上所标点的坐标
     if(!lnglatXY){
-      // console.log(`deviceitem.locz empty:${JSON.stringify(deviceitem)}`)
+      // //console.log(`deviceitem.locz empty:${JSON.stringify(deviceitem)}`)
       resolve();
       return;
     }
-    // console.log(`lnglatXY===>${JSON.stringify(lnglatXY)}`);
+    // //console.log(`lnglatXY===>${JSON.stringify(lnglatXY)}`);
     geocoder.getAddress(lnglatXY, function(status, result) {
         if (status === 'complete' && result.info === 'OK') {
            //获得了有效的地址信息:
@@ -62,7 +62,7 @@ import clone from 'lodash.clone';
            resolve(resultobj);
         }else{
            //获取地址失败
-          //  console.log(`deviceitem:${JSON.stringify(deviceitem)},status:${status},result:${JSON.stringify(result)}`)
+          //  //console.log(`deviceitem:${JSON.stringify(deviceitem)},status:${status},result:${JSON.stringify(result)}`)
            resolve();
         }
     });

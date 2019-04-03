@@ -73,7 +73,7 @@ class AntdTable extends React.Component {
         }
       }).catch((e)=>{
         this.setState({ refreshing: false });
-        console.log(e);
+        //console.log(e);
         this.props.dispatch(set_weui({
           toast:{
           text:e,

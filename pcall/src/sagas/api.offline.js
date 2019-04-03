@@ -110,7 +110,7 @@ export function* apiflow(){//
       yield put(push(`/historyplay/${payload}`));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -126,7 +126,7 @@ export function* apiflow(){//
       yield put(createworkorder_result(payload));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -135,7 +135,7 @@ export function* apiflow(){//
       yield put(getworkusers_result({list:jsondata_bms_workusers}));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -157,7 +157,7 @@ export function* apiflow(){//
 
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -174,7 +174,7 @@ export function* apiflow(){//
       yield put(setworkorderdone_result(item));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -184,7 +184,7 @@ export function* apiflow(){//
       yield put(getallworkorder_result({list:jsondata_bms_workorder}));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -221,7 +221,7 @@ export function* apiflow(){//
       yield put(queryworkorder_result({list}));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -231,7 +231,7 @@ export function* apiflow(){//
       yield put(logout_result({}));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -243,7 +243,7 @@ export function* apiflow(){//
       yield put(getcurallalarm_result({list:jsondata_bms_alarm}));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -255,7 +255,7 @@ export function* apiflow(){//
      yield put(md_querydeviceinfo_result(deviceinfo));
    }
    catch(e){
-     console.log(e);
+     //console.log(e);
    }
   });
 
@@ -270,7 +270,7 @@ export function* apiflow(){//
       }));
     }
     catch(e){
-      console.log(e);
+      //console.log(e);
     }
 
   });
@@ -293,7 +293,7 @@ export function* apiflow(){//
         }
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
   });
 
@@ -311,7 +311,7 @@ export function* apiflow(){//
         yield put(querydevice_result({list:jsondata_result_2}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
   });
 
@@ -320,7 +320,7 @@ export function* apiflow(){//
        yield put(querydevice_result({list:jsondata_bms_mydevice}));
      }
      catch(e){
-       console.log(e);
+       //console.log(e);
      }
     //  yield put(start_serverpush_devicegeo_sz({}));
   });
@@ -341,7 +341,7 @@ export function* apiflow(){//
         yield put(searchbattery_result({list}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
   });
 
@@ -352,7 +352,7 @@ export function* apiflow(){//
           yield put(querydevicegroup_result({list:jsondata_bms_groups}));
         }
         catch(e){
-          console.log(e);
+          //console.log(e);
         }
    });
 
@@ -364,7 +364,7 @@ export function* apiflow(){//
          yield put(notify_socket_connected(true));
        }
        catch(e){
-         console.log(e);
+         //console.log(e);
        }
 
    });
@@ -381,11 +381,11 @@ export function* apiflow(){//
         // let mend = moment(endDate).format('2017-07-31 HH:mm:ss');
         // let index = getrandom(0,list_historyplayback_sz.length -1);
         // let resultlist = list_historyplayback_sz[index];
-        // //console.log(`resultlist:index:${index}:${JSON.stringify(resultlist.length)}`);
+        // ////console.log(`resultlist:index:${index}:${JSON.stringify(resultlist.length)}`);
         // yield put(queryhistorytrack_result({list:resultlist}));
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
    });
 

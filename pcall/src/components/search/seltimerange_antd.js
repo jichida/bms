@@ -27,12 +27,12 @@ class DateRange extends React.Component {
     const startDate = value[0];
     const endDate = value[1];
     this.setState({startDate,endDate});
-    // console.log('Selected Time: ', value);
-    // console.log('Formatted Selected Time: ', dateString);
+    // //console.log('Selected Time: ', value);
+    // //console.log('Formatted Selected Time: ', dateString);
   }
 
  onOk(value) {
-    console.log('onOk: ', value);
+    //console.log('onOk: ', value);
     const startDate = value[0];
     const endDate = value[1];
     if(!!this.props.onChangeSelDate){

@@ -202,7 +202,7 @@ export function* createmaptrackhistoryplaybackflow(){
         }
       }
       catch(e){
-        console.log(e);
+        //console.log(e);
       }
 
     });
@@ -221,7 +221,7 @@ export function* createmaptrackhistoryplaybackflow(){
               }
             }
             catch(e){
-              console.log(e);
+              //console.log(e);
             }
             resolve();
           });
@@ -249,7 +249,7 @@ export function* createmaptrackhistoryplaybackflow(){
     //         }
     //       }
     //       catch(e){
-    //         console.log(e);
+    //         //console.log(e);
     //       }
     //       resolve();
     //     });
@@ -296,7 +296,7 @@ export function* createmaptrackhistoryplaybackflow(){
               devicegpstimes
             }]);
             yield call(startplayback,{isloop,speed});
-            //console.log(`路线:${JSON.stringify({
+            ////console.log(`路线:${JSON.stringify({
             //   name: `车辆:${query.DeviceId}`,
             //   path
             // })}`);
@@ -304,7 +304,7 @@ export function* createmaptrackhistoryplaybackflow(){
 
         }
         catch(e){
-          console.log(e);
+          //console.log(e);
         }
     });
     //mapplayback_end
@@ -318,7 +318,7 @@ export function* createmaptrackhistoryplaybackflow(){
             }
           }
           catch(e){
-            console.log(e);
+            //console.log(e);
           }
           resolve();
         });

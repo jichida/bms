@@ -63,7 +63,7 @@ const {datatree,gmap_acode_treename,gmap_acode_treecount,gmap_acode_node} = get_
 //   })
 //   // map(listdevices,(deviceid)=>{
 //   //   const datatime = get(g_devicesdb,`${deviceid}.last_GPSTime`,'');
-//   //   console.log(`${deviceid}=>${datatime}`);
+//   //   //console.log(`${deviceid}=>${datatime}`);
 //   // });
 //   return listdevices;//lodashreverse(listdevices);
 // }
@@ -375,7 +375,7 @@ const device = createReducer({
   //    datatreeloc.children[0].toggled = true;
   //    datatreeloc.children[0].active = false;
   //    datatreeloc.children[0].loading = false;
-  //   //  console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
+  //   //  //console.log(`datatreeloc.children[1].toggled:${datatreeloc.children[1].toggled}`)
   //   //  datatreeloc.children[1].toggled = true;
   //   //  datatreeloc.children[1].active = false;
   //   //  datatreeloc.children[1].loading = false;

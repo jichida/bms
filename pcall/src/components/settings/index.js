@@ -33,14 +33,14 @@ class Setting extends React.Component {
     }
 
     handleChange_warninglev=(v)=>{
-        console.log(v);
+        //console.log(v);
         this.setState({
             warninglevel: v
         })
     }
 
     handleChange_devicelist=(v)=>{
-        console.log(v);
+        //console.log(v);
         this.setState({
             devicelist: v
         })
@@ -113,7 +113,7 @@ class Setting extends React.Component {
 }
 
 const mapStateToProps = ({userlogin:{ alarmsettings }}) => {
-    // console.log(g_devicesdb);
+    // //console.log(g_devicesdb);
     // g_devicesdb.length = 10;
     return { ...alarmsettings };
 }

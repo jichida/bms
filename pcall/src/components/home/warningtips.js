@@ -272,7 +272,7 @@ class Page extends React.Component {
         //this.props.dispatch(ui_showmenu('showmessage'));
     }
     onClickMenuPipleinfo(tiptype){
-      //console.log(`onClickMenuPipleinfo:${tiptype}`)
+      ////console.log(`onClickMenuPipleinfo:${tiptype}`)
     }
 
     render(){
