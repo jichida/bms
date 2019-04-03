@@ -8,6 +8,7 @@ const moment = require('moment');
 const getdevicesids = require('../getdevicesids');
 const debug = require('debug')('srvapp:device');
 const srvsystem = require('../../srvsystem.js');
+const zipson = require('zipson');
 //
 // const getRandomLocation =  (latitude, longitude, radiusInMeters)=>{
 //
@@ -178,13 +179,22 @@ exports.querydevice = (actiondata,ctx,callback)=>{
       if(!err){
         // debug(`device count:${list.length}`);
         winston.getlog().info(`device count:${list.length}`);
-        
+
         debug(`querydevice loginuser_add:${ctx.userid},${ctx.connectid}`);
         srvsystem.loginuser_add(ctx.userid,ctx.connectid);//开始监听
-        callback({
-          cmd:'querydevice_result',
-          payload:{list}
-        });
+        if(!!actiondata.zipflag){
+          callback({
+            cmd:'querydevice_result',
+            payload:{zippedlist:zipson.stringify(list)}
+          });
+        }
+        else{
+          callback({
+            cmd:'querydevice_result',
+            payload:{list}
+          });
+        }
+
       }
       else{
         callback({

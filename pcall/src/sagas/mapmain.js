@@ -85,7 +85,7 @@ import config from '../config.js';
 import store from '../env/store';
 import {getdevicelist,getdeviceinfo} from './datapiple';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
-
+import { parse } from 'zipson';
 const divmapid_mapmain = 'mapmain';
 const maxzoom = config.softmode === 'pc'?18:19;
 let infoWindow;
@@ -1245,8 +1245,15 @@ export function* createmapmainflow(){
     // });
     //查询所有车辆返回
     yield takeLatest(`${querydevice_result}`, function*(deviceresult) {
-      let {payload:{list:devicelist}} = deviceresult;
+      let {payload:{list,zippedlist}} = deviceresult;
+      let devicelist = list || [];
+      if(!!zippedlist){
+        // console.log(zippedlist);
+        devicelist = parse(zippedlist);
+        // console.log(devicelist);
+      }
       try{
+          console.log(`get devicelist--->${devicelist.length}`)
           while( !distCluster || !markCluster){
             console.log(`wait for discluster ${!!distCluster} or markCluster ${!!markCluster}`);
             yield call(delay,1000);

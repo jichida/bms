@@ -12,7 +12,7 @@ const uuid = require('uuid');
 const srvsystem = require('./srvsystem.js');
 const debug = require('debug')('srvapp:ws');
 const startwebsocketsrv = (http)=>{
-  let io = require('socket.io')(http);
+  let io = require('socket.io')(http,{pingTimeout:180000});
 
   io.on('connection', (socket)=>{
     ////console.log('a user connected');
@@ -71,8 +71,8 @@ const startwebsocketsrv = (http)=>{
       socket.disconnect(true);
     });
 
-    socket.on('disconnect', ()=> {
-      debug(`disconnect:${ctx.userid},${ctx.connectid}`);
+    socket.on('disconnect', (reason)=> {
+      debug(`disconnect:${ctx.userid},${ctx.connectid}:${reason}`);
       if(!!ctx.userid){
         srvsystem.loginuser_remove(ctx.userid,ctx.connectid);//开始监听
       }

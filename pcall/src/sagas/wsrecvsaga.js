@@ -88,7 +88,7 @@ export function* wsrecvsagaflow() {
       map(list,(group)=>{
         groupids.push(group._id);
       });
-      yield put(querydevice_request({query:{}}));
+      yield put(querydevice_request({query:{},zipflag:1}));
     }
     catch(e){
       console.log(e);

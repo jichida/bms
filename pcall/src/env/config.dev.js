@@ -1,4 +1,4 @@
-let islocalhost = true;
+const islocalhost = true;
 const serverurl = islocalhost?'http://localhost:5011':'http://bmscatl.i2u.top:81';
 const serverurlrestful = islocalhost?`${serverurl}/api`:`${serverurl}/apisrv/api`;
 const wspath = islocalhost?'/socket.io':'/apisrv/socket.io';
@@ -9,7 +9,7 @@ let config = {
     serverurl:`${serverurl}`,
     wspath:`${wspath}`,
     requesttimeout:5000,
-    appversion:'1.2.3(build0221)',
+    appversion:'1.2.4(build0404)',
     sendlocationinterval:20000,
     softmode:'pcall',
     wendu_max: 80,
