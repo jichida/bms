@@ -26,6 +26,7 @@ import{
 import map from 'lodash.map';
 import get from 'lodash.get';
 import lodashsortby from 'lodash.sortby';
+import { parse } from 'zipson';
 // import lodashreverse from 'lodash.reverse';
 // import groupBy from 'lodash.groupby';
 // import {getadcodeinfo} from '../util/addressutil';
@@ -427,10 +428,16 @@ const device = createReducer({
     return {...state,groups,groupidlist,datatreegroup};
   },
   [querydevice_result]:(state,payload)=>{
-    const {list} = payload;
+    const {list,zippedlist} = payload;
+    let devicelist = list || [];
+    if(!!zippedlist){
+      // console.log(zippedlist);
+      devicelist = parse(zippedlist);
+      // console.log(devicelist);
+    }
     // let mapdeviceidlist = [];
     let g_devicesdb = {};
-    map(list,(devicerecord)=>{
+    map(devicelist,(devicerecord)=>{
       g_devicesdb[devicerecord.DeviceId] = devicerecord;
     });
 
