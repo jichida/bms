@@ -9,7 +9,7 @@ let config = {
     serverurl:`${serverurl}`,
     wspath:`${wspath}`,
     requesttimeout:5000,
-    appversion:'2.0.1(build0424)',
+    appversion:'2.0.2(build0506)',
     sendlocationinterval:20000,
     softmode:'pcall',
     wendu_max: 80,

@@ -7,7 +7,7 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
 import reducer from '../reducers';
-// import DevTools from './devtools';
+import DevTools from './devtools';
 import createHistory from 'history/createHashHistory';
 const history = createHistory();
 
@@ -25,7 +25,7 @@ let configureStore = (initialState)=> {
         reducer, initialState,
         compose(
             applyMiddleware(thunk,sagaMiddleware,logger,middleware),
-            // DevTools.instrument()
+            DevTools.instrument()
         )
     );
 
