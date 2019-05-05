@@ -87,7 +87,7 @@ import {getdevicelist,getdeviceinfo} from './datapiple';
 import {getdevicestatus_isonline} from '../util/getdeviceitemstatus';
 import { parse } from 'zipson';
 const divmapid_mapmain = 'mapmain';
-const maxzoom = config.softmode === 'pc'?18:19;
+const maxzoom = (config.softmode === 'pc' || config.softmode === 'pcall')?18:19;
 let infoWindow;
 const loczero = L.latLng(0,0);
 let distCluster,markCluster;
