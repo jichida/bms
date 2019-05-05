@@ -62,29 +62,34 @@ class NodeRenderChildren extends React.Component {
             children = children ? [children] : [];
         }
         let retchildren = (node.type==='group_area' || node.type==='group_leaf')?this.getsplitarray(children):children;
-
+        // console.log(node)
+        // console.log(retchildren)
         return (
             <ul style={style.subtree}
                 ref={ref => this.subtreeRef = ref}>
                 {
                   map(retchildren,(child,index)=>{
                     if(isArray(child)){
-                      //
+                      const key = child.id || index;
+                      const keyfinal = typeof key === 'object'?child.name:key;
                       return (<NodeArray subnodes={child}
                           onToggle={onToggle}
                           treeviewstyle={treeviewstyle}
                           {..._eventBubbles}
                           animations={animations}
                           decorators={propDecorators}
-                          key={child.id || index}
+                          key={keyfinal}
                           style={style}
                       />);
                     }
                     else{
+                      const key = child.id || index;
+                      // console.log(typeof key)
+                      const keyfinal = typeof key === 'object'?child.name:key;
                       return (<TreeNode {..._eventBubbles}
                                     animations={animations}
                                     decorators={propDecorators}
-                                    key={child.id || index}
+                                    key={keyfinal}
                                     node={child}
                                     style={style}
                                     treeviewstyle={treeviewstyle}
