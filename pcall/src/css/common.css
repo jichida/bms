@@ -598,6 +598,7 @@
 }
 .treePage .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content-animated{
     flex-grow: 1;
+    overflow-y: auto;
 }
 .treePage .ant-tabs:not(.ant-tabs-vertical) > .ant-tabs-content > .ant-tabs-tabpane{
     display: flex;
