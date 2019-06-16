@@ -112,7 +112,7 @@ const startexport_export = (curdays,devicelist,callbackfn)=>{
   }
 
    let success_list = [];
-   winston.getlog().info(`【export_history_shell】新建一个目录${exportdir},${i}`);
+   winston.getlog().info(`【export_history_shell】新建一个目录${exportdir},${i},共有设备:${devicelist.length}`);
    startexport_batch(devicelist,exportdir,curday,(retlist)=>{
     success_list = _.concat(success_list, retlist);
     debug(`导出历史数据结果->success_list-->${success_list.length},本次新增:${retlist.length}`)
