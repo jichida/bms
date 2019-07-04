@@ -5,6 +5,7 @@ const moment = require('moment');
 const Iconv = require('iconv').Iconv;
 const iconv = new Iconv('UTF-8', 'GBK');
 const csvwriter = require('csvwriter');
+const winston = require('../log/log.js');
 const fs = require('fs');
 const _ = require('lodash');
 const async = require('async');
@@ -41,7 +42,14 @@ const startexport_do = (exportdir,curday,retlist,callbackfn) =>{
 
         csvwriter(newdoc, {header: false, fields: csvfields}, (err, csv)=> {
           if (!err && !!csv ) {
-             res.write(iconv.convert(csv));
+            try{
+              res.write(iconv.convert(csv));
+            }
+            catch(e){
+              debug(e);
+              debug(`导出这条记录错误了:${JSON.stringify(csv)}`);
+              winston.getlog().info(`导出这条记录错误了:${JSON.stringify(csv)}`);
+            }
            }
           //  result = result+1;
           if(i === retlist.length - 1){
