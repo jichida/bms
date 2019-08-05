@@ -14,7 +14,7 @@ const sftptosrv =  require('./ftps/index.js');
 const config = require('./config');
 const getDeviceCities = require('./lib/getdevicecities');
 const moment = require('moment');
-
+const delay = require('timeout-as-promise');
 // *    *    *    *    *    *
 // ┬    ┬    ┬    ┬    ┬    ┬
 // │    │    │    │    │    |
@@ -93,7 +93,7 @@ const start_cron0 = (callbackfnall)=>{
     fnsz.push((callbackfn)=>{
         const exportdirname = path.dirname(`${exportdir}.zip`);
         const zipdir = path.basename(`${exportdir}`);
-        //zip -q -r 20190314.zip 20190314
+        //nohup zip -q -r 20190615.zip 20190615 &
         // zipdir(exportdir, { saveTo: `${exportdir}.zip` },  (err, buffer)=> {
         const shellzipcmd = `zip -q -r ${zipdir}.zip ${zipdir}`;
         debug(`exportdirname:${exportdirname},zipdir:${zipdir}`);
@@ -106,14 +106,17 @@ const start_cron0 = (callbackfnall)=>{
           curtime = moment().format('YYYY-MM-DD HH:mm:ss');
           winston.getlog().info(`压缩完毕:${exportdir}.zip-->${curtime}`);
 
-          winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
+          winston.getlog().info(`[等10分钟]上传ftp文件:${config.exportdir},文件:${filename3}`);
+          delay(1000*60*10).then(()=>{
+            winston.getlog().info(`上传ftp文件:${config.exportdir},文件:${filename3}`);
+            sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
+              curtime = moment().format('YYYY-MM-DD HH:mm:ss');
+              winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
+              debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
+              callbackfn(null,true);
+            });
+          })
 
-          sftptosrv(`${config.exportdir}`,filename3 ,(err,result)=>{
-            curtime = moment().format('YYYY-MM-DD HH:mm:ss');
-            winston.getlog().info(`上传文件:${config.exportdir}/${filename3}到ftp服务器-->${curtime}`);
-            debug(`上传文件:${config.exportdir}/${filename3}到ftp服务器`);
-            callbackfn(null,true);
-          });
         });
     });
 
