@@ -22,7 +22,11 @@ export default {
                 display: 'block'
             },
             activeLink: {
-                background: '#31363F'
+              cursor: 'pointer',
+              position: 'relative',
+              padding: '0px 5px',
+              display: 'block',
+              background: '#31363F'
             },
             toggle: {
                 base: {

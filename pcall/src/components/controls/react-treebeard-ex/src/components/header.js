@@ -29,7 +29,14 @@ class NodeHeader extends React.Component {
         const {animations, decorators, node, onClick, style,treeviewstyle} = this.props;
         const {active, children} = node;
         const terminal = !children;
-        const container = [style.link, active ? style.activeLink : null];
+        // const container = [style.link, active ? style.activeLink : null];
+        let container;
+        if(active){
+           container = style.activeLink;
+        }
+        else{
+          container = style.link;
+        }
         const headerStyles = Object.assign({container}, style);
 
         return (
