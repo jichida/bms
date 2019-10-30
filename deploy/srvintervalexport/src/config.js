@@ -25,7 +25,7 @@ const config =  {
       host: process.env.srvsftp_host||'192.168.2.14',
       port: process.env.srvsftp_port||'22',
       username: process.env.srvsftp_username||'catlftp',
-      password: process.env.srvsftp_password||'%c?D:8Bv'
+      password: process.env.srvsftp_password||'{9VK3hcn8BCW=8'
   },
 
 };
