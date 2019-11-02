@@ -17,7 +17,7 @@
     "lodash": "^4.17.4",
     "mathjs": "^5.0.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.13.4",
+    "mongoose": "^5.7.7",
     "node-rdkafka": "^2.2.2",
     "node-rules": "^3.1.0",
     "uuid": "^3.1.0"
