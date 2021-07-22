@@ -21,7 +21,7 @@
     "react-tap-event-plugin": "2.0.1",
     "react-virtualized-select": "^3.1.3",
     "redux-form-schema": "0.0.3",
-    "xlsx": "^0.12.12"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "buildcp": "react-scripts build && cp -r build/. ../deploy/dist/admin && rm -R build",
